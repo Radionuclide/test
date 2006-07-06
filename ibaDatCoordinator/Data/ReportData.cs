@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml.Serialization;
+
+namespace iba.Data
+{
+    [ Serializable ]
+    public class ReportData : TaskData
+    {
+        private string m_destinationMap;
+        public string DestinationMap
+        {
+            get { return m_destinationMap; }
+            set { m_destinationMap = value; }
+        }
+
+        public enum OutputChoice { FILE, PRINT };
+        private OutputChoice m_outputChoice;
+        public OutputChoice Output
+        {
+            get { return m_outputChoice; }
+            set { m_outputChoice = value; }
+        }
+
+        static private List<string> m_allowedExtensions = new List<string>(new string[] {                
+                "pdf",
+                "htm",
+                "html",
+                "mht",
+                "mhtml",
+                "txt",
+                "xls",
+                "rtf",
+                "xml"});
+
+        private string m_extension;
+        public string Extension
+        {
+            get { return m_extension; }
+            set { if (m_allowedExtensions.Contains(value)) m_extension = value;}
+        }
+
+
+        public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH };
+        private SubfolderChoice m_subfolderChoice;
+        public SubfolderChoice Subfolder
+        {
+            get { return m_subfolderChoice; }
+            set { m_subfolderChoice = value; }
+        }
+
+        private uint m_numbFolders;
+        public uint SubfoldersNumber
+        {
+            get { return m_numbFolders; }
+            set { m_numbFolders = value; }
+        }
+
+        public ReportData(ConfigurationData parent) : base(parent)
+        {
+            m_name = iba.Properties.Resources.reportTitle;
+            m_outputChoice = OutputChoice.FILE;
+            m_subfolderChoice = SubfolderChoice.DAY;
+            m_numbFolders = 10;
+            m_destinationMap = "";
+            m_extension = "pdf";
+        }
+
+        public ReportData() : this(null)
+        {
+        }
+
+        public override object Clone()
+        {
+            ReportData rd = new ReportData(null);
+            rd.m_wtodo = m_wtodo;
+            rd.m_name = m_name.Clone() as string;
+            rd.m_pdoFile = m_pdoFile.Clone() as string;
+            rd.m_numbFolders = m_numbFolders;
+            rd.m_subfolderChoice = m_subfolderChoice;
+            rd.m_outputChoice = m_outputChoice;
+            rd.m_destinationMap = m_destinationMap;
+            rd.m_notify = m_notify;
+            return rd;
+        }
+    }
+}

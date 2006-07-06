@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addConfigurationText" xml:space="preserve">
+    <value>Job hinzufügen</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Aktualisieren" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Aktualisieren.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Analyzer_001" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Analyzer_001.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfile_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile_failure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfile_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile_noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfile_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfile_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile_succes.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfile_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="batchfileButton" xml:space="preserve">
+    <value>Neue Batchdatei-Aufgabe hinzufügen</value>
+  </data>
+  <data name="batchfileTitle" xml:space="preserve">
+    <value>Batchdatei</value>
+  </data>
+  <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="closing" xml:space="preserve">
+    <value>Closing</value>
+  </data>
+  <data name="collapseTitle" xml:space="preserve">
+    <value>Alle reduzieren</value>
+  </data>
+  <data name="configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configuration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\running.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="connectionLost" xml:space="preserve">
+    <value>Die Verbindung zum ibaDatCoordinator-Dienst ist unterbrochen. ibaDatCoordinator arbeitet nun im Offline-Modus weiter. Wir empfehlen, alle Änderungen zu speichern und sowohl den Dienst als auch den ibaDatCoordinator neu zu straten.</value>
+  </data>
+  <data name="connectionLostCaption" xml:space="preserve">
+    <value>Verbindung unterbrochen</value>
+  </data>
+  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copytaskButton" xml:space="preserve">
+    <value>Neue Kopieren-Aufgabe hinzufügen</value>
+  </data>
+  <data name="copyTitle" xml:space="preserve">
+    <value>Kopieren</value>
+  </data>
+  <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cutTitle" xml:space="preserve">
+    <value>Ausschneiden</value>
+  </data>
+  <data name="deleteBatchfileQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Batchdatei-Optionen "{0}" der Job "{1}" löschen wollen?</value>
+  </data>
+  <data name="deleteConfigurationQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Job "{0}" löschen wollen?</value>
+  </data>
+  <data name="deleteCopyTaskQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Kopieren-optionen "{0}" der Job "{1}" löschen wollen?</value>
+  </data>
+  <data name="deleteExtractQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Extraktionsoptionen "{0}" der Job "{1}" löschen wollen?</value>
+  </data>
+  <data name="deleteReportQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Report-Optionen "{0}" der Job "{1}" löschen wollen?</value>
+  </data>
+  <data name="deleteTitle" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disconnected.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\extractfailure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\extractnoaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\db.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\dbsucces.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extract_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\extracttimeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="extractButton" xml:space="preserve">
+    <value>Neue Extraktionsaufgabe hinzufügen</value>
+  </data>
+  <data name="extractTitle" xml:space="preserve">
+    <value>Extraktion</value>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>Fehlgeschlagen! (siehe Protokolldatei)</value>
+  </data>
+  <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logBatchfileFailed" xml:space="preserve">
+    <value>Batchdatei fehlgeschlagen</value>
+  </data>
+  <data name="logBatchfileStarted" xml:space="preserve">
+    <value>Batchdatei gestartet</value>
+  </data>
+  <data name="logBatchfileSuccess" xml:space="preserve">
+    <value>Batchdatei erfolgreich beendet</value>
+  </data>
+  <data name="logBatchfileTimeout" xml:space="preserve">
+    <value>Batchdatei Zeitüberschreitung</value>
+  </data>
+  <data name="logCheckingForNewDatFiles" xml:space="preserve">
+    <value>Auf neue Messdateien überprüfen</value>
+  </data>
+  <data name="logConfigurationStarted" xml:space="preserve">
+    <value>Verarbeitung derJob gestartet</value>
+  </data>
+  <data name="logConfigurationStopped" xml:space="preserve">
+    <value>Verarbeitung der Job gestoppt</value>
+  </data>
+  <data name="logCopyTaskFailed" xml:space="preserve">
+    <value>Kopieren Messdatei fehlgeschlagen</value>
+  </data>
+  <data name="logCopyTaskSuccess" xml:space="preserve">
+    <value>Kopieren Messdatei erfolgreich beendet</value>
+  </data>
+  <data name="logCreateDirectoryFailed" xml:space="preserve">
+    <value>Anlegen des Zielverzeichnisses fehlgeschlagen.</value>
+  </data>
+  <data name="logDatDirError" xml:space="preserve">
+    <value>Der angegebene Messdatei-Ordner ist nicht vorhanden.</value>
+  </data>
+  <data name="logExtractFailed" xml:space="preserve">
+    <value>Extraktion fehlgeschlagen</value>
+  </data>
+  <data name="logExtractStarted" xml:space="preserve">
+    <value>Extraktion gestartet</value>
+  </data>
+  <data name="logExtractSuccess" xml:space="preserve">
+    <value>Extraktion erfolgreich beendet</value>
+  </data>
+  <data name="logExtractTimeout" xml:space="preserve">
+    <value>Extraktion Zeitüberschreitung</value>
+  </data>
+  <data name="logFileVersionToLow" xml:space="preserve">
+    <value>Dieser ibaDatCoordinator erfordert ibaAnalyzer Version 4.4 oder höher.</value>
+  </data>
+  <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logMoveTaskFailed" xml:space="preserve">
+    <value>Verschieben Messdatei fehlgeschlagen</value>
+  </data>
+  <data name="logMoveTaskSuccess" xml:space="preserve">
+    <value>Verschieben Messdatei erfolgreich beendet</value>
+  </data>
+  <data name="logNextTasksIgnored" xml:space="preserve">
+    <value>Verschieben Messdatei erfolgreich beendet, folgende Aufgaben werden ignoriert</value>
+  </data>
+  <data name="logNoBatchfile" xml:space="preserve">
+    <value>Batchdatei ist nicht vorhanden.</value>
+  </data>
+  <data name="logNoExtractPdo" xml:space="preserve">
+    <value>.pdo-Datei für Extraktion ist nicht vorhanden.</value>
+  </data>
+  <data name="logNoReportPdo" xml:space="preserve">
+    <value>.pdo-Datei für Report ist nicht vorhanden</value>
+  </data>
+  <data name="logRemoveDirectoryFailed" xml:space="preserve">
+    <value>Löschen alter Ordner fehlgeschlagen</value>
+  </data>
+  <data name="logReportFailed" xml:space="preserve">
+    <value>Report fehlgeschlagen</value>
+  </data>
+  <data name="logReportStarted" xml:space="preserve">
+    <value>Report gestartet</value>
+  </data>
+  <data name="logReportSuccess" xml:space="preserve">
+    <value>Report erfolgreich beendet</value>
+  </data>
+  <data name="logReportTimeout" xml:space="preserve">
+    <value>Report Zeitüberschreitung</value>
+  </data>
+  <data name="logServiceStarted" xml:space="preserve">
+    <value>ibaDatCoordinator Dienst gestartet</value>
+  </data>
+  <data name="logServiceStopped" xml:space="preserve">
+    <value>ibaDatCoordinator Dienst gestoppt</value>
+  </data>
+  <data name="logTitle" xml:space="preserve">
+    <value>Protokoll</value>
+  </data>
+  <data name="NewBatchfileTitle" xml:space="preserve">
+    <value>Batchdatei-Aufgabe hinzufügen</value>
+  </data>
+  <data name="newConfigurationName" xml:space="preserve">
+    <value>Neue Job</value>
+  </data>
+  <data name="NewCopyTaskTitle" xml:space="preserve">
+    <value>Kopieren-Aufgabe hinzufügen</value>
+  </data>
+  <data name="NewExtractTitle" xml:space="preserve">
+    <value>Extraktionsaufgabe hinzufügen</value>
+  </data>
+  <data name="NewReportTitle" xml:space="preserve">
+    <value>Report-Aufgabe hinzufügen</value>
+  </data>
+  <data name="NewTaskTitle" xml:space="preserve">
+    <value>Aufgabe hinzufügen</value>
+  </data>
+  <data name="niConnected" xml:space="preserve">
+    <value>ibaDatCoordinator (verbunden)</value>
+  </data>
+  <data name="niDisconnected" xml:space="preserve">
+    <value>ibaDatCoordinator (getrennt)</value>
+  </data>
+  <data name="Noaccess" xml:space="preserve">
+    <value>Momentan kein Zugriff auf Messdatei...</value>
+  </data>
+  <data name="Noaccess2" xml:space="preserve">
+    <value>Messdatei ist schreibgeschützt</value>
+  </data>
+  <data name="noIbaAnalyser" xml:space="preserve">
+    <value>kein ibaAnalyzer registriert</value>
+  </data>
+  <data name="notifyIconMenuItemExit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="notifyIconMenuItemRestore" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="notifyIconMenuItemStartService" xml:space="preserve">
+    <value>Dienst  starten</value>
+  </data>
+  <data name="notifyIconMenuItemStopService" xml:space="preserve">
+    <value>Dienst  anhalten</value>
+  </data>
+  <data name="open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OpenFileProblem" xml:space="preserve">
+    <value>Problem beim Dateiöffnen:</value>
+  </data>
+  <data name="paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\paste.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pasteTitle" xml:space="preserve">
+    <value>Einfügen</value>
+  </data>
+  <data name="ReadStatusError" xml:space="preserve">
+    <value>Status der Messdatei konnte nicht gelesen werden.</value>
+  </data>
+  <data name="redarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redarrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redarrow1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshDatButton" xml:space="preserve">
+    <value>"Bereits verarbeitet"-Markierung der Messdateien entfernen. </value>
+  </data>
+  <data name="report_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reportfailure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="report_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\report_noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="report_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\report.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="report_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reportsucces.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="report_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\report_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="reportButton" xml:space="preserve">
+    <value>Neue Report-Aufgabe hinzufügen</value>
+  </data>
+  <data name="reportTitle" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Verarbeitung...</value>
+  </data>
+  <data name="SaveFileProblem" xml:space="preserve">
+    <value>Problem beim Speichern der Datei:</value>
+  </data>
+  <data name="saveQuestion" xml:space="preserve">
+    <value>Aktuelle Job sichern?</value>
+  </data>
+  <data name="ServerSaveFileProblem" xml:space="preserve">
+    <value>Problem beim Speichern der Datei auf der Server-Seite</value>
+  </data>
+  <data name="ServiceConnectProblem" xml:space="preserve">
+    <value>Es gab ein Problem beim Verbinden zum ibaDatCoordinator-Dienst : ''{0}"{1}ibaDatCoordinator fährt im getrennten Modus fort.</value>
+  </data>
+  <data name="ServiceConnectProblem2" xml:space="preserve">
+    <value>Der Dienst konnte nicht gestartet werden.</value>
+  </data>
+  <data name="ServiceConnectProblem3" xml:space="preserve">
+    <value>Es gab ein Problem beim Verbinden zum ibaDatCoordinator-Dienst :"{0}"{1}Bitte stoppen Sie den Dienst manuell.</value>
+  </data>
+  <data name="ServiceConnectProblem4" xml:space="preserve">
+    <value>Der Dienst konnte nicht gestoppt werden.</value>
+  </data>
+  <data name="ServiceConnectProblemCaption" xml:space="preserve">
+    <value>Verbindung zum ibaDatCoordinator-Dienst konnte nicht hergestellt werden.</value>
+  </data>
+  <data name="Speichern" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Speichern.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\default.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Start.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="startButton" xml:space="preserve">
+    <value>Diesen Job starten</value>
+  </data>
+  <data name="statText0" xml:space="preserve">
+    <value>Das sind die Statusdaten für Job : {0}</value>
+  </data>
+  <data name="statText1" xml:space="preserve">
+    <value>Der Job ist {0}</value>
+  </data>
+  <data name="statText2" xml:space="preserve">
+    <value>gestartet</value>
+  </data>
+  <data name="statText3" xml:space="preserve">
+    <value>gestoppt</value>
+  </data>
+  <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\status.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StatusBarError" xml:space="preserve">
+    <value>Fehler! "{0}" Bitte im Protokoll nachsehen. </value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stopAllConfigurations" xml:space="preserve">
+    <value>Alle Jobs stoppen </value>
+  </data>
+  <data name="stopButton" xml:space="preserve">
+    <value>Diesen Job stoppen</value>
+  </data>
+  <data name="stopConfiguration" xml:space="preserve">
+    <value>Job wird gestoppt.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>erfolgreich beendet</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Zeitüberschreitung! (siehe Protokolldatei)</value>
+  </data>
+  <data name="toolTipAutoStart" xml:space="preserve">
+    <value>Diesen Job automatisch nach Dienststart oder Dateiladen ausführen.</value>
+  </data>
+  <data name="toolTipStartAll" xml:space="preserve">
+    <value>Alle Jobs starten</value>
+  </data>
+  <data name="toolTipStopAll" xml:space="preserve">
+    <value>Alle Jobs stoppen</value>
+  </data>
+  <data name="WhenToDo1" xml:space="preserve">
+    <value>Ausführen nach Erfolg</value>
+  </data>
+  <data name="WhenToDo2" xml:space="preserve">
+    <value>Ausführen nach Fehler</value>
+  </data>
+  <data name="WhenToDo3" xml:space="preserve">
+    <value>Immer ausführen</value>
+  </data>
+  <data name="WhenToDo4" xml:space="preserve">
+    <value>Nach 1. Fehler ausführen</value>
+  </data>
+</root>

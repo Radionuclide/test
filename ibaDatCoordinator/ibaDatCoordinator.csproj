@@ -1,0 +1,526 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{03EFD2FC-187D-42A5-B3A7-38232B4FF060}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iba</RootNamespace>
+    <AssemblyName>ibaDatCoordinator</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>http://localhost/ibaDatCoordinator/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetMagic, Version=2.3.0.0, Culture=neutral, PublicKeyToken=6cf6edec59e036ec">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DotNetMagic.DLL</HintPath>
+    </Reference>
+    <Reference Include="Eyefinder, Version=1.2.0.0, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
+    </Reference>
+    <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationObject.cs" />
+    <Compile Include="Controls\BatchFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BatchFileControl.Designer.cs">
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConfigurationControl.Designer.cs">
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CopyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CopyControl.Designer.cs">
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExtractControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ExtractControl.Designer.cs">
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RemoveMarkingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\RemoveMarkingsDialog.Designer.cs">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportControl.Designer.cs">
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\StatusControl.Designer.cs">
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StopWaitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\StopWaitDialog.Designer.cs">
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WatchdogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WatchdogControl.Designer.cs">
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\BatchFileData.cs" />
+    <Compile Include="Data\ConfigurationData.cs" />
+    <Compile Include="Data\CopyMoveTaskData.cs" />
+    <Compile Include="Data\ExtractData.cs" />
+    <Compile Include="Data\LogData.cs" />
+    <Compile Include="Data\ReportData.cs" />
+    <Compile Include="Data\StatusData.cs" />
+    <Compile Include="Data\TaskData.cs" />
+    <Compile Include="Data\WatchDogData.cs" />
+    <Compile Include="GeneralInterfaces.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Processing\Notifier.cs" />
+    <Compile Include="StartServiceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StartServiceDialog.Designer.cs">
+      <DependentUpon>StartServiceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StopServiceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StopServiceDialog.Designer.cs">
+      <DependentUpon>StopServiceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\nextname.cs" />
+    <Compile Include="Utility\NotifyIconEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Processing\ConfigurationWorker.cs" />
+    <Compile Include="Processing\TaskManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\ConfigurationControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StatusControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\Start.bmp" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SingletonApplication.cs" />
+    <Compile Include="Utility\algorithms.cs" />
+    <Compile Include="Utility\containers.cs" />
+    <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\WindowsAPI.cs" />
+    <Compile Include="TreeItemData.cs" />
+    <Compile Include="Utility\WaitCursor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BatchFileControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BatchFileControl.en.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BatchFileControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BatchFileControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConfigurationControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConfigurationControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CopyControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CopyControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CopyControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExtractControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExtractControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExtractControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StatusControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StatusControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StopWaitDialog.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StopWaitDialog.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StopWaitDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WatchdogControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartServiceDialog.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StartServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartServiceDialog.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StartServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartServiceDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StartServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StopServiceDialog.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StopServiceDialog.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StopServiceDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\NotifyIconEx.resx">
+      <DependentUpon>NotifyIconEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\icons.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Analyse_Öffnen.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Analyzer_001.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\odbc.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DOS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Speichern.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Aktualisieren.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button_Statistik.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IbaAnalyzer">
+      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="IBAFILESLib">
+      <Guid>{10FC9C2E-670C-41B4-B967-B2EF8DF25FE3}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Label_Report.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Status_Datenbank_0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\batchfile.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\extract.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\little_check.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\little_cross.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\small_clock.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\db.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbsucces.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\extractfailure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\extracttimeout.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reportsucces.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\report.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reportfailure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\report_timeout.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\batchfile_failure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\batchfile_timeout.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\batchfile_succes.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\batchfile_noaccess.ico" />
+    <Content Include="Properties\ibaLogo.ico" />
+    <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <Content Include="Resources\watchdog.ico" />
+    <None Include="Resources\ibalogo_transparent.jpg" />
+    <None Include="Resources\copydat_noaccess.ico" />
+    <None Include="Resources\copydat_timeout.ico" />
+    <None Include="Resources\copydat_succes.ico" />
+    <None Include="..\..\..\klad\bitmaps\copydat_failure.ico">
+      <Link>Resources\copydat_failure.ico</Link>
+    </None>
+    <None Include="Resources\paste.png" />
+    <None Include="Resources\open.png" />
+    <None Include="Resources\cut.png" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\blank.ico" />
+    <None Include="Resources\redarrow1.ico" />
+    <None Include="Resources\redarrow.ico" />
+    <None Include="Resources\greenarrow.ico" />
+    <None Include="Resources\default.ico" />
+    <None Include="Resources\disconnected.ico" />
+    <None Include="Resources\running.ico" />
+    <None Include="Resources\Start.PNG" />
+    <None Include="Resources\Stop.png" />
+    <None Include="Resources\logging.ico" />
+    <None Include="Resources\ibaLogo.ico" />
+    <None Include="Resources\ibaLogo_noshadow.ico" />
+    <None Include="Resources\status.ico" />
+    <None Include="Resources\configuration.ico" />
+    <None Include="Resources\configuration_new.ico" />
+    <None Include="Resources\status.png" />
+    <None Include="Resources\configuration.png" />
+    <None Include="Resources\report_noaccess.ico" />
+    <None Include="Resources\extractnoaccess.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
