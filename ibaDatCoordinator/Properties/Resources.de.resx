@@ -251,7 +251,7 @@
     <value>Batchdatei Zeitüberschreitung</value>
   </data>
   <data name="logCheckingForNewDatFiles" xml:space="preserve">
-    <value>Auf neue Messdateien überprüfen</value>
+    <value>Auf Messdateien überprüfen</value>
   </data>
   <data name="logConfigurationStarted" xml:space="preserve">
     <value>Verarbeitung derJob gestartet</value>
@@ -284,7 +284,7 @@
     <value>Extraktion Zeitüberschreitung</value>
   </data>
   <data name="logFileVersionToLow" xml:space="preserve">
-    <value>Dieser ibaDatCoordinator erfordert ibaAnalyzer Version 4.4 oder höher.</value>
+    <value>Dieser ibaDatCoordinator erfordert ibaAnalyzer Version 5.0 oder höher.</value>
   </data>
   <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

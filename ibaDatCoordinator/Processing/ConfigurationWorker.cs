@@ -93,10 +93,12 @@ namespace iba.Processing
             m_sd.ReadFiles = m_toProcessFiles = new List<string>();
             m_waitEvent = new AutoResetEvent(false);
             m_notifier = new Notifier(cd);
+            m_candidateNewFiles = new List<string>();
         }       
                 
         List<string> m_processedFiles;
         List<string> m_toProcessFiles;
+        List<string> m_candidateNewFiles;
 
         private void Log(Logging.Level level, string message)
         {
@@ -139,55 +141,46 @@ namespace iba.Processing
                 fswt.IncludeSubdirectories = m_cd.SubDirs;
                 fswt.Created += new FileSystemEventHandler(OnNewDatFile);
                 fswt.EnableRaisingEvents = true;
-                updateDatFileList(true);
-                using (System.Threading.Timer processCycleTimer = new System.Threading.Timer(new TimerCallback(OnProcessCycleTimerTick)))
+                updateDatFileList(WhatToUpdate.ALL);
+                System.Threading.Timer notifyTimer = null;
+                System.Threading.Timer reprocessErrorsTimer = null;
+                System.Threading.Timer rescanTimer = null;
+
+                try
                 {
-                    processCycleTimer.Change(m_cd.TimeInterval, m_cd.TimeInterval);
-                    
-                    System.Threading.Timer notifyTimer = null;
-                    try
+                    reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
+                    reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, m_cd.ReprocessErrorsTimeInterval);
+                    rescanTimer = new System.Threading.Timer(new TimerCallback(OnRescanTimerTick));
+                    rescanTimer.Change(m_cd.RescanTimeInterval, m_cd.RescanTimeInterval);
+
+
+                    if (!m_cd.NotificationData.NotifyImmediately)
                     {
-                        if (!m_cd.NotificationData.NotifyImmediately)
+                        notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
+                        notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
+                    }
+                    while (!m_stop)
+                    {
+                        //register this
+                        if (m_previousRunExecutable != m_cd.IbaAnalyserExe)
                         {
-                            notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
-                            notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
-                        }
-                        while (!m_stop)
-                        {
-                            //register this
-                            if (m_previousRunExecutable != m_cd.IbaAnalyserExe)
+                            try
                             {
-                                try
+                                string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyserExe).FileVersion;
+                                if (version.CompareTo("4.4") < 0)
                                 {
-                                    string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyserExe).FileVersion;
-                                    if (version.CompareTo("4.4") < 0)
-                                    {
-                                        Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
-                                        m_sd.Started = false;
-                                        Stop = true;
-                                        return;
-                                    };
-                                    Process ibaProc = new Process();
-                                    ibaProc.EnableRaisingEvents = false;
-                                    ibaProc.StartInfo.FileName = m_cd.IbaAnalyserExe;
-                                    ibaProc.StartInfo.Arguments = "/regserver";
-                                    ibaProc.Start();
-                                    ibaProc.WaitForExit(10000);
-                                    m_previousRunExecutable = m_cd.IbaAnalyserExe;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log(Logging.Level.Exception, ex.Message);
+                                    Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
                                     m_sd.Started = false;
                                     Stop = true;
                                     return;
-                                }
-                            }
-                            //start the com object
-                            try
-                            {
-                                m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                                string version = m_ibaAnalyzer.GetVersion();
+                                };
+                                Process ibaProc = new Process();
+                                ibaProc.EnableRaisingEvents = false;
+                                ibaProc.StartInfo.FileName = m_cd.IbaAnalyserExe;
+                                ibaProc.StartInfo.Arguments = "/regserver";
+                                ibaProc.Start();
+                                ibaProc.WaitForExit(10000);
+                                m_previousRunExecutable = m_cd.IbaAnalyserExe;
                             }
                             catch (Exception ex)
                             {
@@ -196,76 +189,92 @@ namespace iba.Processing
                                 Stop = true;
                                 return;
                             }
+                        }
+                        //start the com object
+                        try
+                        {
+                            m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                            string version = m_ibaAnalyzer.GetVersion();
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(Logging.Level.Exception, ex.Message);
+                            m_sd.Started = false;
+                            Stop = true;
+                            return;
+                        }
 
-                            while (true)
+                        while (true)
+                        {
+                            string file = null;
+                            lock (m_toProcessFiles)
                             {
-                                string file = null;
-                                lock (m_toProcessFiles)
+                                if (m_toProcessFiles.Count > 0)
                                 {
-                                    if (m_toProcessFiles.Count > 0)
+                                    DateTime mintime = DateTime.MaxValue;
+                                    foreach (string fileC in m_toProcessFiles)
                                     {
-                                        DateTime mintime = DateTime.MaxValue;
-                                        foreach (string fileC in m_toProcessFiles)
+                                        if (File.Exists(fileC))
                                         {
-                                            if (File.Exists(fileC))
+                                            FileInfo f = new FileInfo(fileC);
+                                            DateTime n = f.CreationTime;
+                                            if (n < mintime)
                                             {
-                                                FileInfo f = new FileInfo(fileC);
-                                                DateTime n = f.CreationTime;
-                                                if (n < mintime)
-                                                {
-                                                    file = fileC;
-                                                    mintime = n;
-                                                }
+                                                file = fileC;
+                                                mintime = n;
                                             }
                                         }
                                     }
-                                    else break;
                                 }
-                                if (file == null) //no existing file
-                                {
-                                    lock (m_toProcessFiles)
-                                    {
-                                        m_toProcessFiles.Clear();
-                                    }
-                                    break;
-                                }
-                                ProcessDatfile(file);
-                                if (m_stop) break;
+                                else break;
+                            }
+                            if (file == null) //no existing file
+                            {
                                 lock (m_toProcessFiles)
                                 {
-                                    int index = m_toProcessFiles.IndexOf(file);
-                                    if (index >= 0)
-                                        m_toProcessFiles.RemoveAt(index);
+                                    m_toProcessFiles.Clear();
                                 }
+                                break;
                             }
-                            //stop the com object
-                            try
+                            ProcessDatfile(file);
+                            if (m_stop) break;
+                            lock (m_toProcessFiles)
                             {
-                                if (m_ibaAnalyzer == null)
-                                    return;
-                                System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
-                                m_ibaAnalyzer = null;
+                                int index = m_toProcessFiles.IndexOf(file);
+                                if (index >= 0)
+                                    m_toProcessFiles.RemoveAt(index);
                             }
-                            catch (Exception ex)
-                            {
-                                Log(Logging.Level.Exception, ex.Message);
-                                m_sd.Started = false;
-                                Stop = true;
+                        }
+                        //stop the com object
+                        try
+                        {
+                            if (m_ibaAnalyzer == null)
                                 return;
-                            }
-
-                            m_waitEvent.WaitOne();
-                            UpdateConfiguration();
-                            updateDatFileList(false);
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                            m_ibaAnalyzer = null;
                         }
+                        catch (Exception ex)
+                        {
+                            Log(Logging.Level.Exception, ex.Message);
+                            m_sd.Started = false;
+                            Stop = true;
+                            return;
+                        }
+                        m_waitEvent.WaitOne();
+                        UpdateConfiguration();
                     }
-                    finally
+                }
+                finally
+                {
+                    if (notifyTimer != null)
                     {
-                        if (notifyTimer != null) {
-                            notifyTimer.Dispose();
-                            m_notifier.Send(); //send one last time
-                        }
+                        notifyTimer.Dispose();
+                        m_notifier.Send(); //send one last time
                     }
+                    if (rescanTimer != null)
+                        rescanTimer.Dispose();
+                    if (reprocessErrorsTimer != null)
+                        reprocessErrorsTimer.Dispose();
                 }
             }
             m_sd.Started = false;
@@ -274,87 +283,76 @@ namespace iba.Processing
 
         private void OnNewDatFile(object sender, FileSystemEventArgs args)
         {
-            //configurationdata is changed, do not look at this new file but wait until the entire list is processed
-            if (m_toUpdate != null)
-            {
-                m_waitEvent.Set();
-                return;
-            }
-            
             string filename = args.FullPath;
-            if (File.Exists(filename))
+            lock (m_candidateNewFiles)
             {
-                FileStream fs = null;
-                try
+                if (!m_candidateNewFiles.Contains(filename))
+                    m_candidateNewFiles.Add(filename);
+            }
+        }
+
+        private void OnAddNewDatFileTimerTick(object ignoreMe)
+        {
+            bool changed = false;
+            List<string> added = new List<string>();
+            lock (m_candidateNewFiles)
+            {
+                foreach (string filename in m_candidateNewFiles)
                 {
-                    fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
-                    fs.Close();
-                    fs.Dispose();
-                    bool doit = false;
-                    lock (m_toProcessFiles)
+                    FileStream fs = null;
+                    try
                     {
-                        doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
-                        if (doit)
-                            m_toProcessFiles.Add(filename);
-                    }
-                    if (doit)
-                    {
-                        lock (m_sd.DatFileStates)
+                        fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
+                        fs.Close();
+                        fs.Dispose();
+                        bool doit = false;
+                        lock (m_toProcessFiles)
                         {
-                            m_sd.DatFileStates[filename] = new DatFileStatus();
+                            doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                            if (doit)
+                                m_toProcessFiles.Add(filename);
                         }
+                        added.Add(filename);
+                        changed = changed || doit;
+                    }
+                    catch //no access
+                    {
                     }
                 }
-                catch //no access
+                if (changed)
+                foreach (string filename in added)
                 {
-                    bool doit = false;
-                    lock (m_processedFiles)
-                    {
-                        doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
-                        if (doit)
-                        m_processedFiles.Add(filename);
-                    }
-                    if (doit)
-                    {
-                        DatFileStatus status = new DatFileStatus();
-                        lock (m_sd.DatFileStates)
-                        {
-                            foreach (TaskData dat in m_cd.Tasks)
-                            {
-                                if (dat.Enabled) status.States[dat] = DatFileStatus.State.NO_ACCESS;
-                            }
-                            m_sd.DatFileStates[filename] = status;
-                        }
-                        try
-                        {
-                            FileAttributes at = File.GetAttributes(filename);
-                            if (at != FileAttributes.ReadOnly)
-                                Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-                            else
-                                Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
-                        }
-                        catch
-                        {
-                            Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-                        }
-                    }
+                    m_candidateNewFiles.Remove(filename);
                 }
             }
-            m_sd.TakeCopyOfFileList();
+            if (changed)
+            {
+                updateDatFileList(WhatToUpdate.NEW);
+                m_waitEvent.Set();
+            }
+        }
+
+        private void OnRescanTimerTick(object ignoreMe)
+        {
+            updateDatFileList(WhatToUpdate.ALL);
             m_waitEvent.Set();
         }
 
-        private void OnProcessCycleTimerTick(object ignoreMe)
+        private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
+            updateDatFileList(WhatToUpdate.ERRORS);
             m_waitEvent.Set();
         }
+
 
         private void OnNotifyTimerTick(object ignoreMe)
         {
             m_notifier.Send();
         }
 
-        private void updateDatFileList(bool checknew)
+        private enum WhatToUpdate { ALL, NEW, ERRORS };
+
+        private void updateDatFileList(WhatToUpdate what)
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
             string datDir = m_cd.DatDirectory;
@@ -364,16 +362,26 @@ namespace iba.Processing
                 m_sd.UpdatingFileList = true;
                 lock (m_processedFiles)
                 {
-                    if (!checknew)
+                    if (what != WhatToUpdate.ALL)
                     {
                         int count = m_processedFiles.Count;
                         fileInfos = new FileInfo[count];
                         for (int i = 0; i < count; i++)
                         {
-                            if (File.Exists(m_processedFiles[i]))
-                                fileInfos[i] = new FileInfo(m_processedFiles[i]);
-                            else
-                                fileInfos[i] = null;
+                            lock (m_sd.DatFileStates)
+                            {
+                                if ((File.Exists(m_processedFiles[i]))
+                                    && (
+                                    (what == WhatToUpdate.ERRORS && m_sd.DatFileStates.ContainsKey(m_processedFiles[i]))
+                                    ||
+                                    (what == WhatToUpdate.NEW && !m_sd.DatFileStates.ContainsKey(m_processedFiles[i]))
+                                    ))
+                                {
+                                    fileInfos[i] = new FileInfo(m_processedFiles[i]);
+                                }
+                                else
+                                    fileInfos[i] = null;
+                            }
                         }
                     }
                     m_processedFiles.Clear();
@@ -382,7 +390,7 @@ namespace iba.Processing
                 {
                     //m_toProcessFiles.Clear();
                     DirectoryInfo dirInfo = new DirectoryInfo(datDir);
-                    if (checknew)
+                    if (what == WhatToUpdate.ALL)
                         fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs?SearchOption.AllDirectories:SearchOption.TopDirectoryOnly);
                     foreach (FileInfo fi in fileInfos)
                     {

@@ -130,18 +130,6 @@
   <data name="label2.Text" xml:space="preserve">
     <value>Messdateiverzeichnis:</value>
   </data>
-  <data name="m_timeUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 60</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 13</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Neue Messdateien verarbeiten, alle </value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>264, 62</value>
-  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
   </data>
@@ -168,6 +156,15 @@
   </data>
   <data name="m_enableCheckBox.Text" xml:space="preserve">
     <value>aktiv</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>286, 69</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Minuten</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Zyklus</value>

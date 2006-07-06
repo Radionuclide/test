@@ -466,7 +466,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking for new .dat files.
+        ///   Looks up a localized string similar to Checking for .dat files.
         /// </summary>
         internal static string logCheckingForNewDatFiles {
             get {
@@ -565,7 +565,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to this version of ibaDatCoordinator requires ibaAnalyzer version 4.4 or higher.
+        ///   Looks up a localized string similar to this version of ibaDatCoordinator requires ibaAnalyzer version 5.0 or higher.
         /// </summary>
         internal static string logFileVersionToLow {
             get {

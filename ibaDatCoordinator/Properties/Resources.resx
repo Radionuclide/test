@@ -359,7 +359,7 @@
     <value>..\resources\dbsucces.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logCheckingForNewDatFiles" xml:space="preserve">
-    <value>Checking for new .dat files</value>
+    <value>Checking for .dat files</value>
   </data>
   <data name="statText3" xml:space="preserve">
     <value>stopped</value>
@@ -401,7 +401,7 @@
     <value>a specified parameter is invalid</value>
   </data>
   <data name="logFileVersionToLow" xml:space="preserve">
-    <value>this version of ibaDatCoordinator requires ibaAnalyzer version 4.4 or higher</value>
+    <value>this version of ibaDatCoordinator requires ibaAnalyzer version 5.0 or higher</value>
   </data>
   <data name="NewCopyTaskTitle" xml:space="preserve">
     <value>Add Copy Task</value>
