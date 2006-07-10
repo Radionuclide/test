@@ -120,7 +120,11 @@ namespace iba.Controls
                     return;
                 }
             }
-            if (!m_data.Changed && sender != null) return;
+            if (!m_data.Changed && sender != null)
+            {
+                m_refreshTimer.Enabled = true;
+                return;
+            }
             m_data.Changed = false;
             //wait cursor
             if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;

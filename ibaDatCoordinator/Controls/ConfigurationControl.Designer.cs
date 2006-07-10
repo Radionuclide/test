@@ -34,7 +34,7 @@ namespace iba.Controls
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.m_datDirTextBox = new System.Windows.Forms.TextBox();
-            this.m_timeUpDown = new System.Windows.Forms.NumericUpDown();
+            this.m_scanTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
@@ -48,7 +48,7 @@ namespace iba.Controls
             this.label11 = new System.Windows.Forms.Label();
             this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
-            this.m_timeUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -78,11 +78,11 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.m_timeUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_timeUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
@@ -130,30 +130,30 @@ namespace iba.Controls
             this.m_datDirTextBox.Name = "m_datDirTextBox";
             this.m_toolTip.SetToolTip(this.m_datDirTextBox, resources.GetString("m_datDirTextBox.ToolTip"));
             // 
-            // m_timeUpDown
+            // m_scanTimeUpDown
             // 
-            this.m_timeUpDown.AccessibleDescription = null;
-            this.m_timeUpDown.AccessibleName = null;
-            resources.ApplyResources(this.m_timeUpDown, "m_timeUpDown");
-            this.m_timeUpDown.Font = null;
-            this.m_timeUpDown.Increment = new decimal(new int[] {
+            this.m_scanTimeUpDown.AccessibleDescription = null;
+            this.m_scanTimeUpDown.AccessibleName = null;
+            resources.ApplyResources(this.m_scanTimeUpDown, "m_scanTimeUpDown");
+            this.m_scanTimeUpDown.Font = null;
+            this.m_scanTimeUpDown.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.m_timeUpDown.Maximum = new decimal(new int[] {
+            this.m_scanTimeUpDown.Maximum = new decimal(new int[] {
             600,
             0,
             0,
             0});
-            this.m_timeUpDown.Minimum = new decimal(new int[] {
+            this.m_scanTimeUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.m_timeUpDown.Name = "m_timeUpDown";
-            this.m_toolTip.SetToolTip(this.m_timeUpDown, resources.GetString("m_timeUpDown.ToolTip"));
-            this.m_timeUpDown.Value = new decimal(new int[] {
+            this.m_scanTimeUpDown.Name = "m_scanTimeUpDown";
+            this.m_toolTip.SetToolTip(this.m_scanTimeUpDown, resources.GetString("m_scanTimeUpDown.ToolTip"));
+            this.m_scanTimeUpDown.Value = new decimal(new int[] {
             10,
             0,
             0,
@@ -255,10 +255,10 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
             this.groupBox3.Controls.Add(this.m_enableCheckBox);
-            this.groupBox3.Controls.Add(this.m_timeUpDown2);
+            this.groupBox3.Controls.Add(this.m_failTimeUpDown);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.m_timeUpDown);
+            this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
             this.groupBox3.Font = null;
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
@@ -322,30 +322,30 @@ namespace iba.Controls
             this.m_enableCheckBox.UseVisualStyleBackColor = true;
             this.m_enableCheckBox.CheckedChanged += new System.EventHandler(this.m_enableCheckBox_CheckedChanged);
             // 
-            // m_timeUpDown2
+            // m_failTimeUpDown
             // 
-            this.m_timeUpDown2.AccessibleDescription = null;
-            this.m_timeUpDown2.AccessibleName = null;
-            resources.ApplyResources(this.m_timeUpDown2, "m_timeUpDown2");
-            this.m_timeUpDown2.Font = null;
-            this.m_timeUpDown2.Increment = new decimal(new int[] {
+            this.m_failTimeUpDown.AccessibleDescription = null;
+            this.m_failTimeUpDown.AccessibleName = null;
+            resources.ApplyResources(this.m_failTimeUpDown, "m_failTimeUpDown");
+            this.m_failTimeUpDown.Font = null;
+            this.m_failTimeUpDown.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.m_timeUpDown2.Maximum = new decimal(new int[] {
+            this.m_failTimeUpDown.Maximum = new decimal(new int[] {
             600,
             0,
             0,
             0});
-            this.m_timeUpDown2.Minimum = new decimal(new int[] {
+            this.m_failTimeUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.m_timeUpDown2.Name = "m_timeUpDown2";
-            this.m_toolTip.SetToolTip(this.m_timeUpDown2, resources.GetString("m_timeUpDown2.ToolTip"));
-            this.m_timeUpDown2.Value = new decimal(new int[] {
+            this.m_failTimeUpDown.Name = "m_failTimeUpDown";
+            this.m_toolTip.SetToolTip(this.m_failTimeUpDown, resources.GetString("m_failTimeUpDown.ToolTip"));
+            this.m_failTimeUpDown.Value = new decimal(new int[] {
             10,
             0,
             0,
@@ -704,14 +704,14 @@ namespace iba.Controls
             this.MinimumSize = new System.Drawing.Size(620, 660);
             this.Name = "ConfigurationControl";
             this.m_toolTip.SetToolTip(this, resources.GetString("$this.ToolTip"));
-            ((System.ComponentModel.ISupportInitialize)(this.m_timeUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_timeUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -731,7 +731,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox m_datDirTextBox;
-        private System.Windows.Forms.NumericUpDown m_timeUpDown;
+        private System.Windows.Forms.NumericUpDown m_scanTimeUpDown;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox m_subMapsCheckBox;
@@ -773,7 +773,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown m_timeUpDown2;
+        private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
         private System.Windows.Forms.Label label10;
     }
 }

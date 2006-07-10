@@ -73,6 +73,12 @@ namespace iba.Processing
         {
             if (m_toUpdate != null)
             {
+                if (m_toUpdate.NotificationData.TimeInterval < m_cd.NotificationData.TimeInterval)
+                    notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
+                if (m_toUpdate.RescanTimeInterval < m_cd.RescanTimeInterval)
+                    rescanTimer.Change(m_toUpdate.RescanTimeInterval, TimeSpan.Zero);
+                if (m_toUpdate.ReprocessErrorsTimeInterval< m_cd.ReprocessErrorsTimeInterval)
+                    notifyTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                 m_cd = m_toUpdate;
                 m_sd.CorrConfigurationData = m_cd;
                 if (m_notifier != null)
@@ -131,10 +137,22 @@ namespace iba.Processing
 
         private string m_previousRunExecutable;
 
+        private System.Threading.Timer notifyTimer;
+        private System.Threading.Timer reprocessErrorsTimer;
+        private System.Threading.Timer rescanTimer;
+        private System.Threading.Timer retryAccessTimer;
+        bool m_bTimersstopped;
         private void Run()
         {
             //Notifier not = new Notifier();
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
+            if (!Directory.Exists(m_cd.DatDirectory))
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                m_sd.Started = false;
+                Stop = true;
+                return;
+            }
             using (FileSystemWatcher fswt = new FileSystemWatcher(m_cd.DatDirectory, "*.dat"))
             {
                 fswt.NotifyFilter = NotifyFilters.FileName;
@@ -142,17 +160,16 @@ namespace iba.Processing
                 fswt.Created += new FileSystemEventHandler(OnNewDatFile);
                 fswt.EnableRaisingEvents = true;
                 updateDatFileList(WhatToUpdate.ALL);
-                System.Threading.Timer notifyTimer = null;
-                System.Threading.Timer reprocessErrorsTimer = null;
-                System.Threading.Timer rescanTimer = null;
-
+                notifyTimer = null;
                 try
                 {
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
-                    reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, m_cd.ReprocessErrorsTimeInterval);
+                    reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                     rescanTimer = new System.Threading.Timer(new TimerCallback(OnRescanTimerTick));
-                    rescanTimer.Change(m_cd.RescanTimeInterval, m_cd.RescanTimeInterval);
-
+                    rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
+                    retryAccessTimer = new System.Threading.Timer(new TimerCallback(OnAddNewDatFileTimerTick));
+                    retryAccessTimer.Change(1000, Timeout.Infinite); //hard coded, each second see if no new files are available
+                    m_bTimersstopped = false;
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
@@ -167,7 +184,7 @@ namespace iba.Processing
                             try
                             {
                                 string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyserExe).FileVersion;
-                                if (version.CompareTo("4.4") < 0)
+                                if (version.CompareTo("5.0") < 0)
                                 {
                                     Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
                                     m_sd.Started = false;
@@ -266,15 +283,28 @@ namespace iba.Processing
                 }
                 finally
                 {
+                    m_bTimersstopped = true;
                     if (notifyTimer != null)
                     {
+                        notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         notifyTimer.Dispose();
                         m_notifier.Send(); //send one last time
                     }
                     if (rescanTimer != null)
+                    {
+                        rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         rescanTimer.Dispose();
+                    }
                     if (reprocessErrorsTimer != null)
+                    {
+                        reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         reprocessErrorsTimer.Dispose();
+                    }
+                    if (retryAccessTimer != null)
+                    {
+                        retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        reprocessErrorsTimer.Dispose();
+                    }
                 }
             }
             m_sd.Started = false;
@@ -293,6 +323,8 @@ namespace iba.Processing
 
         private void OnAddNewDatFileTimerTick(object ignoreMe)
         {
+            if (m_bTimersstopped || m_stop) return;
+            retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
             List<string> added = new List<string>();
             lock (m_candidateNewFiles)
@@ -330,24 +362,40 @@ namespace iba.Processing
                 updateDatFileList(WhatToUpdate.NEW);
                 m_waitEvent.Set();
             }
+            if (!m_bTimersstopped && !m_stop)
+                retryAccessTimer.Change(1000, Timeout.Infinite);
         }
 
         private void OnRescanTimerTick(object ignoreMe)
         {
+            if (m_bTimersstopped || m_stop) return;
+            rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
             updateDatFileList(WhatToUpdate.ALL);
             m_waitEvent.Set();
+            if (!m_bTimersstopped && !m_stop)
+                rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
         }
 
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
+            if (m_bTimersstopped || m_stop) return;
+            reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
             updateDatFileList(WhatToUpdate.ERRORS);
+            if (!m_stop)
+                reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
             m_waitEvent.Set();
+            if (!m_bTimersstopped && !m_stop)
+                reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
         }
 
 
         private void OnNotifyTimerTick(object ignoreMe)
         {
+            if (m_bTimersstopped || m_stop) return;
+            notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
             m_notifier.Send();
+            if (!m_bTimersstopped && !m_stop)
+                notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
         }
 
         private enum WhatToUpdate { ALL, NEW, ERRORS };
@@ -383,8 +431,37 @@ namespace iba.Processing
                                     fileInfos[i] = null;
                             }
                         }
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
+                                m_processedFiles.Remove(fileInfos[i].FullName);
+                        }
+                        count = m_processedFiles.Count;
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            string filename = m_processedFiles[i];
+                            lock (m_sd.DatFileStates)
+                            {
+                                bool allclear = true;
+                                if (m_sd.DatFileStates.ContainsKey(filename))
+                                foreach (TaskData dat in m_cd.Tasks)
+                                {
+                                    if (dat.Enabled)
+                                        allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat) && m_sd.DatFileStates[filename].States[dat] == DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                    if (!allclear) break;
+                                }
+                                if (allclear)
+                                {
+                                    m_processedFiles.Remove(filename);
+                                    i--;
+                                    count--;
+                                }
+                            }
+                        }
                     }
-                    m_processedFiles.Clear();
+                    else
+                        m_processedFiles.Clear();
                 }
                 lock (m_toProcessFiles)
                 {

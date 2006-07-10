@@ -49,32 +49,32 @@ namespace iba.Data
             set { m_doSubDirs = value; }
         }
      
-        private TimeSpan m_time1;
+        private TimeSpan m_reproccessTime;
         [XmlIgnore]
         public TimeSpan ReprocessErrorsTimeInterval
         {
-            get { return m_time1; }
-            set { m_time1 = value; }
+            get { return m_reproccessTime; }
+            set { m_reproccessTime = value; }
         }
 
         public long ReprocessErrorsTimeIntervalTicks
         {
-            get { return m_time1.Ticks; }
-            set { m_time1 = new TimeSpan(value); }
+            get { return m_reproccessTime.Ticks; }
+            set { m_reproccessTime = new TimeSpan(value); }
         }
 
-        private TimeSpan m_time2;
+        private TimeSpan m_rescanTime;
         [XmlIgnore]
         public TimeSpan RescanTimeInterval
         {
-            get { return m_time2; }
-            set { m_time2 = value; }
+            get { return m_rescanTime; }
+            set { m_rescanTime = value; }
         }
 
         public long RescanTimeIntervalTicks
         {
-            get { return m_time2.Ticks; }
-            set { m_time2 = new TimeSpan(value); }
+            get { return m_rescanTime.Ticks; }
+            set { m_rescanTime = new TimeSpan(value); }
         }
 
 
@@ -120,7 +120,7 @@ namespace iba.Data
 
         public ConfigurationData(string name)
         {
-            m_time1 = m_time2 = new TimeSpan(0, 0, 10);
+            m_reproccessTime = m_rescanTime = new TimeSpan(0, 0, 10);
             m_name = name;
             m_enabled = true;
             m_autoStart = false;
@@ -161,8 +161,8 @@ namespace iba.Data
             cd.m_autoStart = m_autoStart;
             cd.m_datDirectory = m_datDirectory.Clone() as string;
             cd.m_doSubDirs = m_doSubDirs;
-            cd.m_time1 = m_time1;
-            cd.m_time2 = m_time2;
+            cd.m_reproccessTime = m_reproccessTime;
+            cd.m_rescanTime = m_rescanTime;
             cd.m_notify = m_notify.Clone() as NotificationData;
             return cd;
         }

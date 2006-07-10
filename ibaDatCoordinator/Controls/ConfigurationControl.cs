@@ -58,17 +58,20 @@ namespace iba.Controls
             m_autoStartCheckBox.Checked = m_data.AutoStart;
             m_enableCheckBox.Checked = m_data.Enabled;
             m_analyserTextBox.Text = m_data.IbaAnalyserExe;
-            if (m_timeUpDown.Minimum >  (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
-                m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_timeUpDown.Minimum);
-            else if (m_timeUpDown.Maximum < (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
-                m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_timeUpDown.Maximum);
-            if (m_timeUpDown2.Minimum > (decimal)m_data.RescanTimeInterval.TotalMinutes)
-                m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_timeUpDown2.Minimum);
-            else if (m_timeUpDown2.Maximum < (decimal)m_data.RescanTimeInterval.TotalMinutes)
-                m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_timeUpDown2.Maximum);
+
+            if (m_failTimeUpDown.Minimum >  (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
+                m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Minimum);
+            else if (m_failTimeUpDown.Maximum < (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
+                m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Maximum);
             
+            if (m_scanTimeUpDown.Minimum > (decimal)m_data.RescanTimeInterval.TotalMinutes)
+                m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Minimum);
+            else if (m_scanTimeUpDown.Maximum < (decimal)m_data.RescanTimeInterval.TotalMinutes)
+                m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Maximum);
+                        
+            m_scanTimeUpDown.Value = (decimal) m_data.RescanTimeInterval.TotalMinutes;
+            m_failTimeUpDown.Value = (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes;
             
-            m_timeUpDown.Value = (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes;
             m_executeIBAAButton.Enabled = File.Exists(m_analyserTextBox.Text);
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
@@ -135,8 +138,8 @@ namespace iba.Controls
             m_data.Enabled = m_enableCheckBox.Checked;
             m_data.AutoStart = m_autoStartCheckBox.Checked;
             m_data.IbaAnalyserExe = m_analyserTextBox.Text;
-            m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_timeUpDown.Value);
-            m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_timeUpDown2.Value); 
+            m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
+            m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value); 
             m_data.NotificationData.Email = m_tbEmail.Text;
             m_data.NotificationData.SMTPServer = m_tbSMTP.Text;
             m_data.NotificationData.Host = m_tbNetSend.Text;
