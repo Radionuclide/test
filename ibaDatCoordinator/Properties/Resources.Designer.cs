@@ -1246,6 +1246,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        internal static string textFileStopped {
+            get {
+                return ResourceManager.GetString("textFileStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to timed out! (see logfile).
         /// </summary>
         internal static string Timeout {
@@ -1294,6 +1303,69 @@ namespace iba.Properties {
         internal static string watchdogTitle {
             get {
                 return ResourceManager.GetString("watchdogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCP/IP watchdog : socket exception on accept : {0}.
+        /// </summary>
+        internal static string wdErrorAccept {
+            get {
+                return ResourceManager.GetString("wdErrorAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred while connecting in TCP/IP watchdog : {0}.
+        /// </summary>
+        internal static string wdErrorConnect {
+            get {
+                return ResourceManager.GetString("wdErrorConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error sending TCP/IP watchdog : {0} --&gt; Disconnecting.
+        /// </summary>
+        internal static string wdErrorSend {
+            get {
+                return ResourceManager.GetString("wdErrorSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred when stopping TCP/IP watchdog : {0}.
+        /// </summary>
+        internal static string wdErrorStop {
+            get {
+                return ResourceManager.GetString("wdErrorStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to {0}.
+        /// </summary>
+        internal static string wdTcpIpConnected {
+            get {
+                return ResourceManager.GetString("wdTcpIpConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Listening....
+        /// </summary>
+        internal static string wdTcpIpListening {
+            get {
+                return ResourceManager.GetString("wdTcpIpListening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        internal static string wdTcpIpNotConnected {
+            get {
+                return ResourceManager.GetString("wdTcpIpNotConnected", resourceCulture);
             }
         }
         

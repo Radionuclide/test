@@ -261,6 +261,12 @@ namespace iba.Processing
         {
             get { return m_workers.Count; }
         }
+
+        //can't be called remote, so no virtual
+        public string GetStatusForWatchdog()
+        {
+            return "booha";
+        }
     }
 
 

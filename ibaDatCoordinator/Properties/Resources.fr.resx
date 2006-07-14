@@ -493,6 +493,9 @@
   <data name="Success" xml:space="preserve">
     <value>Terminé correctement</value>
   </data>
+  <data name="textFileStopped" xml:space="preserve">
+    <value>Arrêté</value>
+  </data>
   <data name="Timeout" xml:space="preserve">
     <value>Dépassement du délai! (cf. fichier journal)</value>
   </data>
@@ -504,6 +507,27 @@
   </data>
   <data name="toolTipStopAll" xml:space="preserve">
     <value>Arrêter tous les boulots</value>
+  </data>
+  <data name="wdErrorAccept" xml:space="preserve">
+    <value>TCP/IP watchdog : socket exception on accept : {0}</value>
+  </data>
+  <data name="wdErrorConnect" xml:space="preserve">
+    <value>Error occurred while connecting in TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdErrorSend" xml:space="preserve">
+    <value>Error sending TCP/IP watchdog : {0} --&gt; Disconnecting</value>
+  </data>
+  <data name="wdErrorStop" xml:space="preserve">
+    <value>Error occurred when stopping TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdTcpIpConnected" xml:space="preserve">
+    <value>Connecté à {0}</value>
+  </data>
+  <data name="wdTcpIpListening" xml:space="preserve">
+    <value>Ecoute...</value>
+  </data>
+  <data name="wdTcpIpNotConnected" xml:space="preserve">
+    <value>Pas connecté</value>
   </data>
   <data name="WhenToDo1" xml:space="preserve">
     <value>Exécuter après réussite</value>

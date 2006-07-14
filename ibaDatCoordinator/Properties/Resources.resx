@@ -571,4 +571,28 @@
   <data name="watchdogTitle" xml:space="preserve">
     <value>TCP/IP Watchdog</value>
   </data>
+  <data name="textFileStopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="wdErrorAccept" xml:space="preserve">
+    <value>TCP/IP watchdog : socket exception on accept : {0}</value>
+  </data>
+  <data name="wdErrorConnect" xml:space="preserve">
+    <value>Error occurred while connecting in TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdErrorSend" xml:space="preserve">
+    <value>Error sending TCP/IP watchdog : {0} --&gt; Disconnecting</value>
+  </data>
+  <data name="wdErrorStop" xml:space="preserve">
+    <value>Error occurred when stopping TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdTcpIpConnected" xml:space="preserve">
+    <value>Connected to {0}</value>
+  </data>
+  <data name="wdTcpIpListening" xml:space="preserve">
+    <value>Listening...</value>
+  </data>
+  <data name="wdTcpIpNotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
 </root>

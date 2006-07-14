@@ -73,10 +73,17 @@ namespace iba.Processing
         {
             if (m_toUpdate != null)
             {
-                if (m_toUpdate.NotificationData.TimeInterval < m_cd.NotificationData.TimeInterval)
+                if (m_toUpdate.NotificationData.TimeInterval < m_cd.NotificationData.TimeInterval 
+                    && !m_toUpdate.NotificationData.NotifyImmediately)
+                {
+                    if (notifyTimer == null) notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
                     notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
-                if (m_toUpdate.RescanTimeInterval < m_cd.RescanTimeInterval)
+                }
+                if (m_toUpdate.RescanTimeInterval < m_cd.RescanTimeInterval && m_toUpdate.RescanEnabled)
+                {
+                    if (rescanTimer == null) rescanTimer = new System.Threading.Timer(OnRescanTimerTick);
                     rescanTimer.Change(m_toUpdate.RescanTimeInterval, TimeSpan.Zero);
+                }
                 if (m_toUpdate.ReprocessErrorsTimeInterval< m_cd.ReprocessErrorsTimeInterval)
                     notifyTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                 m_cd = m_toUpdate;
@@ -100,6 +107,7 @@ namespace iba.Processing
             m_waitEvent = new AutoResetEvent(false);
             m_notifier = new Notifier(cd);
             m_candidateNewFiles = new List<string>();
+            m_timerLock = new Object();
         }       
                 
         List<string> m_processedFiles;
@@ -113,6 +121,14 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
+            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
+            {
+                //somtehing wrong and I'm gonna catch it
+                string a;
+                a = "blabla";
+                a += "nondedju";
+
+            }
         }
 
         private void Log(Logging.Level level, string message, string datfile)
@@ -122,6 +138,14 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(datfile, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
+            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
+            {
+                //somtehing wrong and I'm gonna catch it
+                string a;
+                a = "blabla";
+                a += "nondedju";
+
+            }
         }
 
         private void Log(Logging.Level level, string message, string datfile, TaskData task)
@@ -130,6 +154,14 @@ namespace iba.Processing
             {
                 LogExtraData data = new LogExtraData(datfile, task, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
+            }
+            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
+            {
+                //somtehing wrong and I'm gonna catch it
+                string a;
+                a = "blabla";
+                a += "nondedju";
+
             }
         }
 
@@ -165,8 +197,13 @@ namespace iba.Processing
                 {
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
-                    rescanTimer = new System.Threading.Timer(new TimerCallback(OnRescanTimerTick));
-                    rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
+                    if (m_cd.RescanEnabled)
+                    {
+                        rescanTimer = new System.Threading.Timer(new TimerCallback(OnRescanTimerTick));
+                        rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
+                    }
+                    else rescanTimer = null;
+                    
                     retryAccessTimer = new System.Threading.Timer(new TimerCallback(OnAddNewDatFileTimerTick));
                     retryAccessTimer.Change(1000, Timeout.Infinite); //hard coded, each second see if no new files are available
                     m_bTimersstopped = false;
@@ -211,6 +248,7 @@ namespace iba.Processing
                         try
                         {
                             m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                            Trace.WriteLine("ibastarted\r\n");
                             string version = m_ibaAnalyzer.GetVersion();
                         }
                         catch (Exception ex)
@@ -253,7 +291,10 @@ namespace iba.Processing
                                 }
                                 break;
                             }
-                            ProcessDatfile(file);
+                            lock (m_timerLock)
+                            {
+                                ProcessDatfile(file);
+                            }
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
@@ -268,10 +309,12 @@ namespace iba.Processing
                             if (m_ibaAnalyzer == null)
                                 return;
                             System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                            Trace.WriteLine("ibastopped\r\n");
                             m_ibaAnalyzer = null;
                         }
                         catch (Exception ex)
                         {
+                            Trace.WriteLine("ibaerror\r\n");
                             Log(Logging.Level.Exception, ex.Message);
                             m_sd.Started = false;
                             Stop = true;
@@ -305,6 +348,7 @@ namespace iba.Processing
                         retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         reprocessErrorsTimer.Dispose();
                     }
+                    Debug.Assert(m_ibaAnalyzer == null, "ibaAnalyzer should have been closed");
                 }
             }
             m_sd.Started = false;
@@ -321,46 +365,51 @@ namespace iba.Processing
             }
         }
 
+        private object m_timerLock; //makes the timer routines mutually exclusive
+
         private void OnAddNewDatFileTimerTick(object ignoreMe)
         {
             if (m_bTimersstopped || m_stop) return;
             retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
             List<string> added = new List<string>();
-            lock (m_candidateNewFiles)
+            lock (m_timerLock)
             {
-                foreach (string filename in m_candidateNewFiles)
+                lock (m_candidateNewFiles)
                 {
-                    FileStream fs = null;
-                    try
+                    foreach (string filename in m_candidateNewFiles)
                     {
-                        fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
-                        fs.Close();
-                        fs.Dispose();
-                        bool doit = false;
-                        lock (m_toProcessFiles)
+                        FileStream fs = null;
+                        try
                         {
-                            doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
-                            if (doit)
-                                m_toProcessFiles.Add(filename);
+                            fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
+                            fs.Close();
+                            fs.Dispose();
+                            bool doit = false;
+                            lock (m_toProcessFiles)
+                            {
+                                doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                                if (doit)
+                                    m_toProcessFiles.Add(filename);
+                            }
+                            added.Add(filename);
+                            changed = changed || doit;
                         }
-                        added.Add(filename);
-                        changed = changed || doit;
+                        catch //no access
+                        {
+                        }
                     }
-                    catch //no access
-                    {
-                    }
+                    if (changed)
+                        foreach (string filename in added)
+                        {
+                            m_candidateNewFiles.Remove(filename);
+                        }
                 }
                 if (changed)
-                foreach (string filename in added)
                 {
-                    m_candidateNewFiles.Remove(filename);
+                    updateDatFileList(WhatToUpdate.NEW);
+                    m_waitEvent.Set();
                 }
-            }
-            if (changed)
-            {
-                updateDatFileList(WhatToUpdate.NEW);
-                m_waitEvent.Set();
             }
             if (!m_bTimersstopped && !m_stop)
                 retryAccessTimer.Change(1000, Timeout.Infinite);
@@ -370,8 +419,11 @@ namespace iba.Processing
         {
             if (m_bTimersstopped || m_stop) return;
             rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            updateDatFileList(WhatToUpdate.ALL);
-            m_waitEvent.Set();
+            lock (m_timerLock)
+            {
+                updateDatFileList(WhatToUpdate.ALL);
+                m_waitEvent.Set();
+            }
             if (!m_bTimersstopped && !m_stop)
                 rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
         }
@@ -380,10 +432,11 @@ namespace iba.Processing
         {
             if (m_bTimersstopped || m_stop) return;
             reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            updateDatFileList(WhatToUpdate.ERRORS);
-            if (!m_stop)
-                reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            m_waitEvent.Set();
+            lock (m_timerLock)
+            {
+                updateDatFileList(WhatToUpdate.ERRORS);
+                m_waitEvent.Set();
+            }
             if (!m_bTimersstopped && !m_stop)
                 reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
         }
@@ -454,6 +507,11 @@ namespace iba.Processing
                                 if (allclear)
                                 {
                                     m_processedFiles.Remove(filename);
+                                    lock (m_sd.DatFileStates)
+                                    {
+                                        if (m_sd.DatFileStates.ContainsKey(filename))
+                                            m_sd.DatFileStates.Remove(filename);
+                                    }
                                     i--;
                                     count--;
                                 }

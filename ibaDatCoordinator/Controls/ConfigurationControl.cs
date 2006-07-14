@@ -71,7 +71,9 @@ namespace iba.Controls
                         
             m_scanTimeUpDown.Value = (decimal) m_data.RescanTimeInterval.TotalMinutes;
             m_failTimeUpDown.Value = (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes;
-            
+
+            m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked = m_data.RescanEnabled;
+
             m_executeIBAAButton.Enabled = File.Exists(m_analyserTextBox.Text);
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
@@ -139,7 +141,8 @@ namespace iba.Controls
             m_data.AutoStart = m_autoStartCheckBox.Checked;
             m_data.IbaAnalyserExe = m_analyserTextBox.Text;
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
-            m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value); 
+            m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
+            m_data.RescanEnabled = m_cbRescanEnabled.Checked;
             m_data.NotificationData.Email = m_tbEmail.Text;
             m_data.NotificationData.SMTPServer = m_tbSMTP.Text;
             m_data.NotificationData.Host = m_tbNetSend.Text;
@@ -277,6 +280,7 @@ namespace iba.Controls
             {
                 t.UpdateButtons();
                 t.SwitchToStatusPane();
+                t.StatusBarLabel.Text = ""; //clear any errors on restart
             }
         }
 
@@ -315,6 +319,11 @@ namespace iba.Controls
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
         {
             m_nudNotifyTime.Enabled = m_rbTime.Checked;
+        }
+
+        private void m_cbRescanEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked;
         }
 
     }

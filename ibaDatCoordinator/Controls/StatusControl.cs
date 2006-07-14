@@ -31,6 +31,7 @@ namespace iba.Controls
 
         Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons;
         Dictionary<DatFileStatus.State, String> m_taskTexts;
+        Bitmap m_blankIcon;
 
         private void InitializeIcons()
         {
@@ -75,6 +76,9 @@ namespace iba.Controls
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.Success);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.Failure);
             m_taskTexts.Add(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.Timeout);
+
+            m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
+        
         }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
@@ -142,9 +146,11 @@ namespace iba.Controls
                         if (File.Exists(file))
                         {
                             FileInfo f = new FileInfo(file);
+                            DatFileStatus dfs = null;
+                            if (m_data.DatFileStates.ContainsKey(file))
+                                dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
                             contents[f.CreationTime] = 
-                                new KeyValuePair<string,DatFileStatus>(file,
-                                    (DatFileStatus)m_data.DatFileStates[file].Clone());
+                                new KeyValuePair<string,DatFileStatus>(file, dfs);
                         }
                     }
             }
@@ -156,18 +162,22 @@ namespace iba.Controls
                         if (File.Exists(file))
                         {
                             FileInfo f = new FileInfo(file);
+                            DatFileStatus dfs = null;
+                            if (m_data.DatFileStates.ContainsKey(file))
+                                dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
                             contents[f.CreationTime] = 
-                                new KeyValuePair<string,DatFileStatus>(file,
-                                    (DatFileStatus)m_data.DatFileStates[file].Clone());
+                                new KeyValuePair<string,DatFileStatus>(file, dfs);
                         }
                     }
             }
 
             m_gridView.RowCount = contents.Count;
             int count = 0;
-            foreach (KeyValuePair<DateTime,KeyValuePair<string, DatFileStatus> > it in contents)
+            foreach (KeyValuePair<DateTime, KeyValuePair<string, DatFileStatus>> it in contents)
             {
                 m_gridView.Rows[count].Cells[0].Value = it.Value.Key;
+                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
+                    (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
                 if (it.Value.Value != null)
                 {
 
@@ -191,16 +201,13 @@ namespace iba.Controls
                             if (pair.Value == DatFileStatus.State.RUNNING)
                                 m_gridView.CurrentCell = cell;
                         }
-                        if (cell.ToolTipText != text) 
+                        if (cell.ToolTipText != text)
                             cell.ToolTipText = text;
                     }
                 }
-                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
-                {
-                    if ((m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value == null)
-                        (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value =
-                        Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
-                }
+//                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
+  //                  if ((m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value == null)
+    //                    (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
                 count++;
             }
             m_refreshTimer.Enabled = true;

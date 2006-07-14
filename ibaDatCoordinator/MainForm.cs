@@ -1435,6 +1435,7 @@ namespace iba
         {
             SaveRightPaneControl();
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
+            StatusBarLabel.Text = ""; //clear any errors on restart
             TaskManager.Manager.StartAllConfigurations();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
             {

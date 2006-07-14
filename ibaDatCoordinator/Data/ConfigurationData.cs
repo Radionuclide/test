@@ -63,6 +63,14 @@ namespace iba.Data
             set { m_reproccessTime = new TimeSpan(value); }
         }
 
+        private bool m_bRescanEnabled;
+
+        public bool RescanEnabled
+        {
+            get { return m_bRescanEnabled; }
+            set { m_bRescanEnabled = value; }
+        }
+
         private TimeSpan m_rescanTime;
         [XmlIgnore]
         public TimeSpan RescanTimeInterval
@@ -125,6 +133,7 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
+            m_bRescanEnabled = true;
             m_datDirectory = System.Environment.CurrentDirectory;
             try
             {
@@ -164,6 +173,7 @@ namespace iba.Data
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_rescanTime = m_rescanTime;
             cd.m_notify = m_notify.Clone() as NotificationData;
+            cd.m_bRescanEnabled = m_bRescanEnabled;
             return cd;
         }
 

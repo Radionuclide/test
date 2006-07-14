@@ -61,5 +61,25 @@ namespace iba.Data
             wd.m_portNr = m_portNr;
             return wd;
         }
+
+        public override bool Equals(object obj)
+        {
+            WatchDogData temp = obj as WatchDogData;
+            if (temp == null) return false;
+            return temp.m_activeNode == m_activeNode
+                && temp.m_address == m_address
+                && temp.m_cycleTime == m_cycleTime
+                && temp.m_enabled == m_enabled
+                && temp.m_portNr == m_portNr;
+        }
+
+        public override int GetHashCode()
+        {
+            return m_activeNode.GetHashCode()
+                ^ m_address.GetHashCode()
+                ^ m_cycleTime.GetHashCode()
+                ^ m_enabled.GetHashCode()
+                ^ m_portNr.GetHashCode();
+        }
     }
 }

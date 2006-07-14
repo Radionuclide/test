@@ -157,6 +157,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Processing\Notifier.cs" />
+    <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="StartServiceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
