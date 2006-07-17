@@ -28,6 +28,7 @@ namespace iba.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.m_statusGroupBox = new System.Windows.Forms.GroupBox();
             this.m_tbStatus = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -43,6 +44,8 @@ namespace iba.Controls
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.m_rbPassiveNode = new System.Windows.Forms.RadioButton();
             this.m_rbActiveNode = new System.Windows.Forms.RadioButton();
+            this.m_timerStatus = new System.Windows.Forms.Timer(this.components);
+            this.m_ApplyButton = new System.Windows.Forms.Button();
             this.m_statusGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_cycleUpDown)).BeginInit();
@@ -59,7 +62,7 @@ namespace iba.Controls
             this.m_statusGroupBox.Location = new System.Drawing.Point(28, 256);
             this.m_statusGroupBox.Name = "m_statusGroupBox";
             this.m_statusGroupBox.Size = new System.Drawing.Size(565, 172);
-            this.m_statusGroupBox.TabIndex = 5;
+            this.m_statusGroupBox.TabIndex = 3;
             this.m_statusGroupBox.TabStop = false;
             this.m_statusGroupBox.Text = "Status";
             // 
@@ -78,6 +81,7 @@ namespace iba.Controls
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.m_ApplyButton);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.m_enableCheckBox);
             this.groupBox3.Controls.Add(this.label4);
@@ -85,7 +89,7 @@ namespace iba.Controls
             this.groupBox3.Location = new System.Drawing.Point(28, 20);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(565, 73);
-            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Cyclus";
             // 
@@ -95,7 +99,7 @@ namespace iba.Controls
             this.label1.Location = new System.Drawing.Point(85, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 5;
+            this.label1.TabIndex = 1;
             this.label1.Text = "cycle";
             // 
             // m_enableCheckBox
@@ -118,7 +122,7 @@ namespace iba.Controls
             this.label4.Location = new System.Drawing.Point(199, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 4;
+            this.label4.TabIndex = 3;
             this.label4.Text = "seconds";
             // 
             // m_cycleUpDown
@@ -136,7 +140,7 @@ namespace iba.Controls
             0});
             this.m_cycleUpDown.Name = "m_cycleUpDown";
             this.m_cycleUpDown.Size = new System.Drawing.Size(66, 20);
-            this.m_cycleUpDown.TabIndex = 3;
+            this.m_cycleUpDown.TabIndex = 2;
             this.m_cycleUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -154,7 +158,7 @@ namespace iba.Controls
             this.groupBox1.Location = new System.Drawing.Point(28, 99);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(565, 77);
-            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TCP/IP";
             // 
@@ -165,7 +169,7 @@ namespace iba.Controls
             this.label8.Location = new System.Drawing.Point(85, 51);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 13);
-            this.label8.TabIndex = 7;
+            this.label8.TabIndex = 2;
             this.label8.Text = "port:";
             // 
             // label7
@@ -175,7 +179,7 @@ namespace iba.Controls
             this.label7.Location = new System.Drawing.Point(13, 25);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(108, 13);
-            this.label7.TabIndex = 5;
+            this.label7.TabIndex = 0;
             this.label7.Text = "address or hostname:";
             // 
             // m_tbPort
@@ -186,7 +190,7 @@ namespace iba.Controls
             this.m_tbPort.Location = new System.Drawing.Point(127, 48);
             this.m_tbPort.Name = "m_tbPort";
             this.m_tbPort.Size = new System.Drawing.Size(79, 20);
-            this.m_tbPort.TabIndex = 8;
+            this.m_tbPort.TabIndex = 3;
             // 
             // m_tbHost
             // 
@@ -196,7 +200,7 @@ namespace iba.Controls
             this.m_tbHost.Location = new System.Drawing.Point(127, 22);
             this.m_tbHost.Name = "m_tbHost";
             this.m_tbHost.Size = new System.Drawing.Size(418, 20);
-            this.m_tbHost.TabIndex = 6;
+            this.m_tbHost.TabIndex = 1;
             // 
             // groupBox2
             // 
@@ -207,7 +211,7 @@ namespace iba.Controls
             this.groupBox2.Location = new System.Drawing.Point(29, 182);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(564, 68);
-            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Node";
             // 
@@ -232,6 +236,22 @@ namespace iba.Controls
             this.m_rbActiveNode.TabStop = true;
             this.m_rbActiveNode.Text = "This node is active";
             this.m_rbActiveNode.UseVisualStyleBackColor = true;
+            // 
+            // m_timerStatus
+            // 
+            this.m_timerStatus.Interval = 500;
+            this.m_timerStatus.Tick += new System.EventHandler(this.m_timerStatus_Tick);
+            // 
+            // m_ApplyButton
+            // 
+            this.m_ApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ApplyButton.Location = new System.Drawing.Point(444, 32);
+            this.m_ApplyButton.Name = "m_ApplyButton";
+            this.m_ApplyButton.Size = new System.Drawing.Size(101, 25);
+            this.m_ApplyButton.TabIndex = 4;
+            this.m_ApplyButton.Text = "Apply";
+            this.m_ApplyButton.UseVisualStyleBackColor = true;
+            this.m_ApplyButton.Click += new System.EventHandler(this.m_applyButton_Click);
             // 
             // WatchdogControl
             // 
@@ -274,5 +294,7 @@ namespace iba.Controls
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton m_rbPassiveNode;
         private System.Windows.Forms.RadioButton m_rbActiveNode;
+        private System.Windows.Forms.Timer m_timerStatus;
+        private System.Windows.Forms.Button m_ApplyButton;
     }
 }

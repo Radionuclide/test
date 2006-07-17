@@ -121,14 +121,6 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
-            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
-            {
-                //somtehing wrong and I'm gonna catch it
-                string a;
-                a = "blabla";
-                a += "nondedju";
-
-            }
         }
 
         private void Log(Logging.Level level, string message, string datfile)
@@ -138,14 +130,6 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(datfile, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
-            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
-            {
-                //somtehing wrong and I'm gonna catch it
-                string a;
-                a = "blabla";
-                a += "nondedju";
-
-            }
         }
 
         private void Log(Logging.Level level, string message, string datfile, TaskData task)
@@ -154,14 +138,6 @@ namespace iba.Processing
             {
                 LogExtraData data = new LogExtraData(datfile, task, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
-            }
-            if (level == Logging.Level.Exception && message.Contains("The operation completed"))
-            {
-                //somtehing wrong and I'm gonna catch it
-                string a;
-                a = "blabla";
-                a += "nondedju";
-
             }
         }
 
@@ -174,6 +150,7 @@ namespace iba.Processing
         private System.Threading.Timer rescanTimer;
         private System.Threading.Timer retryAccessTimer;
         bool m_bTimersstopped;
+        
         private void Run()
         {
             //Notifier not = new Notifier();

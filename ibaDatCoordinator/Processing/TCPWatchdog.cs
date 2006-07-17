@@ -8,7 +8,7 @@ using iba.Data;
 
 namespace iba.Processing
 {
-    class TCPWatchdog
+    public class TCPWatchdog
     {
         private bool m_bStopThread;
         private Thread m_thread;
@@ -20,6 +20,7 @@ namespace iba.Processing
 
         public TCPWatchdog()
         {
+            m_settings = new WatchDogData();
             m_bStopThread = false;
             m_thread = null;
             m_waitEvent = new AutoResetEvent(false);
@@ -37,8 +38,6 @@ namespace iba.Processing
         {
             m_com = com;
         }
-
-
 
         private WatchDogData m_settings;
         public WatchDogData Settings
@@ -163,7 +162,7 @@ namespace iba.Processing
 
         Byte[] CreateWatchdogMessage()
         {
-            string message = string.Format("{0},{1},DatCo", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"), Environment.NewLine);
+            string message = string.Format("{0},{1},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"), Environment.NewLine);
             string result = null;
             //todo: get function from taskmanager
             if (m_com != null)
@@ -266,6 +265,24 @@ namespace iba.Processing
                 if (!bReconnectNeeded && remtime > 0)
                     m_waitEvent.WaitOne(remtime, true);
             }
+
+            if(m_serverSocket != null)
+            {
+                if(m_serverSocket.Connected)
+                    m_serverSocket.Shutdown(SocketShutdown.Both);
+                m_serverSocket.Close();
+                m_serverSocket = null;
+            }
+
+            foreach(Socket sock in m_dataSockets) 
+            {
+                if(sock.Connected)
+                {
+                    sock.Shutdown(SocketShutdown.Both);
+                    sock.Close();
+                }
+            }
+            m_statusString = iba.Properties.Resources.textFileStopped;
         }
     }
 }

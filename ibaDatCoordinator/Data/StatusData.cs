@@ -19,6 +19,11 @@ namespace iba.Data
             NO_ACCESS = 5
         }
 
+        static public bool IsError(State stat)
+        {
+            return stat == State.TIMED_OUT || stat == State.COMPLETED_FAILURE || stat == State.NO_ACCESS;
+        }
+
         private STLLikeMap<TaskData, State> m_states;
         public STLLikeMap<TaskData, State> States
         {
@@ -69,6 +74,23 @@ namespace iba.Data
                     m_changed = true;
                 }
             }
+        }
+
+        public int CountErrors()
+        {
+            int count = 0;
+            lock (m_datFileStates)
+            {
+                foreach (DatFileStatus stat in m_datFileStates.Values)
+                {
+                    foreach (KeyValuePair<TaskData, DatFileStatus.State> taskstat in stat.States)
+                    {
+                        if (taskstat.Key != null && taskstat.Key.Enabled && DatFileStatus.IsError(taskstat.Value))
+                            count++;
+                    }
+                }
+            }
+            return count;
         }
 
         private bool m_updatingFileList;

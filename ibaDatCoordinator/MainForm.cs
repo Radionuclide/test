@@ -300,7 +300,7 @@ namespace iba
                 SaveRightPaneControl();
                 Control ctrl = propertyPanes["watchdogControl"] as Control;
                 if (ctrl == null) ctrl = new WatchdogControl();
-                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.watchdogTitle, TaskManager.Manager.WatchDogData);
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.watchdogTitle, TaskManager.Manager.WatchDogData.Clone());
                 watchdogToolStripMenuItem.Enabled = false; 
                 pasteToolStripMenuItem.Enabled = false;
                 copyToolStripMenuItem.Enabled = false;

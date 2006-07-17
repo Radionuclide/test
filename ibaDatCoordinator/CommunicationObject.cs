@@ -46,6 +46,7 @@ namespace iba
         {
             m_manager = new TaskManager();
             m_filename = null;
+            m_manager.WatchDog.SetCommunication(this);
         }
 
         private string m_filename;

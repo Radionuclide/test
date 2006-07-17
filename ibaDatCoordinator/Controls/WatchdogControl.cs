@@ -27,7 +27,7 @@ namespace iba.Controls
             m_data = datasource as WatchDogData;
             m_rbActiveNode.Checked = m_data.ActiveNode;
             m_rbPassiveNode.Checked = !m_data.ActiveNode;
-            m_enableCheckBox.Checked = m_data.Enabled;
+            m_timerStatus.Enabled = m_enableCheckBox.Checked = m_data.Enabled;
             m_cycleUpDown.Value = m_data.CycleTime;
             m_tbHost.Text = m_data.Address;
             m_tbPort.Text = m_data.PortNr.ToString();
@@ -44,9 +44,22 @@ namespace iba.Controls
             m_data.CycleTime = (int) m_cycleUpDown.Value;
             m_data.ActiveNode = m_rbActiveNode.Checked;
             m_data.Enabled = m_enableCheckBox.Checked;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceWatchdogData(m_data);
+            TaskManager.Manager.ReplaceWatchdogData(m_data.Clone() as WatchDogData);
+            m_timerStatus.Enabled = false;
         }
         #endregion
+
+        private void m_timerStatus_Tick(object sender, EventArgs e)
+        {
+            m_timerStatus.Enabled = false;
+            m_tbStatus.Text = TaskManager.Manager.GetWatchdogStatus();
+            m_timerStatus.Enabled = m_enableCheckBox.Checked;
+        }
+
+        private void m_applyButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            m_timerStatus.Enabled = m_enableCheckBox.Checked;
+        }
     }
 }

@@ -4,7 +4,8 @@ using System.Text;
 
 namespace iba.Data
 {
-    public class WatchDogData
+    [Serializable]
+    public class WatchDogData: ICloneable
     {
         private bool m_enabled;
         public bool Enabled

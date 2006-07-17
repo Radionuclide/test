@@ -56,11 +56,6 @@ namespace iba.Processing
             }
         }
 
-        virtual public void ReplaceWatchdogData(WatchDogData data)
-        {
-            m_watchdogData = data;
-        }
-
         virtual public void ClearConfigurations()
         {
             StopAndWaitForAllConfigurations();
@@ -184,12 +179,26 @@ namespace iba.Processing
         }
 
         //watchdog data
-        private WatchDogData m_watchdogData;
-        virtual public WatchDogData WatchDogData
+        private TCPWatchdog m_watchdog;
+        public TCPWatchdog WatchDog
         {
-            get { return m_watchdogData; }
+            get { return m_watchdog; }        
         }
 
+        virtual public WatchDogData WatchDogData
+        {
+            get { return m_watchdog.Settings; }
+        }
+
+        virtual public string GetWatchdogStatus()
+        {
+            return m_watchdog.StatusString;
+        }   
+            
+        virtual public void ReplaceWatchdogData(WatchDogData data)
+        {
+            m_watchdog.Settings = data;
+        }
 
         //singleton construction
         private static TaskManager theTaskManager=null;
@@ -198,7 +207,7 @@ namespace iba.Processing
         public TaskManager()
         {
             m_workers = new SortedDictionary<ConfigurationData, ConfigurationWorker>();
-            m_watchdogData = new WatchDogData();
+            m_watchdog = new TCPWatchdog();
         }
         
         public static TaskManager Manager
@@ -265,7 +274,22 @@ namespace iba.Processing
         //can't be called remote, so no virtual
         public string GetStatusForWatchdog()
         {
-            return "booha";
+            StringBuilder message = new StringBuilder();
+            lock (m_workers)
+            {
+                foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> val in m_workers)
+                {
+                    message.Append(val.Key.Name);
+                    message.Append(':');
+                    message.Append(val.Value.Status.ReadFiles.Count);
+                    message.Append(" todo,");
+                    message.Append(val.Value.Status.ProcessedFiles.Count);
+                    message.Append(" done,");
+                    message.Append(val.Value.Status.CountErrors());
+                    message.Append(" erroneous;");
+                }
+            }
+            return message.ToString();
         }
     }
 
@@ -355,6 +379,20 @@ namespace iba.Processing
                 }
             }
         }
+
+        public override string GetWatchdogStatus()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetWatchdogStatus();
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                return Manager.GetWatchdogStatus();
+            }
+        }
+
 
         public override int Count
         {
