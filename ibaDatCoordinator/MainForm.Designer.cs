@@ -67,6 +67,7 @@ namespace iba
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,6 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -398,6 +398,12 @@ namespace iba
             resources.ApplyResources(this.loggingToolStripMenuItem, "loggingToolStripMenuItem");
             this.loggingToolStripMenuItem.Click += new System.EventHandler(this.loggingToolStripMenuItem_Click);
             // 
+            // watchdogToolStripMenuItem
+            // 
+            this.watchdogToolStripMenuItem.Name = "watchdogToolStripMenuItem";
+            resources.ApplyResources(this.watchdogToolStripMenuItem, "watchdogToolStripMenuItem");
+            this.watchdogToolStripMenuItem.Click += new System.EventHandler(this.watchdogToolStripMenuItem_Click);
+            // 
             // serviceToolStripMenuItem
             // 
             this.serviceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -435,12 +441,6 @@ namespace iba
             // m_openFileDialog
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
-            // 
-            // watchdogToolStripMenuItem
-            // 
-            this.watchdogToolStripMenuItem.Name = "watchdogToolStripMenuItem";
-            resources.ApplyResources(this.watchdogToolStripMenuItem, "watchdogToolStripMenuItem");
-            this.watchdogToolStripMenuItem.Click += new System.EventHandler(this.watchdogToolStripMenuItem_Click);
             // 
             // MainForm
             // 

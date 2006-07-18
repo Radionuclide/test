@@ -139,6 +139,13 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(datfile, task, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
+            if (level == Logging.Level.Exception)
+            {
+                if (message.Contains("The operation"))
+                {
+                    string debug = message;                
+                }
+            }
         }
 
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
