@@ -200,10 +200,10 @@
     <value />
   </data>
   <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 17</value>
+    <value>47, 17</value>
   </data>
   <data name="m_enableCheckBox.Text" xml:space="preserve">
-    <value>actif</value>
+    <value>Actif</value>
   </data>
   <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
     <value />

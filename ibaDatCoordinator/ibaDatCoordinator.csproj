@@ -229,10 +229,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\BatchFileControl.en.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>BatchFileControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BatchFileControl.fr.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
@@ -328,6 +324,14 @@
     <EmbeddedResource Include="Controls\StopWaitDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WatchdogControl.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WatchdogControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WatchdogControl.resx">
       <SubType>Designer</SubType>

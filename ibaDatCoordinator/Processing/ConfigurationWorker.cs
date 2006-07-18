@@ -86,7 +86,7 @@ namespace iba.Processing
                 }
                 if (m_toUpdate.ReprocessErrorsTimeInterval< m_cd.ReprocessErrorsTimeInterval)
                     notifyTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
-                m_cd = m_toUpdate;
+                m_cd = m_toUpdate.Clone_AlsoCopyGuids();
                 m_sd.CorrConfigurationData = m_cd;
                 if (m_notifier != null)
                 {
@@ -99,7 +99,7 @@ namespace iba.Processing
 
         public ConfigurationWorker(ConfigurationData cd)
         {
-            m_cd = cd;
+            m_cd = cd.Clone_AlsoCopyGuids();
             m_sd = new StatusData(cd);
             m_stop = true;
             m_sd.ProcessedFiles = m_processedFiles = new List<string>();

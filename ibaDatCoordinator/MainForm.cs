@@ -636,6 +636,8 @@ namespace iba
             //Delete node in tree
             if (node.Tag is ConfigurationTreeItemData)
             {
+                if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started)
+                    return;
                 int newIndex = node.Index - 1;
                 m_configTreeView.SelectedNode = null;
                 TaskManager.Manager.RemoveConfiguration((node.Tag as ConfigurationTreeItemData).ConfigurationData);
@@ -654,8 +656,10 @@ namespace iba
                 TreeNode nextNode = node.NextNode;
                 if (nextNode == null) nextNode = node.PrevNode;
                 if (nextNode == null) nextNode = node.Parent;
-                m_configTreeView.SelectedNode = null;
                 ConfigurationData confParent = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
+                if (TaskManager.Manager.GetStatus(confParent.ID).Started) return;
+
+                m_configTreeView.SelectedNode = null;
                 TaskData task = null;
                 ReportTreeItemData rti = node.Tag as ReportTreeItemData;
                 if (rti != null) task = rti.ReportData;

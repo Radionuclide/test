@@ -146,7 +146,7 @@ namespace iba
             resources.ApplyResources(this.m_navBar, "m_navBar");
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.m_navBar.SelectedPane = this.m_configPane;
+            this.m_navBar.SelectedPane = this.m_watchdogPane;
             this.m_navBar.ShowPanes = 4;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 

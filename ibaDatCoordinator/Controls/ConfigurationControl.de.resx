@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="m_nameTextBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
@@ -124,11 +127,23 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Jobname:</value>
   </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Messdateiverzeichnis:</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_datDirTextBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_scanTimeUpDown.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -136,14 +151,44 @@
   <data name="label4.Text" xml:space="preserve">
     <value>Minuten</value>
   </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="m_subMapsCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 17</value>
   </data>
   <data name="m_subMapsCheckBox.Text" xml:space="preserve">
     <value>Unterverzeichnisse prüfen</value>
   </data>
+  <data name="m_subMapsCheckBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_browseFolderButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Messdateien</value>
+  </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_refreshDats.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_cbRescanEnabled.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_stopButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_startButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label11.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="m_autoStartCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 17</value>
@@ -151,11 +196,20 @@
   <data name="m_autoStartCheckBox.Text" xml:space="preserve">
     <value>Automatisch nach dem Laden starten</value>
   </data>
+  <data name="m_autoStartCheckBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 17</value>
   </data>
   <data name="m_enableCheckBox.Text" xml:space="preserve">
     <value>aktiv</value>
+  </data>
+  <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_failTimeUpDown.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -163,8 +217,20 @@
   <data name="label10.Text" xml:space="preserve">
     <value>Minuten</value>
   </data>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Zyklus</value>
+  </data>
+  <data name="groupBox3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_browseExecutableButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 13</value>
@@ -172,7 +238,79 @@
   <data name="label5.Text" xml:space="preserve">
     <value>Programmpfad und -name:</value>
   </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_analyserTextBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_newReportButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_newExtractButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_newBatchfileButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_newCopyTaskButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Neue Aufgabe</value>
+  </data>
+  <data name="groupBox4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_rbNetSend.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_tbSMTP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_tbEmail.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_rbEmail.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_tbNetSend.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_subfolderGroupBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_nudNotifyTime.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_rbTime.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_rbImmediate.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

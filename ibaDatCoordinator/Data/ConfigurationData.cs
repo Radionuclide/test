@@ -177,6 +177,15 @@ namespace iba.Data
             return cd;
         }
 
+        public ConfigurationData Clone_AlsoCopyGuids()
+        {
+            ConfigurationData cd = this.Clone() as ConfigurationData;
+            for (int i = 0; i < m_tasks.Count; i++)
+                cd.m_tasks[i].Guid = m_tasks[i].Guid;
+            return cd;
+        }
+
+
         public int CompareTo(ConfigurationData other)
         {
             return m_id.CompareTo(other.m_id);
