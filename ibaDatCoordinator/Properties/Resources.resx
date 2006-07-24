@@ -595,4 +595,7 @@
   <data name="wdTcpIpNotConnected" xml:space="preserve">
     <value>Not connected</value>
   </data>
+  <data name="applyStartedButton" xml:space="preserve">
+    <value>apply changes in jobconfiguration to the running job</value>
+  </data>
 </root>

@@ -44,6 +44,7 @@ namespace iba.Controls
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.m_cbRescanEnabled = new System.Windows.Forms.CheckBox();
             this.m_stopButton = new System.Windows.Forms.Button();
+            this.m_applyToRunningButton = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
@@ -242,6 +243,7 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.m_cbRescanEnabled);
             this.groupBox3.Controls.Add(this.m_refreshDats);
             this.groupBox3.Controls.Add(this.m_stopButton);
+            this.groupBox3.Controls.Add(this.m_applyToRunningButton);
             this.groupBox3.Controls.Add(this.m_startButton);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
@@ -279,6 +281,18 @@ namespace iba.Controls
             this.m_toolTip.SetToolTip(this.m_stopButton, resources.GetString("m_stopButton.ToolTip"));
             this.m_stopButton.UseVisualStyleBackColor = true;
             this.m_stopButton.Click += new System.EventHandler(this.m_stopButton_Click);
+            // 
+            // m_applyToRunningButton
+            // 
+            this.m_applyToRunningButton.AccessibleDescription = null;
+            this.m_applyToRunningButton.AccessibleName = null;
+            resources.ApplyResources(this.m_applyToRunningButton, "m_applyToRunningButton");
+            this.m_applyToRunningButton.BackgroundImage = null;
+            this.m_applyToRunningButton.Font = null;
+            this.m_applyToRunningButton.Name = "m_applyToRunningButton";
+            this.m_toolTip.SetToolTip(this.m_applyToRunningButton, resources.GetString("m_applyToRunningButton.ToolTip"));
+            this.m_applyToRunningButton.UseVisualStyleBackColor = true;
+            this.m_applyToRunningButton.Click += new System.EventHandler(this.m_applyToRunningButton_Click);
             // 
             // m_startButton
             // 
@@ -778,5 +792,6 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox m_cbRescanEnabled;
+        private System.Windows.Forms.Button m_applyToRunningButton;
     }
 }

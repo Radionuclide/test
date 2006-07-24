@@ -156,6 +156,12 @@
   <data name="&gt;&gt;label10.Name" xml:space="preserve">
     <value>label10</value>
   </data>
+  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
+    <value>m_newReportButton</value>
+  </data>
+  <data name="m_rbEmail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 17</value>
+  </data>
   <data name="&gt;&gt;m_scanTimeUpDown.Name" xml:space="preserve">
     <value>m_scanTimeUpDown</value>
   </data>
@@ -167,9 +173,6 @@
   </data>
   <data name="label7.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -210,11 +213,14 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_tbEmail.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>host:</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -228,26 +234,35 @@
   <data name="m_datDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>284, 20</value>
   </data>
+  <data name="m_nameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
   </data>
   <data name="m_stopButton.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="m_applyToRunningButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
   </data>
   <data name="m_rbNetSend.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 17</value>
   </data>
+  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>507, 17</value>
+  </data>
   <data name="&gt;&gt;m_subMapsCheckBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_autoStartCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbNetSend.Text" xml:space="preserve">
+    <value>net send</value>
   </data>
   <data name="&gt;&gt;m_cbRescanEnabled.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -274,7 +289,7 @@
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_analyserTextBox.Parent" xml:space="preserve">
     <value>groupBox5</value>
@@ -291,8 +306,8 @@
   <data name="m_failTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
   </data>
-  <data name="m_rbImmediate.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_rbNetSend.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_subMapsCheckBox.Text" xml:space="preserve">
     <value>Check subdirectories</value>
@@ -318,11 +333,14 @@
   <data name="m_rbEmail.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 42</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ConfigurationControl</value>
   </data>
   <data name="&gt;&gt;m_refreshDats.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_tbNetSend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>376, 20</value>
@@ -333,6 +351,9 @@
   <data name="m_rbNetSend.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="m_applyToRunningButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>461, 43</value>
+  </data>
   <data name="m_newBatchfileButton.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -342,29 +363,20 @@
   <data name="&gt;&gt;m_refreshDats.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_tbSMTP.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="m_newReportButton.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="m_refreshDats.Location" type="System.Drawing.Point, System.Drawing">
+    <value>507, 42</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_rbTime.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;m_scanTimeUpDown.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;m_cbRescanEnabled.Name" xml:space="preserve">
+    <value>m_cbRescanEnabled</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>groupBox3</value>
@@ -377,6 +389,9 @@
   </data>
   <data name="m_rbEmail.ToolTip" xml:space="preserve">
     <value />
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -397,7 +412,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -417,11 +432,14 @@
   <data name="m_refreshDats.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_tbSMTP.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;m_scanTimeUpDown.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>Retry failed operations every</value>
+  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbTime.Text" xml:space="preserve">
+    <value>Notify at most every</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>620, 660</value>
@@ -462,6 +480,9 @@
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -474,8 +495,17 @@
   <data name="&gt;&gt;m_rbEmail.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="m_newCopyTaskButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_autoStartCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>239, 19</value>
@@ -489,8 +519,8 @@
   <data name="&gt;&gt;m_browseFolderButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 131</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -519,8 +549,11 @@
   <data name="&gt;&gt;m_scanTimeUpDown.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_nudNotifyTime.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
     <value>$this</value>
@@ -534,8 +567,8 @@
   <data name="&gt;&gt;label11.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Name" xml:space="preserve">
-    <value>m_cbRescanEnabled</value>
+  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_nudNotifyTime.Name" xml:space="preserve">
     <value>m_nudNotifyTime</value>
@@ -550,7 +583,7 @@
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 13</value>
@@ -561,17 +594,11 @@
   <data name="m_scanTimeUpDown.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="label8.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_rbImmediate.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 131</value>
-  </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_autoStartCheckBox.ToolTip" xml:space="preserve">
     <value />
@@ -612,8 +639,11 @@
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_rbNetSend.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -627,8 +657,8 @@
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
-    <value>m_browseExecutableButton</value>
+  <data name="&gt;&gt;m_applyToRunningButton.Name" xml:space="preserve">
+    <value>m_applyToRunningButton</value>
   </data>
   <data name="m_datDirTextBox.ToolTip" xml:space="preserve">
     <value />
@@ -663,8 +693,8 @@
   <data name="m_nudNotifyTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
   </data>
-  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
-    <value>m_enableCheckBox</value>
+  <data name="&gt;&gt;m_applyToRunningButton.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_autoStartCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 17</value>
@@ -672,29 +702,26 @@
   <data name="&gt;&gt;label9.Name" xml:space="preserve">
     <value>label9</value>
   </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
+    <value>m_browseExecutableButton</value>
+  </data>
   <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_tbEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="&gt;&gt;m_tbEmail.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;label9.Parent" xml:space="preserve">
     <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="m_startButton.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="m_nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_cbRescanEnabled.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="m_refreshDats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 42</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>groupBox5</value>
@@ -704,6 +731,9 @@
   </data>
   <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 439</value>
+  </data>
+  <data name="m_rbTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -717,14 +747,11 @@
   <data name="m_failTimeUpDown.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_subfolderGroupBox.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_datDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="&gt;&gt;m_tbNetSend.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 289</value>
   </data>
   <data name="&gt;&gt;m_analyserTextBox.Name" xml:space="preserve">
     <value>m_analyserTextBox</value>
@@ -732,17 +759,14 @@
   <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="m_tbEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_enableCheckBox.Text" xml:space="preserve">
     <value>Enabled</value>
@@ -750,29 +774,23 @@
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 362</value>
   </data>
+  <data name="groupBox5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudNotifyTime.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="m_browseExecutableButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>415, 42</value>
+    <value>369, 42</value>
   </data>
-  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -786,8 +804,8 @@
   <data name="m_rbNetSend.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Dat files</value>
+  <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;m_rbEmail.Name" xml:space="preserve">
     <value>m_rbEmail</value>
@@ -813,6 +831,9 @@
   <data name="groupBox2.Text" xml:space="preserve">
     <value>ID</value>
   </data>
+  <data name="m_applyToRunningButton.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
     <value>m_autoStartCheckBox</value>
   </data>
@@ -825,8 +846,8 @@
   <data name="label10.Text" xml:space="preserve">
     <value>minutes</value>
   </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="m_newReportButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -846,11 +867,11 @@
   <data name="m_cbRescanEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_applyToRunningButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
   <data name="m_scanTimeUpDown.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 218</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -860,6 +881,9 @@
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 13</value>
   </data>
   <data name="m_nudNotifyTime.ToolTip" xml:space="preserve">
     <value />
@@ -876,8 +900,8 @@
   <data name="&gt;&gt;m_refreshDats.Name" xml:space="preserve">
     <value>m_refreshDats</value>
   </data>
-  <data name="m_browseExecutableButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -900,8 +924,8 @@
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>99, 25</value>
   </data>
-  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 17</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>New Task</value>
   </data>
   <data name="m_enableCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -912,11 +936,8 @@
   <data name="&gt;&gt;m_scanTimeUpDown.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_browseExecutableButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 28</value>
@@ -927,14 +948,8 @@
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 192</value>
   </data>
-  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;m_newBatchfileButton.Parent" xml:space="preserve">
     <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>groupBox7</value>
   </data>
   <data name="&gt;&gt;m_nameTextBox.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -957,9 +972,6 @@
   <data name="&gt;&gt;m_tbSMTP.Name" xml:space="preserve">
     <value>m_tbSMTP</value>
   </data>
-  <data name="&gt;&gt;m_newReportButton.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
   <data name="&gt;&gt;m_rbEmail.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -972,8 +984,8 @@
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>311, 69</value>
   </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Parent" xml:space="preserve">
-    <value>groupBox7</value>
+  <data name="m_subfolderGroupBox.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -1008,14 +1020,11 @@
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="m_applyToRunningButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Target</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>227, 44</value>
@@ -1023,8 +1032,11 @@
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>565, 67</value>
   </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;m_applyToRunningButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_tbNetSend.Size" type="System.Drawing.Size, System.Drawing">
     <value>360, 20</value>
@@ -1041,9 +1053,6 @@
   <data name="&gt;&gt;m_rbImmediate.Parent" xml:space="preserve">
     <value>groupBox7</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ConfigurationControl</value>
-  </data>
   <data name="m_cbRescanEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 42</value>
   </data>
@@ -1053,11 +1062,20 @@
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>119, 77</value>
   </data>
+  <data name="m_applyToRunningButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Dat files</value>
+  </data>
   <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_rbImmediate.Name" xml:space="preserve">
-    <value>m_rbImmediate</value>
+  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 218</value>
+  </data>
+  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="label5.ToolTip" xml:space="preserve">
     <value />
@@ -1074,8 +1092,8 @@
   <data name="m_rbTime.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_analyserTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 25</value>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>groupBox7</value>
   </data>
   <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1083,8 +1101,8 @@
   <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
     <value>532, 70</value>
   </data>
-  <data name="&gt;&gt;m_nameTextBox.Name" xml:space="preserve">
-    <value>m_nameTextBox</value>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Retry failed operations every</value>
   </data>
   <data name="m_rbEmail.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 23</value>
@@ -1134,14 +1152,17 @@
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
+  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="m_tbEmail.Location" type="System.Drawing.Point, System.Drawing">
     <value>155, 22</value>
   </data>
   <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Job name:</value>
+  <data name="&gt;&gt;m_rbNetSend.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
   </data>
   <data name="m_rbImmediate.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 17</value>
@@ -1152,32 +1173,23 @@
   <data name="groupBox4.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;m_newExtractButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_rbEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 17</value>
+  <data name="&gt;&gt;m_rbImmediate.Name" xml:space="preserve">
+    <value>m_rbImmediate</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
     <value>groupBox3</value>
-  </data>
-  <data name="m_newBatchfileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 19</value>
   </data>
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>New Task</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -1187,9 +1199,6 @@
   </data>
   <data name="groupBox7.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="m_startButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
   </data>
   <data name="&gt;&gt;m_datDirTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1209,6 +1218,9 @@
   <data name="m_rbNetSend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="m_rbImmediate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 19</value>
+  </data>
   <data name="m_stopButton.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
@@ -1224,32 +1236,35 @@
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
+  <data name="m_analyserTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 25</value>
+  </data>
   <data name="groupBox5.Text" xml:space="preserve">
     <value>ibaAnalyzer</value>
   </data>
-  <data name="&gt;&gt;m_tbEmail.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;m_cbRescanEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 31</value>
   </data>
+  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_nameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 289</value>
   </data>
   <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_rbTime.Text" xml:space="preserve">
-    <value>Notify at most every</value>
+  <data name="m_newBatchfileButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 19</value>
   </data>
   <data name="&gt;&gt;label8.Parent" xml:space="preserve">
     <value>m_subfolderGroupBox</value>
@@ -1266,17 +1281,20 @@
   <data name="m_rbImmediate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
+  <data name="m_rbTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 42</value>
   </data>
-  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 13</value>
+  </data>
+  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
+    <value>m_enableCheckBox</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1302,14 +1320,14 @@
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="groupBox5.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Target</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1317,20 +1335,23 @@
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
   </data>
   <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
     <value>m_subfolderGroupBox</value>
   </data>
-  <data name="m_rbImmediate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 19</value>
+  <data name="m_applyToRunningButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_scanTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>239, 41</value>
   </data>
-  <data name="m_rbNetSend.Text" xml:space="preserve">
-    <value>net send</value>
+  <data name="&gt;&gt;m_nameTextBox.Name" xml:space="preserve">
+    <value>m_nameTextBox</value>
   </data>
   <data name="m_refreshDats.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1350,8 +1371,8 @@
   <data name="&gt;&gt;m_startButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_tbNetSend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
   </data>
   <data name="m_enableCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 19</value>
@@ -1359,8 +1380,8 @@
   <data name="m_tbSMTP.Location" type="System.Drawing.Point, System.Drawing">
     <value>155, 48</value>
   </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;m_rbImmediate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -1371,8 +1392,8 @@
   <data name="m_rbTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 17</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 13</value>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
     <value>groupBox5</value>
@@ -1392,11 +1413,14 @@
   <data name="&gt;&gt;m_rbTime.Name" xml:space="preserve">
     <value>m_rbTime</value>
   </data>
+  <data name="&gt;&gt;m_applyToRunningButton.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>
   </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -1404,8 +1428,8 @@
   <data name="&gt;&gt;m_browseExecutableButton.Parent" xml:space="preserve">
     <value>groupBox5</value>
   </data>
-  <data name="&gt;&gt;m_rbNetSend.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="m_startButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
   </data>
   <data name="&gt;&gt;m_subMapsCheckBox.Name" xml:space="preserve">
     <value>m_subMapsCheckBox</value>
@@ -1413,8 +1437,8 @@
   <data name="&gt;&gt;m_tbSMTP.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>host:</value>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1425,20 +1449,23 @@
   <data name="m_browseExecutableButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
-  <data name="m_datDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="&gt;&gt;m_newReportButton.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Job name:</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 13</value>
   </data>
   <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 42</value>
+    <value>415, 42</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
     <value />
@@ -1446,17 +1473,20 @@
   <data name="m_datDirTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>171, 28</value>
   </data>
+  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
     <value>32, 69</value>
   </data>
-  <data name="m_rbTime.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
+    <value>groupBox6</value>
   </data>
-  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
-    <value>m_newReportButton</value>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 20</value>
@@ -1467,22 +1497,25 @@
   <data name="m_cbRescanEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="m_startButton.ToolTip" xml:space="preserve">
+  <data name="m_rbImmediate.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_rbTime.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>291, 17</value>
   </metadata>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>190, 17</value>
-  </metadata>
-  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
   </metadata>
 </root>

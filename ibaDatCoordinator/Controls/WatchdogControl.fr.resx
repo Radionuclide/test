@@ -117,45 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_statusGroupBox.Text" xml:space="preserve">
+    <value>Etat</value>
   </data>
-  <data name="m_rb1stFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_ApplyButton.Text" xml:space="preserve">
+    <value>Appliquer</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rb1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 22</value>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>98, 44</value>
   </data>
-  <data name="m_rbAlways.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 17</value>
   </data>
-  <data name="m_rbAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>364, 22</value>
+  <data name="m_enableCheckBox.Text" xml:space="preserve">
+    <value>Actif</value>
   </data>
-  <data name="m_rbFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 13</value>
   </data>
-  <data name="m_rbFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 22</value>
+  <data name="label4.Text" xml:space="preserve">
+    <value>secondes</value>
   </data>
-  <data name="m_rbDisabled.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_cycleUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 42</value>
   </data>
-  <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>364, 22</value>
+  <data name="m_cycleUpDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 20</value>
   </data>
-  <data name="m_rbSucces.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Cycle</value>
   </data>
-  <data name="m_rbSucces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 22</value>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 51</value>
   </data>
-  <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 13</value>
   </data>
-  <data name="tableLayoutPanel6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="label7.Text" xml:space="preserve">
+    <value>addresse ou nom d'hôte:</value>
+  </data>
+  <data name="m_tbPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 48</value>
+  </data>
+  <data name="m_tbHost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 22</value>
+  </data>
+  <data name="m_tbHost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>403, 20</value>
+  </data>
+  <data name="m_rbPassiveNode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 17</value>
+  </data>
+  <data name="m_rbPassiveNode.Text" xml:space="preserve">
+    <value>Ce nœud est passif</value>
+  </data>
+  <data name="m_rbActiveNode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 17</value>
+  </data>
+  <data name="m_rbActiveNode.Text" xml:space="preserve">
+    <value>Ce nœud est actif</value>
   </data>
 </root>

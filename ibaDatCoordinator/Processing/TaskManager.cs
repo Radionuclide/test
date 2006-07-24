@@ -45,6 +45,24 @@ namespace iba.Processing
                 try
                 {
                     ConfigurationWorker cw = m_workers[data];
+                    //cw.ConfigurationToUpdate = data;
+                    m_workers.Remove(data);
+                    m_workers.Add(data, cw);
+                }
+                catch (KeyNotFoundException)
+                {
+                    //doesn't matter
+                }
+            }
+        }
+
+        virtual public void UpdateConfiguration(ConfigurationData data)
+        {
+            lock (m_workers)
+            {
+                try
+                {
+                    ConfigurationWorker cw = m_workers[data];
                     cw.ConfigurationToUpdate = data;
                     m_workers.Remove(data);
                     m_workers.Add(data, cw);
@@ -79,6 +97,7 @@ namespace iba.Processing
 
         virtual public void StartConfiguration(ConfigurationData data)
         {
+            m_workers[data].ConfigurationToUpdate = data;
             m_workers[data].Start();
         }
 
@@ -472,6 +491,19 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.handleBrokenConnection();
                 Manager.ReplaceConfiguration(data);
+            }
+        }
+
+        public override void UpdateConfiguration(ConfigurationData data)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.UpdateConfiguration(data);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                Manager.UpdateConfiguration(data);
             }
         }
 

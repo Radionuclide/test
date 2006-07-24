@@ -32,6 +32,7 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_autoStartCheckBox, iba.Properties.Resources.toolTipAutoStart);
+            m_toolTip.SetToolTip(m_applyToRunningButton, iba.Properties.Resources.applyStartedButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
         }
 
@@ -326,5 +327,10 @@ namespace iba.Controls
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked;
         }
 
+        private void m_applyToRunningButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            TaskManager.Manager.UpdateConfiguration(m_data);
+        }
     }
 }

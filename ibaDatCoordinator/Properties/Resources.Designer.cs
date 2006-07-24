@@ -83,6 +83,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to apply changes in jobconfiguration to the running job.
+        /// </summary>
+        internal static string applyStartedButton {
+            get {
+                return ResourceManager.GetString("applyStartedButton", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon batchfile_failure {
             get {
                 object obj = ResourceManager.GetObject("batchfile_failure", resourceCulture);

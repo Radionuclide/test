@@ -180,6 +180,7 @@ namespace iba.Data
         public ConfigurationData Clone_AlsoCopyGuids()
         {
             ConfigurationData cd = this.Clone() as ConfigurationData;
+            cd.m_id = m_id;
             for (int i = 0; i < m_tasks.Count; i++)
                 cd.m_tasks[i].Guid = m_tasks[i].Guid;
             return cd;
