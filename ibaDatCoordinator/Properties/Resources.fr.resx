@@ -511,6 +511,9 @@
   <data name="toolTipStopAll" xml:space="preserve">
     <value>Arrêter tous les boulots</value>
   </data>
+  <data name="UpdateHappened" xml:space="preserve">
+    <value>the jobconfiguration was updated</value>
+  </data>
   <data name="wdErrorAccept" xml:space="preserve">
     <value>TCP/IP watchdog : socket exception on accept : {0}</value>
   </data>

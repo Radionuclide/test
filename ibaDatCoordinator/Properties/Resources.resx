@@ -598,4 +598,7 @@
   <data name="applyStartedButton" xml:space="preserve">
     <value>apply changes in jobconfiguration to the running job</value>
   </data>
+  <data name="UpdateHappened" xml:space="preserve">
+    <value>the jobconfiguration was updated</value>
+  </data>
 </root>

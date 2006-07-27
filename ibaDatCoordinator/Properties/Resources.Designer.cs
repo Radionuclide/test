@@ -1299,6 +1299,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to the jobconfiguration was updated.
+        /// </summary>
+        internal static string UpdateHappened {
+            get {
+                return ResourceManager.GetString("UpdateHappened", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon watchdog {
             get {
                 object obj = ResourceManager.GetObject("watchdog", resourceCulture);

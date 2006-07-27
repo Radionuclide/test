@@ -294,6 +294,11 @@ namespace iba
                 statusToolStripMenuItem.Enabled = true;
                 configurationToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
+
+                if (LogData.Data.Logger.ChildCount > 0)
+                    m_EntriesNumericUpDown1.Value = (LogData.Data.Logger.Children[0] as GridViewLogger).MaxRows;
+                else
+                    m_EntriesNumericUpDown1.Value = (LogData.Data.Logger as GridViewLogger).MaxRows;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
             {
@@ -405,6 +410,7 @@ namespace iba
             m_configTreeView.Nodes.Add(newConfNode); 
             m_configTreeView.EndUpdate();
             m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
+            UpdateButtons();
         }
 
         private void loadStatuses()
@@ -552,6 +558,7 @@ namespace iba
                     node = m_configTreeView.Nodes[m_configTreeView.Nodes.Count - 2];
                     m_configTreeView.SelectedNode = node;
                     loadStatuses();
+                    UpdateButtons();
                 }
                 else 
                 {
@@ -733,6 +740,7 @@ namespace iba
                 m_configTreeView.SelectedNode = node;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
                 loadStatuses();
+                UpdateButtons();
             }
             else if (node.Tag is ConfigurationTreeItemData && m_cd_copy != null && m_confCopiedMostRecent)
             {
@@ -751,6 +759,7 @@ namespace iba
                 m_configTreeView.SelectedNode = node;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
                 loadStatuses();
+                UpdateButtons();
             }
             else if (node.Tag is ConfigurationTreeItemData && m_task_copy != null)
             {

@@ -93,6 +93,8 @@ namespace iba.Processing
                     m_notifier.Send();
                     m_notifier = new Notifier(m_cd);
                 }
+                Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
+
                 m_toUpdate = null;
             }
         }

@@ -150,6 +150,7 @@ namespace iba.Data
             set
             {
                 m_maxRows = value;
+                Profiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
                 if (m_grid.Rows.Count > m_maxRows) m_control.Invoke(m_clearSomeRowsDelegate);
             }
         }
@@ -288,6 +289,7 @@ namespace iba.Data
             m_clearAllRowsDelegate = new ClearDelegate(clearAllRowsToBeInvoked);
             m_clearSomeRowsDelegate = new ClearDelegate(clearSomeRowsToBeInvoked);
             m_maxRows = 50;
+            Profiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
             m_isForwarding = m_isForwarding2 = false;
         }
 

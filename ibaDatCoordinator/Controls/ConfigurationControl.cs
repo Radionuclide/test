@@ -79,12 +79,14 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
+                m_applyToRunningButton.Enabled = false;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = false;
                 m_refreshDats.Enabled = true;
             }
             else if (TaskManager.Manager.GetStatus(m_data.ID).Started)
             {
+                m_applyToRunningButton.Enabled = true;
                 m_startButton.Enabled = false;
                 m_newBatchfileButton.Enabled = false;
                 m_newExtractButton.Enabled = false;
@@ -95,6 +97,7 @@ namespace iba.Controls
             }
             else
             {
+                m_applyToRunningButton.Enabled = false;
                 m_startButton.Enabled = true;
                 m_newBatchfileButton.Enabled = true;
                 m_newExtractButton.Enabled = true;
@@ -274,6 +277,7 @@ namespace iba.Controls
             m_newExtractButton.Enabled = false;
             m_newReportButton.Enabled = false;
             m_newCopyTaskButton.Enabled = false;
+            m_applyToRunningButton.Enabled = true;
             m_stopButton.Enabled = true;
             m_refreshDats.Enabled = false;
             MainForm t = m_manager as MainForm;
@@ -292,6 +296,7 @@ namespace iba.Controls
                 w.ShowDialog(ParentForm);
             }
             m_startButton.Enabled = true;
+            m_applyToRunningButton.Enabled = false;
             m_newBatchfileButton.Enabled = true;
             m_newExtractButton.Enabled = true;
             m_newReportButton.Enabled = true;
