@@ -59,11 +59,17 @@ namespace iba.Services
             {
                 try
                 {
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
-                        confs = (List<ConfigurationData>)mySerializer.Deserialize(myFileStream);
+                        ibaDatCoordinatorData dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                        TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
+                        TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
+                        confs = dat.Configurations;
+                        if (LogData.Data.FileName != dat.Logfile)
+                            LogData.OpenFromFile(dat.Logfile);
+                        LogData.Data.MaxRows = dat.LogItemCount;
                     }
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();
                     m_communicationObject.Manager.Configurations = confs;

@@ -294,11 +294,7 @@ namespace iba
                 statusToolStripMenuItem.Enabled = true;
                 configurationToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
-
-                if (LogData.Data.Logger.ChildCount > 0)
-                    m_EntriesNumericUpDown1.Value = (LogData.Data.Logger.Children[0] as GridViewLogger).MaxRows;
-                else
-                    m_EntriesNumericUpDown1.Value = (LogData.Data.Logger as GridViewLogger).MaxRows;
+                m_EntriesNumericUpDown1.Value = LogData.Data.MaxRows;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
             {
@@ -1147,13 +1143,19 @@ namespace iba
             else using (WaitCursor wait = new WaitCursor())
                 {
                     SaveRightPaneControl();
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     // To write to a file, create a StreamWriter object.
                     try
                     {
                         using (StreamWriter myWriter = new StreamWriter(m_filename))
                         {
-                            mySerializer.Serialize(myWriter, TaskManager.Manager.Configurations);
+                            ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
+                                TaskManager.Manager.WatchDogData,
+                                TaskManager.Manager.Configurations, 
+                                LogData.Data.FileName,
+                                LogData.Data.MaxRows
+                                );
+                            mySerializer.Serialize(myWriter, dat);
                         }
                     }
                     catch (Exception ex)
@@ -1168,13 +1170,19 @@ namespace iba
         private string TextToSave()
         {
             SaveRightPaneControl();
-            XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+            XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
             StringBuilder sb = new StringBuilder();
             try
             {
                 using (StringWriter myWriter = new StringWriter(sb))
                 {
-                    mySerializer.Serialize(myWriter, TaskManager.Manager.Configurations);
+                    ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
+                        TaskManager.Manager.WatchDogData,
+                        TaskManager.Manager.Configurations,
+                        LogData.Data.FileName,
+                        LogData.Data.MaxRows
+                        );
+                    mySerializer.Serialize(myWriter, dat);
                 }
             }
             catch
@@ -1238,11 +1246,17 @@ namespace iba
             {
                 using (WaitCursor wait = new WaitCursor())
                 {
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
-                        confs = (List<ConfigurationData>)mySerializer.Deserialize(myFileStream);
+                        ibaDatCoordinatorData dat = (ibaDatCoordinatorData) mySerializer.Deserialize(myFileStream);
+                        TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
+                        TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
+                        confs = dat.Configurations;
+                        if (LogData.Data.FileName != dat.Logfile)
+                            LogData.OpenFromFile(dat.Logfile);
+                        LogData.Data.MaxRows = dat.LogItemCount;
                     }
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
@@ -1424,10 +1438,7 @@ namespace iba
         
         private void m_EntriesNumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            if (LogData.Data.Logger.ChildCount > 0)
-                (LogData.Data.Logger.Children[0] as GridViewLogger).MaxRows = (int) m_EntriesNumericUpDown1.Value;
-            else
-                (LogData.Data.Logger as GridViewLogger).MaxRows = (int)m_EntriesNumericUpDown1.Value;
+            LogData.Data.MaxRows = (int) m_EntriesNumericUpDown1.Value;
         }
 
         private void m_stopButton_Click(object sender, EventArgs e)

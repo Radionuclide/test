@@ -84,9 +84,9 @@ namespace iba
             this.m_vANAL.AutoSize = true;
             this.m_vANAL.Location = new System.Drawing.Point(104, 99);
             this.m_vANAL.Name = "m_vANAL";
-            this.m_vANAL.Size = new System.Drawing.Size(42, 13);
+            this.m_vANAL.Size = new System.Drawing.Size(35, 13);
             this.m_vANAL.TabIndex = 5;
-            this.m_vANAL.Text = "vDATC";
+            this.m_vANAL.Text = "vANA";
             // 
             // label5
             // 
@@ -102,9 +102,9 @@ namespace iba
             this.m_vFILES.AutoSize = true;
             this.m_vFILES.Location = new System.Drawing.Point(104, 121);
             this.m_vFILES.Name = "m_vFILES";
-            this.m_vFILES.Size = new System.Drawing.Size(42, 13);
+            this.m_vFILES.Size = new System.Drawing.Size(35, 13);
             this.m_vFILES.TabIndex = 7;
-            this.m_vFILES.Text = "vDATC";
+            this.m_vFILES.Text = "vFILE";
             // 
             // label7
             // 
@@ -120,9 +120,9 @@ namespace iba
             this.m_vLogger.AutoSize = true;
             this.m_vLogger.Location = new System.Drawing.Point(104, 143);
             this.m_vLogger.Name = "m_vLogger";
-            this.m_vLogger.Size = new System.Drawing.Size(42, 13);
+            this.m_vLogger.Size = new System.Drawing.Size(58, 13);
             this.m_vLogger.TabIndex = 9;
-            this.m_vLogger.Text = "vDATC";
+            this.m_vLogger.Text = "vLOGGER";
             // 
             // label9
             // 

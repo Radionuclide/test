@@ -215,7 +215,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
             this.m_refreshDats.BackgroundImage = null;
             this.m_refreshDats.Font = null;
-            this.m_refreshDats.Image = global::iba.Properties.Resources.Aktualisieren;
+            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
             this.m_refreshDats.Name = "m_refreshDats";
             this.m_toolTip.SetToolTip(this.m_refreshDats, resources.GetString("m_refreshDats.ToolTip"));
             this.m_refreshDats.UseVisualStyleBackColor = true;
@@ -289,6 +289,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_applyToRunningButton, "m_applyToRunningButton");
             this.m_applyToRunningButton.BackgroundImage = null;
             this.m_applyToRunningButton.Font = null;
+            this.m_applyToRunningButton.Image = global::iba.Properties.Resources.refreshconfs;
             this.m_applyToRunningButton.Name = "m_applyToRunningButton";
             this.m_toolTip.SetToolTip(this.m_applyToRunningButton, resources.GetString("m_applyToRunningButton.ToolTip"));
             this.m_applyToRunningButton.UseVisualStyleBackColor = true;

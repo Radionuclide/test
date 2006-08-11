@@ -87,7 +87,35 @@ namespace iba.Processing
                 if (m_toUpdate.ReprocessErrorsTimeInterval< m_cd.ReprocessErrorsTimeInterval)
                     notifyTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                 m_cd = m_toUpdate.Clone_AlsoCopyGuids();
+
+                //also update statusdata
                 m_sd.CorrConfigurationData = m_cd;
+                lock (m_sd.DatFileStates)
+                {
+                    foreach (KeyValuePair<string, DatFileStatus> p in m_sd.DatFileStates)
+                    {
+                        DatFileStatus updatedStatus = new DatFileStatus();
+                        foreach (TaskData task in m_cd.Tasks)
+                        {
+                            Nullable<DatFileStatus.State> stat = null;
+                            foreach (KeyValuePair<TaskData, DatFileStatus.State> p2 in p.Value.States)
+                            {
+                                if (p2.Key.Guid == task.Guid)
+                                    stat = p2.Value;
+                            }
+                            if (stat != null)
+                                updatedStatus.States[task] = stat.Value;
+                        }
+                        p.Value.States.Clear();
+                        foreach (KeyValuePair<TaskData, DatFileStatus.State> p2 in updatedStatus.States)
+                        {
+                            p.Value.States.Add(p2.Key, p2.Value);
+                        }
+                        //m_sd.DatFileStates[p.Key] = updatedStatus;
+                    }
+                }
+
+
                 if (m_notifier != null)
                 {
                     m_notifier.Send();
@@ -123,6 +151,13 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
+            if (level == Logging.Level.Exception)
+            {
+                if (message.Contains("The operation"))
+                {
+                    string debug = message;
+                }
+            }
         }
 
         private void Log(Logging.Level level, string message, string datfile)
@@ -131,6 +166,13 @@ namespace iba.Processing
             {
                 LogExtraData data = new LogExtraData(datfile, null, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
+            }
+            if (level == Logging.Level.Exception)
+            {
+                if (message.Contains("The operation"))
+                {
+                    string debug = message;
+                }
             }
         }
 

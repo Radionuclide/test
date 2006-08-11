@@ -34,6 +34,7 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_autoStartCheckBox, iba.Properties.Resources.toolTipAutoStart);
             m_toolTip.SetToolTip(m_applyToRunningButton, iba.Properties.Resources.applyStartedButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
+            ((Bitmap)m_applyToRunningButton.Image).MakeTransparent(Color.Magenta);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -136,6 +137,7 @@ namespace iba.Controls
                 m_rbTime.Checked = true;
             }
         }
+
         public void SaveData()
         {
             m_data.Name = m_nameTextBox.Text;

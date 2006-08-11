@@ -359,6 +359,25 @@ namespace iba.Data
             }
         }
 
+        public int MaxRows
+        {
+            get 
+            {
+                if (m_data.Logger.ChildCount > 0)
+                    return (m_data.Logger.Children[0] as GridViewLogger).MaxRows;
+                else
+                    return (m_data.Logger as GridViewLogger).MaxRows;
+            }
+            set
+            {
+                if (m_data.Logger.ChildCount > 0)
+                    (m_data.Logger.Children[0] as GridViewLogger).MaxRows = value;
+                else
+                    (m_data.Logger as GridViewLogger).MaxRows = value;
+            }
+        }
+
+
         private Logger m_logger; 
         public Logger Logger
         {

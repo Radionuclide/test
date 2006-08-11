@@ -62,7 +62,12 @@ namespace iba.Controls
                 }
                 finally
                 {
-                    ibaDatFile.Close();
+                    try
+                    {
+                        ibaDatFile.Close();
+                    }
+                    catch
+                    { }
                 }
                 try
                 {

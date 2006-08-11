@@ -160,9 +160,6 @@
   <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="closing" xml:space="preserve">
-    <value>Closing</value>
-  </data>
   <data name="notifyIconMenuItemStopService" xml:space="preserve">
     <value>Stop Service</value>
   </data>
@@ -329,7 +326,7 @@
     <value>Error! "{0}" Please examine log </value>
   </data>
   <data name="NotificationEmailSubject" xml:space="preserve">
-    <value>ibaAnalyzer notification</value>
+    <value>ibaDatCoordinator notification</value>
   </data>
   <data name="Noaccess" xml:space="preserve">
     <value>momentarely no access to .dat  file...</value>
@@ -467,7 +464,7 @@
     <value>Are you sure you want to delete the Copy options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="stopButton" xml:space="preserve">
-    <value>stop this job</value>
+    <value>Stop this job</value>
   </data>
   <data name="copydat_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copydat_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -488,7 +485,7 @@
     <value>The notification e-mail addres is invalid or not supplied</value>
   </data>
   <data name="toolTipStartAll" xml:space="preserve">
-    <value>start ALLjobs</value>
+    <value>Start ALLjobs</value>
   </data>
   <data name="notifyIconMenuItemRestore" xml:space="preserve">
     <value>Restore</value>
@@ -500,7 +497,7 @@
     <value>ibaDatCoordinator (disconnected)</value>
   </data>
   <data name="startButton" xml:space="preserve">
-    <value>start this job</value>
+    <value>Start this job</value>
   </data>
   <data name="logNoBatchfile" xml:space="preserve">
     <value>batchfile does not exist</value>
@@ -554,7 +551,7 @@
     <value>Add Batchfile Task</value>
   </data>
   <data name="toolTipStopAll" xml:space="preserve">
-    <value>stop ALL jobs</value>
+    <value>Stop ALL jobs</value>
   </data>
   <data name="logBatchfileStarted" xml:space="preserve">
     <value>batchfile started</value>
@@ -596,9 +593,18 @@
     <value>Not connected</value>
   </data>
   <data name="applyStartedButton" xml:space="preserve">
-    <value>apply changes in jobconfiguration to the running job</value>
+    <value>Apply changes in jobconfiguration to the running job</value>
   </data>
   <data name="UpdateHappened" xml:space="preserve">
     <value>the jobconfiguration was updated</value>
+  </data>
+  <data name="refreshconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshdats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshdats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="closing" xml:space="preserve">
+    <value>Closing</value>
   </data>
 </root>

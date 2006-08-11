@@ -155,7 +155,7 @@
     <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="closing" xml:space="preserve">
-    <value>Closing</value>
+    <value>Fermer</value>
   </data>
   <data name="collapseTitle" xml:space="preserve">
     <value>Réduire tout</value>
@@ -241,6 +241,9 @@
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="invalidEmail" xml:space="preserve">
+    <value>The notification e-mail addres is invalid or not supplied</value>
+  </data>
   <data name="logBatchfileFailed" xml:space="preserve">
     <value>Fichier batch échoué</value>
   </data>
@@ -310,6 +313,24 @@
   <data name="logNoReportPdo" xml:space="preserve">
     <value>Fichier .pdo pour rapport n'existe pas</value>
   </data>
+  <data name="logNotifcationInvalidParameter" xml:space="preserve">
+    <value>a specified parameter is invalid</value>
+  </data>
+  <data name="logNotificationAccessDenied" xml:space="preserve">
+    <value>the user does not have access to the requested information</value>
+  </data>
+  <data name="logNotificationFailed" xml:space="preserve">
+    <value>notification failed</value>
+  </data>
+  <data name="logNotificationNameNotFound" xml:space="preserve">
+    <value>the user name could not be found</value>
+  </data>
+  <data name="logNotificationNetworkError" xml:space="preserve">
+    <value>a general failure occurred in the network hardware </value>
+  </data>
+  <data name="logNotificationNotSupported" xml:space="preserve">
+    <value>this network request is not supported</value>
+  </data>
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>Suppression d'anciens répertoires a échoué</value>
   </data>
@@ -366,6 +387,15 @@
   </data>
   <data name="noIbaAnalyser" xml:space="preserve">
     <value>Aucun ibaAnalyzer enregistré</value>
+  </data>
+  <data name="NotificationEmailSubject" xml:space="preserve">
+    <value>ibaDatCoordinator notification</value>
+  </data>
+  <data name="NotificationFailures" xml:space="preserve">
+    <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
+  </data>
+  <data name="NotificationSuccesses" xml:space="preserve">
+    <value>Task "{0}" for job "{1}" was completed successfully for the following .dat files :</value>
   </data>
   <data name="notifyIconMenuItemExit" xml:space="preserve">
     <value>Quitter</value>
@@ -513,6 +543,9 @@
   </data>
   <data name="UpdateHappened" xml:space="preserve">
     <value>the jobconfiguration was updated</value>
+  </data>
+  <data name="watchdogTitle" xml:space="preserve">
+    <value>TCP/IP Chien de garde</value>
   </data>
   <data name="wdErrorAccept" xml:space="preserve">
     <value>TCP/IP watchdog : socket exception on accept : {0}</value>

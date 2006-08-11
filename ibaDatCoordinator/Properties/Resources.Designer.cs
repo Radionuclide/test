@@ -84,7 +84,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to apply changes in jobconfiguration to the running job.
+        ///   Looks up a localized string similar to Apply changes in jobconfiguration to the running job.
         /// </summary>
         internal static string applyStartedButton {
             get {
@@ -869,7 +869,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer notification.
+        ///   Looks up a localized string similar to ibaDatCoordinator notification.
         /// </summary>
         internal static string NotificationEmailSubject {
             get {
@@ -986,12 +986,26 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap refreshconfs {
+            get {
+                object obj = ResourceManager.GetObject("refreshconfs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Remove the &quot;allready processed&quot; mark from the dat files.
         /// </summary>
         internal static string refreshDatButton {
             get {
                 return ResourceManager.GetString("refreshDatButton", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap refreshdats {
+            get {
+                object obj = ResourceManager.GetObject("refreshdats", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1151,7 +1165,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to start this job.
+        ///   Looks up a localized string similar to Start this job.
         /// </summary>
         internal static string startButton {
             get {
@@ -1228,7 +1242,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to stop this job.
+        ///   Looks up a localized string similar to Stop this job.
         /// </summary>
         internal static string stopButton {
             get {
@@ -1282,7 +1296,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to start ALLjobs.
+        ///   Looks up a localized string similar to Start ALLjobs.
         /// </summary>
         internal static string toolTipStartAll {
             get {
@@ -1291,7 +1305,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to stop ALL jobs.
+        ///   Looks up a localized string similar to Stop ALL jobs.
         /// </summary>
         internal static string toolTipStopAll {
             get {

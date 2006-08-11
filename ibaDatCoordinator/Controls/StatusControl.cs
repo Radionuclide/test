@@ -176,8 +176,9 @@ namespace iba.Controls
             foreach (KeyValuePair<DateTime, KeyValuePair<string, DatFileStatus>> it in contents)
             {
                 m_gridView.Rows[count].Cells[0].Value = it.Value.Key;
-                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
-                    (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
+                List<bool> blank = new List<bool>();
+                for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
+                    blank.Add(true);
                 if (it.Value.Value != null)
                 {
 
@@ -195,6 +196,7 @@ namespace iba.Controls
                             bitmap = m_copydatIcons[pair.Value];
                         text = m_taskTexts[pair.Value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 1] as DataGridViewImageCell;
+                        blank[pair.Key.Index + 1] = false;
                         if ((cell.Value as Bitmap) != bitmap)
                         {
                             cell.Value = bitmap;
@@ -208,6 +210,9 @@ namespace iba.Controls
 //                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
   //                  if ((m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value == null)
     //                    (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
+                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
+                    if (blank[i] && (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value != m_blankIcon)
+                        (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
                 count++;
             }
             m_refreshTimer.Enabled = true;

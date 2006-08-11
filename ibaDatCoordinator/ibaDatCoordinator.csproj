@@ -144,6 +144,7 @@
     <Compile Include="Data\ConfigurationData.cs" />
     <Compile Include="Data\CopyMoveTaskData.cs" />
     <Compile Include="Data\ExtractData.cs" />
+    <Compile Include="Data\ibaDatCoordinatorData.cs" />
     <Compile Include="Data\LogData.cs" />
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
@@ -481,6 +482,8 @@
     <None Include="Resources\batchfile_noaccess.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\refreshdats.bmp" />
+    <None Include="Resources\refreshconfs.bmp" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />
