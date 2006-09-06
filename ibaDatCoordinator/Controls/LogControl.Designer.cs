@@ -40,12 +40,8 @@ namespace iba.Controls
             // 
             // m_dataGridView
             // 
-            this.m_dataGridView.AccessibleDescription = null;
-            this.m_dataGridView.AccessibleName = null;
             this.m_dataGridView.AllowUserToAddRows = false;
             this.m_dataGridView.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.m_dataGridView, "m_dataGridView");
-            this.m_dataGridView.BackgroundImage = null;
             this.m_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.time,
@@ -53,11 +49,13 @@ namespace iba.Controls
             this.Task,
             this.datFile,
             this.message});
-            this.m_dataGridView.Font = null;
+            resources.ApplyResources(this.m_dataGridView, "m_dataGridView");
             this.m_dataGridView.MultiSelect = false;
             this.m_dataGridView.Name = "m_dataGridView";
             this.m_dataGridView.ReadOnly = true;
             this.m_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.m_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dataGridView_CellClick);
+            this.m_dataGridView.Scroll += new System.Windows.Forms.ScrollEventHandler(this.m_dataGridView_Scroll);
             // 
             // time
             // 
@@ -97,13 +95,9 @@ namespace iba.Controls
             // 
             // LogControl
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.Controls.Add(this.m_dataGridView);
-            this.Font = null;
             this.Name = "LogControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_dataGridView)).EndInit();
             this.ResumeLayout(false);

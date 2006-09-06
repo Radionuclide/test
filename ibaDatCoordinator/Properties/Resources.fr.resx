@@ -128,7 +128,7 @@
     <value>..\Resources\Analyzer_001.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="applyStartedButton" xml:space="preserve">
-    <value>apply changes in jobconfiguration to the running job</value>
+    <value>Apliquer les changements de la configuration du boulot au boulot en exécution</value>
   </data>
   <data name="batchfile_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\batchfile_failure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -242,7 +242,7 @@
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
-    <value>The notification e-mail addres is invalid or not supplied</value>
+    <value>L' addresse de E-mail pour les notifications est inadmissible ou non rempli</value>
   </data>
   <data name="logBatchfileFailed" xml:space="preserve">
     <value>Fichier batch échoué</value>
@@ -308,28 +308,28 @@
     <value>Fichier batch n'existe pas.</value>
   </data>
   <data name="logNoExtractPdo" xml:space="preserve">
-    <value>Fichier .pdo pour extraction n'existe pas.</value>
+    <value>Fichier .pdo pour extraction n'existe pas</value>
   </data>
   <data name="logNoReportPdo" xml:space="preserve">
     <value>Fichier .pdo pour rapport n'existe pas</value>
   </data>
   <data name="logNotifcationInvalidParameter" xml:space="preserve">
-    <value>a specified parameter is invalid</value>
+    <value>un paramètre indiqué est inadmissible</value>
   </data>
   <data name="logNotificationAccessDenied" xml:space="preserve">
-    <value>the user does not have access to the requested information</value>
+    <value>l'utilisateur n'a pas accès à l'information demandé</value>
   </data>
   <data name="logNotificationFailed" xml:space="preserve">
-    <value>notification failed</value>
+    <value>notification échouée</value>
   </data>
   <data name="logNotificationNameNotFound" xml:space="preserve">
-    <value>the user name could not be found</value>
+    <value>le nom d'utilisateur n'a pas pu être trouvé</value>
   </data>
   <data name="logNotificationNetworkError" xml:space="preserve">
-    <value>a general failure occurred in the network hardware </value>
+    <value>un échec général s'est produit dans le matériel de réseau</value>
   </data>
   <data name="logNotificationNotSupported" xml:space="preserve">
-    <value>this network request is not supported</value>
+    <value>cette demande de réseau n'est pas soutenue </value>
   </data>
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>Suppression d'anciens répertoires a échoué</value>
@@ -392,10 +392,10 @@
     <value>ibaDatCoordinator notification</value>
   </data>
   <data name="NotificationFailures" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
+    <value>Tâche "{0}" pour boulot "{1}" a échoué pour les fichiers de données suivants:</value>
   </data>
   <data name="NotificationSuccesses" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" was completed successfully for the following .dat files :</value>
+    <value>Tâche "{0}" pour boulot "{1}" a terminé correctement pour les fichiers de données suivants:</value>
   </data>
   <data name="notifyIconMenuItemExit" xml:space="preserve">
     <value>Quitter</value>

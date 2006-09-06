@@ -45,10 +45,14 @@ namespace iba
                 {
                     System.ServiceProcess.ServiceController myController =
                         new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                    if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
+                    if (myController.Status == System.ServiceProcess.ServiceControllerStatus.Stopped)
                     {
                         myController.Start();
                         myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
+                    }
+                    else if (myController.Status == System.ServiceProcess.ServiceControllerStatus.StartPending)
+                    {
+                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(3.0));
                     }
                     if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
                     {

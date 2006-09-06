@@ -122,13 +122,13 @@
     <value>447, 3</value>
   </data>
   <data name="m_rb1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 17</value>
+    <value>96, 22</value>
   </data>
   <data name="m_rb1stFailure.Text" xml:space="preserve">
     <value>à la 1ère erreur</value>
   </data>
   <data name="m_rbAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 17</value>
+    <value>321, 22</value>
   </data>
   <data name="m_rbAlways.Text" xml:space="preserve">
     <value>toujours</value>
@@ -137,13 +137,13 @@
     <value>330, 31</value>
   </data>
   <data name="m_rbFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
+    <value>111, 22</value>
   </data>
   <data name="m_rbFailure.Text" xml:space="preserve">
     <value>en cas d'erreur</value>
   </data>
   <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 17</value>
+    <value>321, 22</value>
   </data>
   <data name="m_rbDisabled.Text" xml:space="preserve">
     <value>jamais</value>
@@ -152,7 +152,7 @@
     <value>330, 3</value>
   </data>
   <data name="m_rbSucces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 17</value>
+    <value>111, 22</value>
   </data>
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>en cas de réussite</value>
@@ -179,7 +179,7 @@
     <value>239, 27</value>
   </data>
   <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 17</value>
+    <value>155, 19</value>
   </data>
   <data name="m_rbOriginal.Text" xml:space="preserve">
     <value>garder la structure originale </value>
@@ -188,13 +188,13 @@
     <value>400, 27</value>
   </data>
   <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 17</value>
+    <value>117, 19</value>
   </data>
   <data name="m_rbNONE.Text" xml:space="preserve">
     <value>aucun</value>
   </data>
   <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 17</value>
+    <value>230, 18</value>
   </data>
   <data name="m_rbHour.Text" xml:space="preserve">
     <value>toutes les heures</value>
@@ -203,7 +203,7 @@
     <value>239, 3</value>
   </data>
   <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 17</value>
+    <value>155, 18</value>
   </data>
   <data name="m_rbDay.Text" xml:space="preserve">
     <value>tous les jours</value>
@@ -212,13 +212,13 @@
     <value>400, 3</value>
   </data>
   <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 17</value>
+    <value>117, 18</value>
   </data>
   <data name="m_rbWeek.Text" xml:space="preserve">
     <value>toutes les semaines</value>
   </data>
   <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 17</value>
+    <value>230, 19</value>
   </data>
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>tous les mois</value>
@@ -251,13 +251,13 @@
     <value>447, 3</value>
   </data>
   <data name="m_rbNot1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 17</value>
+    <value>96, 22</value>
   </data>
   <data name="m_rbNot1stFailure.Text" xml:space="preserve">
     <value>à la 1ère erreur</value>
   </data>
   <data name="m_rbNotAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 17</value>
+    <value>321, 22</value>
   </data>
   <data name="m_rbNotAlways.Text" xml:space="preserve">
     <value>toujours</value>
@@ -266,13 +266,13 @@
     <value>330, 31</value>
   </data>
   <data name="m_rbNotFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
+    <value>111, 22</value>
   </data>
   <data name="m_rbNotFailure.Text" xml:space="preserve">
     <value>en cas d'erreur</value>
   </data>
   <data name="m_rbNotDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 17</value>
+    <value>321, 22</value>
   </data>
   <data name="m_rbNotDisabled.Text" xml:space="preserve">
     <value>jamais</value>
@@ -281,7 +281,7 @@
     <value>330, 3</value>
   </data>
   <data name="m_rbNotSuccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 17</value>
+    <value>111, 22</value>
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>en cas de réussite</value>

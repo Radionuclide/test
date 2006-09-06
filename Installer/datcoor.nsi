@@ -41,6 +41,7 @@ SetCompressor /SOLID lzma
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
 !define MUI_ABORTWARNING
 !define MUI_COMPONENTSPAGE_NODESC
+!define MUI_WELCOMEFINISHPAGE_INI "welcome.ini"
 ;!define MUI_COMPONENTSPAGE_SMALLDESC
 ;!define MUI_FINISHPAGE_NOAUTOCLOSE
 
@@ -72,8 +73,10 @@ FunctionEnd
 
 Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
+;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_COMPONENTS
+Page custom InstalltypeSelect
+;!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !define MUI_FINISHPAGE_TITLE_3LINES
@@ -121,28 +124,33 @@ VIProductVersion "${PRODUCT_FILE_VERSION}"
 ;--------------------------------
 ; Reserve Files
 
-!insertmacro MUI_RESERVEFILE_LANGDLL
+ReserveFile "serviceorstandalone.ini"
+;ReserveFile "welcome.ini"
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
+!insertmacro MUI_RESERVEFILE_LANGDLL
 
 ${StrLoc}
 
 VAR WinVer
 VAR PrevUninstall
 
+
+InstType "service"
+InstType "standalone"
+
 ;--------------------------------
 ; Initialization functions
-
 Function .onInit
   SetShellVarContext all
-
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "serviceorstandalone.ini"
+  ;!insertmacro MUI_INSTALLOPTIONS_EXTRACT "welcome.ini"
   ;Display language selection dialog
   ;!insertmacro MUI_LANGDLL_DISPLAY
-
 FunctionEnd
 
 Function un.onInit
   ;!insertmacro MUI_UNGETLANGUAGE
-FunctionEnd
+functionend
 
 ;--------------------------------
 ; PreInstall function that checks requirements and previous installs
@@ -152,6 +160,19 @@ FunctionEnd
 Function PreInstall
   Call CheckRequirements
   Call CheckPreviousVersions
+FunctionEnd
+
+Function InstalltypeSelect
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSERVICE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSTANDALONE)"
+  !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
+  !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
+  ${If} $0 != "1"
+    SetCurInstType 0
+  ${Else}
+    SetCurInstType 1
+  ${EndIf}
 FunctionEnd
 
 ;--------------------------------
@@ -254,11 +275,8 @@ Section -PreInstall
   ${EndIf}
 SectionEnd
 
-;--------------------------------
-; Tasks install
-
 Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
-
+  SectionIn 1
   SetOverwrite on
   
   ;Copy server files
@@ -285,7 +303,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
 SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
-
+  SectionIn 2
   SetOverwrite on
   ;Copy server files
   SetOutPath "$INSTDIR"
@@ -639,6 +657,11 @@ LangString DESC_INSTALLING                ${LANG_ENGLISH} "Installing"
 LangString TEXT_SERVICE_INSTALL           ${LANG_ENGLISH} "Installing service"
 LangString TEXT_SERVICE_STOP              ${LANG_ENGLISH} "Stopping service"
 LangString TEXT_SERVICE_REMOVE            ${LANG_ENGLISH} "Deleting service"
+LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_ENGLISH} "Choose whether or not ibaDatCoordinator is installed as a service"
+LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordinator as a service"
+LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordinator as stand alone executable"
+
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
@@ -663,6 +686,10 @@ LangString DESC_INSTALLING                ${LANG_GERMAN} "wird installiert"
 LangString TEXT_SERVICE_INSTALL           ${LANG_GERMAN} "Dienst wird installiert"
 LangString TEXT_SERVICE_STOP              ${LANG_GERMAN} "Dienst wird angehalten"
 LangString TEXT_SERVICE_REMOVE            ${LANG_GERMAN} "Dienst wird gelöscht"
+LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_GERMAN} "Wählen Sie die Installationsart"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie ob der ibaDatCoordinator als Dienst installiert werden soll"
+LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator als Dienst installieren"
+LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
@@ -687,3 +714,8 @@ LangString DESC_INSTALLING                ${LANG_FRENCH} "Installation"
 LangString TEXT_SERVICE_INSTALL           ${LANG_FRENCH} "Installation du service"
 LangString TEXT_SERVICE_STOP              ${LANG_FRENCH} "Arrêt du service"
 LangString TEXT_SERVICE_REMOVE            ${LANG_FRENCH} "Suppression du service"
+LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_FRENCH} "Choisir Type d'Installlation"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_FRENCH} "Choisir si l'ibaDatCoordinator est installé comme service"
+LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme service"
+LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoordinator comme exécutable autonome"
+

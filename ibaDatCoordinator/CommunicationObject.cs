@@ -26,18 +26,24 @@ namespace iba
 
         public void SaveConfigurations()
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+            XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
             // To write to a file, create a StreamWriter object.
             try
             {
                 using (StreamWriter myWriter = new StreamWriter(m_filename))
                 {
-                    mySerializer.Serialize(myWriter, m_manager.Configurations);
+                    ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
+                        Manager.WatchDogData,
+                        Manager.Configurations,
+                        LogData.Data.FileName,
+                        LogData.Data.MaxRows
+                        );
+                    mySerializer.Serialize(myWriter, dat);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                LogData.Data.Logger.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem + ": " + ex.Message);
+                LogData.Data.Logger.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
             }
         }
 
@@ -54,6 +60,18 @@ namespace iba
         {
             get { return m_filename; }
             set { m_filename = value; }
+        }
+
+        public int LoggerMaxRows
+        {
+            get
+            {
+                return LogData.Data.MaxRows;
+            }
+            set
+            {
+                LogData.Data.MaxRows = value;
+            }
         }
 
         public override object InitializeLifetimeService()
@@ -78,6 +96,14 @@ namespace iba
         public void Logging_setNewFile(string filename)
         {
             LogData.NewFromFile(filename);
+        }
+
+        public string Logging_fileName
+        {
+            get
+            {
+                return LogData.Data.FileName;
+            }
         }
 
         public void Logging_Log(string message)
@@ -129,6 +155,34 @@ namespace iba
                 handleBrokenConnection();
             }
         }
+
+        public int LoggerMaxRows
+        {
+            get
+            {
+                try
+                {
+                    return m_com.LoggerMaxRows;
+                }
+                catch (SocketException)
+                {
+                    handleBrokenConnection();
+                    return LogData.Data.MaxRows;
+                }
+            }
+            set
+            {
+                try
+                {
+                    m_com.LoggerMaxRows = value;
+                }
+                catch (SocketException)
+                {
+                    handleBrokenConnection();
+                }
+            }
+        }
+
         public TaskManager Manager
         {
             get 
@@ -196,6 +250,23 @@ namespace iba
                 LogData.NewFromFile(filename);
             }
         }
+
+        public string Logging_fileName
+        {
+            get
+            {
+                try
+                {
+                    return m_com.Logging_fileName;
+                }
+                catch (SocketException)
+                {
+                    handleBrokenConnection();
+                    return null;
+                }
+            }
+        }
+
 
         public void Logging_Log(string message)
         {

@@ -241,51 +241,10 @@ namespace iba.Processing
                         notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
                         notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
                     }
+
+                    StartIbaAnalyzer();
                     while (!m_stop)
                     {
-                        //register this
-                        if (m_previousRunExecutable != m_cd.IbaAnalyserExe)
-                        {
-                            try
-                            {
-                                string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyserExe).FileVersion;
-                                if (version.CompareTo("5.0") < 0)
-                                {
-                                    Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
-                                    m_sd.Started = false;
-                                    Stop = true;
-                                    return;
-                                };
-                                Process ibaProc = new Process();
-                                ibaProc.EnableRaisingEvents = false;
-                                ibaProc.StartInfo.FileName = m_cd.IbaAnalyserExe;
-                                ibaProc.StartInfo.Arguments = "/regserver";
-                                ibaProc.Start();
-                                ibaProc.WaitForExit(10000);
-                                m_previousRunExecutable = m_cd.IbaAnalyserExe;
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(Logging.Level.Exception, ex.Message);
-                                m_sd.Started = false;
-                                Stop = true;
-                                return;
-                            }
-                        }
-                        //start the com object
-                        try
-                        {
-                            m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                            Trace.WriteLine("ibastarted\r\n");
-                            string version = m_ibaAnalyzer.GetVersion();
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(Logging.Level.Exception, ex.Message);
-                            m_sd.Started = false;
-                            Stop = true;
-                            return;
-                        }
 
                         while (true)
                         {
@@ -330,27 +289,18 @@ namespace iba.Processing
                                 if (index >= 0)
                                     m_toProcessFiles.RemoveAt(index);
                             }
+                            UpdateConfiguration();
+                            if (m_previousRunExecutable != m_cd.IbaAnalyserExe)
+                            {
+                                StopIbaAnalyzer();
+                                StartIbaAnalyzer();
+                            }
                         }
                         //stop the com object
-                        try
-                        {
-                            if (m_ibaAnalyzer == null)
-                                return;
-                            System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
-                            Trace.WriteLine("ibastopped\r\n");
-                            m_ibaAnalyzer = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            Trace.WriteLine("ibaerror\r\n");
-                            Log(Logging.Level.Exception, ex.Message);
-                            m_sd.Started = false;
-                            Stop = true;
-                            return;
-                        }
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
+                    StopIbaAnalyzer();
                 }
                 finally
                 {
@@ -382,6 +332,87 @@ namespace iba.Processing
             m_sd.Started = false;
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStopped);
         }
+
+        private void StartIbaAnalyzer()
+        {
+            //register this
+            if (m_previousRunExecutable != m_cd.IbaAnalyserExe)
+            {
+                try
+                {
+                    string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyserExe).FileVersion;
+                    if (version.CompareTo("5.0") < 0)
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
+                        m_sd.Started = false;
+                        Stop = true;
+                        return;
+                    };
+                    Process ibaProc = new Process();
+                    ibaProc.EnableRaisingEvents = false;
+                    ibaProc.StartInfo.FileName = m_cd.IbaAnalyserExe;
+                    ibaProc.StartInfo.Arguments = "/regserver";
+                    ibaProc.Start();
+                    ibaProc.WaitForExit(10000);
+                    m_previousRunExecutable = m_cd.IbaAnalyserExe;
+                }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Exception, ex.Message);
+                    m_sd.Started = false;
+                    Stop = true;
+                    return;
+                }
+            }
+            //start the com object
+            try
+            {
+                m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+            }
+            catch (Exception)
+            {
+                try //try again by first registering
+                {
+                    Process ibaProc = new Process();
+                    ibaProc.EnableRaisingEvents = false;
+                    ibaProc.StartInfo.FileName = m_cd.IbaAnalyserExe;
+                    ibaProc.StartInfo.Arguments = "/regserver";
+                    ibaProc.Start();
+                    ibaProc.WaitForExit(10000);
+
+                    m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                }
+                catch (Exception ex2)
+                {
+                    Log(Logging.Level.Exception, ex2.Message);
+                    m_sd.Started = false;
+                    Stop = true;
+                    return;
+                }
+            }
+        }
+
+        private void StopIbaAnalyzer()
+        {
+            try
+            {
+                if (m_ibaAnalyzer == null)
+                    return;
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                Trace.WriteLine("ibastopped\r\n");
+                m_ibaAnalyzer = null;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("ibaerror\r\n");
+                Log(Logging.Level.Exception, ex.Message);
+                m_sd.Started = false;
+                Stop = true;
+                return;
+            }
+        }
+
+
 
         private void OnNewDatFile(object sender, FileSystemEventArgs args)
         {
@@ -495,6 +526,7 @@ namespace iba.Processing
                     {
                         int count = m_processedFiles.Count;
                         fileInfos = new FileInfo[count];
+                        
                         for (int i = 0; i < count; i++)
                         {
                             lock (m_sd.DatFileStates)
@@ -512,6 +544,7 @@ namespace iba.Processing
                                     fileInfos[i] = null;
                             }
                         }
+
                         for (int i = 0; i < count; i++)
                         {
                             if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))

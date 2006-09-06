@@ -66,9 +66,11 @@ namespace iba.Processing
                     cw.ConfigurationToUpdate = data;
                     m_workers.Remove(data);
                     m_workers.Add(data, cw);
+                    LogData.Data.Logger.Log("updated");
                 }
                 catch (KeyNotFoundException)
                 {
+                    LogData.Data.Logger.Log("key not found");
                     //doesn't matter
                 }
             }

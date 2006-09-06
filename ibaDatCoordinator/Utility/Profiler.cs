@@ -127,7 +127,7 @@ namespace iba.Utility
 		{
 			try
 			{
-				string keyName = @"Software\ibaBenelux\DATCoordinator";
+				string keyName = @"Software\iba\DATCoordinator";
 				if(section != String.Empty)
 					keyName = keyName + @"\" + section;
 

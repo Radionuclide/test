@@ -29,8 +29,8 @@ namespace iba
         private void btStop_Click(object sender, EventArgs e)
         {
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
+            m_communicationObject.ForwardEvents = false;
             LogData.StopLogger();
-            this.Close();
         }
 
         private CommunicationObject m_communicationObject;
@@ -53,23 +53,39 @@ namespace iba
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                //Stop();
             }
 
-            string filename = "";
-            Profiler.ProfileString(true, "LastState", "LastSavedFile", ref filename, "not set");
-            if (filename != "not set")
+            string filename = @"C:\Program Files\iba\ibaDatCoordinator\lastsaved.xml";
+            m_communicationObject.FileName = filename;
+
+
+            if (File.Exists(filename))
             {
                 try
                 {
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(List<ConfigurationData>));
+                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
-                        confs = (List<ConfigurationData>)mySerializer.Deserialize(myFileStream);
+                        ibaDatCoordinatorData dat = null;
+                        try
+                        {
+                            dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                        }
+                        catch (Exception ex)
+                        { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
+                            LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                            return;
+                        }
+                        m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
+                        m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
+                        confs = dat.Configurations;
+                        if (LogData.Data.FileName != dat.Logfile)
+                            LogData.OpenFromFile(dat.Logfile);
+                        LogData.Data.MaxRows = dat.LogItemCount;
                     }
-                    m_communicationObject.FileName = filename;
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();
                     m_communicationObject.Manager.Configurations = confs;
                     foreach (ConfigurationData dat in confs)
@@ -79,8 +95,8 @@ namespace iba
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
-                    return;
+                    LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                    //Stop();
                 }
             }
         }

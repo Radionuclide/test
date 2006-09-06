@@ -63,9 +63,18 @@ namespace iba.Services
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
-                        ibaDatCoordinatorData dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
-                        TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
-                        TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
+                        ibaDatCoordinatorData dat = null;
+                        try
+                        {
+                            dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                        }
+                        catch (Exception ex)
+                        { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
+                            LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                            return;
+                        }
+                        m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
+                        m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
                         confs = dat.Configurations;
                         if (LogData.Data.FileName != dat.Logfile)
                             LogData.OpenFromFile(dat.Logfile);
@@ -95,8 +104,8 @@ namespace iba.Services
 
         protected override void OnShutdown()
         {
-            base.OnShutdown();
             OnStop();
+            base.OnShutdown();
         }
     }
 }

@@ -274,6 +274,8 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             TaskManager.Manager.StartConfiguration(m_data.ID);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.SaveConfigurations();
             m_startButton.Enabled = false;
             m_newBatchfileButton.Enabled = false;
             m_newExtractButton.Enabled = false;
@@ -338,6 +340,8 @@ namespace iba.Controls
         {
             SaveData();
             TaskManager.Manager.UpdateConfiguration(m_data);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.SaveConfigurations();
         }
     }
 }

@@ -32,6 +32,7 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as LogData;
+            m_freeze = false;
         }
 
         public void SaveData()
@@ -40,5 +41,24 @@ namespace iba.Controls
 
         #endregion
 
-    }
+        private bool m_freeze;
+        public bool Freeze
+        {
+            get {return m_freeze;}
+            set { m_freeze = value; }
+        }
+
+
+        private void m_dataGridView_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (m_dataGridView.FirstDisplayedScrollingRowIndex + m_dataGridView.DisplayedRowCount(true) >= m_dataGridView.RowCount)
+                m_freeze = false;
+        }
+
+        private void m_dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != m_dataGridView.RowCount - 1)
+                m_freeze = true;
+        }
+   }
 }

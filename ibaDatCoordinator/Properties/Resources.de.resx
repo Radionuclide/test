@@ -128,7 +128,7 @@
     <value>..\Resources\Analyzer_001.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="applyStartedButton" xml:space="preserve">
-    <value>apply changes in jobconfiguration to the running job</value>
+    <value>Änderungen in der Job-Konfiguration auf den aktuellen Job anwenden</value>
   </data>
   <data name="batchfile_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\batchfile_failure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -242,7 +242,7 @@
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
-    <value>The notification e-mail addres is invalid or not supplied</value>
+    <value>Die E-Mailadresse für Benachrichtigungen ist ungültig oder nicht eingetragen</value>
   </data>
   <data name="logBatchfileFailed" xml:space="preserve">
     <value>Batchdatei fehlgeschlagen</value>
@@ -314,22 +314,22 @@
     <value>.pdo-Datei für Report ist nicht vorhanden</value>
   </data>
   <data name="logNotifcationInvalidParameter" xml:space="preserve">
-    <value>a specified parameter is invalid</value>
+    <value>Ein angegebener Parameter ist ungültig</value>
   </data>
   <data name="logNotificationAccessDenied" xml:space="preserve">
-    <value>the user does not have access to the requested information</value>
+    <value>Der Benutzer hat keinen Zugriff auf die angeforderten Informationen</value>
   </data>
   <data name="logNotificationFailed" xml:space="preserve">
-    <value>notification failed</value>
+    <value>Benachrichtigung fehlgeschlagen</value>
   </data>
   <data name="logNotificationNameNotFound" xml:space="preserve">
-    <value>the user name could not be found</value>
+    <value>Der Benutzername konnte nicht gefunden werden</value>
   </data>
   <data name="logNotificationNetworkError" xml:space="preserve">
-    <value>a general failure occurred in the network hardware </value>
+    <value>Es ist ein allgemeiner Fehler in der Netzwerk-Hardware aufgetreten</value>
   </data>
   <data name="logNotificationNotSupported" xml:space="preserve">
-    <value>this network request is not supported</value>
+    <value>Diese Netzwerkanfrage wird nicht unterstützt</value>
   </data>
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>Löschen alter Ordner fehlgeschlagen</value>
@@ -389,13 +389,13 @@
     <value>kein ibaAnalyzer registriert</value>
   </data>
   <data name="NotificationEmailSubject" xml:space="preserve">
-    <value>ibaDatCoordinator notification</value>
+    <value>ibaDatCoordinator Benachrichtigung</value>
   </data>
   <data name="NotificationFailures" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
+    <value>Aufgabe "{0}" für Job "{1}" fehlgeschlagen für folgende .dat-Files:</value>
   </data>
   <data name="NotificationSuccesses" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" was completed successfully for the following .dat files :</value>
+    <value>Aufgabe "{0}" für Job "{1}" wurde erfolgreich abgeschlossen für folgende .dat-Files:</value>
   </data>
   <data name="notifyIconMenuItemExit" xml:space="preserve">
     <value>Beenden</value>

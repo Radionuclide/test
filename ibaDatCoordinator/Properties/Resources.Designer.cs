@@ -430,7 +430,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The notification e-mail addres is invalid or not supplied.
+        ///   Looks up a localized string similar to The notification e-mail address is invalid or not supplied.
         /// </summary>
         internal static string invalidEmail {
             get {

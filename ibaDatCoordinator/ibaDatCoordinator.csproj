@@ -222,6 +222,14 @@
     <Compile Include="Utility\WaitCursor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutBox.de.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutBox.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>

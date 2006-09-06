@@ -32,12 +32,16 @@ namespace iba
             LogControl theLogControl; 
             propertyPanes["logControl"] = theLogControl = new LogControl();
             LogData.InitializeLogger(theLogControl.LogView, theLogControl, Program.RunsWithService == Program.ServiceEnum.CONNECTED);
+            theLogControl.CreateControl();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
             {
+                LogData.Data.MaxRows = Program.CommunicationObject.LoggerMaxRows;
                 Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
                 ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
+                string lf = LogData.Data.FileName;
+                if (lf != null)
+                    LogData.OpenFromFile(LogData.Data.FileName);
             }
-            theLogControl.CreateControl();
             configurationToolStripMenuItem.Enabled = false;
             statusToolStripMenuItem.Enabled = true;
             m_filename = null;
@@ -1439,6 +1443,8 @@ namespace iba
         private void m_EntriesNumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             LogData.Data.MaxRows = (int) m_EntriesNumericUpDown1.Value;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.LoggerMaxRows = LogData.Data.MaxRows;
         }
 
         private void m_stopButton_Click(object sender, EventArgs e)
@@ -1459,6 +1465,9 @@ namespace iba
         {
             SaveRightPaneControl();
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.SaveConfigurations();
+
             StatusBarLabel.Text = ""; //clear any errors on restart
             TaskManager.Manager.StartAllConfigurations();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)

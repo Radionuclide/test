@@ -10,6 +10,7 @@ using iba.Utility;
 using iba.Logging;
 using iba.Logging.Loggers;
 using iba.Processing;
+using iba.Controls;
 
 namespace iba.Data
 {
@@ -151,15 +152,27 @@ namespace iba.Data
             {
                 m_maxRows = value;
                 Profiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
-                if (m_grid.Rows.Count > m_maxRows) m_control.Invoke(m_clearSomeRowsDelegate);
+                if (m_control != null) //gui present
+                    if (m_grid.Rows.Count > m_maxRows) m_control.Invoke(m_clearSomeRowsDelegate);
             }
         }
 
         private void update(Event _event)
         {
             int index;
+
+            LogControl lc = (m_control as LogControl);
+            
+            bool freeze = lc!= null && lc.Freeze;
+
+            int rowpos = freeze ? m_grid.FirstDisplayedScrollingRowIndex:-1;
+
             while (m_grid.Rows.Count >= m_maxRows)
+            {
                 m_grid.Rows.RemoveAt(0);
+                rowpos -= 1;
+            }
+            
             LogExtraData data = _event.Data as LogExtraData;
             lock (m_grid.Rows)
             {
@@ -189,7 +202,19 @@ namespace iba.Data
                         text = text.Remove(tindex);
                     Program.MainForm.StatusBarLabel.Text = String.Format(iba.Properties.Resources.StatusBarError, text);
                 }
-                m_grid.Rows[index].Selected = true;
+                if (!freeze)
+                {
+                    m_grid.Rows[index].Selected = true;
+                    if (lc != null) lc.Freeze = false;
+                }
+            }
+            try
+            {
+                if (freeze && rowpos > 0)
+                    m_grid.FirstDisplayedScrollingRowIndex = rowpos;
+            }
+            catch
+            {
             }
         }
 
@@ -215,8 +240,8 @@ namespace iba.Data
             List<List<string>> readEvents = new List<List<string>>();
             try
             {
-                FileInfo ifd = new FileInfo(filename);
-                using (StreamReader logfile = ifd.OpenText())
+                FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using (StreamReader logfile = new StreamReader(stream))
                 {
                     char[] sep = { '\t' };
                     char[] totrim = {'[',']'};
@@ -251,13 +276,18 @@ namespace iba.Data
                     else if (readEvent[1] == Logging.Level.Info.ToString()) style.ForeColor = Color.Green;
                     else if (readEvent[1] == Logging.Level.Exception.ToString()) style.ForeColor = Color.Red;
                 }
-                m_grid.Rows[index].Selected=true;
+                if (m_grid.Rows.Count > index)
+                    m_grid.Rows[index].Selected=true;
             }
             return true;
         }
 
         public bool readFromFile(string filename)
         {
+            if (m_control == null && (m_ef == null || !m_isForwarding)) //we are at te server side, but there is no client to forward to
+            {
+                return true;
+            }
             bool result = false;
             if (m_ef != null && m_isForwarding)
             {
@@ -265,7 +295,10 @@ namespace iba.Data
             }
             m_isForwarding2 = m_isForwarding; //ok to close GUI
             if (m_ef != null) return result;
-            return (bool) m_control.Invoke(m_readDelegate, new object[] { filename });
+            if (m_control.InvokeRequired)
+                return (bool)m_control.Invoke(m_readDelegate, new object[] { filename });
+            else
+                return readFromFileToBeInvoked(filename);
         }
 
         public void clear()
@@ -350,7 +383,12 @@ namespace iba.Data
         private string m_filename;
         public string FileName
         {
-            get { return m_filename; }
+            get {
+                if (m_onlyGrid)
+                    return Program.CommunicationObject.Logging_fileName;
+                else
+                    return m_filename; 
+            }
             set 
             {
                 m_filename = value;
@@ -458,6 +496,7 @@ namespace iba.Data
             if (gv.readFromFile(filename))
             {
                 m_data.FileName = filename;
+                if (m_data.m_onlyGrid) return; //don't hold the file
                 m_data.Logger.Close();
                 InitializeLogger(gv.Grid, gv.LogControl,m_data.OnlyGrid);
             }

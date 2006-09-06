@@ -28,6 +28,7 @@ namespace iba
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,112 +45,108 @@ namespace iba
             // 
             // pictureBox1
             // 
+            this.pictureBox1.AccessibleDescription = null;
+            this.pictureBox1.AccessibleName = null;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.BackgroundImage = null;
+            this.pictureBox1.Font = null;
             this.pictureBox1.Image = global::iba.Properties.Resources.ibalogo_transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(24, 12);
+            this.pictureBox1.ImageLocation = null;
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(62, 65);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(119, 26);
+            this.label1.AccessibleDescription = null;
+            this.label1.AccessibleName = null;
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Font = null;
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "ibaDatCoordinator";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(119, 48);
+            this.label2.AccessibleDescription = null;
+            this.label2.AccessibleName = null;
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Font = null;
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Copyright © 2005-2006 iba-AG";
             // 
             // m_vDATC
             // 
-            this.m_vDATC.AutoSize = true;
-            this.m_vDATC.Location = new System.Drawing.Point(217, 26);
+            this.m_vDATC.AccessibleDescription = null;
+            this.m_vDATC.AccessibleName = null;
+            resources.ApplyResources(this.m_vDATC, "m_vDATC");
+            this.m_vDATC.Font = null;
             this.m_vDATC.Name = "m_vDATC";
-            this.m_vDATC.Size = new System.Drawing.Size(42, 13);
-            this.m_vDATC.TabIndex = 3;
-            this.m_vDATC.Text = "vDATC";
             // 
             // m_vANAL
             // 
-            this.m_vANAL.AutoSize = true;
-            this.m_vANAL.Location = new System.Drawing.Point(104, 99);
+            this.m_vANAL.AccessibleDescription = null;
+            this.m_vANAL.AccessibleName = null;
+            resources.ApplyResources(this.m_vANAL, "m_vANAL");
+            this.m_vANAL.Font = null;
             this.m_vANAL.Name = "m_vANAL";
-            this.m_vANAL.Size = new System.Drawing.Size(35, 13);
-            this.m_vANAL.TabIndex = 5;
-            this.m_vANAL.Text = "vANA";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 99);
+            this.label5.AccessibleDescription = null;
+            this.label5.AccessibleName = null;
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Font = null;
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "ibaAnalyzer";
             // 
             // m_vFILES
             // 
-            this.m_vFILES.AutoSize = true;
-            this.m_vFILES.Location = new System.Drawing.Point(104, 121);
+            this.m_vFILES.AccessibleDescription = null;
+            this.m_vFILES.AccessibleName = null;
+            resources.ApplyResources(this.m_vFILES, "m_vFILES");
+            this.m_vFILES.Font = null;
             this.m_vFILES.Name = "m_vFILES";
-            this.m_vFILES.Size = new System.Drawing.Size(35, 13);
-            this.m_vFILES.TabIndex = 7;
-            this.m_vFILES.Text = "vFILE";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(21, 121);
+            this.label7.AccessibleDescription = null;
+            this.label7.AccessibleName = null;
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Font = null;
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(42, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "ibaFiles";
             // 
             // m_vLogger
             // 
-            this.m_vLogger.AutoSize = true;
-            this.m_vLogger.Location = new System.Drawing.Point(104, 143);
+            this.m_vLogger.AccessibleDescription = null;
+            this.m_vLogger.AccessibleName = null;
+            resources.ApplyResources(this.m_vLogger, "m_vLogger");
+            this.m_vLogger.Font = null;
             this.m_vLogger.Name = "m_vLogger";
-            this.m_vLogger.Size = new System.Drawing.Size(58, 13);
-            this.m_vLogger.TabIndex = 9;
-            this.m_vLogger.Text = "vLOGGER";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(21, 143);
+            this.label9.AccessibleDescription = null;
+            this.label9.AccessibleName = null;
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Font = null;
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "ibaLogger";
             // 
             // button1
             // 
+            this.button1.AccessibleDescription = null;
+            this.button1.AccessibleName = null;
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.BackgroundImage = null;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(196, 138);
+            this.button1.Font = null;
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AboutBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AccessibleDescription = null;
+            this.AccessibleName = null;
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = null;
             this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(288, 175);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.m_vLogger);
             this.Controls.Add(this.label9);
@@ -161,14 +158,15 @@ namespace iba
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
+            this.Font = null;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = null;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "About ibaDatCoordinator";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
