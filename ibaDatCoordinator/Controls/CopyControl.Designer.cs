@@ -40,6 +40,11 @@ namespace iba.Controls
             this.label5 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.m_tbPass = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.m_tbUserName = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_checkPathButton = new System.Windows.Forms.Button();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -217,6 +222,11 @@ namespace iba.Controls
             this.groupBox2.AccessibleName = null;
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.BackgroundImage = null;
+            this.groupBox2.Controls.Add(this.m_tbPass);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.m_tbUserName);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.m_checkPathButton);
             this.groupBox2.Controls.Add(this.m_subfolderGroupBox);
             this.groupBox2.Controls.Add(this.m_browseFolderButton);
             this.groupBox2.Controls.Add(this.label1);
@@ -224,6 +234,54 @@ namespace iba.Controls
             this.groupBox2.Font = null;
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // m_tbPass
+            // 
+            this.m_tbPass.AccessibleDescription = null;
+            this.m_tbPass.AccessibleName = null;
+            resources.ApplyResources(this.m_tbPass, "m_tbPass");
+            this.m_tbPass.BackgroundImage = null;
+            this.m_tbPass.Font = null;
+            this.m_tbPass.Name = "m_tbPass";
+            this.m_tbPass.TextChanged += new System.EventHandler(this.m_targetDirInfoChanged);
+            // 
+            // label12
+            // 
+            this.label12.AccessibleDescription = null;
+            this.label12.AccessibleName = null;
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Font = null;
+            this.label12.Name = "label12";
+            // 
+            // m_tbUserName
+            // 
+            this.m_tbUserName.AccessibleDescription = null;
+            this.m_tbUserName.AccessibleName = null;
+            resources.ApplyResources(this.m_tbUserName, "m_tbUserName");
+            this.m_tbUserName.BackgroundImage = null;
+            this.m_tbUserName.Font = null;
+            this.m_tbUserName.Name = "m_tbUserName";
+            this.m_tbUserName.TextChanged += new System.EventHandler(this.m_targetDirInfoChanged);
+            // 
+            // label4
+            // 
+            this.label4.AccessibleDescription = null;
+            this.label4.AccessibleName = null;
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Font = null;
+            this.label4.Name = "label4";
+            // 
+            // m_checkPathButton
+            // 
+            this.m_checkPathButton.AccessibleDescription = null;
+            this.m_checkPathButton.AccessibleName = null;
+            resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
+            this.m_checkPathButton.BackgroundImage = null;
+            this.m_checkPathButton.Font = null;
+            this.m_checkPathButton.Image = global::iba.Properties.Resources.thumup;
+            this.m_checkPathButton.Name = "m_checkPathButton";
+            this.m_checkPathButton.UseVisualStyleBackColor = true;
+            this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
             // m_subfolderGroupBox
             // 
@@ -398,6 +456,7 @@ namespace iba.Controls
             this.m_targetFolderTextBox.BackgroundImage = null;
             this.m_targetFolderTextBox.Font = null;
             this.m_targetFolderTextBox.Name = "m_targetFolderTextBox";
+            this.m_targetFolderTextBox.TextChanged += new System.EventHandler(this.m_targetDirInfoChanged);
             // 
             // groupBox1
             // 
@@ -670,7 +729,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Font = null;
-            this.MinimumSize = new System.Drawing.Size(620, 545);
+            this.MinimumSize = new System.Drawing.Size(620, 575);
             this.Name = "CopyControl";
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -752,5 +811,10 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbNotDisabled;
         private System.Windows.Forms.RadioButton m_rbNotSuccess;
         private System.Windows.Forms.RadioButton m_rbOriginal;
+        private System.Windows.Forms.TextBox m_tbPass;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox m_tbUserName;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button m_checkPathButton;
     }
 }

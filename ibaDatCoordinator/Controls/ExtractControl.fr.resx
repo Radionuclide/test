@@ -130,9 +130,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Nom de la tâche d'extraction:</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Cible</value>
-  </data>
   <data name="m_rbDbase.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 17</value>
   </data>
@@ -145,6 +142,9 @@
   <data name="m_rbFile.Text" xml:space="preserve">
     <value>Extraire dans fichier:</value>
   </data>
+  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>165, 68</value>
+  </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 13</value>
   </data>
@@ -152,16 +152,31 @@
     <value>Répertoire de destination:</value>
   </data>
   <data name="m_targetFolderTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 16</value>
+    <value>165, 13</value>
   </data>
   <data name="m_targetFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>302, 20</value>
   </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
   <data name="groupBox5.Text" xml:space="preserve">
     <value>Type de fichier</value>
   </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Sous-répertoires</value>
+  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>165, 42</value>
+  </data>
+  <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>478, 5</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Nom utilisateur:</value>
   </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>164, 12</value>
@@ -214,8 +229,14 @@
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>tous les mois</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Exécuter</value>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Sous-répertoires</value>
+  </data>
+  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>346, 42</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Cible</value>
   </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>441, 3</value>
@@ -256,8 +277,8 @@
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>en cas de réussite</value>
   </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notifications</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Exécuter</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>441, 3</value>
@@ -297,5 +318,8 @@
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>en cas de réussite</value>
+  </data>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

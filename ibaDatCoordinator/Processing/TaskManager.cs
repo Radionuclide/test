@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using iba.Data;
 using System.Net.Sockets;
+using iba.Utility;
 
 namespace iba.Processing
 {
@@ -85,11 +86,14 @@ namespace iba.Processing
             }
         }
 
-        virtual public void StartAllConfigurations()
+        virtual public void StartAllEnabledConfigurations()
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
-                StartConfiguration(kvp.Key);
+                if (kvp.Key.Enabled)
+                    StartConfiguration(kvp.Key);
         }
+
+
 
         virtual public void StopAllConfigurations()
         {
@@ -219,6 +223,11 @@ namespace iba.Processing
         virtual public void ReplaceWatchdogData(WatchDogData data)
         {
             m_watchdog.Settings = data;
+        }
+
+        virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew)
+        {
+            return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew);
         }
 
         //singleton construction
@@ -523,11 +532,11 @@ namespace iba.Processing
         }
 
         
-        public override void StartAllConfigurations()
+        public override void StartAllEnabledConfigurations()
         {
             try
             {
-                Program.CommunicationObject.Manager.StartAllConfigurations();
+                Program.CommunicationObject.Manager.StartAllEnabledConfigurations();
             }
             catch (SocketException)
             {
@@ -603,6 +612,7 @@ namespace iba.Processing
             }
         }
 
+
         public override void StopAllConfigurations()
         {
             try
@@ -672,6 +682,20 @@ namespace iba.Processing
             catch (SocketException)
             {
                 Program.CommunicationObject.handleBrokenConnection();
+            }
+        }
+
+        public override bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.TestPath(dir, user, pass, out errormessage, createnew);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                errormessage = iba.Properties.Resources.CouldNotTestPath;
+                return false;
             }
         }
     }

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using iba.Utility;
 
 namespace iba.Data
 {
     [Serializable]
-    public class ExtractData : TaskData
+    public class ExtractData : TaskDataUNC
     {
         public ExtractData(ConfigurationData parent) : base(parent)
         {
@@ -18,10 +19,8 @@ namespace iba.Data
             m_fileType = ExtractFileType.BINARY;
         }
 
-        public ExtractData() : base(null)
+        public ExtractData() : this(null)
         {
-            m_destinationMap = String.Empty;
-            m_toFile = false;
         }
 
         private bool m_toFile;
@@ -30,15 +29,6 @@ namespace iba.Data
             get { return m_toFile; }
             set { m_toFile = value; }
         }
-
-        private string m_destinationMap;
-        public string DestinationMap
-        {
-            get { return m_destinationMap; }
-            set { m_destinationMap = value; }
-        }
-
-
 
         //letter B appended because of name collision in XML serialisation
         public enum SubfolderChoiceB { SAME, NONE, HOUR, DAY, WEEK, MONTH };
@@ -76,8 +66,10 @@ namespace iba.Data
             ed.m_subfolderChoice = m_subfolderChoice;
             ed.m_numbFolders = m_numbFolders;
             ed.m_fileType = m_fileType;
+            ed.m_username = m_username;
+            ed.m_pass = m_pass;
+            ed.m_destinationMapUNC = m_destinationMapUNC;
             return ed;
         }
-
     }
 }

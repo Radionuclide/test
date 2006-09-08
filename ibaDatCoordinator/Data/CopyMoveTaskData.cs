@@ -5,15 +5,8 @@ using System.Text;
 namespace iba.Data
 {
     [Serializable]
-    public class CopyMoveTaskData : TaskData
+    public class CopyMoveTaskData : TaskDataUNC
     {
-        private string m_destinationMap;
-        public string DestinationMap
-        {
-            get { return m_destinationMap; }
-            set { m_destinationMap = value; }
-        }
-
         bool m_removeSource;
         public bool RemoveSource
         {
@@ -34,8 +27,8 @@ namespace iba.Data
             m_removeSource = false;
             m_subfolderChoice = SubfolderChoiceA.NONE;
             m_numbFolders = 10;
-            m_destinationMap = "";
         }
+
         //letter A added because namecollision in XML-Serialiser with SubFolderCHoice from reportdata
         public enum SubfolderChoiceA { NONE, HOUR, DAY, WEEK, MONTH,SAME};
         private SubfolderChoiceA m_subfolderChoice;
@@ -60,6 +53,9 @@ namespace iba.Data
             cd.m_destinationMap = m_destinationMap;
             cd.m_numbFolders = m_numbFolders;
             cd.m_notify = m_notify;
+            cd.m_username = m_username;
+            cd.m_pass = m_pass;
+            cd.m_destinationMapUNC = m_destinationMapUNC;
             return cd;
         }
     }

@@ -50,7 +50,7 @@ namespace iba.Data
 
         public ibaDatCoordinatorData()
         {
-            m_version = 1;
+            m_version = 2;
             m_wd = null;
             m_confs = null;
             m_logfile = null;

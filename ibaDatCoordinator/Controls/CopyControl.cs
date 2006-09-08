@@ -86,6 +86,11 @@ namespace iba.Controls
             m_rbNotFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE;
             m_rbNot1stFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE;
             m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
+
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
+            m_tbPass.Text = m_data.Password;
+            m_tbUserName.Text = m_data.Username;
         }
 
         public void SaveData()
@@ -122,9 +127,15 @@ namespace iba.Controls
             if (m_rbMonth.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.SAME;
             m_data.SubfoldersNumber = (uint)m_folderNumber.Value;
+
+            m_data.Password = m_tbPass.Text;
+            m_data.Username = m_tbUserName.Text;
+            m_data.UpdateUNC();
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
+
         
         #endregion
         
@@ -155,6 +166,38 @@ namespace iba.Controls
                 taskNode.StateImageIndex = 0;
             else
                 taskNode.StateImageIndex = -1;
+        }
+
+        private void m_checkPathButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            string errormessage = null;
+            bool ok;
+            using (WaitCursor wait = new WaitCursor())
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    ok = TaskManager.Manager.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+                else
+                    ok = SharesHandler.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+            }
+            if (ok)
+            {
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumup;
+            }
+            else
+            {
+                MessageBox.Show(errormessage, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
+            }
+            ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void m_targetDirInfoChanged(object sender, EventArgs e)
+        {
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
         }
     }
 }

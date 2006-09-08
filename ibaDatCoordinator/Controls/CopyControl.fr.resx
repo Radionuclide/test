@@ -166,6 +166,33 @@
   <data name="label5.Text" xml:space="preserve">
     <value>Nom tâche de copier:</value>
   </data>
+  <data name="m_nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 26</value>
+  </data>
+  <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>400, 20</value>
+  </data>
+  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 79</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
+  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 53</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Nom utilisateur:</value>
+  </data>
+  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>328, 53</value>
+  </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>164, 12</value>
   </data>

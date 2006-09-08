@@ -90,7 +90,7 @@ namespace iba
                     m_communicationObject.Manager.Configurations = confs;
                     foreach (ConfigurationData dat in confs)
                     {
-                        if (dat.AutoStart) m_communicationObject.Manager.StartConfiguration(dat.ID);
+                        if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat.ID);
                     }
                 }
                 catch (Exception ex)

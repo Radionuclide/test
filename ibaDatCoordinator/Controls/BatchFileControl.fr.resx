@@ -133,9 +133,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Nom de tâche fichier batch:</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Exécuter</value>
-  </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
   </data>
@@ -175,8 +172,8 @@
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>en cas de réussite</value>
   </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notifications</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Exécuter</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
@@ -216,5 +213,8 @@
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>en cas de réussite</value>
+  </data>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

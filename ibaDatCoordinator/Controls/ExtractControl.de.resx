@@ -148,8 +148,26 @@
   <data name="label3.Text" xml:space="preserve">
     <value>Zielverzeichnis:</value>
   </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 71</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
   <data name="groupBox5.Text" xml:space="preserve">
     <value>Dateityp</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 45</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Benutzername:</value>
   </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>176, 12</value>

@@ -119,10 +119,10 @@
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_rbMonth.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel3.Name" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;m_rbNotDisabled.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -130,6 +130,9 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>532, 129</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Name" xml:space="preserve">
+    <value>m_tbUserName</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_rbAlways.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -150,8 +153,17 @@
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,20" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 66</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_rbPrint.Parent" xml:space="preserve">
-    <value>m_OutputGroupBox</value>
+    <value>groupBox2</value>
+  </data>
+  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 40</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Report task name:</value>
@@ -168,14 +180,17 @@
   <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_rbDay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_pdoFileTextBox.Name" xml:space="preserve">
     <value>m_pdoFileTextBox</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 20</value>
   </data>
-  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 19</value>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 16</value>
   </data>
   <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -249,8 +264,8 @@
   <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
     <value>groupBox7</value>
   </data>
-  <data name="m_rbNotFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>373, 31</value>
+  <data name="m_rb1stFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
     <value>groupBox3</value>
@@ -261,20 +276,20 @@
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>
   </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 16</value>
+  <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>458, 3</value>
   </data>
   <data name="&gt;&gt;m_extensionComboBox.Name" xml:space="preserve">
     <value>m_extensionComboBox</value>
-  </data>
-  <data name="m_OutputGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="m_rbNot1stFailure.Text" xml:space="preserve">
     <value>on 1st failure</value>
   </data>
   <data name="m_rbSucces.Location" type="System.Drawing.Point, System.Drawing">
     <value>373, 3</value>
+  </data>
+  <data name="m_rbNotDisabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
   <data name="&gt;&gt;m_rbPrint.Name" xml:space="preserve">
     <value>m_rbPrint</value>
@@ -284,6 +299,9 @@
   </data>
   <data name="m_rbNotSuccess.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_rbNotSuccess.Name" xml:space="preserve">
     <value>m_rbNotSuccess</value>
@@ -324,23 +342,29 @@
   <data name="&gt;&gt;m_browseFileButton.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;m_OutputGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_rbSucces.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_rbPrint.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
-  <data name="m_OutputGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="m_panelFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_panelFile.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;m_rbOriginal.Name" xml:space="preserve">
     <value>m_rbOriginal</value>
   </data>
-  <data name="m_OutputGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 52</value>
-  </data>
-  <data name="&gt;&gt;m_OutputGroupBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="m_rbNotAlways.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
     <value>tableLayoutPanel6</value>
@@ -348,20 +372,17 @@
   <data name="m_rbMonth.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 27</value>
   </data>
-  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_rbFailure.Name" xml:space="preserve">
     <value>m_rbFailure</value>
   </data>
-  <data name="m_OutputGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 66</value>
-  </data>
   <data name="m_rbPrint.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_OutputGroupBox.Name" xml:space="preserve">
-    <value>m_OutputGroupBox</value>
+  <data name="m_panelFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 223</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -371,6 +392,15 @@
   </data>
   <data name="m_rb1stFailure.Text" xml:space="preserve">
     <value>on 1st failure</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Name" xml:space="preserve">
+    <value>m_checkPathButton</value>
   </data>
   <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>520, 49</value>
@@ -391,7 +421,13 @@
     <value>m_browseFileButton</value>
   </data>
   <data name="m_targetFolderTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
+  </data>
+  <data name="m_tbPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>620, 620</value>
@@ -402,8 +438,8 @@
   <data name="&gt;&gt;m_rbNot1stFailure.Name" xml:space="preserve">
     <value>m_rbNot1stFailure</value>
   </data>
-  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 110</value>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -412,7 +448,7 @@
     <value>1</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -421,10 +457,7 @@
     <value>None</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbHour" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDay" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbWeek" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbMonth" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNONE" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbOriginal" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33333,0,33,33333,Percent,33" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>7</value>
   </data>
   <data name="m_rbNONE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -450,11 +483,17 @@
   <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 19</value>
   </data>
-  <data name="m_rbNotAlways.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="tableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="m_rbFailure.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -475,13 +514,13 @@
     <value>True</value>
   </data>
   <data name="m_rbNONE.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_nameTextBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_rbHour.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rb1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbSucces" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33333,0,33,33333,Percent,33" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -495,8 +534,8 @@
   <data name="tableLayoutPanel6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
+  <data name="&gt;&gt;m_tbPass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rb1stFailure.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -504,8 +543,11 @@
   <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
     <value>438, 27</value>
   </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_rbNONE.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -531,17 +573,23 @@
   <data name="m_rbNotDisabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>526, 110</value>
+  </data>
   <data name="&gt;&gt;m_pdoFileTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbDay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_rbOriginal.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
     <value>302, 27</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_rbDay.Name" xml:space="preserve">
     <value>m_rbDay</value>
@@ -565,7 +613,13 @@
     <value>4</value>
   </data>
   <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>2</value>
+  </data>
+  <data name="m_rbNotDisabled.Text" xml:space="preserve">
+    <value>disabled</value>
+  </data>
+  <data name="m_rbNotDisabled.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>520, 49</value>
@@ -579,17 +633,17 @@
   <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>293, 19</value>
   </data>
-  <data name="m_pdoFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;m_tbUserName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 43</value>
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
   <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="m_folderNumber.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
   </data>
   <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
     <value>302, 3</value>
@@ -600,6 +654,9 @@
   <data name="m_rbDisabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
+  <data name="&gt;&gt;m_panelFile.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_browseFolderButton.Name" xml:space="preserve">
     <value>m_browseFolderButton</value>
   </data>
@@ -607,7 +664,7 @@
     <value>tableLayoutPanel3</value>
   </data>
   <data name="m_rbOriginal.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
     <value>m_subfolderGroupBox</value>
@@ -615,8 +672,8 @@
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_rbNotFailure.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_rbFile.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
   <data name="m_nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -634,7 +691,7 @@
     <value>3</value>
   </data>
   <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 124</value>
+    <value>5, 93</value>
   </data>
   <data name="m_rbDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -646,7 +703,7 @@
     <value>Fill</value>
   </data>
   <data name="&gt;&gt;m_targetFolderTextBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -654,17 +711,20 @@
   <data name="&gt;&gt;m_rbWeek.Name" xml:space="preserve">
     <value>m_rbWeek</value>
   </data>
-  <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 69</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>458, 3</value>
   </data>
+  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 89</value>
@@ -681,6 +741,12 @@
   <data name="m_rbHour.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="&gt;&gt;m_panelFile.Name" xml:space="preserve">
+    <value>m_panelFile</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;m_rbNotAlways.Name" xml:space="preserve">
     <value>m_rbNotAlways</value>
   </data>
@@ -696,8 +762,8 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Report analysis file</value>
   </data>
-  <data name="m_rbNotDisabled.Text" xml:space="preserve">
-    <value>disabled</value>
+  <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbHour" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDay" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbWeek" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbMonth" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNONE" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbOriginal" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33333,0,33,33333,Percent,33" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_rbAlways.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -726,6 +792,9 @@
   <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
     <value>groupBox7</value>
   </data>
+  <data name="&gt;&gt;m_panelFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Target</value>
   </data>
@@ -751,7 +820,7 @@
     <value>565, 75</value>
   </data>
   <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>463, 16</value>
+    <value>452, 1</value>
   </data>
   <data name="m_rbDisabled.Text" xml:space="preserve">
     <value>disabled</value>
@@ -763,7 +832,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_rbFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>252, 19</value>
+    <value>258, 19</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -774,11 +843,14 @@
   <data name="&gt;&gt;tableLayoutPanel3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_OutputGroupBox.Text" xml:space="preserve">
-    <value>Output</value>
-  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>102, 13</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
+  </data>
+  <data name="m_panelFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 43</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>ID</value>
@@ -787,7 +859,7 @@
     <value>Each hour</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 265</value>
+    <value>565, 273</value>
   </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
@@ -798,14 +870,20 @@
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
   <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
     <value>groupBox4</value>
   </data>
-  <data name="tableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_rb1stFailure.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;m_rbHour.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_rbNotFailure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>373, 31</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>507, 20</value>
@@ -840,20 +918,20 @@
   <data name="m_rbNotAlways.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;m_folderNumber.Name" xml:space="preserve">
-    <value>m_folderNumber</value>
+  <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_rbWeek.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_targetFolderTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 27</value>
-  </data>
-  <data name="m_rb1stFailure.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>92, 12</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -865,10 +943,10 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="m_rbDay.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_subfolderGroupBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>m_panelFile</value>
   </data>
   <data name="m_rbNotDisabled.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -883,16 +961,19 @@
     <value>175, 21</value>
   </data>
   <data name="&gt;&gt;m_rbFile.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_OutputGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Notify</value>
   </data>
   <data name="&gt;&gt;m_rb1stFailure.Name" xml:space="preserve">
     <value>m_rb1stFailure</value>
+  </data>
+  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_rbFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -902,9 +983,6 @@
   </data>
   <data name="&gt;&gt;m_targetFolderTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>on success</value>
@@ -921,23 +999,23 @@
   <data name="m_rbDay.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_rbOriginal.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>273, 40</value>
   </data>
-  <data name="&gt;&gt;m_rbNotDisabled.Name" xml:space="preserve">
-    <value>m_rbNotDisabled</value>
+  <data name="&gt;&gt;m_folderNumber.Name" xml:space="preserve">
+    <value>m_folderNumber</value>
   </data>
   <data name="m_rbPrint.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 19</value>
+    <value>18, 19</value>
   </data>
-  <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>458, 3</value>
+  <data name="m_folderNumber.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
   </data>
   <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_rbNotDisabled.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_rbNotAlways.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -945,11 +1023,14 @@
   <data name="m_rbNotSuccess.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="&gt;&gt;m_rb1stFailure.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_rbNotAlways.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="m_rbNotAlways.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -965,6 +1046,9 @@
   </data>
   <data name="m_rbNot1stFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;m_nameTextBox.Name" xml:space="preserve">
     <value>m_nameTextBox</value>
@@ -984,11 +1068,17 @@
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="m_tbUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_pdoFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>440, 20</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 30</value>
+    <value>2, 15</value>
+  </data>
+  <data name="&gt;&gt;m_rbOriginal.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
   </data>
   <data name="m_rbNot1stFailure.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 22</value>
@@ -997,7 +1087,7 @@
     <value>4</value>
   </data>
   <data name="&gt;&gt;m_targetFolderTextBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1008,8 +1098,14 @@
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
+  <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="m_rbDay.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotDisabled.Name" xml:space="preserve">
+    <value>m_rbNotDisabled</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Target directory:</value>
@@ -1023,14 +1119,20 @@
   <data name="&gt;&gt;m_rbNotAlways.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;m_tbPass.Name" xml:space="preserve">
+    <value>m_tbPass</value>
+  </data>
   <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Subdirectories</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
   <data name="&gt;&gt;m_rbNot1stFailure.Parent" xml:space="preserve">
     <value>tableLayoutPanel6</value>
-  </data>
-  <data name="m_rbSucces.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
   </data>
   <data name="&gt;&gt;m_folderNumber.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -1038,11 +1140,14 @@
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
   </data>
+  <data name="&gt;&gt;m_checkPathButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Execute</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -1056,17 +1161,17 @@
   <data name="m_pdoFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 31</value>
   </data>
-  <data name="&gt;&gt;m_rbFile.Parent" xml:space="preserve">
-    <value>m_OutputGroupBox</value>
-  </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="&gt;&gt;m_rbNotDisabled.Parent" xml:space="preserve">
     <value>tableLayoutPanel6</value>
   </data>
-  <data name="&gt;&gt;m_rbNotSuccess.Parent" xml:space="preserve">
-    <value>tableLayoutPanel6</value>
+  <data name="&gt;&gt;tableLayoutPanel3.Name" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="m_rbNotDisabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>364, 22</value>
@@ -1080,8 +1185,8 @@
   <data name="&gt;&gt;m_rbNotSuccess.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_rb1stFailure.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 19</value>
   </data>
   <data name="&gt;&gt;m_rbNotFailure.Name" xml:space="preserve">
     <value>m_rbNotFailure</value>
@@ -1099,7 +1204,10 @@
     <value>40, 40</value>
   </data>
   <data name="&gt;&gt;m_extensionComboBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
   </data>
   <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1110,11 +1218,11 @@
   <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
     <value>m_executeIBAAButton</value>
   </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_rbNotSuccess.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
   </data>
   <data name="m_rbWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_rbNot1stFailure.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1128,6 +1236,12 @@
   <data name="&gt;&gt;m_rbMonth.Name" xml:space="preserve">
     <value>m_rbMonth</value>
   </data>
+  <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
   <data name="m_rbOriginal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1135,10 +1249,10 @@
     <value>Top, Right</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notify</value>
+  <data name="m_pdoFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_rbFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1152,8 +1266,8 @@
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 16</value>
   </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Subdirectories</value>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1167,8 +1281,8 @@
   <data name="m_rbSucces.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
     <value>m_subfolderGroupBox</value>
@@ -1192,10 +1306,13 @@
     <value>130, 18</value>
   </data>
   <data name="&gt;&gt;m_extensionComboBox.Parent" xml:space="preserve">
-    <value>m_OutputGroupBox</value>
+    <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;m_folderNumber.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>Each month</value>
@@ -1209,17 +1326,17 @@
   <data name="tableLayoutPanel6.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_extensionComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>323, 18</value>
+    <value>327, 15</value>
   </data>
   <data name="&gt;&gt;m_rbPrint.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1230,11 +1347,11 @@
   <data name="m_rbNotFailure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_rbNotDisabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
-  <data name="m_rbSucces.Text" xml:space="preserve">
-    <value>on success</value>
+  <data name="&gt;&gt;m_rbNotFailure.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_rbHour.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -1247,6 +1364,9 @@
   </data>
   <data name="m_rbFailure.Text" xml:space="preserve">
     <value>on failure</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Username:</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1266,6 +1386,9 @@
   <data name="m_rbFile.Text" xml:space="preserve">
     <value>File:</value>
   </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
   <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>
   </data>
@@ -1281,11 +1404,17 @@
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Password:</value>
+  </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 522</value>
+    <value>28, 530</value>
+  </data>
+  <data name="m_tbUserName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 20</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1308,6 +1437,9 @@
   <data name="&gt;&gt;m_rbNONE.Name" xml:space="preserve">
     <value>m_rbNONE</value>
   </data>
+  <data name="&gt;&gt;m_panelFile.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
   <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
@@ -1317,8 +1449,8 @@
   <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 17</value>
   </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="m_rbSucces.Text" xml:space="preserve">
+    <value>on success</value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>78</value>

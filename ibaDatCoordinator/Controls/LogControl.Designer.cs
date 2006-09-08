@@ -63,6 +63,7 @@ namespace iba.Controls
             resources.ApplyResources(this.time, "time");
             this.time.Name = "time";
             this.time.ReadOnly = true;
+            this.time.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // ConfigurationData
             // 
@@ -70,6 +71,7 @@ namespace iba.Controls
             resources.ApplyResources(this.ConfigurationData, "ConfigurationData");
             this.ConfigurationData.Name = "ConfigurationData";
             this.ConfigurationData.ReadOnly = true;
+            this.ConfigurationData.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Task
             // 
@@ -77,6 +79,7 @@ namespace iba.Controls
             resources.ApplyResources(this.Task, "Task");
             this.Task.Name = "Task";
             this.Task.ReadOnly = true;
+            this.Task.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // datFile
             // 
@@ -84,6 +87,7 @@ namespace iba.Controls
             resources.ApplyResources(this.datFile, "datFile");
             this.datFile.Name = "datFile";
             this.datFile.ReadOnly = true;
+            this.datFile.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // message
             // 
@@ -92,6 +96,7 @@ namespace iba.Controls
             resources.ApplyResources(this.message, "message");
             this.message.Name = "message";
             this.message.ReadOnly = true;
+            this.message.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // LogControl
             // 

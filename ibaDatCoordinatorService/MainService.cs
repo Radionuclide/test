@@ -80,11 +80,15 @@ namespace iba.Services
                             LogData.OpenFromFile(dat.Logfile);
                         LogData.Data.MaxRows = dat.LogItemCount;
                     }
-                    foreach (ConfigurationData dat in confs) dat.relinkChildData();
+                    foreach (ConfigurationData dat in confs)
+                    {
+                        dat.relinkChildData();
+                        dat.UpdateUNC(true);
+                    }
                     m_communicationObject.Manager.Configurations = confs;
                     foreach (ConfigurationData dat in confs)
                     {
-                        if (dat.AutoStart) m_communicationObject.Manager.StartConfiguration(dat.ID);
+                        if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat.ID);
                     }
                 }
                 catch (Exception ex)

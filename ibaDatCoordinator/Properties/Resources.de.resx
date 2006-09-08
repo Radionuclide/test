@@ -238,11 +238,17 @@
   <data name="Failure" xml:space="preserve">
     <value>Fehlgeschlagen! (siehe Protokolldatei)</value>
   </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>Specified directory does not exist</value>
+  </data>
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
     <value>Die E-Mailadresse für Benachrichtigungen ist ungültig oder nicht eingetragen</value>
+  </data>
+  <data name="invalidPath" xml:space="preserve">
+    <value>invalid path</value>
   </data>
   <data name="logBatchfileFailed" xml:space="preserve">
     <value>Batchdatei fehlgeschlagen</value>

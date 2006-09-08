@@ -6,7 +6,7 @@ using System.IO;
 using Microsoft.Win32;
 
 using System.Diagnostics;
-
+using iba.Utility;
 
 namespace iba.Data
 {
@@ -34,6 +34,46 @@ namespace iba.Data
             get { return m_tasks; }
             set { m_tasks = value; }
         }
+
+        private string m_datdirectoryUNC;
+        public string DatDirectoryUNC
+        {
+            get { return m_datdirectoryUNC; }
+            set { m_datdirectoryUNC = value; }
+        }
+
+        public void UpdateUNC()
+        {
+            UpdateUNC(false);
+        }
+
+        public void UpdateUNC(bool updateChildren)
+        {
+            m_datdirectoryUNC = Shares.PathToUnc(m_datDirectory, false);
+            if (updateChildren)
+            {
+                foreach (TaskData task in m_tasks)
+                {
+                    TaskDataUNC t = task as TaskDataUNC;
+                    if (t!= null) t.UpdateUNC();
+                }
+            }
+        }
+
+        private string m_pass;
+        public string Password
+        {
+            get { return m_pass; }
+            set { m_pass = value; }
+        }
+
+        private string m_username;
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
 
         private string m_ibaAnalyserExe;
         public string IbaAnalyserExe
@@ -149,6 +189,9 @@ namespace iba.Data
             m_id = m_idCounter;
             m_idCounter++;
             m_notify = new NotificationData();
+            m_pass = "";
+            m_username = "";
+            m_datdirectoryUNC = "";
         }
 
         public void relinkChildData()
@@ -174,6 +217,9 @@ namespace iba.Data
             cd.m_rescanTime = m_rescanTime;
             cd.m_notify = m_notify.Clone() as NotificationData;
             cd.m_bRescanEnabled = m_bRescanEnabled;
+            cd.m_datdirectoryUNC = m_datdirectoryUNC;
+            cd.m_username = m_username;
+            cd.m_pass = m_pass;
             return cd;
         }
 

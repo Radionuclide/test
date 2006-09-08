@@ -149,6 +149,7 @@
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
     <Compile Include="Data\TaskData.cs" />
+    <Compile Include="Data\TaskDataUNC.cs" />
     <Compile Include="Data\WatchDogData.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
@@ -217,6 +218,8 @@
     <Compile Include="Utility\containers.cs" />
     <Compile Include="Utility\Path.cs" />
     <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\Shares.cs" />
+    <Compile Include="Utility\SharesHandler.cs" />
     <Compile Include="Utility\WindowsAPI.cs" />
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
@@ -492,6 +495,8 @@
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\refreshdats.bmp" />
     <None Include="Resources\refreshconfs.bmp" />
+    <None Include="Resources\thumup.png" />
+    <None Include="Resources\thumbdown.PNG" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

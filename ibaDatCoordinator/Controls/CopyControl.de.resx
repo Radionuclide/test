@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Ausführen</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>460, 3</value>
@@ -157,14 +160,29 @@
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>bei Erfolg</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Ausführen</value>
-  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Name der Kopieren-Aufgabe:</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Benutzername:</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Unterverzeichnisse</value>
   </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>176, 12</value>
@@ -223,17 +241,14 @@
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>monatlich</value>
   </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Unterverzeichnisse</value>
-  </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Zielverzeichnis:</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Ziel</value>
+  <data name="groupBox6.Text" xml:space="preserve">
+    <value>Quelle</value>
   </data>
   <data name="m_cbRemoveSource.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 17</value>
@@ -241,8 +256,8 @@
   <data name="m_cbRemoveSource.Text" xml:space="preserve">
     <value>Löschen ursprüngliche Messdatei</value>
   </data>
-  <data name="groupBox6.Text" xml:space="preserve">
-    <value>Quelle</value>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Benachrichtigungen</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>460, 3</value>
@@ -282,8 +297,5 @@
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>bei Erfolg</value>
-  </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Benachrichtigungen</value>
   </data>
 </root>

@@ -30,6 +30,12 @@ namespace iba.Controls
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportControl));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.m_panelFile = new System.Windows.Forms.Panel();
+            this.m_tbPass = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.m_tbUserName = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_checkPathButton = new System.Windows.Forms.Button();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -42,13 +48,12 @@ namespace iba.Controls
             this.m_rbMonth = new System.Windows.Forms.RadioButton();
             this.m_rbNONE = new System.Windows.Forms.RadioButton();
             this.m_rbOriginal = new System.Windows.Forms.RadioButton();
-            this.m_OutputGroupBox = new System.Windows.Forms.GroupBox();
-            this.m_extensionComboBox = new System.Windows.Forms.ComboBox();
-            this.m_rbPrint = new System.Windows.Forms.RadioButton();
-            this.m_rbFile = new System.Windows.Forms.RadioButton();
             this.m_browseFolderButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
+            this.m_extensionComboBox = new System.Windows.Forms.ComboBox();
+            this.m_rbPrint = new System.Windows.Forms.RadioButton();
+            this.m_rbFile = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -73,12 +78,12 @@ namespace iba.Controls
             this.m_rbNotDisabled = new System.Windows.Forms.RadioButton();
             this.m_rbNotSuccess = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
+            this.m_panelFile.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
-            this.m_OutputGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -93,14 +98,79 @@ namespace iba.Controls
             this.groupBox2.AccessibleName = null;
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.BackgroundImage = null;
-            this.groupBox2.Controls.Add(this.m_subfolderGroupBox);
-            this.groupBox2.Controls.Add(this.m_OutputGroupBox);
-            this.groupBox2.Controls.Add(this.m_browseFolderButton);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.m_targetFolderTextBox);
+            this.groupBox2.Controls.Add(this.m_panelFile);
+            this.groupBox2.Controls.Add(this.m_extensionComboBox);
+            this.groupBox2.Controls.Add(this.m_rbPrint);
+            this.groupBox2.Controls.Add(this.m_rbFile);
             this.groupBox2.Font = null;
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // m_panelFile
+            // 
+            this.m_panelFile.AccessibleDescription = null;
+            this.m_panelFile.AccessibleName = null;
+            resources.ApplyResources(this.m_panelFile, "m_panelFile");
+            this.m_panelFile.BackgroundImage = null;
+            this.m_panelFile.Controls.Add(this.m_tbPass);
+            this.m_panelFile.Controls.Add(this.label12);
+            this.m_panelFile.Controls.Add(this.m_tbUserName);
+            this.m_panelFile.Controls.Add(this.label4);
+            this.m_panelFile.Controls.Add(this.m_checkPathButton);
+            this.m_panelFile.Controls.Add(this.m_subfolderGroupBox);
+            this.m_panelFile.Controls.Add(this.m_browseFolderButton);
+            this.m_panelFile.Controls.Add(this.label1);
+            this.m_panelFile.Controls.Add(this.m_targetFolderTextBox);
+            this.m_panelFile.Font = null;
+            this.m_panelFile.Name = "m_panelFile";
+            // 
+            // m_tbPass
+            // 
+            this.m_tbPass.AccessibleDescription = null;
+            this.m_tbPass.AccessibleName = null;
+            resources.ApplyResources(this.m_tbPass, "m_tbPass");
+            this.m_tbPass.BackgroundImage = null;
+            this.m_tbPass.Font = null;
+            this.m_tbPass.Name = "m_tbPass";
+            this.m_tbPass.TextChanged += new System.EventHandler(this.m_reportDirInfoChanged);
+            // 
+            // label12
+            // 
+            this.label12.AccessibleDescription = null;
+            this.label12.AccessibleName = null;
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Font = null;
+            this.label12.Name = "label12";
+            // 
+            // m_tbUserName
+            // 
+            this.m_tbUserName.AccessibleDescription = null;
+            this.m_tbUserName.AccessibleName = null;
+            resources.ApplyResources(this.m_tbUserName, "m_tbUserName");
+            this.m_tbUserName.BackgroundImage = null;
+            this.m_tbUserName.Font = null;
+            this.m_tbUserName.Name = "m_tbUserName";
+            this.m_tbUserName.TextChanged += new System.EventHandler(this.m_reportDirInfoChanged);
+            // 
+            // label4
+            // 
+            this.label4.AccessibleDescription = null;
+            this.label4.AccessibleName = null;
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Font = null;
+            this.label4.Name = "label4";
+            // 
+            // m_checkPathButton
+            // 
+            this.m_checkPathButton.AccessibleDescription = null;
+            this.m_checkPathButton.AccessibleName = null;
+            resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
+            this.m_checkPathButton.BackgroundImage = null;
+            this.m_checkPathButton.Font = null;
+            this.m_checkPathButton.Image = global::iba.Properties.Resources.thumup;
+            this.m_checkPathButton.Name = "m_checkPathButton";
+            this.m_checkPathButton.UseVisualStyleBackColor = true;
+            this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
             // m_subfolderGroupBox
             // 
@@ -247,51 +317,6 @@ namespace iba.Controls
             this.m_rbOriginal.TabStop = true;
             this.m_rbOriginal.UseVisualStyleBackColor = true;
             // 
-            // m_OutputGroupBox
-            // 
-            this.m_OutputGroupBox.AccessibleDescription = null;
-            this.m_OutputGroupBox.AccessibleName = null;
-            resources.ApplyResources(this.m_OutputGroupBox, "m_OutputGroupBox");
-            this.m_OutputGroupBox.BackgroundImage = null;
-            this.m_OutputGroupBox.Controls.Add(this.m_extensionComboBox);
-            this.m_OutputGroupBox.Controls.Add(this.m_rbPrint);
-            this.m_OutputGroupBox.Controls.Add(this.m_rbFile);
-            this.m_OutputGroupBox.Font = null;
-            this.m_OutputGroupBox.Name = "m_OutputGroupBox";
-            this.m_OutputGroupBox.TabStop = false;
-            // 
-            // m_extensionComboBox
-            // 
-            this.m_extensionComboBox.AccessibleDescription = null;
-            this.m_extensionComboBox.AccessibleName = null;
-            resources.ApplyResources(this.m_extensionComboBox, "m_extensionComboBox");
-            this.m_extensionComboBox.BackgroundImage = null;
-            this.m_extensionComboBox.Font = null;
-            this.m_extensionComboBox.FormattingEnabled = true;
-            this.m_extensionComboBox.Name = "m_extensionComboBox";
-            // 
-            // m_rbPrint
-            // 
-            this.m_rbPrint.AccessibleDescription = null;
-            this.m_rbPrint.AccessibleName = null;
-            resources.ApplyResources(this.m_rbPrint, "m_rbPrint");
-            this.m_rbPrint.BackgroundImage = null;
-            this.m_rbPrint.Font = null;
-            this.m_rbPrint.Name = "m_rbPrint";
-            this.m_rbPrint.TabStop = true;
-            this.m_rbPrint.UseVisualStyleBackColor = true;
-            // 
-            // m_rbFile
-            // 
-            this.m_rbFile.AccessibleDescription = null;
-            this.m_rbFile.AccessibleName = null;
-            resources.ApplyResources(this.m_rbFile, "m_rbFile");
-            this.m_rbFile.BackgroundImage = null;
-            this.m_rbFile.Font = null;
-            this.m_rbFile.Name = "m_rbFile";
-            this.m_rbFile.TabStop = true;
-            this.m_rbFile.UseVisualStyleBackColor = true;
-            // 
             // m_browseFolderButton
             // 
             this.m_browseFolderButton.AccessibleDescription = null;
@@ -320,6 +345,40 @@ namespace iba.Controls
             this.m_targetFolderTextBox.BackgroundImage = null;
             this.m_targetFolderTextBox.Font = null;
             this.m_targetFolderTextBox.Name = "m_targetFolderTextBox";
+            this.m_targetFolderTextBox.TextChanged += new System.EventHandler(this.m_reportDirInfoChanged);
+            // 
+            // m_extensionComboBox
+            // 
+            this.m_extensionComboBox.AccessibleDescription = null;
+            this.m_extensionComboBox.AccessibleName = null;
+            resources.ApplyResources(this.m_extensionComboBox, "m_extensionComboBox");
+            this.m_extensionComboBox.BackgroundImage = null;
+            this.m_extensionComboBox.Font = null;
+            this.m_extensionComboBox.FormattingEnabled = true;
+            this.m_extensionComboBox.Name = "m_extensionComboBox";
+            // 
+            // m_rbPrint
+            // 
+            this.m_rbPrint.AccessibleDescription = null;
+            this.m_rbPrint.AccessibleName = null;
+            resources.ApplyResources(this.m_rbPrint, "m_rbPrint");
+            this.m_rbPrint.BackgroundImage = null;
+            this.m_rbPrint.Font = null;
+            this.m_rbPrint.Name = "m_rbPrint";
+            this.m_rbPrint.TabStop = true;
+            this.m_rbPrint.UseVisualStyleBackColor = true;
+            this.m_rbPrint.CheckedChanged += new System.EventHandler(this.m_rbPrint_CheckedChanged);
+            // 
+            // m_rbFile
+            // 
+            this.m_rbFile.AccessibleDescription = null;
+            this.m_rbFile.AccessibleName = null;
+            resources.ApplyResources(this.m_rbFile, "m_rbFile");
+            this.m_rbFile.BackgroundImage = null;
+            this.m_rbFile.Font = null;
+            this.m_rbFile.Name = "m_rbFile";
+            this.m_rbFile.TabStop = true;
+            this.m_rbFile.UseVisualStyleBackColor = true;
             // 
             // m_openFileDialog1
             // 
@@ -588,6 +647,8 @@ namespace iba.Controls
             this.Name = "ReportControl";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.m_panelFile.ResumeLayout(false);
+            this.m_panelFile.PerformLayout();
             this.m_subfolderGroupBox.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -595,8 +656,6 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.m_OutputGroupBox.ResumeLayout(false);
-            this.m_OutputGroupBox.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -615,7 +674,6 @@ namespace iba.Controls
 
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox m_OutputGroupBox;
         private System.Windows.Forms.Button m_browseFolderButton;
         private System.Windows.Forms.TextBox m_targetFolderTextBox;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
@@ -656,6 +714,12 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbNotDisabled;
         private System.Windows.Forms.RadioButton m_rbNotSuccess;
         private System.Windows.Forms.RadioButton m_rbOriginal;
+        private System.Windows.Forms.TextBox m_tbPass;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox m_tbUserName;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button m_checkPathButton;
+        private System.Windows.Forms.Panel m_panelFile;
 
     }
 }

@@ -2,19 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-
 namespace iba.Data
 {
     [ Serializable ]
-    public class ReportData : TaskData
+    public class ReportData : TaskDataUNC
     {
-        private string m_destinationMap;
-        public string DestinationMap
-        {
-            get { return m_destinationMap; }
-            set { m_destinationMap = value; }
-        }
-
         public enum OutputChoice { FILE, PRINT };
         private OutputChoice m_outputChoice;
         public OutputChoice Output
@@ -63,7 +55,6 @@ namespace iba.Data
             m_outputChoice = OutputChoice.FILE;
             m_subfolderChoice = SubfolderChoice.DAY;
             m_numbFolders = 10;
-            m_destinationMap = "";
             m_extension = "pdf";
         }
 
@@ -82,6 +73,9 @@ namespace iba.Data
             rd.m_outputChoice = m_outputChoice;
             rd.m_destinationMap = m_destinationMap;
             rd.m_notify = m_notify;
+            rd.m_username = m_username;
+            rd.m_pass = m_pass;
+            rd.m_destinationMapUNC = m_destinationMapUNC;
             return rd;
         }
     }

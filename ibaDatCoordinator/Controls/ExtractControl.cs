@@ -84,6 +84,8 @@ namespace iba.Controls
                 m_rb1stFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE;
                 m_rbDisabled.Checked = m_data.WhenToExecute == TaskData.WhenToDo.DISABLED;
             }
+
+            m_panelFile.Enabled = m_rbFile.Checked;
             m_rbNotAlways.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
             m_rbNotSuccess.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES;
             m_rbNotFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE;
@@ -99,6 +101,11 @@ namespace iba.Controls
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
+
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
+            m_tbPass.Text = m_data.Password;
+            m_tbUserName.Text = m_data.Username;
         }
 
         public void SaveData()
@@ -137,6 +144,10 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.SAME;
+
+            m_data.Password = m_tbPass.Text;
+            m_data.Username = m_tbUserName.Text;
+            m_data.UpdateUNC();
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
@@ -208,6 +219,38 @@ namespace iba.Controls
         private void m_rbDbase_CheckedChanged(object sender, EventArgs e)
         {
             m_panelFile.Enabled = m_rbFile.Checked;
+        }
+
+        private void m_checkPathButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            string errormessage = null;
+            bool ok;
+            using (WaitCursor wait = new WaitCursor())
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    ok = TaskManager.Manager.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+                else
+                    ok = SharesHandler.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+            }
+            if (ok)
+            {
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumup;
+            }
+            else
+            {
+                MessageBox.Show(errormessage, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
+            }
+            ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void m_extractDirInfoChanged(object sender, EventArgs e)
+        {
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
         }
     }
 }

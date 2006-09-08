@@ -118,94 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 12</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 14</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 13</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Nombre max. sous-répertoires</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 18</value>
-  </data>
-  <data name="m_rbHour.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rbHour.Text" xml:space="preserve">
-    <value>toutes les heures</value>
-  </data>
-  <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 3</value>
-  </data>
-  <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 18</value>
-  </data>
-  <data name="m_rbDay.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbDay.Text" xml:space="preserve">
-    <value>tous les jours</value>
-  </data>
-  <data name="m_rbWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>400, 3</value>
-  </data>
-  <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 18</value>
-  </data>
-  <data name="m_rbWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_rbWeek.Text" xml:space="preserve">
-    <value>toutes les semaines</value>
-  </data>
-  <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 19</value>
-  </data>
-  <data name="m_rbMonth.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_rbMonth.Text" xml:space="preserve">
-    <value>tous les mois</value>
-  </data>
-  <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>400, 27</value>
-  </data>
-  <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 19</value>
-  </data>
-  <data name="m_rbNONE.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_rbNONE.Text" xml:space="preserve">
-    <value>aucun</value>
-  </data>
-  <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 27</value>
-  </data>
-  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 19</value>
-  </data>
-  <data name="m_rbOriginal.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_rbOriginal.Text" xml:space="preserve">
-    <value>garder la structure originale </value>
-  </data>
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Sous-répertoires</value>
-  </data>
   <data name="m_rbPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 17</value>
   </data>
@@ -218,35 +130,114 @@
   <data name="m_rbFile.Text" xml:space="preserve">
     <value>Fichier:</value>
   </data>
-  <data name="m_OutputGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Cible</value>
   </data>
-  <data name="m_OutputGroupBox.Text" xml:space="preserve">
-    <value>Sortie</value>
+  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>136, 66</value>
   </data>
-  <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
+  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>136, 40</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Nom utilisateur:</value>
+  </data>
+  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 42</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Sous-répertoires</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 12</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 14</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Nombre max. sous-répertoires</value>
+  </data>
+  <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
+    <value>230, 18</value>
+  </data>
+  <data name="m_rbHour.Text" xml:space="preserve">
+    <value>toutes les heures</value>
+  </data>
+  <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 3</value>
+  </data>
+  <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 18</value>
+  </data>
+  <data name="m_rbDay.Text" xml:space="preserve">
+    <value>tous les jours</value>
+  </data>
+  <data name="m_rbWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>400, 3</value>
+  </data>
+  <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 18</value>
+  </data>
+  <data name="m_rbWeek.Text" xml:space="preserve">
+    <value>toutes les semaines</value>
+  </data>
+  <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>230, 19</value>
+  </data>
+  <data name="m_rbMonth.Text" xml:space="preserve">
+    <value>tous les mois</value>
+  </data>
+  <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>400, 27</value>
+  </data>
+  <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 19</value>
+  </data>
+  <data name="m_rbNONE.Text" xml:space="preserve">
+    <value>aucun</value>
+  </data>
+  <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 27</value>
+  </data>
+  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 19</value>
+  </data>
+  <data name="m_rbOriginal.Text" xml:space="preserve">
+    <value>garder la structure originale </value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 15</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 13</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Répertoire de destination:</value>
   </data>
   <data name="m_targetFolderTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 27</value>
+    <value>136, 12</value>
   </data>
   <data name="m_targetFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>310, 20</value>
-  </data>
-  <data name="m_targetFolderTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Cible</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 13</value>
@@ -256,6 +247,9 @@
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Fichier d'analyse pour rapport</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Exécuter</value>
   </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
@@ -296,8 +290,8 @@
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>en cas de réussite</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Exécuter</value>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Notifications</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
@@ -337,8 +331,5 @@
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>en cas de réussite</value>
-  </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notifications</value>
   </data>
 </root>

@@ -269,6 +269,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to could not test validity op the directory.
+        /// </summary>
+        internal static string CouldNotTestPath {
+            get {
+                return ResourceManager.GetString("CouldNotTestPath", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap cut {
             get {
                 object obj = ResourceManager.GetObject("cut", resourceCulture);
@@ -415,6 +424,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Specified directory does not exist.
+        /// </summary>
+        internal static string FolderDoesNotExist {
+            get {
+                return ResourceManager.GetString("FolderDoesNotExist", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon greenarrow {
             get {
                 object obj = ResourceManager.GetObject("greenarrow", resourceCulture);
@@ -435,6 +453,15 @@ namespace iba.Properties {
         internal static string invalidEmail {
             get {
                 return ResourceManager.GetString("invalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to invalid path.
+        /// </summary>
+        internal static string invalidPath {
+            get {
+                return ResourceManager.GetString("invalidPath", resourceCulture);
             }
         }
         
@@ -1274,6 +1301,20 @@ namespace iba.Properties {
         internal static string textFileStopped {
             get {
                 return ResourceManager.GetString("textFileStopped", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap thumbdown {
+            get {
+                object obj = ResourceManager.GetObject("thumbdown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap thumup {
+            get {
+                object obj = ResourceManager.GetObject("thumup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

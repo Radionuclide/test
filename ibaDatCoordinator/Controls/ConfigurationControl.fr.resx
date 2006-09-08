@@ -157,6 +157,21 @@
   <data name="m_subMapsCheckBox.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="m_tbPass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label12.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_tbUserName.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_checkPathButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="m_browseFolderButton.ToolTip" xml:space="preserve">
     <value />
   </data>

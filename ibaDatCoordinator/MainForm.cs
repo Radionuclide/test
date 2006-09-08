@@ -1147,7 +1147,17 @@ namespace iba
             else using (WaitCursor wait = new WaitCursor())
                 {
                     SaveRightPaneControl();
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+                    XmlSerializer mySerializer = null;    
+                    try
+                    {
+                        mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+                    }
+                    catch (Exception erreur)
+                    {
+                        string ert = erreur.ToString();
+                    }
+
+
                     // To write to a file, create a StreamWriter object.
                     try
                     {
@@ -1264,7 +1274,11 @@ namespace iba
                     }
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
-                    foreach (ConfigurationData dat in confs) dat.relinkChildData();
+                    foreach (ConfigurationData dat in confs)
+                    {
+                        dat.relinkChildData();
+                        dat.UpdateUNC(true);
+                    }
 
                     if (TaskManager.Manager.Count > 0)
                     {
@@ -1469,7 +1483,7 @@ namespace iba
                 Program.CommunicationObject.SaveConfigurations();
 
             StatusBarLabel.Text = ""; //clear any errors on restart
-            TaskManager.Manager.StartAllConfigurations();
+            TaskManager.Manager.StartAllEnabledConfigurations();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
             {
                 (m_rightPane.Controls[0] as ConfigurationControl).LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData,this);
@@ -1485,17 +1499,20 @@ namespace iba
 
         public void UpdateButtons()
         {
-            bool allstarted = true;
-            bool allstopped = true;
+            bool allEnabledStarted = true;
+            bool allStopped = true;
             
             foreach (ConfigurationData data in TaskManager.Manager.Configurations)
             {
                 bool started = TaskManager.Manager.GetStatus(data.ID).Started;
-                allstarted = allstarted && started;
-                allstopped = allstopped && !started;
+                if (data.Enabled)
+                {
+                    allEnabledStarted = allEnabledStarted && started;
+                }
+                allStopped = allStopped && !started;
             }
-            m_startButton.Enabled = !allstarted;
-            m_stopButton.Enabled = !allstopped;
+            m_startButton.Enabled = !allEnabledStarted;
+            m_stopButton.Enabled = !allStopped;
         }
 
         public Button StartButton

@@ -206,14 +206,14 @@ namespace iba.Processing
         {
             //Notifier not = new Notifier();
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
-            if (!Directory.Exists(m_cd.DatDirectory))
+            if (!Directory.Exists(m_cd.DatDirectoryUNC))
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                 m_sd.Started = false;
                 Stop = true;
                 return;
             }
-            using (FileSystemWatcher fswt = new FileSystemWatcher(m_cd.DatDirectory, "*.dat"))
+            using (FileSystemWatcher fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat"))
             {
                 fswt.NotifyFilter = NotifyFilters.FileName;
                 fswt.IncludeSubdirectories = m_cd.SubDirs;
@@ -411,9 +411,7 @@ namespace iba.Processing
                 return;
             }
         }
-
-
-
+        
         private void OnNewDatFile(object sender, FileSystemEventArgs args)
         {
             string filename = args.FullPath;
@@ -515,7 +513,7 @@ namespace iba.Processing
         private void updateDatFileList(WhatToUpdate what)
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
-            string datDir = m_cd.DatDirectory;
+            string datDir = m_cd.DatDirectoryUNC;
             FileInfo[] fileInfos = null;
             if (Directory.Exists(datDir))
             {
@@ -944,8 +942,9 @@ namespace iba.Processing
             string dir = task.DestinationMap;
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
-                dir = Path.Combine(m_cd.DatDirectory, dir);
+                dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
+            else dir = task.DestinationMapUNC;
             if (m_cd.SubDirs && task.Subfolder == ExtractData.SubfolderChoiceB.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
                 string s2 = Path.GetFullPath(m_cd.DatDirectory);
@@ -1093,8 +1092,10 @@ namespace iba.Processing
                 string dir = task.DestinationMap;
                 if (!Path.IsPathRooted(dir))
                 {  //get Absolute path relative to dir
-                    dir = Path.Combine(m_cd.DatDirectory, dir);
+                    dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
                 }
+                else
+                    dir = task.DestinationMapUNC;
                 if (m_cd.SubDirs && task.Subfolder == ReportData.SubfolderChoice.SAME)
                 {   //concatenate subfolder corresponding to dat subfolder
                     string s2 = Path.GetFullPath(m_cd.DatDirectory);
@@ -1182,6 +1183,7 @@ namespace iba.Processing
             {  //get Absolute path relative to dir
                 dir = Path.Combine(m_cd.DatDirectory, dir);
             }
+            else dir = task.DestinationMapUNC;
             if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
             {
                 string s2 = Path.GetFullPath(m_cd.DatDirectory);

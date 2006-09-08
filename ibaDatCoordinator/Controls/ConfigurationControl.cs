@@ -99,7 +99,7 @@ namespace iba.Controls
             else
             {
                 m_applyToRunningButton.Enabled = false;
-                m_startButton.Enabled = true;
+                m_startButton.Enabled = m_data.Enabled;
                 m_newBatchfileButton.Enabled = true;
                 m_newExtractButton.Enabled = true;
                 m_newReportButton.Enabled = true;
@@ -136,6 +136,10 @@ namespace iba.Controls
                 m_rbImmediate.Checked = false;
                 m_rbTime.Checked = true;
             }
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
+            m_tbPass.Text = m_data.Password;
+            m_tbUserName.Text = m_data.Username;
         }
 
         public void SaveData()
@@ -155,8 +159,14 @@ namespace iba.Controls
             m_data.NotificationData.NotifyOutput = m_rbNetSend.Checked ? NotificationData.NotifyOutputChoice.NETSEND : NotificationData.NotifyOutputChoice.EMAIL;
             m_data.NotificationData.NotifyImmediately = m_rbImmediate.Checked;
             m_data.NotificationData.TimeInterval = TimeSpan.FromMinutes((double)m_nudNotifyTime.Value);
+            
+            m_data.Password = m_tbPass.Text;
+            m_data.Username = m_tbUserName.Text;
+            m_data.UpdateUNC(); 
+            
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+
         }
         #endregion
 
@@ -250,6 +260,7 @@ namespace iba.Controls
 
         private void m_enableCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            m_startButton.Enabled = m_enableCheckBox.Checked;
             MainForm.strikeOutNodeText(m_manager.LeftTree.SelectedNode, !m_enableCheckBox.Checked);
 
             foreach (TreeNode node in m_manager.getLeftTree("status").Nodes)
@@ -257,6 +268,8 @@ namespace iba.Controls
                     MainForm.strikeOutNodeText(node, !m_enableCheckBox.Checked);
             if (!m_enableCheckBox.Checked)
                 TaskManager.Manager.StopConfiguration(m_data.ID);
+            MainForm t = m_manager as MainForm;
+            if (t != null) t.UpdateButtons();
         }
 
         private void m_browseExecutableButton_Click(object sender, EventArgs e)
@@ -342,6 +355,38 @@ namespace iba.Controls
             TaskManager.Manager.UpdateConfiguration(m_data);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
+        }
+
+        private void m_checkPathButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            string errormessage = null;
+            bool ok;
+            using (WaitCursor wait = new WaitCursor())
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    ok = TaskManager.Manager.TestPath(m_datDirTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                else
+                ok = SharesHandler.TestPath(m_datDirTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage,false);
+            }
+            if (ok)
+            {
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumup;
+            }
+            else
+            {
+                MessageBox.Show(errormessage,iba.Properties.Resources.invalidPath,MessageBoxButtons.OK, MessageBoxIcon.Error);
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
+            }
+            ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void m_datDirInfoChanged(object sender, EventArgs e)
+        {
+            m_checkPathButton.Image = null;
+            m_checkPathButton.Text = "?";
         }
     }
 }

@@ -41,28 +41,19 @@ namespace iba.Controls
             // 
             // label1
             // 
-            this.label1.AccessibleDescription = null;
-            this.label1.AccessibleName = null;
             resources.ApplyResources(this.label1, "label1");
-            this.label1.Font = null;
             this.label1.Name = "label1";
             // 
             // m_confNameLinkLabel
             // 
-            this.m_confNameLinkLabel.AccessibleDescription = null;
-            this.m_confNameLinkLabel.AccessibleName = null;
             resources.ApplyResources(this.m_confNameLinkLabel, "m_confNameLinkLabel");
-            this.m_confNameLinkLabel.Font = null;
             this.m_confNameLinkLabel.Name = "m_confNameLinkLabel";
             this.m_confNameLinkLabel.TabStop = true;
             this.m_confNameLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_confNameLinkLabel_LinkClicked);
             // 
             // m_infoText
             // 
-            this.m_infoText.AccessibleDescription = null;
-            this.m_infoText.AccessibleName = null;
             resources.ApplyResources(this.m_infoText, "m_infoText");
-            this.m_infoText.Font = null;
             this.m_infoText.Name = "m_infoText";
             // 
             // m_refreshTimer
@@ -71,19 +62,15 @@ namespace iba.Controls
             // 
             // m_gridView
             // 
-            this.m_gridView.AccessibleDescription = null;
-            this.m_gridView.AccessibleName = null;
             this.m_gridView.AllowUserToAddRows = false;
             this.m_gridView.AllowUserToDeleteRows = false;
             this.m_gridView.AllowUserToResizeColumns = false;
             this.m_gridView.AllowUserToResizeRows = false;
             resources.ApplyResources(this.m_gridView, "m_gridView");
-            this.m_gridView.BackgroundImage = null;
             this.m_gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_gridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DatFiles});
             this.m_gridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.m_gridView.Font = null;
             this.m_gridView.Name = "m_gridView";
             this.m_gridView.ReadOnly = true;
             this.m_gridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -94,19 +81,16 @@ namespace iba.Controls
             resources.ApplyResources(this.DatFiles, "DatFiles");
             this.DatFiles.Name = "DatFiles";
             this.DatFiles.ReadOnly = true;
+            this.DatFiles.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // StatusControl
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.Controls.Add(this.m_gridView);
             this.Controls.Add(this.m_infoText);
             this.Controls.Add(this.m_confNameLinkLabel);
             this.Controls.Add(this.label1);
-            this.Font = null;
             this.MinimumSize = new System.Drawing.Size(620, 430);
             this.Name = "StatusControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).EndInit();
