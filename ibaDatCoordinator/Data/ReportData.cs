@@ -24,6 +24,12 @@ namespace iba.Data
                 "txt",
                 "xls",
                 "rtf",
+                "tif",
+                "tiff",
+                "emf",
+                "jpg",
+                "jpeg",
+                "bmp",
                 "xml"});
 
         private string m_extension;
@@ -76,6 +82,7 @@ namespace iba.Data
             rd.m_username = m_username;
             rd.m_pass = m_pass;
             rd.m_destinationMapUNC = m_destinationMapUNC;
+            rd.m_extension = m_extension;
             return rd;
         }
     }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="addConfigurationText" xml:space="preserve">
-    <value>Ajouter bullot</value>
+    <value>Ajouter boulot</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Aktualisieren" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -154,6 +154,9 @@
   <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="checkPathButton" xml:space="preserve">
+    <value>Tester chemin</value>
+  </data>
   <data name="closing" xml:space="preserve">
     <value>Fermer</value>
   </data>
@@ -175,6 +178,12 @@
   <data name="connectionLostCaption" xml:space="preserve">
     <value>Connexion interrompue</value>
   </data>
+  <data name="ConnectionLostFrom" xml:space="preserve">
+    <value>Connexion avec le répertoire partagé '{0}' échoué: '{1}'</value>
+  </data>
+  <data name="ConnectionRestoredTo" xml:space="preserve">
+    <value>Connexion avec le répertoire partagé '{0}' rétabli</value>
+  </data>
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -183,6 +192,9 @@
   </data>
   <data name="copyTitle" xml:space="preserve">
     <value>Copier</value>
+  </data>
+  <data name="CouldNotTestPath" xml:space="preserve">
+    <value>Ne pouvait pas tester la validité du chemin</value>
   </data>
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -547,8 +559,11 @@
   <data name="toolTipStopAll" xml:space="preserve">
     <value>Arrêter tous les boulots</value>
   </data>
+  <data name="UNCPathUnavailable" xml:space="preserve">
+    <value>Ne pouvait pas trouver le chemin UNC '{0}'</value>
+  </data>
   <data name="UpdateHappened" xml:space="preserve">
-    <value>the jobconfiguration was updated</value>
+    <value>Le boulot était actualisée</value>
   </data>
   <data name="watchdogTitle" xml:space="preserve">
     <value>TCP/IP Chien de garde</value>

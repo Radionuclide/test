@@ -609,7 +609,7 @@ namespace iba
 
         private void m_configTreeView_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode != Keys.Delete) || (m_configTreeView.SelectedNode == null))
+            if ((e.KeyCode != Keys.Delete) || (m_configTreeView.SelectedNode == null) || !(m_configTreeView.Focused))
                 return;
             Delete(m_configTreeView.SelectedNode);
         }
@@ -1291,7 +1291,7 @@ namespace iba
                     if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
                         foreach (ConfigurationData dat in confs)
                         {
-                            if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat.ID);
+                            if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
                         }
                 }
             }
@@ -1710,7 +1710,7 @@ namespace iba
                 fillManagerFromTree(TaskManager.Manager);
                 foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                 {
-                    if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat.ID);
+                    if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
                 }
                 LogData.Data.Logger.Close();
                 Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());

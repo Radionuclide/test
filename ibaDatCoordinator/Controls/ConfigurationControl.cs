@@ -33,6 +33,7 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_autoStartCheckBox, iba.Properties.Resources.toolTipAutoStart);
             m_toolTip.SetToolTip(m_applyToRunningButton, iba.Properties.Resources.applyStartedButton);
+            m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningButton.Image).MakeTransparent(Color.Magenta);
         }
@@ -284,9 +285,7 @@ namespace iba.Controls
         private void m_startButton_Click(object sender, EventArgs e)
         {
             SaveData();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            TaskManager.Manager.StartConfiguration(m_data.ID);
+            TaskManager.Manager.StartConfiguration(m_data);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
             m_startButton.Enabled = false;
@@ -365,9 +364,9 @@ namespace iba.Controls
             using (WaitCursor wait = new WaitCursor())
             {
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                    ok = TaskManager.Manager.TestPath(m_datDirTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
                 else
-                ok = SharesHandler.TestPath(m_datDirTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage,false);
+                ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage,false);
             }
             if (ok)
             {

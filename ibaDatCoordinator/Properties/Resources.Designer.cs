@@ -153,6 +153,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to test path.
+        /// </summary>
+        internal static string checkPathButton {
+            get {
+                return ResourceManager.GetString("checkPathButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing.
         /// </summary>
         internal static string closing {
@@ -206,6 +215,24 @@ namespace iba.Properties {
         internal static string connectionLostCaption {
             get {
                 return ResourceManager.GetString("connectionLostCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lost connection to shared network directory &apos;{0}&apos; : &quot;{1}&quot;.
+        /// </summary>
+        internal static string ConnectionLostFrom {
+            get {
+                return ResourceManager.GetString("ConnectionLostFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection restored to shared network directory &apos;{0}&apos;.
+        /// </summary>
+        internal static string ConnectionRestoredTo {
+            get {
+                return ResourceManager.GetString("ConnectionRestoredTo", resourceCulture);
             }
         }
         
@@ -270,7 +297,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to could not test validity op the directory.
+        ///   Looks up a localized string similar to could not test validity of the directory.
         /// </summary>
         internal static string CouldNotTestPath {
             get {
@@ -1351,6 +1378,15 @@ namespace iba.Properties {
         internal static string toolTipStopAll {
             get {
                 return ResourceManager.GetString("toolTipStopAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the UNC path &apos;{0}&apos;.
+        /// </summary>
+        internal static string UNCPathUnavailable {
+            get {
+                return ResourceManager.GetString("UNCPathUnavailable", resourceCulture);
             }
         }
         

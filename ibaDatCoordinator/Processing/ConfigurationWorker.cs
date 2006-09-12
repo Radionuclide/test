@@ -37,6 +37,11 @@ namespace iba.Processing
             }
         }
 
+        public void Signal()
+        {
+            m_waitEvent.Set();
+        }
+
         public bool Join(int timeout)
         {
             Stop = true;
@@ -69,7 +74,7 @@ namespace iba.Processing
             set { m_toUpdate = value; }
         }
 
-        private void UpdateConfiguration()
+        private bool UpdateConfiguration()
         {
             if (m_toUpdate != null)
             {
@@ -79,14 +84,70 @@ namespace iba.Processing
                     if (notifyTimer == null) notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
                     notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                 }
-                if (m_toUpdate.RescanTimeInterval < m_cd.RescanTimeInterval && m_toUpdate.RescanEnabled)
+                if (m_toUpdate.RescanEnabled)
                 {
-                    if (rescanTimer == null) rescanTimer = new System.Threading.Timer(OnRescanTimerTick);
-                    rescanTimer.Change(m_toUpdate.RescanTimeInterval, TimeSpan.Zero);
+                    if (rescanTimer == null)
+                    {
+                        rescanTimer = new System.Threading.Timer(OnRescanTimerTick);
+                        rescanTimer.Change(m_toUpdate.RescanTimeInterval, TimeSpan.Zero);
+                    }
+                    else if (m_toUpdate.RescanTimeInterval < m_cd.RescanTimeInterval)
+                    {
+                        rescanTimer.Change(m_toUpdate.RescanTimeInterval, TimeSpan.Zero);
+                    }
                 }
-                if (m_toUpdate.ReprocessErrorsTimeInterval< m_cd.ReprocessErrorsTimeInterval)
-                    notifyTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                else
+                {
+                    if (rescanTimer != null)
+                    {
+                        rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        rescanTimer.Dispose();
+                        rescanTimer = null;
+                    }
+                }
+                if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval)
+                {
+                    if (reprocessErrorsTimer == null) reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
+                    reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                }
+                if (m_sd.Started)
+                {
+                    if (fswt != null)
+                    {
+                        fswt.Dispose();
+                        fswt = null;
+                    }
+                    SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+                }
                 m_cd = m_toUpdate.Clone_AlsoCopyGuids();
+                object errorObject;
+                SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
+                if (errorObject != null)
+                {
+                    if (errorObject is ConfigurationData)
+                    {
+                        networkErrorOccured = true;
+                        Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, m_cd.DatDirectoryUNC));
+                        tickCount = 0;
+                    }
+                    else
+                    {
+                        TaskDataUNC t = errorObject as TaskDataUNC;
+                        if (t != null)
+                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
+                    }
+                }
+                else
+                {
+                    fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                    fswt.NotifyFilter = NotifyFilters.FileName;
+                    fswt.IncludeSubdirectories = m_cd.SubDirs;
+                    fswt.Created += new FileSystemEventHandler(OnNewDatFile);
+                    fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                    fswt.EnableRaisingEvents = true;
+                    networkErrorOccured = false;
+                    tickCount = 0;
+                }
 
                 //also update statusdata
                 m_sd.CorrConfigurationData = m_cd;
@@ -119,12 +180,14 @@ namespace iba.Processing
                 if (m_notifier != null)
                 {
                     m_notifier.Send();
-                    m_notifier = new Notifier(m_cd);
                 }
-                Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
+                m_notifier = new Notifier(m_cd);
 
+                Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
                 m_toUpdate = null;
+                return true;
             }
+            return false;
         }
 
         public ConfigurationWorker(ConfigurationData cd)
@@ -201,7 +264,9 @@ namespace iba.Processing
         private System.Threading.Timer rescanTimer;
         private System.Threading.Timer retryAccessTimer;
         bool m_bTimersstopped;
-        
+
+        private FileSystemWatcher fswt = null;
+
         private void Run()
         {
             //Notifier not = new Notifier();
@@ -210,15 +275,12 @@ namespace iba.Processing
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                 m_sd.Started = false;
+                SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                 Stop = true;
                 return;
             }
-            using (FileSystemWatcher fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat"))
+            try
             {
-                fswt.NotifyFilter = NotifyFilters.FileName;
-                fswt.IncludeSubdirectories = m_cd.SubDirs;
-                fswt.Created += new FileSystemEventHandler(OnNewDatFile);
-                fswt.EnableRaisingEvents = true;
                 updateDatFileList(WhatToUpdate.ALL);
                 notifyTimer = null;
                 try
@@ -256,16 +318,21 @@ namespace iba.Processing
                                     DateTime mintime = DateTime.MaxValue;
                                     foreach (string fileC in m_toProcessFiles)
                                     {
-                                        if (File.Exists(fileC))
+                                        try
                                         {
-                                            FileInfo f = new FileInfo(fileC);
-                                            DateTime n = f.CreationTime;
-                                            if (n < mintime)
+                                            if (File.Exists(fileC))
                                             {
-                                                file = fileC;
-                                                mintime = n;
+                                                FileInfo f = new FileInfo(fileC);
+                                                DateTime n = f.CreationTime;
+                                                if (n < mintime)
+                                                {
+                                                    file = fileC;
+                                                    mintime = n;
+                                                }
                                             }
                                         }
+                                        catch //if network disconnection should happen
+                                        { }
                                     }
                                 }
                                 else break;
@@ -315,6 +382,7 @@ namespace iba.Processing
                     {
                         rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         rescanTimer.Dispose();
+                        rescanTimer = null;
                     }
                     if (reprocessErrorsTimer != null)
                     {
@@ -324,13 +392,32 @@ namespace iba.Processing
                     if (retryAccessTimer != null)
                     {
                         retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                        reprocessErrorsTimer.Dispose();
+                        retryAccessTimer.Dispose();
                     }
                     Debug.Assert(m_ibaAnalyzer == null, "ibaAnalyzer should have been closed");
                 }
             }
+            finally
+            {
+                if (fswt != null) fswt.Dispose();
+                fswt = null;
+            }
+
             m_sd.Started = false;
+            SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStopped);
+        }
+
+
+        private bool networkErrorOccured = false;
+        int tickCount = 0;
+
+        void OnFileSystemError(object sender, ErrorEventArgs e)
+        {
+            networkErrorOccured = true;
+            fswt.Dispose();
+            fswt = null;
+            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC,e.GetException().Message));
         }
 
         private void StartIbaAnalyzer()
@@ -468,17 +555,37 @@ namespace iba.Processing
                     m_waitEvent.Set();
                 }
             }
+
+            if (!changed && networkErrorOccured) tickCount++;
+
+            if (tickCount >= 20) //retry restoring dataaccess every minut
+            {
+                tickCount = 0;
+                if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))
+                {
+                    if (fswt != null)
+                        fswt.Dispose();
+                    fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                    fswt.NotifyFilter = NotifyFilters.FileName;
+                    fswt.IncludeSubdirectories = m_cd.SubDirs;
+                    fswt.Created += new FileSystemEventHandler(OnNewDatFile);
+                    fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                    fswt.EnableRaisingEvents = true;
+                    networkErrorOccured = false;
+                    Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
+                }
+            }
             if (!m_bTimersstopped && !m_stop)
                 retryAccessTimer.Change(1000, Timeout.Infinite);
         }
 
         private void OnRescanTimerTick(object ignoreMe)
         {
-            if (m_bTimersstopped || m_stop) return;
+            if (m_bTimersstopped || m_stop || rescanTimer==null) return;
             rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
             lock (m_timerLock)
             {
-                updateDatFileList(WhatToUpdate.ALL);
+                if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ALL);
                 m_waitEvent.Set();
             }
             if (!m_bTimersstopped && !m_stop)
@@ -487,11 +594,12 @@ namespace iba.Processing
 
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
+            if (networkErrorOccured) return; //wait until problem is fixed
             if (m_bTimersstopped || m_stop) return;
             reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
             lock (m_timerLock)
             {
-                updateDatFileList(WhatToUpdate.ERRORS);
+                if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ERRORS);
                 m_waitEvent.Set();
             }
             if (!m_bTimersstopped && !m_stop)
@@ -512,7 +620,7 @@ namespace iba.Processing
 
         private void updateDatFileList(WhatToUpdate what)
         {
-            Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
+            if (what != WhatToUpdate.NEW) Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
             string datDir = m_cd.DatDirectoryUNC;
             FileInfo[] fileInfos = null;
             if (Directory.Exists(datDir))
@@ -585,7 +693,18 @@ namespace iba.Processing
                     //m_toProcessFiles.Clear();
                     DirectoryInfo dirInfo = new DirectoryInfo(datDir);
                     if (what == WhatToUpdate.ALL)
-                        fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs?SearchOption.AllDirectories:SearchOption.TopDirectoryOnly);
+                    {
+                        try
+                        {
+                            fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                        }
+                        catch
+                        {
+                            m_sd.UpdatingFileList = false;
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                            return;
+                        }
+                    }
                     foreach (FileInfo fi in fileInfos)
                     {
                         if (m_stop) break;
@@ -958,20 +1077,40 @@ namespace iba.Processing
                 dir = Path.Combine(dir, SubFolder(task.Subfolder));
             }
             if (!Directory.Exists(dir))
+            {
                 try
                 {
                     Directory.CreateDirectory(dir);
                 }
                 catch
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                    lock (m_sd.DatFileStates)
+                    bool failed = true;
+                    if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
                     {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        failed = false;
+                        if (!Directory.Exists(dir))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+                            catch
+                            {
+                                failed = true;
+                            }
+                        }
                     }
-                    return null;
+                    if (failed)
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        }
+                        return null;
+                    }
                 }
-
+            }
             string ext = (task.FileType == ExtractData.ExtractFileType.BINARY?"dat":"txt");
             //arg += ":" + Path.Combine(dir, actualFileName + ext);
             string arg = Path.Combine(dir, actualFileName + "." + ext);
@@ -1109,20 +1248,41 @@ namespace iba.Processing
                     dir = Path.Combine(dir, SubFolder(task.Subfolder));
                 }
                 if (!Directory.Exists(dir))
+                {
                     try
                     {
                         Directory.CreateDirectory(dir);
                     }
                     catch
                     {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename,task);
-                        lock (m_sd.DatFileStates)
+                        bool failed = true;
+                        if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
                         {
-                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            failed = false;
+                            if (!Directory.Exists(dir))
+                            {
+                                try
+                                {
+                                    Directory.CreateDirectory(dir);
+                                }
+                                catch
+                                {
+                                    failed = true;
+                                }
+                            }
                         }
-                        return;
-                    }
 
+                        if (failed)
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+                    }
+                }
                 string ext = task.Extension;
                 //arg += ":" + Path.Combine(dir, actualFileName + ext);
                 arg = Path.Combine(dir, actualFileName + "." + ext);
@@ -1196,20 +1356,41 @@ namespace iba.Processing
                 dir = Path.Combine(dir, SubFolder(task.Subfolder));
             }
             if (!Directory.Exists(dir))
+            {
                 try
                 {
                     Directory.CreateDirectory(dir);
                 }
                 catch
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                    lock (m_sd.DatFileStates)
+                    bool failed = true;
+                    if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
                     {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        failed = false;
+                        if (!Directory.Exists(dir))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+                            catch
+                            {
+                                failed = true;
+                            }
+                        }
                     }
-                    return;
+                    if (failed)
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        }
+                        return;
+                    }
                 }
-
+            }
+            
             if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE)
             {
                 List<string> subdirs = new List<string>(Directory.GetDirectories(Directory.GetParent(dir).FullName));

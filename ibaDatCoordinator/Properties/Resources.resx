@@ -608,7 +608,7 @@
     <value>Closing</value>
   </data>
   <data name="CouldNotTestPath" xml:space="preserve">
-    <value>could not test validity op the directory</value>
+    <value>could not test validity of the directory</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
     <value>Specified directory does not exist</value>
@@ -621,5 +621,17 @@
   </data>
   <data name="thumup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\thumup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkPathButton" xml:space="preserve">
+    <value>test path</value>
+  </data>
+  <data name="ConnectionLostFrom" xml:space="preserve">
+    <value>Lost connection to shared network directory '{0}' : "{1}"</value>
+  </data>
+  <data name="ConnectionRestoredTo" xml:space="preserve">
+    <value>Connection restored to shared network directory '{0}'</value>
+  </data>
+  <data name="UNCPathUnavailable" xml:space="preserve">
+    <value>Could not find the UNC path '{0}'</value>
   </data>
 </root>

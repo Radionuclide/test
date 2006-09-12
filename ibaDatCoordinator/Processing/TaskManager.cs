@@ -67,7 +67,7 @@ namespace iba.Processing
                     cw.ConfigurationToUpdate = data;
                     m_workers.Remove(data);
                     m_workers.Add(data, cw);
-                    LogData.Data.Logger.Log("updated");
+                    cw.Signal();
                 }
                 catch (KeyNotFoundException)
                 {
@@ -110,18 +110,6 @@ namespace iba.Processing
         virtual public void StopConfiguration(ConfigurationData data)
         {
             m_workers[data].Stop = true;
-        }
-
-        virtual public void StartConfiguration(ulong ID)
-        {
-            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
-            {
-                if (pair.Key.ID == ID)
-                {
-                    pair.Value.Start();
-                    return;
-                }
-            }
         }
 
         virtual public ulong IdCounter
@@ -555,18 +543,6 @@ namespace iba.Processing
                 Program.CommunicationObject.handleBrokenConnection();
             }
         }                        
-
-        public override void StartConfiguration(ulong ID)
-        {
-            try
-            {
-                Program.CommunicationObject.Manager.StartConfiguration(ID);
-            }
-            catch (SocketException)
-            {
-                Program.CommunicationObject.handleBrokenConnection();
-            }
-        }
 
         public override ulong IdCounter
         {

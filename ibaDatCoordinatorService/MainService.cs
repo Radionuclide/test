@@ -37,6 +37,7 @@ namespace iba.Services
             BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
             IDictionary props = new Hashtable();
             props["port"] = 8800;
+            props["machineName"] = "localhost";
             TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
             try
             {
@@ -88,7 +89,7 @@ namespace iba.Services
                     m_communicationObject.Manager.Configurations = confs;
                     foreach (ConfigurationData dat in confs)
                     {
-                        if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat.ID);
+                        if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
                     }
                 }
                 catch (Exception ex)

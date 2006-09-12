@@ -12,7 +12,7 @@ namespace iba.Utility
         public static bool TestPath(string path, string userName, string passWord, out string errorMsg, bool createallowed)
         {
 	        errorMsg = String.Empty;
-            if(path.StartsWith(@"\\\\"))
+            if(path.StartsWith(@"\\"))
 	        {
 		        try
 		        {
@@ -51,7 +51,7 @@ namespace iba.Utility
 	        }
 	        finally
 	        {
-		        if(path.StartsWith(@"\\\\"))
+		        if(path.StartsWith(@"\\"))
 		        {
 			        //Cancel connection
 			        String computer = Path.GetPathRoot(path);
@@ -61,10 +61,6 @@ namespace iba.Utility
         }
 
         private SortedDictionary<string, int> m_connectedComputers;
-
-
-
-
         private SharesHandler()
         {
             m_connectedComputers = new SortedDictionary<string, int>();
@@ -72,11 +68,14 @@ namespace iba.Utility
 
         ~SharesHandler() //should not do much, but just in case
         {
-            foreach (string comp in m_connectedComputers.Keys)
+            lock (m_connectedComputers)
             {
-                Shares.DisconnectFromComputer(comp, true);  
+                foreach (string comp in m_connectedComputers.Keys)
+                {
+                    Shares.DisconnectFromComputer(comp, true);
+                }
+                m_connectedComputers.Clear();
             }
-            m_connectedComputers.Clear();
         }
 
         private int AddReference(string computer, string user, string pass)
@@ -95,6 +94,21 @@ namespace iba.Utility
                     }
                     else return 0;
                 }
+            }
+        }
+
+        public bool TryReconnect(string path, string user, string pass)
+        {
+            string computer = ComputerName(path);
+            lock (m_connectedComputers)
+            {
+                if (Directory.Exists(path)) return true; //path restored by other means
+                if (m_connectedComputers.ContainsKey(computer))
+                {
+                    return Shares.ConnectToComputer(computer, user, pass) == 0
+                        && Directory.Exists(computer);
+                }
+                else return false;
             }
         }
 
@@ -133,7 +147,7 @@ namespace iba.Utility
 
         public bool IsUNC(string path)
         {
-            return path.StartsWith(@"\\\\");
+            return path.StartsWith(@"\\");
         }
 
         public string ComputerName(string path)
@@ -143,12 +157,12 @@ namespace iba.Utility
 
         public void ReleaseFromConfiguration(ConfigurationData conf)
         {
-            if (conf.DatDirectory != conf.DatDirectoryUNC)
+            if (IsUNC(conf.DatDirectoryUNC))
                 Release(ComputerName(conf.DatDirectoryUNC));
             foreach (TaskData dat in conf.Tasks)
             {
                 TaskDataUNC datUNC = dat as TaskDataUNC;
-                if (datUNC != null)
+                if (datUNC != null && IsUNC(datUNC.DestinationMapUNC))
                     Release(ComputerName(datUNC.DestinationMapUNC));
             }
         }

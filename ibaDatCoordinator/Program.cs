@@ -81,6 +81,7 @@ namespace iba
                 serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
                 Hashtable props = new Hashtable();
                 props["port"] = 0;
+                props["machineName"] = "localhost";
                 // Pass the properties for the port setting and the server provider in the server chain argument. (Client remains null here.)
                 TcpChannel channel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(channel,false);

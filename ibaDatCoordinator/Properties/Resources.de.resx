@@ -154,6 +154,9 @@
   <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="checkPathButton" xml:space="preserve">
+    <value>Pfad prüfen</value>
+  </data>
   <data name="closing" xml:space="preserve">
     <value>Schließen</value>
   </data>
@@ -175,6 +178,12 @@
   <data name="connectionLostCaption" xml:space="preserve">
     <value>Verbindung unterbrochen</value>
   </data>
+  <data name="ConnectionLostFrom" xml:space="preserve">
+    <value>Die Verbindung zum Netzlaufwerk '{0}' ist unterbrochen : ''{1}"</value>
+  </data>
+  <data name="ConnectionRestoredTo" xml:space="preserve">
+    <value>Die Verbindung zum Netzlaufwerk '{0}' wurde wiederhergestellt</value>
+  </data>
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -183,6 +192,9 @@
   </data>
   <data name="copyTitle" xml:space="preserve">
     <value>Kopieren</value>
+  </data>
+  <data name="CouldNotTestPath" xml:space="preserve">
+    <value>Konnte nicht Gültigkeit des Verzeichnisses prüfen</value>
   </data>
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -529,6 +541,9 @@
   <data name="stopConfiguration" xml:space="preserve">
     <value>Job wird gestoppt.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Die geänderte Konfiguration wurde übernommen</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>erfolgreich beendet</value>
   </data>
@@ -547,8 +562,11 @@
   <data name="toolTipStopAll" xml:space="preserve">
     <value>Alle Jobs stoppen</value>
   </data>
+  <data name="UNCPathUnavailable" xml:space="preserve">
+    <value>Der UNC Pfad kann nicht gefunden werden</value>
+  </data>
   <data name="UpdateHappened" xml:space="preserve">
-    <value>the jobconfiguration was updated</value>
+    <value>Die geänderte Konfiguration wurde übernommen</value>
   </data>
   <data name="watchdogTitle" xml:space="preserve">
     <value>TCP/IP Totmann-Meldung</value>

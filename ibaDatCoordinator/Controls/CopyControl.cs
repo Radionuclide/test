@@ -176,9 +176,9 @@ namespace iba.Controls
             using (WaitCursor wait = new WaitCursor())
             {
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                    ok = TaskManager.Manager.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_targetFolderTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
                 else
-                    ok = SharesHandler.TestPath(m_targetFolderTextBox.Text, m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+                    ok = SharesHandler.TestPath(Shares.PathToUnc(m_targetFolderTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
             }
             if (ok)
             {

@@ -143,14 +143,20 @@ namespace iba.Controls
                 foreach (string file in m_data.ProcessedFilesCopy)
                     lock (m_data.DatFileStates)
                     {
-                        if (File.Exists(file))
+                        try
                         {
-                            FileInfo f = new FileInfo(file);
-                            DatFileStatus dfs = null;
-                            if (m_data.DatFileStates.ContainsKey(file))
-                                dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                            contents[f.CreationTime] = 
-                                new KeyValuePair<string,DatFileStatus>(file, dfs);
+                            if (File.Exists(file))
+                            {
+                                FileInfo f = new FileInfo(file);
+                                DatFileStatus dfs = null;
+                                if (m_data.DatFileStates.ContainsKey(file))
+                                    dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
+                                contents[f.CreationTime] =
+                                    new KeyValuePair<string, DatFileStatus>(file, dfs);
+                            }
+                        }
+                        catch //if network disconnection shouldh happen
+                        {
                         }
                     }
             }
@@ -159,14 +165,20 @@ namespace iba.Controls
                 foreach (string file in m_data.ReadFilesCopy)
                     lock (m_data.DatFileStates)
                     {
-                        if (File.Exists(file))
+                        try
                         {
-                            FileInfo f = new FileInfo(file);
-                            DatFileStatus dfs = null;
-                            if (m_data.DatFileStates.ContainsKey(file))
-                                dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                            contents[f.CreationTime] = 
-                                new KeyValuePair<string,DatFileStatus>(file, dfs);
+                            if (File.Exists(file))
+                            {
+                                FileInfo f = new FileInfo(file);
+                                DatFileStatus dfs = null;
+                                if (m_data.DatFileStates.ContainsKey(file))
+                                    dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
+                                contents[f.CreationTime] =
+                                    new KeyValuePair<string, DatFileStatus>(file, dfs);
+                            }
+                        }
+                        catch //if network disconnection should happen
+                        { 
                         }
                     }
             }
