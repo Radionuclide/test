@@ -81,6 +81,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
+      <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
+      <Name>DatCoordinatorPlugins</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj">
       <Project>{03EFD2FC-187D-42A5-B3A7-38232B4FF060}</Project>
       <Name>ibaDatCoordinator</Name>

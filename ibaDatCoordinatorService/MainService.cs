@@ -60,6 +60,8 @@ namespace iba.Services
             {
                 try
                 {
+                    PluginManager.Manager.LoadPlugins();
+
                     XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
@@ -84,7 +86,6 @@ namespace iba.Services
                     foreach (ConfigurationData dat in confs)
                     {
                         dat.relinkChildData();
-                        dat.UpdateUNC(true);
                     }
                     m_communicationObject.Manager.Configurations = confs;
                     foreach (ConfigurationData dat in confs)

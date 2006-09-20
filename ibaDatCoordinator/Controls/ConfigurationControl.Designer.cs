@@ -62,12 +62,13 @@ namespace iba.Controls
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_analyserTextBox = new System.Windows.Forms.TextBox();
-            this.m_newReportButton = new System.Windows.Forms.Button();
-            this.m_newExtractButton = new System.Windows.Forms.Button();
-            this.m_newBatchfileButton = new System.Windows.Forms.Button();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.m_newCopyTaskButton = new System.Windows.Forms.Button();
+            this.m_newTaskToolstrip = new System.Windows.Forms.ToolStrip();
+            this.m_newReportButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newExtractButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newBatchfileButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newCopyTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -91,6 +92,7 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.m_newTaskToolstrip.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -358,42 +360,52 @@ namespace iba.Controls
             this.m_analyserTextBox.Name = "m_analyserTextBox";
             this.m_analyserTextBox.TextChanged += new System.EventHandler(this.m_analyserTextBox_TextChanged);
             // 
+            // groupBox4
+            // 
+            resources.ApplyResources(this.groupBox4, "groupBox4");
+            this.groupBox4.Controls.Add(this.m_newTaskToolstrip);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.TabStop = false;
+            // 
+            // m_newTaskToolstrip
+            // 
+            resources.ApplyResources(this.m_newTaskToolstrip, "m_newTaskToolstrip");
+            this.m_newTaskToolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.m_newTaskToolstrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.m_newTaskToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_newReportButton,
+            this.m_newExtractButton,
+            this.m_newBatchfileButton,
+            this.m_newCopyTaskButton});
+            this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
+            this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            // 
             // m_newReportButton
             // 
             resources.ApplyResources(this.m_newReportButton, "m_newReportButton");
+            this.m_newReportButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newReportButton.Name = "m_newReportButton";
-            this.m_newReportButton.UseVisualStyleBackColor = true;
             this.m_newReportButton.Click += new System.EventHandler(this.m_newReportButton_Click);
             // 
             // m_newExtractButton
             // 
             resources.ApplyResources(this.m_newExtractButton, "m_newExtractButton");
+            this.m_newExtractButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newExtractButton.Name = "m_newExtractButton";
-            this.m_newExtractButton.UseVisualStyleBackColor = true;
             this.m_newExtractButton.Click += new System.EventHandler(this.m_newExtractButton_Click);
             // 
             // m_newBatchfileButton
             // 
             resources.ApplyResources(this.m_newBatchfileButton, "m_newBatchfileButton");
+            this.m_newBatchfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newBatchfileButton.Name = "m_newBatchfileButton";
-            this.m_newBatchfileButton.UseVisualStyleBackColor = true;
             this.m_newBatchfileButton.Click += new System.EventHandler(this.m_newBatchfileButton_Click);
-            // 
-            // groupBox4
-            // 
-            resources.ApplyResources(this.groupBox4, "groupBox4");
-            this.groupBox4.Controls.Add(this.m_newCopyTaskButton);
-            this.groupBox4.Controls.Add(this.m_newBatchfileButton);
-            this.groupBox4.Controls.Add(this.m_newExtractButton);
-            this.groupBox4.Controls.Add(this.m_newReportButton);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.TabStop = false;
             // 
             // m_newCopyTaskButton
             // 
             resources.ApplyResources(this.m_newCopyTaskButton, "m_newCopyTaskButton");
+            this.m_newCopyTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newCopyTaskButton.Name = "m_newCopyTaskButton";
-            this.m_newCopyTaskButton.UseVisualStyleBackColor = true;
             this.m_newCopyTaskButton.Click += new System.EventHandler(this.m_newCopyTaskButton_Click);
             // 
             // m_subfolderGroupBox
@@ -547,6 +559,9 @@ namespace iba.Controls
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.m_newTaskToolstrip.ResumeLayout(false);
+            this.m_newTaskToolstrip.PerformLayout();
             this.m_subfolderGroupBox.ResumeLayout(false);
             this.m_subfolderGroupBox.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -576,9 +591,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox m_analyserTextBox;
         private System.Windows.Forms.CheckBox m_enableCheckBox;
-        private System.Windows.Forms.Button m_newReportButton;
-        private System.Windows.Forms.Button m_newExtractButton;
-        private System.Windows.Forms.Button m_newBatchfileButton;
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.Button m_browseExecutableButton;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;
@@ -587,7 +599,6 @@ namespace iba.Controls
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button m_refreshDats;
         private System.Windows.Forms.CheckBox m_autoStartCheckBox;
-        private System.Windows.Forms.Button m_newCopyTaskButton;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
         private System.Windows.Forms.RadioButton m_rbNetSend;
         private System.Windows.Forms.TextBox m_tbEmail;
@@ -613,5 +624,10 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbUserName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button m_checkPathButton;
+        private System.Windows.Forms.ToolStrip m_newTaskToolstrip;
+        private System.Windows.Forms.ToolStripButton m_newReportButton;
+        private System.Windows.Forms.ToolStripButton m_newExtractButton;
+        private System.Windows.Forms.ToolStripButton m_newBatchfileButton;
+        private System.Windows.Forms.ToolStripButton m_newCopyTaskButton;
     }
 }

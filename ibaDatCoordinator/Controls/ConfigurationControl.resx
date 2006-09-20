@@ -543,138 +543,6 @@
   <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Name" xml:space="preserve">
-    <value>m_cbRescanEnabled</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Name" xml:space="preserve">
-    <value>m_stopButton</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.Name" xml:space="preserve">
-    <value>m_applyToRunningButton</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Name" xml:space="preserve">
-    <value>m_startButton</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
-    <value>m_autoStartCheckBox</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
-    <value>m_enableCheckBox</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Name" xml:space="preserve">
-    <value>m_failTimeUpDown</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 89</value>
-  </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 97</value>
-  </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Cyclus</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_cbRescanEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -922,83 +790,35 @@
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
+  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 89</value>
+  </data>
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 97</value>
+  </data>
+  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Cyclus</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
-    <value>m_browseExecutableButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Name" xml:space="preserve">
-    <value>m_analyserTextBox</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 294</value>
-  </data>
-  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 67</value>
-  </data>
-  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_browseExecutableButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1102,68 +922,29 @@
   <data name="&gt;&gt;m_analyserTextBox.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_newReportButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 19</value>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 294</value>
   </data>
-  <data name="m_newReportButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 67</value>
   </data>
-  <data name="m_newReportButton.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
-    <value>m_newReportButton</value>
-  </data>
-  <data name="&gt;&gt;m_newReportButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_newReportButton.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;m_newReportButton.ZOrder" xml:space="preserve">
+  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_newExtractButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 19</value>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>ibaAnalyzer</value>
   </data>
-  <data name="m_newExtractButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
+    <value>groupBox5</value>
   </data>
-  <data name="m_newExtractButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_newExtractButton.Name" xml:space="preserve">
-    <value>m_newExtractButton</value>
+  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_newExtractButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_newExtractButton.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;m_newExtractButton.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_newBatchfileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 19</value>
-  </data>
-  <data name="m_newBatchfileButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_newBatchfileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_newBatchfileButton.Name" xml:space="preserve">
-    <value>m_newBatchfileButton</value>
-  </data>
-  <data name="&gt;&gt;m_newBatchfileButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_newBatchfileButton.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;m_newBatchfileButton.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>190, 17</value>
@@ -1171,16 +952,154 @@
   <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Name" xml:space="preserve">
-    <value>m_newCopyTaskButton</value>
+  <metadata name="m_newTaskToolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 16</value>
+  </metadata>
+  <data name="m_newTaskToolstrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_newReportButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Parent" xml:space="preserve">
+  <data name="m_newReportButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newReportButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newReportButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newReportButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newReportButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
+  <data name="m_newExtractButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newExtractButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newExtractButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newExtractButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newExtractButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newExtractButton.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
+  </data>
+  <data name="m_newBatchfileButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newBatchfileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newBatchfileButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newBatchfileButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newBatchfileButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newBatchfileButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
+  <data name="m_newCopyTaskButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newCopyTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newCopyTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newCopyTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newCopyTaskButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newCopyTaskButton.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
+  </data>
+  <data name="m_newTaskToolstrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="m_newTaskToolstrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>559, 52</value>
+  </data>
+  <data name="m_newTaskToolstrip.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_newTaskToolstrip.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Name" xml:space="preserve">
+    <value>m_newTaskToolstrip</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Parent" xml:space="preserve">
     <value>groupBox4</value>
   </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_newTaskToolstrip.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
@@ -1207,152 +1126,8 @@
   <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_newCopyTaskButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_newCopyTaskButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 19</value>
-  </data>
-  <data name="m_newCopyTaskButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_newCopyTaskButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Name" xml:space="preserve">
-    <value>m_newCopyTaskButton</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Name" xml:space="preserve">
-    <value>m_rbNetSend</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Name" xml:space="preserve">
-    <value>m_tbSMTP</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Name" xml:space="preserve">
-    <value>m_tbEmail</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Name" xml:space="preserve">
-    <value>m_rbEmail</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Name" xml:space="preserve">
-    <value>m_tbNetSend</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 19</value>
-  </data>
-  <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 102</value>
-  </data>
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Parent" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1573,119 +1348,35 @@
   <data name="&gt;&gt;m_tbNetSend.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 19</value>
+  </data>
+  <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>532, 102</value>
+  </data>
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Parent" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="groupBox6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 444</value>
-  </data>
-  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 218</value>
-  </data>
-  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="groupBox6.Text" xml:space="preserve">
-    <value>Notifications</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.Name" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Name" xml:space="preserve">
-    <value>m_nudNotifyTime</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Name" xml:space="preserve">
-    <value>m_rbTime</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Name" xml:space="preserve">
-    <value>m_rbImmediate</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 131</value>
-  </data>
-  <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 70</value>
-  </data>
-  <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1798,6 +1489,54 @@
   <data name="&gt;&gt;m_rbImmediate.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 131</value>
+  </data>
+  <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>532, 70</value>
+  </data>
+  <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 444</value>
+  </data>
+  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 218</value>
+  </data>
+  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="groupBox6.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Name" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>291, 17</value>
   </metadata>
@@ -1821,6 +1560,30 @@
   </data>
   <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
+    <value>m_newReportButton</value>
+  </data>
+  <data name="&gt;&gt;m_newReportButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newExtractButton.Name" xml:space="preserve">
+    <value>m_newExtractButton</value>
+  </data>
+  <data name="&gt;&gt;m_newExtractButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newBatchfileButton.Name" xml:space="preserve">
+    <value>m_newBatchfileButton</value>
+  </data>
+  <data name="&gt;&gt;m_newBatchfileButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newCopyTaskButton.Name" xml:space="preserve">
+    <value>m_newCopyTaskButton</value>
+  </data>
+  <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>

@@ -43,7 +43,8 @@ namespace iba
             }
             catch (Exception)
             {
-                LogData.Data.Logger.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
+                if (LogData.Data.Logger.IsOpen)
+                    LogData.Data.Logger.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
             }
         }
 
@@ -108,7 +109,8 @@ namespace iba
 
         public void Logging_Log(string message)
         {
-            LogData.Data.Logger.Log(Logging.Level.Info, message);
+            if (LogData.Data.Logger.IsOpen) 
+                LogData.Data.Logger.Log(Logging.Level.Info, message);
         }
 
         public void Logging_openFromFile(string filename)
@@ -277,7 +279,8 @@ namespace iba
             catch (SocketException)
             {
                 handleBrokenConnection();
-                LogData.Data.Logger.Log(Logging.Level.Info, message);
+                if (LogData.Data.Logger.IsOpen)
+                    LogData.Data.Logger.Log(Logging.Level.Info, message);
             }
         }
 

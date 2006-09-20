@@ -30,6 +30,8 @@
     <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,6 +100,12 @@
     <Compile Include="Controls\CopyControl.Designer.cs">
       <DependentUpon>CopyControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomTaskControl.Designer.cs">
+      <DependentUpon>CustomTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ExtractControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,6 +151,7 @@
     <Compile Include="Data\BatchFileData.cs" />
     <Compile Include="Data\ConfigurationData.cs" />
     <Compile Include="Data\CopyMoveTaskData.cs" />
+    <Compile Include="Data\CustomTaskData.cs" />
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\ibaDatCoordinatorData.cs" />
     <Compile Include="Data\LogData.cs" />
@@ -172,6 +181,7 @@
     <Compile Include="StopServiceDialog.Designer.cs">
       <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Utility\NotifyIconEx.cs">
       <SubType>Component</SubType>
@@ -217,6 +227,7 @@
     <Compile Include="Utility\algorithms.cs" />
     <Compile Include="Utility\containers.cs" />
     <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\PluginManager.cs" />
     <Compile Include="Utility\Profiler.cs" />
     <Compile Include="Utility\Shares.cs" />
     <Compile Include="Utility\SharesHandler.cs" />
@@ -268,6 +279,10 @@
     <EmbeddedResource Include="Controls\CopyControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CopyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomTaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CustomTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ExtractControl.de.resx">
       <SubType>Designer</SubType>
@@ -497,6 +512,10 @@
     <None Include="Resources\refreshconfs.bmp" />
     <None Include="Resources\thumup.png" />
     <None Include="Resources\thumbdown.PNG" />
+    <None Include="Resources\timeout.ico" />
+    <None Include="Resources\error.ico" />
+    <None Include="Resources\noaccess.ico" />
+    <None Include="Resources\success.ico" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />
@@ -535,6 +554,12 @@
       <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
+      <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
+      <Name>DatCoordinatorPlugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

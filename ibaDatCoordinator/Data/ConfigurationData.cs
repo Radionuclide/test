@@ -7,11 +7,12 @@ using Microsoft.Win32;
 
 using System.Diagnostics;
 using iba.Utility;
+using iba.Plugins;
 
 namespace iba.Data
 {
     [ Serializable ]
-    public class ConfigurationData : ICloneable, IComparable<ConfigurationData>
+    public class ConfigurationData : ICloneable, IComparable<ConfigurationData>, IJobData
     {
         private string m_name;
         public string Name
@@ -55,7 +56,13 @@ namespace iba.Data
                 foreach (TaskData task in m_tasks)
                 {
                     TaskDataUNC t = task as TaskDataUNC;
-                    if (t!= null) t.UpdateUNC();
+                    if (t != null) t.UpdateUNC();
+                    CustomTaskData c = task as CustomTaskData;
+                    if (c != null)
+                    {
+                        IPluginTaskDataUNC plugin = c.Plugin as IPluginTaskDataUNC;
+                        if (plugin != null) plugin.UpdateUNC();
+                    }
                 }
             }
         }

@@ -92,37 +92,9 @@ namespace iba.Properties {
             }
         }
         
-        internal static System.Drawing.Icon batchfile_failure {
-            get {
-                object obj = ResourceManager.GetObject("batchfile_failure", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon batchfile_noaccess {
-            get {
-                object obj = ResourceManager.GetObject("batchfile_noaccess", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
         internal static System.Drawing.Icon batchfile_running {
             get {
                 object obj = ResourceManager.GetObject("batchfile_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon batchfile_success {
-            get {
-                object obj = ResourceManager.GetObject("batchfile_success", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon batchfile_timeout {
-            get {
-                object obj = ResourceManager.GetObject("batchfile_timeout", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -243,37 +215,9 @@ namespace iba.Properties {
             }
         }
         
-        internal static System.Drawing.Icon copydat_failure {
-            get {
-                object obj = ResourceManager.GetObject("copydat_failure", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon copydat_noaccess {
-            get {
-                object obj = ResourceManager.GetObject("copydat_noaccess", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
         internal static System.Drawing.Icon copydat_running {
             get {
                 object obj = ResourceManager.GetObject("copydat_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon copydat_success {
-            get {
-                object obj = ResourceManager.GetObject("copydat_success", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon copydat_timeout {
-            get {
-                object obj = ResourceManager.GetObject("copydat_timeout", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -349,6 +293,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the &apos;{0}&apos; options &quot;{1}&quot; of Job &quot;{2}&quot; ?.
+        /// </summary>
+        internal static string deleteCustomTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteCustomTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Extract options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteExtractQuestion {
@@ -389,16 +342,9 @@ namespace iba.Properties {
             }
         }
         
-        internal static System.Drawing.Icon extract_failure {
+        internal static System.Drawing.Icon error {
             get {
-                object obj = ResourceManager.GetObject("extract_failure", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon extract_noaccess {
-            get {
-                object obj = ResourceManager.GetObject("extract_noaccess", resourceCulture);
+                object obj = ResourceManager.GetObject("error", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -406,20 +352,6 @@ namespace iba.Properties {
         internal static System.Drawing.Icon extract_running {
             get {
                 object obj = ResourceManager.GetObject("extract_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon extract_success {
-            get {
-                object obj = ResourceManager.GetObject("extract_success", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon extract_timeout {
-            get {
-                object obj = ResourceManager.GetObject("extract_timeout", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -752,6 +684,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error loading assembly {0} : &apos;{1}&apos;.
+        /// </summary>
+        internal static string logPluginLoadError {
+            get {
+                return ResourceManager.GetString("logPluginLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to failed to remove old folder.
         /// </summary>
         internal static string logRemoveDirectoryFailed {
@@ -851,6 +792,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add {0} Task.
+        /// </summary>
+        internal static string NewCustomTaskTitle {
+            get {
+                return ResourceManager.GetString("NewCustomTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Extract Task.
         /// </summary>
         internal static string NewExtractTitle {
@@ -901,6 +851,13 @@ namespace iba.Properties {
         internal static string Noaccess {
             get {
                 return ResourceManager.GetString("Noaccess", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Icon noaccess1 {
+            get {
+                object obj = ResourceManager.GetObject("noaccess1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -1063,37 +1020,9 @@ namespace iba.Properties {
             }
         }
         
-        internal static System.Drawing.Icon report_failure {
-            get {
-                object obj = ResourceManager.GetObject("report_failure", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon report_noaccess {
-            get {
-                object obj = ResourceManager.GetObject("report_noaccess", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
         internal static System.Drawing.Icon report_running {
             get {
                 object obj = ResourceManager.GetObject("report_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon report_success {
-            get {
-                object obj = ResourceManager.GetObject("report_success", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon report_timeout {
-            get {
-                object obj = ResourceManager.GetObject("report_timeout", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -1322,6 +1251,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Icon success1 {
+            get {
+                object obj = ResourceManager.GetObject("success1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Stopped.
         /// </summary>
@@ -1351,6 +1287,13 @@ namespace iba.Properties {
         internal static string Timeout {
             get {
                 return ResourceManager.GetString("Timeout", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Icon timeout1 {
+            get {
+                object obj = ResourceManager.GetObject("timeout1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

@@ -44,31 +44,31 @@ namespace iba.Controls
 
             m_reportIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_reportIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle));
-            m_reportIcons.Add(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.report_noaccess.Handle));
-            m_reportIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.report_success.Handle));
-            m_reportIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.report_failure.Handle));
-            m_reportIcons.Add(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.report_timeout.Handle));
+            m_reportIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS,Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
+            m_reportIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
+            m_reportIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
+            m_reportIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
 
             m_extractIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_extractIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle));
-            m_extractIcons.Add(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.extract_noaccess.Handle));
-            m_extractIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.extract_success.Handle));
-            m_extractIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.extract_failure.Handle));
-            m_extractIcons.Add(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.extract_timeout.Handle));
+            m_extractIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
+            m_extractIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
+            m_extractIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
+            m_extractIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
 
             m_batchfileIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_batchfileIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle));
-            m_batchfileIcons.Add(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.batchfile_noaccess.Handle));
-            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.batchfile_success.Handle));
-            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.batchfile_failure.Handle));
-            m_batchfileIcons.Add(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.batchfile_timeout.Handle));
+            m_batchfileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
+            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
+            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
+            m_batchfileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
 
             m_copydatIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_copydatIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle));
-            m_copydatIcons.Add(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.copydat_noaccess.Handle));
-            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.copydat_success.Handle));
-            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.copydat_failure.Handle));
-            m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.copydat_timeout.Handle));
+            m_copydatIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
+            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
+            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
+            m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
 
             m_taskTexts.Add(DatFileStatus.State.NOT_STARTED, String.Empty);
             m_taskTexts.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.Running);
@@ -79,6 +79,31 @@ namespace iba.Controls
 
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
         
+        }
+
+        private Bitmap MergeIcons(DatFileStatus.State stat, Bitmap original)
+        {
+            Bitmap overlayBitmap = null;
+            switch (stat)
+            {
+                case DatFileStatus.State.COMPLETED_FAILURE:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.error.Handle);
+                    break;
+                case DatFileStatus.State.COMPLETED_SUCCESFULY:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.success1.Handle);
+                    break;
+                case DatFileStatus.State.NO_ACCESS:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.noaccess1.Handle);
+                    break;
+                case DatFileStatus.State.TIMED_OUT:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.timeout1.Handle);
+                    break;
+            }
+            Bitmap combinedBitmap = (Bitmap) original.Clone();
+            Graphics g = Graphics.FromImage(combinedBitmap);
+            g.DrawImageUnscaled(overlayBitmap, 0, 0);
+            g.Dispose();
+            return combinedBitmap;
         }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)

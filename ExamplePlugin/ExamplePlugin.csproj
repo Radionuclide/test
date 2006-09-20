@@ -4,19 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8B2378DF-7A1D-4D46-B4C0-EE8CFEB94DA2}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{C427E1E6-31A4-42E4-9315-92B92CDF79BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ibaDatCoordinatorService</RootNamespace>
-    <AssemblyName>ibaDatCoordinatorService</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <RootNamespace>ExamplePlugin</RootNamespace>
+    <AssemblyName>ExamplePlugin</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,50 +28,54 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainService.cs">
-      <SubType>Component</SubType>
+    <Compile Include="PluginCollection.cs" />
+    <Compile Include="PluginCopyTask.cs" />
+    <Compile Include="PluginCopyTaskControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MainService.Designer.cs">
-      <DependentUpon>MainService.cs</DependentUpon>
+    <Compile Include="PluginCopyTaskControl.Designer.cs">
+      <DependentUpon>PluginCopyTaskControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ProjectInstaller.Designer.cs">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </Compile>
+    <Compile Include="PluginCopyTaskWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
       <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
       <Name>DatCoordinatorPlugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj">
-      <Project>{03EFD2FC-187D-42A5-B3A7-38232B4FF060}</Project>
-      <Name>ibaDatCoordinator</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ProjectInstaller.resx">
+    <EmbeddedResource Include="PluginCopyTaskControl.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+      <DependentUpon>PluginCopyTaskControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copydat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thumbdown.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thumup.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -89,4 +85,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

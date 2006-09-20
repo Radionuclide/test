@@ -46,12 +46,12 @@ namespace iba.Data
         public override object Clone()
         {
             CopyMoveTaskData cd = new CopyMoveTaskData(null);
-            cd.m_wtodo = m_wtodo;
-            cd.m_name = m_name.Clone() as string;
             cd.m_removeSource = m_removeSource;
             cd.m_subfolderChoice = m_subfolderChoice;
             cd.m_destinationMap = m_destinationMap;
             cd.m_numbFolders = m_numbFolders;
+            cd.m_wtodo = m_wtodo;
+            cd.m_name = m_name.Clone() as string;
             cd.m_notify = m_notify;
             cd.m_username = m_username;
             cd.m_pass = m_pass;

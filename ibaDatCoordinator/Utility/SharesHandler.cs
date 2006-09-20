@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 
 using iba.Data;
+using iba.Plugins;
 
 namespace iba.Utility
 {
@@ -142,6 +143,27 @@ namespace iba.Utility
                         return;
                     }
                 }
+                IPluginTaskDataUNC plugin = null;
+                if ((dat is CustomTaskData) && ((dat as CustomTaskData).Plugin is IPluginTaskDataUNC))
+                    plugin = (dat as CustomTaskData).Plugin as IPluginTaskDataUNC;
+                if (plugin != null)
+                {
+                    foreach (string[] folder in plugin.UNCPaths())
+                    {
+                        if (AddReference(ComputerName(folder[0]), folder[1], folder[2]) == 0)
+                        {
+                            foreach (TaskData dat2 in conf.Tasks)
+                            {
+                                TaskDataUNC datUNC2 = dat2 as TaskDataUNC;
+                                if (datUNC == datUNC2) break;
+                                if (datUNC2 != null)
+                                    Release(ComputerName(datUNC2.DestinationMapUNC));
+                            }
+                            error = datUNC;
+                            return;
+                        }
+                    }
+                }
             }
         }
 
@@ -164,6 +186,17 @@ namespace iba.Utility
                 TaskDataUNC datUNC = dat as TaskDataUNC;
                 if (datUNC != null && IsUNC(datUNC.DestinationMapUNC))
                     Release(ComputerName(datUNC.DestinationMapUNC));
+                IPluginTaskDataUNC plugin = null;
+                if ((dat is CustomTaskData) && ((dat as CustomTaskData).Plugin is IPluginTaskDataUNC))
+                    plugin = (dat as CustomTaskData).Plugin as IPluginTaskDataUNC;
+                if (plugin != null)
+                {
+                    foreach (string[] folder in plugin.UNCPaths())
+                    {
+                        if (IsUNC(folder[0]))
+                            Release(ComputerName(folder[0]));
+                    }
+                }
             }
         }
 

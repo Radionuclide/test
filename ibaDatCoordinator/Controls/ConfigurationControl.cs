@@ -12,6 +12,7 @@ using iba;
 using iba.Data;
 using iba.Utility;
 using iba.Processing;
+using iba.Plugins;
 
 namespace iba.Controls
 {
@@ -24,10 +25,12 @@ namespace iba.Controls
             m_newReportButton.Image = Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle);
             m_newExtractButton.Image = Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle);
             m_newCopyTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle); 
-            m_toolTip.SetToolTip(m_newExtractButton, iba.Properties.Resources.extractButton);
-            m_toolTip.SetToolTip(m_newReportButton, iba.Properties.Resources.reportButton);
-            m_toolTip.SetToolTip(m_newBatchfileButton, iba.Properties.Resources.batchfileButton);
-            m_toolTip.SetToolTip(m_newCopyTaskButton, iba.Properties.Resources.copytaskButton);
+
+            m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
+            m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
+            m_newBatchfileButton.ToolTipText = iba.Properties.Resources.batchfileButton;
+            m_newCopyTaskButton.ToolTipText = iba.Properties.Resources.copytaskButton;
+
             m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.startButton);
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
@@ -36,6 +39,20 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningButton.Image).MakeTransparent(Color.Magenta);
+
+            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+            {
+                ToolStripButton bt = new ToolStripButton();
+                bt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+                bt.AutoSize = false;
+                bt.Height = bt.Width = 40;
+                bt.Image = Bitmap.FromHicon(info.Icon.Handle);
+                bt.ImageScaling = ToolStripItemImageScaling.None;
+                bt.ToolTipText = info.Description;
+                bt.Tag = info;
+                bt.Click += new EventHandler(newCustomTaskButton_Click);
+                m_newTaskToolstrip.Items.Add(bt);
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -90,10 +107,7 @@ namespace iba.Controls
             {
                 m_applyToRunningButton.Enabled = true;
                 m_startButton.Enabled = false;
-                m_newBatchfileButton.Enabled = false;
-                m_newExtractButton.Enabled = false;
-                m_newReportButton.Enabled = false;
-                m_newCopyTaskButton.Enabled = false;
+                m_newTaskToolstrip.Enabled = false;
                 m_stopButton.Enabled = true;
                 m_refreshDats.Enabled = false;
             }
@@ -101,10 +115,7 @@ namespace iba.Controls
             {
                 m_applyToRunningButton.Enabled = false;
                 m_startButton.Enabled = m_data.Enabled;
-                m_newBatchfileButton.Enabled = true;
-                m_newExtractButton.Enabled = true;
-                m_newReportButton.Enabled = true;
-                m_newCopyTaskButton.Enabled = true;
+                m_newTaskToolstrip.Enabled = true;
                 m_stopButton.Enabled = false;
                 m_refreshDats.Enabled = true;
             }
@@ -212,7 +223,7 @@ namespace iba.Controls
             ReportData report = new ReportData(m_data);
             new SetNextName(report);
             m_data.Tasks.Add(report);
-            TreeNode newNode = new TreeNode(report.Name, 1, 1);
+            TreeNode newNode = new TreeNode(report.Name, MainForm.REPORTTASK_INDEX, MainForm.REPORTTASK_INDEX);
             newNode.Tag = new ReportTreeItemData(m_manager, report);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -225,7 +236,7 @@ namespace iba.Controls
             ExtractData extract = new ExtractData(m_data);
             new SetNextName(extract);
             m_data.Tasks.Add(extract);
-            TreeNode newNode = new TreeNode(extract.Name, 2,2);
+            TreeNode newNode = new TreeNode(extract.Name, MainForm.EXTRACTTASK_INDEX, MainForm.EXTRACTTASK_INDEX);
             newNode.Tag = new ExtractTreeItemData(m_manager, extract);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -238,7 +249,7 @@ namespace iba.Controls
             BatchFileData batchfile = new BatchFileData(m_data);
             new SetNextName(batchfile);
             m_data.Tasks.Add(batchfile);
-            TreeNode newNode = new TreeNode(batchfile.Name, 3, 3);
+            TreeNode newNode = new TreeNode(batchfile.Name, MainForm.BATCHFILETASK_INDEX, MainForm.BATCHFILETASK_INDEX);
             newNode.Tag = new BatchFileTreeItemData(m_manager, batchfile);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -251,13 +262,29 @@ namespace iba.Controls
             CopyMoveTaskData copy = new CopyMoveTaskData(m_data);
             new SetNextName(copy);
             m_data.Tasks.Add(copy);
-            TreeNode newNode = new TreeNode(copy.Name, 4, 4);
+            TreeNode newNode = new TreeNode(copy.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
             newNode.Tag = new CopyTaskTreeItemData(m_manager, copy);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
         }
+
+        void newCustomTaskButton_Click(object sender, EventArgs e)
+        {
+            PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton) sender).Tag);
+            CustomTaskData cust = new CustomTaskData(m_data, info);
+            new SetNextName(cust);
+            m_data.Tasks.Add(cust);
+            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+            TreeNode newNode = new TreeNode(cust.Name, MainForm.CUSTOMTASK_INDEX + index, MainForm.CUSTOMTASK_INDEX + index);
+            newNode.Tag = new CustomTaskTreeItemData(m_manager,cust);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode); 
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+        }
+
 
         private void m_enableCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -289,10 +316,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
             m_startButton.Enabled = false;
-            m_newBatchfileButton.Enabled = false;
-            m_newExtractButton.Enabled = false;
-            m_newReportButton.Enabled = false;
-            m_newCopyTaskButton.Enabled = false;
+            m_newTaskToolstrip.Enabled = false;
             m_applyToRunningButton.Enabled = true;
             m_stopButton.Enabled = true;
             m_refreshDats.Enabled = false;
@@ -313,10 +337,7 @@ namespace iba.Controls
             }
             m_startButton.Enabled = true;
             m_applyToRunningButton.Enabled = false;
-            m_newBatchfileButton.Enabled = true;
-            m_newExtractButton.Enabled = true;
-            m_newReportButton.Enabled = true;
-            m_newCopyTaskButton.Enabled = true;
+            m_newTaskToolstrip.Enabled = true;
             m_refreshDats.Enabled = true;
             m_stopButton.Enabled = false;
             MainForm t = m_manager as MainForm;

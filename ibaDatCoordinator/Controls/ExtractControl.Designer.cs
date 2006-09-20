@@ -99,46 +99,30 @@ namespace iba.Controls
             // 
             // m_rbTextFile
             // 
-            this.m_rbTextFile.AccessibleDescription = null;
-            this.m_rbTextFile.AccessibleName = null;
             resources.ApplyResources(this.m_rbTextFile, "m_rbTextFile");
-            this.m_rbTextFile.BackgroundImage = null;
-            this.m_rbTextFile.Font = null;
             this.m_rbTextFile.Name = "m_rbTextFile";
             this.m_rbTextFile.TabStop = true;
             this.m_rbTextFile.UseVisualStyleBackColor = true;
             // 
             // m_rbBinaryFile
             // 
-            this.m_rbBinaryFile.AccessibleDescription = null;
-            this.m_rbBinaryFile.AccessibleName = null;
             resources.ApplyResources(this.m_rbBinaryFile, "m_rbBinaryFile");
-            this.m_rbBinaryFile.BackgroundImage = null;
-            this.m_rbBinaryFile.Font = null;
             this.m_rbBinaryFile.Name = "m_rbBinaryFile";
             this.m_rbBinaryFile.TabStop = true;
             this.m_rbBinaryFile.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.AccessibleDescription = null;
-            this.groupBox1.AccessibleName = null;
             resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.BackgroundImage = null;
             this.groupBox1.Controls.Add(this.m_executeIBAAButton);
             this.groupBox1.Controls.Add(this.m_browseFileButton);
             this.groupBox1.Controls.Add(this.m_pdoFileTextBox);
-            this.groupBox1.Font = null;
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // m_executeIBAAButton
             // 
-            this.m_executeIBAAButton.AccessibleDescription = null;
-            this.m_executeIBAAButton.AccessibleName = null;
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.BackgroundImage = null;
-            this.m_executeIBAAButton.Font = null;
             this.m_executeIBAAButton.Image = global::iba.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
@@ -146,11 +130,7 @@ namespace iba.Controls
             // 
             // m_browseFileButton
             // 
-            this.m_browseFileButton.AccessibleDescription = null;
-            this.m_browseFileButton.AccessibleName = null;
             resources.ApplyResources(this.m_browseFileButton, "m_browseFileButton");
-            this.m_browseFileButton.BackgroundImage = null;
-            this.m_browseFileButton.Font = null;
             this.m_browseFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browseFileButton.Name = "m_browseFileButton";
             this.m_browseFileButton.UseVisualStyleBackColor = true;
@@ -158,68 +138,41 @@ namespace iba.Controls
             // 
             // m_pdoFileTextBox
             // 
-            this.m_pdoFileTextBox.AccessibleDescription = null;
-            this.m_pdoFileTextBox.AccessibleName = null;
             resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
-            this.m_pdoFileTextBox.BackgroundImage = null;
-            this.m_pdoFileTextBox.Font = null;
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
-            // m_openFileDialog1
-            // 
-            resources.ApplyResources(this.m_openFileDialog1, "m_openFileDialog1");
-            // 
             // groupBox2
             // 
-            this.groupBox2.AccessibleDescription = null;
-            this.groupBox2.AccessibleName = null;
             resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.BackgroundImage = null;
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.m_nameTextBox);
-            this.groupBox2.Font = null;
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
             // label1
             // 
-            this.label1.AccessibleDescription = null;
-            this.label1.AccessibleName = null;
             resources.ApplyResources(this.label1, "label1");
-            this.label1.Font = null;
             this.label1.Name = "label1";
             // 
             // m_nameTextBox
             // 
-            this.m_nameTextBox.AccessibleDescription = null;
-            this.m_nameTextBox.AccessibleName = null;
             resources.ApplyResources(this.m_nameTextBox, "m_nameTextBox");
-            this.m_nameTextBox.BackgroundImage = null;
-            this.m_nameTextBox.Font = null;
             this.m_nameTextBox.Name = "m_nameTextBox";
             this.m_nameTextBox.TextChanged += new System.EventHandler(this.m_nameTextBox_TextChanged);
             // 
             // groupBox3
             // 
-            this.groupBox3.AccessibleDescription = null;
-            this.groupBox3.AccessibleName = null;
             resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.BackgroundImage = null;
             this.groupBox3.Controls.Add(this.m_rbDbase);
             this.groupBox3.Controls.Add(this.m_rbFile);
             this.groupBox3.Controls.Add(this.m_panelFile);
-            this.groupBox3.Font = null;
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
             // m_rbDbase
             // 
-            this.m_rbDbase.AccessibleDescription = null;
-            this.m_rbDbase.AccessibleName = null;
             resources.ApplyResources(this.m_rbDbase, "m_rbDbase");
-            this.m_rbDbase.BackgroundImage = null;
-            this.m_rbDbase.Font = null;
             this.m_rbDbase.Name = "m_rbDbase";
             this.m_rbDbase.TabStop = true;
             this.m_rbDbase.UseVisualStyleBackColor = true;
@@ -227,11 +180,7 @@ namespace iba.Controls
             // 
             // m_rbFile
             // 
-            this.m_rbFile.AccessibleDescription = null;
-            this.m_rbFile.AccessibleName = null;
             resources.ApplyResources(this.m_rbFile, "m_rbFile");
-            this.m_rbFile.BackgroundImage = null;
-            this.m_rbFile.Font = null;
             this.m_rbFile.Name = "m_rbFile";
             this.m_rbFile.TabStop = true;
             this.m_rbFile.UseVisualStyleBackColor = true;
@@ -239,10 +188,7 @@ namespace iba.Controls
             // 
             // m_panelFile
             // 
-            this.m_panelFile.AccessibleDescription = null;
-            this.m_panelFile.AccessibleName = null;
             resources.ApplyResources(this.m_panelFile, "m_panelFile");
-            this.m_panelFile.BackgroundImage = null;
             this.m_panelFile.Controls.Add(this.m_tbPass);
             this.m_panelFile.Controls.Add(this.label3);
             this.m_panelFile.Controls.Add(this.m_targetFolderTextBox);
@@ -253,84 +199,53 @@ namespace iba.Controls
             this.m_panelFile.Controls.Add(this.label4);
             this.m_panelFile.Controls.Add(this.m_subfolderGroupBox);
             this.m_panelFile.Controls.Add(this.m_checkPathButton);
-            this.m_panelFile.Font = null;
             this.m_panelFile.Name = "m_panelFile";
             // 
             // m_tbPass
             // 
-            this.m_tbPass.AccessibleDescription = null;
-            this.m_tbPass.AccessibleName = null;
             resources.ApplyResources(this.m_tbPass, "m_tbPass");
-            this.m_tbPass.BackgroundImage = null;
-            this.m_tbPass.Font = null;
             this.m_tbPass.Name = "m_tbPass";
             this.m_tbPass.TextChanged += new System.EventHandler(this.m_extractDirInfoChanged);
             // 
             // label3
             // 
-            this.label3.AccessibleDescription = null;
-            this.label3.AccessibleName = null;
             resources.ApplyResources(this.label3, "label3");
-            this.label3.Font = null;
             this.label3.Name = "label3";
             // 
             // m_targetFolderTextBox
             // 
-            this.m_targetFolderTextBox.AccessibleDescription = null;
-            this.m_targetFolderTextBox.AccessibleName = null;
             resources.ApplyResources(this.m_targetFolderTextBox, "m_targetFolderTextBox");
-            this.m_targetFolderTextBox.BackgroundImage = null;
-            this.m_targetFolderTextBox.Font = null;
             this.m_targetFolderTextBox.Name = "m_targetFolderTextBox";
             this.m_targetFolderTextBox.TextChanged += new System.EventHandler(this.m_extractDirInfoChanged);
             // 
             // label12
             // 
-            this.label12.AccessibleDescription = null;
-            this.label12.AccessibleName = null;
             resources.ApplyResources(this.label12, "label12");
-            this.label12.Font = null;
             this.label12.Name = "label12";
             // 
             // groupBox5
             // 
-            this.groupBox5.AccessibleDescription = null;
-            this.groupBox5.AccessibleName = null;
             resources.ApplyResources(this.groupBox5, "groupBox5");
-            this.groupBox5.BackgroundImage = null;
             this.groupBox5.Controls.Add(this.tableLayoutPanel4);
-            this.groupBox5.Font = null;
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.AccessibleDescription = null;
-            this.tableLayoutPanel4.AccessibleName = null;
             resources.ApplyResources(this.tableLayoutPanel4, "tableLayoutPanel4");
-            this.tableLayoutPanel4.BackgroundImage = null;
             this.tableLayoutPanel4.Controls.Add(this.m_rbTextFile, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.m_rbBinaryFile, 1, 0);
-            this.tableLayoutPanel4.Font = null;
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             // 
             // m_tbUserName
             // 
-            this.m_tbUserName.AccessibleDescription = null;
-            this.m_tbUserName.AccessibleName = null;
             resources.ApplyResources(this.m_tbUserName, "m_tbUserName");
-            this.m_tbUserName.BackgroundImage = null;
-            this.m_tbUserName.Font = null;
             this.m_tbUserName.Name = "m_tbUserName";
             this.m_tbUserName.TextChanged += new System.EventHandler(this.m_extractDirInfoChanged);
             // 
             // m_browseFolderButton
             // 
-            this.m_browseFolderButton.AccessibleDescription = null;
-            this.m_browseFolderButton.AccessibleName = null;
             resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-            this.m_browseFolderButton.BackgroundImage = null;
-            this.m_browseFolderButton.Font = null;
             this.m_browseFolderButton.Image = global::iba.Properties.Resources.open;
             this.m_browseFolderButton.Name = "m_browseFolderButton";
             this.m_browseFolderButton.UseVisualStyleBackColor = true;
@@ -338,51 +253,33 @@ namespace iba.Controls
             // 
             // label4
             // 
-            this.label4.AccessibleDescription = null;
-            this.label4.AccessibleName = null;
             resources.ApplyResources(this.label4, "label4");
-            this.label4.Font = null;
             this.label4.Name = "label4";
             // 
             // m_subfolderGroupBox
             // 
-            this.m_subfolderGroupBox.AccessibleDescription = null;
-            this.m_subfolderGroupBox.AccessibleName = null;
             resources.ApplyResources(this.m_subfolderGroupBox, "m_subfolderGroupBox");
-            this.m_subfolderGroupBox.BackgroundImage = null;
             this.m_subfolderGroupBox.Controls.Add(this.tableLayoutPanel2);
-            this.m_subfolderGroupBox.Font = null;
             this.m_subfolderGroupBox.Name = "m_subfolderGroupBox";
             this.m_subfolderGroupBox.TabStop = false;
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.AccessibleDescription = null;
-            this.tableLayoutPanel2.AccessibleName = null;
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
-            this.tableLayoutPanel2.BackgroundImage = null;
             this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel2.Font = null;
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             // 
             // panel1
             // 
-            this.panel1.AccessibleDescription = null;
-            this.panel1.AccessibleName = null;
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.BackgroundImage = null;
             this.panel1.Controls.Add(this.m_folderNumber);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Font = null;
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // m_folderNumber
             // 
-            this.m_folderNumber.AccessibleDescription = null;
-            this.m_folderNumber.AccessibleName = null;
             resources.ApplyResources(this.m_folderNumber, "m_folderNumber");
-            this.m_folderNumber.Font = null;
             this.m_folderNumber.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -402,100 +299,65 @@ namespace iba.Controls
             // 
             // label2
             // 
-            this.label2.AccessibleDescription = null;
-            this.label2.AccessibleName = null;
             resources.ApplyResources(this.label2, "label2");
-            this.label2.Font = null;
             this.label2.Name = "label2";
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.AccessibleDescription = null;
-            this.tableLayoutPanel3.AccessibleName = null;
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.BackgroundImage = null;
             this.tableLayoutPanel3.Controls.Add(this.m_rbOriginal, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.m_rbNONE, 2, 1);
             this.tableLayoutPanel3.Controls.Add(this.m_rbHour, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.m_rbDay, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.m_rbWeek, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.m_rbMonth, 0, 1);
-            this.tableLayoutPanel3.Font = null;
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // m_rbOriginal
             // 
-            this.m_rbOriginal.AccessibleDescription = null;
-            this.m_rbOriginal.AccessibleName = null;
             resources.ApplyResources(this.m_rbOriginal, "m_rbOriginal");
-            this.m_rbOriginal.BackgroundImage = null;
-            this.m_rbOriginal.Font = null;
             this.m_rbOriginal.Name = "m_rbOriginal";
             this.m_rbOriginal.TabStop = true;
             this.m_rbOriginal.UseVisualStyleBackColor = true;
             // 
             // m_rbNONE
             // 
-            this.m_rbNONE.AccessibleDescription = null;
-            this.m_rbNONE.AccessibleName = null;
             resources.ApplyResources(this.m_rbNONE, "m_rbNONE");
-            this.m_rbNONE.BackgroundImage = null;
-            this.m_rbNONE.Font = null;
             this.m_rbNONE.Name = "m_rbNONE";
             this.m_rbNONE.TabStop = true;
             this.m_rbNONE.UseVisualStyleBackColor = true;
             // 
             // m_rbHour
             // 
-            this.m_rbHour.AccessibleDescription = null;
-            this.m_rbHour.AccessibleName = null;
             resources.ApplyResources(this.m_rbHour, "m_rbHour");
-            this.m_rbHour.BackgroundImage = null;
-            this.m_rbHour.Font = null;
             this.m_rbHour.Name = "m_rbHour";
             this.m_rbHour.TabStop = true;
             this.m_rbHour.UseVisualStyleBackColor = true;
             // 
             // m_rbDay
             // 
-            this.m_rbDay.AccessibleDescription = null;
-            this.m_rbDay.AccessibleName = null;
             resources.ApplyResources(this.m_rbDay, "m_rbDay");
-            this.m_rbDay.BackgroundImage = null;
-            this.m_rbDay.Font = null;
             this.m_rbDay.Name = "m_rbDay";
             this.m_rbDay.TabStop = true;
             this.m_rbDay.UseVisualStyleBackColor = true;
             // 
             // m_rbWeek
             // 
-            this.m_rbWeek.AccessibleDescription = null;
-            this.m_rbWeek.AccessibleName = null;
             resources.ApplyResources(this.m_rbWeek, "m_rbWeek");
-            this.m_rbWeek.BackgroundImage = null;
-            this.m_rbWeek.Font = null;
             this.m_rbWeek.Name = "m_rbWeek";
             this.m_rbWeek.TabStop = true;
             this.m_rbWeek.UseVisualStyleBackColor = true;
             // 
             // m_rbMonth
             // 
-            this.m_rbMonth.AccessibleDescription = null;
-            this.m_rbMonth.AccessibleName = null;
             resources.ApplyResources(this.m_rbMonth, "m_rbMonth");
-            this.m_rbMonth.BackgroundImage = null;
-            this.m_rbMonth.Font = null;
             this.m_rbMonth.Name = "m_rbMonth";
             this.m_rbMonth.TabStop = true;
             this.m_rbMonth.UseVisualStyleBackColor = true;
             // 
             // m_checkPathButton
             // 
-            this.m_checkPathButton.AccessibleDescription = null;
-            this.m_checkPathButton.AccessibleName = null;
             resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
-            this.m_checkPathButton.BackgroundImage = null;
-            this.m_checkPathButton.Font = null;
             this.m_checkPathButton.Image = global::iba.Properties.Resources.thumup;
             this.m_checkPathButton.Name = "m_checkPathButton";
             this.m_checkPathButton.UseVisualStyleBackColor = true;
@@ -503,70 +365,46 @@ namespace iba.Controls
             // 
             // groupBox4
             // 
-            this.groupBox4.AccessibleDescription = null;
-            this.groupBox4.AccessibleName = null;
             resources.ApplyResources(this.groupBox4, "groupBox4");
-            this.groupBox4.BackgroundImage = null;
             this.groupBox4.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox4.Font = null;
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.AccessibleDescription = null;
-            this.tableLayoutPanel1.AccessibleName = null;
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.BackgroundImage = null;
             this.tableLayoutPanel1.Controls.Add(this.m_rb1stFailure, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_rbAlways, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.m_rbFailure, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.m_rbDisabled, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_rbSucces, 1, 0);
-            this.tableLayoutPanel1.Font = null;
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // m_rb1stFailure
             // 
-            this.m_rb1stFailure.AccessibleDescription = null;
-            this.m_rb1stFailure.AccessibleName = null;
             resources.ApplyResources(this.m_rb1stFailure, "m_rb1stFailure");
-            this.m_rb1stFailure.BackgroundImage = null;
-            this.m_rb1stFailure.Font = null;
             this.m_rb1stFailure.Name = "m_rb1stFailure";
             this.m_rb1stFailure.UseVisualStyleBackColor = true;
             this.m_rb1stFailure.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
             // 
             // m_rbAlways
             // 
-            this.m_rbAlways.AccessibleDescription = null;
-            this.m_rbAlways.AccessibleName = null;
             resources.ApplyResources(this.m_rbAlways, "m_rbAlways");
-            this.m_rbAlways.BackgroundImage = null;
-            this.m_rbAlways.Font = null;
             this.m_rbAlways.Name = "m_rbAlways";
             this.m_rbAlways.UseVisualStyleBackColor = true;
             this.m_rbAlways.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
             // 
             // m_rbFailure
             // 
-            this.m_rbFailure.AccessibleDescription = null;
-            this.m_rbFailure.AccessibleName = null;
             resources.ApplyResources(this.m_rbFailure, "m_rbFailure");
-            this.m_rbFailure.BackgroundImage = null;
-            this.m_rbFailure.Font = null;
             this.m_rbFailure.Name = "m_rbFailure";
             this.m_rbFailure.UseVisualStyleBackColor = true;
             this.m_rbFailure.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
             // 
             // m_rbDisabled
             // 
-            this.m_rbDisabled.AccessibleDescription = null;
-            this.m_rbDisabled.AccessibleName = null;
             resources.ApplyResources(this.m_rbDisabled, "m_rbDisabled");
-            this.m_rbDisabled.BackgroundImage = null;
             this.m_rbDisabled.Checked = true;
-            this.m_rbDisabled.Font = null;
             this.m_rbDisabled.Name = "m_rbDisabled";
             this.m_rbDisabled.TabStop = true;
             this.m_rbDisabled.UseVisualStyleBackColor = true;
@@ -574,109 +412,69 @@ namespace iba.Controls
             // 
             // m_rbSucces
             // 
-            this.m_rbSucces.AccessibleDescription = null;
-            this.m_rbSucces.AccessibleName = null;
             resources.ApplyResources(this.m_rbSucces, "m_rbSucces");
-            this.m_rbSucces.BackgroundImage = null;
-            this.m_rbSucces.Font = null;
             this.m_rbSucces.Name = "m_rbSucces";
             this.m_rbSucces.UseVisualStyleBackColor = true;
             this.m_rbSucces.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
             // 
             // groupBox7
             // 
-            this.groupBox7.AccessibleDescription = null;
-            this.groupBox7.AccessibleName = null;
             resources.ApplyResources(this.groupBox7, "groupBox7");
-            this.groupBox7.BackgroundImage = null;
             this.groupBox7.Controls.Add(this.tableLayoutPanel6);
-            this.groupBox7.Font = null;
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.TabStop = false;
             // 
             // tableLayoutPanel6
             // 
-            this.tableLayoutPanel6.AccessibleDescription = null;
-            this.tableLayoutPanel6.AccessibleName = null;
             resources.ApplyResources(this.tableLayoutPanel6, "tableLayoutPanel6");
-            this.tableLayoutPanel6.BackgroundImage = null;
             this.tableLayoutPanel6.Controls.Add(this.m_rbNot1stFailure, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.m_rbNotAlways, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.m_rbNotFailure, 1, 1);
             this.tableLayoutPanel6.Controls.Add(this.m_rbNotDisabled, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.m_rbNotSuccess, 1, 0);
-            this.tableLayoutPanel6.Font = null;
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             // 
             // m_rbNot1stFailure
             // 
-            this.m_rbNot1stFailure.AccessibleDescription = null;
-            this.m_rbNot1stFailure.AccessibleName = null;
             resources.ApplyResources(this.m_rbNot1stFailure, "m_rbNot1stFailure");
-            this.m_rbNot1stFailure.BackgroundImage = null;
-            this.m_rbNot1stFailure.Font = null;
             this.m_rbNot1stFailure.Name = "m_rbNot1stFailure";
             this.m_rbNot1stFailure.UseVisualStyleBackColor = true;
             // 
             // m_rbNotAlways
             // 
-            this.m_rbNotAlways.AccessibleDescription = null;
-            this.m_rbNotAlways.AccessibleName = null;
             resources.ApplyResources(this.m_rbNotAlways, "m_rbNotAlways");
-            this.m_rbNotAlways.BackgroundImage = null;
-            this.m_rbNotAlways.Font = null;
             this.m_rbNotAlways.Name = "m_rbNotAlways";
             this.m_rbNotAlways.UseVisualStyleBackColor = true;
             // 
             // m_rbNotFailure
             // 
-            this.m_rbNotFailure.AccessibleDescription = null;
-            this.m_rbNotFailure.AccessibleName = null;
             resources.ApplyResources(this.m_rbNotFailure, "m_rbNotFailure");
-            this.m_rbNotFailure.BackgroundImage = null;
-            this.m_rbNotFailure.Font = null;
             this.m_rbNotFailure.Name = "m_rbNotFailure";
             this.m_rbNotFailure.UseVisualStyleBackColor = true;
             // 
             // m_rbNotDisabled
             // 
-            this.m_rbNotDisabled.AccessibleDescription = null;
-            this.m_rbNotDisabled.AccessibleName = null;
             resources.ApplyResources(this.m_rbNotDisabled, "m_rbNotDisabled");
-            this.m_rbNotDisabled.BackgroundImage = null;
             this.m_rbNotDisabled.Checked = true;
-            this.m_rbNotDisabled.Font = null;
             this.m_rbNotDisabled.Name = "m_rbNotDisabled";
             this.m_rbNotDisabled.TabStop = true;
             this.m_rbNotDisabled.UseVisualStyleBackColor = true;
             // 
             // m_rbNotSuccess
             // 
-            this.m_rbNotSuccess.AccessibleDescription = null;
-            this.m_rbNotSuccess.AccessibleName = null;
             resources.ApplyResources(this.m_rbNotSuccess, "m_rbNotSuccess");
-            this.m_rbNotSuccess.BackgroundImage = null;
-            this.m_rbNotSuccess.Font = null;
             this.m_rbNotSuccess.Name = "m_rbNotSuccess";
             this.m_rbNotSuccess.UseVisualStyleBackColor = true;
             // 
-            // m_folderBrowserDialog1
-            // 
-            resources.ApplyResources(this.m_folderBrowserDialog1, "m_folderBrowserDialog1");
-            // 
             // ExtractControl
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Font = null;
             this.MinimumSize = new System.Drawing.Size(620, 640);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);

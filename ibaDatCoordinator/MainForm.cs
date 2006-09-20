@@ -18,15 +18,27 @@ using iba.Data;
 using iba.Controls;
 using iba.Utility;
 using iba.Processing;
+using iba.Plugins;
 
 namespace iba
 {
     #region MainForm
     public partial class MainForm : Form, IPropertyPaneManager, IExternalCommand
     {
+        public static readonly int CONFIGURATION_INDEX = 0;
+        public static readonly int REPORTTASK_INDEX = 1;
+        public static readonly int EXTRACTTASK_INDEX = 2;
+        public static readonly int BATCHFILETASK_INDEX = 3;
+        public static readonly int COPYTASK_INDEX = 4;
+        public static readonly int NEWCONF_INDEX = 5;
+        public static readonly int CUSTOMTASK_INDEX = 6;
+
         public MainForm()
         {
             InitializeComponent();
+            //load any optional plugins
+            PluginManager.Manager.LoadPlugins();
+
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
             //register nodename change with the configurationcontrol
             LogControl theLogControl; 
@@ -61,6 +73,11 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
             confsImageList.Images.Add(iba.Properties.Resources.copydat_running);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
+            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+            {
+                confsImageList.Images.Add(info.Icon);
+            }
+
             m_configTreeView.ImageList = confsImageList;
             
             ImageList confsImageList2 = new ImageList();
@@ -332,7 +349,7 @@ namespace iba
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
         {
-            TreeNode confNode = new TreeNode(confIt.Name, 0, 0);
+            TreeNode confNode = new TreeNode(confIt.Name, CONFIGURATION_INDEX, CONFIGURATION_INDEX);
             MainForm.strikeOutNodeText(confNode, ! confIt.Enabled);
             
             confNode.Tag = new ConfigurationTreeItemData(this, confIt);
@@ -342,25 +359,32 @@ namespace iba
                 TreeNode taskNode = null;
                 if (task is ReportData)
                 {
-                    taskNode = new TreeNode(task.Name, 1, 1);
+                    taskNode = new TreeNode(task.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
                     taskNode.Tag = new ReportTreeItemData(this, task as ReportData);
                 }
                 else if (task is ExtractData)
                 {
-                    taskNode = new TreeNode(task.Name, 2, 2);
+                    taskNode = new TreeNode(task.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
                     taskNode.Tag = new ExtractTreeItemData(this, task as ExtractData);
                 }
                 else if (task is BatchFileData)
                 {
-                    taskNode = new TreeNode(task.Name, 3, 3);
+                    taskNode = new TreeNode(task.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
                     taskNode.Tag = new BatchFileTreeItemData(this, task as BatchFileData);
+                }
+                else if (task is CopyMoveTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, COPYTASK_INDEX, COPYTASK_INDEX);
+                    taskNode.Tag = new CopyTaskTreeItemData(this, task as CopyMoveTaskData);
                 }
                 else
                 {
-                    taskNode = new TreeNode(task.Name, 4, 4);
-                    taskNode.Tag = new CopyTaskTreeItemData(this, task as CopyMoveTaskData);
+                    CustomTaskData cust = (CustomTaskData) task;
+                    PluginTaskInfo info = cust.Plugin.GetInfo();
+                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+                    taskNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+                    taskNode.Tag = new CustomTaskTreeItemData(this, cust);
                 }
-
 
                 MainForm.strikeOutNodeText(taskNode, !task.Enabled);
                 switch (task.WhenToExecute)
@@ -404,7 +428,7 @@ namespace iba
                 m_configTreeView.Nodes.Add(CreateConfigurationNode(confIt));
 
             //add the new Configuration node
-            TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText,5, 5);
+            TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText, NEWCONF_INDEX, NEWCONF_INDEX);
             newConfNode.ForeColor = Color.Blue;
             newConfNode.Tag = new NewConfigurationTreeItemData(this);
             m_configTreeView.Nodes.Add(newConfNode); 
@@ -448,15 +472,15 @@ namespace iba
                 title = copyNode.Text + " - " + title;
 			}
             title =  m_navBar.SelectedPane.Text + ": " + title;
-            
-            Control ctrl = propertyPanes[what + "Control"] as Control;
+
+            Control ctrl = null;
             switch (what)
             {
                 case "Status":
                     {
                         if (m_navBar.SelectedPane != m_statusPane) return;
-                        if (ctrl == null) ctrl = new StatusControl();
                         StatusTreeItemData data = node.Tag as StatusTreeItemData;
+                        ctrl = data.CreateControl();
                         SetRightPaneControl(ctrl, title, data.StatusData);
                         pasteToolStripMenuItem.Enabled = false;
                         copyToolStripMenuItem.Enabled = false;
@@ -467,9 +491,8 @@ namespace iba
                 case "Configuration":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
-                        // Ctrl will never be zero here as the Configurationcontrol is initialised in constructor
-                        if (ctrl == null) ctrl = new ConfigurationControl();
                         ConfigurationTreeItemData data = node.Tag as ConfigurationTreeItemData;
+                        ctrl = data.CreateControl();
                         SetRightPaneControl(ctrl, title, data.ConfigurationData);
                         pasteToolStripMenuItem.Enabled = m_cd_copy != null;
                         bool started = TaskManager.Manager.GetStatus(data.ConfigurationData.ID).Started;
@@ -483,8 +506,8 @@ namespace iba
                 case "BatchFile":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
-                        if (ctrl == null) ctrl = new BatchFileControl();
                         BatchFileTreeItemData data = node.Tag as BatchFileTreeItemData;
+                        ctrl = data.CreateControl();
                         bool started = TaskManager.Manager.GetStatus(data.BatchFileData.ParentConfigurationData.ID).Started;
                         SetRightPaneControl(ctrl, title, data.BatchFileData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
@@ -496,8 +519,8 @@ namespace iba
                 case "Report":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
-                        if (ctrl == null) ctrl = new ReportControl();
                         ReportTreeItemData data = node.Tag as ReportTreeItemData;
+                        ctrl = data.CreateControl();
                         bool started = TaskManager.Manager.GetStatus(data.ReportData.ParentConfigurationData.ID).Started;
                         SetRightPaneControl(ctrl, title, data.ReportData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
@@ -509,8 +532,8 @@ namespace iba
                 case "Extract":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
-                        if (ctrl == null) ctrl = new ExtractControl();
                         ExtractTreeItemData data = node.Tag as ExtractTreeItemData;
+                        ctrl = data.CreateControl();
                         bool started = TaskManager.Manager.GetStatus(data.ExtractData.ParentConfigurationData.ID).Started;
                         SetRightPaneControl(ctrl, title, data.ExtractData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
@@ -522,8 +545,8 @@ namespace iba
                 case "CopyTask":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
-                        if (ctrl == null) ctrl = new CopyControl();
                         CopyTaskTreeItemData data = node.Tag as CopyTaskTreeItemData;
+                        ctrl = data.CreateControl();
                         bool started = TaskManager.Manager.GetStatus(data.CopyTaskData.ParentConfigurationData.ID).Started;
                         SetRightPaneControl(ctrl, title, data.CopyTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
@@ -532,11 +555,22 @@ namespace iba
                         deleteToolStripMenuItem.Enabled = !started;
                         break;
                     }
-
+                case "CustomTask":
+                    {
+                        if (m_navBar.SelectedPane != m_configPane) return;
+                        CustomTaskTreeItemData data = node.Tag as CustomTaskTreeItemData;
+                        ctrl = data.CreateControl();
+                        bool started = TaskManager.Manager.GetStatus(data.CustomTaskData.ParentConfigurationData.ID).Started;
+                        SetRightPaneControl(ctrl, title, data.CustomTaskData);
+                        pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
+                        copyToolStripMenuItem.Enabled = true;
+                        cutToolStripMenuItem.Enabled = !started;
+                        deleteToolStripMenuItem.Enabled = !started;
+                        break;
+                    }
                 default:
                     break;
             }
-            propertyPanes[what + "Control"] = ctrl;
         }
 
         private void OnConfigurationTreeViewAfterSelect(object sender, TreeViewEventArgs e)
@@ -634,6 +668,10 @@ namespace iba
                     msg = String.Format(iba.Properties.Resources.deleteExtractQuestion, node.Text, node.Parent.Text);
                 else if (node.Tag is CopyTaskTreeItemData)
                     msg = String.Format(iba.Properties.Resources.deleteCopyTaskQuestion, node.Text, node.Parent.Text);
+                else if (node.Tag is CustomTaskTreeItemData)
+                    msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion, 
+                    ((CustomTaskTreeItemData)(node.Tag)).CustomTaskData.Plugin.GetInfo().Name,
+                        node.Text, node.Parent.Text);
 
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -684,6 +722,12 @@ namespace iba
                             CopyTaskTreeItemData cti = node.Tag as CopyTaskTreeItemData;
                             if (cti != null)
                                 task = cti.CopyTaskData;
+                            else
+                            {
+                                CustomTaskTreeItemData pti = node.Tag as CustomTaskTreeItemData;
+                                if (pti != null)
+                                    task = pti.CustomTaskData;
+                            }
                         }
                     }
                 }
@@ -718,6 +762,8 @@ namespace iba
                     m_task_copy = (node.Tag as ExtractTreeItemData).ExtractData.Clone() as ExtractData;
                 else if (node.Tag is CopyTaskTreeItemData)
                     m_task_copy = (node.Tag as CopyTaskTreeItemData).CopyTaskData.Clone() as CopyMoveTaskData;
+                else if (node.Tag is CustomTaskTreeItemData)
+                    m_task_copy = (node.Tag as CustomTaskTreeItemData).CustomTaskData.Clone() as CustomTaskData;
                 m_confCopiedMostRecent = false;
             }
         }
@@ -729,6 +775,8 @@ namespace iba
                 SaveRightPaneControl();
                 //code to create new configuration
                 new SetNextName(m_cd_copy);
+                foreach (TaskData t in m_cd_copy.Tasks)
+                    new SetNextName(t);
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 TreeNode tn = CreateConfigurationNode(m_cd_copy);
@@ -748,6 +796,8 @@ namespace iba
                 int index = node.Index;
                 //code to create new configuration
                 new SetNextName(m_cd_copy);
+                foreach (TaskData t in m_cd_copy.Tasks)
+                    new SetNextName(t);
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 TreeNode tn = CreateConfigurationNode(m_cd_copy);
@@ -771,24 +821,34 @@ namespace iba
                 TreeNode taskNode = null;
                 if (m_task_copy is ReportData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 1, 1);
+                    taskNode = new TreeNode(m_task_copy.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
                     taskNode.Tag = new ReportTreeItemData(this, m_task_copy as ReportData);
                 }
                 else if (m_task_copy is ExtractData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 2, 2);
+                    taskNode = new TreeNode(m_task_copy.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
                     taskNode.Tag = new ExtractTreeItemData(this, m_task_copy as ExtractData);
                 }
                 else if (m_task_copy is BatchFileData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 3, 3);
+                    taskNode = new TreeNode(m_task_copy.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
                     taskNode.Tag = new BatchFileTreeItemData(this, m_task_copy as BatchFileData);
                 }
                 else if (m_task_copy is CopyMoveTaskData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 4, 4);
+                    taskNode = new TreeNode(m_task_copy.Name, COPYTASK_INDEX, COPYTASK_INDEX);
                     taskNode.Tag = new CopyTaskTreeItemData(this, m_task_copy as CopyMoveTaskData);
                 }
+                else if (m_task_copy is CustomTaskData)
+                {
+                    CustomTaskData cust = (CustomTaskData) m_task_copy;
+                    PluginTaskInfo info = cust.Plugin.GetInfo();
+                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+                    taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+                    taskNode.Tag = new CustomTaskTreeItemData(this,cust);
+                }
+
+
                 MainForm.strikeOutNodeText(taskNode, !m_task_copy.Enabled);
                 switch (m_task_copy.WhenToExecute)
                 {
@@ -821,24 +881,33 @@ namespace iba
                 new SetNextName(m_task_copy);
                 if (m_task_copy is ReportData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 1, 1);
+                    taskNode = new TreeNode(m_task_copy.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
                     taskNode.Tag = new ReportTreeItemData(this, m_task_copy as ReportData);
                 }
                 else if (m_task_copy is ExtractData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 2, 2);
+                    taskNode = new TreeNode(m_task_copy.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
                     taskNode.Tag = new ExtractTreeItemData(this, m_task_copy as ExtractData);
                 }
                 else if (m_task_copy is BatchFileData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 3, 3);
+                    taskNode = new TreeNode(m_task_copy.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
                     taskNode.Tag = new BatchFileTreeItemData(this, m_task_copy as BatchFileData);
                 }
                 else if (m_task_copy is CopyMoveTaskData)
                 {
-                    taskNode = new TreeNode(m_task_copy.Name, 4, 4);
+                    taskNode = new TreeNode(m_task_copy.Name, COPYTASK_INDEX, COPYTASK_INDEX);
                     taskNode.Tag = new CopyTaskTreeItemData(this, m_task_copy as CopyMoveTaskData);
                 }
+                else if (m_task_copy is CustomTaskData)
+                {
+                    CustomTaskData cust = (CustomTaskData)m_task_copy;
+                    PluginTaskInfo info = cust.Plugin.GetInfo();
+                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+                    taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+                    taskNode.Tag = new CustomTaskTreeItemData(this, cust);
+                }
+
 
                 MainForm.strikeOutNodeText(taskNode, !m_task_copy.Enabled);
                 switch (m_task_copy.WhenToExecute)
@@ -856,9 +925,9 @@ namespace iba
                         taskNode.StateImageIndex = -1;
                         break;
                 }
-                int index = node.Index;
-                origData.Tasks.Insert(index, m_task_copy);
-                node.Parent.Nodes.Insert(index, taskNode);
+                int index2 = node.Index;
+                origData.Tasks.Insert(index2, m_task_copy);
+                node.Parent.Nodes.Insert(index2, taskNode);
                 taskNode.EnsureVisible();
                 m_configTreeView.SelectedNode = taskNode;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -887,23 +956,34 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.extract_running);
             menuImages.Images.Add(iba.Properties.Resources.batchfile_running);
             menuImages.Images.Add(iba.Properties.Resources.copydat_running);
-            m_menuItems = new MenuCommand[] 
-			{
-                new MenuCommand(iba.Properties.Resources.deleteTitle,il.List, MyImageList.Delete, Shortcut.Del,	new EventHandler(OnDeleteMenuItem)),
-                new MenuCommand(iba.Properties.Resources.collapseTitle,il.List, -1, Shortcut.None,	new EventHandler(OnCollapseAllMenuItem)),
-                new MenuCommand(iba.Properties.Resources.cutTitle,menuImages,0,Shortcut.CtrlX,new EventHandler(OnCutMenuItem)),
-                new MenuCommand(iba.Properties.Resources.copyTitle,menuImages,1,Shortcut.CtrlC,new EventHandler(OnCopyMenuItem)),
-                new MenuCommand(iba.Properties.Resources.pasteTitle,menuImages,2,Shortcut.CtrlV,new EventHandler(OnPasteMenuItem)),
-                new MenuCommand(iba.Properties.Resources.NewTaskTitle,il.List, -1, Shortcut.None),            
-                new MenuCommand(iba.Properties.Resources.NewReportTitle,menuImages,3,Shortcut.None, new EventHandler(OnNewReportMenuItem)),
-                new MenuCommand(iba.Properties.Resources.NewExtractTitle,menuImages,4,Shortcut.None, new EventHandler(OnNewExtractMenuItem)),
-                new MenuCommand(iba.Properties.Resources.NewBatchfileTitle,menuImages,5,Shortcut.None, new EventHandler(OnNewBatchfileMenuItem)),
-                new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages,6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem))
-            };
+            foreach(PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+                menuImages.Images.Add(info.Icon);
+
+            int customcount = PluginManager.Manager.PluginInfos.Count;
+            m_menuItems = new MenuCommand[10 + customcount];
+            m_menuItems[(int)MenuItemsEnum.Delete] = new MenuCommand(iba.Properties.Resources.deleteTitle, il.List, MyImageList.Delete, Shortcut.Del, new EventHandler(OnDeleteMenuItem));
+            m_menuItems[(int)MenuItemsEnum.CollapseAll] = new MenuCommand(iba.Properties.Resources.collapseTitle, il.List, -1, Shortcut.None, new EventHandler(OnCollapseAllMenuItem));
+            m_menuItems[(int)MenuItemsEnum.Cut] = new MenuCommand(iba.Properties.Resources.cutTitle, menuImages, 0, Shortcut.CtrlX, new EventHandler(OnCutMenuItem));
+            m_menuItems[(int)MenuItemsEnum.Copy] = new MenuCommand(iba.Properties.Resources.copyTitle, menuImages, 1, Shortcut.CtrlC, new EventHandler(OnCopyMenuItem));
+            m_menuItems[(int)MenuItemsEnum.Paste] = new MenuCommand(iba.Properties.Resources.pasteTitle, menuImages, 2, Shortcut.CtrlV, new EventHandler(OnPasteMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewTask] = new MenuCommand(iba.Properties.Resources.NewTaskTitle, il.List, -1, Shortcut.None);
+            m_menuItems[(int)MenuItemsEnum.NewReport] = new MenuCommand(iba.Properties.Resources.NewReportTitle, menuImages, 3, Shortcut.None, new EventHandler(OnNewReportMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewExtract] = new MenuCommand(iba.Properties.Resources.NewExtractTitle, menuImages, 4, Shortcut.None, new EventHandler(OnNewExtractMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new MenuCommand(iba.Properties.Resources.NewBatchfileTitle, menuImages, 5, Shortcut.None, new EventHandler(OnNewBatchfileMenuItem));
+            m_menuItems[(int) MenuItemsEnum.NewCopyTask] = new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages,6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem));
+            for (int i = 0; i < customcount; i++)
+            {
+                string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, 7+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
+            }
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewBatchfile]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewCopyTask]);
+            for (int i = 0; i < customcount; i++)
+            {
+                m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
+            }
         }
 
         internal enum MenuItemsEnum
@@ -917,7 +997,8 @@ namespace iba
             NewReport = 6,
             NewExtract = 7,
             NewBatchfile = 8,
-            NewCopyTask = 9
+            NewCopyTask = 9,
+            NewCustomTask = 10
         }
 
         private void m_configTreeView_MouseDown(object sender, MouseEventArgs e)
@@ -967,8 +1048,17 @@ namespace iba
                 mc.Tag = node;
                 m_popupMenu.MenuCommands.Add(mc);
                 if (item == MenuItemsEnum.NewTask)
+                {
+                    int index = PluginManager.Manager.PluginInfos.Count - mc.MenuCommands.Count;
                     foreach (MenuCommand mc2 in mc.MenuCommands)
-                        mc2.Tag = node;
+                    {
+                        if (index < 0)
+                            mc2.Tag = node;
+                        else
+                            mc2.Tag = new Pair<TreeNode, int>(node, index);
+                        index++;
+                    }
+                }
             }
             m_popupMenu.TrackPopup(Cursor.Position);
         }
@@ -1021,7 +1111,7 @@ namespace iba
             confData.Tasks.Add(report);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(report.Name, 1, 1);
+            TreeNode newNode = new TreeNode(report.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
             newNode.Tag = new ReportTreeItemData(this, report);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -1037,7 +1127,7 @@ namespace iba
             confData.Tasks.Add(extract);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(extract.Name, 2, 2);
+            TreeNode newNode = new TreeNode(extract.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
             newNode.Tag = new ExtractTreeItemData(this, extract);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -1053,7 +1143,7 @@ namespace iba
             confData.Tasks.Add(bat);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(bat.Name, 3, 3);
+            TreeNode newNode = new TreeNode(bat.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
             newNode.Tag = new BatchFileTreeItemData(this, bat);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
@@ -1069,11 +1159,31 @@ namespace iba
             confData.Tasks.Add(cop);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cop.Name, 4, 4);
+            TreeNode newNode = new TreeNode(cop.Name, COPYTASK_INDEX, COPYTASK_INDEX);
             newNode.Tag = new CopyTaskTreeItemData(this, cop);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
         }
+
+        private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
+        {
+            MenuCommand mc = (MenuCommand)sender;
+            Pair<TreeNode, int> p = mc.Tag as Pair<TreeNode, int>;
+            TreeNode node = p.First;
+            int index = p.Second;
+            PluginTaskInfo info = PluginManager.Manager.PluginInfos[index];
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            CustomTaskData cust = new CustomTaskData(confData, info);
+            new SetNextName(cust);
+            confData.Tasks.Add(cust);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+            newNode.Tag = new CustomTaskTreeItemData(this, cust);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+        }
+
         #endregion
 
         #region Main menu stuff

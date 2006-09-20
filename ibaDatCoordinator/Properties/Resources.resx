@@ -127,14 +127,8 @@
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="report_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\report_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disconnected.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="extract_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\extracttimeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="notifyIconMenuItemExit" xml:space="preserve">
     <value>Exit</value>
@@ -174,15 +168,6 @@
   </data>
   <data name="ServiceConnectProblem" xml:space="preserve">
     <value>There was a problem connecting to the ibaDatCoordinator service : ''{0}"{1}ibaDatCoordinator will continue in disconnected mode.</value>
-  </data>
-  <data name="copydat_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copydat_noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="batchfile_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\batchfile_failure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="extract_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\extractnoaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logNotificationNotSupported" xml:space="preserve">
     <value>this network request is not supported</value>
@@ -231,9 +216,6 @@
   </data>
   <data name="statText1" xml:space="preserve">
     <value>The job is {0}</value>
-  </data>
-  <data name="batchfile_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\batchfile_succes.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="extract_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\db.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -289,9 +271,6 @@
   <data name="notifyIconMenuItemStartService" xml:space="preserve">
     <value>Start Service</value>
   </data>
-  <data name="report_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reportsucces.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="logConfigurationStopped" xml:space="preserve">
     <value>stopped processing configuration</value>
   </data>
@@ -309,9 +288,6 @@
   </data>
   <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\running.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="extract_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\extractfailure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Failure" xml:space="preserve">
     <value>failed! (see logfile)</value>
@@ -352,9 +328,6 @@
   <data name="niConnected" xml:space="preserve">
     <value>ibaDatCoordinator (connected)</value>
   </data>
-  <data name="extract_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\dbsucces.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="logCheckingForNewDatFiles" xml:space="preserve">
     <value>Checking for .dat files</value>
   </data>
@@ -364,14 +337,8 @@
   <data name="logCopyTaskSuccess" xml:space="preserve">
     <value>file successfully copied</value>
   </data>
-  <data name="copydat_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copydat_succes.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="extractTitle" xml:space="preserve">
     <value>Extract</value>
-  </data>
-  <data name="report_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\report_noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logNoExtractPdo" xml:space="preserve">
     <value>.pdo file for extractor does not exist</value>
@@ -421,9 +388,6 @@
   <data name="saveQuestion" xml:space="preserve">
     <value>Save current jobs ?</value>
   </data>
-  <data name="batchfile_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\batchfile_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="logNotificationFailed" xml:space="preserve">
     <value>notification failed</value>
   </data>
@@ -466,9 +430,6 @@
   <data name="stopButton" xml:space="preserve">
     <value>Stop this job</value>
   </data>
-  <data name="copydat_timeout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copydat_timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="deleteExtractQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the Extract options "{0}" of Job "{1}" ?</value>
   </data>
@@ -477,9 +438,6 @@
   </data>
   <data name="Speichern" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Speichern.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="report_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reportfailure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
     <value>The notification e-mail address is invalid or not supplied</value>
@@ -529,17 +487,11 @@
   <data name="WhenToDo3" xml:space="preserve">
     <value>always execute</value>
   </data>
-  <data name="batchfile_noaccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\batchfile_noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="statText0" xml:space="preserve">
     <value>This is the statusdata for Job : {0}</value>
   </data>
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="copydat_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\copydat_failure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logExtractFailed" xml:space="preserve">
     <value>extractor failed</value>
@@ -633,5 +585,26 @@
   </data>
   <data name="UNCPathUnavailable" xml:space="preserve">
     <value>Could not find the UNC path '{0}'</value>
+  </data>
+  <data name="logPluginLoadError" xml:space="preserve">
+    <value>Error loading assembly {0} : '{1}'</value>
+  </data>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="noaccess1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="success1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\success.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="timeout1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteCustomTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the '{0}' options "{1}" of Job "{2}" ?</value>
+  </data>
+  <data name="NewCustomTaskTitle" xml:space="preserve">
+    <value>Add {0} Task</value>
   </data>
 </root>

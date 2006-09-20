@@ -68,12 +68,11 @@ namespace iba
 		public override Control CreateControl()
 		{
 			Control ctrl = manager.PropertyPanes["ConfigurationControl"] as Control;
-            //this code
-            //if(ctrl == null)
-            //{
-            //    ctrl = new ConfigurationControl();
-            //    manager.PropertyPanes["ConfigurationControl"] = ctrl;
-            //}
+            if(ctrl == null)
+            {
+                ctrl = new ConfigurationControl();
+                manager.PropertyPanes["ConfigurationControl"] = ctrl;
+            }
 			return ctrl;
 		}
 	}
@@ -219,6 +218,41 @@ namespace iba
     }
     #endregion
 
+    #region CustomTaskTreeItemData
+    public class CustomTaskTreeItemData : TreeItemData
+    {
+        public CustomTaskTreeItemData(IPropertyPaneManager propManager, CustomTaskData cust)
+            : base(propManager)
+        {
+            m_cust = cust;
+        }
+
+        public override string What
+        {
+            get { return "CustomTask"; }
+        }
+
+        protected CustomTaskData m_cust;
+
+        public CustomTaskData CustomTaskData
+        {
+            get { return m_cust; }
+            set { m_cust = value; }
+        }
+
+        public override Control CreateControl()
+        {
+            string id = CustomTaskData.Plugin.GetInfo().Name + "Control";
+            Control ctrl = manager.PropertyPanes[id] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CustomTaskControl(CustomTaskData.Plugin.GetControl() as Control);
+                manager.PropertyPanes[id] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
 
     #region StatusTreeItemData
     public class StatusTreeItemData : TreeItemData

@@ -39,8 +39,9 @@ namespace iba.Data
         }
 
         protected ConfigurationData m_parentCD;
+
         [XmlIgnore]
-        public ConfigurationData ParentConfigurationData
+        virtual public ConfigurationData ParentConfigurationData
         {
             get { return m_parentCD; }
             set { m_parentCD = value; }

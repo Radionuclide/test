@@ -6,6 +6,7 @@ using System.Threading;
 using iba.Data;
 using IBAFILESLib;
 using iba.Utility;
+using iba.Plugins;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -172,7 +173,6 @@ namespace iba.Processing
                         {
                             p.Value.States.Add(p2.Key, p2.Value);
                         }
-                        //m_sd.DatFileStates[p.Key] = updatedStatus;
                     }
                 }
 
@@ -182,6 +182,18 @@ namespace iba.Processing
                     m_notifier.Send();
                 }
                 m_notifier = new Notifier(m_cd);
+
+                //lastly, execute plugin actions that need to happen in the case of an update
+                foreach (TaskData t in m_cd.Tasks)
+                {
+                    CustomTaskData c = t as CustomTaskData;
+                    if (c != null)
+                    {
+                        IPluginTaskWorker w = c.Plugin.GetWorker();
+                        if (!w.OnApply(c.Plugin, m_cd))
+                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                    }
+                }
 
                 Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
                 m_toUpdate = null;
@@ -269,7 +281,6 @@ namespace iba.Processing
 
         private void Run()
         {
-            //Notifier not = new Notifier();
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
             if (!Directory.Exists(m_cd.DatDirectoryUNC))
             {
@@ -302,6 +313,18 @@ namespace iba.Processing
                     {
                         notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
                         notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
+                    }
+
+                    //do initializations of custom tasks
+                    foreach(TaskData t in m_cd.Tasks)
+                    {
+                        CustomTaskData c = t as CustomTaskData;
+                        if (c != null)
+                        {
+                            IPluginTaskWorker w = c.Plugin.GetWorker();
+                            if (!w.OnStart())
+                                Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                        }
                     }
 
                     StartIbaAnalyzer();
@@ -367,6 +390,18 @@ namespace iba.Processing
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
+                    //do finalization of custom tasks
+                    foreach (TaskData t in m_cd.Tasks)
+                    {
+                        CustomTaskData c = t as CustomTaskData;
+                        if (c != null)
+                        {
+                            IPluginTaskWorker w = c.Plugin.GetWorker();
+                            if (!w.OnStop())
+                                Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                        }
+                    }
+
                     StopIbaAnalyzer();
                 }
                 finally
@@ -959,6 +994,10 @@ namespace iba.Processing
                     else
                         CopyDatFile(DatFile, dat);
                 }
+                else if (task is CustomTaskData)
+                {
+                    (task as CustomTaskData).Plugin.GetWorker().ExecuteTask(DatFile);
+                }
                 lock (m_sd.DatFileStates)
                 {
                     if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
@@ -1085,7 +1124,7 @@ namespace iba.Processing
                 catch
                 {
                     bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
+                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
                     {
                         failed = false;
                         if (!Directory.Exists(dir))
@@ -1256,7 +1295,7 @@ namespace iba.Processing
                     catch
                     {
                         bool failed = true;
-                        if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
+                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
                         {
                             failed = false;
                             if (!Directory.Exists(dir))
@@ -1364,7 +1403,7 @@ namespace iba.Processing
                 catch
                 {
                     bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, m_cd.Username, m_cd.Password))
+                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
                     {
                         failed = false;
                         if (!Directory.Exists(dir))
