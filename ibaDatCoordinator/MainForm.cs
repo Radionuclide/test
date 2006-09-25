@@ -30,8 +30,9 @@ namespace iba
         public static readonly int EXTRACTTASK_INDEX = 2;
         public static readonly int BATCHFILETASK_INDEX = 3;
         public static readonly int COPYTASK_INDEX = 4;
-        public static readonly int NEWCONF_INDEX = 5;
-        public static readonly int CUSTOMTASK_INDEX = 6;
+        public static readonly int IFTASK_INDEX = 5;
+        public static readonly int NEWCONF_INDEX = 6;
+        public static readonly int CUSTOMTASK_INDEX = 7;
 
         public MainForm()
         {
@@ -72,6 +73,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.extract_running);
             confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
             confsImageList.Images.Add(iba.Properties.Resources.copydat_running);
+            confsImageList.Images.Add(iba.Properties.Resources.iftask);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
@@ -377,6 +379,11 @@ namespace iba
                     taskNode = new TreeNode(task.Name, COPYTASK_INDEX, COPYTASK_INDEX);
                     taskNode.Tag = new CopyTaskTreeItemData(this, task as CopyMoveTaskData);
                 }
+                else if (task is IfTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, IFTASK_INDEX, IFTASK_INDEX);
+                    taskNode.Tag = new IfTaskTreeItemData(this, task as IfTaskData);
+                }
                 else
                 {
                     CustomTaskData cust = (CustomTaskData) task;
@@ -555,6 +562,19 @@ namespace iba
                         deleteToolStripMenuItem.Enabled = !started;
                         break;
                     }
+                case "IfTask":
+                    {
+                        if (m_navBar.SelectedPane != m_configPane) return;
+                        IfTaskTreeItemData data = node.Tag as IfTaskTreeItemData;
+                        ctrl = data.CreateControl();
+                        bool started = TaskManager.Manager.GetStatus(data.IfTaskData.ParentConfigurationData.ID).Started;
+                        SetRightPaneControl(ctrl, title, data.IfTaskData);
+                        pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
+                        copyToolStripMenuItem.Enabled = true;
+                        cutToolStripMenuItem.Enabled = !started;
+                        deleteToolStripMenuItem.Enabled = !started;
+                        break;
+                    }
                 case "CustomTask":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
@@ -668,6 +688,8 @@ namespace iba
                     msg = String.Format(iba.Properties.Resources.deleteExtractQuestion, node.Text, node.Parent.Text);
                 else if (node.Tag is CopyTaskTreeItemData)
                     msg = String.Format(iba.Properties.Resources.deleteCopyTaskQuestion, node.Text, node.Parent.Text);
+                else if (node.Tag is IfTaskTreeItemData)
+                    msg = String.Format(iba.Properties.Resources.deleteIfTaskQuestion, node.Text, node.Parent.Text);
                 else if (node.Tag is CustomTaskTreeItemData)
                     msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion, 
                     ((CustomTaskTreeItemData)(node.Tag)).CustomTaskData.Plugin.GetInfo().Name,
@@ -724,9 +746,15 @@ namespace iba
                                 task = cti.CopyTaskData;
                             else
                             {
+                                IfTaskTreeItemData iti = node.Tag as IfTaskTreeItemData;
+                                if (iti != null)
+                                    task = iti.IfTaskData;
+                                else
+                                {
                                 CustomTaskTreeItemData pti = node.Tag as CustomTaskTreeItemData;
                                 if (pti != null)
                                     task = pti.CustomTaskData;
+                                }
                             }
                         }
                     }
@@ -762,6 +790,8 @@ namespace iba
                     m_task_copy = (node.Tag as ExtractTreeItemData).ExtractData.Clone() as ExtractData;
                 else if (node.Tag is CopyTaskTreeItemData)
                     m_task_copy = (node.Tag as CopyTaskTreeItemData).CopyTaskData.Clone() as CopyMoveTaskData;
+                else if (node.Tag is IfTaskTreeItemData)
+                    m_task_copy = (node.Tag as IfTaskTreeItemData).IfTaskData.Clone() as IfTaskData;
                 else if (node.Tag is CustomTaskTreeItemData)
                     m_task_copy = (node.Tag as CustomTaskTreeItemData).CustomTaskData.Clone() as CustomTaskData;
                 m_confCopiedMostRecent = false;
@@ -839,6 +869,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, COPYTASK_INDEX, COPYTASK_INDEX);
                     taskNode.Tag = new CopyTaskTreeItemData(this, m_task_copy as CopyMoveTaskData);
                 }
+                else if (m_task_copy is IfTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, IFTASK_INDEX, IFTASK_INDEX);
+                    taskNode.Tag = new IfTaskTreeItemData(this, m_task_copy as IfTaskData);
+                }
                 else if (m_task_copy is CustomTaskData)
                 {
                     CustomTaskData cust = (CustomTaskData) m_task_copy;
@@ -847,7 +882,6 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
                     taskNode.Tag = new CustomTaskTreeItemData(this,cust);
                 }
-
 
                 MainForm.strikeOutNodeText(taskNode, !m_task_copy.Enabled);
                 switch (m_task_copy.WhenToExecute)
@@ -898,6 +932,11 @@ namespace iba
                 {
                     taskNode = new TreeNode(m_task_copy.Name, COPYTASK_INDEX, COPYTASK_INDEX);
                     taskNode.Tag = new CopyTaskTreeItemData(this, m_task_copy as CopyMoveTaskData);
+                }
+                else if (m_task_copy is IfTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, IFTASK_INDEX, IFTASK_INDEX);
+                    taskNode.Tag = new IfTaskTreeItemData(this, m_task_copy as IfTaskData);
                 }
                 else if (m_task_copy is CustomTaskData)
                 {
@@ -956,11 +995,12 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.extract_running);
             menuImages.Images.Add(iba.Properties.Resources.batchfile_running);
             menuImages.Images.Add(iba.Properties.Resources.copydat_running);
+            menuImages.Images.Add(iba.Properties.Resources.iftask);
             foreach(PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
             int customcount = PluginManager.Manager.PluginInfos.Count;
-            m_menuItems = new MenuCommand[10 + customcount];
+            m_menuItems = new MenuCommand[11 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new MenuCommand(iba.Properties.Resources.deleteTitle, il.List, MyImageList.Delete, Shortcut.Del, new EventHandler(OnDeleteMenuItem));
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new MenuCommand(iba.Properties.Resources.collapseTitle, il.List, -1, Shortcut.None, new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new MenuCommand(iba.Properties.Resources.cutTitle, menuImages, 0, Shortcut.CtrlX, new EventHandler(OnCutMenuItem));
@@ -971,15 +1011,17 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewExtract] = new MenuCommand(iba.Properties.Resources.NewExtractTitle, menuImages, 4, Shortcut.None, new EventHandler(OnNewExtractMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new MenuCommand(iba.Properties.Resources.NewBatchfileTitle, menuImages, 5, Shortcut.None, new EventHandler(OnNewBatchfileMenuItem));
             m_menuItems[(int) MenuItemsEnum.NewCopyTask] = new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages,6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewIfTask] = new MenuCommand(iba.Properties.Resources.NewIfTaskTitle, menuImages, 7, Shortcut.None, new EventHandler(OnNewIfTaskMenuItem));
             for (int i = 0; i < customcount; i++)
             {
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
-                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, 7+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, 8+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
             }
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewBatchfile]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewCopyTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewIfTask]);
             for (int i = 0; i < customcount; i++)
             {
                 m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
@@ -998,7 +1040,8 @@ namespace iba
             NewExtract = 7,
             NewBatchfile = 8,
             NewCopyTask = 9,
-            NewCustomTask = 10
+            NewIfTask = 10,
+            NewCustomTask = 11
         }
 
         private void m_configTreeView_MouseDown(object sender, MouseEventArgs e)
@@ -1149,6 +1192,21 @@ namespace iba
             newNode.EnsureVisible();
         }
 
+        private void OnNewIfTaskMenuItem(object sender, EventArgs e)
+        {
+            MenuCommand mc = (MenuCommand)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            IfTaskData condo = new IfTaskData(confData);
+            new SetNextName(condo);
+            confData.Tasks.Add(condo);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(condo.Name, IFTASK_INDEX, IFTASK_INDEX);
+            newNode.Tag = new IfTaskTreeItemData(this, condo);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+        }
         private void OnNewCopyTaskMenuItem(object sender, EventArgs e)
         {
             MenuCommand mc = (MenuCommand)sender;
@@ -1255,40 +1313,41 @@ namespace iba
                 saveAsToolStripMenuItem_Click(sender, e);
             }
             else using (WaitCursor wait = new WaitCursor())
+            {
+                SaveRightPaneControl();
+                XmlSerializer mySerializer = null;    
+                try
                 {
-                    SaveRightPaneControl();
-                    XmlSerializer mySerializer = null;    
-                    try
-                    {
-                        mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-                    }
-                    catch (Exception erreur)
-                    {
-                        string ert = erreur.ToString();
-                    }
-
-
-                    // To write to a file, create a StreamWriter object.
-                    try
-                    {
-                        using (StreamWriter myWriter = new StreamWriter(m_filename))
-                        {
-                            ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
-                                TaskManager.Manager.WatchDogData,
-                                TaskManager.Manager.Configurations, 
-                                LogData.Data.FileName,
-                                LogData.Data.MaxRows
-                                );
-                            mySerializer.Serialize(myWriter, dat);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message);
-                    }
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                        Program.CommunicationObject.SaveConfigurations();
+                    mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message);
+                    return;
+                }
+
+
+                // To write to a file, create a StreamWriter object.
+                try
+                {
+                    using (StreamWriter myWriter = new StreamWriter(m_filename))
+                    {
+                        ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
+                            TaskManager.Manager.WatchDogData,
+                            TaskManager.Manager.Configurations, 
+                            LogData.Data.FileName,
+                            LogData.Data.MaxRows
+                            );
+                        mySerializer.Serialize(myWriter, dat);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message);
+                }
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    Program.CommunicationObject.SaveConfigurations();
+            }
         }
 
         private string TextToSave()
@@ -1359,7 +1418,7 @@ namespace iba
             if (result != DialogResult.OK) return;
                 
             SaveRightPaneControl();
-            loadFromFile(m_openFileDialog.FileName,true);
+            loadFromFile(m_openFileDialog.FileName,false);
             loadConfigurations();
             loadStatuses();
         }
@@ -1415,21 +1474,29 @@ namespace iba
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
-                    iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-            switch (res)
+            SaveRightPaneControl();
+           string s1 = TextFromLoad();
+            string s2 = TextToSave();
+            if (s1 != s2)
             {
-                case DialogResult.Cancel:
-                    return;
-                case DialogResult.Yes:
-                    saveToolStripMenuItem_Click(sender, e);
-                    break;
-                case DialogResult.No:
-                    break;
+                DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
+                        iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                switch (res)
+                {
+                    case DialogResult.Cancel:
+                        return;
+                    case DialogResult.Yes:
+                        saveToolStripMenuItem_Click(null, null);
+                        break;
+                    case DialogResult.No:
+                        break;
+                }
             }
             m_filename = null;
             clearAllConfigurations();
+            this.Text = "ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
         }
+
         internal struct PreviousMenuItems
         {
             public bool p, c, t, d;

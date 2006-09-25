@@ -48,7 +48,5 @@ namespace iba.Data
             get { return m_pass; }
             set { m_pass = value; }
         }
-
-
     }
 }

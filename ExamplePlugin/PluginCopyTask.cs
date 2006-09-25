@@ -8,21 +8,32 @@ namespace ExamplePlugin
     [Serializable]
     public class PluginCopyTask : IPluginTaskDataUNC
     {
-        public PluginCopyTask() : this(null,null, null)
+        public PluginCopyTask()
         {
         }
 
         private IDatCoHost m_datcoHost;
         private PluginTaskInfo m_info;
 
-        private IJobData m_parentJob;
-
-        public IJobData ParentJob
+        private string m_nameInfo;
+        public string NameInfo
         {
-            get { return m_parentJob; }
-            set { m_parentJob = value; }
+            get { return m_nameInfo; }
+            set { m_nameInfo = value; }
         }
-        
+
+        private IJobData m_parentJob;
+        public void SetParentJob( IJobData data)
+        {
+            m_parentJob = data; 
+        }
+
+        public void Reset(PluginTaskInfo info, IDatCoHost host)
+        {
+            m_info = info;
+            m_datcoHost = host;
+        }
+
         public PluginCopyTask(PluginTaskInfo info, IDatCoHost host, IJobData parentJob)
         {
             m_parentJob = parentJob;
@@ -34,6 +45,7 @@ namespace ExamplePlugin
             m_removeSource = false;
             m_subfolderChoice = SubfolderChoiceC.NONE;
             m_numbFolders = 10;
+            m_nameInfo = info.Name;
         }
 
         bool m_removeSource;
@@ -61,7 +73,7 @@ namespace ExamplePlugin
 
         #region IPluginTaskData Members
 
-        PluginCopyTaskControl m_control;
+        private PluginCopyTaskControl m_control;
 
         public IPluginControl GetControl()
         {
@@ -69,7 +81,7 @@ namespace ExamplePlugin
             return m_control;
         }
 
-        PluginCopyTaskWorker m_worker;
+        private PluginCopyTaskWorker m_worker;
 
         public IPluginTaskWorker GetWorker()
         {

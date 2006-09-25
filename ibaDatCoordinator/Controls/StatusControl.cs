@@ -12,6 +12,7 @@ using iba;
 using iba.Data;
 using iba.Utility;
 using iba.Processing;
+using iba.Plugins;
 
 namespace iba.Controls
 {
@@ -29,8 +30,11 @@ namespace iba.Controls
 
         private enum TaskChoice {REPORT,EXTRACT,BATCHFILE}
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons;
+        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons;
+        Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
+        
         Dictionary<DatFileStatus.State, String> m_taskTexts;
+        
         Bitmap m_blankIcon;
 
         private void InitializeIcons()
@@ -40,6 +44,12 @@ namespace iba.Controls
             m_batchfileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_copydatIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
+
+            m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
+            for (int i = 0; i < m_customtaskIcons.Length; i++)
+                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Bitmap>();
+
+
             Bitmap blankBitmap = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
 
             m_reportIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
@@ -70,12 +80,35 @@ namespace iba.Controls
             m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
             m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
 
+            m_conditionIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
+            m_conditionIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle));
+            m_conditionIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle))); 
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+            m_conditionIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+
+            for (int i = 0; i < m_customtaskIcons.Length; i++)
+            {
+                IntPtr handle = PluginManager.Manager.PluginInfos[i].Icon.Handle;
+                m_customtaskIcons[i].Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
+                m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(handle));
+                m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(handle)));
+            }
+
+
             m_taskTexts.Add(DatFileStatus.State.NOT_STARTED, String.Empty);
             m_taskTexts.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.Running);
             m_taskTexts.Add(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.Noaccess);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.Success);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.Failure);
             m_taskTexts.Add(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.Timeout);
+            m_taskTexts.Add(DatFileStatus.State.COMPLETED_FALSE, iba.Properties.Resources.logIfTaskEvaluatedFalse);
+            m_taskTexts.Add(DatFileStatus.State.COMPLETED_TRUE, iba.Properties.Resources.logIfTaskEvaluatedTrue);
 
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
         
@@ -231,6 +264,16 @@ namespace iba.Controls
                             bitmap = m_batchfileIcons[pair.Value];
                         else if (pair.Key is CopyMoveTaskData)
                             bitmap = m_copydatIcons[pair.Value];
+                        else if (pair.Key is IfTaskData)
+                            bitmap = m_conditionIcons[pair.Value];
+                        else if (pair.Key is CustomTaskData)
+                        {
+                            CustomTaskData cust = (CustomTaskData) pair.Key;
+                            PluginTaskInfo info = cust.Plugin.GetInfo();
+                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+                            bitmap = m_customtaskIcons[index][pair.Value];
+                        }
+
                         text = m_taskTexts[pair.Value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 1] as DataGridViewImageCell;
                         blank[pair.Key.Index + 1] = false;

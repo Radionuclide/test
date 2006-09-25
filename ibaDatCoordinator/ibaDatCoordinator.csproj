@@ -100,17 +100,23 @@
     <Compile Include="Controls\CopyControl.Designer.cs">
       <DependentUpon>CopyControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomTaskControl.cs">
+    <Compile Include="Controls\CommonTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\CustomTaskControl.Designer.cs">
-      <DependentUpon>CustomTaskControl.cs</DependentUpon>
+    <Compile Include="Controls\CommonTaskControl.Designer.cs">
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ExtractControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ExtractControl.Designer.cs">
       <DependentUpon>ExtractControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IfTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\IfTaskControl.Designer.cs">
+      <DependentUpon>IfTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\LogControl.cs">
       <SubType>UserControl</SubType>
@@ -154,6 +160,7 @@
     <Compile Include="Data\CustomTaskData.cs" />
     <Compile Include="Data\ExtractData.cs" />
     <Compile Include="Data\ibaDatCoordinatorData.cs" />
+    <Compile Include="Data\IfTaskData.cs" />
     <Compile Include="Data\LogData.cs" />
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
@@ -234,6 +241,7 @@
     <Compile Include="Utility\WindowsAPI.cs" />
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
+    <Compile Include="Utility\XmlWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.de.resx">
@@ -280,9 +288,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>CopyControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CustomTaskControl.resx">
+    <EmbeddedResource Include="Controls\CommonTaskControl.de.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>CustomTaskControl.cs</DependentUpon>
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CommonTaskControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CommonTaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ExtractControl.de.resx">
       <SubType>Designer</SubType>
@@ -295,6 +311,10 @@
     <EmbeddedResource Include="Controls\ExtractControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExtractControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\IfTaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>IfTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LogControl.de.resx">
       <SubType>Designer</SubType>
@@ -516,6 +536,8 @@
     <None Include="Resources\error.ico" />
     <None Include="Resources\noaccess.ico" />
     <None Include="Resources\success.ico" />
+    <None Include="Resources\iftask_running.ico" />
+    <None Include="Resources\iftask.ico" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

@@ -29,7 +29,7 @@ namespace iba.Data
 
         private List<TaskData> m_tasks;
 
-        [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData))]
+        [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData)), XmlElement(Type = typeof(CustomTaskData))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }
@@ -159,7 +159,6 @@ namespace iba.Data
             get { return m_idCounter; }
             set { m_idCounter = value; }
         }
-
 
         public ConfigurationData() : this("") 
         {

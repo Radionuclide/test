@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="DatcoHost.cs" />
     <Compile Include="DatCoPlugin.cs" />
-    <Compile Include="IConfigurationData.cs" />
+    <Compile Include="ConfigurationData.cs" />
     <Compile Include="PluginControl.cs" />
     <Compile Include="PluginTaskData.cs" />
     <Compile Include="PluginTaskInfo.cs" />

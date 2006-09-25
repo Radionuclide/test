@@ -24,12 +24,14 @@ namespace iba.Controls
             m_newBatchfileButton.Image = Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle);
             m_newReportButton.Image = Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle);
             m_newExtractButton.Image = Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle);
-            m_newCopyTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle); 
+            m_newCopyTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle);
+            m_newIfTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle); 
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
             m_newBatchfileButton.ToolTipText = iba.Properties.Resources.batchfileButton;
             m_newCopyTaskButton.ToolTipText = iba.Properties.Resources.copytaskButton;
+            m_newIfTaskButton.ToolTipText = iba.Properties.Resources.iftaskButton;
 
             m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.startButton);
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
@@ -264,6 +266,19 @@ namespace iba.Controls
             m_data.Tasks.Add(copy);
             TreeNode newNode = new TreeNode(copy.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
             newNode.Tag = new CopyTaskTreeItemData(m_manager, copy);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+        }
+
+        private void m_newIfTaskButton_Click(object sender, EventArgs e)
+        {
+            IfTaskData condo = new IfTaskData(m_data);
+            new SetNextName(condo);
+            m_data.Tasks.Add(condo);
+            TreeNode newNode = new TreeNode(condo.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
+            newNode.Tag = new IfTaskTreeItemData(m_manager, condo);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)

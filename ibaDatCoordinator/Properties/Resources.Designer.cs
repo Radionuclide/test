@@ -311,6 +311,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the condition options &quot;{0}&quot; of Job &quot;{1}&quot; ? (dependent tasks will not be deleted).
+        /// </summary>
+        internal static string deleteIfTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteIfTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Report options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteReportQuestion {
@@ -403,6 +412,58 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("ibalogo_transparent", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon iftask {
+            get {
+                object obj = ResourceManager.GetObject("iftask", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new condition task.
+        /// </summary>
+        internal static string iftaskButton {
+            get {
+                return ResourceManager.GetString("iftaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Condition.
+        /// </summary>
+        internal static string iftaskTitle {
+            get {
+                return ResourceManager.GetString("iftaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression could not be evaluated, this will be treated as FALSE.
+        /// </summary>
+        internal static string IfTestBadEvaluation {
+            get {
+                return ResourceManager.GetString("IfTestBadEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression evaluated to FALSE.
+        /// </summary>
+        internal static string IfTestNegativeEvaluation {
+            get {
+                return ResourceManager.GetString("IfTestNegativeEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression evaluated to TRUE.
+        /// </summary>
+        internal static string IfTestPositiveEvaluation {
+            get {
+                return ResourceManager.GetString("IfTestPositiveEvaluation", resourceCulture);
             }
         }
         
@@ -572,6 +633,33 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("logging", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to condition evaluated as FALSE.
+        /// </summary>
+        internal static string logIfTaskEvaluatedFalse {
+            get {
+                return ResourceManager.GetString("logIfTaskEvaluatedFalse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to condition evaluated as TRUE.
+        /// </summary>
+        internal static string logIfTaskEvaluatedTrue {
+            get {
+                return ResourceManager.GetString("logIfTaskEvaluatedTrue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to started evaluating condition.
+        /// </summary>
+        internal static string logIfTaskStarted {
+            get {
+                return ResourceManager.GetString("logIfTaskStarted", resourceCulture);
             }
         }
         
@@ -806,6 +894,15 @@ namespace iba.Properties {
         internal static string NewExtractTitle {
             get {
                 return ResourceManager.GetString("NewExtractTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Condition.
+        /// </summary>
+        internal static string NewIfTaskTitle {
+            get {
+                return ResourceManager.GetString("NewIfTaskTitle", resourceCulture);
             }
         }
         
@@ -1243,6 +1340,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed evaluating condition.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to successfully completed.
         /// </summary>
         internal static string Success {
@@ -1454,6 +1560,42 @@ namespace iba.Properties {
         internal static string WhenToDo4 {
             get {
                 return ResourceManager.GetString("WhenToDo4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to frequency.
+        /// </summary>
+        internal static string XFrequency {
+            get {
+                return ResourceManager.GetString("XFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1/lentgh.
+        /// </summary>
+        internal static string XInvLength {
+            get {
+                return ResourceManager.GetString("XInvLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to length.
+        /// </summary>
+        internal static string XLength {
+            get {
+                return ResourceManager.GetString("XLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to time.
+        /// </summary>
+        internal static string XTime {
+            get {
+                return ResourceManager.GetString("XTime", resourceCulture);
             }
         }
     }

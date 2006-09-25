@@ -14,11 +14,12 @@ using iba.Plugins;
 
 namespace iba.Controls
 {
-    public partial class CustomTaskControl : UserControl, IPropertyPane
+    public partial class CommonTaskControl : UserControl, IPropertyPane
     {
-        public CustomTaskControl(Control pluginControl)
+        public CommonTaskControl(Control pluginControl)
         {
             m_plugin = pluginControl as IPluginControl;
+            m_regularControl = pluginControl as IPropertyPane;
             InitializeComponent();
             //this.tableLayoutPanel1.ColumnStyles[0].SizeType = SizeType.Percent;
             //this.tableLayoutPanel1.ColumnStyles[0].Width = 33;
@@ -62,15 +63,16 @@ namespace iba.Controls
 
 
         private IPluginControl m_plugin;
+        private IPropertyPane m_regularControl;
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
-        private CustomTaskData m_data;
+        private TaskData m_data;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
-            m_data = datasource as CustomTaskData;
+            m_data = datasource as TaskData;
             m_nameTextBox.Text = m_data.Name;
 
             if (m_data.Index == 0)
@@ -80,11 +82,11 @@ namespace iba.Controls
                 m_rbFailure.Checked = false;
                 m_rb1stFailure.Checked = false;
                 m_rbDisabled.Checked = false;
-                groupBox4.Enabled = false;
+                m_ExecutegroupBox.Enabled = false;
             }
             else
             {
-                groupBox4.Enabled = true;
+                m_ExecutegroupBox.Enabled = true;
                 m_rbAlways.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
                 m_rbSucces.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES;
                 m_rbFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE;
@@ -97,7 +99,11 @@ namespace iba.Controls
             m_rbNot1stFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE;
             m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
 
-            m_plugin.LoadData(m_data.Plugin,this);
+            if (m_plugin != null)
+                m_plugin.LoadData((m_data as CustomTaskData).Plugin, this);
+            else if (m_regularControl != null)
+                m_regularControl.LoadData(datasource, manager);
+
         }
 
         public void SaveData()
@@ -125,10 +131,13 @@ namespace iba.Controls
                 m_data.WhenToNotify = TaskData.WhenToDo.DISABLED;
 
             m_data.Name = m_nameTextBox.Text;
+
+            if (m_plugin != null)
+                m_plugin.SaveData();
+            else if (m_regularControl != null)
+                m_regularControl.SaveData();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
-
-            m_plugin.SaveData();
         }
         #endregion
     }

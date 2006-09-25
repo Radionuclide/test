@@ -117,87 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="m_rbBinaryFile.Text" xml:space="preserve">
-    <value>Binär (.dat)</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Analysevorschrift für Extraktionsaufgabe</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rbDbase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 17</value>
-  </data>
-  <data name="m_rbDbase.Text" xml:space="preserve">
-    <value>Extrahieren in Datenbank</value>
-  </data>
-  <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 17</value>
-  </data>
-  <data name="m_rbFile.Text" xml:space="preserve">
-    <value>Extrahieren in Datei:</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Zielverzeichnis:</value>
-  </data>
-  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 71</value>
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Passwort:</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>Dateityp</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 45</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Benutzername:</value>
-  </data>
-  <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 12</value>
-  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 13</value>
+    <value>74, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Max. Anzahl Unterverzeichnisse</value>
+    <value>Nom de tâche</value>
   </data>
-  <data name="m_rbOriginal.Text" xml:space="preserve">
-    <value>die ursprüngliche Struktur halten </value>
+  <data name="m_rb1stFailure.Text" xml:space="preserve">
+    <value>à la 1ère erreur</value>
   </data>
-  <data name="m_rbNONE.Text" xml:space="preserve">
-    <value>keine</value>
+  <data name="m_rbAlways.Text" xml:space="preserve">
+    <value>toujours</value>
   </data>
-  <data name="m_rbHour.Text" xml:space="preserve">
-    <value>stündlich</value>
+  <data name="m_rbFailure.Text" xml:space="preserve">
+    <value>en cas d'erreur</value>
   </data>
-  <data name="m_rbDay.Text" xml:space="preserve">
-    <value>täglich</value>
+  <data name="m_rbDisabled.Text" xml:space="preserve">
+    <value>jamais</value>
   </data>
-  <data name="m_rbWeek.Text" xml:space="preserve">
-    <value>wöchentlich</value>
+  <data name="m_rbSucces.Text" xml:space="preserve">
+    <value>en cas de réussite</value>
   </data>
-  <data name="m_rbMonth.Text" xml:space="preserve">
-    <value>monatlich</value>
+  <data name="m_rbNot1stFailure.Text" xml:space="preserve">
+    <value>à la 1ère erreur</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_rbNotAlways.Text" xml:space="preserve">
+    <value>toujours</value>
   </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Unterverzeichnisse</value>
+  <data name="m_rbNotFailure.Text" xml:space="preserve">
+    <value>en cas d'erreur</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>In Datei extrahieren</value>
+  <data name="m_rbNotDisabled.Text" xml:space="preserve">
+    <value>jamais</value>
+  </data>
+  <data name="m_rbNotSuccess.Text" xml:space="preserve">
+    <value>en cas de réussite</value>
+  </data>
+  <data name="groupBox8.Text" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

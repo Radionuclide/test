@@ -118,21 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rbPrint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 17</value>
-  </data>
-  <data name="m_rbPrint.Text" xml:space="preserve">
-    <value>Imprimer</value>
-  </data>
-  <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 17</value>
-  </data>
-  <data name="m_rbFile.Text" xml:space="preserve">
-    <value>Fichier:</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Cible</value>
-  </data>
   <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
     <value>136, 66</value>
   </data>
@@ -154,16 +139,6 @@
   <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>317, 42</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Sous-répertoires</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 12</value>
   </data>
@@ -175,6 +150,10 @@
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Nombre max. sous-répertoires</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
     <value>230, 18</value>
@@ -224,6 +203,12 @@
   <data name="m_rbOriginal.Text" xml:space="preserve">
     <value>garder la structure originale </value>
   </data>
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Sous-répertoires</value>
+  </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 15</value>
   </data>
@@ -239,6 +224,21 @@
   <data name="m_targetFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>310, 20</value>
   </data>
+  <data name="m_rbPrint.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 17</value>
+  </data>
+  <data name="m_rbPrint.Text" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
+  <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 17</value>
+  </data>
+  <data name="m_rbFile.Text" xml:space="preserve">
+    <value>Fichier:</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Cible</value>
+  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 13</value>
   </data>
@@ -247,9 +247,6 @@
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Fichier d'analyse pour rapport</value>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Exécuter</value>
   </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
@@ -290,8 +287,8 @@
   <data name="m_rbSucces.Text" xml:space="preserve">
     <value>en cas de réussite</value>
   </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notifications</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Exécuter</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
     <value>447, 3</value>
@@ -331,5 +328,8 @@
   </data>
   <data name="m_rbNotSuccess.Text" xml:space="preserve">
     <value>en cas de réussite</value>
+  </data>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

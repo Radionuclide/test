@@ -36,9 +36,6 @@ namespace iba.Controls
             this.m_browseFileButton = new System.Windows.Forms.Button();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.m_nameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.m_rbDbase = new System.Windows.Forms.RadioButton();
             this.m_rbFile = new System.Windows.Forms.RadioButton();
@@ -65,23 +62,8 @@ namespace iba.Controls
             this.m_rbWeek = new System.Windows.Forms.RadioButton();
             this.m_rbMonth = new System.Windows.Forms.RadioButton();
             this.m_checkPathButton = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.m_rb1stFailure = new System.Windows.Forms.RadioButton();
-            this.m_rbAlways = new System.Windows.Forms.RadioButton();
-            this.m_rbFailure = new System.Windows.Forms.RadioButton();
-            this.m_rbDisabled = new System.Windows.Forms.RadioButton();
-            this.m_rbSucces = new System.Windows.Forms.RadioButton();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.m_rbNot1stFailure = new System.Windows.Forms.RadioButton();
-            this.m_rbNotAlways = new System.Windows.Forms.RadioButton();
-            this.m_rbNotFailure = new System.Windows.Forms.RadioButton();
-            this.m_rbNotDisabled = new System.Windows.Forms.RadioButton();
-            this.m_rbNotSuccess = new System.Windows.Forms.RadioButton();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -91,10 +73,6 @@ namespace iba.Controls
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_rbTextFile
@@ -141,25 +119,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.m_nameTextBox);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // m_nameTextBox
-            // 
-            resources.ApplyResources(this.m_nameTextBox, "m_nameTextBox");
-            this.m_nameTextBox.Name = "m_nameTextBox";
-            this.m_nameTextBox.TextChanged += new System.EventHandler(this.m_nameTextBox_TextChanged);
             // 
             // groupBox3
             // 
@@ -363,124 +322,16 @@ namespace iba.Controls
             this.m_checkPathButton.UseVisualStyleBackColor = true;
             this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
-            // groupBox4
-            // 
-            resources.ApplyResources(this.groupBox4, "groupBox4");
-            this.groupBox4.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.TabStop = false;
-            // 
-            // tableLayoutPanel1
-            // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.m_rb1stFailure, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbAlways, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbFailure, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbDisabled, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbSucces, 1, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // m_rb1stFailure
-            // 
-            resources.ApplyResources(this.m_rb1stFailure, "m_rb1stFailure");
-            this.m_rb1stFailure.Name = "m_rb1stFailure";
-            this.m_rb1stFailure.UseVisualStyleBackColor = true;
-            this.m_rb1stFailure.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
-            // 
-            // m_rbAlways
-            // 
-            resources.ApplyResources(this.m_rbAlways, "m_rbAlways");
-            this.m_rbAlways.Name = "m_rbAlways";
-            this.m_rbAlways.UseVisualStyleBackColor = true;
-            this.m_rbAlways.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
-            // 
-            // m_rbFailure
-            // 
-            resources.ApplyResources(this.m_rbFailure, "m_rbFailure");
-            this.m_rbFailure.Name = "m_rbFailure";
-            this.m_rbFailure.UseVisualStyleBackColor = true;
-            this.m_rbFailure.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
-            // 
-            // m_rbDisabled
-            // 
-            resources.ApplyResources(this.m_rbDisabled, "m_rbDisabled");
-            this.m_rbDisabled.Checked = true;
-            this.m_rbDisabled.Name = "m_rbDisabled";
-            this.m_rbDisabled.TabStop = true;
-            this.m_rbDisabled.UseVisualStyleBackColor = true;
-            this.m_rbDisabled.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
-            // 
-            // m_rbSucces
-            // 
-            resources.ApplyResources(this.m_rbSucces, "m_rbSucces");
-            this.m_rbSucces.Name = "m_rbSucces";
-            this.m_rbSucces.UseVisualStyleBackColor = true;
-            this.m_rbSucces.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
-            // 
-            // groupBox7
-            // 
-            resources.ApplyResources(this.groupBox7, "groupBox7");
-            this.groupBox7.Controls.Add(this.tableLayoutPanel6);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.TabStop = false;
-            // 
-            // tableLayoutPanel6
-            // 
-            resources.ApplyResources(this.tableLayoutPanel6, "tableLayoutPanel6");
-            this.tableLayoutPanel6.Controls.Add(this.m_rbNot1stFailure, 2, 0);
-            this.tableLayoutPanel6.Controls.Add(this.m_rbNotAlways, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.m_rbNotFailure, 1, 1);
-            this.tableLayoutPanel6.Controls.Add(this.m_rbNotDisabled, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.m_rbNotSuccess, 1, 0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            // 
-            // m_rbNot1stFailure
-            // 
-            resources.ApplyResources(this.m_rbNot1stFailure, "m_rbNot1stFailure");
-            this.m_rbNot1stFailure.Name = "m_rbNot1stFailure";
-            this.m_rbNot1stFailure.UseVisualStyleBackColor = true;
-            // 
-            // m_rbNotAlways
-            // 
-            resources.ApplyResources(this.m_rbNotAlways, "m_rbNotAlways");
-            this.m_rbNotAlways.Name = "m_rbNotAlways";
-            this.m_rbNotAlways.UseVisualStyleBackColor = true;
-            // 
-            // m_rbNotFailure
-            // 
-            resources.ApplyResources(this.m_rbNotFailure, "m_rbNotFailure");
-            this.m_rbNotFailure.Name = "m_rbNotFailure";
-            this.m_rbNotFailure.UseVisualStyleBackColor = true;
-            // 
-            // m_rbNotDisabled
-            // 
-            resources.ApplyResources(this.m_rbNotDisabled, "m_rbNotDisabled");
-            this.m_rbNotDisabled.Checked = true;
-            this.m_rbNotDisabled.Name = "m_rbNotDisabled";
-            this.m_rbNotDisabled.TabStop = true;
-            this.m_rbNotDisabled.UseVisualStyleBackColor = true;
-            // 
-            // m_rbNotSuccess
-            // 
-            resources.ApplyResources(this.m_rbNotSuccess, "m_rbNotSuccess");
-            this.m_rbNotSuccess.Name = "m_rbNotSuccess";
-            this.m_rbNotSuccess.UseVisualStyleBackColor = true;
-            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(620, 640);
+            this.MinimumSize = new System.Drawing.Size(566, 390);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.m_panelFile.ResumeLayout(false);
@@ -495,12 +346,6 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -512,26 +357,9 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_browseFileButton;
         private System.Windows.Forms.TextBox m_pdoFileTextBox;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox m_nameTextBox;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button m_browseFolderButton;
         private System.Windows.Forms.TextBox m_targetFolderTextBox;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.RadioButton m_rb1stFailure;
-        private System.Windows.Forms.RadioButton m_rbAlways;
-        private System.Windows.Forms.RadioButton m_rbFailure;
-        private System.Windows.Forms.RadioButton m_rbDisabled;
-        private System.Windows.Forms.RadioButton m_rbSucces;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private System.Windows.Forms.RadioButton m_rbNot1stFailure;
-        private System.Windows.Forms.RadioButton m_rbNotAlways;
-        private System.Windows.Forms.RadioButton m_rbNotFailure;
-        private System.Windows.Forms.RadioButton m_rbNotDisabled;
-        private System.Windows.Forms.RadioButton m_rbNotSuccess;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Panel panel1;

@@ -607,4 +607,52 @@
   <data name="NewCustomTaskTitle" xml:space="preserve">
     <value>Add {0} Task</value>
   </data>
+  <data name="deleteIfTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the condition options "{0}" of Job "{1}" ? (dependent tasks will not be deleted)</value>
+  </data>
+  <data name="iftask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\iftask.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="iftaskTitle" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="NewIfTaskTitle" xml:space="preserve">
+    <value>Add Condition</value>
+  </data>
+  <data name="iftaskButton" xml:space="preserve">
+    <value>add a new condition task</value>
+  </data>
+  <data name="IfTestBadEvaluation" xml:space="preserve">
+    <value>The expression could not be evaluated, this will be treated as FALSE</value>
+  </data>
+  <data name="IfTestNegativeEvaluation" xml:space="preserve">
+    <value>The expression evaluated to FALSE</value>
+  </data>
+  <data name="IfTestPositiveEvaluation" xml:space="preserve">
+    <value>The expression evaluated to TRUE</value>
+  </data>
+  <data name="logIfTaskEvaluatedFalse" xml:space="preserve">
+    <value>condition evaluated as FALSE</value>
+  </data>
+  <data name="logIfTaskEvaluatedTrue" xml:space="preserve">
+    <value>condition evaluated as TRUE</value>
+  </data>
+  <data name="logIfTaskStarted" xml:space="preserve">
+    <value>started evaluating condition</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>failed evaluating condition</value>
+  </data>
+  <data name="XFrequency" xml:space="preserve">
+    <value>frequency</value>
+  </data>
+  <data name="XInvLength" xml:space="preserve">
+    <value>1/lentgh</value>
+  </data>
+  <data name="XLength" xml:space="preserve">
+    <value>length</value>
+  </data>
+  <data name="XTime" xml:space="preserve">
+    <value>time</value>
+  </data>
 </root>

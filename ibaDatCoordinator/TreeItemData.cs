@@ -105,7 +105,7 @@ namespace iba
             Control ctrl = manager.PropertyPanes["ReportControl"] as Control;
             if (ctrl == null)
             {
-                ctrl = new ReportControl();
+                ctrl = new CommonTaskControl(new ReportControl());
                 manager.PropertyPanes["ReportControl"] = ctrl;
             }
             return ctrl;
@@ -140,7 +140,7 @@ namespace iba
             Control ctrl = manager.PropertyPanes["CopyTaskControl"] as Control;
             if (ctrl == null)
             {
-                ctrl = new CopyControl();
+                ctrl = new CommonTaskControl(new CopyControl());
                 manager.PropertyPanes["CopyTaskControl"] = ctrl;
             }
             return ctrl;
@@ -175,7 +175,7 @@ namespace iba
             Control ctrl = manager.PropertyPanes["ExtractControl"] as Control;
             if (ctrl == null)
             {
-                ctrl = new ExtractControl();
+                ctrl = new CommonTaskControl(new ExtractControl());
                 manager.PropertyPanes["ExtractControl"] = ctrl;
             }
             return ctrl;
@@ -210,8 +210,43 @@ namespace iba
             Control ctrl = manager.PropertyPanes["BatchFileControl"] as Control;
             if (ctrl == null)
             {
-                ctrl = new BatchFileControl();
+                ctrl = new CommonTaskControl(new BatchFileControl());
                 manager.PropertyPanes["BatchFileControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
+    #region IfTaskTreeItemData
+    public class IfTaskTreeItemData : TreeItemData
+    {
+        public IfTaskTreeItemData(IPropertyPaneManager propManager, IfTaskData ift)
+            : base(propManager)
+        {
+            m_ift = ift;
+        }
+
+        public override string What
+        {
+            get { return "IfTask"; }
+        }
+
+        protected IfTaskData m_ift;
+
+        public IfTaskData IfTaskData
+        {
+            get { return m_ift; }
+            set { m_ift = value; }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["IfTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new IfTaskControl());
+                manager.PropertyPanes["IfTaskControl"] = ctrl;
             }
             return ctrl;
         }
@@ -246,7 +281,7 @@ namespace iba
             Control ctrl = manager.PropertyPanes[id] as Control;
             if (ctrl == null)
             {
-                ctrl = new CustomTaskControl(CustomTaskData.Plugin.GetControl() as Control);
+                ctrl = new CommonTaskControl(CustomTaskData.Plugin.GetControl() as Control);
                 manager.PropertyPanes[id] = ctrl;
             }
             return ctrl;

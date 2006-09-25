@@ -16,7 +16,9 @@ namespace iba.Data
             TIMED_OUT=2,
             COMPLETED_SUCCESFULY=3,
             COMPLETED_FAILURE = 4,
-            NO_ACCESS = 5
+            NO_ACCESS = 5,
+            COMPLETED_TRUE = 6,
+            COMPLETED_FALSE = 7
         }
 
         static public bool IsError(State stat)

@@ -13,7 +13,6 @@ using System.ComponentModel;
 
 namespace iba.Processing
 {
-
     class ConfigurationWorker
     {
         private ConfigurationData m_cd;
@@ -703,7 +702,8 @@ namespace iba.Processing
                                 foreach (TaskData dat in m_cd.Tasks)
                                 {
                                     if (dat.Enabled)
-                                        allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat) && m_sd.DatFileStates[filename].States[dat] == DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                        allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
+                                            && !shouldTaskBeDone(dat, filename);
                                     if (!allclear) break;
                                 }
                                 if (allclear)
@@ -902,18 +902,26 @@ namespace iba.Processing
             {
                 if (task.Enabled == false)
                     return false;
-                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
-                    return m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY;
-                else if (task.Index == 0) //first task and dependent on previous task, always do
-                    return true;
-                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
-                    return m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY &&
-                        m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_SUCCESFULY;
-                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE)
-                    return m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FAILURE;
-                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE)
-                    return m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
-                       && m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FAILURE;
+                else
+                {
+                    bool completed = m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY &&
+                            m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_TRUE &&
+                                m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_FALSE;
+                    if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE || task.Index == 0)
+                        return !completed;
+                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
+                        return !completed && 
+                            (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_SUCCESFULY
+                                || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_TRUE);
+                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE)
+                        return m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FAILURE
+                            || (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE
+                                && !completed);
+                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE)
+                        return !completed
+                            && (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FAILURE
+                            || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE);
+                }
                 return false;
             }
         }
@@ -941,6 +949,8 @@ namespace iba.Processing
             }
             foreach (TaskData task in m_cd.Tasks)
             {
+                if (!shouldTaskBeDone(task, DatFile))
+                    continue;
                 bool failedOnce = false;
                 lock (m_sd.DatFileStates)
                 {
@@ -948,9 +958,7 @@ namespace iba.Processing
                         && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
                         && m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE;
                 }
-                if (!shouldTaskBeDone(task, DatFile))
-                    continue;
-                else if (task is ReportData)
+                if (task is ReportData)
                 {
                     Report(DatFile,task as ReportData);
                 }
@@ -961,6 +969,10 @@ namespace iba.Processing
                 else if (task is BatchFileData)
                 {
                     Batchfile(DatFile,task as BatchFileData);
+                }
+                else if (task is IfTaskData)
+                {
+                    IfTask(DatFile, task as IfTaskData);
                 }
                 else if (task is CopyMoveTaskData)
                 {
@@ -1000,9 +1012,13 @@ namespace iba.Processing
                 }
                 lock (m_sd.DatFileStates)
                 {
-                    if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
+                    if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
+                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_TRUE
+                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
                         completeSucces = false;
-                    if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY
+                    if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
+                        m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
+                        m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
                         && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
                     {
                         m_notifier.AddSuccess(task, DatFile);
@@ -1012,7 +1028,7 @@ namespace iba.Processing
                     else if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE ||
                         m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.TIMED_OUT) &&
                         (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
-                        || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && failedOnce)))
+                        || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
                     {
                         m_notifier.AddFailure(task, DatFile);
                         if (m_cd.NotificationData.NotifyImmediately)
@@ -1534,6 +1550,46 @@ namespace iba.Processing
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
+            }
+        }
+
+        private void IfTask(string filename, IfTaskData task)
+        {
+            bool bUseAnalysis = File.Exists(task.AnalysisFile);
+            try
+            {
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                }
+                Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskStarted, filename, task);
+
+                if (bUseAnalysis) m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
+                
+                
+                float f = m_ibaAnalyzer.Evaluate(task.Expression, (int) task.XType);
+
+                if (!float.IsNaN(f) && f >= 0.5)
+                {
+                    //code on succes
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_TRUE;
+                    Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedTrue, filename, task);
+                }
+                else
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FALSE;
+                    Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedFalse, filename, task);
+                }
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, m_ibaAnalyzer.GetLastError(), filename, task);
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+            }
+            finally
+            {
+                if (m_ibaAnalyzer != null && bUseAnalysis)
+                    m_ibaAnalyzer.CloseAnalysis();
             }
         }
     }

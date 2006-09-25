@@ -11,10 +11,27 @@ namespace iba.Data
     public class CustomTaskData : TaskData
     {
         private IPluginTaskData m_plugin;
+        
+        [XmlIgnore]
         public IPluginTaskData Plugin
         {
             get { return m_plugin; }
             set { m_plugin = value; }
+        }
+
+        public XmlWrapper PluginXML
+        {
+            get 
+            {
+                return new XmlWrapper(m_plugin);
+            }
+            set 
+            {
+                m_plugin = value.ObjectToSerialize as IPluginTaskData;
+                string name = m_plugin.NameInfo;
+                m_plugin.Reset(PluginManager.Manager.PluginInfos.Find(delegate(PluginTaskInfo i) { return i.Name == name; }), 
+                    DatCoordinatorHostImpl.Host);
+            }
         }
 
         public CustomTaskData(ConfigurationData parent, PluginTaskInfo plugin)
@@ -43,7 +60,7 @@ namespace iba.Data
             set
             {
                 m_parentCD = value;
-                m_plugin.ParentJob = value;
+                m_plugin.SetParentJob(value);
             }
         }
 

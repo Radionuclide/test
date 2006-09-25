@@ -8,13 +8,16 @@ namespace iba.Plugins
     /// <summary>
     /// Interface implemented by a plugin task, data part
     /// Implementation must have the Serializable attribute
+    /// When saving or loading a datcoordinator configuration, the datcoordinator
+    /// will try to serialise the plugin with an XMLSerializer. If this in problematic,
+    /// derive your plugin also from IXmlSerializable to write your own XMLSerialization
     /// </summary>
     public interface IPluginTaskData : ICloneable
     {
         /// <summary>
         /// Get GUI Control 
         /// If the resulting class is not a Control, 
-        /// this will result in error.v
+        /// this will result in error
         /// </summary>
         IPluginControl GetControl();
 
@@ -27,9 +30,26 @@ namespace iba.Plugins
         /// Function to get information about the plugin
         /// </summary>
         PluginTaskInfo GetInfo();
+
+        /// <summary>
+        /// Index to retrieve info from pluginmanager after serialisation
+        /// </summary>
+        string NameInfo
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Function to reset the PluginTask after serialisation
+        /// </summary>
+        /// <param name="info">information to set</param>
+        void Reset(PluginTaskInfo info, IDatCoHost host);
         
-        ///
-        IJobData ParentJob {get; set;}
+        /// <summary>
+        /// Function to set the parent job data
+        /// </summary>
+        /// <param name="data">the parent jobconfiguration to set</param>
+        void SetParentJob (IJobData data);
     }
 
     /// <summary>

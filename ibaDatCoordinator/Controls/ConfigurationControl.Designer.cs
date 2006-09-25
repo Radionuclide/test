@@ -85,6 +85,7 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.m_newIfTaskButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -376,7 +377,8 @@ namespace iba.Controls
             this.m_newReportButton,
             this.m_newExtractButton,
             this.m_newBatchfileButton,
-            this.m_newCopyTaskButton});
+            this.m_newCopyTaskButton,
+            this.m_newIfTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -536,6 +538,13 @@ namespace iba.Controls
             // 
             this.m_openFileDialog1.FileName = "openFileDialog1";
             // 
+            // m_newIfTaskButton
+            // 
+            resources.ApplyResources(this.m_newIfTaskButton, "m_newIfTaskButton");
+            this.m_newIfTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newIfTaskButton.Name = "m_newIfTaskButton";
+            this.m_newIfTaskButton.Click += new System.EventHandler(this.m_newIfTaskButton_Click);
+            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -629,5 +638,6 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newExtractButton;
         private System.Windows.Forms.ToolStripButton m_newBatchfileButton;
         private System.Windows.Forms.ToolStripButton m_newCopyTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newIfTaskButton;
     }
 }
