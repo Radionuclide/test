@@ -1071,7 +1071,9 @@ namespace iba
                 {
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = (m_cd_copy != null || m_task_copy != null) && !started;
                     items.Add(MenuItemsEnum.NewTask);
+                    string version = FileVersionInfo.GetVersionInfo((data as ConfigurationTreeItemData).ConfigurationData.IbaAnalyserExe).FileVersion;
                     m_menuItems[(int)MenuItemsEnum.NewTask].Enabled = !started;
+                    m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = (version.CompareTo("5.4") >= 0);
                 }
                 else if (data is NewConfigurationTreeItemData)
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = false;

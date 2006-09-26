@@ -515,6 +515,12 @@ namespace iba.Processing
 
         private void StopIbaAnalyzer()
         {
+            StopIbaAnalyzer(true);
+        }
+
+
+        private void StopIbaAnalyzer(bool stop)
+        {
             try
             {
                 if (m_ibaAnalyzer == null)
@@ -528,8 +534,31 @@ namespace iba.Processing
                 Trace.WriteLine("ibaerror\r\n");
                 Log(Logging.Level.Exception, ex.Message);
                 m_sd.Started = false;
-                Stop = true;
+                Stop = stop;
                 return;
+            }
+        }
+
+        private string IbaAnalyzerErrorMessage()
+        {
+            try
+            {
+                if (m_ibaAnalyzer != null)
+                    return m_ibaAnalyzer.GetLastError();
+                else
+                {
+                    StopIbaAnalyzer(false);
+                    StartIbaAnalyzer();
+                    return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log(Logging.Level.Exception, ex.Message);
+                StopIbaAnalyzer(false);
+                StartIbaAnalyzer();
+                return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
             }
         }
         
@@ -904,9 +933,9 @@ namespace iba.Processing
                     return false;
                 else
                 {
-                    bool completed = m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY &&
-                            m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_TRUE &&
-                                m_sd.DatFileStates[filename].States[task] != DatFileStatus.State.COMPLETED_FALSE;
+                    bool completed = m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
+                            m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
+                                m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_FALSE;
                     if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE || task.Index == 0)
                         return !completed;
                     else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
@@ -1100,7 +1129,7 @@ namespace iba.Processing
             }
             catch 
             {
-                Log(Logging.Level.Exception, m_ibaAnalyzer.GetLastError(), filename,task);
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
             }
             finally
@@ -1380,7 +1409,7 @@ namespace iba.Processing
             }
             catch
             {
-                Log(Logging.Level.Exception, m_ibaAnalyzer.GetLastError(), filename,task);
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
             }
             finally
@@ -1583,7 +1612,7 @@ namespace iba.Processing
             }
             catch
             {
-                Log(Logging.Level.Exception, m_ibaAnalyzer.GetLastError(), filename, task);
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
             }
             finally

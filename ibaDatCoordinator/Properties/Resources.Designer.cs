@@ -408,6 +408,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to IbaAnalyzer critical error, ibaAnalyzer will be restarted.
+        /// </summary>
+        internal static string IbaAnalyzerUndeterminedError {
+            get {
+                return ResourceManager.GetString("IbaAnalyzerUndeterminedError", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap ibalogo_transparent {
             get {
                 object obj = ResourceManager.GetObject("ibalogo_transparent", resourceCulture);

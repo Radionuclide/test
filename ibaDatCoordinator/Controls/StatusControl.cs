@@ -43,7 +43,9 @@ namespace iba.Controls
             m_extractIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_batchfileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_copydatIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_conditionIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
+
 
             m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)

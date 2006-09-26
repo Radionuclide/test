@@ -655,4 +655,7 @@
   <data name="XTime" xml:space="preserve">
     <value>time</value>
   </data>
+  <data name="IbaAnalyzerUndeterminedError" xml:space="preserve">
+    <value>IbaAnalyzer critical error, ibaAnalyzer will be restarted</value>
+  </data>
 </root>

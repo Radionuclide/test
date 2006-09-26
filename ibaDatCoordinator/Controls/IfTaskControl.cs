@@ -150,22 +150,17 @@ namespace iba.Controls
                 }
             }
 
-            bool bUseAnalysis = File.Exists(m_data.AnalysisFile);
+            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
+            float f = 0;
             try
             {
-                float f;
                 using (new Utility.WaitCursor())
                 {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
                     f = ibaAnalyzer.Evaluate(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex);
+                    this.ParentForm.Activate();
                 }
-                if (float.IsNaN(f) || float.IsInfinity(f))
-                    MessageBox.Show(iba.Properties.Resources.IfTestBadEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                else if (f >= 0.5)
-                    MessageBox.Show(iba.Properties.Resources.IfTestPositiveEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else
-                    MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex3)
             {
@@ -180,9 +175,13 @@ namespace iba.Controls
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
                 }
             }
+            if (float.IsNaN(f) || float.IsInfinity(f))
+                MessageBox.Show(iba.Properties.Resources.IfTestBadEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else if (f >= 0.5)
+                MessageBox.Show(iba.Properties.Resources.IfTestPositiveEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
