@@ -98,6 +98,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_tbPass, "m_tbPass");
             this.m_tbPass.Name = "m_tbPass";
+            this.m_tbPass.UseSystemPasswordChar = true;
             this.m_tbPass.TextChanged += new System.EventHandler(this.m_reportDirInfoChanged);
             // 
             // label12

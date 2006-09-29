@@ -15,7 +15,7 @@ namespace iba.Plugins
         /// <returns>taskinfos</returns>
         PluginTaskInfo[] GetTasks();
         /// <summary>
-        /// Property to get or set the callbackinterface to some usefall DatCoordinator routines
+        /// Property to get or set the callbackinterface to some usefull DatCoordinator routines
         /// </summary>
         IDatCoHost DatCoordinatorHost { get; set;}
         /// <summary>

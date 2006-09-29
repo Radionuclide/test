@@ -162,7 +162,7 @@ namespace iba.Processing
 
         Byte[] CreateWatchdogMessage()
         {
-            string message = string.Format("{0},{1},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"), Environment.NewLine);
+            string message = string.Format("{0},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"));
             string result = null;
             //todo: get function from taskmanager
             if (m_com != null)

@@ -208,10 +208,6 @@ namespace iba.Controls
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
             this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
             // 
-            // m_openFileDialog
-            // 
-            this.m_openFileDialog.FileName = "openFileDialog1";
-            // 
             // IfTaskControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

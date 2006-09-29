@@ -47,6 +47,7 @@ namespace iba.Controls
                 node.Text = m_nameTextBox.Text;
             m_manager.AdjustRightPaneControlTitle();
         }
+
         private void m_whenRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             TreeNode taskNode = m_manager.LeftTree.SelectedNode;
@@ -75,24 +76,26 @@ namespace iba.Controls
             m_data = datasource as TaskData;
             m_nameTextBox.Text = m_data.Name;
 
-            if (m_data.Index == 0)
+            m_rbAlways.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
+            m_rbDisabled.Checked = m_data.WhenToExecute == TaskData.WhenToDo.DISABLED;
+
+
+            bool firsttask = (m_data.Index == 0 || 
+                m_data.ParentConfigurationData.Tasks[m_data.Index-1].WhenToExecute == TaskData.WhenToDo.DISABLED);
+            
+            if (!firsttask)
             {
-                m_rbAlways.Checked = true;
-                m_rbSucces.Checked = false;
-                m_rbFailure.Checked = false;
-                m_rb1stFailure.Checked = false;
-                m_rbDisabled.Checked = false;
-                m_ExecutegroupBox.Enabled = false;
-            }
-            else
-            {
-                m_ExecutegroupBox.Enabled = true;
-                m_rbAlways.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
+                m_rbSucces.Enabled = m_rbFailure.Enabled = m_rb1stFailure.Enabled = true;
                 m_rbSucces.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES;
                 m_rbFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE;
                 m_rb1stFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE;
-                m_rbDisabled.Checked = m_data.WhenToExecute == TaskData.WhenToDo.DISABLED;
             }
+            else
+            {
+                m_rbSucces.Checked = m_rbSucces.Enabled = m_rbFailure.Checked = m_rbFailure.Enabled
+                                   = m_rb1stFailure.Checked = m_rb1stFailure.Enabled = false;
+            }
+            
             m_rbNotAlways.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
             m_rbNotSuccess.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES;
             m_rbNotFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE;
@@ -117,7 +120,15 @@ namespace iba.Controls
             else if (m_rb1stFailure.Checked)
                 m_data.WhenToExecute = TaskData.WhenToDo.AFTER_1st_FAILURE;
             else
-                m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
+            {
+                if (m_data.WhenToExecute != TaskData.WhenToDo.DISABLED)
+                {
+                    m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
+                    if (m_data.ParentConfigurationData.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data.ParentConfigurationData);
+                }
+                else
+                    m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
+            }
 
             if (m_rbNotAlways.Checked)
                 m_data.WhenToNotify = TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
@@ -136,6 +147,7 @@ namespace iba.Controls
                 m_plugin.SaveData();
             else if (m_regularControl != null)
                 m_regularControl.SaveData();
+            
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }

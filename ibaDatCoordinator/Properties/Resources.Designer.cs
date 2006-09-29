@@ -853,6 +853,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; task succesfully completed .
+        /// </summary>
+        internal static string logTaskSuccess {
+            get {
+                return ResourceManager.GetString("logTaskSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log.
         /// </summary>
         internal static string logTitle {
@@ -889,7 +898,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add {0} Task.
+        ///   Looks up a localized string similar to Add &apos;{0}&apos; Task.
         /// </summary>
         internal static string NewCustomTaskTitle {
             get {
@@ -1582,7 +1591,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1/lentgh.
+        ///   Looks up a localized string similar to 1/length.
         /// </summary>
         internal static string XInvLength {
             get {

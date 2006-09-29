@@ -68,10 +68,19 @@ namespace iba.Data
         }
 
         private string m_pass;
+        
+        
+        [XmlIgnore]
         public string Password
         {
             get { return m_pass; }
             set { m_pass = value; }
+        }
+
+        public string PasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_pass); }
+            set { m_pass = Crypt.Decrypt(value); }
         }
 
         private string m_username;
@@ -81,9 +90,8 @@ namespace iba.Data
             set { m_username = value; }
         }
 
-
         private string m_ibaAnalyserExe;
-        public string IbaAnalyserExe
+        public string IbaAnalyzerExe
         {
             get { return m_ibaAnalyserExe; }
             set { if (value.Length != 0) m_ibaAnalyserExe = value; }
@@ -242,6 +250,26 @@ namespace iba.Data
         public int CompareTo(ConfigurationData other)
         {
             return m_id.CompareTo(other.m_id);
+        }
+
+        public bool AdjustDependencies()
+        {
+            if (Tasks.Count == 0) return false;
+            bool changed = false;
+            if (Tasks[0].WhenToExecute != TaskData.WhenToDo.DISABLED && Tasks[0].WhenToExecute != TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
+            {
+                Tasks[0].WhenToExecute = TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
+                changed = true;
+            }
+            for (int i = 1; i < Tasks.Count; i++)
+            {
+                if (Tasks[i - 1].WhenToExecute == TaskData.WhenToDo.DISABLED && Tasks[i].WhenToExecute != TaskData.WhenToDo.DISABLED && Tasks[i].WhenToExecute != TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
+                {
+                    Tasks[i].WhenToExecute = TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
+                    changed = true;
+                }
+            }
+            return changed;
         }
     }
 

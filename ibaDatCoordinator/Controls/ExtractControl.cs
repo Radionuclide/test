@@ -42,7 +42,7 @@ namespace iba.Controls
 
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
             m_targetFolderTextBox.Text = m_data.DestinationMap;
             m_rbFile.Checked = m_data.ExtractToFile;
             m_rbDbase.Checked = !m_data.ExtractToFile;
@@ -96,7 +96,7 @@ namespace iba.Controls
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyserExe;
+                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
                     ibaProc.StartInfo.Arguments = m_pdoFileTextBox.Text;
                     ibaProc.Start();
                 }
@@ -110,7 +110,7 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         private void m_browseFileButton_Click(object sender, EventArgs e)

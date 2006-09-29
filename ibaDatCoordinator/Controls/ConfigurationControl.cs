@@ -79,7 +79,7 @@ namespace iba.Controls
             m_subMapsCheckBox.Checked = m_data.SubDirs;
             m_autoStartCheckBox.Checked = m_data.AutoStart;
             m_enableCheckBox.Checked = m_data.Enabled;
-            m_analyserTextBox.Text = m_data.IbaAnalyserExe;
+            m_analyserTextBox.Text = m_data.IbaAnalyzerExe;
 
             if (m_failTimeUpDown.Minimum >  (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Minimum);
@@ -154,7 +154,7 @@ namespace iba.Controls
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
-            string version = FileVersionInfo.GetVersionInfo(m_data.IbaAnalyserExe).FileVersion;
+            string version = FileVersionInfo.GetVersionInfo(m_data.IbaAnalyzerExe).FileVersion;
             m_newIfTaskButton.Enabled = (version.CompareTo("5.4") >= 0);
         }
 
@@ -165,7 +165,7 @@ namespace iba.Controls
             m_data.SubDirs = m_subMapsCheckBox.Checked;
             m_data.Enabled = m_enableCheckBox.Checked;
             m_data.AutoStart = m_autoStartCheckBox.Checked;
-            m_data.IbaAnalyserExe = m_analyserTextBox.Text;
+            m_data.IbaAnalyzerExe = m_analyserTextBox.Text;
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
             m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
             m_data.RescanEnabled = m_cbRescanEnabled.Checked;
@@ -227,12 +227,14 @@ namespace iba.Controls
             ReportData report = new ReportData(m_data);
             new SetNextName(report);
             m_data.Tasks.Add(report);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(report.Name, MainForm.REPORTTASK_INDEX, MainForm.REPORTTASK_INDEX);
             newNode.Tag = new ReportTreeItemData(m_manager, report);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         private void m_newExtractButton_Click(object sender, EventArgs e)
@@ -240,12 +242,14 @@ namespace iba.Controls
             ExtractData extract = new ExtractData(m_data);
             new SetNextName(extract);
             m_data.Tasks.Add(extract);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(extract.Name, MainForm.EXTRACTTASK_INDEX, MainForm.EXTRACTTASK_INDEX);
             newNode.Tag = new ExtractTreeItemData(m_manager, extract);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         private void m_newBatchfileButton_Click(object sender, EventArgs e)
@@ -253,12 +257,14 @@ namespace iba.Controls
             BatchFileData batchfile = new BatchFileData(m_data);
             new SetNextName(batchfile);
             m_data.Tasks.Add(batchfile);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(batchfile.Name, MainForm.BATCHFILETASK_INDEX, MainForm.BATCHFILETASK_INDEX);
             newNode.Tag = new BatchFileTreeItemData(m_manager, batchfile);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         private void m_newCopyTaskButton_Click(object sender, EventArgs e)
@@ -266,12 +272,14 @@ namespace iba.Controls
             CopyMoveTaskData copy = new CopyMoveTaskData(m_data);
             new SetNextName(copy);
             m_data.Tasks.Add(copy);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(copy.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
             newNode.Tag = new CopyTaskTreeItemData(m_manager, copy);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         private void m_newIfTaskButton_Click(object sender, EventArgs e)
@@ -279,12 +287,14 @@ namespace iba.Controls
             IfTaskData condo = new IfTaskData(m_data);
             new SetNextName(condo);
             m_data.Tasks.Add(condo);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(condo.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
             newNode.Tag = new IfTaskTreeItemData(m_manager, condo);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)
@@ -293,6 +303,7 @@ namespace iba.Controls
             CustomTaskData cust = new CustomTaskData(m_data, info);
             new SetNextName(cust);
             m_data.Tasks.Add(cust);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
             TreeNode newNode = new TreeNode(cust.Name, MainForm.CUSTOMTASK_INDEX + index, MainForm.CUSTOMTASK_INDEX + index);
             newNode.Tag = new CustomTaskTreeItemData(m_manager,cust);
@@ -300,6 +311,7 @@ namespace iba.Controls
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
 

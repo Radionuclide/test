@@ -97,8 +97,7 @@ namespace iba.Controls
                 m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(handle));
                 m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(handle)));
                 m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
                 m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(handle)));
             }
 
@@ -211,7 +210,7 @@ namespace iba.Controls
                                 DatFileStatus dfs = null;
                                 if (m_data.DatFileStates.ContainsKey(file))
                                     dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                                contents[f.CreationTime] =
+                                contents[f.LastWriteTime] =
                                     new KeyValuePair<string, DatFileStatus>(file, dfs);
                             }
                         }
@@ -233,7 +232,7 @@ namespace iba.Controls
                                 DatFileStatus dfs = null;
                                 if (m_data.DatFileStates.ContainsKey(file))
                                     dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                                contents[f.CreationTime] =
+                                contents[f.LastWriteTime] =
                                     new KeyValuePair<string, DatFileStatus>(file, dfs);
                             }
                         }
@@ -271,8 +270,8 @@ namespace iba.Controls
                         else if (pair.Key is CustomTaskData)
                         {
                             CustomTaskData cust = (CustomTaskData) pair.Key;
-                            PluginTaskInfo info = cust.Plugin.GetInfo();
-                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
+                            string name = cust.Plugin.NameInfo;
+                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
                             bitmap = m_customtaskIcons[index][pair.Value];
                         }
 

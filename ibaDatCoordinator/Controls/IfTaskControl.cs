@@ -44,8 +44,8 @@ namespace iba.Controls
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe) &&
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text);
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
         }
@@ -78,7 +78,7 @@ namespace iba.Controls
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyserExe;
+                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
                     ibaProc.StartInfo.Arguments = m_pdoFileTextBox.Text;
                     ibaProc.Start();
                 }
@@ -105,18 +105,18 @@ namespace iba.Controls
             //register this
             using (new Utility.WaitCursor())
             {
-                if (m_previousRunExecutable != m_data.ParentConfigurationData.IbaAnalyserExe)
+                if (m_previousRunExecutable != m_data.ParentConfigurationData.IbaAnalyzerExe)
                 {
                     try
                     {
                         //version check not necessary, as we're not going to enable this button if the file version is to low
                         Process ibaProc = new Process();
                         ibaProc.EnableRaisingEvents = false;
-                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyserExe;
+                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
                         ibaProc.StartInfo.Arguments = "/regserver";
                         ibaProc.Start();
                         ibaProc.WaitForExit(10000);
-                        m_previousRunExecutable = m_data.ParentConfigurationData.IbaAnalyserExe;
+                        m_previousRunExecutable = m_data.ParentConfigurationData.IbaAnalyzerExe;
                     }
                     catch (Exception ex)
                     {
@@ -135,7 +135,7 @@ namespace iba.Controls
                     {
                         Process ibaProc = new Process();
                         ibaProc.EnableRaisingEvents = false;
-                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyserExe;
+                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
                         ibaProc.StartInfo.Arguments = "/regserver";
                         ibaProc.Start();
                         ibaProc.WaitForExit(10000);
@@ -186,13 +186,13 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-            File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+            File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
     }
 }

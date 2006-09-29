@@ -188,6 +188,7 @@
     <Compile Include="StopServiceDialog.Designer.cs">
       <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Utility\NotifyIconEx.cs">

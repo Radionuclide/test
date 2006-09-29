@@ -6,6 +6,7 @@ using iba.Processing;
 
 namespace iba.Utility
 {
+    [Serializable]
     class DatCoordinatorHostImpl : IDatCoHost
     {
 

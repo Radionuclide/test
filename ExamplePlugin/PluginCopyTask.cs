@@ -13,8 +13,6 @@ namespace ExamplePlugin
         }
 
         private IDatCoHost m_datcoHost;
-        private PluginTaskInfo m_info;
-
         private string m_nameInfo;
         public string NameInfo
         {
@@ -28,24 +26,22 @@ namespace ExamplePlugin
             m_parentJob = data; 
         }
 
-        public void Reset(PluginTaskInfo info, IDatCoHost host)
+        public void Reset(IDatCoHost host)
         {
-            m_info = info;
             m_datcoHost = host;
         }
 
-        public PluginCopyTask(PluginTaskInfo info, IDatCoHost host, IJobData parentJob)
+        public PluginCopyTask(string name, IDatCoHost host, IJobData parentJob)
         {
             m_parentJob = parentJob;
             m_pass = "";
             m_username = "";
             m_destinationMapUNC = "";
-            m_info = info;
             m_datcoHost = host;
             m_removeSource = false;
             m_subfolderChoice = SubfolderChoiceC.NONE;
             m_numbFolders = 10;
-            m_nameInfo = info.Name;
+            m_nameInfo = name;
         }
 
         bool m_removeSource;
@@ -73,25 +69,20 @@ namespace ExamplePlugin
 
         #region IPluginTaskData Members
 
+        [NonSerialized]
         private PluginCopyTaskControl m_control;
-
         public IPluginControl GetControl()
         {
             if (m_control == null) m_control = new PluginCopyTaskControl(m_datcoHost);
             return m_control;
         }
 
+        [NonSerialized]
         private PluginCopyTaskWorker m_worker;
-
         public IPluginTaskWorker GetWorker()
         {
             if (m_worker == null) m_worker = new PluginCopyTaskWorker(m_datcoHost, this, m_parentJob);
             return m_worker;
-        }
-
-        public PluginTaskInfo GetInfo()
-        {
-            return m_info;
         }
 
         public void Destroy()
@@ -104,7 +95,7 @@ namespace ExamplePlugin
 
         public object Clone()
         {
-            PluginCopyTask cd = new PluginCopyTask(m_info,m_datcoHost,null);
+            PluginCopyTask cd = new PluginCopyTask(m_nameInfo,m_datcoHost,null);
             cd.m_removeSource = m_removeSource;
             cd.m_subfolderChoice = m_subfolderChoice;
             cd.m_destinationMap = m_destinationMap;
@@ -126,7 +117,7 @@ namespace ExamplePlugin
 
         public string[][] UNCPaths()
         {
-            return new string[][] { new string[] { m_destinationMap }, new string[] { m_username }, new string[] { m_pass } };
+            return new string[][] { new string[] { m_destinationMap, m_username, m_pass } };
         }
 
         #endregion

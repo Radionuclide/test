@@ -45,7 +45,7 @@ namespace iba.Controls
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_batchFileTextBox.Text = m_data.BatchFile;
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
             if (File.Exists(m_batchFileTextBox.Text))
             {
                 m_executeBatchFile.Enabled = true;
@@ -85,7 +85,7 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyserExe);
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         private void m_executeBatchFile_Click(object sender, EventArgs e)
@@ -113,7 +113,7 @@ namespace iba.Controls
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyserExe;
+                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
                     ibaProc.StartInfo.Arguments = m_pdoFileTextBox.Text;
                     ibaProc.Start();
                 }

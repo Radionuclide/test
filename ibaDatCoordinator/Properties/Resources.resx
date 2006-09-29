@@ -605,7 +605,7 @@
     <value>Are you sure you want to delete the '{0}' options "{1}" of Job "{2}" ?</value>
   </data>
   <data name="NewCustomTaskTitle" xml:space="preserve">
-    <value>Add {0} Task</value>
+    <value>Add '{0}' Task</value>
   </data>
   <data name="deleteIfTaskQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the condition options "{0}" of Job "{1}" ? (dependent tasks will not be deleted)</value>
@@ -647,7 +647,7 @@
     <value>frequency</value>
   </data>
   <data name="XInvLength" xml:space="preserve">
-    <value>1/lentgh</value>
+    <value>1/length</value>
   </data>
   <data name="XLength" xml:space="preserve">
     <value>length</value>
@@ -657,5 +657,8 @@
   </data>
   <data name="IbaAnalyzerUndeterminedError" xml:space="preserve">
     <value>IbaAnalyzer critical error, ibaAnalyzer will be restarted</value>
+  </data>
+  <data name="logTaskSuccess" xml:space="preserve">
+    <value>'{0}' task succesfully completed </value>
   </data>
 </root>

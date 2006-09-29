@@ -29,8 +29,7 @@ namespace iba.Data
             {
                 m_plugin = value.ObjectToSerialize as IPluginTaskData;
                 string name = m_plugin.NameInfo;
-                m_plugin.Reset(PluginManager.Manager.PluginInfos.Find(delegate(PluginTaskInfo i) { return i.Name == name; }), 
-                    DatCoordinatorHostImpl.Host);
+                m_plugin.Reset(DatCoordinatorHostImpl.Host);
             }
         }
 

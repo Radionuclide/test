@@ -65,7 +65,7 @@ namespace iba.Utility
                 catch (Exception ex)
                 {
                     string message = String.Format(iba.Properties.Resources.logPluginLoadError, assemblyFileName, ex.Message);
-                    if (LogData.Data.Logger.IsOpen)
+                    if (LogData.Data != null && LogData.Data.Logger != null && LogData.Data.Logger.IsOpen)
                         LogData.Data.Logger.Log(iba.Logging.Level.Exception, message);
                 }
             }

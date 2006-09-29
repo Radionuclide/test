@@ -27,11 +27,6 @@ namespace iba.Plugins
         IPluginTaskWorker GetWorker();
 
         /// <summary>
-        /// Function to get information about the plugin
-        /// </summary>
-        PluginTaskInfo GetInfo();
-
-        /// <summary>
         /// Index to retrieve info from pluginmanager after serialisation
         /// </summary>
         string NameInfo
@@ -43,7 +38,7 @@ namespace iba.Plugins
         /// Function to reset the PluginTask after serialisation
         /// </summary>
         /// <param name="info">information to set</param>
-        void Reset(PluginTaskInfo info, IDatCoHost host);
+        void Reset(IDatCoHost host);
         
         /// <summary>
         /// Function to set the parent job data

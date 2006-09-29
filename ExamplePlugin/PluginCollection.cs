@@ -37,7 +37,7 @@ namespace ExamplePlugin
         public IPluginTaskData CreateTask(string taskname, IJobData m_parentJob)
         {
             if (taskname == "CopyP")
-                return new PluginCopyTask(m_info, DatCoordinatorHost, m_parentJob);
+                return new PluginCopyTask(taskname, DatCoordinatorHost, m_parentJob);
             else return null;
         }
 

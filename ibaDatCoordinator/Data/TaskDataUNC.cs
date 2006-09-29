@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iba.Utility;
+using System.Xml.Serialization;
 
 namespace iba.Data
 {
@@ -43,10 +44,18 @@ namespace iba.Data
         }
 
         protected string m_pass;
+
+        [XmlIgnore]
         public string Password
         {
             get { return m_pass; }
             set { m_pass = value; }
+        }
+
+        public string PasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_pass); }
+            set { m_pass = Crypt.Decrypt(value); }
         }
     }
 }

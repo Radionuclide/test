@@ -277,7 +277,7 @@ namespace iba
 
         public override Control CreateControl()
         {
-            string id = CustomTaskData.Plugin.GetInfo().Name + "Control";
+            string id = CustomTaskData.Plugin.NameInfo + "Control";
             Control ctrl = manager.PropertyPanes[id] as Control;
             if (ctrl == null)
             {
