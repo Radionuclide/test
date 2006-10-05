@@ -118,79 +118,55 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Passwort:</value>
-  </data>
-  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 39</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 42</value>
-  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
+    <value>70, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>Benutzername:</value>
+    <value>X-Achsentyp:</value>
   </data>
-  <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 12</value>
+  <data name="m_XTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 92</value>
+  </data>
+  <data name="m_XTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 21</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 13</value>
+    <value>95, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Max. Anzahl Unterverzeichnisse</value>
-  </data>
-  <data name="m_rbHour.Text" xml:space="preserve">
-    <value>stündlich</value>
-  </data>
-  <data name="m_rbDay.Text" xml:space="preserve">
-    <value>täglich</value>
-  </data>
-  <data name="m_rbWeek.Text" xml:space="preserve">
-    <value>wöchentlich</value>
-  </data>
-  <data name="m_rbMonth.Text" xml:space="preserve">
-    <value>monatlich</value>
-  </data>
-  <data name="m_rbNONE.Text" xml:space="preserve">
-    <value>keine</value>
-  </data>
-  <data name="m_rbOriginal.Text" xml:space="preserve">
-    <value>die ursprüngliche Struktur halten </value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Unterverzeichnisse</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 15</value>
+    <value>Optionale Analyse:</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+    <value>55, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Zielverzeichnis:</value>
+    <value>Ausdruck:</value>
   </data>
-  <data name="m_rbPrint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 17</value>
+  <data name="m_expressionTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 66</value>
   </data>
-  <data name="m_rbPrint.Text" xml:space="preserve">
-    <value>Drucker</value>
+  <data name="m_expressionTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>430, 20</value>
   </data>
-  <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 17</value>
+  <data name="m_pdoFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 31</value>
   </data>
-  <data name="m_rbFile.Text" xml:space="preserve">
-    <value>Datei:</value>
+  <data name="m_pdoFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>338, 20</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
-    <value>Ziel</value>
+    <value>Ausdruck definieren</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Analysevorschrift für Report-Aufgabe</value>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Messdatei:</value>
+  </data>
+  <data name="m_datFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 31</value>
+  </data>
+  <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>338, 20</value>
   </data>
 </root>

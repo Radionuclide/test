@@ -137,8 +137,9 @@ namespace iba.Controls
                 {
                     try
                     {
-                        File.Create(m_batchFileTextBox.Text);
-                    }
+                        FileStream f = File.Create(m_batchFileTextBox.Text);
+                        f.Close();
+                     }
                     catch
                     {
                         MessageBox.Show("Unable to create batchfile");

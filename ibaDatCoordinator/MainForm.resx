@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_statusBarStripLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>768, 17</value>
+    <value>799, 17</value>
   </data>
   <data name="m_statusStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>

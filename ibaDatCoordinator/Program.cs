@@ -92,6 +92,16 @@ namespace iba
             Application.SetCompatibleTextRenderingDefault(false);
             System.Threading.Thread.CurrentThread.Name = "GUI thread";
             MainForm = new MainForm();
+            if (RunsWithService != ServiceEnum.NOSERVICE)
+            {
+                MainForm.WindowState = FormWindowState.Minimized;
+                MainForm.ShowInTaskbar = false;
+            }
+            else
+            {
+                MainForm.WindowState = FormWindowState.Normal;
+                MainForm.ShowInTaskbar = true;
+            }
             Application.Run(MainForm);
         }
     }

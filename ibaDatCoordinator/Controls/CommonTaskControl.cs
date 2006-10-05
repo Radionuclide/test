@@ -58,6 +58,11 @@ namespace iba.Controls
                 taskNode.StateImageIndex = 1;
             else if (m_rbSucces.Checked)
                 taskNode.StateImageIndex = 0;
+            else if (m_rbDisabled.Checked)
+            {
+                m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
+                if (m_data.ParentConfigurationData.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data.ParentConfigurationData);
+            }
             else
                 taskNode.StateImageIndex = -1;
         }
@@ -95,7 +100,9 @@ namespace iba.Controls
                 m_rbSucces.Checked = m_rbSucces.Enabled = m_rbFailure.Checked = m_rbFailure.Enabled
                                    = m_rb1stFailure.Checked = m_rb1stFailure.Enabled = false;
             }
-            
+
+            m_whenRadioButton_CheckedChanged(null, null);
+
             m_rbNotAlways.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
             m_rbNotSuccess.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES;
             m_rbNotFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE;
@@ -121,12 +128,6 @@ namespace iba.Controls
                 m_data.WhenToExecute = TaskData.WhenToDo.AFTER_1st_FAILURE;
             else
             {
-                if (m_data.WhenToExecute != TaskData.WhenToDo.DISABLED)
-                {
-                    m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
-                    if (m_data.ParentConfigurationData.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data.ParentConfigurationData);
-                }
-                else
                     m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
             }
 

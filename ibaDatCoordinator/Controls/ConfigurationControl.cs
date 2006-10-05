@@ -155,7 +155,7 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             string version = FileVersionInfo.GetVersionInfo(m_data.IbaAnalyzerExe).FileVersion;
-            m_newIfTaskButton.Enabled = (version.CompareTo("5.4") >= 0);
+            m_newIfTaskButton.Enabled = (version.CompareTo("5.3.4") >= 0);
         }
 
         public void SaveData()

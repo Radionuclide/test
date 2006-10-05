@@ -181,9 +181,12 @@ namespace iba
                             break;
                     }
                 }
-                WindowState = FormWindowState.Minimized;
-                ShowInTaskbar = false;
-                e.Cancel = true;
+                if (WindowState != FormWindowState.Minimized)
+                {
+                    WindowState = FormWindowState.Minimized;
+                    ShowInTaskbar = false;
+                    e.Cancel = true;
+                }
                 return;
             }
             
@@ -223,6 +226,17 @@ namespace iba
                     waiter.ShowDialog(this);
                 }
             }
+        }
+
+        bool bHandleResize = false;
+        protected override void OnResize(EventArgs e)
+        {
+            if (bHandleResize && WindowState == FormWindowState.Minimized)
+            {
+                ShowInTaskbar = false;
+                Hide();
+            }
+            base.OnResize(e);
         }
 
         public void fromStatusToConfiguration()
@@ -344,9 +358,13 @@ namespace iba
             if (returnvalue != "not set" && Program.RunsWithService != Program.ServiceEnum.CONNECTED) loadFromFile(returnvalue,true);
             loadConfigurations();
             loadStatuses();
-            if (WindowState == FormWindowState.Minimized)
-                Hide();
             UpdateButtons();
+
+            if (WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                bHandleResize = true;
+            }
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
@@ -967,8 +985,8 @@ namespace iba
                 }
                 int index2 = node.Index;
                 origData.Tasks.Insert(index2, m_task_copy);
-                if (origData.AdjustDependencies()) AdjustFrontIcons(origData); 
                 node.Parent.Nodes.Insert(index2, taskNode);
+                if (origData.AdjustDependencies()) AdjustFrontIcons(origData); 
                 taskNode.EnsureVisible();
                 m_configTreeView.SelectedNode = taskNode;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -1075,7 +1093,7 @@ namespace iba
                     items.Add(MenuItemsEnum.NewTask);
                     string version = FileVersionInfo.GetVersionInfo((data as ConfigurationTreeItemData).ConfigurationData.IbaAnalyzerExe).FileVersion;
                     m_menuItems[(int)MenuItemsEnum.NewTask].Enabled = !started;
-                    m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = (version.CompareTo("5.4") >= 0);
+                    m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = (version.CompareTo("5.3.4") >= 0);
                 }
                 else if (data is NewConfigurationTreeItemData)
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = false;
@@ -1262,8 +1280,8 @@ namespace iba
                 {
                     for (int i = 0; i < data.Tasks.Count; i++)
                     {
-                        if (data.Tasks[i].WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
-                            node.Nodes[i].StateImageIndex = 0;
+                        if (data.Tasks[i].WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
+                            node.Nodes[i].StateImageIndex = -1;
                     }
                 }
             }
