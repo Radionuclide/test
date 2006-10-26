@@ -329,7 +329,6 @@ namespace iba.Processing
                     StartIbaAnalyzer();
                     while (!m_stop)
                     {
-
                         while (true)
                         {
                             string file = null;

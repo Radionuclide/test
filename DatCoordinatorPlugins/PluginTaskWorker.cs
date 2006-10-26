@@ -4,6 +4,15 @@ using System.Text;
 
 namespace iba.Plugins
 {
+    /// <summary>
+    /// give an instance of a class derived from this class to return worker status
+    /// </summary>
+    [Serializable]
+    public class PluginTaskWorkerStatus
+    {
+        public bool started;
+        public object extraData;
+    }
 
     /// <summary>
     /// Interface implemented by a plugin task, worker part
@@ -41,5 +50,9 @@ namespace iba.Plugins
         /// </summary>
         /// <returns>null if no error occured, description of the error otherwise</returns>
         string GetLastError();
+
+
+        PluginTaskWorkerStatus GetWorkerStatus();
+            
     }
 }

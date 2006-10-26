@@ -162,9 +162,16 @@ namespace iba.Controls
             OnChangedData(null, null);
             m_refreshTimer.Start();
         }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (!Visible)
+                m_refreshTimer.Stop();
+        }
+
         public void SaveData()
         {
-            m_refreshTimer.Stop();
             //nothing to be saved as status is purely an output control
         }
 

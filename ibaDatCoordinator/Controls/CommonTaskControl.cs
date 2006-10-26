@@ -14,7 +14,7 @@ using iba.Plugins;
 
 namespace iba.Controls
 {
-    public partial class CommonTaskControl : UserControl, IPropertyPane
+    public partial class CommonTaskControl : UserControl, IPropertyPane, ICommonTaskControl
     {
         public CommonTaskControl(Control pluginControl)
         {
@@ -74,6 +74,12 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         private TaskData m_data;
+
+        public TaskData Data
+        {
+            get { return m_data; }
+            set { m_data = value; }
+        }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -152,6 +158,20 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
+        #endregion
+
+        #region ICommonTaskControl Members
+
+        public ulong ParentConfigurationID()
+        {
+            return m_data.ParentConfigurationData.ID;
+        }
+
+        public int TaskIndex()
+        {
+            return m_data.Index;
+        }
+
         #endregion
     }
 }

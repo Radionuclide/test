@@ -34,7 +34,7 @@ namespace ExamplePlugin
         #region IPluginControl Members
 
         PluginCopyTask m_data;
-        public void LoadData(object datasource, Control parentcontrol)
+        public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
             m_data = datasource as PluginCopyTask;
             m_targetFolderTextBox.Text = m_data.DestinationMap;

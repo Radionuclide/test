@@ -1557,7 +1557,7 @@ namespace iba
             deleteToolStripMenuItem.Enabled = m_previousMenuItems.d;
         }
 
-        private void m_rightPane_Enter(object sender, EventArgs e)
+        public void m_rightPane_Enter(object sender, EventArgs e)
         {
             m_previousMenuItems.p = pasteToolStripMenuItem.Enabled;
             m_previousMenuItems.c = copyToolStripMenuItem.Enabled;

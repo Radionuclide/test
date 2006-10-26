@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using iba.Data;
 using System.Net.Sockets;
 using iba.Utility;
+using iba.Plugins;
 
 namespace iba.Processing
 {
@@ -180,6 +181,16 @@ namespace iba.Processing
                 if (pair.Key.ID == ID) return pair.Value.Status;
             }
             throw new KeyNotFoundException(ID.ToString() + " not found");
+        }
+
+        virtual public PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.ID == ID && pair.Key.Tasks[taskindex] is CustomTaskData) 
+                    return (pair.Key.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
+            }
+            return null;
         }
 
         virtual public StatusData GetStatusCopy(ulong ID)
@@ -451,6 +462,19 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.handleBrokenConnection();
                 return Manager.GetStatus(ID);
+            }
+        }
+
+        public override PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetStatusPlugin(ID,taskindex);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                return Manager.GetStatusPlugin(ID,taskindex);
             }
         }
 

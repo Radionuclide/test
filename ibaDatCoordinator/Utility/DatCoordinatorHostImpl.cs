@@ -52,5 +52,11 @@ namespace iba.Utility
                 return m_instance;
             }
         }
+
+        public PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        {
+            return TaskManager.Manager.GetStatusPlugin(ID, taskindex);
+        }
+
     }
 }

@@ -203,5 +203,15 @@ namespace ExamplePlugin
         }
 
         #endregion
+
+        #region IPluginTaskWorker Members
+
+
+        public PluginTaskWorkerStatus GetWorkerStatus()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        #endregion
     }
 }

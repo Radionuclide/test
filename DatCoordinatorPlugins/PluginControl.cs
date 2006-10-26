@@ -11,7 +11,13 @@ namespace iba.Plugins
     /// </summary>
     public interface IPluginControl
     {
-        void LoadData(object datasource, Control parentcontrol);
+        void LoadData(object datasource, ICommonTaskControl parentcontrol);
         void SaveData();
+    }
+
+    public interface ICommonTaskControl
+    {
+        ulong ParentConfigurationID();
+        int TaskIndex();
     }
 }

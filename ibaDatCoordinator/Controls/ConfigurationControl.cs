@@ -235,6 +235,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
         private void m_newExtractButton_Click(object sender, EventArgs e)
@@ -250,6 +251,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
         private void m_newBatchfileButton_Click(object sender, EventArgs e)
@@ -265,6 +267,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
         private void m_newCopyTaskButton_Click(object sender, EventArgs e)
@@ -280,6 +283,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
         private void m_newIfTaskButton_Click(object sender, EventArgs e)
@@ -295,6 +299,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)
@@ -312,6 +317,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
         }
 
 

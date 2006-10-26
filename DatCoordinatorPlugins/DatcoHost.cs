@@ -42,5 +42,7 @@ namespace iba.Plugins
         /// <param name="handle">handle of the textbox to autocomplete</param>
         /// <param name="directory">set to true if autocompletion for a directory, false for a file</param>
         void EnableAutoComplete(IntPtr handle, bool directory);
+
+        PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex);
     }
 }
