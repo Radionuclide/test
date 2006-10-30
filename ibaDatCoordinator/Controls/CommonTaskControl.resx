@@ -220,10 +220,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 3</value>
+    <value>371, 3</value>
   </data>
   <data name="m_rb1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>185, 22</value>
   </data>
   <data name="m_rb1stFailure.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -256,7 +256,7 @@
     <value>3, 31</value>
   </data>
   <data name="m_rbAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbAlways.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -286,10 +286,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 31</value>
+    <value>187, 31</value>
   </data>
   <data name="m_rbFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbFailure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -322,7 +322,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -352,10 +352,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbSucces.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 3</value>
+    <value>187, 3</value>
   </data>
   <data name="m_rbSucces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbSucces.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -375,14 +375,17 @@
   <data name="&gt;&gt;m_rbSucces.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 16</value>
+    <value>3, 16</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>546, 56</value>
+    <value>559, 56</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -442,10 +445,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 3</value>
+    <value>371, 3</value>
   </data>
   <data name="m_rbNot1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>185, 22</value>
   </data>
   <data name="m_rbNot1stFailure.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -478,7 +481,7 @@
     <value>3, 31</value>
   </data>
   <data name="m_rbNotAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbNotAlways.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -508,10 +511,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNotFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 31</value>
+    <value>187, 31</value>
   </data>
   <data name="m_rbNotFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbNotFailure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -544,7 +547,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_rbNotDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbNotDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -574,10 +577,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNotSuccess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 3</value>
+    <value>187, 3</value>
   </data>
   <data name="m_rbNotSuccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_rbNotSuccess.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -597,14 +600,17 @@
   <data name="&gt;&gt;m_rbNotSuccess.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="tableLayoutPanel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="tableLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 16</value>
+    <value>3, 16</value>
   </data>
   <data name="tableLayoutPanel6.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>546, 56</value>
+    <value>559, 56</value>
   </data>
   <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>

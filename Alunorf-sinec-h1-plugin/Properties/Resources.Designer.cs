@@ -60,6 +60,13 @@ namespace Alunorf_sinec_h1_plugin.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Aktualisieren {
+            get {
+                object obj = ResourceManager.GetObject("Aktualisieren", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to connected.
         /// </summary>
@@ -163,6 +170,20 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         internal static string initialised {
             get {
                 return ResourceManager.GetString("initialised", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap open {
+            get {
+                object obj = ResourceManager.GetObject("open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Speichern {
+            get {
+                object obj = ResourceManager.GetObject("Speichern", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

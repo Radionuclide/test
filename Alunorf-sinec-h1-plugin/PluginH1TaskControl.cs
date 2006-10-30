@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.IO;
 using iba.Plugins;
 
 namespace Alunorf_sinec_h1_plugin
@@ -148,8 +150,6 @@ namespace Alunorf_sinec_h1_plugin
                     m_statusNQS1.ForeColor = Color.Green;
                     break;
             }
-
-
             m_refreshTimer.Enabled = true;
         }
 
@@ -160,5 +160,70 @@ namespace Alunorf_sinec_h1_plugin
                 m_refreshTimer.Stop();
         }
 
+        private void m_btOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_btSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_datagvMessages_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                int row = 0;
+                int col = 0;
+
+                if (m_datagvMessages.CurrentCell != null)
+                {
+                    row = m_datagvMessages.CurrentCell.RowIndex;
+                    col = m_datagvMessages.CurrentCell.ColumnIndex;
+                }
+                if (m_datagvMessages.SelectedCells.Count > 2) //multiselect, only take first
+                {
+                    row = Algorithms.min< DataGridViewCell>(m_datagvMessages.SelectedCells, delegate(DataGridViewCell a, DataGridViewCell b) { return a.RowIndex - b.RowIndex; }).RowIndex;
+                    col = Algorithms.min<DataGridViewCell>(m_datagvMessages.SelectedCells, delegate(DataGridViewCell a, DataGridViewCell b) { return a.ColumnIndex - b.ColumnIndex; }).ColumnIndex;
+                }
+
+                if (e.Control && e.KeyCode == Keys.V && Clipboard.ContainsData(DataFormats.CommaSeparatedValue))
+                {
+                    object o = Clipboard.GetData(DataFormats.CommaSeparatedValue);
+                    using (StreamReader sr = new StreamReader((Stream)Clipboard.GetData(DataFormats.CommaSeparatedValue)))
+                    {
+                        for (string s = sr.ReadLine(); s != null; s = sr.ReadLine())
+                        {
+                            if (string.IsNullOrEmpty(s) || s == "\0")
+                            {
+                                row++;
+                                continue;
+                            }
+                            while (row+1 >= m_datagvMessages.RowCount) //always leav
+                                m_datagvMessages.RowCount++;
+                            string[] sr_array = s.Split(',');
+                            for (int col2 = col; col2 < sr_array.Length + col; col2++)
+                            {
+
+                                if (col2 == 0 || col2 == 2) //comment or field 
+                                    (m_datagvMessages.Rows[row].Cells[col2]).Value = sr_array[col2 - col];
+                                else if (col2 == 1)
+                                {
+                                    DataGridViewComboBoxCell cell = (m_datagvMessages.Rows[row].Cells[col2] as DataGridViewComboBoxCell);
+                                    if (cell.Items.Contains(sr_array[col2 - col]))
+                                        cell.Value = sr_array[col2 - col];
+                                }
+                                else break;
+                            }
+                            row++;
+                        }
+                    }
+                }
+            }
+            catch (ExternalException ex)
+            {
+            }
+        }
     }
 }

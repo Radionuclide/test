@@ -96,10 +96,11 @@ namespace Alunorf_sinec_h1_plugin
             return m_control;
         }
 
-
+        private PluginH1TaskWorker m_worker;
         public IPluginTaskWorker GetWorker()
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (m_worker == null) m_worker = new PluginH1TaskWorker(this);
+            return m_worker;
         }
 
         private IDatCoHost m_datcoHost;

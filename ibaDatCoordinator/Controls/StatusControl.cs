@@ -281,7 +281,6 @@ namespace iba.Controls
                             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
                             bitmap = m_customtaskIcons[index][pair.Value];
                         }
-
                         text = m_taskTexts[pair.Value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 1] as DataGridViewImageCell;
                         blank[pair.Key.Index + 1] = false;
@@ -295,9 +294,7 @@ namespace iba.Controls
                             cell.ToolTipText = text;
                     }
                 }
-//                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
-  //                  if ((m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value == null)
-    //                    (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
+
                 for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
                     if (blank[i] && (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value != m_blankIcon)
                         (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
