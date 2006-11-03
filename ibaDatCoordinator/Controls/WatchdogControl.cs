@@ -47,6 +47,9 @@ namespace iba.Controls
             TaskManager.Manager.ReplaceWatchdogData(m_data.Clone() as WatchDogData);
             m_timerStatus.Enabled = false;
         }
+
+        public void LeaveCleanup() { }
+
         #endregion
 
         private void m_timerStatus_Tick(object sender, EventArgs e)

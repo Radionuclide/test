@@ -5,6 +5,7 @@ using System.Threading;
 
 using iba;
 using iba.Plugins;
+using IBAFILESLib;
 
 namespace Alunorf_sinec_h1_plugin
 {
@@ -13,7 +14,6 @@ namespace Alunorf_sinec_h1_plugin
         public PluginH1TaskWorker.NQSStatus nqs1;
         public PluginH1TaskWorker.NQSStatus nqs2;
     }
-
 
     public class PluginH1TaskWorker : IPluginTaskWorker
     {
@@ -29,7 +29,6 @@ namespace Alunorf_sinec_h1_plugin
             m_thread.Start();
             
             //wait here until initialisation succeeded
-
             m_waitConnectedEvent = new AutoResetEvent(false);
             m_waitConnectedEvent.WaitOne(2000* (m_data.SendTimeOut + m_data.AckTimeOut + m_data.ConnectionTimeOut + 30),true);
             if ((m_nqs1Status == NQSStatus.GO && m_nqs2Status == NQSStatus.CONNECTED) || (m_nqs2Status == NQSStatus.GO && m_nqs1Status == NQSStatus.CONNECTED))
@@ -59,81 +58,221 @@ namespace Alunorf_sinec_h1_plugin
 
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
-            m_data = newtask as PluginH1Task;
+            PluginH1Task data = newtask as PluginH1Task;
+            if (data.NQS_TSAPforNQS1 != data.NQS_TSAPforNQS1
+                || data.NQS_TSAPforNQS2 != data.NQS_TSAPforNQS2
+                || data.OwnTSAPforNQS1 != data.OwnTSAPforNQS1
+                || data.OwnTSAPforNQS2 != data.OwnTSAPforNQS2
+                || data.NQSAddress1[0] != data.NQSAddress1[0]
+                || data.NQSAddress1[1] != data.NQSAddress1[1]
+                || data.NQSAddress1[2] != data.NQSAddress1[2]
+                || data.NQSAddress1[3] != data.NQSAddress1[3]
+                || data.NQSAddress1[4] != data.NQSAddress1[4]
+                || data.NQSAddress1[5] != data.NQSAddress1[5]
+                || data.NQSAddress2[0] != data.NQSAddress2[0]
+                || data.NQSAddress2[1] != data.NQSAddress2[1]
+                || data.NQSAddress2[2] != data.NQSAddress2[2]
+                || data.NQSAddress2[3] != data.NQSAddress2[3]
+                || data.NQSAddress2[4] != data.NQSAddress2[4]
+                || data.NQSAddress2[5] != data.NQSAddress2[5])
+            {
+                m_h1manager.DisconnectAll();
+                m_retryConnect = true;
+            }
+
+            bool telsAreEqual = true;
+            if (data.Telegrams.Count == m_data.Telegrams.Count)
+            {
+                for (int i = 0; i < data.Telegrams.Count && telsAreEqual; i++)
+                {
+                    if (data.Telegrams[i].DataInfo.Count != m_data.Telegrams[i].DataInfo.Count
+                        || data.Telegrams[i].DataSignal.Count != m_data.Telegrams[i].DataSignal.Count
+                        || data.Telegrams[i].QdtType != m_data.Telegrams[i].QdtType)
+                        telsAreEqual = false;
+                    else
+                    {
+                        for (int j = 0; j < data.Telegrams[i].DataInfo.Count && telsAreEqual;j++ )
+                        {
+                            telsAreEqual = telsAreEqual && data.Telegrams[i].DataInfo[j].DataType == m_data.Telegrams[i].DataInfo[j].DataType
+                            && data.Telegrams[i].DataInfo[j].Name == m_data.Telegrams[i].DataInfo[j].Name;
+                        }
+                        for (int j = 0; j < data.Telegrams[i].DataSignal.Count && telsAreEqual; j++)
+                        {
+                            telsAreEqual = telsAreEqual && data.Telegrams[i].DataSignal[j].DataType == m_data.Telegrams[i].DataSignal[j].DataType
+                            && data.Telegrams[i].DataSignal[j].Name == m_data.Telegrams[i].DataSignal[j].Name;
+                        }
+                    }
+                }
+            }
+            else telsAreEqual = false;
+
+            if (!telsAreEqual) // cleanup back log
+            {
+                m_idToFilename.Clear();
+                m_acknowledgements.Clear();
+                m_nak_errors.Clear();
+            }
+            m_data = data;
             return true;
         }
 
         public bool ExecuteTask(string datFile)
         {
-            lock (m_acknowledgements)
+            IbaFileReader reader = new IbaFileClass();
+            try
             {
-                if (m_acknowledgements.ContainsKey(datFile))
+                reader.Open(datFile);
+            }
+            catch
+            {
+                m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_no_open;
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
+                return false;
+            }
+
+            List<short> UnTimelyAcknowledged = new List<short>();
+            List<string> NAKnowledged = new List<string>();
+            List<string> ErrorTelegram = new List<string>();
+            List<string> ErrorSendTelegram = new List<string>();
+
+            int count = 0;
+            foreach (PluginH1Task.Telegram telegram in m_data.Telegrams)
+            {
+                count++;
+                string key = datFile + "#" + count.ToString();
+                lock (m_acknowledgements)
                 {
-                    if (m_acknowledgements[datFile]) //positively acknowledged in the mean time;
+                    if (m_acknowledgements.ContainsKey(key))
                     {
-                        m_acknowledgements.Remove(datFile);
-                        m_idToFilename.Remove(datFile);
-                        return true;
+                        if (m_acknowledgements[key]) //positively acknowledged in the mean time;
+                        {
+                            m_acknowledgements.Remove(key);
+                            m_idToFilename.Remove(key);
+                            continue;
+                        }
+                        else //negatively acknowledged, regard the datfile as never send
+                        {
+                            m_acknowledgements.Remove(key);
+                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]); 
+                            m_nak_errors.Remove(key);
+                            NAKnowledged.Add(item);
+                            m_idToFilename.Remove(key);
+                            continue;
+                        }
                     }
-                    else //negatively acknowledged, regard the datfile as never send
+                }
+
+                lock (m_messageQueue)
+                {
+                    if (m_messageQueue.Count > 1000)
                     {
-                        m_acknowledgements.Remove(datFile);
+                        m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_queue;
+                        return false;
+                    }
+                    QdtTelegram qdt = null;
+                    if (m_nqs1Status == NQSStatus.GO)
+                    {
+                        qdt = new QdtTelegram(telegram, reader, m_idCounter, m_nqs1Messages++);
+                    }
+                    else if (m_nqs1Status == NQSStatus.GO)
+                    {
+                        qdt = new QdtTelegram(telegram, reader, m_idCounter, m_nqs2Messages++);
+                    }
+                    else
+                    {
+                        m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
+                        return false;
+                    }
+                    m_idCounter += 2;
+                    m_messageQueue.Add(qdt);
+                }
+
+                //wait until acknowledged
+                m_waitSendEvent = new AutoResetEvent(false);
+                m_waitSendEvent.WaitOne(1000 * (m_data.SendTimeOut + m_data.AckTimeOut), true);
+
+                lock (m_acknowledgements)
+                {
+                    if (m_acknowledgements.ContainsKey(datFile))
+                    {
+                        m_acknowledgements.Remove(key);
+                        if (m_acknowledgements[datFile]) //positively acknowledged in the mean time;
+                        {
+                        }
+                        else if (m_nak_errors[key].StartsWith("Malformed telegram:"))
+                        {
+                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key].Substring(9)); ;
+                            m_nak_errors.Remove(key);
+                            ErrorTelegram.Add(item);
+                        }
+                        else if (m_nak_errors[key].StartsWith(Alunorf_sinec_h1_plugin.Properties.Resources.err_send))
+                        {
+                            m_nak_errors.Remove(key);
+                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key].Substring(Alunorf_sinec_h1_plugin.Properties.Resources.err_send.Length));
+                            ErrorSendTelegram.Add(item);
+                        }
+                        else
+                        {
+                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]);
+                            m_nak_errors.Remove(key);
+                            NAKnowledged.Add(item);
+                        }
                         m_idToFilename.Remove(datFile);
+                    }
+                    else 
+                    {
+                        UnTimelyAcknowledged.Add(telegram.QdtType);
                     }
                 }
             }
-            
-            lock (m_messageQueue)
-            {
-                if (m_messageQueue.Count > 1000)
-                {
-                    m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_queue;
-                    return false;
-                }
-                QdtTelegram qdt = null;
-                if (m_nqs1Status == NQSStatus.GO)
-                {
-                    qdt = new QdtTelegram(m_idCounter, m_nqs1Messages++);
-                }
-                else if (m_nqs1Status == NQSStatus.GO)
-                {
-                    qdt = new QdtTelegram(m_idCounter, m_nqs2Messages++);
-                }
-                else
-                {
-                    m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
-                    return false;
-                }
-                //TODO: fill in data in qdt diagram
 
-
-                m_idCounter += 2;
-                m_messageQueue.Add(qdt);            
-            }
-
-            //wait until acknowledged
-            m_waitSendEvent = new AutoResetEvent(false);
-            m_waitSendEvent.WaitOne(1000 * (m_data.SendTimeOut + m_data.AckTimeOut), true);
-
-            if (m_acknowledgements.ContainsKey(datFile))
-            {
-                if (m_acknowledgements[datFile])
-                {
-                    m_acknowledgements.Remove(datFile);
-                    m_idToFilename.Remove(datFile);
-                    return true;
-                }
-                else
-                {
-                    m_acknowledgements.Remove(datFile);
-                    m_idToFilename.Remove(datFile);
-                    m_error = m_nak_error;
-                    return false;
-                }
-            }
+            //to do, set errors;
+            if (UnTimelyAcknowledged.Count == 0 && NAKnowledged.Count == 0 && ErrorTelegram.Count == 0)
+                return true;
             else
             {
-                m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_noAck;
+                StringBuilder b = new StringBuilder(Alunorf_sinec_h1_plugin.Properties.Resources.err_tele);
+                if (ErrorTelegram.Count > 0)
+                {
+                   b.Append( Environment.NewLine);
+                   b.Append( Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_malformed);
+                   foreach(string item in ErrorTelegram)
+                   {
+                       b.Append( Environment.NewLine);
+                       b.Append( item);
+                   }         
+                }
+                if (NAKnowledged.Count > 0)
+                {
+                    b.Append(Environment.NewLine);
+                    b.Append( Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_NAK);
+                    foreach(string item in NAKnowledged)
+                    {
+                        b.Append(Environment.NewLine);
+                        b.Append(item);
+                    }
+                }
+                if (ErrorSendTelegram.Count > 0)
+                {
+                    b.Append(Environment.NewLine);
+                    b.Append(Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_send);
+                    foreach (string item in ErrorSendTelegram)
+                    {
+                        b.Append(Environment.NewLine);
+                        b.Append(item);
+                    }
+                }
+                if (UnTimelyAcknowledged.Count > 0)
+                {
+                    b.Append(Environment.NewLine);
+                    b.Append(Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_time);
+                    foreach (short item in UnTimelyAcknowledged)
+                    {
+                        b.Append(Environment.NewLine);
+                        b.Append(item);
+                    }
+                }
+                m_error = b.ToString();
                 return false;
             }
         }
@@ -165,7 +304,7 @@ namespace Alunorf_sinec_h1_plugin
         private NQSStatus m_nqs2Status;
         private bool m_stop;
         private string m_error;
-        private string m_nak_error;
+        private SortedDictionary<string,string> m_nak_errors;
         private PluginH1Task m_data;
         private Thread m_thread;
         private CH1Manager m_h1manager;
@@ -204,6 +343,7 @@ namespace Alunorf_sinec_h1_plugin
             m_messageQueue = new List<AlunorfTelegram>();
             m_reconnectTimer = new System.Threading.Timer(OnReconnectTimerTick);
             m_liveTimer = new System.Threading.Timer(OnLiveTimerTick);
+            m_nak_errors = new SortedDictionary<string, string>();
         }
 
         private void Run()
@@ -243,21 +383,22 @@ namespace Alunorf_sinec_h1_plugin
                 {
                     if (m_messageQueue.Count > 0)
                     {
+                        string key = m_idToFilename[m_messageQueue[0].AktId];
                         if (m_nqs1Status == NQSStatus.GO)
                         {
-                            if (!SendTelegram(m_vnr1, m_messageQueue[0], m_idToFilename[m_messageQueue[0].AktId]))
+                            if (!SendTelegram(m_vnr1, m_messageQueue[0], key))
                             {
-                                m_nak_error = m_error;
-                                m_acknowledgements[m_idToFilename[m_messageQueue[0].AktId]] = false;
+                                m_nak_errors[key] = m_error;
+                                m_acknowledgements[key] = false;
                                 m_waitSendEvent.Set();
                             }
                         }
                         if (m_nqs1Status == NQSStatus.GO)
                         {
-                            if (!SendTelegram(m_vnr2, m_messageQueue[0], m_idToFilename[m_messageQueue[0].AktId]))
+                            if (!SendTelegram(m_vnr2, m_messageQueue[0], key))
                             {
-                                m_nak_error = m_error;
-                                m_acknowledgements[m_idToFilename[m_messageQueue[0].AktId]] = false;
+                                m_nak_errors[key] = m_error;
+                                m_acknowledgements[key] = false;
                                 m_waitSendEvent.Set();
                             }
                         }
@@ -283,8 +424,8 @@ namespace Alunorf_sinec_h1_plugin
                         NAKTelegram nak = wrap.InnerTelegram as NAKTelegram;
                         if (nak != null && m_idToFilename.Contains(nak.AktId))
                         {
-                            m_nak_error = nak.FehlerText;
                             string id = m_idToFilename[nak.AktId];
+                            m_nak_errors[id] = nak.FehlerText; 
                             m_acknowledgements[id] = false;
                             if (id == "init1" || id == "init2" )
                                 m_waitConnectedEvent.Set();
@@ -577,7 +718,18 @@ namespace Alunorf_sinec_h1_plugin
                     else if (vnr == m_vnr2)
                         m_nqs2Status = NQSStatus.DISCONNECTED;
                 }
-                m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_send + m_h1manager.LastError ?? "";
+                if (telegram is QdtTelegram && result == CH1Manager.H1Result.TELEGRAM_ERROR)
+                {
+                    m_error = "Malformed telegram:";
+                    QdtTelegram qdt = telegram as QdtTelegram;
+                    if (qdt.ErrInInfo)
+                        m_error += String.Format(Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_info, qdt.ErrPos);
+                    else
+                        m_error += String.Format(Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_signal, qdt.ErrPos);
+                }
+                else
+                    m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_send + m_h1manager.LastError ?? "";
+                
                 return false;
             }
         }

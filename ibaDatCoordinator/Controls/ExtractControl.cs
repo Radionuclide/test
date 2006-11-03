@@ -87,6 +87,9 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
+
+        public void LeaveCleanup() { }
+
         #endregion
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)

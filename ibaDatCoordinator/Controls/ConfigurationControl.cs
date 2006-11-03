@@ -184,6 +184,9 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data);
 
         }
+
+        public void LeaveCleanup() {}
+
         #endregion
 
         private void m_nameTextBox_TextChanged(object sender, EventArgs e)

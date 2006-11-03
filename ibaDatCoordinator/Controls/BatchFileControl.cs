@@ -66,6 +66,9 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
+
+        public void LeaveCleanup() { return; }
+
         #endregion
 
         private void m_batchFileTextBox_TextChanged(object sender, EventArgs e)

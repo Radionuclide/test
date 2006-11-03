@@ -13,6 +13,7 @@ namespace iba.Plugins
     {
         void LoadData(object datasource, ICommonTaskControl parentcontrol);
         void SaveData();
+        void LeaveCleanup();
     }
 
     public interface ICommonTaskControl

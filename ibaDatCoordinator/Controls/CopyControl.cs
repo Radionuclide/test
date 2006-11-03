@@ -70,6 +70,7 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
+        public void LeaveCleanup() { return; }
         
         #endregion
         

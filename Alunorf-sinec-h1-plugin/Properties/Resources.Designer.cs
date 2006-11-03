@@ -113,6 +113,15 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not open .dat file for reading.
+        /// </summary>
+        internal static string err_no_open {
+            get {
+                return ResourceManager.GetString("err_no_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to QDT telegram not (yet) acknowledged.
         /// </summary>
         internal static string err_noAck {
@@ -149,6 +158,87 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There were errors sending the telegrams:.
+        /// </summary>
+        internal static string err_tele {
+            get {
+                return ResourceManager.GetString("err_tele", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First error at {0}th infofield .
+        /// </summary>
+        internal static string err_tele_info {
+            get {
+                return ResourceManager.GetString("err_tele_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following telegrams were malformed or not compatible with the .dat file:.
+        /// </summary>
+        internal static string err_tele_malformed {
+            get {
+                return ResourceManager.GetString("err_tele_malformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following telegrams were negatively acknowledged (NAK):.
+        /// </summary>
+        internal static string err_tele_NAK {
+            get {
+                return ResourceManager.GetString("err_tele_NAK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following telegrams could not be sent:.
+        /// </summary>
+        internal static string err_tele_send {
+            get {
+                return ResourceManager.GetString("err_tele_send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First error at {0}th signalfield.
+        /// </summary>
+        internal static string err_tele_signal {
+            get {
+                return ResourceManager.GetString("err_tele_signal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following telegrams were not acknowledged in time:.
+        /// </summary>
+        internal static string err_tele_time {
+            get {
+                return ResourceManager.GetString("err_tele_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to load message configuration: .
+        /// </summary>
+        internal static string err_xml_load {
+            get {
+                return ResourceManager.GetString("err_xml_load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save message configuration: .
+        /// </summary>
+        internal static string err_xml_save {
+            get {
+                return ResourceManager.GetString("err_xml_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to recieving.
         /// </summary>
         internal static string go {
@@ -164,12 +254,37 @@ namespace Alunorf_sinec_h1_plugin.Properties {
             }
         }
         
+        internal static System.Drawing.Icon info {
+            get {
+                object obj = ResourceManager.GetObject("info", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info fields.
+        /// </summary>
+        internal static string infoNodeText {
+            get {
+                return ResourceManager.GetString("infoNodeText", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to initialised.
         /// </summary>
         internal static string initialised {
             get {
                 return ResourceManager.GetString("initialised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add telegram.
+        /// </summary>
+        internal static string newTelegramNodeText {
+            get {
+                return ResourceManager.GetString("newTelegramNodeText", resourceCulture);
             }
         }
         
@@ -180,10 +295,58 @@ namespace Alunorf_sinec_h1_plugin.Properties {
             }
         }
         
+        internal static System.Drawing.Icon signal {
+            get {
+                object obj = ResourceManager.GetObject("signal", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signal fields.
+        /// </summary>
+        internal static string signalNodeText {
+            get {
+                return ResourceManager.GetString("signalNodeText", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Speichern {
             get {
                 object obj = ResourceManager.GetObject("Speichern", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon telegram {
+            get {
+                object obj = ResourceManager.GetObject("telegram", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon telegram_new {
+            get {
+                object obj = ResourceManager.GetObject("telegram_new", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram .
+        /// </summary>
+        internal static string telegramNodeText {
+            get {
+                return ResourceManager.GetString("telegramNodeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type here optionally a description of the telegram. This text is not part of the telegram to be sent to the NQS servers..
+        /// </summary>
+        internal static string tooltipDesc {
+            get {
+                return ResourceManager.GetString("tooltipDesc", resourceCulture);
             }
         }
     }

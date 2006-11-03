@@ -101,7 +101,6 @@ namespace iba
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
                 WindowState = FormWindowState.Minimized;
-
                 m_miRestoreCoordinator = new MenuItem(iba.Properties.Resources.notifyIconMenuItemRestore,miRestore_Click);
                 m_miStartService = new MenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, miStartService_Click);
                 m_miStopService = new MenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, miStopService_Click);
@@ -649,7 +648,10 @@ namespace iba
                 Debug.Assert(m_rightPane.Controls.Count == 1, "Only 1 control allowed in rightpane");
                 IPropertyPane pane = m_rightPane.Controls[0] as IPropertyPane;
                 if (pane != null)
+                {
+                    pane.LeaveCleanup();
                     pane.SaveData();
+                }
             }
 
             //Set new control
@@ -663,9 +665,11 @@ namespace iba
                 m_rightPane.Controls.Add(newControl);
             }
 
-            //Remove old control
+            //Remove old control, do necessary cleanup
             if (bOldControl && (newControl != m_rightPane.Controls[0]))
+            {
                 m_rightPane.Controls.RemoveAt(0);
+            }
         }
 
         public void SaveRightPaneControl()
@@ -777,12 +781,12 @@ namespace iba
                         }
                     }
                 }
+                m_configTreeView.SelectedNode = nextNode;
                 confParent.Tasks.Remove(task);
                 if (confParent.AdjustDependencies()) AdjustFrontIcons(confParent);
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     TaskManager.Manager.ReplaceConfiguration(confParent);
                 node.Remove();
-                m_configTreeView.SelectedNode = nextNode;
             }
         }
 
@@ -1780,7 +1784,6 @@ namespace iba
             set { m_statusBarStripLabel = value; }
         }
 
-
         #region ConfigurationTree DragDrop
 
         private void m_configTreeView_DragDrop(object sender, DragEventArgs e)
@@ -1898,7 +1901,6 @@ namespace iba
                 if (!(draggedNode.Tag is NewConfigurationTreeItemData))
                     DoDragDrop(e.Item, DragDropEffects.Copy | DragDropEffects.Move);
             }
-
         }
         #endregion
 

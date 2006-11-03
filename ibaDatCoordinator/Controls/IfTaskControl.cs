@@ -60,6 +60,11 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
+        public void LeaveCleanup()
+        {
+            return;
+        }
+
         #endregion
 
         private void m_browsePDOFileButton_Click(object sender, EventArgs e)
@@ -194,5 +199,6 @@ namespace iba.Controls
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
+
     }
 }

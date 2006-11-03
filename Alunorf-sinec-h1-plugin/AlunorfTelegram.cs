@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iba;
+using IBAFILESLib;
 
 namespace Alunorf_sinec_h1_plugin 
 {
@@ -345,18 +346,75 @@ namespace Alunorf_sinec_h1_plugin
 
     public class QdtTelegram : AlunorfTelegram
     {
-        public QdtTelegram(UInt16 AktId, UInt16 Tseqnr)
-        : base(AktId,Tseqnr)
-        {
-            m_TlgArt = 22;
-        }
+        private int m_size;
 
-        public QdtTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
-            : base(AktId, Tseqnr, stamp)
+        private int errPos;
+        public int ErrPos
         {
-            m_TlgArt = 22;
+            get { return errPos; }
+            set { errPos = value; }
         }
         
+        private bool errInInfo;
+        public bool ErrInInfo
+        {
+            get { return errInInfo; }
+            set { errInInfo = value; }
+        }
+
+        private void CalcSize()
+        {
+            m_size = 2; //qdt field
+            int count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
+            {
+                count++;
+                if (String.IsNullOrEmpty(rec.DataType))
+                {
+                    m_size = -1;
+                    errPos = count;
+                    errInInfo = true;
+                    return;
+                }
+
+                int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                m_size += int.Parse(rec.DataType.Substring(pos));
+            }
+            count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataSignal)
+            {
+                count++;
+                if (String.IsNullOrEmpty(rec.DataType) || rec.DataType != "float4")
+                {
+                    m_size = -1;
+                    errPos = count;
+                    errInInfo = false;
+                }
+                m_size += 3200; //2*4*400
+            }
+        }
+
+        PluginH1Task.Telegram m_telegramData;
+        private IbaFileReader m_file;
+
+        public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
+            : base(AktId, Tseqnr, stamp)
+        {
+            m_telegramData = data;
+            m_file = file;
+            m_TlgArt = 22;
+            CalcSize();
+        }
+
+        public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr)
+            : base(AktId, Tseqnr)
+        {
+            m_file = file;
+            m_telegramData = data;
+            m_TlgArt = 22;
+            CalcSize();
+        }
+
         public override bool ReadBody(H1ByteStream stream)
         {
             //throw new Exception("The method or operation is not implemented.");
@@ -365,7 +423,80 @@ namespace Alunorf_sinec_h1_plugin
 
         public override bool WriteBody(H1ByteStream stream)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            if (m_size < 0) return false; //problem detected in Calcsize;
+            stream.WriteInt16(m_telegramData.QdtType);
+            int count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
+            {
+                count++;
+                try
+                {
+                    string data = m_file.QueryInfoByName(rec.Name);
+                    int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                    uint size = uint.Parse(rec.DataType.Substring(pos));
+                    string type = rec.DataType.Substring(0, pos + 1);
+
+                    if (type == "int" && size == 1)
+                        stream.WriteSByte(SByte.Parse(data));
+                    else if (type == "int" && size == 2)
+                        stream.WriteInt16(Int16.Parse(data));
+                    else if (type == "int" && size == 4)
+                        stream.WriteInt32(Int32.Parse(data));
+                    else if (type == "u. int" && size == 1)
+                        stream.WriteByte(Byte.Parse(data));
+                    else if (type == "u. int" && size == 2)
+                        stream.WriteUInt16(UInt16.Parse(data));
+                    else if (type == "u. int" && size == 4)
+                        stream.WriteUInt32(UInt32.Parse(data));
+                    else if (type == "float" && size == 4)
+                        stream.WriteFloat32(float.Parse(data));
+                    else if (type == "char" && size > 0)
+                        stream.WriteString(data, size);
+                    else
+                    {
+                        errPos = count;
+                        errInInfo = true;
+                        return false;
+                    }
+                }
+                catch
+                {
+                    errPos = count;
+                    errInInfo = true;
+                    return false;
+                }
+            }
+            count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataSignal)
+            {
+                count++;
+                try
+                {
+                    IbaChannelReader reader; 
+                    m_file.QueryChannelByName(rec.Name, out reader);
+                    float lengthBase, offset;
+                    object data;
+                    reader.QueryLengthbasedData(out lengthBase, out offset, out data);
+                    float[] values = data as float[]; 
+                    for (int i = 0; i < 400; i++)
+                    {
+                        if (i >= values.Length)
+                            stream.WriteFloat32(float.NaN);
+                        else
+                            stream.WriteFloat32(values[i]);
+                    }
+                    for (int i = 0; i < 400; i++)
+                        stream.WriteFloat32(offset + i * lengthBase);
+
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
+                }
+                catch
+                {
+                    errPos = count;
+                    errInInfo = false;
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -373,8 +504,7 @@ namespace Alunorf_sinec_h1_plugin
         {
             get 
             { 
-                //throw new Exception("The method or operation is not implemented."
-                return HEADERSIZE;
+                return HEADERSIZE+(uint)m_size;
             }
         }
     }

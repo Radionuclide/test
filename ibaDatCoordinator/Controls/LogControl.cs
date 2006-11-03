@@ -39,6 +39,8 @@ namespace iba.Controls
         {
         }
 
+        public void LeaveCleanup() { }
+
         #endregion
 
         private bool m_freeze;

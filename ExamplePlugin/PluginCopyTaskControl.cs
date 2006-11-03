@@ -69,6 +69,8 @@ namespace ExamplePlugin
             m_data.UpdateUNC();
         }
 
+        public void LeaveCleanup() { }
+
         #endregion
 
         private void m_browseFolderButton_Click(object sender, EventArgs e)

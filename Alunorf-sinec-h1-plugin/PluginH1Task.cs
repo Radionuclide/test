@@ -9,6 +9,80 @@ namespace Alunorf_sinec_h1_plugin
     public class PluginH1Task : IPluginTaskData
     {
         private byte[] m_ownAddress;
+
+        public struct TelegramRecord
+        {
+            public string Name;
+            public string DataType;
+            public string Comment;
+        }
+
+        public class Telegram
+        {
+            private List<TelegramRecord> m_data_info;
+            public List<TelegramRecord> DataInfo
+            {
+                get { return m_data_info; }
+                set { m_data_info = value; }
+            }
+
+            private List<TelegramRecord> m_data_signal;
+            public List<TelegramRecord> DataSignal
+            {
+                get { return m_data_signal; }
+                set { m_data_signal = value; }
+            }
+
+            private string m_description;
+
+            public string Description
+            {
+                get { return m_description; }
+                set { m_description = value; }
+            }
+
+            public Telegram()
+            {
+                m_data_info = new List<TelegramRecord>();
+                m_data_signal = new List<TelegramRecord>();
+                m_qdtType = 0;
+                m_description = "";
+            }
+
+            public Telegram Clone()
+            {
+                Telegram tele = new Telegram();
+                foreach (TelegramRecord rec in m_data_signal)
+                {
+                    tele.m_data_signal.Add(rec);
+                }
+                foreach (TelegramRecord rec in m_data_info)
+                {
+                    tele.m_data_info.Add(rec);
+                }
+
+                tele.m_qdtType = m_qdtType;
+                tele.m_description = m_description;
+                return tele;
+            }
+
+
+            private short m_qdtType;
+            public short QdtType
+            {
+                get { return m_qdtType; }
+                set { m_qdtType = value; }
+            }
+        }
+
+        private List<Telegram> m_telegrams;
+
+        public List<Telegram> Telegrams
+        {
+            get { return m_telegrams; }
+            set { m_telegrams = value; }
+        } 
+
         public byte[] OwnAddress
         {
             get { return m_ownAddress; }
@@ -86,7 +160,6 @@ namespace Alunorf_sinec_h1_plugin
             set { m_ackTimeOut = value; }
         }
 
-
         #region IPluginTaskData Members
 
         private PluginH1TaskControl m_control;
@@ -159,6 +232,16 @@ namespace Alunorf_sinec_h1_plugin
             m_parentJob = parentJob;
             m_datcoHost = host;
             m_nameInfo = name;
+            m_lastSelectedTelegram = -1;
+            m_telegrams = new List<Telegram>();
+        }
+
+        private int m_lastSelectedTelegram;
+
+        public int LastSelectedTelegram
+        {
+            get { return m_lastSelectedTelegram; }
+            set { m_lastSelectedTelegram = value; }
         }
 
         #region ICloneable Members
@@ -177,6 +260,9 @@ namespace Alunorf_sinec_h1_plugin
             ht.m_retryConnectTimeInterval = m_retryConnectTimeInterval;
             ht.m_sendTimeOut = m_sendTimeOut;
             ht.m_ackTimeOut = m_ackTimeOut;
+            ht.m_lastSelectedTelegram = m_lastSelectedTelegram;
+            foreach (Telegram tele in m_telegrams)
+                ht.Telegrams.Add(tele.Clone());
             return ht;
         }
 

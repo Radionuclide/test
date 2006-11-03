@@ -163,11 +163,8 @@ namespace iba.Controls
             m_refreshTimer.Start();
         }
 
-        protected override void OnVisibleChanged(EventArgs e)
-        {
-            base.OnVisibleChanged(e);
-            if (!Visible)
-                m_refreshTimer.Stop();
+        public void LeaveCleanup() {
+            m_refreshTimer.Stop();
         }
 
         public void SaveData()

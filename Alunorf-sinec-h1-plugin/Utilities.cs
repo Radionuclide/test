@@ -148,5 +148,11 @@ namespace Alunorf_sinec_h1_plugin
             }
             return true;
         }
+
+        public void Clear()
+        {
+            FromTo.Clear();
+            ToFrom.Clear();
+        }
     }
 }

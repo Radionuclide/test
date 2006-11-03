@@ -8,6 +8,7 @@ namespace iba
     public interface IPropertyPane
 	{
 		void LoadData(object datasource, IPropertyPaneManager manager);
+        void LeaveCleanup(); // do cleanup data
 		void SaveData();
     }
 

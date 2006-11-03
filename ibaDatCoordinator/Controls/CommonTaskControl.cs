@@ -158,6 +158,14 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
+
+        public void LeaveCleanup() {
+            if (m_plugin != null)
+                m_plugin.LeaveCleanup();
+            else if (m_regularControl != null)
+                m_regularControl.LeaveCleanup();
+        }
+
         #endregion
 
         #region ICommonTaskControl Members
