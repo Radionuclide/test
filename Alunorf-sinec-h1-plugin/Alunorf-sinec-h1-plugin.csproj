@@ -28,10 +28,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="H1Protocol, Version=1.0.2483.20685, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\H1Protocol\release\H1Protocol.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -68,6 +64,10 @@
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
       <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
       <Name>DatCoordinatorPlugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\H1Protocol\H1Protocol.vcproj">
+      <Project>{A1B35688-5CD7-4931-9258-A4939CAA749A}</Project>
+      <Name>H1Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +129,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
-copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
+copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>

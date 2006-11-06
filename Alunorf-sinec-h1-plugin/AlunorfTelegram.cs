@@ -395,7 +395,13 @@ namespace Alunorf_sinec_h1_plugin
         }
 
         PluginH1Task.Telegram m_telegramData;
+
         private IbaFileReader m_file;
+        public IbaFileReader File
+        {
+          get { return m_file; }
+          set { m_file = value; }
+        }
 
         public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
@@ -415,11 +421,132 @@ namespace Alunorf_sinec_h1_plugin
             CalcSize();
         }
 
-        public override bool ReadBody(H1ByteStream stream)
+        private string m_read;
+
+        public string Read
         {
-            //throw new Exception("The method or operation is not implemented.");
+            get { return m_read; }
+        }
+
+
+        public override bool ReadBody(H1ByteStream stream)
+        { //to test the QDT telegram, reading has to implemented at well, by writing the values to a string
+            if (m_size < 0) return false; //problem detected in Calcsize;
+            StringBuilder b = new StringBuilder();
+            
+            SByte v_sbyte=0;
+            Byte  v_byte=0;
+            Int16 v_int16=0;
+            Int32 v_int32=0;
+            string v_string="";
+            UInt16 v_uint16=0;
+            UInt32 v_uint32=0;
+            float v_float=0;
+
+            stream.ReadInt16(ref v_int16);
+            b.Append(v_int16);b.Append(Environment.NewLine);
+
+            int count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
+            {
+                count++;
+                try
+                {
+                    string data = m_file.QueryInfoByName(rec.Name);
+                    int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                    uint size = uint.Parse(rec.DataType.Substring(pos));
+                    string type = rec.DataType.Substring(0, pos + 1);
+                    b.Append(rec.Name);
+                    b.Append(": ");
+                    if (type == "int" && size == 1)
+                    {
+                        stream.ReadSByte(ref v_sbyte);
+                        b.Append(v_sbyte);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "int" && size == 2)
+                    {
+                        stream.ReadInt16(ref v_int16);
+                        b.Append(v_int16);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "int" && size == 4)
+                    {
+                        stream.ReadInt32(ref v_int32);
+                        b.Append(v_int32);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "u. int" && size == 1)
+                    {
+                        stream.ReadByte(ref v_byte);
+                        b.Append(v_byte);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "u. int" && size == 2)
+                    {
+                        stream.ReadUInt16(ref v_uint16);
+                        b.Append(v_uint16);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "u. int" && size == 4)
+                    {
+                        stream.ReadUInt32(ref v_uint32);
+                        b.Append(v_uint32);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "float" && size == 4)
+                    {
+                        stream.ReadFloat32(ref v_float);
+                        b.Append(v_float);b.Append(Environment.NewLine);
+                    }
+                    else if (type == "char" && size > 0)
+                    {
+                        stream.ReadString(ref v_string, size);
+                        b.Append(v_string);b.Append(Environment.NewLine);
+                    }
+                    else
+                    {
+                        errPos = count;
+                        errInInfo = true;
+                        return false;
+                    }
+                }
+                catch
+                {
+                    errPos = count;
+                    errInInfo = true;
+                    return false;
+                }
+            }
+
+            count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataSignal)
+            {
+                count++;
+                try
+                {
+                    b.Append(rec.Name);
+                    b.Append(": ");
+                    for (int i = 0; i < 400; i++)
+                    {
+                        stream.ReadFloat32(ref v_float);
+                        b.Append(v_float);
+                        b.Append(" ");
+                    }
+                    b.Append(Environment.NewLine);
+                    b.Append("length: ");
+                    for (int i = 0; i < 400; i++)
+                    {
+                        b.Append(v_float);
+                        b.Append(" ");
+                        stream.ReadFloat32(ref v_float);
+                    }
+                    b.Append(Environment.NewLine);
+                }
+                catch
+                {
+                    errPos = count;
+                    errInInfo = false;
+                }
+            }
+            m_read = b.ToString();
             return true;
         }
+
 
         public override bool WriteBody(H1ByteStream stream)
         {
