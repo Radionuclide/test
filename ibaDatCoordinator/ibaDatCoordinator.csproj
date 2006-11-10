@@ -318,6 +318,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>IfTaskControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\IfTaskControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>IfTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\IfTaskControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>IfTaskControl.cs</DependentUpon>

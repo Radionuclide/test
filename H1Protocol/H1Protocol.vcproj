@@ -89,7 +89,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)Dependencies\Wmknt.dll&quot; &quot;$(TargetDir)&quot;"
+				CommandLine="copy &quot;$(SolutionDir)Dependencies\Wmknt.dll&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)Dependencies\Wmknt.dll&quot; &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;"
 			/>
 		</Configuration>
 		<Configuration

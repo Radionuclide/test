@@ -640,9 +640,6 @@
   <data name="logIfTaskStarted" xml:space="preserve">
     <value>started evaluating condition</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>failed evaluating condition</value>
-  </data>
   <data name="XFrequency" xml:space="preserve">
     <value>frequency</value>
   </data>

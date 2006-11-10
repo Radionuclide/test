@@ -211,8 +211,14 @@
   <data name="deleteCopyTaskQuestion" xml:space="preserve">
     <value>Etes-vous sûr de vouloir supprimer les options copier "{0}" du boulot "{1}" ?</value>
   </data>
+  <data name="deleteCustomTaskQuestion" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer les '{0}' options "{1}" de la tâche "{2}"?</value>
+  </data>
   <data name="deleteExtractQuestion" xml:space="preserve">
     <value>Etes-vous sûr de vouloir supprimer les options extraction "{0}" du boulot"{1}" ?</value>
+  </data>
+  <data name="deleteIfTaskQuestion" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer les options conditionnelles "{0}" de la tâche "{1}"? (des tâches dépendantes ne sont pas supprimées)</value>
   </data>
   <data name="deleteReportQuestion" xml:space="preserve">
     <value>Etes-vous sûr de vouloir supprimer les options rapport "{0}" du boulot "{1}" ?</value>
@@ -255,6 +261,24 @@
   </data>
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IbaAnalyzerUndeterminedError" xml:space="preserve">
+    <value>ibaAnalyzer erreur critique, redémarrage d'ibaAnalyzer</value>
+  </data>
+  <data name="iftaskButton" xml:space="preserve">
+    <value>Ajouter nouvelle conditio</value>
+  </data>
+  <data name="iftaskTitle" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="IfTestBadEvaluation" xml:space="preserve">
+    <value>L'expression ne peut pas être calculée et est évaluée en tant que FALSE.</value>
+  </data>
+  <data name="IfTestNegativeEvaluation" xml:space="preserve">
+    <value>Le résultat de l'expression est FALSE.</value>
+  </data>
+  <data name="IfTestPositiveEvaluation" xml:space="preserve">
+    <value>Le résultat de l'expression est TRUE.</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
     <value>L' addresse de E-mail pour les notifications est inadmissible ou non rempli</value>
@@ -313,6 +337,15 @@
   <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="logIfTaskEvaluatedFalse" xml:space="preserve">
+    <value>La condition est FALSE.</value>
+  </data>
+  <data name="logIfTaskEvaluatedTrue" xml:space="preserve">
+    <value>La condition est TRUE.</value>
+  </data>
+  <data name="logIfTaskStarted" xml:space="preserve">
+    <value>Lancement du calcul de la condition.</value>
+  </data>
   <data name="logMoveTaskFailed" xml:space="preserve">
     <value>Déplacer de fichier de donnée échouée</value>
   </data>
@@ -349,6 +382,9 @@
   <data name="logNotificationNotSupported" xml:space="preserve">
     <value>cette demande de réseau n'est pas soutenue </value>
   </data>
+  <data name="logPluginLoadError" xml:space="preserve">
+    <value>Erreur en chargeant l'assemblage {0} : '{1}'</value>
+  </data>
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>Suppression d'anciens répertoires a échoué</value>
   </data>
@@ -370,6 +406,9 @@
   <data name="logServiceStopped" xml:space="preserve">
     <value>Service ibaDatCoordinator arrêté</value>
   </data>
+  <data name="logTaskSuccess" xml:space="preserve">
+    <value>'{0}' tâche terminée correctement.</value>
+  </data>
   <data name="logTitle" xml:space="preserve">
     <value>Journal</value>
   </data>
@@ -384,6 +423,9 @@
   </data>
   <data name="NewExtractTitle" xml:space="preserve">
     <value>Ajouter tâche extraction</value>
+  </data>
+  <data name="NewIfTaskTitle" xml:space="preserve">
+    <value>Ajouter tâche de condition</value>
   </data>
   <data name="NewReportTitle" xml:space="preserve">
     <value>Ajouter tâche rapport</value>
@@ -600,5 +642,17 @@
   </data>
   <data name="WhenToDo4" xml:space="preserve">
     <value>Exécuter après 1ère erreur</value>
+  </data>
+  <data name="XFrequency" xml:space="preserve">
+    <value>fréquence</value>
+  </data>
+  <data name="XInvLength" xml:space="preserve">
+    <value>1/longueur</value>
+  </data>
+  <data name="XLength" xml:space="preserve">
+    <value>longueur</value>
+  </data>
+  <data name="XTime" xml:space="preserve">
+    <value>temps</value>
   </data>
 </root>

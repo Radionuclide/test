@@ -175,7 +175,6 @@ namespace iba.Processing
                     }
                 }
 
-
                 if (m_notifier != null)
                 {
                     m_notifier.Send();
@@ -353,7 +352,9 @@ namespace iba.Processing
                                             }
                                         }
                                         catch //if network disconnection should happen
-                                        { }
+                                        {
+                                            
+                                        }
                                     }
                                 }
                                 else break;
@@ -1130,14 +1131,14 @@ namespace iba.Processing
                 }
                 else
                 {
-                    //code on succes
+                    //code on error
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
                     string error = task.Plugin.GetWorker().GetLastError();
                     if (error == null) error = "";
-                    Log(Logging.Level.Info, task.Plugin.GetWorker().GetLastError(), DatFile, task);
+                    Log(Logging.Level.Exception, task.Plugin.GetWorker().GetLastError(), DatFile, task);
                 }
             }
             catch (Exception ex)

@@ -21,6 +21,17 @@ namespace Alunorf_sinec_h1_plugin
 
         public bool OnStart()
         {
+            bool ok = m_h1manager.SetStationAddress(m_data.OwnAddress);
+            if (ok)
+                ok = m_h1manager.SetSendTimeout(m_data.SendTimeOut);
+            if (!ok)
+            {
+                m_started = false;
+                m_error = m_h1manager.LastError;
+                return false;
+            }
+            
+            m_retryConnect = true;
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
@@ -59,25 +70,61 @@ namespace Alunorf_sinec_h1_plugin
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
             PluginH1Task data = newtask as PluginH1Task;
+
+            bool ok = true;
+
+            if (m_data.SendTimeOut != data.SendTimeOut)
+            {
+                ok = m_h1manager.SetSendTimeout(data.SendTimeOut);
+                if (!ok)
+                {
+                    m_stop = true;
+                    m_error = m_h1manager.LastError;
+                    return false;
+                }
+            }
+
+
             if (data.NQS_TSAPforNQS1 != data.NQS_TSAPforNQS1
-                || data.NQS_TSAPforNQS2 != data.NQS_TSAPforNQS2
-                || data.OwnTSAPforNQS1 != data.OwnTSAPforNQS1
-                || data.OwnTSAPforNQS2 != data.OwnTSAPforNQS2
-                || data.NQSAddress1[0] != data.NQSAddress1[0]
-                || data.NQSAddress1[1] != data.NQSAddress1[1]
-                || data.NQSAddress1[2] != data.NQSAddress1[2]
-                || data.NQSAddress1[3] != data.NQSAddress1[3]
-                || data.NQSAddress1[4] != data.NQSAddress1[4]
-                || data.NQSAddress1[5] != data.NQSAddress1[5]
-                || data.NQSAddress2[0] != data.NQSAddress2[0]
-                || data.NQSAddress2[1] != data.NQSAddress2[1]
-                || data.NQSAddress2[2] != data.NQSAddress2[2]
-                || data.NQSAddress2[3] != data.NQSAddress2[3]
-                || data.NQSAddress2[4] != data.NQSAddress2[4]
-                || data.NQSAddress2[5] != data.NQSAddress2[5])
+                || m_data.NQS_TSAPforNQS2 != data.NQS_TSAPforNQS2
+                || m_data.OwnTSAPforNQS1 != data.OwnTSAPforNQS1
+                || m_data.OwnTSAPforNQS2 != data.OwnTSAPforNQS2
+                || m_data.NQSAddress1[0] != data.NQSAddress1[0]
+                || m_data.NQSAddress1[1] != data.NQSAddress1[1]
+                || m_data.NQSAddress1[2] != data.NQSAddress1[2]
+                || m_data.NQSAddress1[3] != data.NQSAddress1[3]
+                || m_data.NQSAddress1[4] != data.NQSAddress1[4]
+                || m_data.NQSAddress1[5] != data.NQSAddress1[5]
+                || m_data.NQSAddress2[0] != data.NQSAddress2[0]
+                || m_data.NQSAddress2[1] != data.NQSAddress2[1]
+                || m_data.NQSAddress2[2] != data.NQSAddress2[2]
+                || m_data.NQSAddress2[3] != data.NQSAddress2[3]
+                || m_data.NQSAddress2[4] != data.NQSAddress2[4]
+                || m_data.NQSAddress2[5] != data.NQSAddress2[5]
+                || m_data.OwnAddress[0] != data.OwnAddress[0]
+                || m_data.OwnAddress[1] != data.OwnAddress[1]
+                || m_data.OwnAddress[2] != data.OwnAddress[2]
+                || m_data.OwnAddress[3] != data.OwnAddress[3]
+                || m_data.OwnAddress[4] != data.OwnAddress[4]
+                || m_data.OwnAddress[5] != data.OwnAddress[5])
             {
                 m_h1manager.DisconnectAll();
                 m_retryConnect = true;
+
+                if (m_data.OwnAddress[0] != data.OwnAddress[0]
+                || m_data.OwnAddress[1] != data.OwnAddress[1]
+                || m_data.OwnAddress[2] != data.OwnAddress[2]
+                || m_data.OwnAddress[3] != data.OwnAddress[3]
+                || m_data.OwnAddress[4] != data.OwnAddress[4]
+                || m_data.OwnAddress[5] != data.OwnAddress[5])
+                {
+                    if (!m_h1manager.SetStationAddress(m_data.OwnAddress))
+                    {
+                        m_stop = true;
+                        m_error = m_h1manager.LastError;
+                        return false;
+                    }
+                }
             }
 
             bool telsAreEqual = true;
@@ -193,7 +240,7 @@ namespace Alunorf_sinec_h1_plugin
 
                 lock (m_acknowledgements)
                 {
-                    if (m_acknowledgements.ContainsKey(datFile))
+                    if (m_acknowledgements.ContainsKey(key))
                     {
                         m_acknowledgements.Remove(key);
                         if (m_acknowledgements[datFile]) //positively acknowledged in the mean time;
@@ -217,7 +264,7 @@ namespace Alunorf_sinec_h1_plugin
                             m_nak_errors.Remove(key);
                             NAKnowledged.Add(item);
                         }
-                        m_idToFilename.Remove(datFile);
+                        m_idToFilename.Remove(key);
                     }
                     else 
                     {
@@ -346,6 +393,25 @@ namespace Alunorf_sinec_h1_plugin
             m_nak_errors = new SortedDictionary<string, string>();
         }
 
+
+        //because NQS1 and NQS2 possibly don't know each others generated AktIds
+        //the next two methods guarantee uniqueness
+        private int FromNonUniqueToUnique(int from, ushort vnr)
+        {
+            if (from % 2 == 1) return from; //generated on ALR (PC) -> odd stays odd
+            else if (vnr == m_vnr1) return 2 * from;
+            else if (vnr == m_vnr2) return 2 * from + 2;
+            else throw new ArgumentException("wrong vnr given");
+        }
+
+        private int FromUniqueToNonUnique(int from)
+        {
+            if (from % 2 == 1) return from; //generated on ALR (PC) -> odd stays odd
+            else if (from % 4 == 0) return from/2;
+            else return (from-2)/ 2;
+        }
+
+    
         private void Run()
         {
             while (!m_stop)
@@ -392,6 +458,7 @@ namespace Alunorf_sinec_h1_plugin
                                 m_acknowledgements[key] = false;
                                 m_waitSendEvent.Set();
                             }
+                            m_messageQueue.RemoveAt(0);
                         }
                         if (m_nqs1Status == NQSStatus.GO)
                         {
@@ -401,6 +468,7 @@ namespace Alunorf_sinec_h1_plugin
                                 m_acknowledgements[key] = false;
                                 m_waitSendEvent.Set();
                             }
+                            m_messageQueue.RemoveAt(0);
                         }
                     }
                 }
@@ -424,7 +492,7 @@ namespace Alunorf_sinec_h1_plugin
                         NAKTelegram nak = wrap.InnerTelegram as NAKTelegram;
                         if (nak != null && m_idToFilename.Contains(nak.AktId))
                         {
-                            string id = m_idToFilename[nak.AktId];
+                            string id = m_idToFilename[FromNonUniqueToUnique(nak.AktId,vnr)];
                             m_nak_errors[id] = nak.FehlerText; 
                             m_acknowledgements[id] = false;
                             if (id == "init1" || id == "init2" )
@@ -435,16 +503,18 @@ namespace Alunorf_sinec_h1_plugin
                         else
                         {
                             AckTelegram ack = wrap.InnerTelegram as AckTelegram;
-                            if (ack != null && m_idToFilename.Contains(ack.AktId))
+                            if (ack != null && m_idToFilename.Contains(FromNonUniqueToUnique(ack.AktId, vnr)))
                             {
-                                string id = m_idToFilename[ack.AktId];
+                                string id = m_idToFilename[FromNonUniqueToUnique(ack.AktId, vnr)];
                                 if (id == "init1")
                                 {
                                     m_nqs1Status = NQSStatus.INITIALISED;
+                                    m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 }
                                 else if (id == "init2")
                                 {
                                     m_nqs1Status = NQSStatus.INITIALISED;
+                                    m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 }
                                 else if (id == "live1" || id == "live2")
                                 {
@@ -461,7 +531,7 @@ namespace Alunorf_sinec_h1_plugin
                                 GoTelegram go = wrap.InnerTelegram as GoTelegram;
                                 if (go != null && m_idToFilename.Contains(go.AktId))
                                 {
-                                    string id = m_idToFilename[ack.AktId];
+                                    string id = m_idToFilename[FromNonUniqueToUnique(go.AktId,vnr)];
                                     if (id == "init1")
                                     {
                                         m_nqs1Status = NQSStatus.GO;
@@ -479,7 +549,7 @@ namespace Alunorf_sinec_h1_plugin
                                     }
                                     else if (id == "init2")
                                     {
-                                        m_nqs1Status = NQSStatus.GO;
+                                        m_nqs2Status = NQSStatus.GO;
 
                                         AckTelegram ackgo = new AckTelegram(go.AktId, m_nqs2Messages++);
                                         if (SendTelegram(m_vnr2, ackgo))
@@ -492,8 +562,8 @@ namespace Alunorf_sinec_h1_plugin
                                             m_nqs2Status = NQSStatus.DISCONNECTED;
                                             m_retryConnect = true;
                                         }
-                                        m_idToFilename.Remove(id);
                                     }
+                                    m_idToFilename.Remove(id);
                                 }
                                 else
                                 {
@@ -703,7 +773,7 @@ namespace Alunorf_sinec_h1_plugin
             {
                 if (id != null)
                 {
-                    m_idToFilename[telegram.AktId] = id;
+                    m_idToFilename[FromNonUniqueToUnique(telegram.AktId,vnr)] = id;
                     if (id != "live1" && id != "live2")
                         m_acknowledgements.Remove(id);
                 }
@@ -717,6 +787,7 @@ namespace Alunorf_sinec_h1_plugin
                         m_nqs1Status = NQSStatus.DISCONNECTED;
                     else if (vnr == m_vnr2)
                         m_nqs2Status = NQSStatus.DISCONNECTED;
+                    m_retryConnect = true;
                 }
                 if (telegram is QdtTelegram && result == CH1Manager.H1Result.TELEGRAM_ERROR)
                 {
@@ -733,7 +804,6 @@ namespace Alunorf_sinec_h1_plugin
                 return false;
             }
         }
-
     }
 
 }

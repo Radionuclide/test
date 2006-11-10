@@ -1358,15 +1358,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to failed evaluating condition.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to successfully completed.
         /// </summary>
         internal static string Success {

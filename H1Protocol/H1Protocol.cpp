@@ -92,17 +92,27 @@ namespace iba {
 			ownMacAdress[3],
 			ownMacAdress[4],
 			ownMacAdress[5]};
+		unsigned char setaddress[14];
+		memset(setaddress,0,sizeof(setaddress));
+
 		int error = H1SetzeStationsAdresse(address);
 		if (error) 
 		{
 			m_lastError = LoadError(ERR_STATION_ADDRESS) + ": " + error.ToString();
 			return false;
 		};
-		error = H1HoleStationsAdresse(address);
+		try
+		{
+			error = H1HoleStationsAdresse(setaddress);
+		}
+		catch (...)
+		{
+			return false;
+		}
 		if (!error)
 		{
 			for (int i = 0; i < 6; i++)
-				if (ownMacAdress[i] != address[i])
+				if (ownMacAdress[i] != setaddress[i+2])
 				{
 					m_lastError = LoadError(ERR_STATION_ADDRESS);
 					return false;
@@ -275,7 +285,7 @@ namespace iba {
 			m_blockpos = 0;
 			return ans;
 		}
-		return telegram->ReadFromBuffer(gcnew H1ByteStream(IntPtr((void*)rp->Daten),rp->RecLen,true));
+		else return telegram->ReadFromBuffer(gcnew H1ByteStream(IntPtr((void*)rp->Daten),rp->RecLen,true));
 	}
 
 	bool CH1Manager::StoreBlockedBytes(unsigned short vnr)

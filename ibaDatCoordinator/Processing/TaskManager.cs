@@ -94,8 +94,6 @@ namespace iba.Processing
                     StartConfiguration(kvp.Key);
         }
 
-
-
         virtual public void StopAllConfigurations()
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
