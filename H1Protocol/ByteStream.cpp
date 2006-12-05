@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "ByteStream.h"
+#include <assert.h>
 
 using namespace System::Runtime::InteropServices;
 
@@ -11,6 +12,27 @@ namespace iba
 		m_pos = 0;
 		m_be = bigendian;
 		m_buffer = (unsigned char*) ptr.ToPointer();
+		m_ownsbuffer = false;
+	}
+
+	H1ByteStream::H1ByteStream(unsigned long len, bool bigendian)
+	{
+		m_len = len;
+		m_pos = 0;
+		m_be = bigendian;
+		m_buffer = new unsigned char[len];
+		m_ownsbuffer = true;
+	}
+
+	H1ByteStream::!H1ByteStream() { 
+		if (m_ownsbuffer && m_buffer) 
+			delete [] m_buffer; 
+		m_buffer = 0;
+	}
+	H1ByteStream::~H1ByteStream() { 
+		if (m_ownsbuffer && m_buffer) 
+			delete [] m_buffer; 
+		m_buffer = 0;
 	}
 
 	bool H1ByteStream::ReadByte(unsigned char% val)
@@ -269,6 +291,27 @@ namespace iba
 			return true;
 		}
 		return false;
+	}
+
+	bool H1ByteStream::WriteStream(H1ByteStream^ stream)
+	{
+		//return true;
+		unsigned int len = stream->m_len - stream->m_pos;
+		assert(len>=0);
+		if (m_pos + len <= m_len)
+		{
+			unsigned char* dest = m_buffer + m_pos;
+			unsigned char* src = stream->m_buffer + stream->m_pos;
+			memcpy(dest,src,len);
+			m_pos += len;
+			return true;
+		}
+		return false;
+	}
+
+	void H1ByteStream::Reset()
+	{
+		m_pos = 0;
 	}
 
 	array<unsigned char>^ H1ByteStream::GetBuffer()

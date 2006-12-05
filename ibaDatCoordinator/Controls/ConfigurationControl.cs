@@ -384,6 +384,7 @@ namespace iba.Controls
 
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
+            SaveData();
             using (RemoveMarkingsDialog dialog = new RemoveMarkingsDialog(m_data))
             {
                 dialog.ShowDialog(ParentForm);

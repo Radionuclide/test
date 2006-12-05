@@ -15,6 +15,8 @@ namespace Alunorf_plugin_test
 {
     public partial class MainForm : Form
     {
+        bool m_readStarted = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -37,7 +39,7 @@ namespace Alunorf_plugin_test
             m_otherMAC.Text = temp.Address;
             temp.FirstByte = 0x0A;
             temp.SecondByte = 0x00;
-            temp.ThirdByte = 0xAE;
+            temp.ThirdByte = 0x8E;
             temp.FourthByte = 0x00;
             temp.FifthByte = 0x00;
             temp.SixthByte = 0x01;
@@ -55,9 +57,14 @@ namespace Alunorf_plugin_test
         private void m_btGO_Click(object sender, EventArgs e)
         {
             ushort id = 0;
-            if (m_idToFilename.Contains("init"))
+            if (m_idToFilename.Contains("init_pc"))
             {
-                id = (ushort) m_idToFilename["init"];
+                id = (ushort) m_idToFilename["init_pc"];
+                m_idToFilename[id] = "go";
+            }
+            else if (m_idToFilename.Contains("init"))
+            {
+                id = (ushort)m_idToFilename["init"];
                 m_idToFilename[id] = "go";
             }
             else if (m_idToFilename.Contains("go"))
@@ -71,26 +78,27 @@ namespace Alunorf_plugin_test
             {
                 m_messageQueue.Add(go);
             }
-            m_waitSendEvent = new AutoResetEvent(false);
-            m_waitSendEvent.WaitOne(1000 * ((int) (m_nudSendTimeout.Value + m_nudAckTimeout.Value)), true);
+            //m_waitSendEvent = new AutoResetEvent(false);
+            //m_waitSendEvent.WaitOne(1000 * ((int) (m_nudSendTimeout.Value + m_nudAckTimeout.Value)), true);
 
-            lock (m_acknowledgements)
-            {
-                if (m_acknowledgements.ContainsKey("go"))
-                {
-                    m_acknowledgements.Remove("go");
-                    SetMessage("GO acknowledged");
-                }
-                else
-                {
-                    SetMessage("GO not acknowledged in time");
-                }
-            }
+            //lock (m_acknowledgements)
+            //{
+            //    if (m_acknowledgements.ContainsKey("go"))
+            //    {
+            //        m_acknowledgements.Remove("go");
+            //        SetMessage("GO acknowledged");
+            //    }
+            //    else
+            //    {
+            //        SetMessage("GO not acknowledged in time");
+            //    }
+            //}
         }
 
         private void m_btStop_Click(object sender, EventArgs e)
         {
             m_stop = true;
+            m_thread.Join(60000);
             m_btStop.Enabled = false;
             m_btGO.Enabled = false;
         }
@@ -127,17 +135,17 @@ namespace Alunorf_plugin_test
             SetMessage("gui thread: waiting on connect");
 
             //wait here until initialisation succeeded
-            m_waitConnectedEvent = new AutoResetEvent(false);
-            m_waitConnectedEvent.WaitOne(1000 * ((int)m_nudSendTimeout.Value + (int)m_nudAckTimeout.Value + (int)m_nudTryconnectTimeout.Value + 30), true);
-            if (m_pcConnected == ConnectionState.READY)
-            {
+            //m_waitConnectedEvent = new AutoResetEvent(false);
+            //m_waitConnectedEvent.WaitOne(1000 * ((int)m_nudSendTimeout.Value + (int)m_nudAckTimeout.Value + (int)m_nudTryconnectTimeout.Value + 30), true);
+            //if (m_pcConnected == ConnectionState.READY)
+            //{
                 m_btStop.Enabled = true;
                 m_btGO.Enabled = true;
-            }
-            else
-            {
-                SetMessage("gui thread: connection timed out, will retry in several seconds");
-            }
+            //}
+            //else
+            //{
+            //    SetMessage("gui thread: connection timed out, will retry in several seconds");
+            //}
             m_messageQueue = new List<AlunorfTelegram>();
         }
 
@@ -198,7 +206,6 @@ namespace Alunorf_plugin_test
                     MessageBox.Show("fout: " + ex.ToString());
                 }
             }
-
         }
 
         private List<PluginH1Task.Telegram> m_telegrams;
@@ -214,56 +221,51 @@ namespace Alunorf_plugin_test
         private Thread m_thread;
         private System.Threading.Timer m_reconnectTimer;
         private System.Threading.Timer m_liveTimer;
-        private AutoResetEvent m_waitConnectedEvent;
-        private AutoResetEvent m_waitSendEvent;
+        //private AutoResetEvent m_waitConnectedEvent;
+        //private AutoResetEvent m_waitSendEvent;
         private bool m_retryConnect;
         private List<AlunorfTelegram> m_messageQueue;
 
         private void Run()
         {
-            try
+            SetMessage("Cycle started");
+            while (!m_stop)
             {
-                while (!m_stop)
+                if (m_retryConnect)
                 {
-                    if (m_retryConnect)
+                    BuildConnection();
+                    if (m_pcConnected == ConnectionState.READY)
                     {
-                        BuildConnection();
+                        m_acknowledgements["live"] = false;
+                        SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                        m_idCounter += 2;
+                        m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
+                    }
+                }
+                if (!ReadMessage())
+                {
+                    m_stop = true;
+                    break;
+                }
+                lock (m_messageQueue)
+                {
+                    if (m_messageQueue.Count > 0)
+                    {
+                        string key = m_idToFilename[m_messageQueue[0].AktId];
                         if (m_pcConnected == ConnectionState.READY)
                         {
-                            m_acknowledgements["live"] = false;
-                            SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
-                            m_idCounter += 2;
-                            m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
-                        }
-                    }
-                    if (!ReadMessage())
-                    {
-                        m_stop = true;
-                        break;
-                    }
-                    lock (m_messageQueue)
-                    {
-                        if (m_messageQueue.Count > 0)
-                        {
-                            string key = m_idToFilename[m_messageQueue[0].AktId];
-                            if (m_pcConnected == ConnectionState.READY)
+                            if (!SendTelegram(m_messageQueue[0], key))
                             {
-                                if (!SendTelegram(m_messageQueue[0], key))
-                                {
-                                    m_acknowledgements[key] = false;
-                                    m_waitSendEvent.Set();
-                                }
-                                m_messageQueue.RemoveAt(0);
+                                m_acknowledgements[key] = false;
+                                //m_waitSendEvent.Set();
                             }
+                            m_messageQueue.RemoveAt(0);
                         }
                     }
                 }
-                m_h1manager.DisconnectAll();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            m_h1manager.DisconnectAll();
+            SetMessage("Cycle started");
         }
 
         private void BuildConnection()
@@ -286,7 +288,7 @@ namespace Alunorf_plugin_test
                         temp.Address = m_otherMAC.Text;
                         byte[] otherMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
                         SetMessage("worker thread: trying to connect");
-                        if (m_h1manager.Connect(ref m_vnr, 2, true, otherMAC, m_ownTSAP.Text, m_otherTSAP.Text, ref result, (int) m_nudTryconnectTimeout.Value))
+                        if (m_h1manager.Connect(ref m_vnr, 4, true, otherMAC, m_ownTSAP.Text, m_otherTSAP.Text, ref result, (int) m_nudTryconnectTimeout.Value))
                         {
                             m_pcConnected = ConnectionState.CONNECTED;
                             SetMessage("worker thread: connected");
@@ -347,25 +349,33 @@ namespace Alunorf_plugin_test
 
         private bool SendTelegram(AlunorfTelegram telegram, string id)
         {
-            CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
-            SetMessage("message sent: id" + ((id == null) ? "" : id.ToString()));
-            if (m_h1manager.SendNoPoll(m_vnr, ref result, telegram))
+            //CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+            bool succes = false;
+            CH1Manager.H1Result result = CH1Manager.H1Result.WAIT_CONNECT;
+            while (result == CH1Manager.H1Result.WAIT_CONNECT)
+            {
+                SetMessage("message about to be sent: id " + ((id == null) ? telegram.AktId.ToString() : id));
+                succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
+            }
+            if (succes)
             {
                 if (id != null)
                 {
                     m_idToFilename[telegram.AktId] = id;
                     if (id != "live")
                         m_acknowledgements.Remove(id);
-                    SetMessage("message sent: id" + ((id == null)?"":id.ToString()));
+                    SetMessage("message sent: id " + id);
                 }
+                else
+                    SetMessage("message sent: id " + telegram.AktId.ToString());
                 return true;
             }
             else
             {
                 if (result == CH1Manager.H1Result.WAIT_CONNECT)
                 {
-                    m_pcConnected = ConnectionState.DISCONNECTED;
-                    m_retryConnect = true;
+                    //m_pcConnected = ConnectionState.DISCONNECTED;
+                    //m_retryConnect = true;
                     SetMessage("noticed disconnected while trying to send message with id:" + ((id == null)?"":id.ToString()));
                 }
                 else
@@ -379,7 +389,11 @@ namespace Alunorf_plugin_test
             if (m_pcConnected == ConnectionState.DISCONNECTED)
                 return true;
             CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
-            m_h1manager.GetReadStatus(m_vnr, ref result);
+            
+            if (m_readStarted)
+                m_h1manager.GetReadStatus(m_vnr, ref result);
+            else
+                m_h1manager.StartRead(m_vnr, ref result);
             switch (result)
             {
                 case CH1Manager.H1Result.ALL_CLEAR:
@@ -393,8 +407,10 @@ namespace Alunorf_plugin_test
                             if (id == "init")
                             {
                                 m_pcConnected = ConnectionState.READY;
+                                m_acknowledgements["live"] = false;
                                 m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 SetMessage("acknowledgement to init recieved");
+                                SetMessage("Please press te GO button");
                             }
                             else if (id == "live")
                             {
@@ -410,7 +426,7 @@ namespace Alunorf_plugin_test
                             {
                                 m_acknowledgements[id] = true;
                                 SetMessage("acknowledgement to message with id \"" + id + "\" received");
-                                m_waitSendEvent.Set();
+                                //m_waitSendEvent.Set();
                             }
                         }
                         else
@@ -422,7 +438,7 @@ namespace Alunorf_plugin_test
                                 filename = Path.Combine(m_outputDir.Text, filename);
                                 using (StreamWriter w = File.AppendText(filename))
                                 {
-                                    w.Write(qdt.Read);
+                                    w.Write(qdt.Interpret(m_telegrams));
                                     w.Close();
                                 }
                                 AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
@@ -440,9 +456,8 @@ namespace Alunorf_plugin_test
                                 {
                                     m_pcConnected = ConnectionState.CONNECTED;
                                     AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
-                                    m_idToFilename[ini.AktId] = "init";
                                     SetMessage("ini telegram recieved, please send a GO");
-                                    if (!SendTelegram(ackini))
+                                    if (!SendTelegram(ackini,"init_pc"))
                                     {
                                         m_pcConnected = ConnectionState.DISCONNECTED;
                                         m_retryConnect = true;
@@ -466,18 +481,21 @@ namespace Alunorf_plugin_test
                         }
                     }
                     else return false;
-                    m_h1manager.StartRead(m_vnr, ref result);
                     return true;
                 case CH1Manager.H1Result.NO_REQUEST:
-                    m_h1manager.StartRead(m_vnr, ref result);
+                    m_readStarted = false;
                     return true;
                 case CH1Manager.H1Result.WAIT_CONNECT:
-                    m_pcConnected = ConnectionState.DISCONNECTED;
-                    m_retryConnect = true;
+                    m_readStarted = false;
+                    //m_pcConnected = ConnectionState.DISCONNECTED;
+                    //m_retryConnect = true;
                     return true;
+                case CH1Manager.H1Result.ALREADY_RUNNING:
                 case CH1Manager.H1Result.WAIT_DATA:
+                    m_readStarted = true;
                     return true;
                 case CH1Manager.H1Result.BLOCKED_DATA:
+                    m_readStarted = true;
                     m_h1manager.StoreBlockedBytes(m_vnr);
                     return true;
                 default: // error

@@ -6,7 +6,8 @@
 
 using namespace System::Runtime::InteropServices;
 
-const int PARAMLENGTH = 2048;
+const int RECPARAMLENGTH = 2048;
+const int SENDPARAMLENGTH = 8192;
 
 namespace iba {
 
@@ -17,7 +18,7 @@ namespace iba {
 		m_driverloaded = error == 0;
 		CString message;
 		m_lastError = m_driverloaded?"":LoadError(DRIVER_LOAD_FAILED);
-		H1_SENDPARAMS* m_sp = (H1_SENDPARAMS *) malloc(PARAMLENGTH);
+		m_sp = new map<unsigned short, H1_SENDPARAMS*>();
 		m_rp = new map<unsigned short, H1_RECPARAMS*>();
 		m_blockedBytes = new unsigned char [4096];
 		m_blockpos = 0;
@@ -50,8 +51,19 @@ namespace iba {
 		}
 		if (m_blockedBytes) delete [] m_blockedBytes;
 		m_blockedBytes = NULL;
-		if (m_sp) free(m_sp);
-		m_sp = NULL;
+		if (m_sp)
+		{
+			for (map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
+			{
+				if (it->second)
+				{
+					free(it->second);
+				}
+			}
+			m_sp->clear();
+			delete m_sp;
+			m_sp = 0;
+		}
 	}
 
 	CH1Manager::!CH1Manager()
@@ -74,9 +86,19 @@ namespace iba {
 		}
 		if (m_blockedBytes) delete [] m_blockedBytes;
 		m_blockedBytes = NULL;
-		if (m_sp) free(m_sp);
-		m_rp = NULL;
-		m_sp = NULL;
+		if (m_sp)
+		{
+			for (map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
+			{
+				if (it->second)
+				{
+					free(it->second);
+				}
+			}
+			m_sp->clear();
+			delete m_sp;
+			m_sp = 0;
+		}
 	}
 
 	bool CH1Manager::SetStationAddress(array<Byte>^ ownMacAdress)
@@ -242,7 +264,11 @@ namespace iba {
 
 	bool CH1Manager::GetConnectionStatus(unsigned short vnr, H1Result% result)
 	{
-		if (!m_connections) return false;
+		if (!m_connections) 
+		{
+			result = H1Result::BAD_LINE;
+			return false;
+		}
 		H1_RECPARAMS rp;
 		memset(&rp,0,sizeof(rp));
 		rp.Vnr = vnr;
@@ -258,10 +284,10 @@ namespace iba {
 		if (m_rp->find(vnr) != m_rp->end())
 			rp = (*m_rp)[vnr];
 		else
-			rp = (*m_rp)[vnr] = (H1_RECPARAMS *) malloc(PARAMLENGTH);
+			rp = (*m_rp)[vnr] = (H1_RECPARAMS *) malloc(RECPARAMLENGTH);
 
-		memset(rp,0,PARAMLENGTH);
-		rp->DataLen = PARAMLENGTH - sizeof(H1_RECPARAMS);
+		memset(rp,0,RECPARAMLENGTH);
+		rp->DataLen = RECPARAMLENGTH - sizeof(H1_RECPARAMS);
 		rp->Vnr = vnr;
 		unsigned short err = H1StarteLesen(rp);
 		result = (H1Result) rp->Fehler;
@@ -304,33 +330,55 @@ namespace iba {
 	{
 		H1_RECPARAMS *rp;
 		if (m_rp->find(vnr) == m_rp->end())
+		{
+			result = H1Result::NO_REQUEST;		
 			return false;
+		}
 		else
 			rp = (*m_rp)[vnr];
 		int error = H1AbfrageLesen(rp);
 		result = (H1Result) rp->Fehler;
+		if (result == H1Result::WAIT_CONNECT)
+			m_lastError = "connection lost";
+
 		if (error) return false; 
 		return true;
 	}
 
 	bool CH1Manager::StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram)
 	{
-		memset(m_sp,0,PARAMLENGTH);
-		m_sp->Vnr = vnr;
-		bool ok = telegram->WriteToBuffer(gcnew H1ByteStream(IntPtr((void*)m_sp->Daten),telegram->ActSize,true));
+		H1_SENDPARAMS *sp;
+		if (m_sp->find(vnr) != m_sp->end())
+			sp = (*m_sp)[vnr];
+		else
+			sp = (*m_sp)[vnr] = (H1_SENDPARAMS *) malloc(SENDPARAMLENGTH);
+
+		memset(sp,0,SENDPARAMLENGTH);
+		sp->Vnr = vnr;
+		sp->DataLen = telegram->ActSize;
+		bool ok = telegram->WriteToBuffer(gcnew H1ByteStream(IntPtr((void*)sp->Daten),telegram->ActSize,true));
 		if (!ok) {
 			result = H1Result::TELEGRAM_ERROR;
 			return false;
 		}
-		int error = H1StarteSenden(m_sp);
-		result = (H1Result) m_sp->Fehler;
+		int error = H1StarteSenden(sp);
+		result = (H1Result) sp->Fehler;
 		return !error;
 	}
 
-	bool CH1Manager::GetSendStatus(H1Result% result)
+	bool CH1Manager::GetSendStatus(unsigned short vnr, H1Result% result)
 	{
-		int error = H1AbfrageSenden(m_sp);
-		result = (H1Result) m_sp->Fehler;
+		H1_SENDPARAMS *sp;
+		if (m_sp->find(vnr) != m_sp->end())
+			sp = (*m_sp)[vnr];
+		else
+		{
+			result = H1Result::NO_REQUEST;
+			return false;
+		}
+
+		int error = H1AbfrageSenden(sp);
+		result = (H1Result) sp->Fehler;
 		if (error) return false; 
 		return true;
 	}
@@ -339,32 +387,44 @@ namespace iba {
 
 	bool CH1Manager::SendNoPoll(unsigned short vnr, H1Result% result, ITelegram^ telegram)
 	{
+		H1_SENDPARAMS *sp;
+		if (m_sp->find(vnr) != m_sp->end())
+			sp = (*m_sp)[vnr];
+		else
+			sp = (*m_sp)[vnr] = (H1_SENDPARAMS *) malloc(SENDPARAMLENGTH);
+
 		result = H1Result::ALL_CLEAR;
-		memset(m_sp,0,PARAMLENGTH);	
-		m_sp->DataLen = telegram->ActSize;
-		m_sp->Vnr = m_vnr;
-		if (!telegram->WriteToBuffer(gcnew H1ByteStream(IntPtr((void*)m_sp->Daten),telegram->ActSize,true)))
+		memset(sp,0,SENDPARAMLENGTH);	
+		sp->DataLen = telegram->ActSize;
+		sp->Vnr = vnr;
+		if (!telegram->WriteToBuffer(gcnew H1ByteStream(IntPtr((void*)sp->Daten),telegram->ActSize,true)))
 		{
 			result = H1Result::TELEGRAM_ERROR;
 			m_lastError = "Could not compose telegram";
 			return false;
 		}
 
-		u_short err = H1SendeDaten(m_sp);
+		u_short err = H1SendeDaten(sp);
 		if (err)
 		{
-			m_lastError = "Error sending " + err.ToString() + " " + m_sp->Fehler.ToString();
+			m_lastError = "Error sending " + err.ToString() + " " + sp->Fehler.ToString();
 		}	
+		result = (H1Result) sp->Fehler;
 		return (err == 0);
 	}
 
 	bool CH1Manager::SetSendTimeout(int timeout)
 	{
+		//return true;
 		H1_INITVALUES init;
+		memset(&init,0,sizeof(H1_INITVALUES));
+		init.Cb = sizeof(init);
 		bool ok = H1HoleStandardwerte(&init)==0;
 		if (ok) 
 		{
-			init.TimeoutSend = (unsigned short) timeout;
+			init.TimeoutRetrySend = 20;
+			init.TimeoutNewSend = 20;
+			//init.TimeoutLive = 10000;
 			ok = H1SetzeStandardwerte(&init)==0;
 		}
 		return ok;

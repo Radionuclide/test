@@ -18,7 +18,6 @@ namespace Alunorf_sinec_h1_plugin
             set { m_AktId = value; }
         }
 
-
         protected UInt16 m_Tseqnr;
 
         public const uint HEADERSIZE = 12;
@@ -137,11 +136,13 @@ namespace Alunorf_sinec_h1_plugin
         {
             switch (m_TlgArt)
             {
-                case 1: m_innerTelegram = new AckTelegram(AktId, m_Tseqnr, m_timeStamp); break;
-                case 2: m_innerTelegram = new NAKTelegram(AktId, m_Tseqnr, m_timeStamp); break;
-                case 11: m_innerTelegram = new IniTelegram(AktId, m_Tseqnr, m_timeStamp); break;
-                case 12: m_innerTelegram = new LiveTelegram(AktId, m_Tseqnr, m_timeStamp); break;
-                case 14: m_innerTelegram = new GoTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case AckTelegram.TLGART: m_innerTelegram = new AckTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case NAKTelegram.TLGART: m_innerTelegram = new NAKTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case IniTelegram.TLGART: m_innerTelegram = new IniTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case LiveTelegram.TLGART: m_innerTelegram = new LiveTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case GoTelegram.TLGART: m_innerTelegram = new GoTelegram(AktId, m_Tseqnr, m_timeStamp); break;
+                case QdtTelegram.TLGART: m_innerTelegram = new QdtTelegram(null, null, AktId, m_Tseqnr, m_timeStamp); break;
+                default: m_innerTelegram = null; return false;
             }
 
             return m_innerTelegram.ReadBody(stream);
@@ -156,22 +157,22 @@ namespace Alunorf_sinec_h1_plugin
         {
             get { return m_innerTelegram.ActSize; }
         }
-
     }
 
 
     public class AckTelegram : AlunorfTelegram
     {
+        public const byte TLGART = 1;
         public AckTelegram(UInt16 AktId, UInt16 Tseqnr)
         : base(AktId,Tseqnr)
         {
-            m_TlgArt = 1;
+            m_TlgArt = TLGART;
         }
 
         public AckTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
-            m_TlgArt = 1;
+            m_TlgArt = TLGART;
         }
 
         public override bool ReadBody(H1ByteStream stream)
@@ -192,10 +193,12 @@ namespace Alunorf_sinec_h1_plugin
 
     public class NAKTelegram : AlunorfTelegram
     {
+        public const byte TLGART = 2;
+
         public NAKTelegram(UInt16 AktId, UInt16 Tseqnr)
         : base(AktId,Tseqnr)
         {
-            m_TlgArt = 2;
+            m_TlgArt = TLGART;
             m_fehlerCode = 0;
             m_fehlerText = "";
         }
@@ -203,7 +206,7 @@ namespace Alunorf_sinec_h1_plugin
         public NAKTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
-            m_TlgArt = 2;
+            m_TlgArt = TLGART;
             m_fehlerCode = 0;
             m_fehlerText = "";
         }
@@ -246,16 +249,18 @@ namespace Alunorf_sinec_h1_plugin
 
     public class LiveTelegram : AlunorfTelegram
     {
+        public const byte TLGART = 10;
+
         public LiveTelegram(UInt16 AktId, UInt16 Tseqnr)
             : base(AktId, Tseqnr)
         {
-            m_TlgArt = 10;
+            m_TlgArt = TLGART;
         }
 
         public LiveTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
-            m_TlgArt = 10;
+            m_TlgArt = TLGART;
         }
 
         public override bool ReadBody(H1ByteStream stream)
@@ -276,17 +281,18 @@ namespace Alunorf_sinec_h1_plugin
 
     public class IniTelegram : AlunorfTelegram
     {
+        public const byte TLGART = 11;
         public IniTelegram(UInt16 AktId, UInt16 Tseqnr)
             : base(AktId, Tseqnr)
         {
-            m_TlgArt = 11;
+            m_TlgArt = TLGART;
             m_iniPar = 0;
         }
 
         public IniTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
-            m_TlgArt = 11;
+            m_TlgArt = TLGART;
             m_iniPar = 0;
         }
 
@@ -316,16 +322,17 @@ namespace Alunorf_sinec_h1_plugin
 
     public class GoTelegram : AlunorfTelegram
     {
+        public const byte TLGART = 14;
         public GoTelegram(UInt16 AktId, UInt16 Tseqnr)
             : base(AktId, Tseqnr)
         {
-            m_TlgArt = 14;
+            m_TlgArt = TLGART;
         }
 
         public GoTelegram(UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
-            m_TlgArt = 14;
+            m_TlgArt = TLGART;
         }    
 
         public override bool ReadBody(H1ByteStream stream)
@@ -344,7 +351,7 @@ namespace Alunorf_sinec_h1_plugin
         }
     }
 
-    public class QdtTelegram : AlunorfTelegram
+    public class QdtTelegram : AlunorfTelegram, IDisposable
     {
         private int m_size;
 
@@ -364,6 +371,7 @@ namespace Alunorf_sinec_h1_plugin
 
         private void CalcSize()
         {
+            errPos = -1;
             m_size = 2; //qdt field
             int count = 0;
             foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
@@ -396,42 +404,44 @@ namespace Alunorf_sinec_h1_plugin
 
         PluginH1Task.Telegram m_telegramData;
 
-        private IbaFileReader m_file;
-        public IbaFileReader File
-        {
-          get { return m_file; }
-          set { m_file = value; }
-        }
+        public const byte TLGART = 22;
 
         public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
             : base(AktId, Tseqnr, stamp)
         {
             m_telegramData = data;
-            m_file = file;
-            m_TlgArt = 22;
-            CalcSize();
+            m_TlgArt = TLGART;
+            if (data != null) CalcSize();
+            if (file != null)
+            {
+                m_stream = new H1ByteStream((uint)m_size, true);
+                PreWriteBody(file);
+            }
         }
 
         public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr)
             : base(AktId, Tseqnr)
         {
-            m_file = file;
             m_telegramData = data;
-            m_TlgArt = 22;
-            CalcSize();
+            m_TlgArt = TLGART;
+            if (data != null) CalcSize();
+            if (file != null)
+            {
+                m_stream = new H1ByteStream((uint)m_size, true);
+                PreWriteBody(file);
+            }
         }
 
-        private string m_read;
-
-        public string Read
-        {
-            get { return m_read; }
-        }
-
+        H1ByteStream m_stream;
 
         public override bool ReadBody(H1ByteStream stream)
+        {
+            m_stream = stream;
+            return true;
+        }
+
+        public string Interpret(List<PluginH1Task.Telegram> telegrams)
         { //to test the QDT telegram, reading has to implemented at well, by writing the values to a string
-            if (m_size < 0) return false; //problem detected in Calcsize;
             StringBuilder b = new StringBuilder();
             
             SByte v_sbyte=0;
@@ -443,8 +453,10 @@ namespace Alunorf_sinec_h1_plugin
             UInt32 v_uint32=0;
             float v_float=0;
 
-            stream.ReadInt16(ref v_int16);
+            m_stream.ReadInt16(ref v_int16);
             b.Append(v_int16);b.Append(Environment.NewLine);
+
+            m_telegramData = telegrams.Find(delegate(PluginH1Task.Telegram tele) { return tele.QdtType == v_int16; });
 
             int count = 0;
             foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
@@ -452,64 +464,63 @@ namespace Alunorf_sinec_h1_plugin
                 count++;
                 try
                 {
-                    string data = m_file.QueryInfoByName(rec.Name);
                     int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
                     uint size = uint.Parse(rec.DataType.Substring(pos));
-                    string type = rec.DataType.Substring(0, pos + 1);
+                    string type = rec.DataType.Substring(0, pos);
                     b.Append(rec.Name);
                     b.Append(": ");
                     if (type == "int" && size == 1)
                     {
-                        stream.ReadSByte(ref v_sbyte);
+                        m_stream.ReadSByte(ref v_sbyte);
                         b.Append(v_sbyte);b.Append(Environment.NewLine);
                     }
                     else if (type == "int" && size == 2)
                     {
-                        stream.ReadInt16(ref v_int16);
+                        m_stream.ReadInt16(ref v_int16);
                         b.Append(v_int16);b.Append(Environment.NewLine);
                     }
                     else if (type == "int" && size == 4)
                     {
-                        stream.ReadInt32(ref v_int32);
+                        m_stream.ReadInt32(ref v_int32);
                         b.Append(v_int32);b.Append(Environment.NewLine);
                     }
                     else if (type == "u. int" && size == 1)
                     {
-                        stream.ReadByte(ref v_byte);
+                        m_stream.ReadByte(ref v_byte);
                         b.Append(v_byte);b.Append(Environment.NewLine);
                     }
                     else if (type == "u. int" && size == 2)
                     {
-                        stream.ReadUInt16(ref v_uint16);
+                        m_stream.ReadUInt16(ref v_uint16);
                         b.Append(v_uint16);b.Append(Environment.NewLine);
                     }
                     else if (type == "u. int" && size == 4)
                     {
-                        stream.ReadUInt32(ref v_uint32);
+                        m_stream.ReadUInt32(ref v_uint32);
                         b.Append(v_uint32);b.Append(Environment.NewLine);
                     }
                     else if (type == "float" && size == 4)
                     {
-                        stream.ReadFloat32(ref v_float);
+                        m_stream.ReadFloat32(ref v_float);
                         b.Append(v_float);b.Append(Environment.NewLine);
                     }
                     else if (type == "char" && size > 0)
                     {
-                        stream.ReadString(ref v_string, size);
+                        m_stream.ReadString(ref v_string, size);
                         b.Append(v_string);b.Append(Environment.NewLine);
                     }
                     else
                     {
                         errPos = count;
                         errInInfo = true;
-                        return false;
+                        return null;
                     }
                 }
                 catch
                 {
                     errPos = count;
                     errInInfo = true;
-                    return false;
+                    return null;
                 }
             }
 
@@ -523,7 +534,7 @@ namespace Alunorf_sinec_h1_plugin
                     b.Append(": ");
                     for (int i = 0; i < 400; i++)
                     {
-                        stream.ReadFloat32(ref v_float);
+                        m_stream.ReadFloat32(ref v_float);
                         b.Append(v_float);
                         b.Append(" ");
                     }
@@ -531,9 +542,9 @@ namespace Alunorf_sinec_h1_plugin
                     b.Append("length: ");
                     for (int i = 0; i < 400; i++)
                     {
+                        m_stream.ReadFloat32(ref v_float);
                         b.Append(v_float);
                         b.Append(" ");
-                        stream.ReadFloat32(ref v_float);
                     }
                     b.Append(Environment.NewLine);
                 }
@@ -541,44 +552,50 @@ namespace Alunorf_sinec_h1_plugin
                 {
                     errPos = count;
                     errInInfo = false;
+                    return null;
                 }
             }
-            m_read = b.ToString();
-            return true;
+            return b.ToString();
         }
-
 
         public override bool WriteBody(H1ByteStream stream)
         {
+            return stream.WriteStream(m_stream);
+        }
+
+
+        private bool PreWriteBody(IbaFileReader file)
+        {
             if (m_size < 0) return false; //problem detected in Calcsize;
-            stream.WriteInt16(m_telegramData.QdtType);
+            m_stream.WriteInt16(m_telegramData.QdtType);
             int count = 0;
+            errPos = -1;
             foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
             {
                 count++;
                 try
                 {
-                    string data = m_file.QueryInfoByName(rec.Name);
+                    string data = file.QueryInfoByName(rec.Name);
                     int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
                     uint size = uint.Parse(rec.DataType.Substring(pos));
-                    string type = rec.DataType.Substring(0, pos + 1);
+                    string type = rec.DataType.Substring(0, pos);
 
                     if (type == "int" && size == 1)
-                        stream.WriteSByte(SByte.Parse(data));
+                        m_stream.WriteSByte(SByte.Parse(data));
                     else if (type == "int" && size == 2)
-                        stream.WriteInt16(Int16.Parse(data));
+                        m_stream.WriteInt16(Int16.Parse(data));
                     else if (type == "int" && size == 4)
-                        stream.WriteInt32(Int32.Parse(data));
+                        m_stream.WriteInt32(Int32.Parse(data));
                     else if (type == "u. int" && size == 1)
-                        stream.WriteByte(Byte.Parse(data));
+                        m_stream.WriteByte(Byte.Parse(data));
                     else if (type == "u. int" && size == 2)
-                        stream.WriteUInt16(UInt16.Parse(data));
+                        m_stream.WriteUInt16(UInt16.Parse(data));
                     else if (type == "u. int" && size == 4)
-                        stream.WriteUInt32(UInt32.Parse(data));
+                        m_stream.WriteUInt32(UInt32.Parse(data));
                     else if (type == "float" && size == 4)
-                        stream.WriteFloat32(float.Parse(data));
+                        m_stream.WriteFloat32(float.Parse(data));
                     else if (type == "char" && size > 0)
-                        stream.WriteString(data, size);
+                        m_stream.WriteString(data, size);
                     else
                     {
                         errPos = count;
@@ -600,22 +617,28 @@ namespace Alunorf_sinec_h1_plugin
                 try
                 {
                     IbaChannelReader reader; 
-                    m_file.QueryChannelByName(rec.Name, out reader);
+                    file.QueryChannelByName(rec.Name, out reader);
                     float lengthBase, offset;
                     object data;
-                    reader.QueryLengthbasedData(out lengthBase, out offset, out data);
+                    try
+                    {
+                        reader.QueryLengthbasedData(out lengthBase, out offset, out data);
+                    }
+                    catch (Exception)
+                    {
+                        reader.QueryTimebasedData(out lengthBase, out offset, out data);
+                    }
+
                     float[] values = data as float[]; 
                     for (int i = 0; i < 400; i++)
                     {
                         if (i >= values.Length)
-                            stream.WriteFloat32(float.NaN);
+                            m_stream.WriteFloat32(float.NaN);
                         else
-                            stream.WriteFloat32(values[i]);
+                            m_stream.WriteFloat32(values[i]);
                     }
                     for (int i = 0; i < 400; i++)
-                        stream.WriteFloat32(offset + i * lengthBase);
-
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
+                        m_stream.WriteFloat32(offset + i * lengthBase);
                 }
                 catch
                 {
@@ -624,6 +647,7 @@ namespace Alunorf_sinec_h1_plugin
                     return false;
                 }
             }
+            m_stream.Reset(); //reset for actual write;
             return true;
         }
 
@@ -634,5 +658,25 @@ namespace Alunorf_sinec_h1_plugin
                 return HEADERSIZE+(uint)m_size;
             }
         }
+
+        #region IDisposable Members
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing) m_stream.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~QdtTelegram()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

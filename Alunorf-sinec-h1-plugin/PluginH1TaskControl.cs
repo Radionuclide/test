@@ -209,6 +209,14 @@ namespace Alunorf_sinec_h1_plugin
             m_refreshTimer.Enabled = false;
 
             PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationID(), m_control.TaskIndex());
+            if (stat == null) 
+            {
+                m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                m_statusNQS1.ForeColor = Color.Red;
+                m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                m_statusNQS2.ForeColor = Color.Red;
+                return;
+            }
             switch ((stat.extraData as NqsServerStatusses).nqs1)
             { 
                 case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
@@ -226,6 +234,25 @@ namespace Alunorf_sinec_h1_plugin
                 case PluginH1TaskWorker.NQSStatus.GO:
                     m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
                     m_statusNQS1.ForeColor = Color.Green;
+                    break;
+            }
+            switch ((stat.extraData as NqsServerStatusses).nqs2)
+            {
+                case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
+                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                    m_statusNQS2.ForeColor = Color.Red;
+                    break;
+                case PluginH1TaskWorker.NQSStatus.CONNECTED:
+                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.connected;
+                    m_statusNQS2.ForeColor = Color.Orange;
+                    break;
+                case PluginH1TaskWorker.NQSStatus.INITIALISED:
+                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.initialised;
+                    m_statusNQS2.ForeColor = Color.Green;
+                    break;
+                case PluginH1TaskWorker.NQSStatus.GO:
+                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
+                    m_statusNQS2.ForeColor = Color.Green;
                     break;
             }
             m_refreshTimer.Enabled = true;

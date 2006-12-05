@@ -86,7 +86,7 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not connect to one of the first NQS server: .
+        ///   Looks up a localized string similar to Could not connect to the first NQS server: .
         /// </summary>
         internal static string err_connect1 {
             get {
@@ -239,7 +239,7 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to recieving.
+        ///   Looks up a localized string similar to ready to receive telegrams.
         /// </summary>
         internal static string go {
             get {

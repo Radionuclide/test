@@ -181,12 +181,13 @@ namespace iba.Processing
             throw new KeyNotFoundException(ID.ToString() + " not found");
         }
 
+
         virtual public PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID && pair.Key.Tasks[taskindex] is CustomTaskData) 
-                    return (pair.Key.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
+                if (pair.Key.ID == ID && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started) 
+                    return (pair.Value.RunningConfiguration.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
             }
             return null;
         }

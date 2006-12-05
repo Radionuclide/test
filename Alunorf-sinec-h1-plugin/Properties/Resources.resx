@@ -128,7 +128,7 @@
     <value>disconnected</value>
   </data>
   <data name="err_connect1" xml:space="preserve">
-    <value>Could not connect to one of the first NQS server: </value>
+    <value>Could not connect to the first NQS server: </value>
   </data>
   <data name="err_connect2" xml:space="preserve">
     <value>Could not connect to  the second NQS server: </value>
@@ -179,7 +179,7 @@
     <value>Unable to save message configuration: </value>
   </data>
   <data name="go" xml:space="preserve">
-    <value>recieving</value>
+    <value>ready to receive telegrams</value>
   </data>
   <data name="H1Task" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\H1Task.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

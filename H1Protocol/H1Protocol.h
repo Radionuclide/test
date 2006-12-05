@@ -25,11 +25,10 @@ namespace iba {
 	private:
 		bool m_driverloaded;
 		int m_connections;
-		short int m_vnr;
 		String^ m_lastError;
 		String^ LoadError(UINT id);
 		map<unsigned short, H1_RECPARAMS*>* m_rp;
-		H1_SENDPARAMS* m_sp;
+		map<unsigned short, H1_SENDPARAMS*>* m_sp;
 		unsigned char* m_blockedBytes;
 		unsigned int m_blockpos;
 	public:
@@ -56,7 +55,7 @@ namespace iba {
 				NO_MEMORY=H1_NO_MEMORY,				// Open Driver not possible under win3.x
 				BAD_SIGNATURE=H1_BAD_SIGNATURE,		// The Industrial Ethernet Signature not received
 				TELEGRAM_ERROR=20					// Own error code for failing to read or write telegram	
-		} ;
+		};
 		bool SetStationAddress(array<Byte>^ ownMacAdress);
 		bool Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout);
 		property String^ LastError{ String^ get(); }
@@ -68,7 +67,7 @@ namespace iba {
 		bool FinishRead(unsigned short vnr, ITelegram^ telegram);
 		bool GetReadStatus(unsigned short vnr, H1Result% result);
 		bool StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram);
-		bool GetSendStatus(H1Result% result);
+		bool GetSendStatus(unsigned short vnr, H1Result% result);
 		bool SendNoPoll(unsigned short vnr, H1Result% result, ITelegram^ telegram);
 		bool SetSendTimeout(int timeout);
 

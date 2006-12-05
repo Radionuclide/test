@@ -12,8 +12,12 @@ namespace iba
 		unsigned long m_pos;
 		unsigned char* m_buffer;
 		bool m_be;
+		bool m_ownsbuffer;
 	public:
 		H1ByteStream(IntPtr pointer, unsigned long len, bool bigendian);
+		H1ByteStream(unsigned long len, bool bigendian);
+		~H1ByteStream();
+		!H1ByteStream();
 		bool ReadByte(unsigned char% val);
 		bool WriteByte(unsigned char val);
 		bool ReadSByte(signed char% val);
@@ -30,6 +34,8 @@ namespace iba
 		bool WriteFloat32(float val);
 		bool ReadString(String^% mystring, unsigned int len);
 		bool WriteString(String^ mystring, unsigned int len);
+		bool WriteStream(H1ByteStream^ stream);
+		void Reset();
 		array<unsigned char>^ GetBuffer();
 	};
 }

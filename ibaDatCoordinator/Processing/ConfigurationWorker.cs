@@ -16,6 +16,12 @@ namespace iba.Processing
     class ConfigurationWorker
     {
         private ConfigurationData m_cd;
+
+        public ConfigurationData RunningConfiguration
+        {
+            get {return m_cd;}
+        }
+
         private Thread m_thread;
         private StatusData m_sd;
         private Notifier m_notifier;
@@ -34,6 +40,17 @@ namespace iba.Processing
                 m_stop = value;
                 if (m_stop)
                     m_waitEvent.Set();
+                //do finalization of custom tasks
+                foreach (TaskData t in m_cd.Tasks)
+                {
+                    CustomTaskData c = t as CustomTaskData;
+                    if (c != null)
+                    {
+                        IPluginTaskWorker w = c.Plugin.GetWorker();
+                        if (!w.OnStop())
+                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                    }
+                }
             }
         }
 
@@ -389,18 +406,6 @@ namespace iba.Processing
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
-                    //do finalization of custom tasks
-                    foreach (TaskData t in m_cd.Tasks)
-                    {
-                        CustomTaskData c = t as CustomTaskData;
-                        if (c != null)
-                        {
-                            IPluginTaskWorker w = c.Plugin.GetWorker();
-                            if (!w.OnStop())
-                                Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
-                        }
-                    }
-
                     StopIbaAnalyzer();
                 }
                 finally
@@ -1118,6 +1123,10 @@ namespace iba.Processing
         {
             try
             {
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.RUNNING;
+                }
                 bool succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
                 if (succes)
                 {
@@ -1457,6 +1466,7 @@ namespace iba.Processing
                     m_ibaAnalyzer.Report(arg);
                 else
                     m_ibaAnalyzer.Report("");
+                //Thread.Sleep(500);
                 //code on succes
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 Log(Logging.Level.Info, iba.Properties.Resources.logReportSuccess, filename,task);

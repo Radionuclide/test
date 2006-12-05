@@ -107,7 +107,7 @@ namespace Alunorf_sinec_h1_plugin
             get { return FromTo[s]; }
             set
             {
-                if (FromTo[s].CompareTo(value) == 0) return;
+                if (FromTo.ContainsKey(s) && FromTo[s].CompareTo(value) == 0) return;
                 if (FromTo.ContainsKey(s)) ToFrom.Remove(FromTo[s]);
                 if (ToFrom.ContainsKey(value)) FromTo.Remove(ToFrom[value]);
                 FromTo[s] = value;
@@ -120,7 +120,7 @@ namespace Alunorf_sinec_h1_plugin
             get { return ToFrom[t]; }
             set
             {
-                if (ToFrom[t].CompareTo(value) == 0) return;
+                if (ToFrom.ContainsKey(t) && ToFrom[t].CompareTo(value) == 0) return;
                 if (ToFrom.ContainsKey(t)) FromTo.Remove(ToFrom[t]);
                 if (FromTo.ContainsKey(value)) ToFrom.Remove(FromTo[value]);
                 ToFrom[t] = value;
