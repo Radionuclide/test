@@ -178,8 +178,8 @@ namespace iba.Controls
             
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
-            m_data.UpdateUNC(); 
-            
+            m_data.UpdateUNC();
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
 
@@ -424,9 +424,9 @@ namespace iba.Controls
             using (WaitCursor wait = new WaitCursor())
             {
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
                 else
-                ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text,false), m_tbUserName.Text, m_tbPass.Text, out errormessage,false);
+                    ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
             }
             if (ok)
             {

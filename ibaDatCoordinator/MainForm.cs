@@ -1463,6 +1463,7 @@ namespace iba
 
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.Filter = "XML files (*.xml)|*.xml";
+            m_openFileDialog.FileName = "";
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result != DialogResult.OK) return;
                 

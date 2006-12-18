@@ -239,7 +239,7 @@ namespace Alunorf_plugin_test
                         m_acknowledgements["live"] = false;
                         SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                         m_idCounter += 2;
-                        m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
+                        m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
                     }
                 }
                 if (!ReadMessage())
@@ -278,8 +278,14 @@ namespace Alunorf_plugin_test
                 switch (result)
                 {
                     case CH1Manager.H1Result.ALL_CLEAR:
-                        m_pcConnected = ConnectionState.CONNECTED;
-                        break;
+                        {
+                            m_pcConnected = ConnectionState.CONNECTED;
+                            //send INI telegram
+                            IniTelegram init = new IniTelegram(m_idCounter, m_messagesCount++);
+                            m_idCounter += 2;
+                            SendTelegram(init, "init");
+                            break;
+                        }
                     case CH1Manager.H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
@@ -338,6 +344,7 @@ namespace Alunorf_plugin_test
                 }
                 m_acknowledgements["live"] = false;
                 SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
                 m_idCounter += 2;
             }
         }
@@ -408,7 +415,10 @@ namespace Alunorf_plugin_test
                             {
                                 m_pcConnected = ConnectionState.READY;
                                 m_acknowledgements["live"] = false;
-                                m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
+                                //live message zenden
+                                SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                                m_idCounter += 2;
+                                m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
                                 SetMessage("acknowledgement to init recieved");
                                 SetMessage("Please press te GO button");
                             }
@@ -454,7 +464,7 @@ namespace Alunorf_plugin_test
                                 IniTelegram ini = wrap.InnerTelegram as IniTelegram;
                                 if (ini != null)
                                 {
-                                    m_pcConnected = ConnectionState.CONNECTED;
+                                    m_pcConnected = m_pcConnected == ConnectionState.READY ? ConnectionState.READY:ConnectionState.CONNECTED;
                                     AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
                                     SetMessage("ini telegram recieved, please send a GO");
                                     if (!SendTelegram(ackini,"init_pc"))

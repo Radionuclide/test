@@ -275,7 +275,7 @@ namespace iba.Processing
             }
             if (level == Logging.Level.Exception)
             {
-                if (message.Contains("The operation"))
+                if (message != null && message.Contains("The operation"))
                 {
                     string debug = message;                
                 }
@@ -307,7 +307,9 @@ namespace iba.Processing
             }
             try
             {
+                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 updateDatFileList(WhatToUpdate.ALL);
+                Thread.CurrentThread.Priority = ThreadPriority.Normal;
                 notifyTimer = null;
                 try
                 {
