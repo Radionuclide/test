@@ -183,6 +183,7 @@ namespace Alunorf_sinec_h1_plugin
             }
             catch
             {
+                reader.Close();
                 m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_no_open;
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                 return false;
@@ -242,22 +243,21 @@ namespace Alunorf_sinec_h1_plugin
                     return false;
                 }
 
-                reader.Close();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
-
                 if (qdt.ErrPos != -1)
                 {
                     string subitem = String.Format(qdt.ErrInInfo ? Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_info : Alunorf_sinec_h1_plugin.Properties.Resources.err_tele_signal, qdt.ErrPos);
-                    string item = String.Format("{0}: '{1}'", telegram.QdtType, subitem); 
+                    string item = String.Format("{0}: '{1}'", telegram.QdtType, subitem);
                     ErrorTelegram.Add(item);
                 }
+                else
+                {
+                    m_idCounter += 2;
+                    QueueTelegram(qdt, key);
+                    //wait until acknowledged
+                    m_waitSendEvent = new AutoResetEvent(false);
+                    m_waitSendEvent.WaitOne(1000 * (m_data.SendTimeOut + m_data.AckTimeOut), true);
+                }
 
-                m_idCounter += 2;
-                QueueTelegram(qdt,key);
-
-                //wait until acknowledged
-                m_waitSendEvent = new AutoResetEvent(false);
-                m_waitSendEvent.WaitOne(1000 * (m_data.SendTimeOut + m_data.AckTimeOut), true);
 
                 lock (m_acknowledgements)
                 {
@@ -286,6 +286,8 @@ namespace Alunorf_sinec_h1_plugin
                     }
                 }
             }
+            reader.Close();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
 
             if (UnTimelyAcknowledged.Count == 0 && NAKnowledged.Count == 0 && ErrorTelegram.Count == 0)
                 return true;
@@ -910,6 +912,21 @@ namespace Alunorf_sinec_h1_plugin
                 m_lastgo = vnr;
 
                 CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+                m_h1manager.GetSendStatus(vnr, ref result);
+                switch (result)
+                {
+                    case CH1Manager.H1Result.WAIT_CONNECT:
+                        if (vnr == m_vnr1)
+                            m_disconnectedCounter1++;
+                        else if (vnr == m_vnr2)
+                            m_disconnectedCounter2++;
+                        return true;
+                    case CH1Manager.H1Result.WAIT_SEND:
+                    case CH1Manager.H1Result.ALREADY_RUNNING:
+                        return true; //stay in queue, sending is busy with previous telegram
+
+                }
+
                 m_h1manager.StartSend(vnr, ref result, telegram);
                 QdtTelegram qdt = null;
                 switch (result)
