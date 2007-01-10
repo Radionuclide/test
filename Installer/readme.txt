@@ -1,5 +1,5 @@
 files:
-DatCoordinaterInstall_v1.6.exe : installation program (Setup Wizard) for the ibaDatCoordinator
+DatCoordinaterInstall_v1.7.exe : installation program (Setup Wizard) for the ibaDatCoordinator
 readme.txt: this file
 
 Installation:

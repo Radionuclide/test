@@ -9,6 +9,7 @@ using IBAFILESLib;
 
 namespace Alunorf_sinec_h1_plugin
 {
+    [Serializable]
     public class NqsServerStatusses
     {
         public PluginH1TaskWorker.NQSStatus nqs1;

@@ -6,10 +6,10 @@ using iba.Plugins;
 
 namespace Alunorf_sinec_h1_plugin
 {
+    [Serializable]
     public class PluginH1Task : IPluginTaskData
     {
-        private byte[] m_ownAddress;
-
+        [Serializable]
         public struct TelegramRecord
         {
             public string Name;
@@ -17,8 +17,10 @@ namespace Alunorf_sinec_h1_plugin
             public string Comment;
         }
 
+        [Serializable]
         public class Telegram
         {
+            
             private List<TelegramRecord> m_data_info;
             public List<TelegramRecord> DataInfo
             {
@@ -76,55 +78,55 @@ namespace Alunorf_sinec_h1_plugin
         }
 
         private List<Telegram> m_telegrams;
-
         public List<Telegram> Telegrams
         {
             get { return m_telegrams; }
             set { m_telegrams = value; }
-        } 
+        }
 
+        private byte[] m_ownAddress;
         public byte[] OwnAddress
         {
             get { return m_ownAddress; }
             set { m_ownAddress = value; }
         }
-        private byte[] m_NQSAddress1;
 
+        private byte[] m_NQSAddress1;
         public byte[] NQSAddress1
         {
             get { return m_NQSAddress1; }
             set { m_NQSAddress1 = value; }
         }
-        private byte[] m_NQSAddress2;
 
+        private byte[] m_NQSAddress2;
         public byte[] NQSAddress2
         {
             get { return m_NQSAddress2; }
             set { m_NQSAddress2 = value; }
         }
-        private string m_ownTSAPforNQS1;
 
+        private string m_ownTSAPforNQS1;
         public string OwnTSAPforNQS1
         {
             get { return m_ownTSAPforNQS1; }
             set { m_ownTSAPforNQS1 = value; }
         }
-        private string m_ownTSAPforNQS2;
 
+        private string m_ownTSAPforNQS2;
         public string OwnTSAPforNQS2
         {
             get { return m_ownTSAPforNQS2; }
             set { m_ownTSAPforNQS2 = value; }
         }
-        private string m_NQS_TSAPforNQS1;
 
+        private string m_NQS_TSAPforNQS1;
         public string NQS_TSAPforNQS1
         {
             get { return m_NQS_TSAPforNQS1; }
             set { m_NQS_TSAPforNQS1 = value; }
         }
-        private string m_NQS_TSAPforNQS2;
 
+        private string m_NQS_TSAPforNQS2;
         public string NQS_TSAPforNQS2
         {
             get { return m_NQS_TSAPforNQS2; }
@@ -162,6 +164,7 @@ namespace Alunorf_sinec_h1_plugin
 
         #region IPluginTaskData Members
 
+        [NonSerialized]
         private PluginH1TaskControl m_control;
         public IPluginControl GetControl()
         {
@@ -169,6 +172,7 @@ namespace Alunorf_sinec_h1_plugin
             return m_control;
         }
 
+        [NonSerialized]
         private PluginH1TaskWorker m_worker;
         public IPluginTaskWorker GetWorker()
         {

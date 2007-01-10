@@ -56,6 +56,16 @@ namespace iba.Services
             if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
                 return;
             
+            try
+            {
+                PluginManager.Manager.LoadPlugins();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                Stop();
+            }
+
             if (File.Exists(filename))
             {
                 try
