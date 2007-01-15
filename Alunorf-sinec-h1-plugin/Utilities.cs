@@ -154,5 +154,23 @@ namespace Alunorf_sinec_h1_plugin
             FromTo.Clear();
             ToFrom.Clear();
         }
+
+        public string itemToString(T t)
+        {
+            if (ToFrom.ContainsKey(t))
+            {
+                return t.ToString() + " " + ToFrom[t].ToString();
+            }
+            else return t.ToString() + " ???";
+        }
+
+        public string itemToString(S s)
+        {
+            if (FromTo.ContainsKey(s))
+            {
+                return FromTo[s].ToString() + " " + s.ToString();
+            }
+            else return "??? " + s.ToString();
+        }
     }
 }

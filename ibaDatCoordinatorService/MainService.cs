@@ -30,6 +30,16 @@ namespace iba.Services
         protected override void OnStart(string[] args)
         {
             LogData.InitializeLogger(null, null, false); //dummy gridlogger
+            try
+            {
+                PluginManager.Manager.LoadPlugins();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                Stop();
+            }
+
             m_communicationObject = new CommunicationObject();
             //publish this manager
             BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
@@ -55,23 +65,10 @@ namespace iba.Services
 
             if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
                 return;
-            
-            try
-            {
-                PluginManager.Manager.LoadPlugins();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
-                Stop();
-            }
-
             if (File.Exists(filename))
             {
                 try
                 {
-                    PluginManager.Manager.LoadPlugins();
-
                     XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))

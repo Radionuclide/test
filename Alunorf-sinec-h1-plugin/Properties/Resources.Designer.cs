@@ -176,7 +176,7 @@ namespace Alunorf_sinec_h1_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following telegrams were malformed or not compatible with the .dat file:.
+        ///   Looks up a localized string similar to The following telegrams were malformed or aren&apos;t compatible with the .dat file:.
         /// </summary>
         internal static string err_tele_malformed {
             get {

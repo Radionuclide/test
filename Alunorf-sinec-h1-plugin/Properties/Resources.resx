@@ -158,7 +158,7 @@
     <value>First error at {0}th infofield </value>
   </data>
   <data name="err_tele_malformed" xml:space="preserve">
-    <value>The following telegrams were malformed or not compatible with the .dat file:</value>
+    <value>The following telegrams were malformed or aren't compatible with the .dat file:</value>
   </data>
   <data name="err_tele_NAK" xml:space="preserve">
     <value>The following telegrams were negatively acknowledged (NAK):</value>

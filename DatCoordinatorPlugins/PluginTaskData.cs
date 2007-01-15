@@ -34,6 +34,12 @@ namespace iba.Plugins
             get;
             set;
         }
+
+        int DongleBitPos
+        {
+            get;
+        }
+
         /// <summary>
         /// Function to reset the PluginTask after serialisation
         /// </summary>

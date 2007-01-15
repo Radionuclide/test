@@ -134,7 +134,6 @@ namespace iba.Data
             }
         }
 
-
         private delegate void UpdateDelegate(Event _event);
         private delegate bool ReadDelegate(string filename);
         private delegate void ClearDelegate();
@@ -465,6 +464,8 @@ namespace iba.Data
                 fileLogger.AutoFlushInterval = 1000;
                 fileLogger.BufferSize = 1000;
                 fileLogger.Level = Level.All;
+                fileLogger.MakeDailyArchive = true;
+                fileLogger.MaximumArchiveFiles = 10;
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
 
                 m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger);

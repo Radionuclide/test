@@ -54,7 +54,6 @@ namespace Alunorf_sinec_h1_plugin
         protected TimeStamp m_timeStamp;
 
         #region ITelegram Members
-
     
         public bool ReadFromBuffer(H1ByteStream stream)
         {
@@ -563,7 +562,6 @@ namespace Alunorf_sinec_h1_plugin
             return stream.WriteStream(m_stream);
         }
 
-
         private bool PreWriteBody(IbaFileReader file)
         {
             if (m_size < 0) return false; //problem detected in Calcsize;
@@ -581,19 +579,96 @@ namespace Alunorf_sinec_h1_plugin
                     string type = rec.DataType.Substring(0, pos);
 
                     if (type == "int" && size == 1)
-                        m_stream.WriteSByte(SByte.Parse(data));
+                    {
+                        SByte val;
+                        try
+                        {
+                            val = SByte.Parse(data);
+                        }
+                        catch
+                        {
+                            val = -1;
+                        }
+                        m_stream.WriteSByte(val);
+                    }
                     else if (type == "int" && size == 2)
-                        m_stream.WriteInt16(Int16.Parse(data));
+                    {
+                        Int16 val;
+                        try
+                        {
+                            val = Int16.Parse(data);
+                        }
+                        catch
+                        {
+                            val = -1;
+                        }
+                        m_stream.WriteInt16(val);
+                    }
                     else if (type == "int" && size == 4)
-                        m_stream.WriteInt32(Int32.Parse(data));
+                    {
+                        Int32 val;
+                        try
+                        {
+                            val = Int32.Parse(data);
+                        }
+                        catch
+                        {
+                            val = -1;
+                        }
+                        m_stream.WriteInt32(val);
+                    }
                     else if (type == "u. int" && size == 1)
-                        m_stream.WriteByte(Byte.Parse(data));
+                    {
+                        Byte val;
+                        try
+                        {
+                            val = Byte.Parse(data);
+                        }
+                        catch
+                        {
+                            val = Byte.MaxValue;
+                        }
+                        m_stream.WriteByte(val);
+                    }
                     else if (type == "u. int" && size == 2)
-                        m_stream.WriteUInt16(UInt16.Parse(data));
+                    {
+                        UInt16 val;
+                        try
+                        {
+                            val = UInt16.Parse(data);
+                        }
+                        catch
+                        {
+                            val = UInt16.MaxValue;
+                        }
+                        m_stream.WriteUInt16(val);
+                    }
                     else if (type == "u. int" && size == 4)
-                        m_stream.WriteUInt32(UInt32.Parse(data));
+                    {
+                        UInt32 val;
+                        try
+                        {
+                            val = UInt32.Parse(data);
+                        }
+                        catch
+                        {
+                            val = UInt32.MaxValue;
+                        }
+                        m_stream.WriteUInt32(val);
+                    }
                     else if (type == "float" && size == 4)
-                        m_stream.WriteFloat32(float.Parse(data));
+                    {
+                        float val;
+                        try
+                        {
+                            val = float.Parse(data);
+                        }
+                        catch
+                        {
+                            val = float.NaN;
+                        }
+                        m_stream.WriteFloat32(val);
+                    }
                     else if (type == "char" && size > 0)
                         m_stream.WriteString(data, size);
                     else

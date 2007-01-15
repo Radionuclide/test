@@ -89,6 +89,14 @@ namespace ExamplePlugin
         {
         }
 
+        public int DongleBitPos
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
         #endregion
 
         #region ICloneable Members
@@ -119,9 +127,6 @@ namespace ExamplePlugin
         {
             return new string[][] { new string[] { m_destinationMap, m_username, m_pass } };
         }
-
-        #endregion
-
         protected string m_destinationMap;
         public string DestinationMap
         {
@@ -149,5 +154,8 @@ namespace ExamplePlugin
             get { return m_pass; }
             set { m_pass = value; }
         }
+
+
+        #endregion
     }
 }

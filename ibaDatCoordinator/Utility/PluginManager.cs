@@ -38,7 +38,7 @@ namespace iba.Utility
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);    
             Type requiredInterface = typeof(IDatCoPlugin);
-            String[] assemblies = Directory.GetFiles(m_pluginPath, @"*.dll");
+            String[] assemblies = Directory.GetFiles(m_pluginPath, @"*plugin.dll");
             
             foreach (string assemblyFileName in assemblies)
             {

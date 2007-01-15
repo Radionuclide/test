@@ -592,6 +592,10 @@
       <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
       <Name>DatCoordinatorPlugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatCoUtil\DatCoUtil.vcproj">
+      <Project>{3F16623A-6C9F-4D79-8A6B-351A39BF91A9}</Project>
+      <Name>DatCoUtil</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

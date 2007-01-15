@@ -271,5 +271,18 @@ namespace Alunorf_sinec_h1_plugin
         }
 
         #endregion
+
+        #region IPluginTaskData Members
+
+
+        public int DongleBitPos
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        #endregion
     }
 }
