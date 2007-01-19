@@ -93,6 +93,7 @@ namespace Alunorf_plugin_test
             //        SetMessage("GO not acknowledged in time");
             //    }
             //}
+            m_sendFurtherGoes = true;
         }
 
         private void m_btStop_Click(object sender, EventArgs e)
@@ -102,6 +103,8 @@ namespace Alunorf_plugin_test
             m_btStop.Enabled = false;
             m_btGO.Enabled = false;
         }
+
+        private bool m_sendFurtherGoes;
 
         private void m_btStart_Click(object sender, EventArgs e)
         {
@@ -239,7 +242,7 @@ namespace Alunorf_plugin_test
                         m_acknowledgements["live"] = false;
                         SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                         m_idCounter += 2;
-                        m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
+                        m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
                     }
                 }
                 if (!ReadMessage())
@@ -263,10 +266,18 @@ namespace Alunorf_plugin_test
                         }
                     }
                 }
+                if (m_sendLive)
+                {
+                    SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                    m_idCounter += 2;
+                    m_sendLive = false;
+                }
             }
             m_h1manager.DisconnectAll();
             SetMessage("Cycle started");
         }
+
+        private bool m_sendLive;
 
         private void BuildConnection()
         {
@@ -343,9 +354,8 @@ namespace Alunorf_plugin_test
                     return;
                 }
                 m_acknowledgements["live"] = false;
-                SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
-                m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
-                m_idCounter += 2;
+                m_sendLive = true;
+                m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
             }
         }
 
@@ -361,7 +371,7 @@ namespace Alunorf_plugin_test
             CH1Manager.H1Result result = CH1Manager.H1Result.WAIT_CONNECT;
             while (result == CH1Manager.H1Result.WAIT_CONNECT)
             {
-                SetMessage("message about to be sent: id " + ((id == null) ? telegram.AktId.ToString() : id));
+                SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString());
                 succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
             }
             if (succes)
@@ -371,7 +381,7 @@ namespace Alunorf_plugin_test
                     m_idToFilename[telegram.AktId] = id;
                     if (id != "live")
                         m_acknowledgements.Remove(id);
-                    SetMessage("message sent: id " + id);
+                    SetMessage("message sent: id " + id  + " " + telegram.AktId.ToString());
                 }
                 else
                     SetMessage("message sent: id " + telegram.AktId.ToString());
@@ -418,24 +428,24 @@ namespace Alunorf_plugin_test
                                 //live message zenden
                                 SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                                 m_idCounter += 2;
-                                m_liveTimer.Change(TimeSpan.FromMinutes(1.0), TimeSpan.Zero);
-                                SetMessage("acknowledgement to init recieved");
-                                SetMessage("Please press te GO button");
+                                m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
+                                SetMessage("acknowledgement to init recieved: " + ack.AktId.ToString());
+                                SetMessage("Please press te GO button: " + ack.AktId.ToString());
                             }
                             else if (id == "live")
                             {
                                 m_acknowledgements[id] = true;
-                                SetMessage("acknowledgement to live recieved");
+                                SetMessage("acknowledgement to live recieved: " + ack.AktId.ToString());
                             }
                             else if (id == "go")
                             {
                                 m_acknowledgements[id] = true;
-                                SetMessage("acknowledgement to go recieved");
+                                SetMessage("acknowledgement to go recieved: " + ack.AktId.ToString());
                             }
                             else
                             {
                                 m_acknowledgements[id] = true;
-                                SetMessage("acknowledgement to message with id \"" + id + "\" received");
+                                SetMessage("acknowledgement to message with id \"" + id + "\" received: " + ack.AktId.ToString());
                                 //m_waitSendEvent.Set();
                             }
                         }
@@ -444,15 +454,17 @@ namespace Alunorf_plugin_test
                             QdtTelegram qdt = wrap.InnerTelegram as QdtTelegram;
                             if (qdt != null)
                             {
-                                string filename = "qdt" + qdt.AktId.ToString() + ".txt";
+//                                string filename = "qdt" + qdt.AktId.ToString() + ".txt";
+                                string filename = "qdt" + qdt.AktId.ToString() + ".dat";
                                 filename = Path.Combine(m_outputDir.Text, filename);
-                                using (StreamWriter w = File.AppendText(filename))
-                                {
-                                    w.Write(qdt.Interpret(m_telegrams));
-                                    w.Close();
-                                }
+                                //using (StreamWriter w = File.AppendText(filename))
+                                //{
+                                //    w.Write(qdt.Interpret(m_telegrams));
+                                //    w.Close();
+                                //}
+                                qdt.WriteToDatFile(m_telegrams, filename);
                                 AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
-                                SetMessage("qdt telegram recieved, written to " + filename);
+                                SetMessage("qdt telegram recieved: " + qdt.AktId.ToString()+", written to " + filename);
                                 if (!SendTelegram(ackqdt))
                                 {
                                     m_pcConnected = ConnectionState.DISCONNECTED;
@@ -466,11 +478,20 @@ namespace Alunorf_plugin_test
                                 {
                                     m_pcConnected = m_pcConnected == ConnectionState.READY ? ConnectionState.READY:ConnectionState.CONNECTED;
                                     AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
-                                    SetMessage("ini telegram recieved, please send a GO");
+                                    SetMessage("ini telegram recieved: " + ini.AktId.ToString() + ", please send a GO");
                                     if (!SendTelegram(ackini,"init_pc"))
                                     {
                                         m_pcConnected = ConnectionState.DISCONNECTED;
                                         m_retryConnect = true;
+                                    }
+                                    if (m_sendFurtherGoes)
+                                    {
+                                        GoTelegram go = new GoTelegram(ini.AktId, m_messagesCount++);
+                                        if (!SendTelegram(go, "go"))
+                                        {
+                                            m_pcConnected = ConnectionState.DISCONNECTED;
+                                            m_retryConnect = true;
+                                        }
                                     }
                                 }
                                 else
@@ -478,7 +499,7 @@ namespace Alunorf_plugin_test
                                     LiveTelegram live = wrap.InnerTelegram as LiveTelegram;
                                     if (live != null)
                                     {
-                                        SetMessage("live telegram recieved");
+                                        SetMessage("live telegram recieved: " + live.AktId.ToString());
                                         AckTelegram acklive = new AckTelegram(live.AktId, m_messagesCount++);
                                         if (!SendTelegram(acklive))
                                         {

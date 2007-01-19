@@ -54,7 +54,8 @@ namespace iba {
 				_TRY_AGAIN=H1_TRY_AGAIN,			// Not enough resources temporary. Please call it again later
 				NO_MEMORY=H1_NO_MEMORY,				// Open Driver not possible under win3.x
 				BAD_SIGNATURE=H1_BAD_SIGNATURE,		// The Industrial Ethernet Signature not received
-				TELEGRAM_ERROR=20					// Own error code for failing to read or write telegram	
+				TELEGRAM_ERROR=20,					// Own error code for failing to read or write telegram	
+				OPERATING_SYSTEM_ERROR=21			// Own error code for operating system error,e.g. disconnected cable
 		};
 		bool SetStationAddress(array<Byte>^ ownMacAdress);
 		bool Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout);

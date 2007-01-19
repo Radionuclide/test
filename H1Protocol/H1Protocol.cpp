@@ -192,12 +192,12 @@ namespace iba {
 			result = (H1Result) cr.Fehler;
 			switch (cr.Fehler)
 			{
-			case H1_BAD_CR_PARAMS: m_lastError = "H1_BAD_CR_PARAMS";
-			case H1_BAD_LINE: m_lastError = "H1_BAD_LINE";
-			case H1_NO_ADAPTER: m_lastError = "H1_NO_ADAPTER";
-			case H1_NO_DRIVER: m_lastError = "H1_NO_DRIVER";
-			case H1_NO_SLOT: m_lastError = "H1_NO_SLOT";
-			case H1_WAIT_CONNECT: m_lastError = "H1_WAIT_CONNECT";
+			case H1_BAD_CR_PARAMS: m_lastError = "H1_BAD_CR_PARAMS"; break;
+			case H1_BAD_LINE: m_lastError = "H1_BAD_LINE"; break;
+			case H1_NO_ADAPTER: m_lastError = "H1_NO_ADAPTER"; break;
+			case H1_NO_DRIVER: m_lastError = "H1_NO_DRIVER"; break;
+			case H1_NO_SLOT: m_lastError = "H1_NO_SLOT"; break;
+			case H1_WAIT_CONNECT: m_lastError = "H1_WAIT_CONNECT"; break;
 			default: m_lastError = LoadError(ERR_CONNECT);
 			}
 			return false;
@@ -209,6 +209,7 @@ namespace iba {
 		{
 			int err;
 			H1_RECPARAMS  rp;
+			memset(&rp, 0, sizeof(H1_RECPARAMS));
 			rp.Vnr = vnr;
 			if (!(err = H1TesteStatus(&rp)))
 			{
@@ -220,7 +221,7 @@ namespace iba {
 					case H1_WAIT_CONNECT :
 						break;
 					default:
-						result = (H1Result) cr.Fehler;
+						result = (H1Result) rp.Fehler;
 						m_lastError =  "Error while trying to connect... " + rp.Fehler.ToString();
 						H1StoppeVerbindung(vnr);
 						return false;
@@ -274,7 +275,11 @@ namespace iba {
 		rp.Vnr = vnr;
 		int error = H1TesteStatus(&rp);
 		result = (H1Result) rp.Fehler;
-		if (error) return false; 
+		if (error) {
+			result = H1Result::OPERATING_SYSTEM_ERROR;
+			m_lastError = "Operating system error (unplugged cable?)";
+			return false; 
+		}
 		return true;
 	}
 

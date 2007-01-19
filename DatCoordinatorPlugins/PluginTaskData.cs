@@ -25,6 +25,7 @@ namespace iba.Plugins
         /// Function to get the worker part of the plugin
         /// </summary>
         IPluginTaskWorker GetWorker();
+        void SetWorker(IPluginTaskWorker worker);
 
         /// <summary>
         /// Index to retrieve info from pluginmanager after serialisation

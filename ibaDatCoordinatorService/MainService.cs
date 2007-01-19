@@ -29,6 +29,7 @@ namespace iba.Services
 
         protected override void OnStart(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             LogData.InitializeLogger(null, null, false); //dummy gridlogger
             try
             {
@@ -105,6 +106,16 @@ namespace iba.Services
                     LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
                     Stop();
                 }
+            }
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
+            using (StreamWriter sw = new StreamWriter(file))
+            {
+                sw.WriteLine("exception occured at" + DateTime.Now.ToString());
+                sw.Write((e.ExceptionObject as Exception).ToString());
             }
         }
 

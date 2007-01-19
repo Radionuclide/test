@@ -136,6 +136,7 @@ namespace iba.Processing
                     }
                     SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                 }
+                ConfigurationData oldConfigurationData = m_cd;
                 m_cd = m_toUpdate.Clone_AlsoCopyGuids();
                 object errorObject;
                 SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
@@ -201,12 +202,15 @@ namespace iba.Processing
                 //lastly, execute plugin actions that need to happen in the case of an update
                 foreach (TaskData t in m_cd.Tasks)
                 {
-                    CustomTaskData c = t as CustomTaskData;
-                    if (c != null)
+                    TaskData oldtask = oldConfigurationData.Tasks[t.Index];
+                    CustomTaskData c_old = oldtask as CustomTaskData;
+                    CustomTaskData c_new = t as CustomTaskData;
+                    if (c_old != null && c_new != null)
                     {
-                        IPluginTaskWorker w = c.Plugin.GetWorker();
-                        if (!w.OnApply(c.Plugin, m_cd))
+                        IPluginTaskWorker w = c_old.Plugin.GetWorker();
+                        if (!w.OnApply(c_new.Plugin, m_cd))
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                        c_new.Plugin.SetWorker(w);
                     }
                 }
 
@@ -290,6 +294,8 @@ namespace iba.Processing
         private System.Threading.Timer reprocessErrorsTimer;
         private System.Threading.Timer rescanTimer;
         private System.Threading.Timer retryAccessTimer;
+        private System.Threading.Timer testLicenseTimer;
+
         bool m_bTimersstopped;
 
         private FileSystemWatcher fswt = null;
@@ -305,11 +311,25 @@ namespace iba.Processing
                 Stop = true;
                 return;
             }
+
+            if (!TestLicensePlugins())
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseNoStart);
+                m_sd.Started = false;
+                Stop = true;
+                return;
+            }
+
             try
             {
                 Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 updateDatFileList(WhatToUpdate.ALL);
                 Thread.CurrentThread.Priority = ThreadPriority.Normal;
+                if (m_stop)
+                {
+                    m_sd.Started = false;
+                    return;
+                }
                 notifyTimer = null;
                 try
                 {
@@ -429,11 +449,19 @@ namespace iba.Processing
                     {
                         reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         reprocessErrorsTimer.Dispose();
+                        reprocessErrorsTimer = null;
                     }
                     if (retryAccessTimer != null)
                     {
                         retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         retryAccessTimer.Dispose();
+                        retryAccessTimer = null;
+                    }
+                    if (testLicenseTimer != null)
+                    {
+                        testLicenseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        testLicenseTimer.Dispose();
+                        testLicenseTimer = null;
                     }
                     Debug.Assert(m_ibaAnalyzer == null, "ibaAnalyzer should have been closed");
                 }
@@ -459,6 +487,32 @@ namespace iba.Processing
             fswt.Dispose();
             fswt = null;
             Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC,e.GetException().Message));
+        }
+
+        private bool TestLicensePlugins()
+        {
+            CDongleInfo info = null;
+            bool ok = true;
+            foreach (TaskData task in m_cd.Tasks)
+            {
+                CustomTaskData cust = task as CustomTaskData;
+                if (cust != null)
+                {
+                    if (info == null) info = CDongleInfo.ReadDongle();
+                    if (!info.PluginsLicensed() || !info.IsPluginLicensed(cust.Plugin.DongleBitPos))
+                    {
+                        ok = false;
+                        Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logTaskNotLicensed,task.Name));
+                    }
+                }
+            }
+            if (info != null && ok) // start timer
+            {
+                if (testLicenseTimer == null) testLicenseTimer = new System.Threading.Timer(OnTestLicenseTimerTick);
+                if (!m_bTimersstopped && !m_stop)
+                    testLicenseTimer.Change(TimeSpan.FromMinutes(2.0), TimeSpan.Zero);
+            }
+            return ok;
         }
 
         private void StartIbaAnalyzer()
@@ -524,7 +578,6 @@ namespace iba.Processing
         {
             StopIbaAnalyzer(true);
         }
-
 
         private void StopIbaAnalyzer(bool stop)
         {
@@ -676,7 +729,6 @@ namespace iba.Processing
                 reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
         }
 
-
         private void OnNotifyTimerTick(object ignoreMe)
         {
             if (m_bTimersstopped || m_stop) return;
@@ -684,6 +736,17 @@ namespace iba.Processing
             m_notifier.Send();
             if (!m_bTimersstopped && !m_stop)
                 notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+        }
+
+        private void OnTestLicenseTimerTick(object ignoreMe)
+        {
+            if (m_bTimersstopped || m_stop) return;
+            testLicenseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            if (!TestLicensePlugins())
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseStopped);
+                Stop = true;
+            }
         }
 
         private enum WhatToUpdate { ALL, NEW, ERRORS };
@@ -836,108 +899,115 @@ namespace iba.Processing
 
         private DatFileStatus.State ProcessDatfileReadyness(string filename)
         {
-            IbaFileUpdater ibaDatFile = new IbaFileClass();
-            Nullable<DateTime> time = null;
             try
             {
+                IbaFileUpdater ibaDatFile = new IbaFileClass();
+                Nullable<DateTime> time = null;
                 try
                 {
-                    time = File.GetLastWriteTime(filename);
-                }
-                catch
-                {
-                    time = null;
-                }
-                if (time != null) ibaDatFile.OpenForUpdate(filename);
-            }
-            catch (FileLoadException) //no access
-            {
-                //reason 1, because of RUNNING
-                lock (m_sd.DatFileStates)
-                {
-                    foreach (DatFileStatus.State stat in m_sd.DatFileStates[filename].States.Values)
-                        if (stat == DatFileStatus.State.RUNNING)
-                            return DatFileStatus.State.RUNNING;
-                }
-                try
-                {
-                    FileAttributes at = File.GetAttributes(filename);
-                    if (at != FileAttributes.ReadOnly)
-                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-                    else
-                        Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
-                }
-                catch
-                {
-                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-                }
-                return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
-            }
-            catch (Exception ex)
-            {
-                Log(Logging.Level.Exception, ex.Message, filename);
-                return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
-            }
-
-            try
-            {
-                string status = ibaDatFile.QueryInfoByName("status");
-                if (status == "processed")
-                {
-                    ibaDatFile.Close();
-                    if (time != null) File.SetLastWriteTime(filename, time.Value);
-                    return DatFileStatus.State.COMPLETED_SUCCESFULY;
-                }
-                else if (status == "processingfailed")
-                {
-                    List<string> guids = null;
-                    string guidstring = null;
-                    //get guids
                     try
                     {
-                        guidstring = ibaDatFile.QueryInfoByName("TasksDone");
+                        time = File.GetLastWriteTime(filename);
                     }
-                    catch (ArgumentException)
+                    catch
                     {
+                        time = null;
                     }
-                    catch (Exception) //general exception
+                    if (time != null) ibaDatFile.OpenForUpdate(filename);
+                }
+                catch (FileLoadException) //no access
+                {
+                    //reason 1, because of RUNNING
+                    lock (m_sd.DatFileStates)
                     {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
+                        foreach (DatFileStatus.State stat in m_sd.DatFileStates[filename].States.Values)
+                            if (stat == DatFileStatus.State.RUNNING)
+                                return DatFileStatus.State.RUNNING;
                     }
-                    guidstring.Trim(new char[] { ';' });
-                    guids = new List<string>(guidstring.Split(new char[] { ';' }));
-                    guids.Sort();
-                    foreach (TaskData task in m_cd.Tasks)
+                    try
                     {
-                        if (guids.BinarySearch(task.Guid.ToString()) > 0)
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                            }
+                        FileAttributes at = File.GetAttributes(filename);
+                        if (at != FileAttributes.ReadOnly)
+                            Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                        else
+                            Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
                     }
+                    catch
+                    {
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                    }
+                    return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
+                }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Exception, ex.Message, filename);
+                    return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
+                }
+
+                try
+                {
+                    string status = ibaDatFile.QueryInfoByName("status");
+                    if (status == "processed")
+                    {
+                        if (time != null) File.SetLastWriteTime(filename, time.Value);
+                        return DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    }
+                    else if (status == "processingfailed")
+                    {
+                        List<string> guids = null;
+                        string guidstring = null;
+                        //get guids
+                        try
+                        {
+                            guidstring = ibaDatFile.QueryInfoByName("TasksDone");
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+                        catch (Exception) //general exception
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
+                        }
+                        guidstring.Trim(new char[] { ';' });
+                        guids = new List<string>(guidstring.Split(new char[] { ';' }));
+                        guids.Sort();
+                        foreach (TaskData task in m_cd.Tasks)
+                        {
+                            if (guids.BinarySearch(task.Guid.ToString()) > 0)
+                                lock (m_sd.DatFileStates)
+                                {
+                                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                }
+                        }
+                        ibaDatFile.Close();
+                        if (time != null) File.SetLastWriteTime(filename, time.Value);
+                        return DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    else if (status == "restart" || status == "readyToProcess")
+                    {
+                        ibaDatFile.Close();
+                        if (time != null) ibaDatFile.OpenForUpdate(filename);
+                        return DatFileStatus.State.NOT_STARTED;
+                    }
+                    else
+                    {
+                        ibaDatFile.Close();
+                        return DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                }
+                catch
+                {
+                    ibaDatFile.Close();
+                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.WriteInfoField("status", "readyToProcess");
                     ibaDatFile.Close();
                     if (time != null) File.SetLastWriteTime(filename, time.Value);
-                    return DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                else if (status == "restart" || status == "readyToProcess")
-                {
-                    ibaDatFile.Close();
-                    if (time != null) ibaDatFile.OpenForUpdate(filename);
                     return DatFileStatus.State.NOT_STARTED;
                 }
-                else
-                {
-                    return DatFileStatus.State.COMPLETED_FAILURE;
-                }
             }
-            catch //status field does not exist yet
+            catch //general exception that may have happened
             {
-                ibaDatFile.Close();
-                ibaDatFile.OpenForUpdate(filename);
-                ibaDatFile.WriteInfoField("status", "readyToProcess");
-                ibaDatFile.Close();
-                if (time != null) File.SetLastWriteTime(filename, time.Value);
-                return DatFileStatus.State.NOT_STARTED;
+                return DatFileStatus.State.COMPLETED_FAILURE;
             }
         }
 
@@ -1619,7 +1689,7 @@ namespace iba.Processing
             {
                 ibaProc.EnableRaisingEvents = false;
                 ibaProc.StartInfo.FileName = task.BatchFile;
-                ibaProc.StartInfo.Arguments = filename + " " + task.AnalysisFile;
+                ibaProc.StartInfo.Arguments = "\"" + filename + "\" \"" + task.AnalysisFile + "\"";
                 ibaProc.StartInfo.CreateNoWindow = true;
                 ibaProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 try

@@ -180,6 +180,11 @@ namespace Alunorf_sinec_h1_plugin
             return m_worker;
         }
 
+        public void SetWorker(IPluginTaskWorker worker)
+        {
+            m_worker = worker as PluginH1TaskWorker;
+        }
+
         private IDatCoHost m_datcoHost;
 
         private string m_nameInfo;

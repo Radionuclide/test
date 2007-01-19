@@ -85,6 +85,11 @@ namespace ExamplePlugin
             return m_worker;
         }
 
+        public void SetWorker(IPluginTaskWorker worker)
+        {
+            m_worker = worker as PluginCopyTaskWorker;
+        }
+
         public void Destroy()
         {
         }

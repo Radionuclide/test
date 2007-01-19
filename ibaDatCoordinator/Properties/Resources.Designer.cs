@@ -673,6 +673,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more custom tasks.
+        /// </summary>
+        internal static string logLicenseNoStart {
+            get {
+                return ResourceManager.GetString("logLicenseNoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped the job because no license was found for one or more custom tasks.
+        /// </summary>
+        internal static string logLicenseStopped {
+            get {
+                return ResourceManager.GetString("logLicenseStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to failed to move file.
         /// </summary>
         internal static string logMoveTaskFailed {
@@ -849,6 +867,15 @@ namespace iba.Properties {
         internal static string logServiceStopped {
             get {
                 return ResourceManager.GetString("logServiceStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No license found for custom task &apos;{0}&apos;.
+        /// </summary>
+        internal static string logTaskNotLicensed {
+            get {
+                return ResourceManager.GetString("logTaskNotLicensed", resourceCulture);
             }
         }
         

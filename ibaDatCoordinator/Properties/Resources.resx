@@ -658,4 +658,13 @@
   <data name="logTaskSuccess" xml:space="preserve">
     <value>'{0}' task succesfully completed </value>
   </data>
+  <data name="logLicenseNoStart" xml:space="preserve">
+    <value>Cannot start the job because no license was found for one or more custom tasks</value>
+  </data>
+  <data name="logLicenseStopped" xml:space="preserve">
+    <value>Stopped the job because no license was found for one or more custom tasks</value>
+  </data>
+  <data name="logTaskNotLicensed" xml:space="preserve">
+    <value>No license found for custom task '{0}'</value>
+  </data>
 </root>

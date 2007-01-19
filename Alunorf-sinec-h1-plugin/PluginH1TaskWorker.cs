@@ -77,8 +77,13 @@ namespace Alunorf_sinec_h1_plugin
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
             string filename = Path.Combine(directory, "sinec-h1.log");
-            m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
+            
+            if (m_logger != null && m_logger.IsOpen)
+                m_logger.Close();
+
             FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinaterLog", 10);
+
+            m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
             m_logger.IsBufferingEnabled = false;
             m_logger.IsContextEnabled = true;
             m_logger.AutoFlushInterval = 1000;
@@ -89,6 +94,7 @@ namespace Alunorf_sinec_h1_plugin
             //m_logger.EventFormatter.DataFormatter = new LogExtraDataFormatter(m_idToFilename);
             m_readStarted1 = m_readStarted2 = false;
             m_logger.Open();
+
             bool ok = m_h1manager.SetStationAddress(m_data.OwnAddress);
             if (ok)
                 ok = m_h1manager.SetSendTimeout(m_data.SendTimeOut);
@@ -105,11 +111,18 @@ namespace Alunorf_sinec_h1_plugin
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_data.NameInfo;
             m_started = true;
+            InitMemberData();
             m_thread.Start();
             
             //wait here until initialisation succeeded
-            m_waitConnectedEvent = new AutoResetEvent(false);
-            m_waitConnectedEvent.WaitOne(2000* (m_data.SendTimeOut + m_data.AckTimeOut + m_data.ConnectionTimeOut + 30),true);
+            if (!m_stop)
+            {
+                m_waitConnectedEvent = new AutoResetEvent(false);
+                m_waitConnectedEvent.WaitOne(2000 * (m_data.SendTimeOut + m_data.AckTimeOut + m_data.ConnectionTimeOut + 30), true);
+            }
+            else
+                return true;
+
             if ((m_nqs1Status == NQSStatus.GO && m_nqs2Status != NQSStatus.DISCONNECTED) || (m_nqs2Status == NQSStatus.GO && m_nqs1Status != NQSStatus.DISCONNECTED))
                 return true;
             else if (m_nqs2Status == NQSStatus.GO) 
@@ -142,14 +155,21 @@ namespace Alunorf_sinec_h1_plugin
                 }
                 m_messageQueue.Clear();
             }
+            if (m_logger != null && m_logger.IsOpen)
+            {
+                m_logger.Close();
+                m_logger = null;
+            }
             if (m_started == false)
             {
-                if (m_logger != null)
-                    m_logger.Close();
                 return true;
             }
             else
             {
+
+                //signal any waiting items
+                if (m_waitSendEvent != null) m_waitSendEvent.Set();
+                if (m_waitConnectedEvent != null) m_waitConnectedEvent.Set();
                 return m_thread.Join(30000);
             }
         }
@@ -194,6 +214,7 @@ namespace Alunorf_sinec_h1_plugin
                 || m_data.OwnAddress[5] != data.OwnAddress[5])
             {
                 m_h1manager.DisconnectAll();
+                m_nqs1Status = m_nqs2Status = NQSStatus.DISCONNECTED;
                 m_retryConnect = true;
 
                 if (m_data.OwnAddress[0] != data.OwnAddress[0]
@@ -279,25 +300,31 @@ namespace Alunorf_sinec_h1_plugin
                     {
                         if (m_acknowledgements[key]) //positively acknowledged in the mean time;
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "telegram allready positively acknowledged " + key);
                             m_acknowledgements.Remove(key);
                             m_idToFilename.Remove(key);
                             continue;
                         }
                         else //negatively acknowledged, regard the datfile as never send
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "telegram allready negatively acknowledged " + key);
                             m_acknowledgements.Remove(key);
                             string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]); 
                             m_nak_errors.Remove(key);
-                            NAKnowledged.Add(item);
+                            //NAKnowledged.Add(item);
                             m_idToFilename.Remove(key);
-                            continue;
                         }
                     }
                 }
-
                 if (m_messageQueue.Count > 500)
                 {
+                    if (m_logger != null && m_logger.IsOpen)
+                        m_logger.Log(Level.Exception, "message queue full");
                     m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_queue;
+                    reader.Close();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                     return false;
                 }
                 QdtTelegram qdt = null;
@@ -312,6 +339,8 @@ namespace Alunorf_sinec_h1_plugin
                 else
                 {
                     m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
+                    if (m_logger != null && m_logger.IsOpen)
+                        m_logger.Log(Level.Exception, m_error);
                     reader.Close();
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                     return false;
@@ -339,15 +368,23 @@ namespace Alunorf_sinec_h1_plugin
                     {
                         if (m_acknowledgements[key]) //positively acknowledged in the mean time;
                         {
+                            m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "telegram positively acknowledged in the mean time " + key);
+
                         }
                         else if (m_nak_errors[key].StartsWith(Alunorf_sinec_h1_plugin.Properties.Resources.err_send))
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Exception, m_nak_errors[key]);
                             m_nak_errors.Remove(key);
                             string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key].Substring(Alunorf_sinec_h1_plugin.Properties.Resources.err_send.Length));
                             ErrorSendTelegram.Add(item);
                         }
                         else
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Exception, m_nak_errors[key]);
                             string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]);
                             m_nak_errors.Remove(key);
                             NAKnowledged.Add(item);
@@ -356,6 +393,8 @@ namespace Alunorf_sinec_h1_plugin
                     }
                     else 
                     {
+                        if (m_logger != null && m_logger.IsOpen)
+                            m_logger.Log(Level.Exception, "telegram not acknowledged in time " + key);
                         UnTimelyAcknowledged.Add(telegram.QdtType);
                     }
                 }
@@ -466,6 +505,11 @@ namespace Alunorf_sinec_h1_plugin
         public PluginH1TaskWorker(PluginH1Task data)
         {
             m_data = data;
+            InitMemberData();
+        }
+
+        private void InitMemberData()
+        {
             m_stop = false;
             m_nqs1Messages = 0;
             m_nqs2Messages = 0;
@@ -482,7 +526,6 @@ namespace Alunorf_sinec_h1_plugin
             m_liveTimer = new System.Threading.Timer(OnLiveTimerTick);
             m_nak_errors = new SortedDictionary<string, string>();
         }
-
 
         //because NQS1 and NQS2 possibly don't know each others generated AktIds
         //the next two methods guarantee uniqueness
@@ -547,7 +590,8 @@ namespace Alunorf_sinec_h1_plugin
                 }
                 else if (m_disconnectedCounter1 > 50 && m_nqs1Status != NQSStatus.DISCONNECTED)
                 {
-                    m_logger.Log(Level.Exception, "disconnection detected with NQS1 by repeatable failure to read a message");
+                    if ((m_logger != null) && m_logger.IsOpen)
+                        m_logger.Log(Level.Exception, "disconnection detected with NQS1 by repeatable failure to read a message");
                     m_disconnectedCounter1 = 0;
                     m_nqs1Status = NQSStatus.DISCONNECTED;
                     m_retryConnect = true;
@@ -559,7 +603,8 @@ namespace Alunorf_sinec_h1_plugin
                 }
                 else if (m_disconnectedCounter2 > 50 && m_nqs2Status != NQSStatus.DISCONNECTED)
                 {
-                    m_logger.Log(Level.Exception, "disconnection detected with NQS2 by repeatable failure to read a message");
+                    if ((m_logger != null) && m_logger.IsOpen)
+                        m_logger.Log(Level.Exception, "disconnection detected with NQS2 by repeatable failure to read a message");
                     m_disconnectedCounter2 = 0;
                     m_nqs2Status = NQSStatus.DISCONNECTED;
                     m_retryConnect = true;
@@ -572,6 +617,13 @@ namespace Alunorf_sinec_h1_plugin
                 Thread.Sleep(100);
             }
             m_h1manager.DisconnectAll();
+            m_liveTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            m_liveTimer.Dispose();
+            m_liveTimer = null;
+            m_reconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            m_reconnectTimer.Dispose();
+            m_reconnectTimer = null;
+            m_nqs1Status = m_nqs2Status = NQSStatus.DISCONNECTED;
             m_started = false;
         }
 
@@ -599,7 +651,8 @@ namespace Alunorf_sinec_h1_plugin
                         if (nak != null && m_idToFilename.Contains(FromNonUniqueToUnique(nak.AktId,vnr)))
                         {
                             string id = m_idToFilename[FromNonUniqueToUnique(nak.AktId,vnr)];
-                            m_logger.Log(Level.Info, "NAK telegram recieved from vnr " + vnr.ToString() + " " + m_idToFilename.itemToString(id));
+                            if ((m_logger != null) && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "NAK telegram recieved from vnr " + vnr.ToString() + " " + m_idToFilename.itemToString(id));
                             m_nak_errors[id] = nak.FehlerText; 
                             m_acknowledgements[id] = false;
                             if (id == "init1" || id == "init2" )
@@ -615,7 +668,8 @@ namespace Alunorf_sinec_h1_plugin
                                 string id = m_idToFilename[FromNonUniqueToUnique(ack.AktId, vnr)];
                                 if (id == "init1")
                                 {
-                                    m_logger.Log(Level.Info, "ACK init from NQS1 " + m_idToFilename.itemToString(id));
+                                    if ((m_logger != null) && m_logger.IsOpen)
+                                        m_logger.Log(Level.Info, "ACK init from NQS1 " + m_idToFilename.itemToString(id));
                                     m_nqs1Status = NQSStatus.INITIALISED;
                                     m_acknowledgements["live1"] = false;
                                     QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
@@ -623,7 +677,8 @@ namespace Alunorf_sinec_h1_plugin
                                 }
                                 else if (id == "init2")
                                 {
-                                    m_logger.Log(Level.Info, "ACK init from NQS2 " + m_idToFilename.itemToString(id));
+                                    if ((m_logger != null) && m_logger.IsOpen)
+                                        m_logger.Log(Level.Info, "ACK init from NQS2 " + m_idToFilename.itemToString(id));
                                     m_nqs1Status = NQSStatus.INITIALISED;
                                     m_acknowledgements["live2"] = false;
                                     QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live2");
@@ -631,12 +686,14 @@ namespace Alunorf_sinec_h1_plugin
                                 }
                                 else if (id == "live1" || id == "live2")
                                 {
-                                    m_logger.Log(Level.Info, "ACK live from " + vnr.ToString() + m_idToFilename.itemToString(id));
+                                    if ((m_logger != null) && m_logger.IsOpen)
+                                        m_logger.Log(Level.Info, "ACK live from " + vnr.ToString() + m_idToFilename.itemToString(id));
                                     m_acknowledgements[id] = true;
                                 }
                                 else
                                 {
-                                    m_logger.Log(Level.Info, "ACK received: " + m_idToFilename.itemToString(id));
+                                    if ((m_logger != null) && m_logger.IsOpen)
+                                        m_logger.Log(Level.Info, "ACK received: " + m_idToFilename.itemToString(id));
                                     m_acknowledgements[id] = true;
                                     m_waitSendEvent.Set();
                                 }
@@ -649,7 +706,8 @@ namespace Alunorf_sinec_h1_plugin
                                     string id = m_idToFilename[FromNonUniqueToUnique(go.AktId,vnr)];
                                     if (id == "init1" || id == "init1_nqs")
                                     {
-                                        m_logger.Log(Level.Info, "GO recieved from NQS1 " + m_idToFilename.itemToString(id));
+                                        if ((m_logger != null) && m_logger.IsOpen)
+                                            m_logger.Log(Level.Info, "GO recieved from NQS1 " + m_idToFilename.itemToString(id));
                                         m_nqs1Status = NQSStatus.GO;
                                         AckTelegram ackgo = new AckTelegram(go.AktId, m_nqs1Messages++);
                                         if (QueueTelegram(m_vnr1, ackgo))
@@ -665,7 +723,8 @@ namespace Alunorf_sinec_h1_plugin
                                     }
                                     else if (id == "init2" || id == "init2_nqs")
                                     {
-                                        m_logger.Log(Level.Info, "GO recieved from NQS2 " + m_idToFilename.itemToString(id)); 
+                                        if ((m_logger != null) && m_logger.IsOpen)
+                                            m_logger.Log(Level.Info, "GO recieved from NQS2 " + m_idToFilename.itemToString(id)); 
                                         m_nqs2Status = NQSStatus.GO;
                                         AckTelegram ackgo = new AckTelegram(go.AktId, m_nqs2Messages++);
                                         if (QueueTelegram(m_vnr2, ackgo))
@@ -684,7 +743,6 @@ namespace Alunorf_sinec_h1_plugin
                                 else if (go != null)
                                 {
                                     m_error = "go recieved with no previous init";
-
                                 }
                                 else
                                 {
@@ -693,7 +751,8 @@ namespace Alunorf_sinec_h1_plugin
                                     {
                                         if (vnr == m_vnr1)
                                         {
-                                            m_logger.Log(Level.Info, "INI recieved from NQS1 " + m_idToFilename.itemToString(FromNonUniqueToUnique(ini.AktId, vnr)));
+                                            if ((m_logger != null) && m_logger.IsOpen)
+                                                m_logger.Log(Level.Info, "INI recieved from NQS1 " + m_idToFilename.itemToString(FromNonUniqueToUnique(ini.AktId, vnr)));
                                             m_nqs1Status = NQSStatus.INITIALISED;
                                             AckTelegram ackini = new AckTelegram(ini.AktId, m_nqs1Messages++);
                                             if (!QueueTelegram(m_vnr1, ackini, "init1_nqs"))
@@ -704,7 +763,8 @@ namespace Alunorf_sinec_h1_plugin
                                         }
                                         else if (vnr == m_vnr2)
                                         {
-                                            m_logger.Log(Level.Info, "INI recieved from NQS2 " + m_idToFilename.itemToString(FromNonUniqueToUnique(ini.AktId, vnr)));
+                                            if ((m_logger != null) && m_logger.IsOpen)
+                                                m_logger.Log(Level.Info, "INI recieved from NQS2 " + m_idToFilename.itemToString(FromNonUniqueToUnique(ini.AktId, vnr)));
                                             m_nqs2Status = NQSStatus.INITIALISED;
                                             AckTelegram ackini = new AckTelegram(ini.AktId, m_nqs2Messages++);
                                             if (!QueueTelegram(m_vnr2, ackini, "init2_nqs"))
@@ -721,7 +781,8 @@ namespace Alunorf_sinec_h1_plugin
                                         {
                                             if (vnr == m_vnr1)
                                             {
-                                                m_logger.Log(Level.Info, "LIVE recieved from NQS1 " + m_idToFilename.itemToString(FromNonUniqueToUnique(live.AktId, vnr)));
+                                                if ((m_logger != null) && m_logger.IsOpen)
+                                                    m_logger.Log(Level.Info, "LIVE recieved from NQS1 " + m_idToFilename.itemToString(FromNonUniqueToUnique(live.AktId, vnr)));
                                                 AckTelegram acklive = new AckTelegram(live.AktId, m_nqs1Messages++);
                                                 if (!QueueTelegram(m_vnr1, acklive))
                                                 {
@@ -731,7 +792,8 @@ namespace Alunorf_sinec_h1_plugin
                                             }
                                             else if (vnr == m_vnr2)
                                             {
-                                                m_logger.Log(Level.Info, "LIVE recieved from NQS2 " + m_idToFilename.itemToString(FromNonUniqueToUnique(live.AktId, vnr)));
+                                                if ((m_logger != null) && m_logger.IsOpen)
+                                                    m_logger.Log(Level.Info, "LIVE recieved from NQS2 " + m_idToFilename.itemToString(FromNonUniqueToUnique(live.AktId, vnr)));
                                                 AckTelegram acklive = new AckTelegram(live.AktId, m_nqs2Messages++);
                                                 if (!QueueTelegram(m_vnr2, acklive))
                                                 {
@@ -791,7 +853,8 @@ namespace Alunorf_sinec_h1_plugin
 
         private void BuildConnection()
         {
-            m_logger.Log(Level.Info, "starting build connection : " + m_nqs1Status.ToString() + " " + m_nqs1Status.ToString());
+            if ((m_logger != null) && m_logger.IsOpen)
+                m_logger.Log(Level.Info, "starting build connection : " + m_nqs1Status.ToString() + " " + m_nqs2Status.ToString());
             m_retryConnect = false;
             if (m_nqs1Status == NQSStatus.DISCONNECTED)
             {
@@ -805,18 +868,26 @@ namespace Alunorf_sinec_h1_plugin
                     case CH1Manager.H1Result.ALL_CLEAR:
                         {
                             m_nqs1Status = NQSStatus.CONNECTED;
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "connection to nqs1 was still ok");
                             //send INI telegram
                             IniTelegram init = new IniTelegram(m_idCounter, m_nqs1Messages++);
                             m_idCounter += 2;
                             QueueTelegram(m_vnr1, init, "init1");
                             break;
                         }
+                    case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
+                        m_retryConnect = true;
+                        m_error = m_h1manager.LastError;
+                        break;
                     case CH1Manager.H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
                     case CH1Manager.H1Result.BAD_LINE:
                         if (m_h1manager.Connect(ref m_vnr1, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut))
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "connection to nqs1 restored");
                             m_nqs1Status = NQSStatus.CONNECTED;
                             //send INI telegram
                             IniTelegram init = new IniTelegram(m_idCounter, m_nqs1Messages++);
@@ -827,6 +898,8 @@ namespace Alunorf_sinec_h1_plugin
                         {
                             m_error = m_h1manager.LastError;
                             m_retryConnect = true;
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "timeout trying to connect to nqs1");
                         }
                         break;
                     default:
@@ -843,18 +916,23 @@ namespace Alunorf_sinec_h1_plugin
                     result = CH1Manager.H1Result.BAD_LINE;
                 else
                     m_h1manager.GetConnectionStatus(m_vnr2, ref result);
-
                 switch (result)
                 {
                     case CH1Manager.H1Result.ALL_CLEAR:
                         {
                             m_nqs2Status = NQSStatus.CONNECTED;
                             //send INI telegram
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "connection to nqs2 was still ok");
                             IniTelegram init = new IniTelegram(m_idCounter, m_nqs2Messages++);
                             m_idCounter += 2;
                             QueueTelegram(m_vnr2, init, "init2");
                             break;
                         }
+                    case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
+                        m_retryConnect = true;
+                        m_error = m_h1manager.LastError;
+                        break;
                     case CH1Manager.H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
@@ -862,6 +940,8 @@ namespace Alunorf_sinec_h1_plugin
                         if (m_h1manager.Connect(ref m_vnr2, 4, false, m_data.NQSAddress2, m_data.OwnTSAPforNQS2, m_data.NQS_TSAPforNQS2, ref result, m_data.ConnectionTimeOut))
                         {
                             m_nqs2Status = NQSStatus.CONNECTED;
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "connection to nqs2 restored");
                             //send INI telegram
                             IniTelegram init = new IniTelegram(m_idCounter, m_nqs2Messages++);
                             m_idCounter += 2;
@@ -869,6 +949,8 @@ namespace Alunorf_sinec_h1_plugin
                         }
                         else
                         {
+                            if (m_logger != null && m_logger.IsOpen)
+                                m_logger.Log(Level.Info, "timeout trying to connect to nqs2");
                             m_error = m_h1manager.LastError;
                             m_retryConnect = true;
                         }
@@ -879,14 +961,17 @@ namespace Alunorf_sinec_h1_plugin
                         break;
                 }
             }
+
+
             if (m_retryConnect)
             {
                 m_retryConnect = false;
                 //start reconnect timer
                 m_reconnectTimer.Change(TimeSpan.FromMinutes((double)m_data.RetryConnectTimeInterval), TimeSpan.Zero);
             }
-            
-            m_logger.Log(Level.Info, "exiting buildconnection : " + m_nqs1Status.ToString() + " " + m_nqs1Status.ToString());
+
+            if ((m_logger != null) && m_logger.IsOpen)
+                m_logger.Log(Level.Info, "exiting buildconnection : " + m_nqs1Status.ToString() + " " + m_nqs2Status.ToString());
         }
 
         private void OnReconnectTimerTick(object ignoreMe)
@@ -898,14 +983,15 @@ namespace Alunorf_sinec_h1_plugin
 
         private void OnLiveTimerTick(object ignoreMe)
         {
+            if (m_stop) return;
             m_liveTimer.Change(Timeout.Infinite, Timeout.Infinite);
             if (m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED)
             {
                 if (m_acknowledgements["live1"] == false)
                 {
-                    m_retryConnect = true;
                     m_nqs1Status = NQSStatus.DISCONNECTED;
-                    if (m_logger.IsOpen)
+                    m_retryConnect = true;
+                    if ((m_logger != null) && m_logger.IsOpen)
                         m_logger.Log(Level.Exception, "LiveTimer: nqs1 timed out");
                 }
             }
@@ -914,9 +1000,9 @@ namespace Alunorf_sinec_h1_plugin
             {
                 if (m_acknowledgements["live2"] == false)
                 {
-                    m_retryConnect = true;
                     m_nqs2Status = NQSStatus.DISCONNECTED;
-                    if (m_logger.IsOpen)
+                    m_retryConnect = true;
+                    if (m_logger != null && m_logger.IsOpen)
                         m_logger.Log(Level.Exception, "LiveTimer: nqs1 timed out");
                 }
             }
@@ -1034,13 +1120,15 @@ namespace Alunorf_sinec_h1_plugin
                 }
 
                 m_h1manager.StartSend(vnr, ref result, telegram);
-                m_logger.Log(Level.Info, "started sending on vnr: " + vnr.ToString() 
+                if ((m_logger != null) && m_logger.IsOpen)
+                    m_logger.Log(Level.Info, "started sending on vnr: " + vnr.ToString() 
                     + " " + m_idToFilename.itemToString(FromNonUniqueToUnique(telegram.AktId,vnr)));
                 QdtTelegram qdt = null;
                 switch (result)
                 {
                     case CH1Manager.H1Result.TELEGRAM_ERROR:
-                        m_logger.Log(Level.Info, "telegram contained an error" + m_idToFilename.itemToString(FromNonUniqueToUnique(telegram.AktId, vnr)));
+                        if ((m_logger != null) && m_logger.IsOpen)
+                            m_logger.Log(Level.Info, "telegram contained an error" + m_idToFilename.itemToString(FromNonUniqueToUnique(telegram.AktId, vnr)));
                         m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_send + m_h1manager.LastError ?? "";
                         qdt = telegram as QdtTelegram;
                         if (qdt != null)

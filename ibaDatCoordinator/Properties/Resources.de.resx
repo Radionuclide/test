@@ -302,7 +302,7 @@
     <value>Auf Messdateien überprüfen</value>
   </data>
   <data name="logConfigurationStarted" xml:space="preserve">
-    <value>Verarbeitung derJob gestartet</value>
+    <value>Verarbeitung der Job gestartet</value>
   </data>
   <data name="logConfigurationStopped" xml:space="preserve">
     <value>Verarbeitung der Job gestoppt</value>
@@ -345,6 +345,13 @@
   </data>
   <data name="logIfTaskStarted" xml:space="preserve">
     <value>Berechnung der Bedingung wurde gestartet.</value>
+  </data>
+  <data name="logLicenseNoStart" xml:space="preserve">
+    <value>Der Vorgang kann nicht ausgeführt werden, da keine Lizenz für eine kundenspezifische Funktion (Plugin) vorhanden ist
+</value>
+  </data>
+  <data name="logLicenseStopped" xml:space="preserve">
+    <value>Der Vorgang wurde gestoppt, da keine Lizenz für eine kundenspezifische Funktion (Plugin) vorhanden ist</value>
   </data>
   <data name="logMoveTaskFailed" xml:space="preserve">
     <value>Verschieben Messdatei fehlgeschlagen</value>
@@ -405,6 +412,9 @@
   </data>
   <data name="logServiceStopped" xml:space="preserve">
     <value>ibaDatCoordinator Dienst gestoppt</value>
+  </data>
+  <data name="logTaskNotLicensed" xml:space="preserve">
+    <value>Es wurde keine Lizenz für kundenspezifische Funktion (Plugin) '{0}' gefunden</value>
   </data>
   <data name="logTaskSuccess" xml:space="preserve">
     <value>'{0}' Aufgabe erfolgreich beendet. </value>
@@ -585,9 +595,6 @@
   </data>
   <data name="stopConfiguration" xml:space="preserve">
     <value>Job wird gestoppt.</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>Die geänderte Konfiguration wurde übernommen</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>erfolgreich beendet</value>
