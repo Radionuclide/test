@@ -215,23 +215,24 @@ namespace Alunorf_sinec_h1_plugin
 
         public PluginH1Task(string name, IDatCoHost host, IJobData parentJob)
         {
-            try
-            {
-                IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
-                NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-                m_ownAddress = nics[0].GetPhysicalAddress().GetAddressBytes();
-            }
-            catch (Exception)
-            {
-                m_ownAddress = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-            }
+            //try
+            //{
+            //    IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
+            //    NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            //    m_ownAddress = nics[0].GetPhysicalAddress().GetAddressBytes();
+            //}
+            //catch (Exception)
+            //{
+            //    m_ownAddress = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+            //}
 
+            m_ownAddress = new Byte[] { 0x00, 0x15, 0xBA, 0x00, 0x03, 0x7A };
             m_NQSAddress1 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x01 };
             m_NQSAddress2 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x02 };
             m_NQS_TSAPforNQS1 = "BR 1";
             m_NQS_TSAPforNQS2 = "BR 2";
-            m_ownTSAPforNQS1 = "LT4NQS";
-            m_ownTSAPforNQS2 = "LT4NQS";
+            m_ownTSAPforNQS1 = "LT4NQI";
+            m_ownTSAPforNQS2 = "LT4NQI";
 
             m_connectionTimeOut = 1;
             m_retryConnectTimeInterval = 1;

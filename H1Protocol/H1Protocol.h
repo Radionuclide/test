@@ -24,7 +24,7 @@ namespace iba {
 	{
 	private:
 		bool m_driverloaded;
-		int m_connections;
+		bool m_connections;
 		String^ m_lastError;
 		String^ LoadError(UINT id);
 		map<unsigned short, H1_RECPARAMS*>* m_rp;
@@ -61,7 +61,7 @@ namespace iba {
 		bool Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout);
 		property String^ LastError{ String^ get(); }
 		bool DisconnectAll();
-		bool Disconnect(unsigned short);
+		//bool Disconnect(unsigned short);
 		bool GetConnectionStatus(unsigned short vnr, H1Result% result);
 		bool StartRead(unsigned short vnr, H1Result% result);
 		bool StoreBlockedBytes(unsigned short vnr);

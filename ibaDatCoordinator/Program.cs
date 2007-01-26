@@ -43,20 +43,24 @@ namespace iba
             {
                 try
                 {
+                    DateTime previous = DateTime.Now;
+
                     System.ServiceProcess.ServiceController myController =
                         new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                    System.ServiceProcess.ServiceControllerStatus prevStatus = myController.Status;
+
                     if (myController.Status == System.ServiceProcess.ServiceControllerStatus.Stopped)
                     {
                         myController.Start();
-                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
+                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(5.0));
                     }
                     else if (myController.Status == System.ServiceProcess.ServiceControllerStatus.StartPending)
                     {
-                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(3.0));
+                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(5.0));
                     }
                     if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
                     {
-                        MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, iba.Properties.Resources.ServiceConnectProblem2, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, iba.Properties.Resources.ServiceConnectProblem2 + previous.ToString() + " " + DateTime.Now.ToString() + " " + prevStatus.ToString() + myController.Status.ToString(), Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         RunsWithService = ServiceEnum.DISCONNECTED;
                     }
                     else

@@ -202,15 +202,32 @@ namespace iba.Processing
                 //lastly, execute plugin actions that need to happen in the case of an update
                 foreach (TaskData t in m_cd.Tasks)
                 {
-                    TaskData oldtask = oldConfigurationData.Tasks[t.Index];
-                    CustomTaskData c_old = oldtask as CustomTaskData;
+                    TaskData oldtask = null;
+                    CustomTaskData c_old = null;
+                    try
+                    {
+                       oldtask = oldConfigurationData.Tasks[t.Index];
+                       c_old = oldtask as CustomTaskData;
+                    }
+                    catch
+                    {
+                        oldtask = null;
+                        c_old = null;
+                    }
+                    
                     CustomTaskData c_new = t as CustomTaskData;
-                    if (c_old != null && c_new != null)
+                    if (c_old != null && c_new != null && c_old.Guid == c_new.Guid)
                     {
                         IPluginTaskWorker w = c_old.Plugin.GetWorker();
                         if (!w.OnApply(c_new.Plugin, m_cd))
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                         c_new.Plugin.SetWorker(w);
+                    }
+                    else if (c_new != null)
+                    {
+                        IPluginTaskWorker w = c_new.Plugin.GetWorker();
+                        if (!w.OnApply(c_new.Plugin, m_cd))
+                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
                 }
 
@@ -824,7 +841,6 @@ namespace iba.Processing
                 }
                 lock (m_toProcessFiles)
                 {
-                    //m_toProcessFiles.Clear();
                     DirectoryInfo dirInfo = new DirectoryInfo(datDir);
                     if (what == WhatToUpdate.ALL)
                     {
@@ -838,6 +854,7 @@ namespace iba.Processing
                             Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                             return;
                         }
+                        m_toProcessFiles.Clear();
                     }
                     foreach (FileInfo fi in fileInfos)
                     {
@@ -949,6 +966,7 @@ namespace iba.Processing
                     string status = ibaDatFile.QueryInfoByName("status");
                     if (status == "processed")
                     {
+                        ibaDatFile.Close();
                         if (time != null) File.SetLastWriteTime(filename, time.Value);
                         return DatFileStatus.State.COMPLETED_SUCCESFULY;
                     }
@@ -1007,6 +1025,7 @@ namespace iba.Processing
             }
             catch //general exception that may have happened
             {
+                Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                 return DatFileStatus.State.COMPLETED_FAILURE;
             }
         }

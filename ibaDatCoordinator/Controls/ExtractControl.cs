@@ -59,6 +59,7 @@ namespace iba.Controls
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
+            m_folderNumber.Value = m_data.SubfoldersNumber;
 
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
@@ -79,6 +80,7 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.SAME;
+            m_data.SubfoldersNumber = (uint) m_folderNumber.Value;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;

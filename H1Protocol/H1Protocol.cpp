@@ -13,7 +13,7 @@ namespace iba {
 
 	CH1Manager::CH1Manager()
 	{
-		m_connections = 0;	
+		m_connections = false;	
 		int error = H1DriverOpen();
 		m_driverloaded = error == 0;
 		CString message;
@@ -34,6 +34,7 @@ namespace iba {
 	CH1Manager::~CH1Manager()
 	{
 		if (m_connections) DisconnectAll();
+		m_connections = false;
 		if (m_driverloaded) H1DriverClose();
 		m_driverloaded= false;
 		if (m_rp)
@@ -69,6 +70,7 @@ namespace iba {
 	CH1Manager::!CH1Manager()
 	{
 		if (m_connections) DisconnectAll();
+		m_connections = false;
 		if (m_driverloaded) H1DriverClose();
 		m_driverloaded = false;
 		if (m_rp)
@@ -150,6 +152,22 @@ namespace iba {
 
 	bool CH1Manager::Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout)
 	{
+		//delete obsolete send parameters and recieve parameters
+		unsigned short findval = vnr;
+		map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->find(findval);
+		if (it != m_sp->end())
+		{
+			free (it->second);
+			m_sp->erase(it);
+		}
+		//delete obsolete recieve parameters
+		map<unsigned short,H1_RECPARAMS*>::iterator it2 = m_rp->find(findval);
+		if (it2 != m_rp->end())
+		{
+			free (it2->second);
+			m_rp->erase(it2);
+		}
+
 		result = (H1Result) 0;
 
 		if (!m_driverloaded) return  false;
@@ -175,12 +193,12 @@ namespace iba {
 		for (int i = 0; i < 6; i++) cr.CrParams.DestAddr[i] = otherMacAdress[i];
 		cr.CrParams.LenNSAP = 0;
 		
-		cr.CrParams.LenDestTSAP = Math::Max(16,destTSAP->Length);
+		cr.CrParams.LenDestTSAP = Math::Min(16,destTSAP->Length);
 		IntPtr buffer = Marshal::StringToHGlobalAnsi(destTSAP);
 		strncpy((char*) cr.CrParams.DestTSAP, (char*) buffer.ToPointer(),cr.CrParams.LenDestTSAP);
 		Marshal::FreeHGlobal(buffer);
 
-		cr.CrParams.LenOwnTSAP = Math::Max(16,ownTSAP->Length);
+		cr.CrParams.LenOwnTSAP = Math::Min(16,ownTSAP->Length);
 		buffer = Marshal::StringToHGlobalAnsi(ownTSAP);
 		strncpy((char*) cr.CrParams.OwnTSAP,(char*) buffer.ToPointer(),cr.CrParams.LenOwnTSAP);
 		Marshal::FreeHGlobal(buffer);
@@ -200,6 +218,7 @@ namespace iba {
 			case H1_WAIT_CONNECT: m_lastError = "H1_WAIT_CONNECT"; break;
 			default: m_lastError = LoadError(ERR_CONNECT);
 			}
+			vnr = 0;
 			return false;
 		}
 		
@@ -216,7 +235,7 @@ namespace iba {
 				switch (rp.Fehler)
 				{
   					case 0:
-						m_connections++;
+						m_connections = true;
 						return true;
 					case H1_WAIT_CONNECT :
 						break;
@@ -224,19 +243,23 @@ namespace iba {
 						result = (H1Result) rp.Fehler;
 						m_lastError =  "Error while trying to connect... " + rp.Fehler.ToString();
 						H1StoppeVerbindung(vnr);
+						vnr = 0;
 						return false;
 				}
 			}
 			else
 			{
 				H1StoppeVerbindung(vnr);
+				vnr = 0;
 				m_lastError =  "Error while trying to connect... " + rp.Fehler.ToString();
 				return  false;
 			}
 			//wait one second
 			Sleep(1000);
 		}
-		H1StoppeVerbindung(vnr);
+		//H1StoppeVerbindung(vnr);
+		//vnr = 0;
+		m_connections = true;
 		m_lastError = "Time out trying to connect";
 		return false;
 	}
@@ -247,21 +270,21 @@ namespace iba {
 		else
 		{
 			int error = H1StoppeVerbindungen();
-			m_connections = 0;
+			m_connections = false;
 			return !error;
 		}
 	}
 
-	bool CH1Manager::Disconnect(unsigned short vnr)
-	{
-		if (!m_connections) return false;
-		else
-		{
-			int error = H1StoppeVerbindung(vnr);
-			m_connections--;
-			return !error;
-		}
-	}
+	//bool CH1Manager::Disconnect(unsigned short vnr)
+	//{
+	//	if (!m_connections) return false;
+	//	else
+	//	{
+	//		int error = H1StoppeVerbindung(vnr);
+	//		m_connections--;
+	//		return !error;
+	//	}
+	//}
 
 	bool CH1Manager::GetConnectionStatus(unsigned short vnr, H1Result% result)
 	{
@@ -420,19 +443,19 @@ namespace iba {
 
 	bool CH1Manager::SetSendTimeout(int timeout)
 	{
-		//return true;
-		H1_INITVALUES init;
-		memset(&init,0,sizeof(H1_INITVALUES));
-		init.Cb = sizeof(init);
-		bool ok = H1HoleStandardwerte(&init)==0;
-		if (ok) 
-		{
-			init.TimeoutRetrySend = 20;
-			init.TimeoutNewSend = 20;
-			//init.TimeoutLive = 10000;
-			ok = H1SetzeStandardwerte(&init)==0;
-		}
-		return ok;
+		////return true;
+		//H1_INITVALUES init;
+		//memset(&init,0,sizeof(H1_INITVALUES));
+		//init.Cb = sizeof(init);
+		//bool ok = H1HoleStandardwerte(&init)==0;
+		//if (ok) 
+		//{
+		//	init.TimeoutRetrySend = 20;
+		//	init.TimeoutNewSend = 20;
+		//	//init.TimeoutLive = 10000;
+		//	ok = H1SetzeStandardwerte(&init)==0;
+		//}
+		return true;
 	}
 }
 

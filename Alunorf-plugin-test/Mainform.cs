@@ -242,7 +242,7 @@ namespace Alunorf_plugin_test
                         m_acknowledgements["live"] = false;
                         SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                         m_idCounter += 2;
-                        m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
+                        m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                     }
                 }
                 if (!ReadMessage())
@@ -355,7 +355,7 @@ namespace Alunorf_plugin_test
                 }
                 m_acknowledgements["live"] = false;
                 m_sendLive = true;
-                m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
+                m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
             }
         }
 
@@ -428,7 +428,7 @@ namespace Alunorf_plugin_test
                                 //live message zenden
                                 SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                                 m_idCounter += 2;
-                                m_liveTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
+                                m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 SetMessage("acknowledgement to init recieved: " + ack.AktId.ToString());
                                 SetMessage("Please press te GO button: " + ack.AktId.ToString());
                             }
