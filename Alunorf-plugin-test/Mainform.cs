@@ -10,13 +10,16 @@ using System.Threading;
 using System.IO;
 using Alunorf_sinec_h1_plugin;
 using iba;
+using iba.Utility;
+using iba.Logging;
+using iba.Logging.Loggers;
 
 namespace Alunorf_plugin_test
 {
     public partial class MainForm : Form
     {
         bool m_readStarted = false;
-
+        private FileLogger m_logger;
         public MainForm()
         {
             InitializeComponent();
@@ -27,15 +30,16 @@ namespace Alunorf_plugin_test
             m_btStop.Enabled = false;
             m_setMessageDelegate = SetMessage;
             m_outputDir.Text = Directory.GetCurrentDirectory();
-            m_otherTSAP.Text = "LT4NQS";
+            m_logfile.Text = Path.Combine(Directory.GetCurrentDirectory(),"logfile.txt");
+            m_otherTSAP.Text = "LT4NQI";
             m_ownTSAP.Text = "BR 1";
             temp = new MacAddr();
             temp.FirstByte  = 0x00;
-            temp.SecondByte = 0x21;
-            temp.ThirdByte  = 0xA0;
-            temp.FourthByte = 0x11;
-            temp.FifthByte  = 0x22;
-            temp.SixthByte  = 0x33;
+            temp.SecondByte = 0x15;
+            temp.ThirdByte  = 0xBA;
+            temp.FourthByte = 0x00;
+            temp.FifthByte  = 0x03;
+            temp.SixthByte  = 0x7A;
             m_otherMAC.Text = temp.Address;
             temp.FirstByte = 0x0A;
             temp.SecondByte = 0x00;
@@ -56,28 +60,18 @@ namespace Alunorf_plugin_test
 
         private void m_btGO_Click(object sender, EventArgs e)
         {
-            ushort id = 0;
-            if (m_idToFilename.Contains("init_pc"))
-            {
-                id = (ushort) m_idToFilename["init_pc"];
-                m_idToFilename[id] = "go";
-            }
-            else if (m_idToFilename.Contains("init"))
-            {
-                id = (ushort)m_idToFilename["init"];
-                m_idToFilename[id] = "go";
-            }
-            else if (m_idToFilename.Contains("go"))
-            {
-                id = (ushort) m_idToFilename["go"];
-            }
-            else throw new Exception("go while there is no init or previous go");
+            //ushort id = 0;
+            if (!m_idToFilename.Contains("init_pc") && m_idToFilename.Contains("init"))
+                throw new Exception("go while there is no init or previous go");
 
-            GoTelegram go = new GoTelegram(id, m_messagesCount++);
+            GoTelegram go = new GoTelegram(m_idCounter, m_messagesCount++);
+            m_idToFilename[m_idCounter] = "go";
+            m_idCounter += 2;
             lock (m_messageQueue)
             {
                 m_messageQueue.Add(go);
             }
+
             //m_waitSendEvent = new AutoResetEvent(false);
             //m_waitSendEvent.WaitOne(1000 * ((int) (m_nudSendTimeout.Value + m_nudAckTimeout.Value)), true);
 
@@ -101,7 +95,9 @@ namespace Alunorf_plugin_test
             m_stop = true;
             m_thread.Join(60000);
             m_btStop.Enabled = false;
+            m_btStart.Enabled = true;
             m_btGO.Enabled = false;
+            m_logger.Close();
         }
 
         private bool m_sendFurtherGoes;
@@ -110,6 +106,20 @@ namespace Alunorf_plugin_test
         {
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
+            string filename = m_logfile.Text;
+            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "logfile", 10);
+            m_stop = false;
+            m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}");
+            m_logger.IsBufferingEnabled = false;
+            m_logger.IsContextEnabled = true;
+            m_logger.AutoFlushInterval = 1000;
+            m_logger.BufferSize = 1000;
+            m_logger.Level = Level.All;
+            m_logger.MakeDailyArchive = true;
+            m_logger.MaximumArchiveFiles = 10;
+            //m_logger.EventFormatter.DataFormatter = new LogExtraDataFormatter(m_idToFilename);
+            m_logger.Open();
+
 
             MacAddr temp = new MacAddr();
             temp.Address = m_ownMAC.Text;
@@ -169,10 +179,17 @@ namespace Alunorf_plugin_test
                 {
                     lock (m_messages)
                     {
+                        if (m_messages.Rows.Count > (int)(m_nudMaxgrid.Value))
+                            m_messages.Rows.Remove(m_messages.Rows[0]);
+
                         m_messages.Rows.Add();
                         m_messages.Rows[m_messages.RowCount - 1].Cells[0].Value = DateTime.Now.ToString();
                         m_messages.Rows[m_messages.RowCount - 1].Cells[1].Value = message;
                     }
+
+                    if (m_logger.IsOpen)
+                        m_logger.Log(Level.Info, message);
+
                 }
             }
             catch (Exception ex)
@@ -206,7 +223,7 @@ namespace Alunorf_plugin_test
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("fout: " + ex.ToString());
+                    MessageBox.Show("exception: " + ex.ToString());
                 }
             }
         }
@@ -231,7 +248,7 @@ namespace Alunorf_plugin_test
 
         private void Run()
         {
-            SetMessage("Cycle started");
+            SetMessage("started");
             while (!m_stop)
             {
                 if (m_retryConnect)
@@ -274,7 +291,8 @@ namespace Alunorf_plugin_test
                 }
             }
             m_h1manager.DisconnectAll();
-            SetMessage("Cycle started");
+            m_pcConnected = ConnectionState.DISCONNECTED;
+            SetMessage("stopped");
         }
 
         private bool m_sendLive;
@@ -486,7 +504,8 @@ namespace Alunorf_plugin_test
                                     }
                                     if (m_sendFurtherGoes)
                                     {
-                                        GoTelegram go = new GoTelegram(ini.AktId, m_messagesCount++);
+                                        GoTelegram go = new GoTelegram(m_idCounter , m_messagesCount++);
+                                        m_idCounter += 2;
                                         if (!SendTelegram(go, "go"))
                                         {
                                             m_pcConnected = ConnectionState.DISCONNECTED;
@@ -540,6 +559,17 @@ namespace Alunorf_plugin_test
             DialogResult result = m_folderBrowser.ShowDialog();
             if (result == DialogResult.OK)
                 m_outputDir.Text = m_folderBrowser.SelectedPath;
+        }
+
+        private void BrowseButton2_Click(object sender, EventArgs e)
+        {
+            m_openFileDialog1.CheckFileExists = true;
+            m_openFileDialog1.FileName = "logfile.txt";
+            m_openFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (m_openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                m_logfile.Text = m_openFileDialog1.FileName;
+            }
         }
     }
 }

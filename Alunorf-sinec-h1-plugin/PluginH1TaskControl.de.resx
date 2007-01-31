@@ -117,22 +117,153 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_timestampCln.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_messageCln.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_timestampCln.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_messageCln.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="m_folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>163, 17</value>
-  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 26</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="m_columnFieldname.HeaderText" xml:space="preserve">
+    <value>Feldname</value>
+  </data>
+  <data name="m_columnDataType.HeaderText" xml:space="preserve">
+    <value>Datentyp</value>
+  </data>
+  <data name="dataGridViewTextBoxComment.HeaderText" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="m_statusNQS1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 13</value>
+  </data>
+  <data name="m_statusNQS1.Text" xml:space="preserve">
+    <value>nicht verbunden</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Stationsadresse:</value>
+  </data>
+  <data name="m_statusNQS2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 13</value>
+  </data>
+  <data name="m_statusNQS2.Text" xml:space="preserve">
+    <value>nicht verbunden</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Stationsadresse:</value>
+  </data>
+  <data name="m_btOpen.ToolTip" xml:space="preserve">
+    <value>Telegrammaufbau aus einer XML-Datei importieren</value>
+  </data>
+  <data name="m_btSave.ToolTip" xml:space="preserve">
+    <value>Telegrammaufbau in eine XML-Datei exportieren</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Telegrammaufbau</value>
+  </data>
+  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 94</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 13</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>Time-out für Quittierung:
+</value>
+  </data>
+  <data name="m_nudAckTimeout.Location" type="System.Drawing.Point, System.Drawing">
+    <value>265, 94</value>
+  </data>
+  <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 96</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>Sekunden</value>
+  </data>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 68</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 13</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>Time-out für Senden:
+</value>
+  </data>
+  <data name="m_nudSendTimeout.Location" type="System.Drawing.Point, System.Drawing">
+    <value>265, 68</value>
+  </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 70</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>Sekunden</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 44</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Zeitinterval für wiederholte Verbindungsversuche:
+</value>
+  </data>
+  <data name="m_nudRetryConnectTimeInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>265, 42</value>
+  </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 44</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 13</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>Minuten</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 18</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 13</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Time-out für Verbindungsversuche:
+</value>
+  </data>
+  <data name="m_nudTryconnectTimeout.Location" type="System.Drawing.Point, System.Drawing">
+    <value>265, 16</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 18</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Sekunden</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 127</value>
+  </data>
+  <data name="macGroupbox.Text" xml:space="preserve">
+    <value>PC-Stationsadresse</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Protokolleinstellungen</value>
+  </data>
 </root>

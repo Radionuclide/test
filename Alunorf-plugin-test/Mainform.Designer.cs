@@ -61,11 +61,17 @@ namespace Alunorf_plugin_test
             this.m_folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.m_otherMAC = new Alunorf_plugin_test.matb();
             this.m_ownMAC = new Alunorf_plugin_test.matb();
+            this.label6 = new System.Windows.Forms.Label();
+            this.BrowseButton2 = new System.Windows.Forms.Button();
+            this.m_logfile = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.m_nudMaxgrid = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudAckTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSendTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRetryConnectTimeInterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTryconnectTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_messages)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxgrid)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -89,7 +95,7 @@ namespace Alunorf_plugin_test
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(372, 53);
+            this.label3.Location = new System.Drawing.Point(450, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 13);
             this.label3.TabIndex = 7;
@@ -97,7 +103,7 @@ namespace Alunorf_plugin_test
             // 
             // m_otherTSAP
             // 
-            this.m_otherTSAP.Location = new System.Drawing.Point(445, 50);
+            this.m_otherTSAP.Location = new System.Drawing.Point(523, 47);
             this.m_otherTSAP.MaxLength = 16;
             this.m_otherTSAP.Name = "m_otherTSAP";
             this.m_otherTSAP.Size = new System.Drawing.Size(165, 20);
@@ -106,7 +112,7 @@ namespace Alunorf_plugin_test
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(372, 27);
+            this.label4.Location = new System.Drawing.Point(450, 24);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 5;
@@ -114,7 +120,7 @@ namespace Alunorf_plugin_test
             // 
             // m_ownTSAP
             // 
-            this.m_ownTSAP.Location = new System.Drawing.Point(445, 24);
+            this.m_ownTSAP.Location = new System.Drawing.Point(523, 21);
             this.m_ownTSAP.MaxLength = 16;
             this.m_ownTSAP.Name = "m_ownTSAP";
             this.m_ownTSAP.Size = new System.Drawing.Size(165, 20);
@@ -122,7 +128,7 @@ namespace Alunorf_plugin_test
             // 
             // m_btStart
             // 
-            this.m_btStart.Location = new System.Drawing.Point(174, 158);
+            this.m_btStart.Location = new System.Drawing.Point(188, 158);
             this.m_btStart.Name = "m_btStart";
             this.m_btStart.Size = new System.Drawing.Size(159, 34);
             this.m_btStart.TabIndex = 8;
@@ -132,7 +138,7 @@ namespace Alunorf_plugin_test
             // 
             // m_btStop
             // 
-            this.m_btStop.Location = new System.Drawing.Point(339, 158);
+            this.m_btStop.Location = new System.Drawing.Point(354, 158);
             this.m_btStop.Name = "m_btStop";
             this.m_btStop.Size = new System.Drawing.Size(159, 34);
             this.m_btStop.TabIndex = 9;
@@ -142,7 +148,7 @@ namespace Alunorf_plugin_test
             // 
             // m_btGO
             // 
-            this.m_btGO.Location = new System.Drawing.Point(504, 158);
+            this.m_btGO.Location = new System.Drawing.Point(530, 158);
             this.m_btGO.Name = "m_btGO";
             this.m_btGO.Size = new System.Drawing.Size(159, 34);
             this.m_btGO.TabIndex = 10;
@@ -154,7 +160,7 @@ namespace Alunorf_plugin_test
             // 
             this.label16.AutoSize = true;
             this.label16.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label16.Location = new System.Drawing.Point(296, 115);
+            this.label16.Location = new System.Drawing.Point(446, 110);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(115, 13);
             this.label16.TabIndex = 21;
@@ -162,7 +168,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudAckTimeout
             // 
-            this.m_nudAckTimeout.Location = new System.Drawing.Point(417, 113);
+            this.m_nudAckTimeout.Location = new System.Drawing.Point(567, 108);
             this.m_nudAckTimeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -181,7 +187,7 @@ namespace Alunorf_plugin_test
             // 
             this.label17.AutoSize = true;
             this.label17.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label17.Location = new System.Drawing.Point(489, 115);
+            this.label17.Location = new System.Drawing.Point(639, 110);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(47, 13);
             this.label17.TabIndex = 23;
@@ -191,7 +197,7 @@ namespace Alunorf_plugin_test
             // 
             this.label14.AutoSize = true;
             this.label14.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label14.Location = new System.Drawing.Point(296, 89);
+            this.label14.Location = new System.Drawing.Point(446, 84);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(75, 13);
             this.label14.TabIndex = 15;
@@ -199,7 +205,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudSendTimeout
             // 
-            this.m_nudSendTimeout.Location = new System.Drawing.Point(417, 87);
+            this.m_nudSendTimeout.Location = new System.Drawing.Point(567, 82);
             this.m_nudSendTimeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -223,7 +229,7 @@ namespace Alunorf_plugin_test
             // 
             this.label15.AutoSize = true;
             this.label15.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label15.Location = new System.Drawing.Point(489, 89);
+            this.label15.Location = new System.Drawing.Point(639, 84);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(47, 13);
             this.label15.TabIndex = 17;
@@ -331,10 +337,10 @@ namespace Alunorf_plugin_test
             this.m_messages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.m_timestampCln,
             this.m_messageCln});
-            this.m_messages.Location = new System.Drawing.Point(46, 238);
+            this.m_messages.Location = new System.Drawing.Point(12, 268);
             this.m_messages.Name = "m_messages";
             this.m_messages.ReadOnly = true;
-            this.m_messages.Size = new System.Drawing.Size(616, 391);
+            this.m_messages.Size = new System.Drawing.Size(690, 361);
             this.m_messages.TabIndex = 25;
             // 
             // m_timestampCln
@@ -369,14 +375,14 @@ namespace Alunorf_plugin_test
             // 
             // m_outputDir
             // 
-            this.m_outputDir.Location = new System.Drawing.Point(314, 206);
+            this.m_outputDir.Location = new System.Drawing.Point(100, 236);
             this.m_outputDir.Name = "m_outputDir";
             this.m_outputDir.Size = new System.Drawing.Size(184, 20);
             this.m_outputDir.TabIndex = 28;
             // 
             // BrowseButton
             // 
-            this.BrowseButton.Location = new System.Drawing.Point(504, 198);
+            this.BrowseButton.Location = new System.Drawing.Point(290, 228);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(66, 34);
             this.BrowseButton.TabIndex = 29;
@@ -387,7 +393,7 @@ namespace Alunorf_plugin_test
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(226, 209);
+            this.label5.Location = new System.Drawing.Point(9, 239);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 30;
@@ -411,11 +417,74 @@ namespace Alunorf_plugin_test
             this.m_ownMAC.Size = new System.Drawing.Size(171, 24);
             this.m_ownMAC.TabIndex = 27;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(363, 239);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(37, 13);
+            this.label6.TabIndex = 33;
+            this.label6.Text = "logfile:";
+            // 
+            // BrowseButton2
+            // 
+            this.BrowseButton2.Location = new System.Drawing.Point(623, 228);
+            this.BrowseButton2.Name = "BrowseButton2";
+            this.BrowseButton2.Size = new System.Drawing.Size(66, 34);
+            this.BrowseButton2.TabIndex = 32;
+            this.BrowseButton2.Text = "Browse";
+            this.BrowseButton2.UseVisualStyleBackColor = true;
+            this.BrowseButton2.Click += new System.EventHandler(this.BrowseButton2_Click);
+            // 
+            // m_logfile
+            // 
+            this.m_logfile.Location = new System.Drawing.Point(402, 236);
+            this.m_logfile.Name = "m_logfile";
+            this.m_logfile.Size = new System.Drawing.Size(215, 20);
+            this.m_logfile.TabIndex = 31;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label7.Location = new System.Drawing.Point(185, 209);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(185, 13);
+            this.label7.TabIndex = 34;
+            this.label7.Text = "Maximum number of messages in grid:";
+            // 
+            // m_nudMaxgrid
+            // 
+            this.m_nudMaxgrid.Location = new System.Drawing.Point(376, 207);
+            this.m_nudMaxgrid.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.m_nudMaxgrid.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudMaxgrid.Name = "m_nudMaxgrid";
+            this.m_nudMaxgrid.Size = new System.Drawing.Size(66, 20);
+            this.m_nudMaxgrid.TabIndex = 35;
+            this.m_nudMaxgrid.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 654);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.m_nudMaxgrid);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.BrowseButton2);
+            this.Controls.Add(this.m_logfile);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.BrowseButton);
             this.Controls.Add(this.m_outputDir);
@@ -452,6 +521,7 @@ namespace Alunorf_plugin_test
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRetryConnectTimeInterval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTryconnectTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_messages)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxgrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -492,6 +562,11 @@ namespace Alunorf_plugin_test
         private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowser;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button BrowseButton2;
+        private System.Windows.Forms.TextBox m_logfile;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown m_nudMaxgrid;
     }
 }
 

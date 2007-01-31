@@ -87,7 +87,7 @@ namespace Alunorf_sinec_h1_plugin
             if (m_logger != null && m_logger.IsOpen)
                 m_logger.Close();
 
-            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinaterLog", 10);
+            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinatorLog", 10);
 
             m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
             m_logger.IsBufferingEnabled = false;

@@ -431,7 +431,7 @@ namespace iba.Data
             {
                 //have logfile at a default position
                 string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-                m_filename = Path.Combine(rootPath, @"ibaDatCoordinater\ibaDatCoordinaterLog.txt");
+                m_filename = Path.Combine(rootPath, @"ibaDatCoordinator\ibaDatCoordinaterLog.txt");
             }
             else
             {
@@ -457,7 +457,7 @@ namespace iba.Data
             if (!onlyGrid)
             {
                 string filename = m_data.m_filename;
-                FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinaterLog", 10);
+                FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinatorLog", 10);
                 FileLogger fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
                 fileLogger.IsBufferingEnabled = false;
                 fileLogger.IsContextEnabled = true;

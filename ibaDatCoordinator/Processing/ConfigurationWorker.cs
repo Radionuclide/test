@@ -254,6 +254,7 @@ namespace iba.Processing
         List<string> m_processedFiles;
         List<string> m_toProcessFiles;
         List<string> m_candidateNewFiles;
+        List<string> m_newFiles;
 
         private void Log(Logging.Level level, string message)
         {
@@ -423,10 +424,7 @@ namespace iba.Processing
                                 }
                                 break;
                             }
-                            lock (m_timerLock)
-                            {
-                                ProcessDatfile(file);
-                            }
+                            ProcessDatfile(file);
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
@@ -656,7 +654,8 @@ namespace iba.Processing
             if (m_bTimersstopped || m_stop) return;
             retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
-            List<string> added = new List<string>();
+            List<string> toRemove = new List<string>();
+            m_newFiles = new List<string>();
             lock (m_timerLock)
             {
                 lock (m_candidateNewFiles)
@@ -670,24 +669,24 @@ namespace iba.Processing
                             fs.Close();
                             fs.Dispose();
                             bool doit = false;
-                            lock (m_toProcessFiles)
+                            lock (m_processedFiles)
                             {
-                                doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
-                                if (doit)
-                                    m_toProcessFiles.Add(filename);
+                                lock (m_toProcessFiles)
+                                {
+                                    doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                                    if (doit)
+                                        m_newFiles.Add(filename);
+                                }
                             }
-                            added.Add(filename);
+                            toRemove.Add(filename);
                             changed = changed || doit;
                         }
-                        catch //no access
+                        catch //no access, do not remove from the list yet, make available again when acces to it is restored
                         {
                         }
                     }
-                    if (changed)
-                        foreach (string filename in added)
-                        {
-                            m_candidateNewFiles.Remove(filename);
-                        }
+                    foreach (string filename in toRemove)
+                        m_candidateNewFiles.Remove(filename);
                 }
                 if (changed)
                 {
@@ -767,7 +766,6 @@ namespace iba.Processing
         }
 
         private enum WhatToUpdate { ALL, NEW, ERRORS };
-
         private void updateDatFileList(WhatToUpdate what)
         {
             if (what != WhatToUpdate.NEW) Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
@@ -782,23 +780,40 @@ namespace iba.Processing
                     {
                         int count = m_processedFiles.Count;
                         fileInfos = new FileInfo[count];
-                        
-                        for (int i = 0; i < count; i++)
+
+                        if (what == WhatToUpdate.ERRORS)
                         {
-                            lock (m_sd.DatFileStates)
+                            for (int i = 0; i < count; i++)
                             {
-                                if ((File.Exists(m_processedFiles[i]))
-                                    && (
-                                    (what == WhatToUpdate.ERRORS && m_sd.DatFileStates.ContainsKey(m_processedFiles[i]))
-                                    ||
-                                    (what == WhatToUpdate.NEW && !m_sd.DatFileStates.ContainsKey(m_processedFiles[i]))
-                                    ))
+                                lock (m_sd.DatFileStates)
                                 {
-                                    fileInfos[i] = new FileInfo(m_processedFiles[i]);
+                                    if (File.Exists(m_processedFiles[i])
+                                        && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
+                                    {
+                                        fileInfos[i] = new FileInfo(m_processedFiles[i]);
+                                    }
+                                    else
+                                        fileInfos[i] = null;
+                                }
+                            }
+
+                        }
+                        else //NEW
+                        {
+                            count = m_newFiles.Count;
+                            fileInfos = new FileInfo[count];
+                            for (int i = 0; i < count; i++)
+                            {
+                                string filename = m_newFiles[i];
+                                if (File.Exists(filename)
+                                    && (!m_sd.DatFileStates.ContainsKey(filename)))
+                                {
+                                    fileInfos[i] = new FileInfo(m_newFiles[i]);
                                 }
                                 else
                                     fileInfos[i] = null;
                             }
+                            m_newFiles.Clear();
                         }
 
                         for (int i = 0; i < count; i++)
@@ -806,6 +821,7 @@ namespace iba.Processing
                             if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
                                 m_processedFiles.Remove(fileInfos[i].FullName);
                         }
+
                         count = m_processedFiles.Count;
 
                         for (int i = 0; i < count; i++)
@@ -815,13 +831,13 @@ namespace iba.Processing
                             {
                                 bool allclear = true;
                                 if (m_sd.DatFileStates.ContainsKey(filename))
-                                foreach (TaskData dat in m_cd.Tasks)
-                                {
-                                    if (dat.Enabled)
-                                        allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
-                                            && !shouldTaskBeDone(dat, filename);
-                                    if (!allclear) break;
-                                }
+                                    foreach (TaskData dat in m_cd.Tasks)
+                                    {
+                                        if (dat.Enabled)
+                                            allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
+                                                && !shouldTaskBeDone(dat, filename);
+                                        if (!allclear) break;
+                                    }
                                 if (allclear)
                                 {
                                     m_processedFiles.Remove(filename);
@@ -837,7 +853,10 @@ namespace iba.Processing
                         }
                     }
                     else
+                    {
                         m_processedFiles.Clear();
+                        m_sd.DatFileStates.Clear();
+                    }
                 }
                 lock (m_toProcessFiles)
                 {
