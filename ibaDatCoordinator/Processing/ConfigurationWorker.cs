@@ -697,7 +697,7 @@ namespace iba.Processing
 
             if (!changed && networkErrorOccured) tickCount++;
 
-            if (tickCount >= 20) //retry restoring dataaccess every minut
+            if (tickCount >= 20) //retry restoring dataaccess every minute
             {
                 tickCount = 0;
                 if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))

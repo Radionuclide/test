@@ -1,0 +1,90 @@
+;-------------------------------------------
+; H1 ISO Protocol Win 2000 XP 2003
+; Copyright (c) 1992, 2004 Inat GmbH, ES/WK
+;-------------------------------------------
+[version]
+Signature   = "$Windows NT$"
+Class       = NetTrans
+ClassGUID   = {4d36e975-e325-11ce-bfc1-08002be10318}
+Provider    = %Inat%
+DriverVer   = 03/25/2004,5.00.2064
+
+[Manufacturer]
+%Inat%=INAT
+
+[INAT]
+%Descr%=Install, INAT_H1Prot
+
+; Installation Section
+;----------------------
+[Install]
+AddReg=Inst_Ndi
+Characteristics=0 ; Has no characterstic
+CopyFiles=CpyFiles_Sys
+
+; Ndi installation support
+;--------------------------
+[Inst_Ndi]
+HKR,Ndi,Service,,"H1Prot"
+HKR,Ndi,HelpText,,%H1Prot_HelpText%
+HKR, Ndi\Interfaces, UpperRange,, noupper
+;HKR,"Ndi\Interfaces","LowerRange",,"ndis5,ndis4,ndis5_prot"
+HKR,"Ndi\Interfaces","LowerRange",,"ndis5,ndis4"
+
+; Service installation support
+;------------------------------
+[Install.Services]
+AddService=H1Prot,,Service_Inst
+
+[Service_Inst]
+DisplayName     = %Descr%
+ServiceType     = 1 ;SERVICE_KERNEL_DRIVER
+StartType       = 2 ;SERVICE_AUTO_START
+;StartType       = 3 ;SERVICE_MANUAL_START
+ErrorControl    = 1 ;SERVICE_ERROR_NORMAL
+ServiceBinary   = %12%\H1Prot.sys
+LoadOrderGroup  = NDIS
+AddReg          = AddReg_Service_Inst
+Description     = %Descr%
+
+[AddReg_Service_Inst]
+HKLM,"System\CurrentControlSet\Services\H1Prot","TextModeFlags",%REG_DWORD%,0x0001
+HKR,"Parameters","MaxAckbuffer",%REG_DWORD%,64
+HKR,"Parameters","MaxSendBuffer",%REG_DWORD%,200
+HKR,"Parameters","MaxSendBuffer2",%REG_DWORD%,10
+HKR,"Parameters","MaxSendBuffer3",%REG_DWORD%,10
+HKR,"Parameters","MaxConnections",%REG_DWORD%,200
+HKR,"Parameters","Protokollieren",%REG_SZ%,"Ja"
+HKR,"Parameters","AllowMacChange",%REG_SZ%,"Yes"
+HKR,"Parameters","Init",%REG_SZ%,"IFB0"
+
+
+; Support for removal of static registry settings
+;-------------------------------------------------
+[Install.Remove]
+DelReg=Del_Static_Reg
+
+[Install.Remove.Services]
+;DelService=H1Prot,0x200
+DelService=H1Prot
+
+[Del_Static_Reg]
+HKLM,"System\CurrentControlSet\Services\H1Prot","TextModeFlags"
+
+
+; Declare Directories for file copy/deletion
+;--------------------------------------------
+[DestinationDirs]
+CpyFiles_Sys    = 12    ; DIRID_DRIVERS
+
+
+; Files to Copy/Delete
+;----------------------
+[CpyFiles_Sys]
+H1Prot.sys,,,2
+
+[Strings]
+Inat = "INAT GmbH"
+Descr = "INAT H1 Iso Protocol"
+H1Prot_HelpText = "Inat H1 driver for communication with PLCs."
+REG_DWORD = 0x10001

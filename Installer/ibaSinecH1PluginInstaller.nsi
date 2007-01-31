@@ -52,6 +52,7 @@ SetCompressor /SOLID lzma
 
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "German"
 
 ; Reserve files
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
@@ -134,15 +135,22 @@ standalonecopy:
   SetOutPath "$PluginPath\de"
   File "..\Alunorf-sinec-h1-plugin\bin\Release\de\Alunorf-sinec-h1-plugin.resources.dll"
   ;not copying ibaFiles as this should already be included with the datcoordinator
-  ;CopyFiles "$EXEDIR\pluginFiles\*.*" "$PluginPath"
+  ;copy H1 driver
+  SetOutPath "$PluginPath\H1Driver"
+  File "..\INAT\H1Prot.inf"
+  File "..\INAT\H1Prot.sys"
+  File "..\INAT\viewnetworks.cmd"
   IfErrors standalonecopyError standalonecopyOk
-
 standalonecopyError:
   MessageBox MB_ICONSTOP "Failed to copy plugin files"
   Abort
 standalonecopyOk:
-  DetailPrint "Restarting iba DatCoordinator"
-  Exec '"$ibaDatCoordinatorPath\ibaDatCoordinator.exe"'
+  ;ask to install the H1driver
+  Exec '$PluginPath\H1Driver\viewnetworks.cmd'
+  Sleep 3000
+  MessageBox MB_OK $(DESC_H1INSTALL)
+  ;uncomment if you want to restart ibaDatCoordinator
+  ;Exec '"$ibaDatCoordinatorPath\ibaDatCoordinator.exe"'
   Goto end
 standalonenostop:
   MessageBox MB_ICONSTOP "The plugin dlls cannot be installed while the ibaDatCoordinator is running!"
@@ -195,28 +203,39 @@ servicecopy:
   File "..\Dependencies\Wmknt.dll"
   ;not copying ibaFiles as this should already be included with the datcoordinator
   ;CopyFiles "$EXEDIR\pluginFiles\*.*" "$PluginPath"
+
+  ;german resources for the plugin
   SetOutPath "$PluginPath\de"
   File "..\Alunorf-sinec-h1-plugin\bin\Release\de\Alunorf-sinec-h1-plugin.resources.dll"
 
+  ;H1 driver
+  SetOutPath "$PluginPath\H1Driver"
+  File "..\INAT\H1Prot.inf"
+  File "..\INAT\H1Prot.sys"
+  File "..\INAT\viewnetworks.cmd"
   IfErrors servicecopyError servicecopyOk
 
 servicecopyError:
   MessageBox MB_ICONSTOP "Failed to copy plugin files"
   Abort
 servicecopyOk:
-  DetailPrint "Restarting iba DatCoordinator Service !"
+  ;ask to install the H1driver
+  Exec '$PluginPath\H1Driver\viewnetworks.cmd'
+  Sleep 3000
+  MessageBox MB_OK $(DESC_H1INSTALL)
 
-    Exec '"$ibaDatCoordinatorPath\ibaDatCoordinator.exe" /service'
-    FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-    ${While} $0 == 0
-      Sleep 500
-      FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-    ${EndWhile}
-    SendMessage $0 0x8141 0 0
+  ;uncomment if you want to restart ibaDatCoordinator
+  ;  Exec '"$ibaDatCoordinatorPath\ibaDatCoordinator.exe" /service'
+  ;  FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+  ;  ${While} $0 == 0
+  ;    Sleep 500
+  ;    FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+  ;  ${EndWhile}
+  ;  SendMessage $0 0x8141 0 0
 
-  Call GetServiceStatus
-  Pop $ServiceStatus
-  DetailPrint "ibaDatCoordinatorservice status is $ServiceStatus"
+  ;Call GetServiceStatus
+  ;Pop $ServiceStatus
+  ;DetailPrint "ibaDatCoordinatorservice status is $ServiceStatus"
 
   Goto end
   
@@ -351,4 +370,7 @@ Function GetVersionNr
   Exch $R5
 
 FunctionEnd
+
+LangString DESC_H1INSTALL  ${LANG_ENGLISH} "Installation of the PC-H1 protocol driver:$\r$\n$\t- Open the network settings in your system$\r$\n$\t- Choose minimal one Local Area Connection$\r$\n$\t- Press Properties$\r$\n$\t- If installed, disable 'Qos Packet Scheduler'$\r$\n$\t- Press Install$\r$\n$\t- Add a (new) protocol$\r$\n$\t- Press the button 'Have Disc'$\r$\n$\t- You will find the drivers under$\r$\n$\t$\t $PluginPath\H1Driver$\r$\n$\t- Select the *.inf file$\r$\n$\t- Confirm with 'Open' and 'OK'$\r$\n$\t- Select 'INAT H1 Iso Protocol'$\r$\n$\t- Confirm with 'OK'$\r$\n$\t- The PC-H1 protocol driver is linked now to all of your network cards$\r$\n$\t- Close all network windows$\r$\n$\r$\nAttention:$\r$\n$\tWhen the PC-H1 protocol driver is installed, the PC has to be rebooted"
+LangString DESC_H1INSTALL  ${LANG_GERMAN} "Installation des PC-H1 Protokoll Treibers:$\r$\n$\t- Über die Systemsteuerung die Netzwerkverbindungen öffnen$\r$\n$\t- Wählen Sie mindestens eine LAN Verbindung aus$\r$\n$\t- Eigenschaften$\r$\n$\t- Wenn 'Qos-Paketplaner' installiert ist, bitte deaktivieren$\r$\n$\t- Installieren$\r$\n$\t- 'Protokoll hinzufügen' auswählen$\r$\n$\t- Wählen Sie 'Datenträger'$\r$\n$\t- Über 'Durchsuchen' folgenden Pfad auswählen:$\r$\n$\t$\t $PluginPath\H1Driver$\r$\n$\t- Die *.inf Datei anwählen$\r$\n$\t- Mit 'Öffnen' und 'OK' bestätigen$\r$\n$\t- 'INAT H1 Iso Protocol' auswählen$\r$\n$\t- Mit 'OK' bestätigen$\r$\n$\t- Der PC-H1 Protokoll Treiber ist nun an die Netzwerkkarte(n) gebunden$\r$\n$\t- Alle Netzwerkeinstellungen schliessen$\r$\n$\r$\nBitte beachten Sie:$\r$\n$\tNach der Installation des PC-H1 Protokoll Treibers muss der PC neu gestartet werden"
 

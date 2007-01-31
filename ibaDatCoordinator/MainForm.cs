@@ -300,6 +300,23 @@ namespace iba
             else if (m_navBar.SelectedPane == m_configPane)
             {
                 SaveRightPaneControl();
+                TreeNode statNode = m_statusTreeView.SelectedNode;
+                if (statNode != null)
+                {
+                    ConfigurationData confDat = (statNode.Tag as StatusTreeItemData).StatusData.CorrConfigurationData;
+                    foreach (TreeNode confCandidateNode in m_configTreeView.Nodes)
+                    {
+                        if (confCandidateNode.Tag is ConfigurationTreeItemData)
+                        {
+                            ConfigurationData confCandidateDat = (confCandidateNode.Tag as ConfigurationTreeItemData).ConfigurationData;
+                            if (confCandidateDat == confDat)
+                            {
+                                m_configTreeView.SelectedNode = confCandidateNode;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if (m_configTreeView.SelectedNode == null)
                 {
                     if (m_configTreeView.Nodes.Count > 0) //do not choose the new config node
