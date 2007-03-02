@@ -667,12 +667,10 @@ namespace Alunorf_sinec_h1_plugin
                 {
                     errPos = count;
                     errInInfo = false;
-                }
-                finally
-                {
-                    filewriter.Close();
+                    break;
                 }
             }
+            filewriter.Close();
         }
 
         public override bool WriteBody(H1ByteStream stream)

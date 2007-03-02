@@ -66,8 +66,10 @@ namespace iba.Controls
                     {
                         ibaDatFile.Close();
                     }
-                    catch
-                    { }
+                    catch (Exception ex)//updating didn't work, forget about it
+                    {
+                        string message = ex.Message;
+                    }
                 }
                 try
                 {

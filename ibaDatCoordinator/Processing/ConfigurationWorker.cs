@@ -152,19 +152,30 @@ namespace iba.Processing
                     {
                         TaskDataUNC t = errorObject as TaskDataUNC;
                         if (t != null)
+                        {
                             Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
+                        }
                     }
                 }
                 else
                 {
-                    fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
-                    fswt.NotifyFilter = NotifyFilters.FileName;
-                    fswt.IncludeSubdirectories = m_cd.SubDirs;
-                    fswt.Created += new FileSystemEventHandler(OnNewDatFile);
-                    fswt.Error += new ErrorEventHandler(OnFileSystemError);
-                    fswt.EnableRaisingEvents = true;
-                    networkErrorOccured = false;
-                    tickCount = 0;
+                    if (!Directory.Exists(m_cd.DatDirectoryUNC))
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                        SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+                        Stop = true;
+                    }
+                    else
+                    {
+                        fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                        fswt.NotifyFilter = NotifyFilters.FileName;
+                        fswt.IncludeSubdirectories = m_cd.SubDirs;
+                        fswt.Created += new FileSystemEventHandler(OnNewDatFile);
+                        fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                        fswt.EnableRaisingEvents = true;
+                        networkErrorOccured = false;
+                        tickCount = 0;
+                    }
                 }
 
                 //also update statusdata
@@ -998,8 +1009,9 @@ namespace iba.Processing
                         {
                             guidstring = ibaDatFile.QueryInfoByName("TasksDone");
                         }
-                        catch (ArgumentException)
+                        catch (ArgumentException ex)
                         {
+                            string message = ex.Message;
                         }
                         catch (Exception) //general exception
                         {
@@ -1023,7 +1035,6 @@ namespace iba.Processing
                     else if (status == "restart" || status == "readyToProcess")
                     {
                         ibaDatFile.Close();
-                        if (time != null) ibaDatFile.OpenForUpdate(filename);
                         return DatFileStatus.State.NOT_STARTED;
                     }
                     else
@@ -1083,151 +1094,156 @@ namespace iba.Processing
 
         private void ProcessDatfile(string DatFile)
         {
-            lock (m_processedFiles)
+            lock(m_timerLock)
             {
-                if( ! m_processedFiles.Contains(DatFile))
-                m_processedFiles.Add(DatFile);
-            }
-            bool completeSucces = true;
-            try
-            {
-                FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
-                fs.Close();
-                fs.Dispose();
-                m_ibaAnalyzer.OpenDataFile(0,DatFile);
-            }
-            catch (Exception ex)
-            {
-                Log(Logging.Level.Exception,ex.Message);
-                m_ibaAnalyzer.CloseDataFiles();
-                return;
-            }
-            foreach (TaskData task in m_cd.Tasks)
-            {
-                if (!shouldTaskBeDone(task, DatFile))
-                    continue;
-                bool failedOnce = false;
-                lock (m_sd.DatFileStates)
+                lock (m_processedFiles)
                 {
-                    failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
-                        && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
-                        && m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE;
+                    if( ! m_processedFiles.Contains(DatFile))
+                    m_processedFiles.Add(DatFile);
                 }
-                if (task is ReportData)
+                bool completeSucces = true;
+                try
                 {
-                    Report(DatFile,task as ReportData);
+                    FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
+                    fs.Close();
+                    fs.Dispose();
+                    m_ibaAnalyzer.OpenDataFile(0,DatFile);
                 }
-                else if (task is ExtractData)
+                catch (Exception ex)
                 {
-                    Extract(DatFile,task as ExtractData);
+                    Log(Logging.Level.Exception,ex.Message);
+                    m_ibaAnalyzer.CloseDataFiles();
+                    return;
                 }
-                else if (task is BatchFileData)
+                foreach (TaskData task in m_cd.Tasks)
                 {
-                    Batchfile(DatFile,task as BatchFileData);
-                }
-                else if (task is IfTaskData)
-                {
-                    IfTask(DatFile, task as IfTaskData);
-                }
-                else if (task is CopyMoveTaskData)
-                {
-                    CopyMoveTaskData dat = task as CopyMoveTaskData;
-                    if (dat.RemoveSource)
+                    if (!shouldTaskBeDone(task, DatFile))
+                        continue;
+                    bool failedOnce = false;
+                    lock (m_sd.DatFileStates)
                     {
-                        m_ibaAnalyzer.CloseDataFiles();
-                        CopyDatFile(DatFile, dat);
-                        if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
+                        failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
+                            && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
+                            && m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    if (task is ReportData)
+                    {
+                        Report(DatFile,task as ReportData);
+                    }
+                    else if (task is ExtractData)
+                    {
+                        Extract(DatFile,task as ExtractData);
+                    }
+                    else if (task is BatchFileData)
+                    {
+                        Batchfile(DatFile,task as BatchFileData);
+                    }
+                    else if (task is IfTaskData)
+                    {
+                        IfTask(DatFile, task as IfTaskData);
+                    }
+                    else if (task is CopyMoveTaskData)
+                    {
+                        CopyMoveTaskData dat = task as CopyMoveTaskData;
+                        if (dat.RemoveSource)
                         {
-                            Log(Logging.Level.Warning, iba.Properties.Resources.logNextTasksIgnored, DatFile, task);
-                            m_sd.Changed = true;
-                            return;
-                        }
-                        else if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
-                        {
-                            try
+                            m_ibaAnalyzer.CloseDataFiles();
+                            CopyDatFile(DatFile, dat);
+                            if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
                             {
-                                m_ibaAnalyzer.OpenDataFile(0, DatFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(Logging.Level.Exception, ex.Message);
-                                m_ibaAnalyzer.CloseDataFiles();
+                                Log(Logging.Level.Warning, iba.Properties.Resources.logNextTasksIgnored, DatFile, task);
+                                m_sd.Changed = true;
                                 return;
                             }
+                            else if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
+                            {
+                                try
+                                {
+                                    m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log(Logging.Level.Exception, ex.Message);
+                                    m_ibaAnalyzer.CloseDataFiles();
+                                    return;
+                                }
+                            }
+                            else
+                                return;
                         }
                         else
-                            return;
+                            CopyDatFile(DatFile, dat);
                     }
-                    else
-                        CopyDatFile(DatFile, dat);
-                }
-                else if (task is CustomTaskData)
-                {
-                    DoCustomTask(DatFile, task as CustomTaskData);
-                }
-                lock (m_sd.DatFileStates)
-                {
-                    if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
-                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_TRUE
-                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
-                        completeSucces = false;
-                    if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
-                        m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
-                        m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
-                        && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
+                    else if (task is CustomTaskData)
                     {
-                        m_notifier.AddSuccess(task, DatFile);
-                        if (m_cd.NotificationData.NotifyImmediately)
-                            m_notifier.Send();
+                        DoCustomTask(DatFile, task as CustomTaskData);
                     }
-                    else if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE ||
-                        m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.TIMED_OUT) &&
-                        (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
-                        || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
+                    lock (m_sd.DatFileStates)
                     {
-                        m_notifier.AddFailure(task, DatFile);
-                        if (m_cd.NotificationData.NotifyImmediately)
-                            m_notifier.Send();
+                        if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
+                            && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_TRUE
+                            && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
+                            completeSucces = false;
+                        if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
+                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
+                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
+                            && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
+                        {
+                            m_notifier.AddSuccess(task, DatFile);
+                            if (m_cd.NotificationData.NotifyImmediately)
+                                m_notifier.Send();
+                        }
+                        else if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FAILURE ||
+                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.TIMED_OUT) &&
+                            (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
+                            || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
+                        {
+                            m_notifier.AddFailure(task, DatFile);
+                            if (m_cd.NotificationData.NotifyImmediately)
+                                m_notifier.Send();
+                        }
+                    }
+                    if (m_stop)
+                    {
+                        if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
+                        break;
                     }
                 }
-                if (m_stop)
+                    
+                m_ibaAnalyzer.CloseDataFiles();
+                
+                IbaFileUpdater ibaDatFile = new IbaFileClass();
+                DateTime time = File.GetLastWriteTime(DatFile);
+                try
                 {
-                    if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
-                    break;
+                    ibaDatFile.OpenForUpdate(DatFile);
                 }
-            }
-            m_ibaAnalyzer.CloseDataFiles();
-            
-            IbaFileUpdater ibaDatFile = new IbaFileClass();
-            DateTime time = File.GetLastWriteTime(DatFile);
-            try
-            {
-                ibaDatFile.OpenForUpdate(DatFile);
-            }
-            catch //happens when timed out and proc has not released its resources yet
-            {
+                catch //happens when timed out and proc has not released its resources yet
+                {
+                    m_sd.Changed = true;
+                    return;
+                }
+                if (completeSucces)
+                    ibaDatFile.WriteInfoField("status", "processed");
+                else
+                {
+                    ibaDatFile.WriteInfoField("status", "processingfailed");
+                    //write GUIDs of those that were succesfull
+                    lock (m_sd.DatFileStates)
+                    {
+                        string guids = "";
+                        foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
+                            if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                                guids += stat.Key.Guid.ToString() + ";";
+                        ibaDatFile.WriteInfoField("TasksDone",guids);
+                    }
+                }
+                ibaDatFile.Close();
+                File.SetLastWriteTime(DatFile, time);
                 m_sd.Changed = true;
-                return;
             }
-            if (completeSucces)
-                ibaDatFile.WriteInfoField("status", "processed");
-            else
-            {
-                ibaDatFile.WriteInfoField("status", "processingfailed");
-                //write GUIDs of those that were succesfull
-                lock (m_sd.DatFileStates)
-                {
-                    string guids = "";
-                    foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
-                        if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
-                            guids += stat.Key.Guid.ToString() + ";";
-                    ibaDatFile.WriteInfoField("TasksDone",guids);
-                }
-            }
-            ibaDatFile.Close();
-            File.SetLastWriteTime(DatFile, time);
-            m_sd.Changed = true;
         }
+
 
         private void DoCustomTask(string DatFile, CustomTaskData task)
         {
@@ -1390,7 +1406,7 @@ namespace iba.Processing
                     subdirs.Remove(candidate);
                 }
             }
-            return arg;
+            return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
         private string SubFolder(ReportData.SubfolderChoice choice)
@@ -1562,6 +1578,7 @@ namespace iba.Processing
                         subdirs.Remove(candidate);
                     }
                 }
+                arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
             }
 
             try
@@ -1672,8 +1689,7 @@ namespace iba.Processing
                 }
             }
 
-            string dest = Path.Combine(dir, Path.GetFileName(filename));
-
+            string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(filename)));
             try
             {
                 if (task.RemoveSource)
@@ -1709,7 +1725,6 @@ namespace iba.Processing
                 }
             }
         }
-
 
         private void Batchfile(string filename,BatchFileData task)
         {

@@ -62,7 +62,7 @@ namespace Alunorf_plugin_test
         {
             //ushort id = 0;
             if (!m_idToFilename.Contains("init_pc") && m_idToFilename.Contains("init"))
-                throw new Exception("go while there is no init or previous go");
+                SetMessage("go while there is no init or previous go");
 
             GoTelegram go = new GoTelegram(m_idCounter, m_messagesCount++);
             m_idToFilename[m_idCounter] = "go";
@@ -289,6 +289,7 @@ namespace Alunorf_plugin_test
                     m_idCounter += 2;
                     m_sendLive = false;
                 }
+                Thread.Sleep(100);
             }
             m_h1manager.DisconnectAll();
             m_pcConnected = ConnectionState.DISCONNECTED;
@@ -387,12 +388,14 @@ namespace Alunorf_plugin_test
             //CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
             bool succes = false;
             CH1Manager.H1Result result = CH1Manager.H1Result.WAIT_CONNECT;
-            while (result == CH1Manager.H1Result.WAIT_CONNECT)
+            int i = 0;
+            for (; result == CH1Manager.H1Result.WAIT_CONNECT && i < 10; i++ )
             {
                 SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString());
                 succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
+                Thread.Sleep(500);
             }
-            if (succes)
+            if (succes && i < 10)
             {
                 if (id != null)
                 {

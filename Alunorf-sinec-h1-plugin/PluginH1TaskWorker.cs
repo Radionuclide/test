@@ -76,6 +76,8 @@ namespace Alunorf_sinec_h1_plugin
         //    }
         //}
 
+        private Object m_idCounterLock;
+
         public bool OnStart()
         {
             //set the logger;
@@ -360,7 +362,11 @@ namespace Alunorf_sinec_h1_plugin
                 }
                 else
                 {
-                    m_idCounter += 2;
+                    lock (m_idCounterLock)
+                    {
+                        qdt.AktId = m_idCounter;
+                        m_idCounter += 2;
+                    }
                     QueueTelegram(qdt, key);
                     //wait until acknowledged
                     m_waitSendEvent = new AutoResetEvent(false);
@@ -510,6 +516,7 @@ namespace Alunorf_sinec_h1_plugin
 
         public PluginH1TaskWorker(PluginH1Task data)
         {
+            m_idCounterLock = new Object();
             m_data = data;
             InitMemberData();
         }
@@ -559,34 +566,49 @@ namespace Alunorf_sinec_h1_plugin
             {
                 if (m_retryConnect)
                 {
+                    NQSStatus oldStatus1 = m_nqs1Status;
+                    NQSStatus oldStatus2 = m_nqs2Status;
+                    bool initMade = false;
                     BuildConnection();
-                    if (m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED)
+                    if ((m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED)&& (oldStatus1==NQSStatus.DISCONNECTED||oldStatus1==NQSStatus.CONNECTED))
                     {
                         m_acknowledgements["live1"] = false;
-                        QueueTelegram(m_vnr1,new LiveTelegram(m_idCounter,m_nqs1Messages++),"live1");
-                        m_idCounter +=2;
+                        lock (m_idCounterLock)
+                        {
+                            QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
+                            m_idCounter += 2;
+                        }
+                        initMade = true;
                     }
-                    if (m_nqs2Status == NQSStatus.GO || m_nqs2Status == NQSStatus.INITIALISED)
+                    if ((m_nqs2Status == NQSStatus.GO || m_nqs2Status == NQSStatus.INITIALISED) && (oldStatus2==NQSStatus.DISCONNECTED||oldStatus2==NQSStatus.CONNECTED))
                     {
                         m_acknowledgements["live2"] = false;
-                        QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs2Messages++), "live2");
-                        m_idCounter += 2;
+                        lock (m_idCounterLock)
+                        {
+                            QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs2Messages++), "live2");
+                            m_idCounter += 2;
+                        }
+                        initMade = true;
                     }
-                    if (m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED
-                        || m_nqs2Status == NQSStatus.GO || m_nqs2Status == NQSStatus.INITIALISED)
+                    if (initMade)
                             m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
 
                     if ((m_nqs1Status == NQSStatus.CONNECTED || m_nqs1Status == NQSStatus.INITIALISED) && m_lastgo == m_vnr2 && m_nqs2Status == NQSStatus.DISCONNECTED)
                     { //try to switch to NQS1 server by sending init telegram
-                        IniTelegram init = new IniTelegram(m_idCounter, m_nqs1Messages++);
-                        m_idCounter += 2;
-                        QueueTelegram(m_vnr1, init, "init1");
+                        lock (m_idCounterLock)
+                        {
+                            QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++), "init1");
+                            m_idCounter += 2;
+                        }
+                        
                     }
                     else if ((m_nqs2Status == NQSStatus.CONNECTED || m_nqs2Status == NQSStatus.INITIALISED) && m_lastgo == m_vnr1 && m_nqs1Status == NQSStatus.DISCONNECTED)
                     { //try to switch to NQS1 server by sending init telegram
-                        IniTelegram init = new IniTelegram(m_idCounter, m_nqs2Messages++);
-                        m_idCounter += 2;
-                        QueueTelegram(m_vnr2, init, "init2");
+                        lock (m_idCounterLock)
+                        {
+                            QueueTelegram(m_vnr2, new IniTelegram(m_idCounter, m_nqs2Messages++), "init2");
+                            m_idCounter += 2;
+                        }
                     }
                 }
                 if (!ReadMessage(m_vnr1))
@@ -678,7 +700,12 @@ namespace Alunorf_sinec_h1_plugin
                                         m_logger.Log(Level.Info, "ACK init from NQS1 " + m_idToFilename.itemToString(id));
                                     m_nqs1Status = NQSStatus.INITIALISED;
                                     m_acknowledgements["live1"] = false;
-                                    QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
+                                    m_acknowledgements["init1"] = true;
+                                    lock (m_idCounterLock)
+                                    {
+                                        QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
+                                        m_idCounter+=2;
+                                    }
                                     m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 }
                                 else if (id == "init2")
@@ -687,7 +714,12 @@ namespace Alunorf_sinec_h1_plugin
                                         m_logger.Log(Level.Info, "ACK init from NQS2 " + m_idToFilename.itemToString(id));
                                     m_nqs1Status = NQSStatus.INITIALISED;
                                     m_acknowledgements["live2"] = false;
-                                    QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live2");
+                                    m_acknowledgements["init2"] = true;
+                                    lock (m_idCounterLock)
+                                    {
+                                        QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live2");
+                                        m_idCounter += 2;
+                                    }
                                     m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 }
                                 else if (id == "live1" || id == "live2")
@@ -902,9 +934,11 @@ namespace Alunorf_sinec_h1_plugin
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "connection to nqs1 was still ok");
                             //send INI telegram
-                            IniTelegram init = new IniTelegram(m_idCounter, m_nqs1Messages++);
-                            m_idCounter += 2;
-                            QueueTelegram(m_vnr1, init, "init1");
+                            lock (m_idCounterLock)
+                            {
+                                QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++),"init1");
+                                m_idCounter += 2;
+                            }
                             break;
                         }
                     case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
@@ -921,10 +955,12 @@ namespace Alunorf_sinec_h1_plugin
                                 m_logger.Log(Level.Info, "connection to nqs1 restored");
                             m_nqs1Status = NQSStatus.CONNECTED;
                             //send INI telegram
-                            IniTelegram init = new IniTelegram(m_idCounter, m_nqs1Messages++);
-                            m_idCounter += 2;
-                            QueueTelegram(m_vnr1, init, "init1");
-                        }
+                            lock (m_idCounterLock)
+                            {
+                                QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++), "init1");
+                                m_idCounter += 2;
+                            }
+                    }
                         else
                         {
                             m_error = m_h1manager.LastError;
@@ -955,9 +991,11 @@ namespace Alunorf_sinec_h1_plugin
                             //send INI telegram
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "connection to nqs2 was still ok");
-                            IniTelegram init = new IniTelegram(m_idCounter, m_nqs2Messages++);
-                            m_idCounter += 2;
-                            QueueTelegram(m_vnr2, init, "init2");
+                            lock (m_idCounterLock)
+                            {
+                                QueueTelegram(m_vnr2, new IniTelegram(m_idCounter, m_nqs2Messages++), "init2");
+                                m_idCounter += 2;
+                            }
                             break;
                         }
                     case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
@@ -974,9 +1012,11 @@ namespace Alunorf_sinec_h1_plugin
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "connection to nqs2 restored");
                             //send INI telegram
-                            IniTelegram init = new IniTelegram(m_idCounter, m_nqs2Messages++);
-                            m_idCounter += 2;
-                            QueueTelegram(m_vnr2, init, "init2");
+                            lock (m_idCounterLock)
+                            {
+                                QueueTelegram(m_vnr2, new IniTelegram(m_idCounter, m_nqs2Messages++), "init2");
+                                m_idCounter += 2;
+                            }
                         }
                         else
                         {
@@ -1040,14 +1080,20 @@ namespace Alunorf_sinec_h1_plugin
             if (m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED)
             {
                 m_acknowledgements["live1"] = false;
-                QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
-                m_idCounter += 2;
+                lock (m_idCounterLock)
+                {
+                    QueueTelegram(m_vnr1, new LiveTelegram(m_idCounter, m_nqs1Messages++), "live1");
+                    m_idCounter += 2;
+                }
             }
             if (m_nqs2Status == NQSStatus.GO || m_nqs2Status == NQSStatus.INITIALISED)
             {
                 m_acknowledgements["live2"] = false;
-                QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs2Messages++), "live2");
-                m_idCounter += 2;
+                lock (m_idCounterLock)
+                {
+                    QueueTelegram(m_vnr2, new LiveTelegram(m_idCounter, m_nqs2Messages++), "live2");
+                    m_idCounter += 2;
+                }
             }
             if (m_nqs1Status == NQSStatus.GO || m_nqs1Status == NQSStatus.INITIALISED
                 || m_nqs2Status == NQSStatus.GO || m_nqs2Status == NQSStatus.INITIALISED)

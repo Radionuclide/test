@@ -7,4 +7,4 @@ Have ibaAnalyzer installed and registered as a COM-component, the version of iba
 and to enable conditional tasks, the ibaAnalyzer version should be at least 5.4
 Also install the .NET 2.0 framework, available form www.microsoft.com and
 	http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe
-Execute ibaDatCoordinatorInstall_v1.7.exe and follow instructions.
+Execute ibaDatCoordinatorInstall_v1.7.2.exe and follow instructions.

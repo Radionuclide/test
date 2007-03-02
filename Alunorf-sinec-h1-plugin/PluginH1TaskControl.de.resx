@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 26</value>
-  </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 22</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>Löschen</value>
+  </data>
+  <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 26</value>
   </data>
   <data name="m_columnFieldname.HeaderText" xml:space="preserve">
     <value>Feldname</value>

@@ -137,6 +137,9 @@
   <data name="&gt;&gt;m_openFileDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="m_statusNQS1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_splitContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -164,9 +167,6 @@
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_datagvMessages.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label7.ToolTip" xml:space="preserve">
     <value />
@@ -213,9 +213,6 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_splitContainer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="m_columnFieldname.HeaderText" xml:space="preserve">
     <value>Fieldname</value>
   </data>
@@ -243,6 +240,9 @@
   <data name="&gt;&gt;label16.Name" xml:space="preserve">
     <value>label16</value>
   </data>
+  <data name="m_tbTSAP_NQS1_PC.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="m_statusNQS2.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -258,11 +258,11 @@
   <data name="&gt;&gt;label15.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>225, 53</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 245</value>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 61</value>
   </data>
   <data name="&gt;&gt;m_columnDataType.Name" xml:space="preserve">
     <value>m_columnDataType</value>
@@ -282,14 +282,14 @@
   <data name="&gt;&gt;m_nqs2MAC.Type" xml:space="preserve">
     <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 27</value>
-  </data>
   <data name="m_splitContainer2.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="&gt;&gt;m_tbTSAP_NQS2_PC.Name" xml:space="preserve">
     <value>m_tbTSAP_NQS2_PC</value>
+  </data>
+  <data name="m_statusNQS2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
   </data>
   <data name="m_statusNQS1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -306,11 +306,17 @@
   <data name="&gt;&gt;m_refreshTimer.Name" xml:space="preserve">
     <value>m_refreshTimer</value>
   </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_nudRetryConnectTimeInterval.Name" xml:space="preserve">
     <value>m_nudRetryConnectTimeInterval</value>
+  </data>
+  <data name="m_nudRetryConnectTimeInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 51</value>
+  </data>
+  <data name="m_nudRetryConnectTimeInterval.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="m_splitContainer2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -330,9 +336,6 @@
   <data name="m_openXML.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>telegram specifications</value>
-  </data>
   <data name="m_nqs1MAC.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -351,14 +354,14 @@
   <data name="&gt;&gt;m_tbTSAP_NQS1_PC.Name" xml:space="preserve">
     <value>m_tbTSAP_NQS1_PC</value>
   </data>
-  <data name="&gt;&gt;m_saveXML.Name" xml:space="preserve">
-    <value>m_saveXML</value>
-  </data>
   <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
     <value>488, 53</value>
   </data>
   <data name="m_statusNQS1.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 148</value>
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
     <value>m_tabControl</value>
@@ -417,8 +420,8 @@
   <data name="&gt;&gt;m_btSave.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_statusNQS1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;label12.Name" xml:space="preserve">
     <value>label12</value>
@@ -456,9 +459,6 @@
   <data name="m_saveXML.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
   <data name="&gt;&gt;m_splitContainer.Panel1.Parent" xml:space="preserve">
     <value>m_splitContainer</value>
   </data>
@@ -495,14 +495,14 @@
   <data name="label10.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;macGroupbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Status:</value>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>minutes</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudRetryConnectTimeInterval.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -531,20 +531,8 @@
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>488, 27</value>
-  </data>
-  <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 26</value>
-  </data>
   <data name="m_splitContainer.Panel1.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tbTSAP_NQS2_NQS.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
   </data>
   <data name="label17.Text" xml:space="preserve">
     <value>seconds</value>
@@ -554,6 +542,9 @@
   </data>
   <data name="m_nudSendTimeout.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
+  </data>
+  <data name="m_tbTSAP_NQS2_NQS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 61</value>
@@ -579,9 +570,6 @@
   <data name="m_ownMAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
   </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Status:</value>
-  </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>
   </data>
@@ -597,8 +585,8 @@
   <data name="m_nudTryconnectTimeout.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
   </data>
-  <data name="m_tbTSAP_NQS2_PC.MaxLength" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="NQS1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -609,17 +597,17 @@
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 13</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Retry connect time interval:</value>
+  </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_statusNQS2.Parent" xml:space="preserve">
-    <value>NQS2</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -635,9 +623,6 @@
   </data>
   <data name="m_tbTSAP_NQS1_NQS.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 20</value>
-  </data>
-  <data name="&gt;&gt;m_nudTryconnectTimeout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -699,9 +684,6 @@
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_tvMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 372</value>
-  </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
     <value>295, 53</value>
   </data>
@@ -729,9 +711,6 @@
   <data name="&gt;&gt;m_tbTSAP_NQS2_PC.Parent" xml:space="preserve">
     <value>NQS2</value>
   </data>
-  <data name="m_columnDataType.HeaderText" xml:space="preserve">
-    <value>Datatype</value>
-  </data>
   <data name="&gt;&gt;m_nudAckTimeout.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
@@ -747,17 +726,20 @@
   <data name="&gt;&gt;m_splitContainer.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_statusNQS2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_splitContainer2.Panel2.Parent" xml:space="preserve">
     <value>m_splitContainer2</value>
+  </data>
+  <data name="m_tbTSAP_NQS2_PC.MaxLength" type="System.Int32, mscorlib">
+    <value>16</value>
   </data>
   <data name="m_splitContainer.SplitterDistance" type="System.Int32, mscorlib">
     <value>276</value>
   </data>
   <data name="&gt;&gt;m_tbTSAP_NQS1_PC.Parent" xml:space="preserve">
     <value>NQS1</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 148</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>NQS2</value>
@@ -770,6 +752,9 @@
   </data>
   <data name="&gt;&gt;m_splitContainer.Panel2.Parent" xml:space="preserve">
     <value>m_splitContainer</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>Send time out:</value>
   </data>
   <data name="m_tvMessages.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -792,6 +777,9 @@
   <data name="&gt;&gt;label12.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="deleteToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Del</value>
+  </data>
   <data name="m_nudRetryConnectTimeInterval.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
@@ -807,8 +795,8 @@
   <data name="m_nudAckTimeout.Location" type="System.Drawing.Point, System.Drawing">
     <value>416, 51</value>
   </data>
-  <data name="&gt;&gt;m_tbTSAP_NQS2_PC.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="label12.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="m_nudSendTimeout.Location" type="System.Drawing.Point, System.Drawing">
     <value>416, 25</value>
@@ -819,6 +807,9 @@
   <data name="&gt;&gt;m_contextMenu.Name" xml:space="preserve">
     <value>m_contextMenu</value>
   </data>
+  <data name="macGroupbox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="&gt;&gt;m_statusNQS1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -828,8 +819,11 @@
   <data name="&gt;&gt;m_nudRetryConnectTimeInterval.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;label13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="NQS2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -843,8 +837,8 @@
   <data name="&gt;&gt;m_tabControl.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>Send time out:</value>
+  <data name="&gt;&gt;m_statusNQS2.Parent" xml:space="preserve">
+    <value>NQS2</value>
   </data>
   <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -867,9 +861,6 @@
   <data name="label16.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;NQS1.Parent" xml:space="preserve">
-    <value>m_splitContainer.Panel1</value>
-  </data>
   <data name="m_btSave.ToolTip" xml:space="preserve">
     <value>Export telegram specifications to XML file</value>
   </data>
@@ -888,8 +879,8 @@
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="NQS1.Text" xml:space="preserve">
-    <value>NQS 1</value>
+  <data name="label10.Text" xml:space="preserve">
+    <value>seconds</value>
   </data>
   <data name="m_tvMessages.ToolTip" xml:space="preserve">
     <value />
@@ -903,17 +894,14 @@
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>557, 81</value>
   </data>
-  <data name="m_saveXML.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_columnDataType.HeaderText" xml:space="preserve">
+    <value>Datatype</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>seconds</value>
@@ -933,11 +921,14 @@
   <data name="&gt;&gt;m_splitContainer.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
   <data name="label3.Text" xml:space="preserve">
     <value>TSAP NQS:</value>
   </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>seconds</value>
+  <data name="&gt;&gt;macGroupbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label3.ToolTip" xml:space="preserve">
     <value />
@@ -957,8 +948,11 @@
   <data name="m_ownMAC.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 148</value>
+  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_nqs2MAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
@@ -969,17 +963,11 @@
   <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 61</value>
-  </data>
   <data name="&gt;&gt;m_saveXML.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_tabControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>NQS1</value>
   </data>
   <data name="m_btOpen.Location" type="System.Drawing.Point, System.Drawing">
     <value>511, 6</value>
@@ -992,6 +980,9 @@
   </data>
   <data name="&gt;&gt;label8.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 245</value>
   </data>
   <data name="&gt;&gt;m_splitContainer.Panel1.Name" xml:space="preserve">
     <value>m_splitContainer.Panel1</value>
@@ -1020,8 +1011,8 @@
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
   </data>
-  <data name="m_tbTSAP_NQS2_NQS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 20</value>
+  <data name="m_tbTSAP_NQS1_PC.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_nudSendTimeout.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -1032,14 +1023,20 @@
   <data name="&gt;&gt;m_tvMessages.Type" xml:space="preserve">
     <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="NQS1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="macGroupbox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
     <value>m_tabControl</value>
   </data>
   <data name="&gt;&gt;m_tbTSAP_NQS1_PC.ZOrder" xml:space="preserve">
     <value>5</value>
+  </data>
+  <data name="m_statusNQS2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Type" xml:space="preserve">
     <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
@@ -1062,6 +1059,9 @@
   <data name="m_btSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
+  <data name="m_tabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <data name="m_splitContainer.Size" type="System.Drawing.Size, System.Drawing">
     <value>556, 180</value>
   </data>
@@ -1071,8 +1071,17 @@
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 16</value>
   </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="m_datagvMessages.Size" type="System.Drawing.Size, System.Drawing">
+    <value>353, 372</value>
+  </data>
   <data name="&gt;&gt;dataGridViewTextBoxComment.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_nudTryconnectTimeout.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -1083,8 +1092,8 @@
   <data name="&gt;&gt;m_tbTSAP_NQS2_NQS.Name" xml:space="preserve">
     <value>m_tbTSAP_NQS2_NQS</value>
   </data>
-  <data name="m_statusNQS1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_tvMessages.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 372</value>
   </data>
   <data name="m_openXML.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1101,9 +1110,6 @@
   <data name="&gt;&gt;NQS2.Parent" xml:space="preserve">
     <value>m_splitContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;NQS1.Name" xml:space="preserve">
-    <value>NQS1</value>
-  </data>
   <data name="&gt;&gt;m_splitContainer2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -1119,8 +1125,8 @@
   <data name="label17.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_tbTSAP_NQS1_PC.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="NQS1.Text" xml:space="preserve">
+    <value>NQS 1</value>
   </data>
   <data name="label13.ToolTip" xml:space="preserve">
     <value />
@@ -1173,9 +1179,6 @@
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 16</value>
   </data>
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="m_nqs2MAC.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -1194,9 +1197,6 @@
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tbTSAP_NQS1_PC.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 77</value>
   </data>
@@ -1206,20 +1206,14 @@
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 148</value>
   </data>
-  <data name="m_nudRetryConnectTimeInterval.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;NQS1.Name" xml:space="preserve">
+    <value>NQS1</value>
   </data>
   <data name="&gt;&gt;m_splitContainer.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tbTSAP_NQS1_NQS.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
-  </data>
-  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 53</value>
-  </data>
-  <data name="&gt;&gt;m_btSave.Parent" xml:space="preserve">
-    <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;m_splitContainer.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -1257,14 +1251,14 @@
   <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="m_tbTSAP_NQS2_NQS.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;NQS2.Name" xml:space="preserve">
     <value>NQS2</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>telegram specifications</value>
   </data>
   <data name="m_btSave.Location" type="System.Drawing.Point, System.Drawing">
     <value>511, 52</value>
@@ -1287,9 +1281,6 @@
   <data name="label2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_tbTSAP_NQS1_NQS.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 120</value>
   </data>
@@ -1299,8 +1290,8 @@
   <data name="NQS1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;m_tvMessages.Parent" xml:space="preserve">
-    <value>m_splitContainer2.Panel1</value>
+  <data name="&gt;&gt;m_statusNQS2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Parent" xml:space="preserve">
     <value>macGroupbox</value>
@@ -1332,14 +1323,17 @@
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
   </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;m_saveXML.Name" xml:space="preserve">
+    <value>m_saveXML</value>
   </data>
-  <data name="macGroupbox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;m_tbTSAP_NQS2_PC.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_splitContainer2.Name" xml:space="preserve">
     <value>m_splitContainer2</value>
+  </data>
+  <data name="m_splitContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 59</value>
   </data>
   <data name="&gt;&gt;m_saveFileDialog1.Name" xml:space="preserve">
     <value>m_saveFileDialog1</value>
@@ -1353,25 +1347,25 @@
   <data name="label1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="deleteToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Del</value>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Status:</value>
   </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_datagvMessages.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_nudRetryConnectTimeInterval.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="m_tabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;m_splitContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="m_nudRetryConnectTimeInterval.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
   </data>
-  <data name="m_statusNQS2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
+  <data name="NQS1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="m_statusNQS2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
@@ -1443,8 +1437,8 @@
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 13</value>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>488, 27</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>TSAP PC:</value>
@@ -1458,8 +1452,8 @@
   <data name="m_nqs1MAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
   </data>
-  <data name="m_datagvMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 372</value>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_tbTSAP_NQS1_PC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1473,20 +1467,23 @@
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>
   </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value />
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 13</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="macGroupbox.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 26</value>
   </data>
   <data name="groupBox1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Retry connect time interval:</value>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>NQS1</value>
   </data>
   <data name="m_tbTSAP_NQS2_PC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 20</value>
@@ -1500,29 +1497,32 @@
   <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label8.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_nudTryconnectTimeout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btOpen.Name" xml:space="preserve">
     <value>m_btOpen</value>
   </data>
-  <data name="m_tbTSAP_NQS1_PC.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="m_splitContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 59</value>
+  <data name="&gt;&gt;NQS1.Parent" xml:space="preserve">
+    <value>m_splitContainer.Panel1</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_contextMenu.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="label16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label11.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="m_statusNQS1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 27</value>
   </data>
   <data name="&gt;&gt;macGroupbox.Name" xml:space="preserve">
     <value>macGroupbox</value>
@@ -1530,8 +1530,8 @@
   <data name="label16.Text" xml:space="preserve">
     <value>Acknowledge time out:</value>
   </data>
-  <data name="label16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;m_btSave.Parent" xml:space="preserve">
+    <value>tabPage2</value>
   </data>
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1542,14 +1542,14 @@
   <data name="label16.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label12.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_tvMessages.Parent" xml:space="preserve">
+    <value>m_splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;m_datagvMessages.Parent" xml:space="preserve">
     <value>m_splitContainer2.Panel2</value>
   </data>
-  <data name="m_nudRetryConnectTimeInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 51</value>
+  <data name="m_saveXML.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
   </data>
   <data name="m_tbTSAP_NQS2_PC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1560,9 +1560,6 @@
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>148, 17</value>
   </metadata>
-  <metadata name="m_contextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>249, 17</value>
-  </metadata>
   <metadata name="m_saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>526, 17</value>
   </metadata>
@@ -1572,10 +1569,10 @@
   <metadata name="m_refreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="m_contextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>249, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>German</value>
   </metadata>
 </root>
