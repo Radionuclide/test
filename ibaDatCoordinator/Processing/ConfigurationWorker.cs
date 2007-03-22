@@ -171,6 +171,7 @@ namespace iba.Processing
                         fswt.NotifyFilter = NotifyFilters.FileName;
                         fswt.IncludeSubdirectories = m_cd.SubDirs;
                         fswt.Created += new FileSystemEventHandler(OnNewDatFile);
+                        fswt.Renamed += new RenamedEventHandler(OnDatFileRename);
                         fswt.Error += new ErrorEventHandler(OnFileSystemError);
                         fswt.EnableRaisingEvents = true;
                         networkErrorOccured = false;
@@ -647,6 +648,16 @@ namespace iba.Processing
                 return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
             }
         }
+
+        private void OnDatFileRename(object source, RenamedEventArgs args)
+        {
+            string filename = args.FullPath;
+            lock (m_candidateNewFiles)
+            {
+                if (!m_candidateNewFiles.Contains(filename))
+                    m_candidateNewFiles.Add(filename);
+            }
+        }
         
         private void OnNewDatFile(object sender, FileSystemEventArgs args)
         {
@@ -692,8 +703,16 @@ namespace iba.Processing
                             toRemove.Add(filename);
                             changed = changed || doit;
                         }
-                        catch //no access, do not remove from the list yet, make available again when acces to it is restored
+                        catch //no access, do not remove from the list yet (unless the file doesnt exist), make available again when acces to it is restored
                         {
+                            try
+                            {
+                                if (!File.Exists(filename))
+                                    toRemove.Add(filename);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                     foreach (string filename in toRemove)
@@ -720,6 +739,7 @@ namespace iba.Processing
                     fswt.IncludeSubdirectories = m_cd.SubDirs;
                     fswt.Created += new FileSystemEventHandler(OnNewDatFile);
                     fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                    fswt.Renamed += new RenamedEventHandler(OnDatFileRename);
                     fswt.EnableRaisingEvents = true;
                     networkErrorOccured = false;
                     Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));

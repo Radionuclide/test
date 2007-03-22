@@ -61,18 +61,18 @@ namespace iba.Utility
 
         public string FindSuitableFileName(string filename)
         {
+            string candidate = filename;
             try
             {
-                for (int index = 0; File.Exists(filename); index++)
+                for (int index = 0; File.Exists(candidate); index++)
                 {
                     int pos = filename.LastIndexOf('.');
-                    string indexstr = index.ToString();
-                    if (indexstr.Length == 1) indexstr = "0" + indexstr;
-                    filename = filename.Substring(0, pos) + '_' + indexstr + filename.Substring(pos);
+                    string indexstr = index.ToString("d2");
+                    candidate = filename.Substring(0, pos) + '_' + indexstr + filename.Substring(pos);
                 }
             }
             catch { }
-            return filename;
+            return candidate;
         }
     }
 }
