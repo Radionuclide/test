@@ -89,7 +89,7 @@ namespace Alunorf_sinec_h1_plugin
             if (m_logger != null && m_logger.IsOpen)
                 m_logger.Close();
 
-            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinatorLog", 10);
+            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "sinec-h1", 10);
 
             m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
             m_logger.IsBufferingEnabled = false;
@@ -371,43 +371,42 @@ namespace Alunorf_sinec_h1_plugin
                     //wait until acknowledged
                     m_waitSendEvent = new AutoResetEvent(false);
                     m_waitSendEvent.WaitOne(1000 * (m_data.SendTimeOut + m_data.AckTimeOut), true);
-                }
 
-
-                lock (m_acknowledgements)
-                {
-                    if (m_acknowledgements.ContainsKey(key))
+                    lock (m_acknowledgements)
                     {
-                        if (m_acknowledgements[key]) //positively acknowledged in the mean time;
+                        if (m_acknowledgements.ContainsKey(key))
                         {
-                            m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "telegram positively acknowledged in the mean time " + key);
+                            if (m_acknowledgements[key]) //positively acknowledged in the mean time;
+                            {
+                                m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_nogo;
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Info, "telegram positively acknowledged in the mean time " + key);
 
-                        }
-                        else if (m_nak_errors[key].StartsWith(Alunorf_sinec_h1_plugin.Properties.Resources.err_send))
-                        {
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Exception, m_nak_errors[key]);
-                            m_nak_errors.Remove(key);
-                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key].Substring(Alunorf_sinec_h1_plugin.Properties.Resources.err_send.Length));
-                            ErrorSendTelegram.Add(item);
+                            }
+                            else if (m_nak_errors[key].StartsWith(Alunorf_sinec_h1_plugin.Properties.Resources.err_send))
+                            {
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Exception, m_nak_errors[key]);
+                                m_nak_errors.Remove(key);
+                                string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key].Substring(Alunorf_sinec_h1_plugin.Properties.Resources.err_send.Length));
+                                ErrorSendTelegram.Add(item);
+                            }
+                            else
+                            {
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Exception, m_nak_errors[key]);
+                                string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]);
+                                m_nak_errors.Remove(key);
+                                NAKnowledged.Add(item);
+                            }
+                            m_idToFilename.Remove(key);
                         }
                         else
                         {
                             if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Exception, m_nak_errors[key]);
-                            string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]);
-                            m_nak_errors.Remove(key);
-                            NAKnowledged.Add(item);
+                                m_logger.Log(Level.Exception, "telegram not acknowledged in time " + key);
+                            UnTimelyAcknowledged.Add(telegram.QdtType);
                         }
-                        m_idToFilename.Remove(key);
-                    }
-                    else 
-                    {
-                        if (m_logger != null && m_logger.IsOpen)
-                            m_logger.Log(Level.Exception, "telegram not acknowledged in time " + key);
-                        UnTimelyAcknowledged.Add(telegram.QdtType);
                     }
                 }
             }
@@ -960,7 +959,7 @@ namespace Alunorf_sinec_h1_plugin
                                 QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++), "init1");
                                 m_idCounter += 2;
                             }
-                    }
+                        }
                         else
                         {
                             m_error = m_h1manager.LastError;

@@ -296,6 +296,7 @@ namespace Alunorf_sinec_h1_plugin
             {
                 try
                 {
+                    SaveTelegram();
                     XmlSerializer mySerializer = new XmlSerializer(typeof(List<PluginH1Task.Telegram>));
                     using (StreamWriter myWriter = new StreamWriter(m_saveFileDialog1.FileName))
                     {
@@ -495,6 +496,7 @@ namespace Alunorf_sinec_h1_plugin
                         line.Name = m_datagvMessages.Rows[i].Cells[0].Value as string;
                         line.DataType = m_datagvMessages.Rows[i].Cells[1].Value as string;
                         line.Comment = m_datagvMessages.Rows[i].Cells[2].Value as string;
+                        if (String.IsNullOrEmpty(line.DataType) || String.IsNullOrEmpty(line.Name)) continue;
                         m_telegram.DataInfo.Add(line);
                     }
                     break;
@@ -506,6 +508,7 @@ namespace Alunorf_sinec_h1_plugin
                         line.Name = m_datagvMessages.Rows[i].Cells[0].Value as string;
                         line.DataType = m_datagvMessages.Rows[i].Cells[1].Value as string;
                         line.Comment = m_datagvMessages.Rows[i].Cells[2].Value as string;
+                        if (String.IsNullOrEmpty(line.DataType) || String.IsNullOrEmpty(line.Name)) continue;
                         m_telegram.DataSignal.Add(line);
                     }
                     break;

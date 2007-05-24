@@ -411,7 +411,7 @@ namespace Alunorf_sinec_h1_plugin
             m_telegramData = data;
             m_TlgArt = TLGART;
             if (data != null) CalcSize();
-            if (file != null)
+            if (file != null && m_size >=0)
             {
                 m_stream = new H1ByteStream((uint)m_size, true);
                 PreWriteBody(file);
@@ -424,7 +424,7 @@ namespace Alunorf_sinec_h1_plugin
             m_telegramData = data;
             m_TlgArt = TLGART;
             if (data != null) CalcSize();
-            if (file != null)
+            if (file != null && m_size >= 0)
             {
                 m_stream = new H1ByteStream((uint)m_size, true);
                 PreWriteBody(file);
@@ -689,10 +689,12 @@ namespace Alunorf_sinec_h1_plugin
                 count++;
                 try
                 {
+                    System.Diagnostics.Trace.WriteLine("before" + count.ToString());
                     string data = file.QueryInfoByName(rec.Name);
                     int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
                     uint size = uint.Parse(rec.DataType.Substring(pos));
                     string type = rec.DataType.Substring(0, pos);
+                    System.Diagnostics.Trace.WriteLine("after pos:" + pos.ToString() + " size:  " + size.ToString() + " type: " + type.ToString());
 
                     if (type == "int" && size == 1)
                     {

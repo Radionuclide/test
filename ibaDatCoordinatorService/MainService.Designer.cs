@@ -28,8 +28,12 @@ namespace iba.Services
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            // 
+            // IbaDatCoordinatorService
+            // 
+            this.CanShutdown = true;
             this.ServiceName = "Service1";
+
         }
 
         #endregion

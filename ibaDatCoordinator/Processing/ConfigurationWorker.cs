@@ -1817,7 +1817,7 @@ namespace iba.Processing
                 
                 float f = m_ibaAnalyzer.Evaluate(task.Expression, (int) task.XType);
 
-                if (!float.IsNaN(f) && f >= 0.5)
+                if (!float.IsNaN(f) && !float.IsInfinity(f) &&  f >= 0.5)
                 {
                     //code on succes
                     lock (m_sd.DatFileStates)

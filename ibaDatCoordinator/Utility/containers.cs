@@ -108,8 +108,9 @@ namespace iba.Utility
             {
                 FromTo.Remove(ToFrom[t]);
                 ToFrom.Remove(t);
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

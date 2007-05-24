@@ -330,7 +330,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   RegDll "$INSTDIR\ibaFiles.dll"
 
   DetailPrint $(TEXT_SERVICE_INSTALL)
-  nsSCMEx::Install /NOUNLOAD "ibaDatCoordinatorService" "iba DatCoordinator Service" 0x10 2 "$INSTDIR\ibaDatCoordinatorService.exe" "" "" "" ""
+  nsSCMEx::Install /NOUNLOAD "ibaDatCoordinatorService" "iba DatCoordinator Service" 0x110 2 "$INSTDIR\ibaDatCoordinatorService.exe" "" "" "" ""
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "1"
 
   ;Add serverstatus to autorun

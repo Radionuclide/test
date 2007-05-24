@@ -505,8 +505,8 @@ namespace iba.Utility
 						}
 					}
 				}
-				else
-					Console.WriteLine(nRet);
+				//else
+				//	Console.WriteLine(nRet);
 				
 			}
 			finally 
@@ -674,8 +674,8 @@ namespace iba.Utility
 					return fileName;
 
 				default:
-					Console.WriteLine("Unknown return value: {0}", nRet);
-					return string.Empty;
+					//Console.WriteLine("Unknown return value: {0}", nRet);
+					return fileName;
 			}
 		}
 
@@ -718,6 +718,11 @@ namespace iba.Utility
 				
 				return _local;
 			}
+		}
+
+		public static void ClearLocalShares()
+		{
+			_local = null;
 		}
 		
 		/// <summary>

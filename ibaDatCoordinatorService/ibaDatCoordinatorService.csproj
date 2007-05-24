@@ -76,6 +76,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MainService.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainService.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
