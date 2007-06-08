@@ -396,6 +396,7 @@ namespace Alunorf_sinec_h1_plugin
                     m_size = -1;
                     errPos = count;
                     errInInfo = false;
+                    return;
                 }
                 m_size += 3200; //2*4*400
             }

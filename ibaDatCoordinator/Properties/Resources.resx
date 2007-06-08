@@ -667,4 +667,16 @@
   <data name="logTaskNotLicensed" xml:space="preserve">
     <value>No license found for custom task '{0}'</value>
   </data>
+  <data name="logNoOutputPathSpecified" xml:space="preserve">
+    <value>No destination directory specified for the task.</value>
+  </data>
+  <data name="logOutputIsInput" xml:space="preserve">
+    <value>Tasks destination directory is the same as .dat file directory of its parent job.</value>
+  </data>
+  <data name="IbaAnalyzerExecutableDoesNotExist" xml:space="preserve">
+    <value>Specified ibaAnalyzer executable does not exist: </value>
+  </data>
+  <data name="Noaccess3" xml:space="preserve">
+    <value>PDA not yet finished with .dat file</value>
+  </data>
 </root>

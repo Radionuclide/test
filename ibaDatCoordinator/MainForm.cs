@@ -465,6 +465,7 @@ namespace iba
                 TaskManager.Manager.AddConfiguration(newData);
             }
             List<ConfigurationData> confs = TaskManager.Manager.Configurations;
+            confs.Sort(delegate (ConfigurationData a, ConfigurationData b) {return a.TreePosition.CompareTo(b.TreePosition);});
             foreach (ConfigurationData confIt in confs)
                 m_configTreeView.Nodes.Add(CreateConfigurationNode(confIt));
 
@@ -475,6 +476,7 @@ namespace iba
             m_configTreeView.Nodes.Add(newConfNode); 
             m_configTreeView.EndUpdate();
             m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
+            UpdateTreePositions();
             UpdateButtons();
         }
 
@@ -483,6 +485,7 @@ namespace iba
             m_statusTreeView.BeginUpdate();
             m_statusTreeView.Nodes.Clear();
             List<StatusData> stats = TaskManager.Manager.Statuses;
+            stats.Sort(delegate(StatusData a, StatusData b) { return a.CorrConfigurationData.TreePosition.CompareTo(b.CorrConfigurationData.TreePosition); });
             foreach (StatusData statIt in stats)
             {
                 TreeNode statNode = new TreeNode(statIt.CorrConfigurationData.Name,0, 0);
@@ -647,6 +650,7 @@ namespace iba
                     m_configTreeView.SelectedNode = node;
                     loadStatuses();
                     UpdateButtons();
+                    UpdateTreePositions();
                 }
                 else 
                 {
@@ -752,6 +756,7 @@ namespace iba
                     m_configTreeView.SelectedNode = m_configTreeView.Nodes[newIndex];
                 else
                     m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
+                UpdateTreePositions();
             }
             else if (node.Tag is NewConfigurationTreeItemData)
             {
@@ -857,6 +862,7 @@ namespace iba
                 node = m_configTreeView.Nodes[m_configTreeView.Nodes.Count - 2];
                 m_configTreeView.SelectedNode = node;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
+                UpdateTreePositions();
                 loadStatuses();
                 UpdateButtons();
             }
@@ -875,6 +881,7 @@ namespace iba
                 tn.EnsureVisible();
                 //loadConfigurations();
                 m_configTreeView.EndUpdate();
+                UpdateTreePositions();
                 node = m_configTreeView.Nodes[index];
                 m_configTreeView.SelectedNode = node;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
@@ -1833,6 +1840,7 @@ namespace iba
                 m_configTreeView.Nodes.Insert(index, draggedNode);
                 m_configTreeView.EndUpdate();
                 m_configTreeView.SelectedNode = m_configTreeView.Nodes[index];
+                UpdateTreePositions();
             }
             else
             {
@@ -1928,6 +1936,23 @@ namespace iba
             }
         }
         #endregion
+
+
+        private void UpdateTreePositions()
+        {
+            foreach (TreeNode node in m_configTreeView.Nodes)
+            {
+                ConfigurationTreeItemData dat = (node.Tag as ConfigurationTreeItemData);
+                if (dat != null)
+                {
+                    dat.ConfigurationData.TreePosition = node.Index;
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    {
+                        TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.ID, node.Index);
+                    }
+                }
+            }
+        }
 
 
         #region Service related methods

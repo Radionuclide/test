@@ -170,8 +170,8 @@ namespace iba.Processing
                         fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
                         fswt.NotifyFilter = NotifyFilters.FileName;
                         fswt.IncludeSubdirectories = m_cd.SubDirs;
-                        fswt.Created += new FileSystemEventHandler(OnNewDatFile);
-                        fswt.Renamed += new RenamedEventHandler(OnDatFileRename);
+                        fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
+                        fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
                         fswt.Error += new ErrorEventHandler(OnFileSystemError);
                         fswt.EnableRaisingEvents = true;
                         networkErrorOccured = false;
@@ -549,6 +549,13 @@ namespace iba.Processing
             {
                 try
                 {
+                    if (!File.Exists(m_cd.IbaAnalyzerExe))
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerExecutableDoesNotExist + m_cd.IbaAnalyzerExe);
+                        m_sd.Started = false;
+                        Stop = true;
+                        return;
+                    }
                     string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyzerExe).FileVersion;
                     if (version.CompareTo("5.0") < 0)
                     {
@@ -620,8 +627,11 @@ namespace iba.Processing
             {
                 Trace.WriteLine("ibaerror\r\n");
                 Log(Logging.Level.Exception, ex.Message);
-                m_sd.Started = false;
-                Stop = stop;
+                if (stop)
+                {
+                    m_sd.Started = false;
+                    Stop = stop;
+                }
                 return;
             }
         }
@@ -649,27 +659,21 @@ namespace iba.Processing
             }
         }
 
-        private void OnDatFileRename(object source, RenamedEventArgs args)
+        private void OnNewDatFileOrRenameFile(object sender, FileSystemEventArgs args)
         {
             string filename = args.FullPath;
             lock (m_candidateNewFiles)
             {
                 if (!m_candidateNewFiles.Contains(filename))
+                {
                     m_candidateNewFiles.Add(filename);
-            }
-        }
-        
-        private void OnNewDatFile(object sender, FileSystemEventArgs args)
-        {
-            string filename = args.FullPath;
-            lock (m_candidateNewFiles)
-            {
-                if (!m_candidateNewFiles.Contains(filename))
-                    m_candidateNewFiles.Add(filename);
+                    m_skipAddNewDatFileTimerTick = true; //wait one tick before checking access, to let PDA do stuff
+                }
             }
         }
 
         private object m_timerLock; //makes the timer routines mutually exclusive
+        private bool m_skipAddNewDatFileTimerTick;
 
         private void OnAddNewDatFileTimerTick(object ignoreMe)
         {
@@ -682,6 +686,13 @@ namespace iba.Processing
             {
                 lock (m_candidateNewFiles)
                 {
+                    if (m_skipAddNewDatFileTimerTick)
+                    {
+                        m_skipAddNewDatFileTimerTick = false;
+                        retryAccessTimer.Change(1000, Timeout.Infinite);
+                        return;
+                    }
+
                     foreach (string filename in m_candidateNewFiles)
                     {
                         FileStream fs = null;
@@ -737,9 +748,9 @@ namespace iba.Processing
                     fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
                     fswt.NotifyFilter = NotifyFilters.FileName;
                     fswt.IncludeSubdirectories = m_cd.SubDirs;
-                    fswt.Created += new FileSystemEventHandler(OnNewDatFile);
+                    fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
                     fswt.Error += new ErrorEventHandler(OnFileSystemError);
-                    fswt.Renamed += new RenamedEventHandler(OnDatFileRename);
+                    fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
                     fswt.EnableRaisingEvents = true;
                     networkErrorOccured = false;
                     Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
@@ -1067,6 +1078,27 @@ namespace iba.Processing
                 {
                     ibaDatFile.Close();
                     ibaDatFile.OpenForUpdate(filename);
+
+                    String frames = null;
+                    try
+                    {
+                        ibaDatFile.QueryInfoByName("frames");
+                    }
+                    catch
+                    {
+                    }
+                    if (frames != null && frames == "1000000000")
+                    {
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
+                        try
+                        {
+                            if (time != null) File.SetLastWriteTime(filename, time.Value);
+                        }
+                        catch
+                        {
+                        }
+                        return DatFileStatus.State.COMPLETED_FAILURE;
+                    }
                     ibaDatFile.WriteInfoField("status", "readyToProcess");
                     ibaDatFile.Close();
                     if (time != null) File.SetLastWriteTime(filename, time.Value);
@@ -1132,7 +1164,16 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     Log(Logging.Level.Exception,ex.Message);
-                    m_ibaAnalyzer.CloseDataFiles();
+                    try
+                    {
+                        m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                    }
                     return;
                 }
                 foreach (TaskData task in m_cd.Tasks)
@@ -1167,7 +1208,16 @@ namespace iba.Processing
                         CopyMoveTaskData dat = task as CopyMoveTaskData;
                         if (dat.RemoveSource)
                         {
-                            m_ibaAnalyzer.CloseDataFiles();
+                            try
+                            {
+                                m_ibaAnalyzer.CloseDataFiles();
+                            }
+                            catch
+                            {
+                                Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
+                                StopIbaAnalyzer(false);
+                                StartIbaAnalyzer();
+                            }
                             CopyDatFile(DatFile, dat);
                             if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
                             {
@@ -1184,7 +1234,16 @@ namespace iba.Processing
                                 catch (Exception ex)
                                 {
                                     Log(Logging.Level.Exception, ex.Message);
-                                    m_ibaAnalyzer.CloseDataFiles();
+                                    try
+                                    {
+                                        m_ibaAnalyzer.CloseDataFiles();
+                                    }
+                                    catch
+                                    {
+                                        Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
+                                        StopIbaAnalyzer(false);
+                                        StartIbaAnalyzer();
+                                    }
                                     return;
                                 }
                             }
@@ -1229,8 +1288,17 @@ namespace iba.Processing
                         break;
                     }
                 }
-                    
-                m_ibaAnalyzer.CloseDataFiles();
+
+                try
+                {
+                    m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                    StopIbaAnalyzer(false);
+                    StartIbaAnalyzer();
+                }
                 
                 IbaFileUpdater ibaDatFile = new IbaFileClass();
                 DateTime time = File.GetLastWriteTime(DatFile);
@@ -1344,7 +1412,18 @@ namespace iba.Processing
             finally
             {
                 if (m_ibaAnalyzer != null)
-                    m_ibaAnalyzer.CloseAnalysis();
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                    }
+                }
             }
         }
 
@@ -1352,11 +1431,33 @@ namespace iba.Processing
         {
             string actualFileName = Path.GetFileNameWithoutExtension(filename);
             string dir = task.DestinationMap;
+            if (String.IsNullOrEmpty(dir))
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return null;
+            }
+
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
                 dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
             else dir = task.DestinationMapUNC;
+
+            if (dir == m_cd.DatDirectoryUNC)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return null;
+            }
+
+
             if (m_cd.SubDirs && task.Subfolder == ExtractData.SubfolderChoiceB.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
                 string s2 = Path.GetFullPath(m_cd.DatDirectory);
@@ -1522,12 +1623,33 @@ namespace iba.Processing
             {
                 string actualFileName = Path.GetFileNameWithoutExtension(filename);
                 string dir = task.DestinationMap;
+                if (String.IsNullOrEmpty(dir))
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
+
                 if (!Path.IsPathRooted(dir))
                 {  //get Absolute path relative to dir
                     dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
                 }
                 else
                     dir = task.DestinationMapUNC;
+
+                if (dir == m_cd.DatDirectoryUNC)
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
+
                 if (m_cd.SubDirs && task.Subfolder == ReportData.SubfolderChoice.SAME)
                 {   //concatenate subfolder corresponding to dat subfolder
                     string s2 = Path.GetFullPath(m_cd.DatDirectory);
@@ -1629,7 +1751,18 @@ namespace iba.Processing
             finally
             {
                 if (m_ibaAnalyzer != null)
-                    m_ibaAnalyzer.CloseAnalysis();
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                    }
+                }
             }
         }
 
@@ -1637,11 +1770,33 @@ namespace iba.Processing
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
             string dir = task.DestinationMap;
+            if (String.IsNullOrEmpty(dir))
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
                 dir = Path.Combine(m_cd.DatDirectory, dir);
             }
             else dir = task.DestinationMapUNC;
+
+            if (dir == m_cd.DatDirectoryUNC)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+
             if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
             {
                 string s2 = Path.GetFullPath(m_cd.DatDirectory);
@@ -1846,7 +2001,18 @@ namespace iba.Processing
             finally
             {
                 if (m_ibaAnalyzer != null && bUseAnalysis)
-                    m_ibaAnalyzer.CloseAnalysis();
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                    }
+                }
             }
         }
     }

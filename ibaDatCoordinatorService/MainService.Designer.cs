@@ -32,7 +32,7 @@ namespace iba.Services
             // IbaDatCoordinatorService
             // 
             this.CanShutdown = true;
-            this.ServiceName = "Service1";
+            this.ServiceName = "IbaDatCoordinatorService";
 
         }
 

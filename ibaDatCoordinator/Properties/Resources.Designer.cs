@@ -409,6 +409,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specified ibaAnalyzer executable does not exist: .
+        /// </summary>
+        internal static string IbaAnalyzerExecutableDoesNotExist {
+            get {
+                return ResourceManager.GetString("IbaAnalyzerExecutableDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IbaAnalyzer critical error, ibaAnalyzer will be restarted.
         /// </summary>
         internal static string IbaAnalyzerUndeterminedError {
@@ -736,6 +745,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No destination directory specified for the task..
+        /// </summary>
+        internal static string logNoOutputPathSpecified {
+            get {
+                return ResourceManager.GetString("logNoOutputPathSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .pdo file for report generator does not exist.
         /// </summary>
         internal static string logNoReportPdo {
@@ -795,6 +813,15 @@ namespace iba.Properties {
         internal static string logNotificationNotSupported {
             get {
                 return ResourceManager.GetString("logNotificationNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tasks destination directory is the same as .dat file directory of its parent job..
+        /// </summary>
+        internal static string logOutputIsInput {
+            get {
+                return ResourceManager.GetString("logOutputIsInput", resourceCulture);
             }
         }
         
@@ -1009,6 +1036,15 @@ namespace iba.Properties {
         internal static string Noaccess2 {
             get {
                 return ResourceManager.GetString("Noaccess2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PDA not yet finished with .dat file.
+        /// </summary>
+        internal static string Noaccess3 {
+            get {
+                return ResourceManager.GetString("Noaccess3", resourceCulture);
             }
         }
         

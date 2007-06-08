@@ -19,6 +19,7 @@ namespace iba.Processing
             lock (m_workers)
             {
                 m_workers.Add(data, cw);
+                IdCounter = Math.Max(IdCounter, data.ID + 1);
             }
         }
 
@@ -74,6 +75,18 @@ namespace iba.Processing
                 {
                     LogData.Data.Logger.Log("key not found");
                     //doesn't matter
+                }
+            }
+        }
+
+        virtual public void UpdateTreePosition(ulong ID, int pos)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.ID == ID)
+                {
+                    pair.Key.TreePosition = pos;
+                    return;
                 }
             }
         }
@@ -677,6 +690,18 @@ namespace iba.Processing
             try
             {
                 Program.CommunicationObject.Manager.StopConfiguration(ID);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+            }
+        }
+
+        public override void UpdateTreePosition(ulong ID, int pos)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.UpdateTreePosition(ID, pos);
             }
             catch (SocketException)
             {

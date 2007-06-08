@@ -48,6 +48,14 @@ namespace iba.Data
             UpdateUNC(false);
         }
 
+
+        private int m_treePosition;
+        public int TreePosition
+        {
+            get { return m_treePosition; }
+            set { m_treePosition = value; }
+        }
+
         public void UpdateUNC(bool updateChildren)
         {
             m_datdirectoryUNC = Shares.PathToUnc(m_datDirectory, false);
@@ -206,6 +214,7 @@ namespace iba.Data
             m_pass = "";
             m_username = "";
             m_datdirectoryUNC = "";
+            m_treePosition = -1;
         }
 
         public void relinkChildData()

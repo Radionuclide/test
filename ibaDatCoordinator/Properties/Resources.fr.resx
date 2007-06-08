@@ -262,6 +262,9 @@
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IbaAnalyzerExecutableDoesNotExist" xml:space="preserve">
+    <value>Specified ibaAnalyzer executable does not exist: </value>
+  </data>
   <data name="IbaAnalyzerUndeterminedError" xml:space="preserve">
     <value>ibaAnalyzer erreur critique, redémarrage d'ibaAnalyzer</value>
   </data>
@@ -361,6 +364,9 @@
   <data name="logNoExtractPdo" xml:space="preserve">
     <value>Fichier .pdo pour extraction n'existe pas</value>
   </data>
+  <data name="logNoOutputPathSpecified" xml:space="preserve">
+    <value>No destination directory specified for the task.</value>
+  </data>
   <data name="logNoReportPdo" xml:space="preserve">
     <value>Fichier .pdo pour rapport n'existe pas</value>
   </data>
@@ -381,6 +387,9 @@
   </data>
   <data name="logNotificationNotSupported" xml:space="preserve">
     <value>cette demande de réseau n'est pas soutenue </value>
+  </data>
+  <data name="logOutputIsInput" xml:space="preserve">
+    <value>Tasks destination directory is the same as .dat file directory of its parent job.</value>
   </data>
   <data name="logPluginLoadError" xml:space="preserve">
     <value>Erreur en chargeant l'assemblage {0} : '{1}'</value>
@@ -444,6 +453,9 @@
   </data>
   <data name="Noaccess2" xml:space="preserve">
     <value>Fichier de données protégé à l'écriture</value>
+  </data>
+  <data name="Noaccess3" xml:space="preserve">
+    <value>PDA not yet finished with .dat file</value>
   </data>
   <data name="noIbaAnalyser" xml:space="preserve">
     <value>Aucun ibaAnalyzer enregistré</value>
