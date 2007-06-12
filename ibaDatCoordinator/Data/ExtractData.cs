@@ -17,6 +17,7 @@ namespace iba.Data
             m_subfolderChoice = SubfolderChoiceB.DAY;
             m_numbFolders = 10;
             m_fileType = ExtractFileType.BINARY;
+            m_monitorData = new MonitorData();
         }
 
         public ExtractData() : this(null)
@@ -54,6 +55,13 @@ namespace iba.Data
             set { m_numbFolders = value; }
         }
 
+        private MonitorData m_monitorData;
+        public MonitorData MonitorData
+        {
+            get { return m_monitorData; }
+            set { m_monitorData = value; }
+        }
+
         public override object Clone()
         {
             ExtractData ed = new ExtractData(null);
@@ -69,6 +77,7 @@ namespace iba.Data
             ed.m_username = m_username;
             ed.m_pass = m_pass;
             ed.m_destinationMapUNC = m_destinationMapUNC;
+            ed.m_monitorData = (MonitorData) m_monitorData.Clone();
             return ed;
         }
     }

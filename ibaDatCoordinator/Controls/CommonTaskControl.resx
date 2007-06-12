@@ -163,7 +163,7 @@
     <value>171, 26</value>
   </data>
   <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 20</value>
+    <value>413, 20</value>
   </data>
   <data name="m_nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -181,10 +181,10 @@
     <value>1</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 20</value>
+    <value>15, 20</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 63</value>
+    <value>602, 63</value>
   </data>
   <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -220,10 +220,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>371, 3</value>
+    <value>395, 3</value>
   </data>
   <data name="m_rb1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
+    <value>198, 22</value>
   </data>
   <data name="m_rb1stFailure.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -256,7 +256,7 @@
     <value>3, 31</value>
   </data>
   <data name="m_rbAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbAlways.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -286,10 +286,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 31</value>
+    <value>199, 31</value>
   </data>
   <data name="m_rbFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbFailure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -322,7 +322,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -352,10 +352,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbSucces.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 3</value>
+    <value>199, 3</value>
   </data>
   <data name="m_rbSucces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbSucces.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -385,7 +385,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 56</value>
+    <value>596, 56</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -406,10 +406,10 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rb1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbSucces" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_ExecutegroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 89</value>
+    <value>15, 89</value>
   </data>
   <data name="m_ExecutegroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 75</value>
+    <value>602, 75</value>
   </data>
   <data name="m_ExecutegroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -445,10 +445,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>371, 3</value>
+    <value>395, 3</value>
   </data>
   <data name="m_rbNot1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
+    <value>198, 22</value>
   </data>
   <data name="m_rbNot1stFailure.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -481,7 +481,7 @@
     <value>3, 31</value>
   </data>
   <data name="m_rbNotAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbNotAlways.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -511,10 +511,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNotFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 31</value>
+    <value>199, 31</value>
   </data>
   <data name="m_rbNotFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbNotFailure.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -547,7 +547,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_rbNotDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbNotDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -577,10 +577,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbNotSuccess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 3</value>
+    <value>199, 3</value>
   </data>
   <data name="m_rbNotSuccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>190, 22</value>
   </data>
   <data name="m_rbNotSuccess.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -610,7 +610,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 56</value>
+    <value>596, 56</value>
   </data>
   <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -631,10 +631,10 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNot1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotSuccess" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="groupBox8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 167</value>
+    <value>15, 167</value>
   </data>
   <data name="groupBox8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 75</value>
+    <value>602, 75</value>
   </data>
   <data name="groupBox8.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -658,10 +658,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_pluginPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 248</value>
+    <value>15, 248</value>
   </data>
   <data name="m_pluginPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 377</value>
+    <value>602, 475</value>
   </data>
   <data name="m_pluginPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -684,8 +684,14 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
+  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 740</value>
+  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>620, 640</value>
+    <value>620, 740</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>CommonTaskControl</value>

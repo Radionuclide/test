@@ -679,4 +679,10 @@
   <data name="Noaccess3" xml:space="preserve">
     <value>PDA not yet finished with .dat file</value>
   </data>
+  <data name="errAnalyzerMemory" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed memory limit</value>
+  </data>
+  <data name="errAnalyzerTime" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed time limit</value>
+  </data>
 </root>

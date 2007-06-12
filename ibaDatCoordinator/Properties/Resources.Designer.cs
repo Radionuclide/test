@@ -351,6 +351,24 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to IbaAnalyzer exceeded the imposed memory limit.
+        /// </summary>
+        internal static string errAnalyzerMemory {
+            get {
+                return ResourceManager.GetString("errAnalyzerMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IbaAnalyzer exceeded the imposed time limit.
+        /// </summary>
+        internal static string errAnalyzerTime {
+            get {
+                return ResourceManager.GetString("errAnalyzerTime", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon error {
             get {
                 object obj = ResourceManager.GetObject("error", resourceCulture);

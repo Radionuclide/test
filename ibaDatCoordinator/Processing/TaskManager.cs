@@ -86,6 +86,12 @@ namespace iba.Processing
                 if (pair.Key.ID == ID)
                 {
                     pair.Key.TreePosition = pos;
+                    if (pair.Value.ConfigurationToUpdate != null)
+                        pair.Value.ConfigurationToUpdate.TreePosition = pos;
+                    if (pair.Value.RunningConfiguration != null)
+                        pair.Value.RunningConfiguration.TreePosition = pos;
+                    if (pair.Value.Status.CorrConfigurationData != null)
+                        pair.Value.Status.CorrConfigurationData.TreePosition = pos;
                     return;
                 }
             }

@@ -48,6 +48,22 @@ namespace iba.Controls
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text);
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
+
+            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+            m_nudMemory.Value = m_data.MonitorData.MemoryLimit;
+            m_nudTime.Value = m_data.MonitorData.TimeLimit.Minutes;
+
+            try
+            {
+                string version = FileVersionInfo.GetVersionInfo(m_data.ParentConfigurationData.IbaAnalyzerExe).FileVersion;
+                m_monitorGroup.Enabled = (version.CompareTo("5.8.1") >= 0);
+            }
+            catch
+            {
+                m_monitorGroup.Enabled = false;
+            }
+
         }
 
         public void SaveData()
@@ -56,6 +72,12 @@ namespace iba.Controls
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.Expression = m_expressionTextBox.Text;
             m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
+
+            m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
+            m_data.MonitorData.MonitorTime = m_cbTime.Checked;
+            m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
+            m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }

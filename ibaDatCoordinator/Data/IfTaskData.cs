@@ -45,12 +45,20 @@ namespace iba.Data
             m_testDatFile = String.Empty;
             m_expression = String.Empty;
             m_xtype = 0;
+            m_monitorData = new MonitorData();
         }
 
         public IfTaskData()
             : this(null)
         {
 
+        }
+
+        private MonitorData m_monitorData;
+        public MonitorData MonitorData
+        {
+            get { return m_monitorData; }
+            set { m_monitorData = value; }
         }
 
         public override object Clone()
@@ -63,6 +71,7 @@ namespace iba.Data
             ifd.m_testDatFile = m_testDatFile.Clone() as string;
             ifd.m_notify = m_notify;
             ifd.m_expression = m_expression;
+            ifd.m_monitorData = m_monitorData;
             return ifd;
         }
     }

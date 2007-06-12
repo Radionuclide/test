@@ -61,6 +61,22 @@ namespace iba.Controls
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
             m_folderNumber.Value = m_data.SubfoldersNumber;
 
+            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+            m_nudMemory.Value = m_data.MonitorData.MemoryLimit;
+            m_nudTime.Value = m_data.MonitorData.TimeLimit.Minutes;
+
+            try
+            {
+                string version = FileVersionInfo.GetVersionInfo(m_data.ParentConfigurationData.IbaAnalyzerExe).FileVersion;
+                m_monitorGroup.Enabled = (version.CompareTo("5.8.1") >= 0);
+            }
+            catch
+            {
+                m_monitorGroup.Enabled = false;
+            }
+
+
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
@@ -81,6 +97,11 @@ namespace iba.Controls
             if (m_rbMonth.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.SAME;
             m_data.SubfoldersNumber = (uint) m_folderNumber.Value;
+
+            m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
+            m_data.MonitorData.MonitorTime = m_cbTime.Checked;
+            m_data.MonitorData.MemoryLimit = (uint) m_nudMemory.Value;
+            m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double) m_nudTime.Value);
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;

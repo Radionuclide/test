@@ -163,6 +163,7 @@
     <Compile Include="Data\ibaDatCoordinatorData.cs" />
     <Compile Include="Data\IfTaskData.cs" />
     <Compile Include="Data\LogData.cs" />
+    <Compile Include="Data\MonitorData.cs" />
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
     <Compile Include="Data\TaskData.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Processing\IbaAnalyzerMonitor.cs" />
     <Compile Include="Processing\Notifier.cs" />
     <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="StartServiceDialog.cs">
@@ -275,6 +277,10 @@
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ConfigurationControl.fr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConfigurationControl.hy-AM.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>

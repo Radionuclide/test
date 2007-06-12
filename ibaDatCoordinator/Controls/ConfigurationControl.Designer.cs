@@ -790,7 +790,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Font = null;
-            this.MinimumSize = new System.Drawing.Size(620, 670);
+            this.MinimumSize = new System.Drawing.Size(620, 250);
             this.Name = "ConfigurationControl";
             this.m_toolTip.SetToolTip(this, resources.GetString("$this.ToolTip"));
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).EndInit();

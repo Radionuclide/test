@@ -620,12 +620,10 @@ namespace iba.Processing
                 if (m_ibaAnalyzer == null)
                     return;
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
-                Trace.WriteLine("ibastopped\r\n");
                 m_ibaAnalyzer = null;
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("ibaerror\r\n");
                 Log(Logging.Level.Exception, ex.Message);
                 if (stop)
                 {
@@ -1378,30 +1376,55 @@ namespace iba.Processing
         {
             try
             {
-                m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
-                lock (m_sd.DatFileStates)
+                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
                 {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                    mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
+
+
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                    }
+                    Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
+                    if (task.ExtractToFile)
+                    {
+                        string outFile = GetExtractFileName(filename, task);
+                        if (outFile == null) return;
+                        mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
+                    }
+                    else
+                    {
+                        mon.Execute(delegate() { m_ibaAnalyzer.Extract(0, String.Empty); });
+                    }
+                    //code on succes
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    }
+                    Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, task);
                 }
-                Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
-                if (task.ExtractToFile)
-                {
-                    string outFile = GetExtractFileName(filename, task);
-                    if (outFile == null) return;
-                    m_ibaAnalyzer.Extract(1, outFile);
-                }
-                else
-                {
-                    m_ibaAnalyzer.Extract(0, String.Empty);
-                }
-                //code on succes
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                }
-                Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename,task);
             }
-            catch 
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
+            }
+            catch
             {
                 Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 lock (m_sd.DatFileStates)
@@ -1415,7 +1438,7 @@ namespace iba.Processing
                 {
                     try
                     {
-                        m_ibaAnalyzer.CloseDataFiles();
+                        m_ibaAnalyzer.CloseAnalysis();
                     }
                     catch
                     {
@@ -1725,20 +1748,44 @@ namespace iba.Processing
 
             try
             {
-                m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
+                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
+                {
+                    mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
+
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                    }
+                    Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
+                    if (task.Output != ReportData.OutputChoice.PRINT)
+                        mon.Execute(delegate(){m_ibaAnalyzer.Report(arg);});
+                    else
+                        mon.Execute(delegate(){m_ibaAnalyzer.Report("");});
+                    //Thread.Sleep(500);
+                    //code on succes
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    Log(Logging.Level.Info, iba.Properties.Resources.logReportSuccess, filename, task);
+                }
+            }
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
                 lock (m_sd.DatFileStates)
                 {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
-                Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
-                if (task.Output != ReportData.OutputChoice.PRINT)
-                    m_ibaAnalyzer.Report(arg);
-                else
-                    m_ibaAnalyzer.Report("");
-                //Thread.Sleep(500);
-                //code on succes
-                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                Log(Logging.Level.Info, iba.Properties.Resources.logReportSuccess, filename,task);
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
             }
             catch
             {
@@ -1754,7 +1801,7 @@ namespace iba.Processing
                 {
                     try
                     {
-                        m_ibaAnalyzer.CloseDataFiles();
+                        m_ibaAnalyzer.CloseAnalysis();
                     }
                     catch
                     {
@@ -1967,28 +2014,51 @@ namespace iba.Processing
                 }
                 Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskStarted, filename, task);
 
-                if (bUseAnalysis) m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
-                
-                
-                float f = m_ibaAnalyzer.Evaluate(task.Expression, (int) task.XType);
+                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
+                {
+                    if (bUseAnalysis)
+                        mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
+                    float f = float.NaN;
+                    mon.Execute(delegate() { f = m_ibaAnalyzer.Evaluate(task.Expression, (int)task.XType); });
 
-                if (!float.IsNaN(f) && !float.IsInfinity(f) &&  f >= 0.5)
-                {
-                    //code on succes
-                    lock (m_sd.DatFileStates)
+                    if (!float.IsNaN(f) && !float.IsInfinity(f) && f >= 0.5)
                     {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_TRUE;
+                        //code on succes
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_TRUE;
+                        }
+                        Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedTrue, filename, task);
                     }
-                    Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedTrue, filename, task);
-                }
-                else
-                {
-                    lock (m_sd.DatFileStates)
+                    else
                     {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FALSE;
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FALSE;
+                        }
+                        Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedFalse, filename, task);
                     }
-                    Log(Logging.Level.Info, iba.Properties.Resources.logIfTaskEvaluatedFalse, filename, task);
                 }
+            }
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                StopIbaAnalyzer();
+                StartIbaAnalyzer();
             }
             catch
             {
@@ -2004,7 +2074,7 @@ namespace iba.Processing
                 {
                     try
                     {
-                        m_ibaAnalyzer.CloseDataFiles();
+                        m_ibaAnalyzer.CloseAnalysis();
                     }
                     catch
                     {

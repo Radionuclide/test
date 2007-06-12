@@ -63,6 +63,13 @@ namespace iba.Controls
             this.m_rbMonth = new System.Windows.Forms.RadioButton();
             this.m_checkPathButton = new System.Windows.Forms.Button();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.m_monitorGroup = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.m_nudTime = new System.Windows.Forms.NumericUpDown();
+            this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
+            this.m_cbTime = new System.Windows.Forms.CheckBox();
+            this.m_cbMemory = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -73,6 +80,9 @@ namespace iba.Controls
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
+            this.m_monitorGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
             this.SuspendLayout();
             // 
             // m_rbTextFile
@@ -323,13 +333,88 @@ namespace iba.Controls
             this.m_checkPathButton.UseVisualStyleBackColor = true;
             this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
+            // m_monitorGroup
+            // 
+            resources.ApplyResources(this.m_monitorGroup, "m_monitorGroup");
+            this.m_monitorGroup.Controls.Add(this.label5);
+            this.m_monitorGroup.Controls.Add(this.label1);
+            this.m_monitorGroup.Controls.Add(this.m_nudTime);
+            this.m_monitorGroup.Controls.Add(this.m_nudMemory);
+            this.m_monitorGroup.Controls.Add(this.m_cbTime);
+            this.m_monitorGroup.Controls.Add(this.m_cbMemory);
+            this.m_monitorGroup.Name = "m_monitorGroup";
+            this.m_monitorGroup.TabStop = false;
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // m_nudTime
+            // 
+            resources.ApplyResources(this.m_nudTime, "m_nudTime");
+            this.m_nudTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.m_nudTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudTime.Name = "m_nudTime";
+            this.m_nudTime.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // m_nudMemory
+            // 
+            resources.ApplyResources(this.m_nudMemory, "m_nudMemory");
+            this.m_nudMemory.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.m_nudMemory.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudMemory.Name = "m_nudMemory";
+            this.m_nudMemory.Value = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            // 
+            // m_cbTime
+            // 
+            resources.ApplyResources(this.m_cbTime, "m_cbTime");
+            this.m_cbTime.Name = "m_cbTime";
+            this.m_cbTime.UseVisualStyleBackColor = true;
+            // 
+            // m_cbMemory
+            // 
+            resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
+            this.m_cbMemory.Name = "m_cbMemory";
+            this.m_cbMemory.UseVisualStyleBackColor = true;
+            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(566, 390);
+            this.MinimumSize = new System.Drawing.Size(100, 470);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -347,6 +432,10 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.m_monitorGroup.ResumeLayout(false);
+            this.m_monitorGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -387,6 +476,13 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbUserName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button m_checkPathButton;
+        private System.Windows.Forms.GroupBox m_monitorGroup;
+        private System.Windows.Forms.CheckBox m_cbTime;
+        private System.Windows.Forms.CheckBox m_cbMemory;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown m_nudTime;
+        private System.Windows.Forms.NumericUpDown m_nudMemory;
+        private System.Windows.Forms.Label label5;
 
     }
 }

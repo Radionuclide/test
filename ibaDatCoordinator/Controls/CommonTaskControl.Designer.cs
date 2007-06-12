@@ -195,7 +195,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.m_ExecutegroupBox);
             this.Controls.Add(this.groupBox5);
-            this.MinimumSize = new System.Drawing.Size(620, 640);
+            this.MinimumSize = new System.Drawing.Size(620, 250);
             this.Name = "CommonTaskControl";
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();

@@ -62,10 +62,18 @@ namespace iba.Data
             m_subfolderChoice = SubfolderChoice.DAY;
             m_numbFolders = 10;
             m_extension = "pdf";
+            m_monitorData = new MonitorData();
         }
 
         public ReportData() : this(null)
         {
+        }
+
+        private MonitorData m_monitorData;
+        public MonitorData MonitorData
+        {
+            get { return m_monitorData; }
+            set { m_monitorData = value; }
         }
 
         public override object Clone()
@@ -83,6 +91,7 @@ namespace iba.Data
             rd.m_pass = m_pass;
             rd.m_destinationMapUNC = m_destinationMapUNC;
             rd.m_extension = m_extension;
+            rd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return rd;
         }
     }

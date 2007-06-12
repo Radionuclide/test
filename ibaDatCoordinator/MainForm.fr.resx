@@ -323,6 +323,9 @@
         owcOozlwZeto7ZXDuXvCfHV/+dGfqqrf44qgu28AAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="cutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
+  </data>
   <data name="cutToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Couper</value>
   </data>
@@ -340,6 +343,9 @@
         z2B8MS0mq80GyySHj98rD2jQOpXbtgrVNprRnO2h5lQX1Sc7leYODh27W3nN9/WZDnroDx0A5wwhdtmt
         AAAAAElFTkSuQmCC
 </value>
+  </data>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
   </data>
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Copier</value>
@@ -361,8 +367,14 @@
         YII=
 </value>
   </data>
+  <data name="pasteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
+  </data>
   <data name="pasteToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Coller</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Supprimer</value>
@@ -373,11 +385,23 @@
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Editer</value>
   </data>
+  <data name="configurationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
+  </data>
   <data name="configurationToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Boulots</value>
   </data>
+  <data name="statusToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
+  </data>
+  <data name="loggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
+  </data>
   <data name="loggingToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Journalisation</value>
+  </data>
+  <data name="watchdogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 22</value>
   </data>
   <data name="watchdogToolStripMenuItem.Text" xml:space="preserve">
     <value>Chien de garde</value>
@@ -388,14 +412,20 @@
   <data name="viewToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Vue</value>
   </data>
+  <data name="startServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 22</value>
+  </data>
   <data name="startServiceToolStripMenuItem.Text" xml:space="preserve">
     <value>Démarrer</value>
+  </data>
+  <data name="stopServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 22</value>
   </data>
   <data name="stopServiceToolStripMenuItem.Text" xml:space="preserve">
     <value>Arrêter</value>
   </data>
   <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>132, 22</value>
   </data>
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>A propos ...</value>

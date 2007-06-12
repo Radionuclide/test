@@ -232,6 +232,12 @@
   <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="errAnalyzerMemory" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed memory limit</value>
+  </data>
+  <data name="errAnalyzerTime" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed time limit</value>
+  </data>
   <data name="extract_failure" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\extractfailure.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
