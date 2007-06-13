@@ -1378,13 +1378,11 @@ namespace iba.Processing
             {
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
                 {
-                    mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
-
-
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
+                    mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
                     Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
                     if (task.ExtractToFile)
                     {
@@ -1642,6 +1640,10 @@ namespace iba.Processing
         private void Report(string filename, ReportData task)
         {
             string arg = "";
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
             if (task.Output != ReportData.OutputChoice.PRINT)
             {
                 string actualFileName = Path.GetFileNameWithoutExtension(filename);
@@ -1751,11 +1753,6 @@ namespace iba.Processing
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
                 {
                     mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
-
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
-                    }
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
                     if (task.Output != ReportData.OutputChoice.PRINT)
                         mon.Execute(delegate(){m_ibaAnalyzer.Report(arg);});
