@@ -45,19 +45,38 @@ namespace iba.Processing
         {
             lock (m_workers)
             {
-                try
+                ConfigurationWorker cw;
+                if (m_workers.TryGetValue(data,out cw))
                 {
-                    ConfigurationWorker cw = m_workers[data];
-                    //cw.ConfigurationToUpdate = data;
-                    m_workers.Remove(data);
+                    m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
+                    // new data with same ID
                     m_workers.Add(data, cw);
                 }
-                catch (KeyNotFoundException)
+                else
                 {
-                    //doesn't matter
+                    cw = new ConfigurationWorker(data);
+                    m_workers.Add(data, cw);
                 }
             }
         }
+
+        virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
+        {
+            foreach (ConfigurationData data in datas) ReplaceConfiguration(data);
+            List<ConfigurationData> toRemove = new List<ConfigurationData>();
+            //remove spurious configurations;
+            foreach (ConfigurationData dat in m_workers.Keys)
+            {
+                if (!datas.Contains(dat)) //contains works because we've allready replaced all datas (it would fail otherwise because contains
+                    // uses  equality comparer instead of CompareTo)
+                    toRemove.Add(dat);
+            }
+            foreach (ConfigurationData dat in toRemove)
+            {
+                RemoveConfiguration(dat);
+            }
+        }
+
 
         virtual public void UpdateConfiguration(ConfigurationData data)
         {

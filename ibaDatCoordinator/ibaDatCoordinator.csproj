@@ -280,10 +280,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConfigurationControl.hy-AM.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigurationControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CopyControl.de.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CopyControl.cs</DependentUpon>

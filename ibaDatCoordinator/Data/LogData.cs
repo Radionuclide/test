@@ -383,7 +383,7 @@ namespace iba.Data
         public string FileName
         {
             get {
-                if (m_onlyGrid)
+                if (AppState == ApplicationState.CLIENTCONNECTED)
                     return Program.CommunicationObject.Logging_fileName;
                 else
                     return m_filename; 
@@ -391,8 +391,6 @@ namespace iba.Data
             set 
             {
                 m_filename = value;
-                string s = String.IsNullOrEmpty(m_filename) ? "not set" : m_filename;
-                Profiler.ProfileString(false, "LastState", "LastLogFile", ref s, "not set");
             }
         }
 
@@ -425,19 +423,7 @@ namespace iba.Data
         //singleton construction
         private LogData()
         {
-            string returnvalue = "";
-            Profiler.ProfileString(true, "LastState", "LastLogFile", ref returnvalue, "not set");
-            if (returnvalue == "not set")
-            {
-                //have logfile at a default position
-                string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-                m_filename = Path.Combine(rootPath, @"ibaDatCoordinator\ibaDatCoordinaterLog.txt");
-            }
-            else
-            {
-                m_filename = returnvalue;
-            }
-            m_logger = null; //expect to be set in LogData
+            m_logger = null; //expect to be set in Logger
         }
 
         static public void StopLogger()
@@ -445,7 +431,9 @@ namespace iba.Data
             m_data.Logger.Close();
         }
 
-        static public void InitializeLogger(DataGridView grid, Control control, bool onlyGrid)
+        public enum ApplicationState {CLIENTDISCONNECTED,CLIENTCONNECTED,CLIENTSTANDALONE, SERVICE};
+
+        static public void InitializeLogger(DataGridView grid, Control control, ApplicationState appState)
         {
             if (m_data == null)
                 m_data = new LogData();
@@ -454,10 +442,15 @@ namespace iba.Data
             gvLogger.EventFormatter = new Logging.EventFormatters.SimpleEventFormatter();
             gvLogger.Level = Level.All;
 
-            if (!onlyGrid)
+            if (appState != ApplicationState.CLIENTCONNECTED)
             {
-                string filename = m_data.m_filename;
-                FileBackup.Backup(filename, Path.GetDirectoryName(filename), "ibaDatCoordinatorLog", 10);
+                string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+                string filename = "";
+                if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\DatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
+                else
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\DatCoordinator\ibaDatCoordinaterLog.txt");;
+                FileBackup.Backup(filename, Path.GetDirectoryName(filename), appState == ApplicationState.CLIENTDISCONNECTED?"ibaDatCoordinatorLog_disconnected":"ibaDatCoordinatorLog", 10);
                 FileLogger fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
                 fileLogger.IsBufferingEnabled = false;
                 fileLogger.IsContextEnabled = true;
@@ -469,14 +462,12 @@ namespace iba.Data
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
 
                 m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger);
-                m_data.OnlyGrid = false;
             }
             else
             {
                 m_data.Logger = gvLogger;
-                m_data.OnlyGrid = true;
             }
-
+            m_data.AppState = appState;
             m_data.Logger.IsBufferingEnabled = true;
             m_data.Logger.IsContextEnabled = true;
             m_data.Logger.AutoFlushInterval = 1000;
@@ -485,52 +476,11 @@ namespace iba.Data
             m_data.Logger.Open();
         }
 
-        static public void OpenFromFile(string filename)
+        private ApplicationState m_appState;
+        public ApplicationState AppState
         {
-            //by way of test do the test the grid
-            GridViewLogger gv;
-            if (m_data.OnlyGrid)
-                gv = m_data.Logger as GridViewLogger;
-            else
-                gv = m_data.Logger.Children[0] as GridViewLogger;
-
-            if (gv.readFromFile(filename))
-            {
-                m_data.FileName = filename;
-                if (m_data.m_onlyGrid) return; //don't hold the file
-                m_data.Logger.Close();
-                InitializeLogger(gv.Grid, gv.LogControl,m_data.OnlyGrid);
-            }
-        }
-
-        static public void NewFromFile(string filename)
-        {
-            GridViewLogger gv;
-            if (m_data.OnlyGrid)
-                gv = m_data.Logger as GridViewLogger;
-            else
-                gv = m_data.Logger.Children[0] as GridViewLogger;
-            string oldFilename = m_data.FileName;
-            try
-            {
-                if (File.Exists(filename)) File.Delete(filename);
-                m_data.FileName = filename;
-                gv.clear();
-                m_data.Logger.Close();
-                InitializeLogger(gv.Grid, gv.LogControl,m_data.OnlyGrid);
-            }
-            catch (Exception ex)
-            {
-                m_data.FileName = oldFilename;
-                MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message);
-            }
-        }
-
-        private bool m_onlyGrid;
-        public bool OnlyGrid
-        {
-            get { return m_onlyGrid; }
-            set { m_onlyGrid = value; }
+            get { return m_appState; }
+            set { m_appState = value; }
         }
 
         static private LogData m_data = null;

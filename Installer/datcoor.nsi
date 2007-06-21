@@ -339,6 +339,9 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator Service Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  
+  ;Start service
+   nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
 SectionEnd
 
 Section -Post

@@ -44,17 +44,24 @@ namespace iba
             //register nodename change with the configurationcontrol
             LogControl theLogControl; 
             propertyPanes["logControl"] = theLogControl = new LogControl();
-            LogData.InitializeLogger(theLogControl.LogView, theLogControl, Program.RunsWithService == Program.ServiceEnum.CONNECTED);
-            theLogControl.CreateControl();
+            LogData.ApplicationState state = LogData.ApplicationState.CLIENTSTANDALONE;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                LogData.Data.MaxRows = Program.CommunicationObject.LoggerMaxRows;
-                Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
-                ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
-                string lf = LogData.Data.FileName;
-                if (lf != null)
-                    LogData.OpenFromFile(LogData.Data.FileName);
-            }
+                state = LogData.ApplicationState.CLIENTCONNECTED;
+            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                state = LogData.ApplicationState.CLIENTDISCONNECTED;
+            LogData.InitializeLogger(theLogControl.LogView, theLogControl, state);
+            theLogControl.CreateControl();
+
+            //if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            //{
+            //    LogData.Data.MaxRows = Program.CommunicationObject.LoggerMaxRows;
+            //    Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
+            //    ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
+            //    string lf = LogData.Data.FileName;
+            //    //if (lf != null)
+            //    //    LogData.OpenFromFile(LogData.Data.FileName);
+            //}
+
             configurationToolStripMenuItem.Enabled = false;
             statusToolStripMenuItem.Enabled = true;
             m_filename = null;
@@ -91,10 +98,6 @@ namespace iba
             statImageList.Images.Add(iba.Properties.Resources.configuration);
             m_statusTreeView.ImageList = statImageList;
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                Program.CommunicationObject.Logging_Log("Gui Started");
-            }
 
             m_quitForm = new QuitForm(this);
             m_quitForm.CreateHandle(new CreateParams());
@@ -126,18 +129,6 @@ namespace iba
                 m_iconEx.ContextMenu = m_iconMenu;
                 m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
                 m_iconEx.Visible = true;
-
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                {
-                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
-                    m_iconEx.Text = iba.Properties.Resources.niConnected;
-                }
-                else
-                {
-                    m_startButton.Enabled = m_stopButton.Enabled = false;
-                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.disconnectedIcon;
-                    m_iconEx.Text = iba.Properties.Resources.niDisconnected;
-                }
             }
             else
             {
@@ -162,6 +153,13 @@ namespace iba
             SaveRightPaneControl();
             if (!m_actualClose && Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
+                if (m_tryConnectTimer != null)
+                {
+                    m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                    m_tryConnectTimer.Dispose();
+                    m_tryConnectTimer = null;
+                }
+
                 string s1 = TextFromLoad();
                 string s2 = TextToSave();
                 if (s1 != s2)
@@ -380,6 +378,17 @@ namespace iba
             {
                 Hide();
                 bHandleResize = true;
+            }
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
+                m_iconEx.Text = iba.Properties.Resources.niConnected;
+            }
+            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
+                m_startButton.Enabled = m_stopButton.Enabled = false;
+                m_iconEx.Icon = this.Icon = iba.Properties.Resources.disconnectedIcon;
+                m_iconEx.Text = iba.Properties.Resources.niDisconnected;
             }
         }
 
@@ -1415,7 +1424,6 @@ namespace iba
                         ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
                             TaskManager.Manager.WatchDogData,
                             TaskManager.Manager.Configurations, 
-                            LogData.Data.FileName,
                             LogData.Data.MaxRows
                             );
                         mySerializer.Serialize(myWriter, dat);
@@ -1442,7 +1450,6 @@ namespace iba
                     ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
                         TaskManager.Manager.WatchDogData,
                         TaskManager.Manager.Configurations,
-                        LogData.Data.FileName,
                         LogData.Data.MaxRows
                         );
                     mySerializer.Serialize(myWriter, dat);
@@ -1518,8 +1525,6 @@ namespace iba
                         TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
                         TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
                         confs = dat.Configurations;
-                        if (LogData.Data.FileName != dat.Logfile)
-                            LogData.OpenFromFile(dat.Logfile);
                         LogData.Data.MaxRows = dat.LogItemCount;
                     }
                     m_filename = filename;
@@ -1682,36 +1687,6 @@ namespace iba
             }
         }
 
-        #region buttons in the mainform
-        private void m_newLogFileButton_Click(object sender, EventArgs e)
-        {
-            m_openFileDialog.CheckFileExists = false;
-            m_openFileDialog.Filter = "logfiles (*.txt)|*.txt";
-            DialogResult result = m_openFileDialog.ShowDialog();
-            if (result != DialogResult.OK) return;
-            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED)
-                LogData.NewFromFile(m_openFileDialog.FileName);
-            else
-                Program.CommunicationObject.Logging_setNewFile(m_openFileDialog.FileName);
-        }
-        
-        private void m_loadLogfileButton_Click(object sender, EventArgs e)
-        {
-            m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = "logfiles (*.txt)|*.txt";
-            DialogResult result = m_openFileDialog.ShowDialog();
-            if (result != DialogResult.OK) return;
-            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED)
-                LogData.OpenFromFile(m_openFileDialog.FileName);
-            else
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(DoOpenFromFile), m_openFileDialog.FileName);               
-        }
-
-        private void DoOpenFromFile(object arg)
-        {
-            Program.CommunicationObject.Logging_openFromFile((string)arg);
-        }
-        
         private void m_EntriesNumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             LogData.Data.MaxRows = (int) m_EntriesNumericUpDown1.Value;
@@ -1959,46 +1934,18 @@ namespace iba
         public void OnStartService()
         {
             //startservice dialog
-            bool result = false;
             using (StartServiceDialog ssd = new StartServiceDialog())
             {
                 if (WindowState == FormWindowState.Minimized)
                 {
                     ssd.StartPosition = FormStartPosition.CenterScreen;
                     ssd.ShowDialog();
-                    result = ssd.Result;
                 }
                 else
                 {
                     ssd.StartPosition = FormStartPosition.CenterParent;
                     ssd.ShowDialog(this);
-                    result = ssd.Result;
                 }
-            }
-            if (result)
-            {
-                TaskManager.Manager = null; //remove previous taskmanager so it does not stay
-                // alive during the online session
-                Program.RunsWithService = Program.ServiceEnum.CONNECTED;
-                //initialise with configurations;
-                fillManagerFromTree(TaskManager.Manager);
-                foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
-                {
-                    if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
-                }
-                LogData.Data.Logger.Close();
-                Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
-                ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
-                GridViewLogger gv = LogData.Data.Logger.Children[0] as GridViewLogger;
-                LogData.InitializeLogger(gv.Grid, gv.LogControl, true);
-                Program.CommunicationObject.Logging_Log(iba.Properties.Resources.logServiceStarted);
-                m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
-                m_iconEx.Text = iba.Properties.Resources.niConnected;
-                m_startButton.Enabled = m_stopButton.Enabled = true;
-                if (m_navBar.SelectedPane == m_statusPane)
-                    loadStatuses();
-                else if (m_navBar.SelectedPane == m_configPane)
-                    loadConfigurations();
             }
         }
 
@@ -2034,15 +1981,68 @@ namespace iba
             Program.CommunicationObject.StoppingService = false;
         }
 
-        public void fillManagerFromTree(TaskManager m)
+        public delegate void IbaAnalyzerCall();
+
+        public void TryToConnect(object ignoreMe)
         {
+            if (m_tryConnectTimer != null)
+                m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+
+            CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
+            CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
+            if (wrapper.TestConnection()) //succesfully connected
+            {
+                
+                Program.CommunicationObject = wrapper;
+                if (m_tryConnectTimer != null) //this is not the first call, restore stuff
+                {
+                    MethodInvoker m = delegate()
+                    {
+                        TaskManager.Manager = null; //remove previous taskmanager so it does not stay
+                        // alive during the online session
+                        Program.RunsWithService = Program.ServiceEnum.CONNECTED;
+                        //initialise with configurations;
+                        ReplaceManagerFromTree(TaskManager.Manager);
+                        foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
+                        {
+                            if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                        }
+                        LogData.Data.Logger.Close();
+                        Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
+                        ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
+                        if (m_navBar.SelectedPane == m_statusPane)
+                            loadStatuses();
+                        else if (m_navBar.SelectedPane == m_configPane)
+                            loadConfigurations();
+                        UpdateButtons();
+                    };
+                    Invoke(m);
+                }
+
+                LogData.Data.Logger.Close();
+                GridViewLogger gv = LogData.Data.Logger.Children[0] as GridViewLogger;
+                LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTCONNECTED);
+                Program.CommunicationObject.Logging_Log(iba.Properties.Resources.logServiceStarted);
+            }
+            else
+            {
+                Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
+                if (m_tryConnectTimer == null)
+                    m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
+                m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+            }
+        }
+        private System.Threading.Timer m_tryConnectTimer;
+        
+        public void ReplaceManagerFromTree(TaskManager m)
+        {
+            List<ConfigurationData> toReplace = new List<ConfigurationData>();
             foreach (TreeNode t in m_configTreeView.Nodes)
             {
                 if (t.Tag is ConfigurationTreeItemData)
-                {
-                    m.AddConfiguration((t.Tag as ConfigurationTreeItemData).ConfigurationData);
-                }
+                    toReplace.Add((t.Tag as ConfigurationTreeItemData).ConfigurationData);
             }
+            TaskManager.Manager.ReplaceConfigurations(toReplace);
         }
 
         public void OnExternalActivate()
@@ -2169,7 +2169,6 @@ namespace iba
         private MenuItem m_miExit;
         #endregion
     }
-    #endregion
     #region ImageList
     internal class MyImageList
     {

@@ -35,7 +35,6 @@ namespace iba
                     ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
                         Manager.WatchDogData,
                         Manager.Configurations,
-                        LogData.Data.FileName,
                         LogData.Data.MaxRows
                         );
                     mySerializer.Serialize(myWriter, dat);
@@ -94,11 +93,6 @@ namespace iba
             (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).Forwarder = ev;
         }
 
-        public void Logging_setNewFile(string filename)
-        {
-            LogData.NewFromFile(filename);
-        }
-
         public string Logging_fileName
         {
             get
@@ -111,11 +105,6 @@ namespace iba
         {
             if (LogData.Data.Logger.IsOpen) 
                 LogData.Data.Logger.Log(Logging.Level.Info, message);
-        }
-
-        public void Logging_openFromFile(string filename)
-        {
-            LogData.OpenFromFile(filename);
         }
 
         public void TestConnection() //does nothing
@@ -141,7 +130,6 @@ namespace iba
             }
             catch (SocketException)
             {
-                handleBrokenConnection();
                 return false;
             }
         }
@@ -239,20 +227,6 @@ namespace iba
             }
         }
 
-        public void Logging_setNewFile(string filename)
-        {
-            try
-            {
-                m_com.Logging_setNewFile(filename);
-                m_com.Logging_setEventForwarder(new EventForwarder());
-            }
-            catch (SocketException)
-            {
-                handleBrokenConnection();
-                LogData.NewFromFile(filename);
-            }
-        }
-
         public string Logging_fileName
         {
             get
@@ -296,20 +270,6 @@ namespace iba
             }
         }
 
-        public void Logging_openFromFile(string filename)
-        {
-            try
-            {
-                m_com.Logging_openFromFile(filename);
-                m_com.Logging_setEventForwarder(new EventForwarder());
-            }
-            catch (SocketException)
-            {
-                handleBrokenConnection();
-                LogData.OpenFromFile(filename);
-            }
-        }
-
         private bool m_stoppingService;
         public bool StoppingService
         {
@@ -321,8 +281,8 @@ namespace iba
         {
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
             Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-            if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            Program.MainForm.fillManagerFromTree(TaskManager.Manager);
+            //if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Program.MainForm.ReplaceManagerFromTree(TaskManager.Manager);
             Program.MainForm.Icon = iba.Properties.Resources.disconnectedIcon;
             Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
             Program.MainForm.NotifyIcon.Text = iba.Properties.Resources.niDisconnected;
@@ -332,7 +292,7 @@ namespace iba
             //logger resetten
             LogData.Data.Logger.Close();
             GridViewLogger gv = LogData.Data.Logger as GridViewLogger;
-            LogData.InitializeLogger(gv.Grid, gv.LogControl, false);
+            LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
         }
     }
 }

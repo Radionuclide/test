@@ -37,7 +37,7 @@ namespace iba
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            LogData.InitializeLogger(null, null, false); //dummy gridlogger
+            LogData.InitializeLogger(null, null,LogData.ApplicationState.SERVICE); //dummy gridlogger
             m_communicationObject = new CommunicationObject();
             //publish this manager
             BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
@@ -83,8 +83,6 @@ namespace iba
                         m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
                         m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
                         confs = dat.Configurations;
-                        if (LogData.Data.FileName != dat.Logfile)
-                            LogData.OpenFromFile(dat.Logfile);
                         LogData.Data.MaxRows = dat.LogItemCount;
                     }
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();

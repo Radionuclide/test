@@ -26,12 +26,6 @@ namespace iba.Data
             get { return m_confs; }
             set { m_confs = value; }
         }
-        private String m_logfile;
-        public String Logfile
-        {
-            get { return m_logfile; }
-            set { m_logfile = value; }
-        }
         private int m_logItemCount;
         public int LogItemCount
         {
@@ -39,12 +33,11 @@ namespace iba.Data
             set { m_logItemCount = value; }
         }
 
-        public ibaDatCoordinatorData(WatchDogData wd, List<ConfigurationData> confs, string logfile, int count)
+        public ibaDatCoordinatorData(WatchDogData wd, List<ConfigurationData> confs, int count)
         {
             m_version = 1;
             m_wd = wd;
             m_confs = confs;
-            m_logfile = logfile;
             m_logItemCount = count;
         }
 
@@ -53,7 +46,6 @@ namespace iba.Data
             m_version = 2;
             m_wd = null;
             m_confs = null;
-            m_logfile = null;
             m_logItemCount = 50;
         }
     }

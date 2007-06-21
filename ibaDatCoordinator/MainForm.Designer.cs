@@ -40,8 +40,6 @@ namespace iba
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.m_EntriesNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.m_loadLogfileButton = new System.Windows.Forms.Button();
-            this.m_newLogFileButton = new System.Windows.Forms.Button();
             this.m_statusPane = new TD.Eyefinder.NavigationPane();
             this.m_statusTreeView = new System.Windows.Forms.TreeView();
             this.m_configPane = new TD.Eyefinder.NavigationPane();
@@ -202,7 +200,7 @@ namespace iba
             this.m_navBar.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.m_navBar.SelectedPane = this.m_configPane;
+            this.m_navBar.SelectedPane = this.m_loggingPane;
             this.m_navBar.ShowPanes = 4;
             this.m_toolTip.SetToolTip(this.m_navBar, resources.GetString("m_navBar.ToolTip"));
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
@@ -224,8 +222,6 @@ namespace iba
             resources.ApplyResources(this.m_loggingPane, "m_loggingPane");
             this.m_loggingPane.BackgroundImage = null;
             this.m_loggingPane.Controls.Add(this.splitContainer1);
-            this.m_loggingPane.Controls.Add(this.m_loadLogfileButton);
-            this.m_loggingPane.Controls.Add(this.m_newLogFileButton);
             this.m_loggingPane.Font = null;
             this.m_loggingPane.Name = "m_loggingPane";
             this.m_toolTip.SetToolTip(this.m_loggingPane, resources.GetString("m_loggingPane.ToolTip"));
@@ -293,30 +289,6 @@ namespace iba
             0,
             0});
             this.m_EntriesNumericUpDown1.ValueChanged += new System.EventHandler(this.m_EntriesNumericUpDown1_ValueChanged);
-            // 
-            // m_loadLogfileButton
-            // 
-            this.m_loadLogfileButton.AccessibleDescription = null;
-            this.m_loadLogfileButton.AccessibleName = null;
-            resources.ApplyResources(this.m_loadLogfileButton, "m_loadLogfileButton");
-            this.m_loadLogfileButton.BackgroundImage = null;
-            this.m_loadLogfileButton.Font = null;
-            this.m_loadLogfileButton.Name = "m_loadLogfileButton";
-            this.m_toolTip.SetToolTip(this.m_loadLogfileButton, resources.GetString("m_loadLogfileButton.ToolTip"));
-            this.m_loadLogfileButton.UseVisualStyleBackColor = true;
-            this.m_loadLogfileButton.Click += new System.EventHandler(this.m_loadLogfileButton_Click);
-            // 
-            // m_newLogFileButton
-            // 
-            this.m_newLogFileButton.AccessibleDescription = null;
-            this.m_newLogFileButton.AccessibleName = null;
-            resources.ApplyResources(this.m_newLogFileButton, "m_newLogFileButton");
-            this.m_newLogFileButton.BackgroundImage = null;
-            this.m_newLogFileButton.Font = null;
-            this.m_newLogFileButton.Name = "m_newLogFileButton";
-            this.m_toolTip.SetToolTip(this.m_newLogFileButton, resources.GetString("m_newLogFileButton.ToolTip"));
-            this.m_newLogFileButton.UseVisualStyleBackColor = true;
-            this.m_newLogFileButton.Click += new System.EventHandler(this.m_newLogFileButton_Click);
             // 
             // m_statusPane
             // 
@@ -745,8 +717,6 @@ namespace iba
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private TD.Eyefinder.NavigationPane m_loggingPane;
         private System.Windows.Forms.ToolStripMenuItem loggingToolStripMenuItem;
-        private System.Windows.Forms.Button m_loadLogfileButton;
-        private System.Windows.Forms.Button m_newLogFileButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown m_EntriesNumericUpDown1;

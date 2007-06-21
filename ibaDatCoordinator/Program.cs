@@ -41,44 +41,16 @@ namespace iba
                 return;                
             if (args.Length > 0 && String.Compare(args[0], "/service", true) == 0)
             {
-                try
-                {
-                    DateTime previous = DateTime.Now;
-
-                    System.ServiceProcess.ServiceController myController =
-                        new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                    System.ServiceProcess.ServiceControllerStatus prevStatus = myController.Status;
-
-                    if (myController.Status == System.ServiceProcess.ServiceControllerStatus.Stopped)
-                    {
-                        myController.Start();
-                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(5.0));
-                    }
-                    else if (myController.Status == System.ServiceProcess.ServiceControllerStatus.StartPending)
-                    {
-                        myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(5.0));
-                    }
-                    if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
-                    {
-                        MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, iba.Properties.Resources.ServiceConnectProblem2 + previous.ToString() + " " + DateTime.Now.ToString() + " " + prevStatus.ToString() + myController.Status.ToString(), Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        RunsWithService = ServiceEnum.DISCONNECTED;
-                    }
-                    else
-                    {
-                        RunsWithService = ServiceEnum.CONNECTED;
-                    }
-                    myController.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    RunsWithService = ServiceEnum.DISCONNECTED;
-                }
+                RunsWithService = ServiceEnum.DISCONNECTED;
             }
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
-            
-            if (RunsWithService == ServiceEnum.CONNECTED)
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            System.Threading.Thread.CurrentThread.Name = "GUI thread";
+            MainForm = new MainForm();
+            if (RunsWithService == ServiceEnum.DISCONNECTED)
             {   
                 BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
                 BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
@@ -89,13 +61,9 @@ namespace iba
                 // Pass the properties for the port setting and the server provider in the server chain argument. (Client remains null here.)
                 TcpChannel channel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(channel,false);
-                CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
-                m_comWrapper = new CommunicationObjectWrapper(com);
+                MainForm.TryToConnect(null);    
             }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            System.Threading.Thread.CurrentThread.Name = "GUI thread";
-            MainForm = new MainForm();
+
             if (RunsWithService != ServiceEnum.NOSERVICE)
             {
                 MainForm.WindowState = FormWindowState.Minimized;
