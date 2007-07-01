@@ -38,7 +38,7 @@ namespace iba.Controls
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             if (m_dataToStop != null)
-                TaskManager.Manager.StopAndWaitForConfiguration(m_dataToStop.ID);
+                TaskManager.Manager.StopAndWaitForConfiguration(m_dataToStop.Guid);
             else
                 TaskManager.Manager.StopAndWaitForAllConfigurations();
         }

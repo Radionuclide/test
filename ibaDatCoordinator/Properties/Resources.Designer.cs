@@ -84,6 +84,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        internal static string Application {
+            get {
+                return ResourceManager.GetString("Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply changes in jobconfiguration to the running job.
         /// </summary>
         internal static string applyStartedButton {
@@ -1033,6 +1042,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator (running).
+        /// </summary>
+        internal static string niRunning {
+            get {
+                return ResourceManager.GetString("niRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to momentarely no access to .dat  file....
         /// </summary>
         internal static string Noaccess {
@@ -1171,6 +1189,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Priority of application:.
+        /// </summary>
+        internal static string PriorityApp {
+            get {
+                return ResourceManager.GetString("PriorityApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read status of the dat-file.
         /// </summary>
         internal static string ReadStatusError {
@@ -1250,6 +1277,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Icon runningIcon {
+            get {
+                object obj = ResourceManager.GetObject("runningIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Problem saving file:.
         /// </summary>
@@ -1319,6 +1353,22 @@ namespace iba.Properties {
         internal static string ServiceConnectProblemCaption {
             get {
                 return ResourceManager.GetString("ServiceConnectProblemCaption", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Icon settings {
+            get {
+                object obj = ResourceManager.GetObject("settings", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string settingsTitle {
+            get {
+                return ResourceManager.GetString("settingsTitle", resourceCulture);
             }
         }
         

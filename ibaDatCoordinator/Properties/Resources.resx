@@ -286,7 +286,7 @@
   <data name="configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\running.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Failure" xml:space="preserve">
@@ -684,5 +684,23 @@
   </data>
   <data name="errAnalyzerTime" xml:space="preserve">
     <value>IbaAnalyzer exceeded the imposed time limit</value>
+  </data>
+  <data name="niRunning" xml:space="preserve">
+    <value>ibaDatCoordinator (running)</value>
+  </data>
+  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\running1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="PriorityApp" xml:space="preserve">
+    <value>Priority of application:</value>
+  </data>
+  <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\settings.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settingsTitle" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>

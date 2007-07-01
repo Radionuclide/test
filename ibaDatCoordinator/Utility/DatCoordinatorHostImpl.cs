@@ -54,9 +54,9 @@ namespace iba.Utility
             }
         }
 
-        public PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        public PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {
-            return TaskManager.Manager.GetStatusPlugin(ID, taskindex);
+            return TaskManager.Manager.GetStatusPlugin(guid, taskindex);
         }
 
         public string FindSuitableFileName(string filename)

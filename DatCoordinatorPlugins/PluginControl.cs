@@ -18,7 +18,7 @@ namespace iba.Plugins
 
     public interface ICommonTaskControl
     {
-        ulong ParentConfigurationID();
+        Guid ParentConfigurationGuid();
         int TaskIndex();
     }
 }

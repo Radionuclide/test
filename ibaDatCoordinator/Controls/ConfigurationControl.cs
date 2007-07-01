@@ -105,7 +105,7 @@ namespace iba.Controls
                 m_stopButton.Enabled = false;
                 m_refreshDats.Enabled = true;
             }
-            else if (TaskManager.Manager.GetStatus(m_data.ID).Started)
+            else if (TaskManager.Manager.GetStatus(m_data.Guid).Started)
             {
                 m_applyToRunningButton.Enabled = true;
                 m_startButton.Enabled = false;
@@ -340,7 +340,7 @@ namespace iba.Controls
                 if ((node.Tag as StatusTreeItemData).StatusData.CorrConfigurationData == m_data)
                     MainForm.strikeOutNodeText(node, !m_enableCheckBox.Checked);
             if (!m_enableCheckBox.Checked)
-                TaskManager.Manager.StopConfiguration(m_data.ID);
+                TaskManager.Manager.StopConfiguration(m_data.Guid);
             MainForm t = m_manager as MainForm;
             if (t != null) t.UpdateButtons();
         }

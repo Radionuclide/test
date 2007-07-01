@@ -44,7 +44,7 @@ namespace iba.Data
 
         public MonitorData()
         {
-            m_bMonitorMemoryUsage = m_bMonitorTime = false;
+            m_bMonitorMemoryUsage = m_bMonitorTime = true;
             m_timeLimit = TimeSpan.FromMinutes(10.0);
             m_memoryLimit = 512;
         }

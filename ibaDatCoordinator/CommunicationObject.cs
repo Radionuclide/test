@@ -291,8 +291,14 @@ namespace iba
             TaskManager.Manager.StopAllConfigurations();
             //logger resetten
             LogData.Data.Logger.Close();
-            GridViewLogger gv = LogData.Data.Logger as GridViewLogger;
+            GridViewLogger gv = null;
+            if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
+                gv = LogData.Data.Logger.Children[0] as GridViewLogger;
+            else
+                gv = LogData.Data.Logger as GridViewLogger;
+
             LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
+            Program.MainForm.TryToConnect(null); //start periodic check to restore communication
         }
     }
 }

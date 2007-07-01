@@ -170,9 +170,9 @@ namespace iba.Controls
 
         #region ICommonTaskControl Members
 
-        public ulong ParentConfigurationID()
+        public Guid ParentConfigurationGuid()
         {
-            return m_data.ParentConfigurationData.ID;
+            return m_data.ParentConfigurationData.Guid;
         }
 
         public int TaskIndex()

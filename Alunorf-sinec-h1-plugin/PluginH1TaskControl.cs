@@ -208,7 +208,7 @@ namespace Alunorf_sinec_h1_plugin
         {
             m_refreshTimer.Enabled = false;
 
-            PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationID(), m_control.TaskIndex());
+            PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationGuid(), m_control.TaskIndex());
             if (stat == null) 
             {
                 m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;

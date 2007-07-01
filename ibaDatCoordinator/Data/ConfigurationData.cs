@@ -163,17 +163,11 @@ namespace iba.Data
             set { m_autoStart = value;}
         }
 
-        static ulong m_idCounter = 0UL;
-        private ulong m_id;
-        public ulong ID
+        private Guid m_guid;
+        public Guid Guid
         {
-            get { return m_id; }
-        }
-
-        static public ulong IdCounter
-        {
-            get { return m_idCounter; }
-            set { m_idCounter = value; }
+            get { return m_guid; }
+            set { m_guid = value; }
         }
 
         public ConfigurationData() : this("") 
@@ -190,7 +184,8 @@ namespace iba.Data
 
         public ConfigurationData(string name)
         {
-            m_reproccessTime = m_rescanTime = new TimeSpan(0, 0, 10);
+            m_reproccessTime = new TimeSpan(0, 10, 0);
+            m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
             m_enabled = true;
             m_autoStart = false;
@@ -208,13 +203,12 @@ namespace iba.Data
                 m_ibaAnalyserExe = iba.Properties.Resources.noIbaAnalyser;
             }
             m_tasks = new List<TaskData>();
-            m_id = m_idCounter;
-            m_idCounter++;
             m_notify = new NotificationData();
             m_pass = "";
             m_username = "";
             m_datdirectoryUNC = "";
             m_treePosition = -1;
+            m_guid = Guid.NewGuid();
         }
 
         public void relinkChildData()
@@ -249,7 +243,7 @@ namespace iba.Data
         public ConfigurationData Clone_AlsoCopyGuids()
         {
             ConfigurationData cd = this.Clone() as ConfigurationData;
-            cd.m_id = m_id;
+            cd.m_guid = m_guid;
             for (int i = 0; i < m_tasks.Count; i++)
                 cd.m_tasks[i].Guid = m_tasks[i].Guid;
             return cd;
@@ -258,7 +252,7 @@ namespace iba.Data
 
         public int CompareTo(ConfigurationData other)
         {
-            return m_id.CompareTo(other.m_id);
+            return m_guid.CompareTo(other.m_guid);
         }
 
         public bool AdjustDependencies()

@@ -33,73 +33,25 @@ namespace iba.Services
             {
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 LogData.InitializeLogger(null, null, LogData.ApplicationState.SERVICE); //dummy gridlogger
-                try
-                {
-                    PluginManager.Manager.LoadPlugins();
-                }
-                catch (Exception ex)
-                {
-                    LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
-                    string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
-                    using (StreamWriter sw = new StreamWriter(file))
-                    {
-                        sw.WriteLine("exception occured at" + DateTime.Now.ToString());
-                        sw.Write(ex.ToString());
-                        sw.WriteLine("logfile: " + LogData.Data.FileName);
-                    }
-                    Stop();
-                }
-
+                PluginManager.Manager.LoadPlugins();
                 m_communicationObject = new CommunicationObject();
-                //publish this manager
-                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-                IDictionary props = new Hashtable();
-                props["port"] = 8800;
-                props["machineName"] = "localhost";
-                TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
-                try
-                {
-                    ChannelServices.RegisterChannel(localChannel, false);
-                    RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
-                }
-                catch (Exception ex)
-                {
-                    LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
-                    string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
-                    using (StreamWriter sw = new StreamWriter(file))
-                    {
-                        sw.WriteLine("exception occured at" + DateTime.Now.ToString());
-                        sw.Write(ex.ToString());
-                        sw.WriteLine("logfile: " + LogData.Data.FileName);
-                    }
-                    Stop();
-                }
 
                 string filename = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved.xml");
                 m_communicationObject.FileName = filename;
 
-                if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
-                    return;
-                if (File.Exists(filename))
+                //if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
+                //return;
+                try
                 {
-                    try
+                    if (File.Exists(filename))
                     {
                         XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
                         List<ConfigurationData> confs;
-                        using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
+                        using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
+                            LogData.Data.Logger.Log("Reading configurations from file: " + filename);
                             ibaDatCoordinatorData dat = null;
-                            try
-                            {
                                 dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
-                            }
-                            catch (Exception ex)
-                            { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
-                                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
-                                return;
-                            }
                             m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
                             m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
                             confs = dat.Configurations;
@@ -108,6 +60,7 @@ namespace iba.Services
                         foreach (ConfigurationData dat in confs)
                         {
                             dat.relinkChildData();
+                            LogData.Data.Logger.Log("Read configuration from file with ID" + dat.Guid.ToString());
                         }
                         m_communicationObject.Manager.Configurations = confs;
                         foreach (ConfigurationData dat in confs)
@@ -115,23 +68,33 @@ namespace iba.Services
                             if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
-                        string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
-                        using (StreamWriter sw = new StreamWriter(file))
-                        {
-                            sw.WriteLine("exception occured at" + DateTime.Now.ToString());
-                            sw.Write(ex.ToString());
-                            sw.WriteLine("logfile: " + LogData.Data.FileName);
-                        }
-                        Stop();
-                    }
                 }
+                catch (Exception ex)
+                { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
+                    LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                }
+
+                //publish this manager
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+                IDictionary props = new Hashtable();
+                props["port"] = 8800;
+                props["machineName"] = "localhost";
+                TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
+                ChannelServices.RegisterChannel(localChannel, false);
+                RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                try
+                {
+                    LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                }
+                catch
+                { 
+                }
+                
                 string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
                 using (StreamWriter sw = new StreamWriter(file))
                 {
@@ -141,7 +104,6 @@ namespace iba.Services
                 }
                 Stop();
             }
-
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -157,6 +119,8 @@ namespace iba.Services
         protected override void OnStop()
         {
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
+            m_communicationObject.SaveConfigurations();
+
             m_communicationObject.ForwardEvents = false;
             LogData.StopLogger();
         }

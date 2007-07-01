@@ -34,7 +34,7 @@ namespace iba
             {
                 System.ServiceProcess.ServiceController myController =
                 new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                myController.Start(new string[] { "loadnotfromfile" });
+                myController.Start();
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
                 if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
                 {

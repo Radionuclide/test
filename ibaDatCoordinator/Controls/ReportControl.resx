@@ -132,7 +132,7 @@
     <value>92, 66</value>
   </data>
   <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 20</value>
+    <value>176, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
@@ -187,7 +187,7 @@
     <value>92, 40</value>
   </data>
   <data name="m_tbUserName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 20</value>
+    <value>176, 20</value>
   </data>
   <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -241,7 +241,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>273, 40</value>
+    <value>274, 40</value>
   </data>
   <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -328,7 +328,7 @@
     <value>3, 58</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 49</value>
+    <value>521, 49</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -421,7 +421,7 @@
     <value>345, 3</value>
   </data>
   <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 18</value>
+    <value>173, 18</value>
   </data>
   <data name="m_rbWeek.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -481,7 +481,7 @@
     <value>345, 27</value>
   </data>
   <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 19</value>
+    <value>173, 19</value>
   </data>
   <data name="m_rbNONE.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -541,7 +541,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 49</value>
+    <value>521, 49</value>
   </data>
   <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -571,7 +571,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 110</value>
+    <value>527, 110</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -595,7 +595,7 @@
     <value>5, 93</value>
   </data>
   <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 129</value>
+    <value>533, 129</value>
   </data>
   <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -619,7 +619,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>452, 3</value>
+    <value>453, 3</value>
   </data>
   <data name="m_browseFolderButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -673,7 +673,7 @@
     <value>92, 12</value>
   </data>
   <data name="m_targetFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 20</value>
+    <value>355, 20</value>
   </data>
   <data name="m_targetFolderTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -694,7 +694,7 @@
     <value>11, 43</value>
   </data>
   <data name="m_panelFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 223</value>
+    <value>548, 223</value>
   </data>
   <data name="m_panelFile.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -718,7 +718,7 @@
     <value>327, 15</value>
   </data>
   <data name="m_extensionComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 21</value>
+    <value>176, 21</value>
   </data>
   <data name="m_extensionComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -793,7 +793,7 @@
     <value>0, 81</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 273</value>
+    <value>566, 273</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1093,7 +1093,7 @@
     <value>0, 360</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 73</value>
+    <value>566, 73</value>
   </data>
   <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>

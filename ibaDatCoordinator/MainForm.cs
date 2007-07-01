@@ -36,6 +36,7 @@ namespace iba
 
         public MainForm()
         {
+            m_firstConnectToService = true;
             InitializeComponent();
             //load any optional plugins
             PluginManager.Manager.LoadPlugins();
@@ -70,7 +71,7 @@ namespace iba
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
-            m_navBar.SelectedPane = m_configPane;
+            m_settingsPane.LargeImage = m_settingsPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.settings.Handle);
             m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.toolTipStartAll);
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.toolTipStopAll);
 
@@ -97,7 +98,6 @@ namespace iba
             ImageList statImageList = new ImageList();
             statImageList.Images.Add(iba.Properties.Resources.configuration);
             m_statusTreeView.ImageList = statImageList;
-
 
             m_quitForm = new QuitForm(this);
             m_quitForm.CreateHandle(new CreateParams());
@@ -128,7 +128,7 @@ namespace iba
                 m_iconEx = new NotifyIconEx();
                 m_iconEx.ContextMenu = m_iconMenu;
                 m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
-                m_iconEx.Visible = true;
+                m_iconEx.Visible = false;
             }
             else
             {
@@ -142,6 +142,8 @@ namespace iba
                 m_miExit = null;
                 this.Icon = iba.Properties.Resources.standalone;
             }
+
+            m_navBar.SelectedPane = m_configPane;
         }
 
         private bool m_actualClose = false;
@@ -158,25 +160,6 @@ namespace iba
                     m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
                     m_tryConnectTimer.Dispose();
                     m_tryConnectTimer = null;
-                }
-
-                string s1 = TextFromLoad();
-                string s2 = TextToSave();
-                if (s1 != s2)
-                {
-                    DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
-                            iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-                    switch (res)
-                    {
-                        case DialogResult.Cancel:
-                            e.Cancel = true;
-                            return;
-                        case DialogResult.Yes:
-                            saveToolStripMenuItem_Click(null, null);
-                            break;
-                        case DialogResult.No:
-                            break;
-                    }
                 }
                 if (WindowState != FormWindowState.Minimized)
                 {
@@ -195,7 +178,6 @@ namespace iba
             {
                 Program.CommunicationObject.Logging_Log("Gui Stopped");
                 Program.CommunicationObject.ForwardEvents = false;
-                TaskManager.Manager.IdCounter = ConfigurationData.IdCounter;
                 Program.CommunicationObject.SaveConfigurations();
             }
             else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
@@ -242,7 +224,7 @@ namespace iba
             foreach (TreeNode confCandidate in m_configTreeView.Nodes)
             {
                 ConfigurationTreeItemData dat2 = (confCandidate.Tag as ConfigurationTreeItemData);
-                if (dat2 != null && dat2.ConfigurationData.ID == dat.ID)
+                if (dat2 != null && dat2.ConfigurationData.Guid == dat.Guid)
                 {
                     m_configTreeView.SelectedNode = confCandidate;
                     break;
@@ -331,6 +313,7 @@ namespace iba
                 statusToolStripMenuItem.Enabled = true;
                 loggingToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
+                settingsToolStripMenuItem.Enabled = true;
                 UpdateButtons();
             }
             else if (m_navBar.SelectedPane == m_loggingPane)
@@ -346,6 +329,7 @@ namespace iba
                 configurationToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
                 m_EntriesNumericUpDown1.Value = LogData.Data.MaxRows;
+                settingsToolStripMenuItem.Enabled = true;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
             {
@@ -361,6 +345,23 @@ namespace iba
                 statusToolStripMenuItem.Enabled = true;
                 configurationToolStripMenuItem.Enabled = true;
                 loggingToolStripMenuItem.Enabled = true;
+                settingsToolStripMenuItem.Enabled = true;
+            }
+            else if (m_navBar.SelectedPane == m_settingsPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["settingsControl"] as Control;
+                if (ctrl == null) ctrl = new ServiceSettingsControl();
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.settingsTitle, null);
+                pasteToolStripMenuItem.Enabled = false;
+                copyToolStripMenuItem.Enabled = false;
+                cutToolStripMenuItem.Enabled = false;
+                deleteToolStripMenuItem.Enabled = false;
+                statusToolStripMenuItem.Enabled = true;
+                configurationToolStripMenuItem.Enabled = true;
+                loggingToolStripMenuItem.Enabled = true;
+                watchdogToolStripMenuItem.Enabled = true;
+                settingsToolStripMenuItem.Enabled = false;
             }
         }
         
@@ -379,17 +380,8 @@ namespace iba
                 Hide();
                 bHandleResize = true;
             }
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
-                m_iconEx.Text = iba.Properties.Resources.niConnected;
-            }
-            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-            {
-                m_startButton.Enabled = m_stopButton.Enabled = false;
-                m_iconEx.Icon = this.Icon = iba.Properties.Resources.disconnectedIcon;
-                m_iconEx.Text = iba.Properties.Resources.niDisconnected;
-            }
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
+                m_iconEx.Visible = true;
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
@@ -548,7 +540,7 @@ namespace iba
                         ctrl = data.CreateControl();
                         SetRightPaneControl(ctrl, title, data.ConfigurationData);
                         pasteToolStripMenuItem.Enabled = m_cd_copy != null;
-                        bool started = TaskManager.Manager.GetStatus(data.ConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.ConfigurationData.Guid).Started;
                         if (m_task_copy != null && !m_confCopiedMostRecent)
                             pasteToolStripMenuItem.Enabled = !started;
                         copyToolStripMenuItem.Enabled = true;
@@ -561,7 +553,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         BatchFileTreeItemData data = node.Tag as BatchFileTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.BatchFileData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.BatchFileData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.BatchFileData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -574,7 +566,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         ReportTreeItemData data = node.Tag as ReportTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.ReportData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.ReportData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.ReportData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -587,7 +579,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         ExtractTreeItemData data = node.Tag as ExtractTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.ExtractData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.ExtractData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.ExtractData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -600,7 +592,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         CopyTaskTreeItemData data = node.Tag as CopyTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.CopyTaskData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.CopyTaskData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.CopyTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -613,7 +605,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         IfTaskTreeItemData data = node.Tag as IfTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.IfTaskData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.IfTaskData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.IfTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -626,7 +618,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         CustomTaskTreeItemData data = node.Tag as CustomTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.CustomTaskData.ParentConfigurationData.ID).Started;
+                        bool started = TaskManager.Manager.GetStatus(data.CustomTaskData.ParentConfigurationData.Guid).Started;
                         SetRightPaneControl(ctrl, title, data.CustomTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -755,7 +747,7 @@ namespace iba
             //Delete node in tree
             if (node.Tag is ConfigurationTreeItemData)
             {
-                if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started)
+                if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started)
                     return;
                 int newIndex = node.Index - 1;
                 m_configTreeView.SelectedNode = null;
@@ -777,7 +769,7 @@ namespace iba
                 if (nextNode == null) nextNode = node.PrevNode;
                 if (nextNode == null) nextNode = node.Parent;
                 ConfigurationData confParent = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
-                if (TaskManager.Manager.GetStatus(confParent.ID).Started) return;
+                if (TaskManager.Manager.GetStatus(confParent.Guid).Started) return;
 
                 m_configTreeView.SelectedNode = null;
                 TaskData task = null;
@@ -1111,9 +1103,9 @@ namespace iba
             {
                 bool started = false;
                 if (node.Parent != null) //tasknode
-                    started = TaskManager.Manager.GetStatus((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started;
+                    started = TaskManager.Manager.GetStatus((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
                 else if (node.Tag is ConfigurationTreeItemData)
-                    started = TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started;
+                    started = TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
 
                 TreeItemData data = node.Tag as TreeItemData;
                 m_configTreeView.SelectedNode = node;
@@ -1347,6 +1339,11 @@ namespace iba
         private void watchdogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_watchdogPane;
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_settingsPane;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1732,12 +1729,19 @@ namespace iba
 
         public void UpdateButtons()
         {
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
+                m_startButton.Enabled = m_stopButton.Enabled = false;
+                m_iconEx.Icon = this.Icon = iba.Properties.Resources.disconnectedIcon;
+                m_iconEx.Text = iba.Properties.Resources.niDisconnected;
+                return;
+            }
             bool allEnabledStarted = true;
             bool allStopped = true;
             
             foreach (ConfigurationData data in TaskManager.Manager.Configurations)
             {
-                bool started = TaskManager.Manager.GetStatus(data.ID).Started;
+                bool started = TaskManager.Manager.GetStatus(data.Guid).Started;
                 if (data.Enabled)
                 {
                     allEnabledStarted = allEnabledStarted && started;
@@ -1746,6 +1750,20 @@ namespace iba
             }
             m_startButton.Enabled = !allEnabledStarted;
             m_stopButton.Enabled = !allStopped;
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                if (!allStopped)
+                {
+                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.runningIcon;
+                    m_iconEx.Text = iba.Properties.Resources.niRunning;
+                }
+                else
+                {
+                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
+                    m_iconEx.Text = iba.Properties.Resources.niConnected;
+                }
+            }
         }
 
         public Button StartButton
@@ -1868,19 +1886,19 @@ namespace iba
             }
             else if ((targetNode == draggedNode) && !(draggedNode.Tag is ConfigurationTreeItemData))
             {
-                if (TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started)
+                if (TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started)
                     e.Effect = DragDropEffects.None; //do not modify a running configuration    
                 else e.Effect = DragDropEffects.Copy;
             }
             else if (!(draggedNode.Tag is ConfigurationTreeItemData))
             {
-                bool moveAllowed = !TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started;
+                bool moveAllowed = !TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
                 bool placeAllowed = false;
 
                 if (targetNode.Tag is ConfigurationTreeItemData)
-                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started;
+                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
                 else
-                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.ID).Started;
+                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
 
                 if (!placeAllowed)
                     e.Effect = DragDropEffects.None;
@@ -1923,7 +1941,7 @@ namespace iba
                     dat.ConfigurationData.TreePosition = node.Index;
                     if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     {
-                        TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.ID, node.Index);
+                        TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.Guid, node.Index);
                     }
                 }
             }
@@ -1933,6 +1951,8 @@ namespace iba
         #region Service related methods
         public void OnStartService()
         {
+            SaveRightPaneControl();
+            m_firstConnectToService = false; //user starts service manually, do not automatically load user stuff
             //startservice dialog
             using (StartServiceDialog ssd = new StartServiceDialog())
             {
@@ -1952,6 +1972,7 @@ namespace iba
         public void OnStopService()
         {
             //stopService dialog
+            SaveRightPaneControl();
             Program.CommunicationObject.StoppingService = true;
             bool result = false;
             using (StopServiceDialog ssd = new StopServiceDialog())
@@ -1983,6 +2004,9 @@ namespace iba
 
         public delegate void IbaAnalyzerCall();
 
+
+        private bool m_firstConnectToService;
+
         public void TryToConnect(object ignoreMe)
         {
             if (m_tryConnectTimer != null)
@@ -1992,37 +2016,52 @@ namespace iba
             CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
             if (wrapper.TestConnection()) //succesfully connected
             {
-                
-                Program.CommunicationObject = wrapper;
                 if (m_tryConnectTimer != null) //this is not the first call, restore stuff
                 {
                     MethodInvoker m = delegate()
                     {
-                        TaskManager.Manager = null; //remove previous taskmanager so it does not stay
-                        // alive during the online session
                         Program.RunsWithService = Program.ServiceEnum.CONNECTED;
-                        //initialise with configurations;
-                        ReplaceManagerFromTree(TaskManager.Manager);
-                        foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
+                        TaskManager.Manager = null; //remove previous client taskmanager so it does not stay
+                        // alive during the online session
+                        Program.CommunicationObject = wrapper;
+                        if (NeedUploadToServer())
                         {
-                            if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                            //initialise with configurations;
+                            ReplaceManagerFromTree(TaskManager.Manager);
+                            foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
+                            {
+                                if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                            }
+                            if (m_navBar.SelectedPane == m_statusPane)
+                                loadStatuses();
+                            else if (m_navBar.SelectedPane == m_configPane)
+                                loadConfigurations();
                         }
-                        LogData.Data.Logger.Close();
-                        Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
-                        ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
-                        if (m_navBar.SelectedPane == m_statusPane)
-                            loadStatuses();
-                        else if (m_navBar.SelectedPane == m_configPane)
+                        else //download
+                        {
                             loadConfigurations();
+                            loadStatuses();
+                        }
                         UpdateButtons();
                     };
                     Invoke(m);
                 }
-
+                else
+                {
+                    Program.RunsWithService = Program.ServiceEnum.CONNECTED;
+                    TaskManager.Manager = null; //remove previous client taskmanager so it does not stay
+                    // alive during the online session
+                    Program.CommunicationObject = wrapper;
+                }
                 LogData.Data.Logger.Close();
-                GridViewLogger gv = LogData.Data.Logger.Children[0] as GridViewLogger;
+                GridViewLogger gv = null; ;
+                if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
+                    gv = LogData.Data.Logger.Children[0] as GridViewLogger;
+                else
+                    gv = LogData.Data.Logger as GridViewLogger;
                 LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTCONNECTED);
-                Program.CommunicationObject.Logging_Log(iba.Properties.Resources.logServiceStarted);
+                Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder()); 
+                m_firstConnectToService = false;
             }
             else
             {
@@ -2032,6 +2071,28 @@ namespace iba
                 m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
             }
         }
+
+        private bool NeedUploadToServer()
+        {
+            if (TaskManager.Manager.Count == 0) return true; //nothing on server side, upload the minimum configuration of one
+            if (m_firstConnectToService) return false;
+            //test if there's a difference between the client and server configurations
+            foreach (TreeNode t in m_configTreeView.Nodes)
+            {
+                if (t.Tag is ConfigurationTreeItemData)
+                {
+                    ConfigurationData data = (t.Tag as ConfigurationTreeItemData).ConfigurationData;
+                    if (!TaskManager.Manager.CompareConfiguration(data))
+                    {
+                        UploadOrDownloadConfigurationsDialog uodDiag = new UploadOrDownloadConfigurationsDialog();
+                        uodDiag.ShowDialog(this);
+                        return uodDiag.Upload;
+                    }
+                }
+            }
+            return false;
+        }
+
         private System.Threading.Timer m_tryConnectTimer;
         
         public void ReplaceManagerFromTree(TaskManager m)
@@ -2168,7 +2229,10 @@ namespace iba
         private MenuItem m_miStopService;
         private MenuItem m_miExit;
         #endregion
+
+
     }
+
     #region ImageList
     internal class MyImageList
     {

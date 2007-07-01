@@ -145,7 +145,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as StatusData;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED) //refresh
-                m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.ID);
+                m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.Guid);
 
             m_confNameLinkLabel.Text = m_data.CorrConfigurationData.Name;
             int count = m_data.CorrConfigurationData.Tasks.Count;
@@ -179,7 +179,7 @@ namespace iba.Controls
             {
                 try
                 {
-                    m_data = TaskManager.Manager.GetStatusCopy(m_data.CorrConfigurationData.ID);
+                    m_data = TaskManager.Manager.GetStatusCopy(m_data.CorrConfigurationData.Guid);
                 }
                 catch (SocketException) //shouldn't happen but just in case
                 {

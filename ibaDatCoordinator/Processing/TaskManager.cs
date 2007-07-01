@@ -18,8 +18,8 @@ namespace iba.Processing
             ConfigurationWorker cw = new ConfigurationWorker(data);
             lock (m_workers)
             {
+                LogData.Data.Logger.Log("Added configuration: " + data.Guid.ToString());
                 m_workers.Add(data, cw);
-                IdCounter = Math.Max(IdCounter, data.ID + 1);
             }
         }
 
@@ -37,6 +37,7 @@ namespace iba.Processing
                 {
                     StopConfiguration(data);
                     m_workers.Remove(data);
+                    LogData.Data.Logger.Log("Removed configuration: " + data.Guid.ToString());
                 }
             }
         }
@@ -51,10 +52,28 @@ namespace iba.Processing
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
+                    LogData.Data.Logger.Log("Replaced configuration: " + data.Guid.ToString());
+                }
+                //else, ignore, replace is due to a belated save of an allready deleted configuration
+            }
+        }
+
+        private void ReplaceOrAddConfiguration(ConfigurationData data)
+        {
+            lock (m_workers)
+            {
+                ConfigurationWorker cw;
+                if (m_workers.TryGetValue(data, out cw))
+                {
+                    m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
+                    // new data with same ID
+                    m_workers.Add(data, cw);
+                    //LogData.Data.Logger.Log("Replaced configuration: " + data.Guid.ToString());
                 }
                 else
                 {
                     cw = new ConfigurationWorker(data);
+                    //LogData.Data.Logger.Log("Added instead of Replaced configuration: " + data.Guid.ToString());
                     m_workers.Add(data, cw);
                 }
             }
@@ -62,7 +81,7 @@ namespace iba.Processing
 
         virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
         {
-            foreach (ConfigurationData data in datas) ReplaceConfiguration(data);
+            foreach (ConfigurationData data in datas) ReplaceOrAddConfiguration(data);
             List<ConfigurationData> toRemove = new List<ConfigurationData>();
             //remove spurious configurations;
             foreach (ConfigurationData dat in m_workers.Keys)
@@ -74,6 +93,7 @@ namespace iba.Processing
             foreach (ConfigurationData dat in toRemove)
             {
                 RemoveConfiguration(dat);
+                LogData.Data.Logger.Log("Removed configuration (because it was not in the datas)): " + dat.Guid.ToString());
             }
         }
 
@@ -98,11 +118,29 @@ namespace iba.Processing
             }
         }
 
-        virtual public void UpdateTreePosition(ulong ID, int pos)
+        virtual public bool CompareConfiguration(ConfigurationData data)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID)
+                if (pair.Key.Guid == data.Guid)
+                {
+                    bool result = SerializableObjectsCompare.Compare(data, pair.Key);
+                    LogData.Data.Logger.Log("testing ID " + pair.Key.Guid.ToString() + " result: " + result.ToString());
+                    return result;
+                }
+                else
+                    LogData.Data.Logger.Log("service ID " + pair.Key.Guid.ToString() + " client ID: " + data.Guid);
+            }
+            LogData.Data.Logger.Log("Comparing: no keys found");
+            return false;
+        }
+
+
+        virtual public void UpdateTreePosition(Guid guid, int pos)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.Guid == guid)
                 {
                     pair.Key.TreePosition = pos;
                     if (pair.Value.ConfigurationToUpdate != null)
@@ -149,23 +187,12 @@ namespace iba.Processing
             m_workers[data].Stop = true;
         }
 
-        virtual public ulong IdCounter
-        {
-            get
-            {
-                return ConfigurationData.IdCounter;
-            }
-            set
-            {
-                ConfigurationData.IdCounter = value;
-            }
-        }
 
-        virtual public void StopConfiguration(ulong ID)
+        virtual public void StopConfiguration(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID)
+                if (pair.Key.Guid == guid)
                 {
                     pair.Value.Stop = true;
                     return;
@@ -180,11 +207,11 @@ namespace iba.Processing
             worker.Join(60000);
         }
 
-        virtual public void StopAndWaitForConfiguration(ulong ID)
+        virtual public void StopAndWaitForConfiguration(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID)
+                if (pair.Key.Guid == guid)
                 {
                     pair.Value.Stop = true;
                     pair.Value.Join(60000);
@@ -210,33 +237,33 @@ namespace iba.Processing
             return m_workers[data].Status;
         }
 
-        virtual public StatusData GetStatus(ulong ID)
+        virtual public StatusData GetStatus(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID) return pair.Value.Status;
+                if (pair.Key.Guid == guid) return pair.Value.Status;
             }
-            throw new KeyNotFoundException(ID.ToString() + " not found");
+            throw new KeyNotFoundException(guid.ToString() + " not found");
         }
 
 
-        virtual public PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        virtual public PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started) 
+                if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started) 
                     return (pair.Value.RunningConfiguration.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
             }
             return null;
         }
 
-        virtual public StatusData GetStatusCopy(ulong ID)
+        virtual public StatusData GetStatusCopy(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.ID == ID) return pair.Value.Status.Clone();
+                if (pair.Key.Guid == guid) return pair.Value.Status.Clone();
             }
-            throw new KeyNotFoundException(ID.ToString() + " not found");
+            throw new KeyNotFoundException(guid.ToString() + " not found");
         }
 
         //watchdog data
@@ -318,6 +345,7 @@ namespace iba.Processing
             get
             {
                 List<ConfigurationData> theC = new List<ConfigurationData>(m_workers.Keys);
+
                 return theC;
             }
             set
@@ -489,42 +517,42 @@ namespace iba.Processing
             }
         }
 
-        public override StatusData GetStatus(ulong ID)
+        public override StatusData GetStatus(Guid guid)
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetStatus(ID);
+                return Program.CommunicationObject.Manager.GetStatus(guid);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.handleBrokenConnection();
-                return Manager.GetStatus(ID);
+                return Manager.GetStatus(guid);
             }
         }
 
-        public override PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex)
+        public override PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetStatusPlugin(ID,taskindex);
+                return Program.CommunicationObject.Manager.GetStatusPlugin(guid,taskindex);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.handleBrokenConnection();
-                return Manager.GetStatusPlugin(ID,taskindex);
+                return Manager.GetStatusPlugin(guid,taskindex);
             }
         }
 
-        public override StatusData GetStatusCopy(ulong ID)
+        public override StatusData GetStatusCopy(Guid guid)
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetStatusCopy(ID);
+                return Program.CommunicationObject.Manager.GetStatusCopy(guid);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.handleBrokenConnection();
-                return Manager.GetStatusCopy(ID);
+                return Manager.GetStatusCopy(guid);
             }
         }
 
@@ -554,6 +582,19 @@ namespace iba.Processing
             }
         }
 
+        public override void ReplaceConfigurations(List<ConfigurationData> datas)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.ReplaceConfigurations(datas);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                Manager.ReplaceConfigurations(datas);
+            }
+        }
+
         public override void UpdateConfiguration(ConfigurationData data)
         {
             try
@@ -580,7 +621,19 @@ namespace iba.Processing
             }
         }
 
-        
+        public override bool CompareConfiguration(ConfigurationData data)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.CompareConfiguration(data);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.handleBrokenConnection();
+                return false;
+            }
+        }
+
         public override void StartAllEnabledConfigurations()
         {
             try
@@ -604,34 +657,6 @@ namespace iba.Processing
                 Program.CommunicationObject.handleBrokenConnection();
             }
         }                        
-
-        public override ulong IdCounter
-        {
-            get
-            {
-                try
-                {
-                    return Program.CommunicationObject.Manager.IdCounter;
-                }
-                catch (SocketException)
-                {
-                    Program.CommunicationObject.handleBrokenConnection();
-                    return Manager.IdCounter;
-                }
-            }
-            set
-            {
-                try
-                {
-                    Program.CommunicationObject.Manager.IdCounter = value;
-                }
-                catch (SocketException)
-                {
-                    Program.CommunicationObject.handleBrokenConnection();
-                    Manager.IdCounter = value;
-                }
-            }
-        }
 
         public override List<StatusData> Statuses
         {
@@ -686,11 +711,11 @@ namespace iba.Processing
             }
         }
 
-        public override void StopAndWaitForConfiguration(ulong ID)
+        public override void StopAndWaitForConfiguration(Guid guid)
         {
             try
             {
-                Program.CommunicationObject.Manager.StopAndWaitForConfiguration(ID);
+                Program.CommunicationObject.Manager.StopAndWaitForConfiguration(guid);
             }
             catch (SocketException)
             {
@@ -710,11 +735,11 @@ namespace iba.Processing
             }
         }
 
-        public override void StopConfiguration(ulong ID)
+        public override void StopConfiguration(Guid guid)
         {
             try
             {
-                Program.CommunicationObject.Manager.StopConfiguration(ID);
+                Program.CommunicationObject.Manager.StopConfiguration(guid);
             }
             catch (SocketException)
             {
@@ -722,11 +747,11 @@ namespace iba.Processing
             }
         }
 
-        public override void UpdateTreePosition(ulong ID, int pos)
+        public override void UpdateTreePosition(Guid guid, int pos)
         {
             try
             {
-                Program.CommunicationObject.Manager.UpdateTreePosition(ID, pos);
+                Program.CommunicationObject.Manager.UpdateTreePosition(guid, pos);
             }
             catch (SocketException)
             {

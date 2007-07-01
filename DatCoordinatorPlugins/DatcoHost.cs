@@ -53,6 +53,6 @@ namespace iba.Plugins
         string FindSuitableFileName(string filename);
 
 
-        PluginTaskWorkerStatus GetStatusPlugin(ulong ID, int taskindex);
+        PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex);
     }
 }

@@ -105,7 +105,7 @@ namespace iba
             string str = "";
             foreach (ConfigurationData cd in m_communicationObject.Manager.Configurations)
             {
-                str += cd.Name + "(" + cd.ID + ")" + Environment.NewLine;
+                str += cd.Name + "(" + cd.Guid.ToString() + ")" + Environment.NewLine;
                 foreach (TaskData td in cd.Tasks)
                     str += "-" + td.Name + Environment.NewLine; ;
             }
