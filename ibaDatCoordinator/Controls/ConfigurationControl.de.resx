@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="m_nameTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
@@ -127,29 +124,17 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Jobname:</value>
   </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Messdateiverzeichnis:</value>
   </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_datDirTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_scanTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>266, 41</value>
   </data>
   <data name="m_scanTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 20</value>
-  </data>
-  <data name="m_scanTimeUpDown.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>319, 43</value>
@@ -160,47 +145,27 @@
   <data name="label4.Text" xml:space="preserve">
     <value>Minuten</value>
   </data>
-  <data name="label4.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_subMapsCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 17</value>
   </data>
   <data name="m_subMapsCheckBox.Text" xml:space="preserve">
     <value>Unterverzeichnisse prüfen</value>
   </data>
-  <data name="m_subMapsCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbPass.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label12.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbUserName.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_checkPathButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_browseFolderButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Messdateien</value>
   </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbRetry.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_refreshDats.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_retryUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>266, 92</value>
   </data>
-  <data name="groupBox2.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_retryUpDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 20</value>
+  </data>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>319, 95</value>
   </data>
   <data name="m_cbRescanEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>234, 17</value>
@@ -208,26 +173,11 @@
   <data name="m_cbRescanEnabled.Text" xml:space="preserve">
     <value>Nach unverarbeiteten .dat-Files suchen, alle</value>
   </data>
-  <data name="m_cbRescanEnabled.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_stopButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_applyToRunningButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_startButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>231, 13</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>Wiederholen fehlgeschlagener Operationen alle</value>
-  </data>
-  <data name="label11.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="m_autoStartCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>266, 19</value>
@@ -238,26 +188,17 @@
   <data name="m_autoStartCheckBox.Text" xml:space="preserve">
     <value>Automatisch nach dem Laden starten</value>
   </data>
-  <data name="m_autoStartCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 17</value>
   </data>
   <data name="m_enableCheckBox.Text" xml:space="preserve">
     <value>aktiv</value>
   </data>
-  <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_failTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>266, 67</value>
   </data>
   <data name="m_failTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 20</value>
-  </data>
-  <data name="m_failTimeUpDown.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>319, 69</value>
@@ -268,35 +209,14 @@
   <data name="label10.Text" xml:space="preserve">
     <value>Minuten</value>
   </data>
-  <data name="label10.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Zyklus</value>
-  </data>
-  <data name="groupBox3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_browseExecutableButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Programmpfad und -name:</value>
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_analyserTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox5.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="m_newReportButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -373,14 +293,8 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="m_newTaskToolstrip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Neue Aufgabe</value>
-  </data>
-  <data name="groupBox4.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>94, 77</value>
@@ -391,9 +305,6 @@
   <data name="label9.Text" xml:space="preserve">
     <value>Computer:</value>
   </data>
-  <data name="label9.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
     <value>83, 51</value>
   </data>
@@ -402,9 +313,6 @@
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>smtp-Server:</value>
-  </data>
-  <data name="label8.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>88, 25</value>
@@ -415,23 +323,11 @@
   <data name="label7.Text" xml:space="preserve">
     <value>Empfänger:</value>
   </data>
-  <data name="label7.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_rbNetSend.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 17</value>
   </data>
   <data name="m_rbNetSend.Text" xml:space="preserve">
     <value>Net send</value>
-  </data>
-  <data name="m_rbNetSend.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbSMTP.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbEmail.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="m_rbEmail.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 17</value>
@@ -439,17 +335,8 @@
   <data name="m_rbEmail.Text" xml:space="preserve">
     <value>E-mail</value>
   </data>
-  <data name="m_rbEmail.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbNetSend.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_subfolderGroupBox.Text" xml:space="preserve">
     <value>Ziel</value>
-  </data>
-  <data name="m_subfolderGroupBox.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -457,20 +344,11 @@
   <data name="label6.Text" xml:space="preserve">
     <value>Minuten</value>
   </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_nudNotifyTime.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="m_rbTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 17</value>
   </data>
   <data name="m_rbTime.Text" xml:space="preserve">
     <value>Benachrichtigung alle</value>
-  </data>
-  <data name="m_rbTime.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="m_rbImmediate.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 17</value>
@@ -478,22 +356,10 @@
   <data name="m_rbImmediate.Text" xml:space="preserve">
     <value>Sofort benachrichtigen</value>
   </data>
-  <data name="m_rbImmediate.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="groupBox7.Text" xml:space="preserve">
     <value>Zeit</value>
   </data>
-  <data name="groupBox7.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="groupBox6.Text" xml:space="preserve">
     <value>Benachrichtigungen</value>
-  </data>
-  <data name="groupBox6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
   </data>
 </root>

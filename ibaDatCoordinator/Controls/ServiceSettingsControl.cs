@@ -45,11 +45,39 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            Profiler.ProfileBool(true, "Settings", "DoInitialScan", ref m_cbInitialScan.Checked, true);
-            Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref m_cbPostpone.Checked, true);
+            bool bInitialScan = true; 
+            Profiler.ProfileBool(true, "Settings", "DoInitialScan", ref bInitialScan, true);
+            m_cbInitialScan.Checked = bInitialScan;
+            bool bPostpone = false;
+            Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, false);
+            m_cbPostpone.Checked = bPostpone;
             int minutes = 5;
             Profiler.ProfileInt(true, "Settings", "PostponeMinutes", ref minutes, minutes);
             m_nudPostponeTime.Value = (decimal)minutes;
+            int iPc = (int)System.Diagnostics.ProcessPriorityClass.Normal;
+            Profiler.ProfileInt(true, "Settings", "ProcessPriority", ref iPc, iPc);
+            System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
+            switch (pc)
+            {
+                case System.Diagnostics.ProcessPriorityClass.Idle:
+                    m_comboPriority.SelectedIndex = 0;
+                    break;
+                case System.Diagnostics.ProcessPriorityClass.BelowNormal:
+                    m_comboPriority.SelectedIndex = 1;
+                    break;
+                case System.Diagnostics.ProcessPriorityClass.Normal:
+                    m_comboPriority.SelectedIndex = 2;
+                    break;
+                case System.Diagnostics.ProcessPriorityClass.AboveNormal:
+                    m_comboPriority.SelectedIndex = 3;
+                    break;
+                case System.Diagnostics.ProcessPriorityClass.High:
+                    m_comboPriority.SelectedIndex = 4;
+                    break;
+                case System.Diagnostics.ProcessPriorityClass.RealTime:
+                    m_comboPriority.SelectedIndex = 5;
+                    break;
+            }
         }
 
         public void LeaveCleanup()
@@ -79,10 +107,39 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            Profiler.ProfileBool(false, "Settings", "DoInitialScan", ref m_cbInitialScan.Checked, true);
-            Profiler.ProfileBool(false, "Settings", "DoPostponeProcessing", ref m_cbPostpone.Checked, true);
+            bool bInitialScan = m_cbInitialScan.Checked;
+            Profiler.ProfileBool(false, "Settings", "DoInitialScan", ref bInitialScan, true);
+            bool bPostpone = m_cbPostpone.Checked;
+            Profiler.ProfileBool(false, "Settings", "DoPostponeProcessing", ref bPostpone, true);
             int minutes = (int) m_nudPostponeTime.Value;
             Profiler.ProfileInt(false, "Settings", "PostponeMinutes", ref minutes, 5);
+            
+            int iPc = 2;
+            switch (m_comboPriority.SelectedIndex)
+            {
+                case 0: iPc = (int)System.Diagnostics.ProcessPriorityClass.Idle; break;
+                case 1: iPc = (int)System.Diagnostics.ProcessPriorityClass.BelowNormal; break;
+                case 2: iPc = (int)System.Diagnostics.ProcessPriorityClass.Normal; break;
+                case 3: iPc = (int)System.Diagnostics.ProcessPriorityClass.AboveNormal; break;
+                case 4: iPc = (int)System.Diagnostics.ProcessPriorityClass.High; break;
+                case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
+            }
+            Profiler.ProfileInt(false, "Settings", "ProcessPriority", ref iPc, (int)System.Diagnostics.ProcessPriorityClass.Normal);
+            //set actual priority;
+            System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                try
+                {
+                    System.Diagnostics.Process.GetCurrentProcess().PriorityClass = pc;
+                }
+                catch
+                {}
+            }
+            else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                Program.CommunicationObject.SetPriority(pc);
+            }
         }
 
         #endregion

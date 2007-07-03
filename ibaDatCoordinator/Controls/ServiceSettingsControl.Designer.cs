@@ -30,14 +30,14 @@ namespace iba.Controls
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceSettingsControl));
             this.m_gbApp = new System.Windows.Forms.GroupBox();
-            this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
-            this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_comboPriority = new System.Windows.Forms.ComboBox();
+            this.m_lblPriority = new System.Windows.Forms.Label();
+            this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_cbPostpone = new System.Windows.Forms.CheckBox();
-            this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
             this.m_cbInitialScan = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
+            this.m_cbPostpone = new System.Windows.Forms.CheckBox();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
@@ -52,28 +52,30 @@ namespace iba.Controls
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
             // 
-            // m_cbAutoStart
-            // 
-            resources.ApplyResources(this.m_cbAutoStart, "m_cbAutoStart");
-            this.m_cbAutoStart.Name = "m_cbAutoStart";
-            this.m_cbAutoStart.UseVisualStyleBackColor = true;
-            // 
-            // m_lblPriority
-            // 
-            resources.ApplyResources(this.m_lblPriority, "m_lblPriority");
-            this.m_lblPriority.Name = "m_lblPriority";
-            // 
             // m_comboPriority
             // 
+            this.m_comboPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comboPriority.FormattingEnabled = true;
             this.m_comboPriority.Items.AddRange(new object[] {
             resources.GetString("m_comboPriority.Items"),
             resources.GetString("m_comboPriority.Items1"),
             resources.GetString("m_comboPriority.Items2"),
             resources.GetString("m_comboPriority.Items3"),
-            resources.GetString("m_comboPriority.Items4")});
+            resources.GetString("m_comboPriority.Items4"),
+            resources.GetString("m_comboPriority.Items5")});
             resources.ApplyResources(this.m_comboPriority, "m_comboPriority");
             this.m_comboPriority.Name = "m_comboPriority";
+            // 
+            // m_lblPriority
+            // 
+            resources.ApplyResources(this.m_lblPriority, "m_lblPriority");
+            this.m_lblPriority.Name = "m_lblPriority";
+            // 
+            // m_cbAutoStart
+            // 
+            resources.ApplyResources(this.m_cbAutoStart, "m_cbAutoStart");
+            this.m_cbAutoStart.Name = "m_cbAutoStart";
+            this.m_cbAutoStart.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -85,11 +87,16 @@ namespace iba.Controls
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
-            // m_cbPostpone
+            // m_cbInitialScan
             // 
-            resources.ApplyResources(this.m_cbPostpone, "m_cbPostpone");
-            this.m_cbPostpone.Name = "m_cbPostpone";
-            this.m_cbPostpone.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.m_cbInitialScan, "m_cbInitialScan");
+            this.m_cbInitialScan.Name = "m_cbInitialScan";
+            this.m_cbInitialScan.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
             // 
             // m_nudPostponeTime
             // 
@@ -111,16 +118,11 @@ namespace iba.Controls
             0,
             0});
             // 
-            // label2
+            // m_cbPostpone
             // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // m_cbInitialScan
-            // 
-            resources.ApplyResources(this.m_cbInitialScan, "m_cbInitialScan");
-            this.m_cbInitialScan.Name = "m_cbInitialScan";
-            this.m_cbInitialScan.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.m_cbPostpone, "m_cbPostpone");
+            this.m_cbPostpone.Name = "m_cbPostpone";
+            this.m_cbPostpone.UseVisualStyleBackColor = true;
             // 
             // ServiceSettingsControl
             // 

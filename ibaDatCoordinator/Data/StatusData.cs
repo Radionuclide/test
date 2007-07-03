@@ -14,16 +14,30 @@ namespace iba.Data
             NOT_STARTED=0,
             RUNNING=1,
             TIMED_OUT=2,
-            COMPLETED_SUCCESFULY=3,
-            COMPLETED_FAILURE = 4,
-            NO_ACCESS = 5,
-            COMPLETED_TRUE = 6,
-            COMPLETED_FALSE = 7
+            MEMORY_EXCEEDED = 3,
+            COMPLETED_SUCCESFULY=4,
+            COMPLETED_FAILURE = 5,
+            NO_ACCESS = 6,
+            COMPLETED_TRUE = 7,
+            COMPLETED_FALSE = 8,
+            TRIED_TOO_MANY_TIMES = 9
         }
+
+        private int m_timesTried;
+        public int TimesTried
+        {
+            get { return m_timesTried; }
+            set { m_timesTried = value; }
+        }
+
 
         static public bool IsError(State stat)
         {
-            return stat == State.TIMED_OUT || stat == State.COMPLETED_FAILURE || stat == State.NO_ACCESS;
+            return stat == State.TRIED_TOO_MANY_TIMES || 
+                            stat == State.TIMED_OUT ||
+                            stat == State.MEMORY_EXCEEDED ||
+                            stat == State.COMPLETED_FAILURE || 
+                            stat == State.NO_ACCESS;
         }
 
         private STLLikeMap<TaskData, State> m_states;
@@ -36,6 +50,7 @@ namespace iba.Data
         public DatFileStatus()
         {
             m_states = new STLLikeMap<TaskData,State>();
+            m_timesTried = 0;
         }
 
         public object Clone()
@@ -43,6 +58,7 @@ namespace iba.Data
             DatFileStatus copy = new DatFileStatus();
             foreach (KeyValuePair<TaskData, State> pair in m_states)
                 copy.m_states.Add(pair.Key, pair.Value);
+            copy.m_timesTried = m_timesTried;
             return copy;
         }
     }

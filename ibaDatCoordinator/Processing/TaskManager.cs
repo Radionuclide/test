@@ -18,7 +18,6 @@ namespace iba.Processing
             ConfigurationWorker cw = new ConfigurationWorker(data);
             lock (m_workers)
             {
-                LogData.Data.Logger.Log("Added configuration: " + data.Guid.ToString());
                 m_workers.Add(data, cw);
             }
         }
@@ -37,7 +36,6 @@ namespace iba.Processing
                 {
                     StopConfiguration(data);
                     m_workers.Remove(data);
-                    LogData.Data.Logger.Log("Removed configuration: " + data.Guid.ToString());
                 }
             }
         }
@@ -52,7 +50,6 @@ namespace iba.Processing
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
-                    LogData.Data.Logger.Log("Replaced configuration: " + data.Guid.ToString());
                 }
                 //else, ignore, replace is due to a belated save of an allready deleted configuration
             }
@@ -68,12 +65,10 @@ namespace iba.Processing
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
-                    //LogData.Data.Logger.Log("Replaced configuration: " + data.Guid.ToString());
                 }
                 else
                 {
                     cw = new ConfigurationWorker(data);
-                    //LogData.Data.Logger.Log("Added instead of Replaced configuration: " + data.Guid.ToString());
                     m_workers.Add(data, cw);
                 }
             }
@@ -93,7 +88,6 @@ namespace iba.Processing
             foreach (ConfigurationData dat in toRemove)
             {
                 RemoveConfiguration(dat);
-                LogData.Data.Logger.Log("Removed configuration (because it was not in the datas)): " + dat.Guid.ToString());
             }
         }
 
@@ -123,15 +117,8 @@ namespace iba.Processing
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
                 if (pair.Key.Guid == data.Guid)
-                {
-                    bool result = SerializableObjectsCompare.Compare(data, pair.Key);
-                    LogData.Data.Logger.Log("testing ID " + pair.Key.Guid.ToString() + " result: " + result.ToString());
-                    return result;
-                }
-                else
-                    LogData.Data.Logger.Log("service ID " + pair.Key.Guid.ToString() + " client ID: " + data.Guid);
+                    return SerializableObjectsCompare.Compare(data, pair.Key);
             }
-            LogData.Data.Logger.Log("Comparing: no keys found");
             return false;
         }
 
@@ -399,7 +386,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfiguration(data);
             }
         }
@@ -412,7 +399,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfigurations(datas);
             }
         }
@@ -425,7 +412,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ClearConfigurations();
             }
         }
@@ -440,7 +427,7 @@ namespace iba.Processing
                 }
                 catch (SocketException)
                 {
-                    Program.CommunicationObject.handleBrokenConnection();
+                    Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Configurations;
                 }
             }
@@ -452,7 +439,7 @@ namespace iba.Processing
                 }
                 catch (SocketException)
                 {
-                    Program.CommunicationObject.handleBrokenConnection();
+                    Program.CommunicationObject.HandleBrokenConnection();
                     Manager.Configurations = value;
                 }
             }
@@ -468,7 +455,7 @@ namespace iba.Processing
                 }
                 catch (SocketException)
                 {
-                    Program.CommunicationObject.handleBrokenConnection();
+                    Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.WatchDogData;
                 }
             }
@@ -482,7 +469,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetWatchdogStatus();
             }
         }
@@ -498,7 +485,7 @@ namespace iba.Processing
                 }
                 catch (SocketException)
                 {
-                    Program.CommunicationObject.handleBrokenConnection();
+                    Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Count;
                 }
             }
@@ -512,7 +499,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatus(data);
             }
         }
@@ -525,7 +512,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatus(guid);
             }
         }
@@ -538,7 +525,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatusPlugin(guid,taskindex);
             }
         }
@@ -551,7 +538,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatusCopy(guid);
             }
         }
@@ -564,7 +551,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.RemoveConfiguration(data);
             }
         }
@@ -577,7 +564,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfiguration(data);
             }
         }
@@ -590,7 +577,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfigurations(datas);
             }
         }
@@ -603,7 +590,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.UpdateConfiguration(data);
             }
         }
@@ -616,7 +603,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceWatchdogData(data);
             }
         }
@@ -629,7 +616,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 return false;
             }
         }
@@ -642,7 +629,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -654,7 +641,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }                        
 
@@ -668,7 +655,7 @@ namespace iba.Processing
                 }
                 catch (SocketException)
                 {
-                    Program.CommunicationObject.handleBrokenConnection();
+                    Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Statuses;
                 }
             }
@@ -683,7 +670,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -695,7 +682,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -707,7 +694,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -719,7 +706,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -731,7 +718,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -743,7 +730,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -755,7 +742,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -767,7 +754,7 @@ namespace iba.Processing
             }
             catch (SocketException)
             {
-                Program.CommunicationObject.handleBrokenConnection();
+                Program.CommunicationObject.HandleBrokenConnection();
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
                 return false;
             }

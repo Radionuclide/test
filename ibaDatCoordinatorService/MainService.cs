@@ -49,7 +49,6 @@ namespace iba.Services
                         List<ConfigurationData> confs;
                         using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
-                            LogData.Data.Logger.Log("Reading configurations from file: " + filename);
                             ibaDatCoordinatorData dat = null;
                                 dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
                             m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
@@ -60,7 +59,6 @@ namespace iba.Services
                         foreach (ConfigurationData dat in confs)
                         {
                             dat.relinkChildData();
-                            LogData.Data.Logger.Log("Read configuration from file with ID" + dat.Guid.ToString());
                         }
                         m_communicationObject.Manager.Configurations = confs;
                         foreach (ConfigurationData dat in confs)

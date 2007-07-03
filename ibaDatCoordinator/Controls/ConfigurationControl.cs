@@ -92,9 +92,10 @@ namespace iba.Controls
                 m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Maximum);
                         
             m_scanTimeUpDown.Value = (decimal) m_data.RescanTimeInterval.TotalMinutes;
-            m_failTimeUpDown.Value = (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes;
-
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked = m_data.RescanEnabled;
+            m_failTimeUpDown.Value = (decimal)m_data.ReprocessErrorsTimeInterval.TotalMinutes;
+            m_retryUpDown.Value = (decimal) m_data.NrTryTimes;
+            m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
 
             m_executeIBAAButton.Enabled = File.Exists(m_analyserTextBox.Text);
 
@@ -176,6 +177,9 @@ namespace iba.Controls
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
             m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
             m_data.RescanEnabled = m_cbRescanEnabled.Checked;
+            m_data.NrTryTimes = (int) m_retryUpDown.Value;
+            m_data.LimitTimesTried = m_cbRetry.Checked;
+
             m_data.NotificationData.Email = m_tbEmail.Text;
             m_data.NotificationData.SMTPServer = m_tbSMTP.Text;
             m_data.NotificationData.Host = m_tbNetSend.Text;
@@ -415,6 +419,12 @@ namespace iba.Controls
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked;
         }
 
+
+        private void m_cbRetry_CheckedChanged(object sender, EventArgs e)
+        {
+            m_retryUpDown.Enabled = m_cbRetry.Checked;
+        }
+
         private void m_applyToRunningButton_Click(object sender, EventArgs e)
         {
             SaveData();
@@ -454,5 +464,6 @@ namespace iba.Controls
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
         }
+
     }
 }

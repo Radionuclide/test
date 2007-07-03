@@ -703,4 +703,19 @@
   <data name="settingsTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="AttemptsExceeded" xml:space="preserve">
+    <value>nr of attempts exceeded!</value>
+  </data>
+  <data name="memoryexceeded" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\memoryexceeded.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MemoryExceededTaskText" xml:space="preserve">
+    <value>memory limit exceeded!</value>
+  </data>
+  <data name="tomanytimestried" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tomanytimestried.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TriedToManyTimes" xml:space="preserve">
+    <value>The .dat file could not be processed within the maximum number of attempts, further processing will not be attempted</value>
+  </data>
 </root>

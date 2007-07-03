@@ -60,6 +60,8 @@ namespace iba.Controls
             m_reportIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
             m_reportIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
             m_reportIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
+            m_reportIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
+            m_reportIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle)));
 
             m_extractIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_extractIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle));
@@ -67,6 +69,8 @@ namespace iba.Controls
             m_extractIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
             m_extractIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
             m_extractIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
+            m_extractIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
+            m_extractIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle)));
 
             m_batchfileIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_batchfileIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle));
@@ -74,6 +78,8 @@ namespace iba.Controls
             m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
             m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
             m_batchfileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
+            m_batchfileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
+            m_batchfileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle)));
 
             m_copydatIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_copydatIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle));
@@ -81,6 +87,8 @@ namespace iba.Controls
             m_copydatIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
             m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
             m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
+            m_copydatIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
+            m_copydatIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle)));
 
             m_conditionIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
             m_conditionIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle));
@@ -89,6 +97,8 @@ namespace iba.Controls
             m_conditionIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle))); 
             m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
             m_conditionIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+            m_conditionIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+            m_conditionIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
 
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
@@ -99,6 +109,8 @@ namespace iba.Controls
                 m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
                 m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
                 m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(handle)));
             }
 
 
@@ -108,9 +120,10 @@ namespace iba.Controls
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.Success);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.Failure);
             m_taskTexts.Add(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.Timeout);
+            m_taskTexts.Add(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.MemoryExceededTaskText);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_FALSE, iba.Properties.Resources.logIfTaskEvaluatedFalse);
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_TRUE, iba.Properties.Resources.logIfTaskEvaluatedTrue);
-
+            m_taskTexts.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.AttemptsExceeded);
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
         
         }
@@ -132,6 +145,12 @@ namespace iba.Controls
                 case DatFileStatus.State.TIMED_OUT:
                     overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.timeout1.Handle);
                     break;
+                case DatFileStatus.State.MEMORY_EXCEEDED:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.memoryexceeded.Handle);
+                    break;
+                case DatFileStatus.State.TRIED_TOO_MANY_TIMES:
+                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.tomanytimestried.Handle);
+                    break;
             }
             Bitmap combinedBitmap = (Bitmap) original.Clone();
             Graphics g = Graphics.FromImage(combinedBitmap);
@@ -149,15 +168,15 @@ namespace iba.Controls
 
             m_confNameLinkLabel.Text = m_data.CorrConfigurationData.Name;
             int count = m_data.CorrConfigurationData.Tasks.Count;
-            if (m_gridView.ColumnCount != (count + 1))
+            if (m_gridView.ColumnCount != (count + 2))
             {
-                m_gridView.ColumnCount = 1;
+                m_gridView.ColumnCount = 2;
                 DataGridViewImageColumn [] cols = new DataGridViewImageColumn[count];
                 for(int i = 0; i < cols.Length;i++) cols[i] = new DataGridViewImageColumn();
                 m_gridView.Columns.AddRange(cols);
             }
             foreach (TaskData task in m_data.CorrConfigurationData.Tasks)
-                m_gridView.Columns[task.Index + 1].HeaderText = task.Name;
+                m_gridView.Columns[task.Index + 2].HeaderText = task.Name;
 
             OnChangedData(null, null);
             m_refreshTimer.Start();
@@ -256,7 +275,7 @@ namespace iba.Controls
                     blank.Add(true);
                 if (it.Value.Value != null)
                 {
-
+                    m_gridView.Rows[count].Cells[1].Value = it.Value.Value.TimesTried;
                     Bitmap bitmap = null;
                     text = String.Empty;
                     foreach (KeyValuePair<TaskData, DatFileStatus.State> pair in it.Value.Value.States)
@@ -279,8 +298,8 @@ namespace iba.Controls
                             bitmap = m_customtaskIcons[index][pair.Value];
                         }
                         text = m_taskTexts[pair.Value];
-                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 1] as DataGridViewImageCell;
-                        blank[pair.Key.Index + 1] = false;
+                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 2] as DataGridViewImageCell;
+                        blank[pair.Key.Index + 2] = false;
                         if ((cell.Value as Bitmap) != bitmap)
                         {
                             cell.Value = bitmap;
@@ -292,7 +311,7 @@ namespace iba.Controls
                     }
                 }
 
-                for (int i = 1; i < m_gridView.Rows[count].Cells.Count; i++)
+                for (int i = 2; i < m_gridView.Rows[count].Cells.Count; i++)
                     if (blank[i] && (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value != m_blankIcon)
                         (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
                 count++;

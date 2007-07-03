@@ -127,12 +127,26 @@ namespace iba.Data
         }
 
         private bool m_bRescanEnabled;
-
         public bool RescanEnabled
         {
             get { return m_bRescanEnabled; }
             set { m_bRescanEnabled = value; }
         }
+
+        private bool m_bLimitTimesTried;
+        public bool LimitTimesTried
+        {
+            get { return m_bLimitTimesTried; }
+            set { m_bLimitTimesTried = value; }
+        }
+
+        private int m_nrTimes;
+        public int NrTryTimes
+        {
+            get { return m_nrTimes; }
+            set { m_nrTimes = value; }
+        }
+
 
         private TimeSpan m_rescanTime;
         [XmlIgnore]
@@ -209,6 +223,8 @@ namespace iba.Data
             m_datdirectoryUNC = "";
             m_treePosition = -1;
             m_guid = Guid.NewGuid();
+            m_bLimitTimesTried = false;
+            m_nrTimes = 10;
         }
 
         public void relinkChildData()
@@ -237,6 +253,8 @@ namespace iba.Data
             cd.m_datdirectoryUNC = m_datdirectoryUNC;
             cd.m_username = m_username;
             cd.m_pass = m_pass;
+            cd.m_bLimitTimesTried = m_bLimitTimesTried;
+            cd.m_nrTimes = m_nrTimes;
             return cd;
         }
 

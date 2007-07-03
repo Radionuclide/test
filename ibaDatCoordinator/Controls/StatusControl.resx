@@ -219,6 +219,18 @@
   <data name="DatFiles.MinimumWidth" type="System.Int32, mscorlib">
     <value>204</value>
   </data>
+  <metadata name="m_attempts.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="m_attempts.HeaderText" xml:space="preserve">
+    <value>#attempts</value>
+  </data>
+  <data name="m_attempts.MinimumWidth" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_attempts.Width" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
   <data name="m_gridView.Location" type="System.Drawing.Point, System.Drawing">
     <value>29, 59</value>
   </data>
@@ -262,6 +274,12 @@
     <value>DatFiles</value>
   </data>
   <data name="&gt;&gt;DatFiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_attempts.Name" xml:space="preserve">
+    <value>m_attempts</value>
+  </data>
+  <data name="&gt;&gt;m_attempts.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

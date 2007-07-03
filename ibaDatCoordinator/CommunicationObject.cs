@@ -47,6 +47,16 @@ namespace iba
             }
         }
 
+        public void SetPriority(System.Diagnostics.ProcessPriorityClass priority)
+        {
+            try
+            {
+                System.Diagnostics.Process.GetCurrentProcess().PriorityClass = priority;
+            }
+            catch
+            {
+            }
+        }
 
         public CommunicationObject()
         {
@@ -142,8 +152,13 @@ namespace iba
             }
             catch (SocketException)
             {
-                handleBrokenConnection();
+                HandleBrokenConnection();
             }
+        }
+
+        public void SetPriority(System.Diagnostics.ProcessPriorityClass priority)
+        {
+            m_com.SetPriority(priority);
         }
 
         public int LoggerMaxRows
@@ -156,7 +171,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                     return LogData.Data.MaxRows;
                 }
             }
@@ -168,7 +183,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                 }
             }
         }
@@ -183,7 +198,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                     return TaskManager.Manager;
                 }
             }
@@ -195,7 +210,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                 }
             }
         }
@@ -210,7 +225,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                     return false;
                 }
             }
@@ -222,7 +237,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                 }
             }
         }
@@ -237,7 +252,7 @@ namespace iba
                 }
                 catch (SocketException)
                 {
-                    handleBrokenConnection();
+                    HandleBrokenConnection();
                     return null;
                 }
             }
@@ -252,7 +267,7 @@ namespace iba
             }
             catch (SocketException)
             {
-                handleBrokenConnection();
+                HandleBrokenConnection();
                 if (LogData.Data.Logger.IsOpen)
                     LogData.Data.Logger.Log(Logging.Level.Info, message);
             }
@@ -266,7 +281,7 @@ namespace iba
             }
             catch (SocketException)
             {
-                handleBrokenConnection();
+                HandleBrokenConnection();
             }
         }
 
@@ -277,7 +292,7 @@ namespace iba
             set { m_stoppingService = value; }
         }
 
-        public void handleBrokenConnection()
+        public void HandleBrokenConnection()
         {
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
             Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
@@ -298,7 +313,6 @@ namespace iba
                 gv = LogData.Data.Logger as GridViewLogger;
 
             LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
-            Program.MainForm.TryToConnect(null); //start periodic check to restore communication
         }
     }
 }

@@ -101,6 +101,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to nr of attempts exceeded!.
+        /// </summary>
+        internal static string AttemptsExceeded {
+            get {
+                return ResourceManager.GetString("AttemptsExceeded", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon batchfile_running {
             get {
                 object obj = ResourceManager.GetObject("batchfile_running", resourceCulture);
@@ -951,6 +960,22 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Icon memoryexceeded {
+            get {
+                object obj = ResourceManager.GetObject("memoryexceeded", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to memory limit exceeded!.
+        /// </summary>
+        internal static string MemoryExceededTaskText {
+            get {
+                return ResourceManager.GetString("MemoryExceededTaskText", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Batchfile Task.
         /// </summary>
@@ -1543,6 +1568,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Icon tomanytimestried {
+            get {
+                object obj = ResourceManager.GetObject("tomanytimestried", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Automatically run this job on service start or file loading.
         /// </summary>
@@ -1567,6 +1599,15 @@ namespace iba.Properties {
         internal static string toolTipStopAll {
             get {
                 return ResourceManager.GetString("toolTipStopAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The .dat file could not be processed within the maximum number of attempts, further processing will not be attempted.
+        /// </summary>
+        internal static string TriedToManyTimes {
+            get {
+                return ResourceManager.GetString("TriedToManyTimes", resourceCulture);
             }
         }
         

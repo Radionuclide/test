@@ -36,6 +36,7 @@ namespace iba.Controls
             this.m_refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.m_gridView = new System.Windows.Forms.DataGridView();
             this.DatFiles = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_attempts = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +70,8 @@ namespace iba.Controls
             resources.ApplyResources(this.m_gridView, "m_gridView");
             this.m_gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_gridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DatFiles});
+            this.DatFiles,
+            this.m_attempts});
             this.m_gridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.m_gridView.Name = "m_gridView";
             this.m_gridView.ReadOnly = true;
@@ -82,6 +84,15 @@ namespace iba.Controls
             this.DatFiles.Name = "DatFiles";
             this.DatFiles.ReadOnly = true;
             this.DatFiles.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_attempts
+            // 
+            this.m_attempts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.m_attempts.FillWeight = 20F;
+            resources.ApplyResources(this.m_attempts, "m_attempts");
+            this.m_attempts.Name = "m_attempts";
+            this.m_attempts.ReadOnly = true;
+            this.m_attempts.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // StatusControl
             // 
@@ -107,5 +118,6 @@ namespace iba.Controls
         private System.Windows.Forms.Timer m_refreshTimer;
         private System.Windows.Forms.DataGridView m_gridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn DatFiles;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_attempts;
     }
 }

@@ -52,8 +52,8 @@ namespace iba.Controls
                 {
                     time = File.GetLastWriteTime(filename);
                     ibaDatFile.OpenForUpdate(filename);
-                    ibaDatFile.WriteInfoField("status", "readyToProcess");
-                    ibaDatFile.WriteInfoField("TasksDone", "");
+                    ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                    ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
                     backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));
                 }
                 catch (Exception ex)//updating didn't work, forget about it

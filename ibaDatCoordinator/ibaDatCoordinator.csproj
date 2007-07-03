@@ -138,7 +138,7 @@
       <DependentUpon>ReportControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ServiceSettingsControl.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ServiceSettingsControl.Designer.cs">
       <DependentUpon>ServiceSettingsControl.cs</DependentUpon>
@@ -413,10 +413,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>WatchdogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.de-DE.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.de.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -577,6 +573,8 @@
     <None Include="Resources\iftask.ico" />
     <None Include="Resources\running1.ico" />
     <None Include="Resources\settings.ico" />
+    <None Include="Resources\tomanytimestried.ico" />
+    <None Include="Resources\memoryexceeded.ico" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

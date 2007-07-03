@@ -302,6 +302,9 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   ;Create uninstall shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
+  CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
+  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\DatCoordinator"
+
 SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
@@ -339,7 +342,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator Service Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
-  
+  CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
+  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\DatCoordinator"
   ;Start service
    nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
 SectionEnd
@@ -671,7 +675,7 @@ LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_ENGLISH} "Choose Installation T
 LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_ENGLISH} "Choose whether or not ibaDatCoordinator is installed as a service"
 LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordinator as a service"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordinator as stand alone executable"
-
+LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
@@ -700,6 +704,7 @@ LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_GERMAN} "Wählen Sie die Install
 LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie ob der ibaDatCoordinator als Dienst installiert werden soll"
 LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator als Dienst installieren"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
+LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
@@ -728,4 +733,4 @@ LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_FRENCH} "Choisir Type d'Install
 LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_FRENCH} "Choisir si l'ibaDatCoordinator est installé comme service"
 LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme service"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoordinator comme exécutable autonome"
-
+LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
