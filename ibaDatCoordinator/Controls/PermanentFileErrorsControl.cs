@@ -16,14 +16,19 @@ using iba.Plugins;
 
 namespace iba.Controls
 {
-    public partial class StatusControl : UserControl, IPropertyPane
+    public partial class PermanentFileErrorsControl : UserControl, IPropertyPane
     {
-        public StatusControl()
+        public PermanentFileErrorsControl()
         {
             InitializeComponent();
             InitializeIcons();
-        }
+            ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
+            ((Bitmap)m_deleteDats.Image).MakeTransparent(Color.Magenta);
+            m_checkedFiles = new Set<string>();
+            m_toolTip.SetToolTip(m_deleteDats, iba.Properties.Resources.deletePermanentErrorFilesButton);
+            m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshPermanentErrorFilesButton);
 
+        }
        
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -114,7 +119,6 @@ namespace iba.Controls
                 m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(handle)));
             }
 
-
             m_taskTexts.Add(DatFileStatus.State.NOT_STARTED, String.Empty);
             m_taskTexts.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.Running);
             m_taskTexts.Add(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.Noaccess);
@@ -126,7 +130,6 @@ namespace iba.Controls
             m_taskTexts.Add(DatFileStatus.State.COMPLETED_TRUE, iba.Properties.Resources.logIfTaskEvaluatedTrue);
             m_taskTexts.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.AttemptsExceeded);
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
-        
         }
 
         private Bitmap MergeIcons(DatFileStatus.State stat, Bitmap original)
@@ -169,15 +172,15 @@ namespace iba.Controls
 
             m_confNameLinkLabel.Text = m_data.CorrConfigurationData.Name;
             int count = m_data.CorrConfigurationData.Tasks.Count;
-            if (m_gridView.ColumnCount != (count + 2))
+            if (m_gridView.ColumnCount != (count + 3))
             {
-                m_gridView.ColumnCount = 2;
+                m_gridView.ColumnCount = 3;
                 DataGridViewImageColumn [] cols = new DataGridViewImageColumn[count];
                 for(int i = 0; i < cols.Length;i++) cols[i] = new DataGridViewImageColumn();
                 m_gridView.Columns.AddRange(cols);
             }
             foreach (TaskData task in m_data.CorrConfigurationData.Tasks)
-                m_gridView.Columns[task.Index + 2].HeaderText = task.Name;
+                m_gridView.Columns[task.Index + 3].HeaderText = task.Name;
 
             OnChangedData(null, null);
             m_refreshTimer.Start();
@@ -191,6 +194,21 @@ namespace iba.Controls
         public void SaveData()
         {
             //nothing to be saved as status is purely an output control
+        }
+
+        private Set<String> m_checkedFiles;
+        private void DetermineCheckedFiles()
+        {
+            m_checkedFiles.Clear();
+            foreach (DataGridViewRow row in m_gridView.Rows)
+            {
+                if (((bool) row.Cells[0].Value))
+                {
+                    string filename = row.Cells[1].Value as string;
+                    if (!string.IsNullOrEmpty(filename))
+                        m_checkedFiles.Add(filename);
+                }
+            }
         }
 
         public void OnChangedData(object sender, EventArgs e)
@@ -208,46 +226,28 @@ namespace iba.Controls
                     return;
                 }
             }
-            if (!m_data.Changed && sender != null)
+            if (!m_data.PermanentErrorFilesChanged && sender != null)
             {
                 m_refreshTimer.Enabled = true;
                 return;
             }
-            m_data.Changed = false;
+            m_data.PermanentErrorFilesChanged = false;
             //wait cursor
-            if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
-            else this.Cursor = Cursors.Default;
-            string text = String.Format(iba.Properties.Resources.statText1, m_data.Started ? iba.Properties.Resources.statText2 : iba.Properties.Resources.statText3) + Environment.NewLine;
-            //text += "processedFiles: " + m_data.ProcessedFiles.Count.ToString() + Environment.NewLine;
-            //text += "readFiles: " + m_data.ReadFiles.Count.ToString() + Environment.NewLine;
-            m_statusRunningText.Text = text;
-            SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>> contents = new SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>>();
-
-            lock (m_data.ProcessedFilesCopy)
+            if (m_data.UpdatingFileList)
             {
-                foreach (string file in m_data.ProcessedFilesCopy)
-                    lock (m_data.DatFileStates)
-                    {
-                        try
-                        {
-                            if (File.Exists(file))
-                            {
-                                FileInfo f = new FileInfo(file);
-                                DatFileStatus dfs = null;
-                                if (m_data.DatFileStates.ContainsKey(file))
-                                    dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                                contents[f.LastWriteTime] =
-                                    new KeyValuePair<string, DatFileStatus>(file, dfs);
-                            }
-                        }
-                        catch //if network disconnection shouldh happen
-                        {
-                        }
-                    }
+                this.Cursor = Cursors.WaitCursor;
+                m_deleteDats.Enabled = m_refreshDats.Enabled = false;
             }
-            lock (m_data.ReadFilesCopy)
+            else
             {
-                foreach (string file in m_data.ReadFilesCopy)
+                m_deleteDats.Enabled = m_refreshDats.Enabled = true;
+                this.Cursor = Cursors.Default;
+            }
+
+            SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>> contents = new SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>>();
+            lock (m_data.PermanentErrorFilesCopy)
+            {
+                foreach (string file in m_data.PermanentErrorFilesCopy)
                     lock (m_data.DatFileStates)
                     {
                         try
@@ -268,19 +268,20 @@ namespace iba.Controls
                     }
             }
 
+            DetermineCheckedFiles();
             m_gridView.RowCount = contents.Count;
             int count = 0;
             foreach (KeyValuePair<DateTime, KeyValuePair<string, DatFileStatus>> it in contents)
             {
-                m_gridView.Rows[count].Cells[0].Value = it.Value.Key;
+                m_gridView.Rows[count].Cells[1].Value = it.Value.Key;
+                m_gridView.Rows[count].Cells[0].Value = m_checkedFiles.Contains(it.Value.Key);
                 List<bool> blank = new List<bool>();
                 for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
                     blank.Add(true);
                 if (it.Value.Value != null)
                 {
-                    m_gridView.Rows[count].Cells[1].Value = it.Value.Value.TimesTried;
+                    m_gridView.Rows[count].Cells[2].Value = it.Value.Value.TimesTried;
                     Bitmap bitmap = null;
-                    text = String.Empty;
                     foreach (KeyValuePair<TaskData, DatFileStatus.State> pair in it.Value.Value.States)
                     {
                         if (pair.Key is ReportData)
@@ -300,9 +301,9 @@ namespace iba.Controls
                             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
                             bitmap = m_customtaskIcons[index][pair.Value];
                         }
-                        text = m_taskTexts[pair.Value];
-                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 2] as DataGridViewImageCell;
-                        blank[pair.Key.Index + 2] = false;
+                        String text = m_taskTexts[pair.Value];
+                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 3] as DataGridViewImageCell;
+                        blank[pair.Key.Index + 3] = false;
                         if ((cell.Value as Bitmap) != bitmap)
                         {
                             cell.Value = bitmap;
@@ -314,7 +315,7 @@ namespace iba.Controls
                     }
                 }
 
-                for (int i = 2; i < m_gridView.Rows[count].Cells.Count; i++)
+                for (int i = 3; i < m_gridView.Rows[count].Cells.Count; i++)
                     if (blank[i] && (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value != m_blankIcon)
                         (m_gridView.Rows[count].Cells[i] as DataGridViewImageCell).Value = m_blankIcon;
                 count++;
@@ -326,6 +327,24 @@ namespace iba.Controls
         private void m_confNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             (m_manager as MainForm).fromStatusToConfiguration();
+        }
+
+        private void m_deleteDats_Click(object sender, EventArgs e)
+        {
+            DetermineCheckedFiles();
+            DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_checkedFiles);
+            dlg.StartPosition = FormStartPosition.CenterParent;
+            dlg.ShowDialog(this);
+            TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERDELETE, m_data.CorrConfigurationData.Guid, m_checkedFiles);
+        }
+
+        private void m_refreshDats_Click(object sender, EventArgs e)
+        {
+            DetermineCheckedFiles();
+            RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_checkedFiles);
+            dlg.StartPosition = FormStartPosition.CenterParent;
+            dlg.ShowDialog(this);
+            TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERREFRESH, m_data.CorrConfigurationData.Guid, m_checkedFiles);
         }
     }
 }

@@ -21,6 +21,12 @@ namespace iba.Controls
             findFiles(data); 
         }
 
+        public RemoveMarkingsDialog(List<string> files)
+        {
+            InitializeComponent();
+            m_files = files;
+        }
+
         private void findFiles(ConfigurationData data)
         {
             string datDir = data.DatDirectory;
@@ -54,6 +60,7 @@ namespace iba.Controls
                     ibaDatFile.OpenForUpdate(filename);
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
                     ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
+                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
                     backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));
                 }
                 catch (Exception ex)//updating didn't work, forget about it

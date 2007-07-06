@@ -118,6 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Ce sont les données d'état pour</value>
+  </data>
+  <data name="m_confNameLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>188, 28</value>
+  </data>
   <data name="m_confNameLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
   </data>

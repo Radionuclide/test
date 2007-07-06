@@ -718,4 +718,19 @@
   <data name="TriedToManyTimes" xml:space="preserve">
     <value>The .dat file could not be processed within the maximum number of attempts, further processing will not be attempted</value>
   </data>
+  <data name="brokenfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brokenfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deletedats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deletedats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deletePermanentErrorFilesButton" xml:space="preserve">
+    <value>Delete selected files</value>
+  </data>
+  <data name="PermanentlyFailedDatFiles" xml:space="preserve">
+    <value>permanently failed .dat files</value>
+  </data>
+  <data name="refreshPermanentErrorFilesButton" xml:space="preserve">
+    <value>Remove markings from selected files so they will be reprocessed.</value>
+  </data>
 </root>

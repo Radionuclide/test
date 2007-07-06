@@ -95,6 +95,18 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RemoveMarkingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\RemoveMarkingsDialog.Designer.cs">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PermanentFileErrorsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PermanentFileErrorsControl.Designer.cs">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CopyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -125,11 +137,11 @@
     <Compile Include="Controls\LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RemoveMarkingsDialog.cs">
+    <Compile Include="Controls\DeleteDatFilesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\RemoveMarkingsDialog.Designer.cs">
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    <Compile Include="Controls\DeleteDatFilesDialog.Designer.cs">
+      <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ReportControl.cs">
       <SubType>UserControl</SubType>
@@ -293,6 +305,30 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.de.resx">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.fr.resx">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.resx">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.de.resx">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.fr.resx">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.resx">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CopyControl.de.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CopyControl.cs</DependentUpon>
@@ -353,17 +389,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>LogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.de.resx">
+    <EmbeddedResource Include="Controls\DeleteDatFilesDialog.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+      <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ReportControl.de.resx">
       <SubType>Designer</SubType>
@@ -575,6 +603,8 @@
     <None Include="Resources\settings.ico" />
     <None Include="Resources\tomanytimestried.ico" />
     <None Include="Resources\memoryexceeded.ico" />
+    <None Include="Resources\deletedats.bmp" />
+    <None Include="Resources\brokenfile.ico" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

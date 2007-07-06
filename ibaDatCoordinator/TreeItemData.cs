@@ -323,4 +323,37 @@ namespace iba
     }
     #endregion
 
+    #region StatusPermanentlyErrorFilesTreeItemData
+    public class StatusPermanentlyErrorFilesTreeItemData : TreeItemData
+    {
+        public StatusPermanentlyErrorFilesTreeItemData(IPropertyPaneManager propManager, StatusData stat)
+            : base(propManager)
+        {
+            m_stat = stat;
+        }
+
+        public override string What
+        {
+            get { return "PermanentlyErrorFiles"; }
+        }
+
+        protected StatusData m_stat;
+
+        public StatusData StatusData
+        {
+            get { return m_stat; }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["StatusPermanentlyErrorFilesControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new PermanentFileErrorsControl();
+                manager.PropertyPanes["StatusPermanentlyErrorFilesControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
 }

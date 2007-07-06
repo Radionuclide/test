@@ -1,6 +1,6 @@
 namespace iba.Controls
 {
-    partial class StatusControl
+    partial class PermanentFileErrorsControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,42 +29,31 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PermanentFileErrorsControl));
             this.m_infoLabel = new System.Windows.Forms.Label();
             this.m_confNameLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.m_statusRunningText = new System.Windows.Forms.Label();
             this.m_refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.m_gridView = new System.Windows.Forms.DataGridView();
+            this.m_check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DatFiles = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_attempts = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_refreshDats = new System.Windows.Forms.Button();
+            this.m_deleteDats = new System.Windows.Forms.Button();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).BeginInit();
             this.SuspendLayout();
             // 
             // m_infoLabel
             // 
-            this.m_infoLabel.AccessibleDescription = null;
-            this.m_infoLabel.AccessibleName = null;
             resources.ApplyResources(this.m_infoLabel, "m_infoLabel");
-            this.m_infoLabel.Font = null;
             this.m_infoLabel.Name = "m_infoLabel";
             // 
             // m_confNameLinkLabel
             // 
-            this.m_confNameLinkLabel.AccessibleDescription = null;
-            this.m_confNameLinkLabel.AccessibleName = null;
             resources.ApplyResources(this.m_confNameLinkLabel, "m_confNameLinkLabel");
-            this.m_confNameLinkLabel.Font = null;
             this.m_confNameLinkLabel.Name = "m_confNameLinkLabel";
             this.m_confNameLinkLabel.TabStop = true;
             this.m_confNameLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_confNameLinkLabel_LinkClicked);
-            // 
-            // m_statusRunningText
-            // 
-            this.m_statusRunningText.AccessibleDescription = null;
-            this.m_statusRunningText.AccessibleName = null;
-            resources.ApplyResources(this.m_statusRunningText, "m_statusRunningText");
-            this.m_statusRunningText.Font = null;
-            this.m_statusRunningText.Name = "m_statusRunningText";
             // 
             // m_refreshTimer
             // 
@@ -72,23 +61,27 @@ namespace iba.Controls
             // 
             // m_gridView
             // 
-            this.m_gridView.AccessibleDescription = null;
-            this.m_gridView.AccessibleName = null;
             this.m_gridView.AllowUserToAddRows = false;
             this.m_gridView.AllowUserToDeleteRows = false;
             this.m_gridView.AllowUserToResizeColumns = false;
             this.m_gridView.AllowUserToResizeRows = false;
             resources.ApplyResources(this.m_gridView, "m_gridView");
-            this.m_gridView.BackgroundImage = null;
             this.m_gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_gridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.m_check,
             this.DatFiles,
             this.m_attempts});
             this.m_gridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.m_gridView.Font = null;
             this.m_gridView.Name = "m_gridView";
             this.m_gridView.ReadOnly = true;
             this.m_gridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            // 
+            // m_check
+            // 
+            this.m_check.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            resources.ApplyResources(this.m_check, "m_check");
+            this.m_check.Name = "m_check";
+            this.m_check.ReadOnly = true;
             // 
             // DatFiles
             // 
@@ -107,20 +100,33 @@ namespace iba.Controls
             this.m_attempts.ReadOnly = true;
             this.m_attempts.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // StatusControl
+            // m_refreshDats
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
+            resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
+            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
+            this.m_refreshDats.Name = "m_refreshDats";
+            this.m_refreshDats.UseVisualStyleBackColor = true;
+            this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
+            // 
+            // m_deleteDats
+            // 
+            resources.ApplyResources(this.m_deleteDats, "m_deleteDats");
+            this.m_deleteDats.Image = global::iba.Properties.Resources.deletedats;
+            this.m_deleteDats.Name = "m_deleteDats";
+            this.m_deleteDats.UseVisualStyleBackColor = true;
+            this.m_deleteDats.Click += new System.EventHandler(this.m_deleteDats_Click);
+            // 
+            // PermanentFileErrorsControl
+            // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
+            this.Controls.Add(this.m_deleteDats);
+            this.Controls.Add(this.m_refreshDats);
             this.Controls.Add(this.m_gridView);
-            this.Controls.Add(this.m_statusRunningText);
             this.Controls.Add(this.m_confNameLinkLabel);
             this.Controls.Add(this.m_infoLabel);
-            this.Font = null;
             this.MinimumSize = new System.Drawing.Size(620, 430);
-            this.Name = "StatusControl";
+            this.Name = "PermanentFileErrorsControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -131,9 +137,12 @@ namespace iba.Controls
 
         private System.Windows.Forms.Label m_infoLabel;
         private System.Windows.Forms.LinkLabel m_confNameLinkLabel;
-        private System.Windows.Forms.Label m_statusRunningText;
         private System.Windows.Forms.Timer m_refreshTimer;
         private System.Windows.Forms.DataGridView m_gridView;
+        private System.Windows.Forms.Button m_refreshDats;
+        private System.Windows.Forms.Button m_deleteDats;
+        private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn m_check;
         private System.Windows.Forms.DataGridViewTextBoxColumn DatFiles;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_attempts;
     }

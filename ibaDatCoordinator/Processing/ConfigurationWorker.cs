@@ -74,8 +74,8 @@ namespace iba.Processing
             m_stop = false;
             UpdateConfiguration();
             m_sd = new StatusData(m_cd);
-            m_sd.ProcessedFiles = m_processedFiles = new List<string>();
-            m_sd.ReadFiles = m_toProcessFiles = new List<string>();
+            m_sd.ProcessedFiles = m_processedFiles = new Set<string>();
+            m_sd.ReadFiles = m_toProcessFiles = new Set<string>();
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
@@ -180,7 +180,11 @@ namespace iba.Processing
                 }
 
                 //also update statusdata
-                m_sd.CorrConfigurationData = m_cd;
+                lock (m_listUpdatingLock) //locked because statusdata might update it's 
+                {
+                    m_sd.CorrConfigurationData = m_cd;
+                }
+
                 lock (m_sd.DatFileStates)
                 {
                     foreach (KeyValuePair<string, DatFileStatus> p in m_sd.DatFileStates)
@@ -255,16 +259,16 @@ namespace iba.Processing
             m_cd = cd.Clone_AlsoCopyGuids();
             m_sd = new StatusData(cd);
             m_stop = true;
-            m_sd.ProcessedFiles = m_processedFiles = new List<string>();
-            m_sd.ReadFiles = m_toProcessFiles = new List<string>();
+            m_sd.ProcessedFiles = m_processedFiles = new Set<string>();
+            m_sd.ReadFiles = m_toProcessFiles = new Set<string>();
             m_waitEvent = new AutoResetEvent(false);
             m_notifier = new Notifier(cd);
             m_candidateNewFiles = new List<string>();
-            m_timerLock = new Object();
+            m_listUpdatingLock = new Object();
         }       
                 
-        List<string> m_processedFiles;
-        List<string> m_toProcessFiles;
+        Set<string> m_processedFiles;
+        Set<string> m_toProcessFiles;
         List<string> m_candidateNewFiles;
         List<string> m_newFiles;
 
@@ -703,7 +707,7 @@ namespace iba.Processing
             }
         }
 
-        private object m_timerLock; //makes the timer routines mutually exclusive
+        private object m_listUpdatingLock; //makes the timer routines mutually exclusive
         private bool m_skipAddNewDatFileTimerTick;
 
         private void OnAddNewDatFileTimerTick(object ignoreMe)
@@ -712,8 +716,8 @@ namespace iba.Processing
             retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
             List<string> toRemove = new List<string>();
-            m_newFiles = new List<string>();
-            lock (m_timerLock)
+            m_newFiles = new Set<string>();
+            lock (m_listUpdatingLock)
             {
                 lock (m_candidateNewFiles)
                 {
@@ -795,7 +799,7 @@ namespace iba.Processing
         {
             if (m_bTimersstopped || m_stop || rescanTimer==null) return;
             rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            lock (m_timerLock)
+            lock (m_listUpdatingLock)
             {
                 if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ALL);
                 m_waitEvent.Set();
@@ -809,7 +813,7 @@ namespace iba.Processing
             if (networkErrorOccured) return; //wait until problem is fixed
             if (m_bTimersstopped || m_stop) return;
             reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            lock (m_timerLock)
+            lock (m_listUpdatingLock)
             {
                 if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ERRORS);
                 m_waitEvent.Set();
@@ -948,6 +952,7 @@ namespace iba.Processing
                         }
                         m_toProcessFiles.Clear();
                     }
+                    bool bPermanentErrorFilesChanged = false;
                     foreach (FileInfo fi in fileInfos)
                     {
                         if (m_stop) break;
@@ -996,25 +1001,26 @@ namespace iba.Processing
                             case DatFileStatus.State.RUNNING:
                                 break;
                             case DatFileStatus.State.TRIED_TOO_MANY_TIMES:
-                                lock (m_processedFiles)
+                                lock (m_sd.PermanentErrorFiles)
                                 {
-                                    if (!m_processedFiles.Contains(filename))
-                                        m_processedFiles.Add(filename);
+                                    m_sd.PermanentErrorFiles.Add(filename);
+                                    bPermanentErrorFilesChanged = true;
                                 }
-                                DatFileStatus status2 = new DatFileStatus();
-                                lock (m_sd.DatFileStates)
-                                {
-                                    status2.TimesTried = m_sd.DatFileStates[filename].TimesTried;
-                                    foreach (TaskData dat in m_cd.Tasks)
-                                    {
-                                        if (dat.Enabled) status2.States[dat] = DatFileStatus.State.TRIED_TOO_MANY_TIMES;
-                                    }
-                                    m_sd.DatFileStates[filename] = status2;
-                                }
+                                //DatFileStatus status2 = new DatFileStatus();
+                                //lock (m_sd.DatFileStates)
+                                //{
+                                //    status2.TimesTried = m_sd.DatFileStates[filename].TimesTried;
+                                //    foreach (TaskData dat in m_cd.Tasks)
+                                //    {
+                                //        if (dat.Enabled) status2.States[dat] = DatFileStatus.State.TRIED_TOO_MANY_TIMES;
+                                //    }
+                                //    m_sd.DatFileStates[filename] = status2;
+                                //}
                                 break;
                         }
                     }
                     m_sd.Changed = true;
+                    m_sd.PermanentErrorFilesChanged = bPermanentErrorFilesChanged;
                 }
                 m_sd.TakeCopyOfFileList();
                 m_sd.UpdatingFileList = false;
@@ -1226,7 +1232,7 @@ namespace iba.Processing
 
         private void ProcessDatfile(string DatFile)
         {
-            lock(m_timerLock)
+            lock(m_listUpdatingLock)
             {
                 lock (m_processedFiles)
                 {
@@ -1419,7 +1425,14 @@ namespace iba.Processing
             }
         }
 
-
+        public void MovePermanentFileErrorListToProcessedList(List<string> files)
+        {
+            lock (m_listUpdatingLock)
+            {
+                m_sd.MovePermanentFileErrorListToProcessedList(files);
+            }
+        }
+        
         private void DoCustomTask(string DatFile, CustomTaskData task)
         {
             try

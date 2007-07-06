@@ -91,7 +91,6 @@ namespace iba.Processing
             }
         }
 
-
         virtual public void UpdateConfiguration(ConfigurationData data)
         {
             lock (m_workers)
@@ -121,7 +120,6 @@ namespace iba.Processing
             }
             return false;
         }
-
 
         virtual public void UpdateTreePosition(Guid guid, int pos)
         {
@@ -173,7 +171,6 @@ namespace iba.Processing
         {
             m_workers[data].Stop = true;
         }
-
 
         virtual public void StopConfiguration(Guid guid)
         {
@@ -249,6 +246,22 @@ namespace iba.Processing
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
                 if (pair.Key.Guid == guid) return pair.Value.Status.Clone();
+            }
+            throw new KeyNotFoundException(guid.ToString() + " not found");
+        }
+
+        public enum AlterPermanentFileErrorListWhatToDo { AFTERDELETE, AFTERREFRESH };
+        virtual public void AlterPermanentFileErrorList(AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.Guid == guid)
+                {
+                    if (todo == AlterPermanentFileErrorListWhatToDo.AFTERDELETE)
+                        pair.Value.Status.ClearPermanentFileErrorList(files);
+                    else
+                        pair.Value.MovePermanentFileErrorListToProcessedList(files);
+                }
             }
             throw new KeyNotFoundException(guid.ToString() + " not found");
         }
@@ -474,7 +487,6 @@ namespace iba.Processing
             }
         }
 
-
         public override int Count
         {
             get
@@ -540,6 +552,18 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatusCopy(guid);
+            }
+        }
+
+        public override void AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.AlterPermanentFileErrorList(todo, guid,files);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 

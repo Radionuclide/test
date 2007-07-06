@@ -142,6 +142,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Icon brokenfile {
+            get {
+                object obj = ResourceManager.GetObject("brokenfile", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to test path.
         /// </summary>
@@ -319,6 +326,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap deletedats {
+            get {
+                object obj = ResourceManager.GetObject("deletedats", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Extract options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
@@ -334,6 +348,15 @@ namespace iba.Properties {
         internal static string deleteIfTaskQuestion {
             get {
                 return ResourceManager.GetString("deleteIfTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selected files.
+        /// </summary>
+        internal static string deletePermanentErrorFilesButton {
+            get {
+                return ResourceManager.GetString("deletePermanentErrorFilesButton", resourceCulture);
             }
         }
         
@@ -1214,6 +1237,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to permanently failed .dat files.
+        /// </summary>
+        internal static string PermanentlyFailedDatFiles {
+            get {
+                return ResourceManager.GetString("PermanentlyFailedDatFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority of application:.
         /// </summary>
         internal static string PriorityApp {
@@ -1265,6 +1297,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("refreshdats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove markings from selected files so they will be reprocessed..
+        /// </summary>
+        internal static string refreshPermanentErrorFilesButton {
+            get {
+                return ResourceManager.GetString("refreshPermanentErrorFilesButton", resourceCulture);
             }
         }
         

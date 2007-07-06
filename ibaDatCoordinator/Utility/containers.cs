@@ -19,6 +19,7 @@ namespace iba.Utility
         }
     }
 
+    [Serializable]
     public class Pair<TFirst, TSecond>
     {
 
@@ -45,6 +46,7 @@ namespace iba.Utility
         private TSecond _Second;
     }
 
+    [Serializable]
     public class BiMap<S, T>
         where S : IComparable<S>
         where T : IComparable<T>
@@ -111,6 +113,128 @@ namespace iba.Utility
                 return true;
             }
             return false;
+        }
+    }
+
+    [Serializable]
+    public class Set<T> : List<T>
+        where T:IComparable<T>
+    {
+        public new void Add(T elem)
+        {
+            int pos = BinarySearch(elem);
+            if (pos < 0) Insert(~pos, elem);
+        }
+        
+        public new void  AddRange(IEnumerable<T> elems)
+        {
+            foreach (T elem in elems) Add(elem);
+        }
+        
+        public Set()
+        {
+
+        }
+
+        public new int IndexOf(T elem)
+        {
+            return Math.Max(-1, BinarySearch(elem));
+        }
+
+	    public new bool Contains(T elem )
+	    { 
+		    return BinarySearch( elem ) >= 0;
+	    }
+
+        public new bool Remove(T elem)
+        {
+            int pos = BinarySearch(elem);
+            if (pos < 0) return false;
+            else RemoveAt(pos);
+            return true;
+        }
+
+        private enum SetOperationKind {UNION,INTERSECTION,DIFFERENCE }
+
+        public static Set<T> Union(Set<T> A, Set<T> B)
+        {
+            return SetOperation(A, B, SetOperationKind.UNION);
+        }
+
+        public static Set<T> Intersection(Set<T> A, Set<T> B)
+        {
+            return SetOperation(A, B, SetOperationKind.INTERSECTION);
+        }
+
+        public static Set<T> Difference(Set<T> A, Set<T> B)
+        {
+            return SetOperation(A, B, SetOperationKind.DIFFERENCE);
+        }
+        
+        private static Set<T> SetOperation(Set<T> A, Set<T> B, SetOperationKind kind)
+        {
+            Set<T> result = new Set<T>();
+            if (A.Count == 0) 
+            {
+                if (kind == SetOperationKind.UNION)
+                    (result as List<T>).AddRange(B);
+                return result;
+            }
+            if (B.Count == 0) 
+            {
+                if (kind != SetOperationKind.INTERSECTION)
+                    (result as List<T>).AddRange(A);
+                return result;
+            }
+            IEnumerator<T> Ait = A.GetEnumerator();
+            IEnumerator<T> Bit = B.GetEnumerator();
+            while (true)
+            {
+                int compare = Ait.Current.CompareTo(Bit.Current);
+                if (compare < 0)
+                {
+                    if (kind != SetOperationKind.INTERSECTION) 
+                        (result as List<T>).Add(Ait.Current);
+                    if (!Ait.MoveNext())
+                    {
+                        if (kind == SetOperationKind.UNION) 
+                            while (Bit.MoveNext())
+                                (result as List<T>).Add(Bit.Current);
+                        return result;
+                    }
+                }
+                else if (compare > 0)
+                {
+                    if (kind == SetOperationKind.UNION) 
+                        (result as List<T>).Add(Bit.Current);
+                    if (!Bit.MoveNext())
+                    {
+                        if (kind != SetOperationKind.INTERSECTION) 
+                            while (Ait.MoveNext())
+                                (result as List<T>).Add(Ait.Current);
+                        return result;
+                    }
+                }
+                else //equality
+                {
+                    if (kind != SetOperationKind.DIFFERENCE) 
+                        (result as List<T>).Add(Ait.Current);
+                    if (!Ait.MoveNext())
+                    {
+                        if (kind == SetOperationKind.UNION) 
+                            while (Bit.MoveNext())
+                                (result as List<T>).Add(Bit.Current);
+                        return result;
+                    }
+                    if (!Bit.MoveNext())
+                    {
+                        if (kind != SetOperationKind.INTERSECTION) 
+                            while (Ait.MoveNext())
+                                (result as List<T>).Add(Ait.Current);
+                        return result;
+                    }
+                }
+            }
         }
     }
 }

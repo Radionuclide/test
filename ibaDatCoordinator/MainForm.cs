@@ -97,6 +97,7 @@ namespace iba
             m_configTreeView.StateImageList = confsImageList2;
             ImageList statImageList = new ImageList();
             statImageList.Images.Add(iba.Properties.Resources.configuration);
+            statImageList.Images.Add(iba.Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
 
             m_quitForm = new QuitForm(this);
@@ -266,7 +267,7 @@ namespace iba
                 }
 				else
 				{
-					doSelection(m_statusTreeView.SelectedNode, "Status");
+                    doSelection(m_statusTreeView.SelectedNode, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
 				}
                 statusToolStripMenuItem.Enabled = false;
                 pasteToolStripMenuItem.Enabled = false;
@@ -281,9 +282,11 @@ namespace iba
             {
                 SaveRightPaneControl();
                 TreeNode statNode = m_statusTreeView.SelectedNode;
+                if (statNode != null && statNode.Parent != null) statNode = statNode.Parent; //was on permanent error files
                 if (statNode != null)
                 {
                     ConfigurationData confDat = (statNode.Tag as StatusTreeItemData).StatusData.CorrConfigurationData;
+
                     foreach (TreeNode confCandidateNode in m_configTreeView.Nodes)
                     {
                         if (confCandidateNode.Tag is ConfigurationTreeItemData)
@@ -493,6 +496,12 @@ namespace iba
                 statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, statIt);
                 MainForm.strikeOutNodeText(statNode, !statIt.CorrConfigurationData.Enabled);
                 m_statusTreeView.Nodes.Add(statNode);
+                if (statIt.CorrConfigurationData.LimitTimesTried)
+                {
+                    TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 1, 1);
+                    permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, statIt);
+                    statNode.Nodes.Add(permFailedNode);
+                }
             }
             m_statusTreeView.EndUpdate();
             m_statusTreeView.SelectedNode = m_statusTreeView.Nodes[0];
@@ -503,7 +512,10 @@ namespace iba
             using (WaitCursor wait = new WaitCursor())
             {
                 TreeNode node = e.Node;
-                doSelection(node, "Status");
+                if (node == null)
+                    doSelection(node, "Status");
+                else
+                    doSelection(node, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
             }
         }
 
@@ -525,6 +537,18 @@ namespace iba
                     {
                         if (m_navBar.SelectedPane != m_statusPane) return;
                         StatusTreeItemData data = node.Tag as StatusTreeItemData;
+                        ctrl = data.CreateControl();
+                        SetRightPaneControl(ctrl, title, data.StatusData);
+                        pasteToolStripMenuItem.Enabled = false;
+                        copyToolStripMenuItem.Enabled = false;
+                        cutToolStripMenuItem.Enabled = false;
+                        deleteToolStripMenuItem.Enabled = false;
+                        break;
+                    }
+                case "PermanentlyErrorFiles":
+                    {
+                        if (m_navBar.SelectedPane != m_statusPane) return;
+                        StatusPermanentlyErrorFilesTreeItemData data = node.Tag as StatusPermanentlyErrorFilesTreeItemData;
                         ctrl = data.CreateControl();
                         SetRightPaneControl(ctrl, title, data.StatusData);
                         pasteToolStripMenuItem.Enabled = false;
