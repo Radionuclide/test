@@ -143,7 +143,6 @@ namespace iba
                 m_miExit = null;
                 this.Icon = iba.Properties.Resources.standalone;
             }
-
             m_navBar.SelectedPane = m_configPane;
         }
 
@@ -371,6 +370,7 @@ namespace iba
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            SetRenderer();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
             if (returnvalue != "not set" && Program.RunsWithService != Program.ServiceEnum.CONNECTED) loadFromFile(returnvalue,true);
@@ -1790,6 +1790,27 @@ namespace iba
             }
         }
 
+        public void SetRenderer()
+        {
+            TD.Eyefinder.Office2003Renderer renderer = (TD.Eyefinder.Office2003Renderer)m_navBar.Renderer;
+            if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
+            {
+                renderer.HeaderBackgroundColor1 = Color.FromArgb(255, 89, 135, 214);
+                renderer.HeaderBackgroundColor2 = Color.FromArgb(255, 0, 45, 150);
+                m_rightPane.SetActiveRenderer(renderer);
+                m_navBar.Invalidate();
+                m_rightPane.Invalidate();
+            }
+            else
+            {
+                renderer.HeaderBackgroundColor1 = Color.MistyRose;
+                renderer.HeaderBackgroundColor2 = Color.Crimson;
+                m_rightPane.SetActiveRenderer(renderer);
+                m_navBar.Invalidate();
+                m_rightPane.Invalidate();
+            }
+        }
+
         public Button StartButton
         {
             get { return m_startButton; }
@@ -1997,7 +2018,7 @@ namespace iba
         {
             //stopService dialog
             SaveRightPaneControl();
-            Program.CommunicationObject.StoppingService = true;
+            //Program.CommunicationObject.StoppingService = true;
             bool result = false;
             using (StopServiceDialog ssd = new StopServiceDialog())
             {
@@ -2023,7 +2044,7 @@ namespace iba
                 else if (m_navBar.SelectedPane == m_configPane)
                     loadConfigurations();
             }
-            Program.CommunicationObject.StoppingService = false;
+            //Program.CommunicationObject.StoppingService = false;
         }
 
         public delegate void IbaAnalyzerCall();
@@ -2088,6 +2109,7 @@ namespace iba
                     LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTCONNECTED);
                     Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
                     m_firstConnectToService = false;
+                    SetRenderer();
                 }
                 else
                 {
@@ -2138,7 +2160,6 @@ namespace iba
                             uodDiag.StartPosition = FormStartPosition.CenterParent;
                             uodDiag.ShowDialog(this);
                         }
-
                         return uodDiag.Upload;
                     }
                 }
@@ -2282,8 +2303,6 @@ namespace iba
         private MenuItem m_miStopService;
         private MenuItem m_miExit;
         #endregion
-
-
     }
 
     #region ImageList

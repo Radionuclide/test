@@ -166,6 +166,7 @@ namespace iba.Controls
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
+            bFirstLoad = true;
             m_data = datasource as StatusData;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED) //refresh
                 m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.Guid);
@@ -176,7 +177,11 @@ namespace iba.Controls
             {
                 m_gridView.ColumnCount = 3;
                 DataGridViewImageColumn [] cols = new DataGridViewImageColumn[count];
-                for(int i = 0; i < cols.Length;i++) cols[i] = new DataGridViewImageColumn();
+                for (int i = 0; i < cols.Length; i++)
+                {
+                    cols[i] = new DataGridViewImageColumn();
+                    cols[i].ReadOnly = true;
+                }
                 m_gridView.Columns.AddRange(cols);
             }
             foreach (TaskData task in m_data.CorrConfigurationData.Tasks)
@@ -189,17 +194,23 @@ namespace iba.Controls
         public void LeaveCleanup() 
         {
             m_refreshTimer.Stop();
+            m_checkedFiles.Clear(); //spare some memory
         }
 
         public void SaveData()
         {
-            //nothing to be saved as status is purely an output control
         }
 
         private Set<String> m_checkedFiles;
+        private bool bFirstLoad;
         private void DetermineCheckedFiles()
         {
             m_checkedFiles.Clear();
+            if (bFirstLoad) //m_checkedFiles is set by LoadData;
+            {
+                bFirstLoad = false;
+                return;
+            }
             foreach (DataGridViewRow row in m_gridView.Rows)
             {
                 if (((bool) row.Cells[0].Value))
@@ -231,7 +242,7 @@ namespace iba.Controls
                 m_refreshTimer.Enabled = true;
                 return;
             }
-            m_data.PermanentErrorFilesChanged = false;
+            m_data.PermanentErrorFilesChanged = false; 
             //wait cursor
             if (m_data.UpdatingFileList)
             {
@@ -345,6 +356,34 @@ namespace iba.Controls
             dlg.StartPosition = FormStartPosition.CenterParent;
             dlg.ShowDialog(this);
             TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERREFRESH, m_data.CorrConfigurationData.Guid, m_checkedFiles);
+        }
+
+        private void m_gridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            m_gridView.EndEdit();
+            if (e.ColumnIndex == 0 && m_gridView.Rows.Count > 0) //checkBox
+            {
+                int startPos = m_gridView.Rows.Count;
+                if (m_gridView.SelectedCells.Count > 0)
+                {
+                    foreach (DataGridViewCell cell in m_gridView.SelectedCells)
+                        if (cell.RowIndex < startPos) 
+                            startPos = cell.RowIndex;
+                }
+                else startPos = 0;
+                bool toset = (bool) m_gridView.Rows[startPos].Cells[0].Value;
+                for (int i = startPos; i < m_gridView.Rows.Count; i++)
+                    m_gridView.Rows[i].Cells[0].Value = toset;
+            }
+        }
+
+        //auto commit column 1
+        private void m_gridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (m_gridView.IsCurrentCellDirty && m_gridView.CurrentCell != null && m_gridView.CurrentCell.ColumnIndex == 0)
+            {
+                m_gridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
         }
     }
 }

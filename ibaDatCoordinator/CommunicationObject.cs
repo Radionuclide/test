@@ -285,13 +285,6 @@ namespace iba
             }
         }
 
-        private bool m_stoppingService;
-        public bool StoppingService
-        {
-            get { return m_stoppingService; }
-            set { m_stoppingService = value; }
-        }
-
         public void HandleBrokenConnection()
         {
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
@@ -302,7 +295,8 @@ namespace iba
             Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
             Program.MainForm.NotifyIcon.Text = iba.Properties.Resources.niDisconnected;
             Program.MainForm.StartButton.Enabled = false;
-            Program.MainForm.StopButton.Enabled = false; 
+            Program.MainForm.StopButton.Enabled = false;
+            Program.MainForm.SetRenderer();
             TaskManager.Manager.StopAllConfigurations();
             //logger resetten
             LogData.Data.Logger.Close();

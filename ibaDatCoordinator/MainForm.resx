@@ -816,31 +816,31 @@
     <value>&amp;Edit</value>
   </data>
   <data name="configurationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="configurationToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Jobs</value>
   </data>
   <data name="statusToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="statusToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Status</value>
   </data>
   <data name="loggingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="loggingToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Logging</value>
   </data>
   <data name="watchdogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="watchdogToolStripMenuItem.Text" xml:space="preserve">
     <value>Watchdog</value>
   </data>
   <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Settings</value>
@@ -852,13 +852,13 @@
     <value>&amp;View</value>
   </data>
   <data name="startServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="startServiceToolStripMenuItem.Text" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="stopServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="stopServiceToolStripMenuItem.Text" xml:space="preserve">
     <value>Stop</value>

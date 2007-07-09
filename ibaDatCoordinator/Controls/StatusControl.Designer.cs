@@ -42,50 +42,38 @@ namespace iba.Controls
             // 
             // m_infoLabel
             // 
-            this.m_infoLabel.AccessibleDescription = null;
-            this.m_infoLabel.AccessibleName = null;
             resources.ApplyResources(this.m_infoLabel, "m_infoLabel");
-            this.m_infoLabel.Font = null;
             this.m_infoLabel.Name = "m_infoLabel";
             // 
             // m_confNameLinkLabel
             // 
-            this.m_confNameLinkLabel.AccessibleDescription = null;
-            this.m_confNameLinkLabel.AccessibleName = null;
             resources.ApplyResources(this.m_confNameLinkLabel, "m_confNameLinkLabel");
-            this.m_confNameLinkLabel.Font = null;
             this.m_confNameLinkLabel.Name = "m_confNameLinkLabel";
             this.m_confNameLinkLabel.TabStop = true;
             this.m_confNameLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_confNameLinkLabel_LinkClicked);
             // 
             // m_statusRunningText
             // 
-            this.m_statusRunningText.AccessibleDescription = null;
-            this.m_statusRunningText.AccessibleName = null;
             resources.ApplyResources(this.m_statusRunningText, "m_statusRunningText");
-            this.m_statusRunningText.Font = null;
             this.m_statusRunningText.Name = "m_statusRunningText";
             // 
             // m_refreshTimer
             // 
+            this.m_refreshTimer.Interval = 500;
             this.m_refreshTimer.Tick += new System.EventHandler(this.OnChangedData);
             // 
             // m_gridView
             // 
-            this.m_gridView.AccessibleDescription = null;
-            this.m_gridView.AccessibleName = null;
             this.m_gridView.AllowUserToAddRows = false;
             this.m_gridView.AllowUserToDeleteRows = false;
             this.m_gridView.AllowUserToResizeColumns = false;
             this.m_gridView.AllowUserToResizeRows = false;
             resources.ApplyResources(this.m_gridView, "m_gridView");
-            this.m_gridView.BackgroundImage = null;
             this.m_gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_gridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DatFiles,
             this.m_attempts});
             this.m_gridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.m_gridView.Font = null;
             this.m_gridView.Name = "m_gridView";
             this.m_gridView.ReadOnly = true;
             this.m_gridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -109,16 +97,12 @@ namespace iba.Controls
             // 
             // StatusControl
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.Controls.Add(this.m_gridView);
             this.Controls.Add(this.m_statusRunningText);
             this.Controls.Add(this.m_confNameLinkLabel);
             this.Controls.Add(this.m_infoLabel);
-            this.Font = null;
             this.MinimumSize = new System.Drawing.Size(620, 430);
             this.Name = "StatusControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).EndInit();

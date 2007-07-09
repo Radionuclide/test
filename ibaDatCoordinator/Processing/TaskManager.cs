@@ -229,8 +229,7 @@ namespace iba.Processing
             }
             throw new KeyNotFoundException(guid.ToString() + " not found");
         }
-
-
+        
         virtual public PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
@@ -261,6 +260,7 @@ namespace iba.Processing
                         pair.Value.Status.ClearPermanentFileErrorList(files);
                     else
                         pair.Value.MovePermanentFileErrorListToProcessedList(files);
+                    return;
                 }
             }
             throw new KeyNotFoundException(guid.ToString() + " not found");

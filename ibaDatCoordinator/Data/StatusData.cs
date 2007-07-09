@@ -30,7 +30,6 @@ namespace iba.Data
             set { m_timesTried = value; }
         }
 
-
         static public bool IsError(State stat)
         {
             return stat == State.TRIED_TOO_MANY_TIMES || 
@@ -309,6 +308,9 @@ namespace iba.Data
         {
             StatusData returnValue = new StatusData(m_cf);
             returnValue.m_changed = m_changed;
+            returnValue.m_permanentErrorFilesChanged = m_permanentErrorFilesChanged;
+            //clear these after have taking the copy;
+            m_changed = m_permanentErrorFilesChanged = false;
             returnValue.m_started = m_started;
             returnValue.m_updatingFileList = m_updatingFileList;
             lock (m_datFileStates)

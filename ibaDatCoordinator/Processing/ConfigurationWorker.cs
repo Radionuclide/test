@@ -1583,7 +1583,7 @@ namespace iba.Processing
 
             if (m_cd.SubDirs && task.Subfolder == ExtractData.SubfolderChoiceB.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
-                string s2 = Path.GetFullPath(m_cd.DatDirectory);
+                string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
                 string s0 = s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
@@ -1779,7 +1779,7 @@ namespace iba.Processing
 
                 if (m_cd.SubDirs && task.Subfolder == ReportData.SubfolderChoice.SAME)
                 {   //concatenate subfolder corresponding to dat subfolder
-                    string s2 = Path.GetFullPath(m_cd.DatDirectory);
+                    string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                     string s1 = Path.GetFullPath(filename);
                     string s0 = s1.Remove(0, s2.Length + 1);
                     dir = Path.GetDirectoryName(Path.Combine(dir, s0));
@@ -1928,7 +1928,7 @@ namespace iba.Processing
 
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
-                dir = Path.Combine(m_cd.DatDirectory, dir);
+                dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
             else dir = task.DestinationMapUNC;
 
@@ -1945,7 +1945,7 @@ namespace iba.Processing
 
             if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
             {
-                string s2 = Path.GetFullPath(m_cd.DatDirectory);
+                string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
                 string s0 = s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));

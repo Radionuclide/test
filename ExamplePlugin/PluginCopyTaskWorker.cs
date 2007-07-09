@@ -52,12 +52,12 @@ namespace ExamplePlugin
             string dir = m_data.DestinationMap;
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
-                dir = Path.Combine(m_parentJob.DatDirectory, dir);
+                dir = Path.Combine(m_parentJob.DatDirectoryUNC, dir);
             }
             else dir = m_data.DestinationMapUNC;
             if (m_parentJob.SubDirs && m_data.Subfolder == PluginCopyTask.SubfolderChoiceC.SAME) //concatenate subfolder corresponding to dat subfolder
             {
-                string s2 = Path.GetFullPath(m_parentJob.DatDirectory);
+                string s2 = Path.GetFullPath(m_parentJob.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
                 string s0 = s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
