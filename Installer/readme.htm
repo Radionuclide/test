@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<style type="text/css">
+ body         {font-family: Tahoma, Helvetica, Arial; font-size: 13px}
+ p.title      {color: MediumSeaGreen; font-size: 30px; font-weight: bold}
+ p.section    {color: plum; font-size: 20px; font-weight: bold}
+ p.header1    {color: white; background-color: ForestGreen; font-size: 16px; font-weight: bold; padding: 2px}
+ p.header2    {color: black; font-size: 14px; font-weight: bold}
+ li.highlight {color: red; font-size: 14px; font-weigth: bold}
+</style>
+<TITLE>iba DatCoordinator ReadMe</TITLE>
+</HEAD>
+
+<body>
+<P class="title">iba DatCoordinator</P>
+
+<P class="section">Files</P>
+<UL>
+  <LI>DatCoordinatorInstall_v1.8.0exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>readme.htm: this file</LI>
+</UL>
+
+<P class="section">Installation</P>
+<p>Have ibaAnalyzer installed and registered as a COM-component, the version of ibaAnalyzer should be at least 5.0 
+and to enable conditional tasks, the ibaAnalyzer version should be at least 5.4<BR>
+Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
+<A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
+Execute ibaDatCoordinatorInstall_v1.8.0.exe and follow instructions.</p>
+
+<P class="section">Version history</P>
+
+<P class="header1">Version 1.8.0 - 10/07/2007</P>
+<P class="header2">New features</P>
+<UL>
+	<LI>The number of times the DatCoordinator attempts to process a .dat file can be limited. After this limit is exceeded, 
+	such .dat files are put in a seperate list which the user can clean by selecting to either delete the .dat files or 
+	reset the info fields from the .dat files so the DatCoordinator treats them as newly generated files.</LI>
+	<LI>For a report, extract or conditional task it can be selected to have ibaAnalyzer monitored for memory consumption 
+	and duration of the task. When the time limit or memory limit is exceeded, the task will be terminated.</LI>
+	<LI>A new settings tab is added where the user can select a couple of options</LI>
+	<UL>
+		<LI>You can select whether or not the DatCoordinator service is automatically started when windows starts.</LI>
+		<LI>A time interval can be specified to wait after windows startup before starting to process the .dat files.</LI>
+		<LI>The process priority of the service or application can be specified.</LI>
+		<LI>You can select to skip the initial scan for .dat files allready existing before a DatCoordinator job was running.<BR> 
+		In this case only .dat files created while the job is running will be considered for processing.</LI> 
+	</UL>
+</UL>
+<P class="header2">Enhancements</P>
+<UL>
+	<LI>The DatCoordinator now tries to connect periodically to the service instead of going permanently in offline mode.</LI>
+	<LI>The location of the logfiles is now fixed, i.e. it can no longer be set by the user, after installation a shortcut 
+	to the logfile directory is put under the iba DatCoordinator folder in the windows menu.</LI>
+</UL>	
+<P class="header2">Bugfixes</P>
+<UL>
+	<LI>For extracting to files, report generation and the copy task, when selecting to have subfolders in de destination
+	directory that are the same as in the source .dat directory, the DatCoordinator could accidentely delete subfolders
+	from the parent directory of the destination directory instead of cleaning up subfolders of the destination directory.
+	This could only happen if there where .dat files in the source .dat directory that weren't in subfolders.
+	If the destination directory was a shared network map, it caused a crash instead of actual deletion of folders.
+	</LI>
+</UL>
+</BODY>
+</HTML>

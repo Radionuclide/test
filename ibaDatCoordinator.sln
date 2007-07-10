@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61AD99CC-16A3-411F-A9D5-AA73BBAE9817}"
 	ProjectSection(SolutionItems) = preProject
 		Installer\datcoor.nsi = Installer\datcoor.nsi
+		Installer\readme.htm = Installer\readme.htm
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatCoordinatorPlugins", "DatCoordinatorPlugins\DatCoordinatorPlugins.csproj", "{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}"

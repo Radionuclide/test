@@ -255,6 +255,7 @@ namespace iba.Data
             cd.m_pass = m_pass;
             cd.m_bLimitTimesTried = m_bLimitTimesTried;
             cd.m_nrTimes = m_nrTimes;
+            cd.m_treePosition = m_treePosition;
             return cd;
         }
 

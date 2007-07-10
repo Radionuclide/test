@@ -1569,6 +1569,8 @@ namespace iba.Processing
                 dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
             else dir = task.DestinationMapUNC;
+            
+            string maindir = dir;
 
             if (dir == m_cd.DatDirectoryUNC)
             {
@@ -1579,7 +1581,6 @@ namespace iba.Processing
                 }
                 return null;
             }
-
 
             if (m_cd.SubDirs && task.Subfolder == ExtractData.SubfolderChoiceB.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
@@ -1633,7 +1634,7 @@ namespace iba.Processing
             string arg = Path.Combine(dir, actualFileName + "." + ext);
             if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE)
             {
-                List<string> subdirs = new List<string>(Directory.GetDirectories(Directory.GetParent(dir).FullName));
+                List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
                 while (subdirs.Count > task.SubfoldersNumber)
                 {
                     DateTime oldestDate = DateTime.MaxValue;
@@ -1749,7 +1750,7 @@ namespace iba.Processing
             if (task.Output != ReportData.OutputChoice.PRINT)
             {
                 string actualFileName = Path.GetFileNameWithoutExtension(filename);
-                string dir = task.DestinationMap;
+                string dir = task.DestinationMapUNC;
                 if (String.IsNullOrEmpty(dir))
                 {
                     Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
@@ -1766,6 +1767,7 @@ namespace iba.Processing
                 }
                 else
                     dir = task.DestinationMapUNC;
+                string maindir = dir;
 
                 if (dir == m_cd.DatDirectoryUNC)
                 {
@@ -1830,7 +1832,7 @@ namespace iba.Processing
                 arg = Path.Combine(dir, actualFileName + "." + ext);
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE)
                 {
-                    List<string> subdirs = new List<string>(Directory.GetDirectories(Directory.GetParent(dir).FullName));
+                    List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
                     while (subdirs.Count > task.SubfoldersNumber)
                     {
                         DateTime oldestDate = DateTime.MaxValue;
@@ -1915,7 +1917,7 @@ namespace iba.Processing
 
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
-            string dir = task.DestinationMap;
+            string dir = task.DestinationMapUNC;
             if (String.IsNullOrEmpty(dir))
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
@@ -1931,6 +1933,7 @@ namespace iba.Processing
                 dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
             else dir = task.DestinationMapUNC;
+            string maindir = dir;
 
             if (dir == m_cd.DatDirectoryUNC)
             {
@@ -1992,7 +1995,7 @@ namespace iba.Processing
             
             if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE)
             {
-                List<string> subdirs = new List<string>(Directory.GetDirectories(Directory.GetParent(dir).FullName));
+                List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
                 while (subdirs.Count > task.SubfoldersNumber)
                 {
                     DateTime oldestDate = DateTime.MaxValue;

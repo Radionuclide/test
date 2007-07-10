@@ -248,7 +248,7 @@ namespace iba
                     TreeNode statNode = null;
                     foreach (TreeNode statCandidate in m_statusTreeView.Nodes)
                     {
-                        if ((statCandidate.Tag as StatusTreeItemData).StatusData.CorrConfigurationData == dat)
+                        if ((statCandidate.Tag as StatusTreeItemData).StatusData.CorrConfigurationData.Guid == dat.Guid)
                         {
                             statNode = statCandidate;
                             break;
@@ -291,7 +291,7 @@ namespace iba
                         if (confCandidateNode.Tag is ConfigurationTreeItemData)
                         {
                             ConfigurationData confCandidateDat = (confCandidateNode.Tag as ConfigurationTreeItemData).ConfigurationData;
-                            if (confCandidateDat == confDat)
+                            if (confCandidateDat.Guid == confDat.Guid)
                             {
                                 m_configTreeView.SelectedNode = confCandidateNode;
                                 break;
@@ -488,6 +488,7 @@ namespace iba
         {
             m_statusTreeView.BeginUpdate();
             m_statusTreeView.Nodes.Clear();
+
             List<StatusData> stats = TaskManager.Manager.Statuses;
             stats.Sort(delegate(StatusData a, StatusData b) { return a.CorrConfigurationData.TreePosition.CompareTo(b.CorrConfigurationData.TreePosition); });
             foreach (StatusData statIt in stats)

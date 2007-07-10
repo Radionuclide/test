@@ -36,21 +36,14 @@ namespace iba.Controls
             // 
             // m_progressBar
             // 
-            this.m_progressBar.AccessibleDescription = null;
-            this.m_progressBar.AccessibleName = null;
             resources.ApplyResources(this.m_progressBar, "m_progressBar");
-            this.m_progressBar.BackgroundImage = null;
-            this.m_progressBar.Font = null;
             this.m_progressBar.Name = "m_progressBar";
             this.m_progressBar.Step = 5;
             this.m_progressBar.UseWaitCursor = true;
             // 
             // m_fileLabel
             // 
-            this.m_fileLabel.AccessibleDescription = null;
-            this.m_fileLabel.AccessibleName = null;
             resources.ApplyResources(this.m_fileLabel, "m_fileLabel");
-            this.m_fileLabel.Font = null;
             this.m_fileLabel.Name = "m_fileLabel";
             this.m_fileLabel.UseWaitCursor = true;
             // 
@@ -63,17 +56,12 @@ namespace iba.Controls
             // 
             // RemoveMarkingsDialog
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.ControlBox = false;
             this.Controls.Add(this.m_fileLabel);
             this.Controls.Add(this.m_progressBar);
-            this.Font = null;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = null;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RemoveMarkingsDialog";

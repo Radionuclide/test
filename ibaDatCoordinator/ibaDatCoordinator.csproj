@@ -317,14 +317,6 @@
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.de.resx">
-      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.fr.resx">
-      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PermanentFileErrorsControl.resx">
       <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
