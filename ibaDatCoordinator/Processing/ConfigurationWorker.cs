@@ -2089,7 +2089,9 @@ namespace iba.Processing
                         else
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logBatchfileFailed, filename,task);
+                            string msg = new string();
+                            msg.Format(iba.Properties.Resources.logBatchfileFailed,ibaProc.ExitCode)
+                            Log(Logging.Level.Exception, msg, filename,task);
                         }
                     }
                 }

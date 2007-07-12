@@ -65,10 +65,10 @@ namespace iba.Data
         public override object Clone()
         {
             ExtractData ed = new ExtractData(null);
-            ed.m_name = m_name.Clone() as string;
+            ed.m_name = m_name;
             ed.m_wtodo= m_wtodo;
-            ed.m_pdoFile = m_pdoFile.Clone() as string;
-            ed.m_destinationMap = m_destinationMap.Clone() as string;
+            ed.m_pdoFile = m_pdoFile;
+            ed.m_destinationMap = m_destinationMap;
             ed.m_toFile = m_toFile;
             ed.m_notify = m_notify;
             ed.m_subfolderChoice = m_subfolderChoice;

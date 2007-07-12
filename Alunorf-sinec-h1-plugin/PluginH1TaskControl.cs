@@ -45,7 +45,6 @@ namespace Alunorf_sinec_h1_plugin
                     e.Cancel = true;
                     return;
                 }
-
                 tb.Text = "0" + tb.Text;
             }
             else if (tb.Text.Length == 2)

@@ -733,4 +733,16 @@
   <data name="refreshPermanentErrorFilesButton" xml:space="preserve">
     <value>Remove markings from selected files so they will be reprocessed.</value>
   </data>
+  <data name="AskToSaveScript" xml:space="preserve">
+    <value>Script has changed, do you wish to save the scriptfile ?</value>
+  </data>
+  <data name="ScriptNoExist" xml:space="preserve">
+    <value>Scriptfile does not exist</value>
+  </data>
+  <data name="ScriptReadOnly" xml:space="preserve">
+    <value>Scriptfile is readonly</value>
+  </data>
+  <data name="Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
 </root>

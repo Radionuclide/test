@@ -47,7 +47,7 @@ namespace iba.Data
             CustomTaskData pd = new CustomTaskData();
             pd.m_plugin = m_plugin.Clone() as IPluginTaskData;
             pd.m_wtodo = m_wtodo;
-            pd.m_name = m_name.Clone() as string;
+            pd.m_name = m_name;
             pd.m_notify = m_notify;
             return pd;
         }

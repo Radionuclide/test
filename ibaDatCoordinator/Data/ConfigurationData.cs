@@ -237,14 +237,14 @@ namespace iba.Data
 
         public object Clone()
         {
-            ConfigurationData cd = new ConfigurationData(m_name.Clone() as string);
+            ConfigurationData cd = new ConfigurationData(m_name);
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
             cd.relinkChildData();
             cd.m_ibaAnalyserExe = m_ibaAnalyserExe;
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
-            cd.m_datDirectory = m_datDirectory.Clone() as string;
+            cd.m_datDirectory = m_datDirectory;
             cd.m_doSubDirs = m_doSubDirs;
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_rescanTime = m_rescanTime;

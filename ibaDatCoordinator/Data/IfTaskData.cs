@@ -64,11 +64,11 @@ namespace iba.Data
         public override object Clone()
         {
             IfTaskData ifd = new IfTaskData(null);
-            ifd.m_name = m_name.Clone() as string;
+            ifd.m_name = m_name;
             ifd.m_xtype = m_xtype;
             ifd.m_wtodo = m_wtodo;
-            ifd.m_pdoFile = m_pdoFile.Clone() as string;
-            ifd.m_testDatFile = m_testDatFile.Clone() as string;
+            ifd.m_pdoFile = m_pdoFile;
+            ifd.m_testDatFile = m_testDatFile;
             ifd.m_notify = m_notify;
             ifd.m_expression = m_expression;
             ifd.m_monitorData = m_monitorData;

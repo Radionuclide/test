@@ -80,8 +80,8 @@ namespace iba.Data
         {
             ReportData rd = new ReportData(null);
             rd.m_wtodo = m_wtodo;
-            rd.m_name = m_name.Clone() as string;
-            rd.m_pdoFile = m_pdoFile.Clone() as string;
+            rd.m_name = m_name;
+            rd.m_pdoFile = m_pdoFile;
             rd.m_numbFolders = m_numbFolders;
             rd.m_subfolderChoice = m_subfolderChoice;
             rd.m_outputChoice = m_outputChoice;
