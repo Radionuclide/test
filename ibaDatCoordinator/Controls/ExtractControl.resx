@@ -970,7 +970,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 42</value>
+    <value>282, 44</value>
   </data>
   <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>

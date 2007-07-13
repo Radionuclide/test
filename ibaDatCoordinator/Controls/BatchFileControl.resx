@@ -124,6 +124,9 @@
   <data name="m_newButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_newButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_newButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>409, 20</value>
@@ -147,20 +150,14 @@
   <data name="&gt;&gt;m_newButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_textEditor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
   <data name="m_textEditor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 66</value>
+    <value>16, 71</value>
   </data>
   <data name="m_textEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>525, 293</value>
+    <value>525, 287</value>
   </data>
   <data name="m_textEditor.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="m_textEditor.Text" xml:space="preserve">
-    <value>textEditorControl1</value>
   </data>
   <data name="&gt;&gt;m_textEditor.Name" xml:space="preserve">
     <value>m_textEditor</value>
@@ -201,6 +198,9 @@
   <data name="m_browseBATCHFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_browseBATCHFileButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_browseBATCHFileButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>455, 20</value>
   </data>
@@ -224,6 +224,9 @@
   </data>
   <data name="m_saveButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_saveButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_saveButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>501, 20</value>
@@ -273,8 +276,11 @@
   <data name="m_executeBatchFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_executeBatchFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_executeBatchFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>501, 146</value>
+    <value>501, 133</value>
   </data>
   <data name="m_executeBatchFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -297,38 +303,41 @@
   <data name="m_editorGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="radioButton1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbPrevOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="radioButton1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbPrevOutput.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="radioButton1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbPrevOutput.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 116</value>
   </data>
-  <data name="radioButton1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbPrevOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 17</value>
   </data>
-  <data name="radioButton1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbPrevOutput.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="radioButton1.Text" xml:space="preserve">
+  <data name="m_rbPrevOutput.Text" xml:space="preserve">
     <value>Use the output of a previous task as file in arguments</value>
   </data>
-  <data name="&gt;&gt;radioButton1.Name" xml:space="preserve">
-    <value>radioButton1</value>
+  <data name="&gt;&gt;m_rbPrevOutput.Name" xml:space="preserve">
+    <value>m_rbPrevOutput</value>
   </data>
-  <data name="&gt;&gt;radioButton1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbPrevOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;radioButton1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbPrevOutput.Parent" xml:space="preserve">
     <value>m_editorGroupBox</value>
   </data>
-  <data name="&gt;&gt;radioButton1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_rbDatFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbDatFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_rbDatFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 93</value>
@@ -361,7 +370,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 41</value>
+    <value>181, 43</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 39</value>
@@ -394,7 +403,7 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 146</value>
+    <value>455, 133</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -421,7 +430,7 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 41</value>
+    <value>13, 43</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 39</value>
@@ -453,7 +462,7 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>43, 41</value>
+    <value>43, 43</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 39</value>
@@ -539,7 +548,7 @@ filename without extension</value>
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 160</value>
+    <value>13, 147</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -566,7 +575,7 @@ filename without extension</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="m_datFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 157</value>
+    <value>103, 144</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>346, 20</value>
@@ -590,7 +599,7 @@ filename without extension</value>
     <value>0, 378</value>
   </data>
   <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 192</value>
+    <value>562, 183</value>
   </data>
   <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

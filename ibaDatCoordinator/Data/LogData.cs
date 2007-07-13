@@ -258,7 +258,7 @@ namespace iba.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message);
+                MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             lock (m_grid.Rows)

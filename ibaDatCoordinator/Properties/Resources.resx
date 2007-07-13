@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="batchfileTitle" xml:space="preserve">
-    <value>Batchfile</value>
+    <value>Script</value>
   </data>
   <data name="logBatchfileFailed" xml:space="preserve">
-    <value>batchfile failed</value>
+    <value>script failed</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -143,7 +143,7 @@
     <value>a general failure occurred in the network hardware </value>
   </data>
   <data name="logBatchfileTimeout" xml:space="preserve">
-    <value>batchfile timed out</value>
+    <value>script timed out</value>
   </data>
   <data name="copydat_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copydat.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -224,7 +224,7 @@
     <value>the user does not have access to the requested information</value>
   </data>
   <data name="logBatchfileSuccess" xml:space="preserve">
-    <value>batchfile successfully completed</value>
+    <value>script successfully completed</value>
   </data>
   <data name="NewExtractTitle" xml:space="preserve">
     <value>Add Extract Task</value>
@@ -356,7 +356,7 @@
     <value>execute after 1st failure</value>
   </data>
   <data name="batchfileButton" xml:space="preserve">
-    <value>add a new batchfile task</value>
+    <value>add a new script task</value>
   </data>
   <data name="logMoveTaskFailed" xml:space="preserve">
     <value>failed to move file</value>
@@ -404,7 +404,7 @@
     <value>extracting successfully completed</value>
   </data>
   <data name="deleteBatchfileQuestion" xml:space="preserve">
-    <value>Are you sure you want to delete  the Batchfile options "{0}" of Job "{1}" ?</value>
+    <value>Are you sure you want to delete  the Script options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="toolTipAutoStart" xml:space="preserve">
     <value>Automatically run this job on service start or file loading</value>
@@ -458,7 +458,7 @@
     <value>Start this job</value>
   </data>
   <data name="logNoBatchfile" xml:space="preserve">
-    <value>batchfile does not exist</value>
+    <value>scriptfile does not exist</value>
   </data>
   <data name="statText2" xml:space="preserve">
     <value>started</value>
@@ -500,13 +500,13 @@
     <value>execute after succes</value>
   </data>
   <data name="NewBatchfileTitle" xml:space="preserve">
-    <value>Add Batchfile Task</value>
+    <value>Add Script Task</value>
   </data>
   <data name="toolTipStopAll" xml:space="preserve">
     <value>Stop ALL jobs</value>
   </data>
   <data name="logBatchfileStarted" xml:space="preserve">
-    <value>batchfile started</value>
+    <value>script started</value>
   </data>
   <data name="connectionLostCaption" xml:space="preserve">
     <value>Connection Lost</value>
@@ -744,5 +744,11 @@
   </data>
   <data name="Untitled" xml:space="preserve">
     <value>Untitled</value>
+  </data>
+  <data name="ScriptArgumentsCouldNotBeParsed" xml:space="preserve">
+    <value>The arguments for the script could not be parsed</value>
+  </data>
+  <data name="NoPreviousOutPutFile" xml:space="preserve">
+    <value>No previous output file generated to use in the script</value>
   </data>
 </root>

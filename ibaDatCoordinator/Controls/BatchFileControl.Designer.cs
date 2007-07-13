@@ -37,6 +37,8 @@ namespace iba.Controls
             this.m_saveButton = new System.Windows.Forms.Button();
             this.m_executeBatchFile = new System.Windows.Forms.Button();
             this.m_editorGroupBox = new System.Windows.Forms.GroupBox();
+            this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
+            this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
             this.m_browseDatFileButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -47,8 +49,6 @@ namespace iba.Controls
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.m_editorGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +79,6 @@ namespace iba.Controls
             this.m_textEditor.ShowSpaces = true;
             this.m_textEditor.ShowTabs = true;
             this.m_textEditor.ShowVRuler = true;
-            this.m_textEditor.Changed += new System.EventHandler(this.m_textEditor_Changed);
             // 
             // m_batchFileTextBox
             // 
@@ -114,7 +113,7 @@ namespace iba.Controls
             // m_editorGroupBox
             // 
             resources.ApplyResources(this.m_editorGroupBox, "m_editorGroupBox");
-            this.m_editorGroupBox.Controls.Add(this.radioButton1);
+            this.m_editorGroupBox.Controls.Add(this.m_rbPrevOutput);
             this.m_editorGroupBox.Controls.Add(this.m_rbDatFile);
             this.m_editorGroupBox.Controls.Add(this.label5);
             this.m_editorGroupBox.Controls.Add(this.m_browseDatFileButton);
@@ -127,6 +126,20 @@ namespace iba.Controls
             this.m_editorGroupBox.Controls.Add(this.m_executeBatchFile);
             this.m_editorGroupBox.Name = "m_editorGroupBox";
             this.m_editorGroupBox.TabStop = false;
+            // 
+            // m_rbPrevOutput
+            // 
+            resources.ApplyResources(this.m_rbPrevOutput, "m_rbPrevOutput");
+            this.m_rbPrevOutput.Name = "m_rbPrevOutput";
+            this.m_rbPrevOutput.TabStop = true;
+            this.m_rbPrevOutput.UseVisualStyleBackColor = true;
+            // 
+            // m_rbDatFile
+            // 
+            resources.ApplyResources(this.m_rbDatFile, "m_rbDatFile");
+            this.m_rbDatFile.Name = "m_rbDatFile";
+            this.m_rbDatFile.TabStop = true;
+            this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -171,20 +184,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             // 
-            // m_rbDatFile
-            // 
-            resources.ApplyResources(this.m_rbDatFile, "m_rbDatFile");
-            this.m_rbDatFile.Name = "m_rbDatFile";
-            this.m_rbDatFile.TabStop = true;
-            this.m_rbDatFile.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            resources.ApplyResources(this.radioButton1, "radioButton1");
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.TabStop = true;
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
             // BatchFileControl
             // 
             resources.ApplyResources(this, "$this");
@@ -221,7 +220,7 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_browseDatFileButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.SaveFileDialog m_saveFileDialog1;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton m_rbPrevOutput;
         private System.Windows.Forms.RadioButton m_rbDatFile;
 
     }

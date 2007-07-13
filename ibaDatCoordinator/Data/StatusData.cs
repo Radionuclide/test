@@ -46,9 +46,17 @@ namespace iba.Data
             set { m_states = value; }
         }
 
+        private SortedList<TaskData,string> m_outputFiles;
+        public SortedList<TaskData, string> OutputFiles
+        {
+            get { return m_outputFiles; }
+            set { m_outputFiles = value; }
+        }
+
         public DatFileStatus()
         {
             m_states = new STLLikeMap<TaskData,State>();
+            m_outputFiles = new SortedList<TaskData,string>();
             m_timesTried = 0;
         }
 
@@ -58,6 +66,8 @@ namespace iba.Data
             foreach (KeyValuePair<TaskData, State> pair in m_states)
                 copy.m_states.Add(pair.Key, pair.Value);
             copy.m_timesTried = m_timesTried;
+            foreach(KeyValuePair<TaskData,string> pair in m_outputFiles)
+                copy.m_outputFiles.Add(pair.Key,pair.Value);
             return copy;
         }
     }

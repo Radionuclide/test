@@ -123,6 +123,9 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Analysevorschrift für Extraktionsaufgabe</value>
   </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>In Datei extrahieren</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_rbDbase.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 17</value>
@@ -163,6 +166,13 @@
   <data name="label4.Text" xml:space="preserve">
     <value>Benutzername:</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Unterverzeichnisse</value>
+  </data>
   <data name="m_folderNumber.Location" type="System.Drawing.Point, System.Drawing">
     <value>176, 12</value>
   </data>
@@ -190,14 +200,10 @@
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>monatlich</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 13</value>
   </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Unterverzeichnisse</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>In Datei extrahieren</value>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Minuten to complete</value>
   </data>
 </root>

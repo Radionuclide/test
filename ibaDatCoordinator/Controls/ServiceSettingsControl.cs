@@ -40,7 +40,7 @@ namespace iba.Controls
                     if (ex.InnerException != null)
                         msg += "\r\n" + ex.InnerException.Message;
 
-                    MessageBox.Show(this, msg, "", MessageBoxButtons.OK,
+                    MessageBox.Show(this, msg, "ibaDatCoordinator", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 service.Close();
@@ -102,7 +102,7 @@ namespace iba.Controls
                     if (ex.InnerException != null)
                         msg += "\r\n" + ex.InnerException.Message;
 
-                    MessageBox.Show(this, msg, "", MessageBoxButtons.OK,
+                    MessageBox.Show(this, msg, "ibaDatCoordinator", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 service.Close();

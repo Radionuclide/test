@@ -194,7 +194,7 @@ namespace Alunorf_plugin_test
             }
             catch (Exception ex)
             {
-                MessageBox.Show("fout: " + ex.ToString());
+                MessageBox.Show(ex.ToString());
             }
         }
 

@@ -127,7 +127,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add a new batchfile task.
+        ///   Looks up a localized string similar to add a new script task.
         /// </summary>
         internal static string batchfileButton {
             get {
@@ -136,7 +136,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Batchfile.
+        ///   Looks up a localized string similar to Script.
         /// </summary>
         internal static string batchfileTitle {
             get {
@@ -300,7 +300,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete  the Batchfile options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete  the Script options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteBatchfileQuestion {
             get {
@@ -572,7 +572,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to batchfile failed.
+        ///   Looks up a localized string similar to script failed.
         /// </summary>
         internal static string logBatchfileFailed {
             get {
@@ -581,7 +581,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to batchfile started.
+        ///   Looks up a localized string similar to script started.
         /// </summary>
         internal static string logBatchfileStarted {
             get {
@@ -590,7 +590,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to batchfile successfully completed.
+        ///   Looks up a localized string similar to script successfully completed.
         /// </summary>
         internal static string logBatchfileSuccess {
             get {
@@ -599,7 +599,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to batchfile timed out.
+        ///   Looks up a localized string similar to script timed out.
         /// </summary>
         internal static string logBatchfileTimeout {
             get {
@@ -795,7 +795,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to batchfile does not exist.
+        ///   Looks up a localized string similar to scriptfile does not exist.
         /// </summary>
         internal static string logNoBatchfile {
             get {
@@ -1009,7 +1009,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Batchfile Task.
+        ///   Looks up a localized string similar to Add Script Task.
         /// </summary>
         internal static string NewBatchfileTitle {
             get {
@@ -1147,6 +1147,15 @@ namespace iba.Properties {
         internal static string noIbaAnalyser {
             get {
                 return ResourceManager.GetString("noIbaAnalyser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No previous output file generated to use in the script.
+        /// </summary>
+        internal static string NoPreviousOutPutFile {
+            get {
+                return ResourceManager.GetString("NoPreviousOutPutFile", resourceCulture);
             }
         }
         
@@ -1374,6 +1383,15 @@ namespace iba.Properties {
         internal static string saveQuestion {
             get {
                 return ResourceManager.GetString("saveQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The arguments for the script could not be parsed.
+        /// </summary>
+        internal static string ScriptArgumentsCouldNotBeParsed {
+            get {
+                return ResourceManager.GetString("ScriptArgumentsCouldNotBeParsed", resourceCulture);
             }
         }
         

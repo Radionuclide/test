@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.IO;
 using iba.Data;
 using iba.Processing;
+using System.Diagnostics;
 
 /**
  * Description: class used to communicate with the service
@@ -119,6 +120,17 @@ namespace iba
 
         public void TestConnection() //does nothing
         {
+        }
+
+        public void TestScript(string scriptfile, string arguments)
+        {
+            using (Process ibaProc = new Process())
+            {
+                ibaProc.EnableRaisingEvents = false;
+                ibaProc.StartInfo.FileName = scriptfile;
+                ibaProc.StartInfo.Arguments = arguments;
+                ibaProc.Start();
+            }
         }
     }
 
@@ -307,6 +319,18 @@ namespace iba
                 gv = LogData.Data.Logger as GridViewLogger;
 
             LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
+        }
+
+        public void TestScript(string scriptfile, string arguments)
+        {
+            try
+            {
+                m_com.TestScript(scriptfile,arguments);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+            }
         }
     }
 }

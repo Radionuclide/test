@@ -293,10 +293,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\BatchFileControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>BatchFileControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BatchFileControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>

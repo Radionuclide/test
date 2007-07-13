@@ -1118,7 +1118,7 @@ namespace iba.Processing
                             return DatFileStatus.State.TRIED_TOO_MANY_TIMES;
                         }
                         List<string> guids = null;
-                        string guidstring = null;
+                        string guidstring = "";
                         //get guids
                         try
                         {
@@ -1131,9 +1131,8 @@ namespace iba.Processing
                                 guidstring = ibaDatFile.QueryInfoByName("TasksDone");
                             }
                         }
-                        catch (ArgumentException ex)
+                        catch (ArgumentException)
                         {
-                            string message = ex.Message;
                         }
                         catch (Exception) //general exception
                         {
@@ -1142,13 +1141,39 @@ namespace iba.Processing
                         guidstring.Trim(new char[] { ';' });
                         guids = new List<string>(guidstring.Split(new char[] { ';' }));
                         guids.Sort();
+
+                        //get outputfiles
+                        string outputfilesString = "";
+                        try
+                        {
+                            outputfilesString = ibaDatFile.QueryInfoByName("$DATCOOR_OutputFiles");
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+                        catch (Exception) //general exception
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
+                        }
+                        outputfilesString.Trim(new char[] { ';' });
+                        List<string> outputfilesKeyValuesString = new List<string>(outputfilesString.Split(new char[] { ';' }));
+                        SortedList<string,string> keyvalues = new SortedList<string,string>();
+                        foreach (string pairString in outputfilesKeyValuesString)
+                        {
+                            string[] splitted = pairString.Split(new char[] { '|' });
+                            keyvalues.Add(splitted[0], splitted[1]);
+                        }
+
                         lock (m_sd.DatFileStates)
                         {
-                            m_sd.DatFileStates[filename].TimesTried = timesProcessed;
+                            m_sd.DatFileStates[filename].OutputFiles.Clear();
                             foreach (TaskData task in m_cd.Tasks)
                             {
-                                if (guids.BinarySearch(task.Guid.ToString()) > 0)
+                                string key = task.Guid.ToString();
+                                if (guids.BinarySearch(key) > 0)
                                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                if (keyvalues.ContainsKey(key))
+                                    m_sd.DatFileStates[filename].OutputFiles.Add(task, keyvalues[key]);
                             }
                         }
                         ibaDatFile.Close();
@@ -1265,7 +1290,19 @@ namespace iba.Processing
                 foreach (TaskData task in m_cd.Tasks)
                 {
                     if (!shouldTaskBeDone(task, DatFile))
+                    {
+                        //set the outputfile of previous run if any for the next batchtask
+                        lock (m_sd.DatFileStates)
+                        {
+                            if (m_sd.DatFileStates.ContainsKey(DatFile))
+                                m_sd.DatFileStates[DatFile].OutputFiles.TryGetValue(task, out m_outPutFile);
+                        }
                         continue;
+                    }
+                    if (!(task is BatchFileData))
+                    {
+                        m_outPutFile = null;
+                    }
                     bool failedOnce = false;
                     lock (m_sd.DatFileStates)
                     {
@@ -1401,7 +1438,10 @@ namespace iba.Processing
                 }
                 m_sd.DatFileStates[DatFile].TimesTried++;
                 if (completeSucces)
+                {
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
+                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
+                }
                 else
                 {
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
@@ -1409,10 +1449,16 @@ namespace iba.Processing
                     lock (m_sd.DatFileStates)
                     {
                         string guids = "";
+                        string outputfiles = "";
                         foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
                             if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                            {
                                 guids += stat.Key.Guid.ToString() + ";";
+                                if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
+                                    outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
+                            }
                         ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
                     }
                 }
                 lock (m_sd.DatFileStates)
@@ -1474,6 +1520,7 @@ namespace iba.Processing
             }
         }
 
+        private string m_outPutFile;
         private void Extract(string filename, ExtractData task)
         {
             try
@@ -1491,6 +1538,7 @@ namespace iba.Processing
                         string outFile = GetExtractFileName(filename, task);
                         if (outFile == null) return;
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
+                        m_outPutFile = outFile;
                     }
                     else
                     {
@@ -1859,9 +1907,12 @@ namespace iba.Processing
                     mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
                     if (task.Output != ReportData.OutputChoice.PRINT)
-                        mon.Execute(delegate(){m_ibaAnalyzer.Report(arg);});
+                    {
+                        mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
+                        m_outPutFile = arg;
+                    }
                     else
-                        mon.Execute(delegate(){m_ibaAnalyzer.Report("");});
+                        mon.Execute(delegate() { m_ibaAnalyzer.Report(""); });
                     //Thread.Sleep(500);
                     //code on succes
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
@@ -1945,7 +1996,6 @@ namespace iba.Processing
                 return;
             }
 
-
             if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
             {
                 string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
@@ -2027,6 +2077,7 @@ namespace iba.Processing
                     File.Copy(filename,dest,true);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                 }
+                m_outPutFile = dest;
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
@@ -2060,12 +2111,35 @@ namespace iba.Processing
                 Log(Logging.Level.Exception,iba.Properties.Resources.logNoBatchfile,filename,task);
                 return;
             }
+            string arguments = null;
+            if (task.WhatFile == BatchFileData.WhatFileEnum.PREVOUTPUT)
+            {
+                if (m_outPutFile == null)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFile, filename, task);
+                    return;
+                }
+                if (m_outPutFile != null)
+                    arguments = task.ParsedArguments(m_outPutFile);
+            }
+            else
+            {
+                arguments = task.ParsedArguments(filename);
+            }
+
+            if (arguments == null)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                Log(Logging.Level.Exception, iba.Properties.Resources.ScriptArgumentsCouldNotBeParsed, filename, task);
+                return;
+            }
 
             using (Process ibaProc = new Process())
             {
+                ibaProc.StartInfo.Arguments = arguments;
                 ibaProc.EnableRaisingEvents = false;
                 ibaProc.StartInfo.FileName = task.BatchFile;
-                ibaProc.StartInfo.Arguments = "\"" + filename + "\" \"" + task.AnalysisFile + "\"";
                 ibaProc.StartInfo.CreateNoWindow = true;
                 ibaProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 try
@@ -2089,8 +2163,7 @@ namespace iba.Processing
                         else
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            string msg = new string();
-                            msg.Format(iba.Properties.Resources.logBatchfileFailed,ibaProc.ExitCode)
+                            string msg = String.Format(iba.Properties.Resources.logBatchfileFailed, ibaProc.ExitCode);
                             Log(Logging.Level.Exception, msg, filename,task);
                         }
                     }

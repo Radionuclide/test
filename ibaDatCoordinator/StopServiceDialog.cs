@@ -50,7 +50,8 @@ namespace iba
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); m_result = false;
+                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                m_result = false;
                 return;
             }
         }

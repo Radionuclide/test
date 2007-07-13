@@ -1433,7 +1433,7 @@ namespace iba
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message);
+                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -1453,7 +1453,7 @@ namespace iba
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message);
+                    MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();
@@ -1574,7 +1574,7 @@ namespace iba
             }
             catch (Exception ex)
             {
-                if (!beSilent) MessageBox.Show(iba.Properties.Resources.OpenFileProblem + "  " + ex.Message);
+                if (!beSilent) MessageBox.Show(iba.Properties.Resources.OpenFileProblem + "  " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
