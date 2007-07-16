@@ -37,11 +37,30 @@ namespace iba
             {
                 m_vANAL.Text = "?";
             }
+            try
+            {
+                m_vICSharpTextEditor.Text = "v" + typeof(ICSharpCode.TextEditor.TextEditorControl).Assembly.GetName().Version.ToString();;
+            }
+            catch
+            {
+                m_vICSharpTextEditor.Text = "?";
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void m_textEditorUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(iba.Properties.Resources.ICSharpTextEditorUrl);
+            }
+            catch
+            {
+            }
         }
     }
 }

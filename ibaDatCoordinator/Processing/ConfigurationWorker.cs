@@ -1106,16 +1106,9 @@ namespace iba.Processing
                         catch
                         {
                         }
-                        if (m_cd.LimitTimesTried && timesProcessed >= m_cd.NrTryTimes)
+                        lock (m_sd.DatFileStates)
                         {
-                            ibaDatFile.Close();
-                            try{if (time != null) File.SetLastWriteTime(filename, time.Value);}catch{}
-                            Log(Logging.Level.Warning, iba.Properties.Resources.TriedToManyTimes, filename);
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].TimesTried = timesProcessed;
-                            }
-                            return DatFileStatus.State.TRIED_TOO_MANY_TIMES;
+                            m_sd.DatFileStates[filename].TimesTried = timesProcessed;
                         }
                         List<string> guids = null;
                         string guidstring = "";
@@ -1177,6 +1170,13 @@ namespace iba.Processing
                             }
                         }
                         ibaDatFile.Close();
+                        if (m_cd.LimitTimesTried && timesProcessed >= m_cd.NrTryTimes)
+                        {
+                            try { if (time != null) File.SetLastWriteTime(filename, time.Value); }
+                            catch { }
+                            Log(Logging.Level.Warning, iba.Properties.Resources.TriedToManyTimes, filename);
+                            return DatFileStatus.State.TRIED_TOO_MANY_TIMES;
+                        }
                         try{if (time != null) File.SetLastWriteTime(filename, time.Value);}catch{}
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }

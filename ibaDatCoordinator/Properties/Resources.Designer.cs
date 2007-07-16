@@ -501,6 +501,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.icsharpcode.net/OpenSource/SD.
+        /// </summary>
+        internal static string ICSharpTextEditorUrl {
+            get {
+                return ResourceManager.GetString("ICSharpTextEditorUrl", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon iftask {
             get {
                 object obj = ResourceManager.GetObject("iftask", resourceCulture);

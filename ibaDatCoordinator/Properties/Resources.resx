@@ -751,4 +751,7 @@
   <data name="NoPreviousOutPutFile" xml:space="preserve">
     <value>No previous output file generated to use in the script</value>
   </data>
+  <data name="ICSharpTextEditorUrl" xml:space="preserve">
+    <value>http://www.icsharpcode.net/OpenSource/SD</value>
+  </data>
 </root>

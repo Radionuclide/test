@@ -1462,7 +1462,6 @@ namespace iba
 
         private string TextToSave()
         {
-            SaveRightPaneControl();
             XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
             StringBuilder sb = new StringBuilder();
             try

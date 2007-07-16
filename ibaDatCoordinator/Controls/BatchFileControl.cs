@@ -21,6 +21,39 @@ namespace iba.Controls
         {
             InitializeComponent();
             ((Bitmap)m_newButton.Image).MakeTransparent(Color.Magenta);
+            //m_textEditor.ActiveTextAreaControl.TextArea.KeyUp += new KeyEventHandler(TextArea_KeyUp);
+            m_textEditor.Document.TextContentChanged += new EventHandler(Document_TextContentChanged);
+            m_textEditor.Document.DocumentChanged += new ICSharpCode.TextEditor.Document.DocumentEventHandler(Document_DocumentChanged);
+        }
+
+        void Document_DocumentChanged(object sender, ICSharpCode.TextEditor.Document.DocumentEventArgs e)
+        {
+            if (!m_bChanged)
+            {
+                m_bChanged = true;
+                m_executeBatchFile.Enabled = true;
+                m_saveButton.Enabled = true;
+            }
+        }
+
+        void Document_TextContentChanged(object sender, EventArgs e)
+        {
+            if (!m_bChanged)
+            {
+                m_bChanged = true;
+                m_executeBatchFile.Enabled = true;
+                m_saveButton.Enabled = true;
+            }
+        }
+    
+        void m_textEditor_ActiveTextAreaControlChanged(object sender, EventArgs e)
+        {
+            if (!m_bChanged)
+            {
+                m_bChanged = true;
+                m_executeBatchFile.Enabled = true;
+                m_saveButton.Enabled = true;
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -60,7 +93,8 @@ namespace iba.Controls
                 m_executeBatchFile.Enabled = false;
                 m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
                 m_textEditor.Text = "";
-                m_textEditor.SetHighlighting("Default");
+                m_textEditor.SetHighlighting("VBNET");
+                m_textEditor.Invalidate();
             }
             m_bChanged = false;
             m_saveButton.Enabled = false;
@@ -171,7 +205,7 @@ namespace iba.Controls
                 }
             }
             //do a saveAs
-            m_saveFileDialog1.CheckFileExists = true;
+            m_saveFileDialog1.CheckFileExists = false;
             m_saveFileDialog1.FileName = "myscript.bat";
             m_saveFileDialog1.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
             if (m_saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -186,24 +220,28 @@ namespace iba.Controls
                         {
                             bfile.Write(m_textEditor.Text);
                         }
-                        if (ifd.Extension == ".vbs" || ifd.Extension == ".VBS")
-                            m_textEditor.SetHighlighting("VBNET");
-                        else if (ifd.Extension == ".js" || ifd.Extension == ".JS")
-                            m_textEditor.SetHighlighting("JavaScript");
-                        //else if (ifd.Extension == ".cs")
-                        //    m_textEditor.SetHighlighting("C#");
-                        else
-                            m_textEditor.SetHighlighting("Default");
-                        //m_textEditor.Text = btext;
-                        m_textEditor.Invalidate();
-                        m_saveButton.Enabled = m_bChanged = false;
-                        m_batchFileTextBox.Text = filename;
-                        return;
                     }
                     else
                     {
-                        MessageBox.Show(ifd.Exists ? iba.Properties.Resources.ScriptReadOnly : iba.Properties.Resources.ScriptNoExist, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        using (StreamWriter bfile = new StreamWriter(filename))
+                        {
+                            bfile.Write(m_textEditor.Text);
+                        }
                     }
+                    ifd = new FileInfo(filename);
+                    if (ifd.Extension == ".vbs" || ifd.Extension == ".VBS")
+                        m_textEditor.SetHighlighting("VBNET");
+                    else if (ifd.Extension == ".js" || ifd.Extension == ".JS")
+                        m_textEditor.SetHighlighting("JavaScript");
+                    //else if (ifd.Extension == ".cs")
+                    //    m_textEditor.SetHighlighting("C#");
+                    else
+                        m_textEditor.SetHighlighting("Default");
+                    //m_textEditor.Text = btext;
+                    m_textEditor.Invalidate();
+                    m_saveButton.Enabled = m_bChanged = false;
+                    m_batchFileTextBox.Text = filename;
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -217,7 +255,8 @@ namespace iba.Controls
         private void m_newButton_Click(object sender, EventArgs e)
         {
             m_textEditor.Text = "";
-            m_textEditor.SetHighlighting("Default");
+            //m_textEditor.SetHighlighting("VBNET");
+            m_textEditor.Invalidate(); 
             m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
             m_saveButton.Enabled = m_bChanged = false;
         }
@@ -273,16 +312,6 @@ namespace iba.Controls
             m_openFileDialog1.Filter = "All files (*.*)|*.*";
             if (m_openFileDialog1.ShowDialog() == DialogResult.OK)
                 m_datFileTextBox.Text = m_openFileDialog1.FileName;
-        }
-
-        private void m_textEditor_Changed(object sender, EventArgs e)
-        {
-            if (!m_bChanged)
-            {
-                m_bChanged = true;
-                m_executeBatchFile.Enabled = true;
-                m_saveButton.Enabled = true;
-            }
         }
     }
 }
