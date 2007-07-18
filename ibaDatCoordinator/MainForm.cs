@@ -152,6 +152,9 @@ namespace iba
         {
             base.OnClosing(e);
 
+            if (WindowState != FormWindowState.Minimized || Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                FormStateSerializer.SaveSettings(this, "MainForm");
+
             SaveRightPaneControl();
             if (!m_actualClose && Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
@@ -370,6 +373,8 @@ namespace iba
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                FormStateSerializer.LoadSettings(this, "MainForm");
             SetRenderer();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
@@ -2185,6 +2190,7 @@ namespace iba
             Show();
             Activate();
             WindowState = FormWindowState.Normal;
+            FormStateSerializer.LoadSettings(this, "MainForm");
             ShowInTaskbar = true;
         }
 

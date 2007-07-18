@@ -48,19 +48,11 @@ namespace iba.Data
             set { m_subfolderChoice = value; }
         }
 
-        private uint m_numbFolders;
-        public uint SubfoldersNumber
-        {
-            get { return m_numbFolders; }
-            set { m_numbFolders = value; }
-        }
-
         public ReportData(ConfigurationData parent) : base(parent)
         {
             m_name = iba.Properties.Resources.reportTitle;
             m_outputChoice = OutputChoice.FILE;
             m_subfolderChoice = SubfolderChoice.DAY;
-            m_numbFolders = 10;
             m_extension = "pdf";
             m_monitorData = new MonitorData();
         }

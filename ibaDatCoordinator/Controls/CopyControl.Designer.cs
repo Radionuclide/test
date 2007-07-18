@@ -51,6 +51,8 @@ namespace iba.Controls
             this.label1 = new System.Windows.Forms.Label();
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
+            this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.m_cbRemoveSource = new System.Windows.Forms.CheckBox();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox2.SuspendLayout();
@@ -229,9 +231,25 @@ namespace iba.Controls
             // groupBox6
             // 
             resources.ApplyResources(this.groupBox6, "groupBox6");
+            this.groupBox6.Controls.Add(this.m_rbPrevOutput);
+            this.groupBox6.Controls.Add(this.m_rbDatFile);
             this.groupBox6.Controls.Add(this.m_cbRemoveSource);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.TabStop = false;
+            // 
+            // m_rbPrevOutput
+            // 
+            resources.ApplyResources(this.m_rbPrevOutput, "m_rbPrevOutput");
+            this.m_rbPrevOutput.Name = "m_rbPrevOutput";
+            this.m_rbPrevOutput.TabStop = true;
+            this.m_rbPrevOutput.UseVisualStyleBackColor = true;
+            // 
+            // m_rbDatFile
+            // 
+            resources.ApplyResources(this.m_rbDatFile, "m_rbDatFile");
+            this.m_rbDatFile.Name = "m_rbDatFile";
+            this.m_rbDatFile.TabStop = true;
+            this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
             // m_cbRemoveSource
             // 
@@ -288,5 +306,7 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbUserName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button m_checkPathButton;
+        private System.Windows.Forms.RadioButton m_rbPrevOutput;
+        private System.Windows.Forms.RadioButton m_rbDatFile;
     }
 }

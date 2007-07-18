@@ -14,19 +14,21 @@ namespace iba.Data
             set { m_removeSource = value; }
         }
 
-        private uint m_numbFolders;
-        public uint SubfoldersNumber
-        {
-            get { return m_numbFolders; }
-            set { m_numbFolders = value; }
-        }
-
         public CopyMoveTaskData(ConfigurationData parent) : base(parent)
         {
             m_name = iba.Properties.Resources.copyTitle;
             m_removeSource = false;
             m_subfolderChoice = SubfolderChoiceA.NONE;
-            m_numbFolders = 10;
+            m_whatFile = WhatFileEnumA.DATFILE;
+        }
+
+        public enum WhatFileEnumA { DATFILE, PREVOUTPUT }
+        private WhatFileEnumA m_whatFile;
+
+        public WhatFileEnumA WhatFile
+        {
+            get { return m_whatFile; }
+            set { m_whatFile = value; }
         }
 
         //letter A added because namecollision in XML-Serialiser with SubFolderCHoice from reportdata
@@ -56,6 +58,7 @@ namespace iba.Data
             cd.m_username = m_username;
             cd.m_pass = m_pass;
             cd.m_destinationMapUNC = m_destinationMapUNC;
+            cd.m_whatFile = m_whatFile;
             return cd;
         }
     }

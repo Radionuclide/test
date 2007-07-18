@@ -28,6 +28,7 @@ namespace iba.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchFileControl));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.m_newButton = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@ namespace iba.Controls
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.m_editorGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +69,7 @@ namespace iba.Controls
             // m_newButton
             // 
             resources.ApplyResources(this.m_newButton, "m_newButton");
-            this.m_newButton.Image = global::iba.Properties.Resources.Aktualisieren;
+            this.m_newButton.Image = global::iba.Properties.Resources.NewDocument;
             this.m_newButton.Name = "m_newButton";
             this.m_newButton.UseVisualStyleBackColor = true;
             // 
@@ -222,6 +224,7 @@ namespace iba.Controls
         private System.Windows.Forms.SaveFileDialog m_saveFileDialog1;
         private System.Windows.Forms.RadioButton m_rbPrevOutput;
         private System.Windows.Forms.RadioButton m_rbDatFile;
+        private System.Windows.Forms.ToolTip m_tooltip;
 
     }
 }

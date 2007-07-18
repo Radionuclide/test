@@ -13,6 +13,14 @@ namespace iba.Data
             m_pass = "";
             m_username = "";
             m_destinationMapUNC = "";
+            m_numbFolders = 10;
+        }
+
+        protected uint m_numbFolders;
+        public uint SubfoldersNumber
+        {
+            get { return m_numbFolders; }
+            set { m_numbFolders = value; }
         }
 
         public TaskDataUNC() : this(null) { }

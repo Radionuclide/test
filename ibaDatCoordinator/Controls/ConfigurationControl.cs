@@ -41,6 +41,8 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningButton.Image).MakeTransparent(Color.Magenta);
+            ((Bitmap)m_testNotification.Image).MakeTransparent(Color.Magenta);
+            m_toolTip.SetToolTip(m_testNotification,iba.Properties.Resources.testNotifications);
 
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
@@ -126,6 +128,10 @@ namespace iba.Controls
             m_tbEmail.Text = m_data.NotificationData.Email;
             m_tbSMTP.Text = m_data.NotificationData.SMTPServer;
             m_tbNetSend.Text = m_data.NotificationData.Host;
+            m_tbMailPass.Text = m_data.NotificationData.Password;
+            m_tbMailUsername.Text = m_data.NotificationData.Username;
+            m_cbAuthentication.Checked = m_data.NotificationData.AuthenticationRequired;
+
             if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
             {
                 m_rbNetSend.Checked = true;
@@ -186,7 +192,10 @@ namespace iba.Controls
             m_data.NotificationData.NotifyOutput = m_rbNetSend.Checked ? NotificationData.NotifyOutputChoice.NETSEND : NotificationData.NotifyOutputChoice.EMAIL;
             m_data.NotificationData.NotifyImmediately = m_rbImmediate.Checked;
             m_data.NotificationData.TimeInterval = TimeSpan.FromMinutes((double)m_nudNotifyTime.Value);
-            
+            m_data.NotificationData.AuthenticationRequired = m_cbAuthentication.Checked;
+            m_data.NotificationData.Username = m_tbMailUsername.Text;
+            m_data.NotificationData.Password = m_tbMailPass.Text;
+
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
@@ -404,9 +413,12 @@ namespace iba.Controls
 
         private void m_rbOutputCheckedChanged(object sender, EventArgs e)
         {
-            m_tbNetSend.Enabled = !m_rbEmail.Checked;
-            m_tbEmail.Enabled = !m_rbNetSend.Checked;
-            m_tbSMTP.Enabled = !m_rbNetSend.Checked;
+            labelnetsendhost.Enabled = m_tbNetSend.Enabled = !m_rbEmail.Checked;
+            labelmailrecipient.Enabled = m_tbEmail.Enabled = !m_rbNetSend.Checked;
+            labelmailsmtp.Enabled = m_tbSMTP.Enabled = !m_rbNetSend.Checked;
+            m_tbMailPass.Enabled = labelmailpass.Enabled
+            = m_tbMailUsername.Enabled = labelmailuser.Enabled
+            = m_cbAuthentication.Checked && m_rbEmail.Checked;
         }
 
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
@@ -465,5 +477,32 @@ namespace iba.Controls
             m_checkPathButton.Text = "?";
         }
 
+        private void m_testNotification_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            try
+            {
+                if (Program.RunsWithService != Program.ServiceEnum.CONNECTED)
+                {
+                    Notifier notifier = new Notifier(m_data);
+                    notifier.Test();
+                }
+                else
+                {
+                    Program.CommunicationObject.TestNotifier(m_data);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void m_cbAuthentication_CheckedChanged(object sender, EventArgs e)
+        {
+            m_tbMailPass.Enabled = labelmailpass.Enabled
+            = m_tbMailUsername.Enabled = labelmailuser.Enabled
+            = m_cbAuthentication.Checked && m_rbEmail.Checked;
+        }
     }
 }

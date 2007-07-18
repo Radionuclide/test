@@ -136,7 +136,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_newButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_newButton.Name" xml:space="preserve">
     <value>m_newButton</value>
@@ -160,7 +160,7 @@
     <value>525, 249</value>
   </data>
   <data name="m_textEditor.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_textEditor.Name" xml:space="preserve">
     <value>m_textEditor</value>
@@ -211,7 +211,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_browseBATCHFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_browseBATCHFileButton.Name" xml:space="preserve">
     <value>m_browseBATCHFileButton</value>
@@ -238,7 +238,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_saveButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_saveButton.Name" xml:space="preserve">
     <value>m_saveButton</value>
@@ -289,7 +289,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_executeBatchFile.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_executeBatchFile.Name" xml:space="preserve">
     <value>m_executeBatchFile</value>
@@ -306,150 +306,6 @@
   <data name="m_editorGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_rbPrevOutput.Name" xml:space="preserve">
-    <value>m_rbPrevOutput</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrevOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrevOutput.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_rbDatFile.Name" xml:space="preserve">
-    <value>m_rbDatFile</value>
-  </data>
-  <data name="&gt;&gt;m_rbDatFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbDatFile.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_browseDatFileButton.Name" xml:space="preserve">
-    <value>m_browseDatFileButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseDatFileButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseDatFileButton.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_argumentsTextBox.Name" xml:space="preserve">
-    <value>m_argumentsTextBox</value>
-  </data>
-  <data name="&gt;&gt;m_argumentsTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_argumentsTextBox.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_argumentsTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_datFileTextBox.Name" xml:space="preserve">
-    <value>m_datFileTextBox</value>
-  </data>
-  <data name="&gt;&gt;m_datFileTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_datFileTextBox.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_editorGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 341</value>
-  </data>
-  <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 183</value>
-  </data>
-  <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_editorGroupBox.Text" xml:space="preserve">
-    <value>Execute</value>
-  </data>
-  <data name="&gt;&gt;m_editorGroupBox.Name" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_editorGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_editorGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_editorGroupBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_rbPrevOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -463,7 +319,7 @@
     <value>275, 17</value>
   </data>
   <data name="m_rbPrevOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>6</value>
   </data>
   <data name="m_rbPrevOutput.Text" xml:space="preserve">
     <value>Use the output of a previous task as file in arguments</value>
@@ -493,7 +349,7 @@
     <value>174, 17</value>
   </data>
   <data name="m_rbDatFile.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>5</value>
   </data>
   <data name="m_rbDatFile.Text" xml:space="preserve">
     <value>Use .dat file as file in arguments</value>
@@ -523,7 +379,7 @@
     <value>117, 39</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>4</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>e.g.: "c:\dats\file1.dat"
@@ -556,7 +412,7 @@ e.g.: file1
     <value>40, 40</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.Name" xml:space="preserve">
     <value>m_browseDatFileButton</value>
@@ -583,7 +439,7 @@ e.g.: file1
     <value>24, 39</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>2</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>%f:
@@ -615,7 +471,7 @@ e.g.: file1
     <value>132, 39</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>3</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>"entire file path"
@@ -647,7 +503,7 @@ filename without extension</value>
     <value>59, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>arguments:</value>
@@ -674,7 +530,7 @@ filename without extension</value>
     <value>438, 20</value>
   </data>
   <data name="m_argumentsTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.Name" xml:space="preserve">
     <value>m_argumentsTextBox</value>
@@ -701,7 +557,7 @@ filename without extension</value>
     <value>43, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>test file:</value>
@@ -728,7 +584,7 @@ filename without extension</value>
     <value>346, 20</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.Name" xml:space="preserve">
     <value>m_datFileTextBox</value>
@@ -742,11 +598,38 @@ filename without extension</value>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
+  <data name="m_editorGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 341</value>
+  </data>
+  <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 183</value>
+  </data>
+  <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_editorGroupBox.Text" xml:space="preserve">
+    <value>Execute</value>
+  </data>
+  <data name="&gt;&gt;m_editorGroupBox.Name" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_editorGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_editorGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_editorGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <metadata name="m_saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>163, 17</value>
+  </metadata>
+  <metadata name="m_tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>307, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -768,6 +651,12 @@ filename without extension</value>
   </data>
   <data name="&gt;&gt;m_saveFileDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tooltip.Name" xml:space="preserve">
+    <value>m_tooltip</value>
+  </data>
+  <data name="&gt;&gt;m_tooltip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BatchFileControl</value>

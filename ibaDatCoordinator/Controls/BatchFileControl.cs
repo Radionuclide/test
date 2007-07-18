@@ -21,9 +21,13 @@ namespace iba.Controls
         {
             InitializeComponent();
             ((Bitmap)m_newButton.Image).MakeTransparent(Color.Magenta);
-            //m_textEditor.ActiveTextAreaControl.TextArea.KeyUp += new KeyEventHandler(TextArea_KeyUp);
             m_textEditor.Document.TextContentChanged += new EventHandler(Document_TextContentChanged);
             m_textEditor.Document.DocumentChanged += new ICSharpCode.TextEditor.Document.DocumentEventHandler(Document_DocumentChanged);
+            m_tooltip.SetToolTip(m_browseBATCHFileButton, iba.Properties.Resources.tooltipOpenScript);
+            m_tooltip.SetToolTip(m_newButton, iba.Properties.Resources.tooltipNewScript);
+            m_tooltip.SetToolTip(m_saveButton, iba.Properties.Resources.tooltipSaveScript);
+            m_tooltip.SetToolTip(m_executeBatchFile, iba.Properties.Resources.tooltipExecuteScript);
+            m_tooltip.SetToolTip(m_browseDatFileButton, iba.Properties.Resources.tooltipBrowseTestFile);
         }
 
         void Document_DocumentChanged(object sender, ICSharpCode.TextEditor.Document.DocumentEventArgs e)
@@ -132,9 +136,10 @@ namespace iba.Controls
             }
             try
             {
+                int exitCode = 0;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 {
-                    Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
+                    exitCode = Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
                 }
                 else
                 {
@@ -144,7 +149,12 @@ namespace iba.Controls
                         ibaProc.StartInfo.FileName = m_batchFileTextBox.Text;
                         ibaProc.StartInfo.Arguments = arguments;
                         ibaProc.Start();
+                        exitCode = ibaProc.ExitCode;
                     }
+                }
+                if (exitCode != 0)
+                {
+                    MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed,exitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)

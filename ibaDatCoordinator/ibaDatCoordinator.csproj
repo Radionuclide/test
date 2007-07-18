@@ -221,6 +221,7 @@
     </Compile>
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Utility\NotifyIconEx.cs">
       <SubType>Component</SubType>
@@ -597,6 +598,8 @@
     <None Include="Resources\memoryexceeded.ico" />
     <None Include="Resources\deletedats.bmp" />
     <None Include="Resources\brokenfile.ico" />
+    <None Include="Resources\NewDocument.bmp" />
+    <None Include="Resources\Fax.bmp" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

@@ -32,9 +32,7 @@ namespace iba.Utility
             return min;
         }
 
-        public delegate int CompareDelegate<T>(T t1, T t2);
-
-        static public T max<T>(IEnumerable<T> container,CompareDelegate<T> comp)
+        static public T max<T>(IEnumerable<T> container, Comparison<T> comp)
         {
             IEnumerator<T> iter = container.GetEnumerator();
             iter.MoveNext();
@@ -46,7 +44,7 @@ namespace iba.Utility
             return max;
         }
 
-        static public T min<T>(IEnumerable<T> container, CompareDelegate<T> comp)
+        static public T min<T>(IEnumerable<T> container, Comparison<T> comp)
         {
             IEnumerator<T> iter = container.GetEnumerator();
             iter.MoveNext();
@@ -58,7 +56,7 @@ namespace iba.Utility
             return min;
         }
 
-        static public T max<T>(IEnumerable container, CompareDelegate<T> comp)
+        static public T max<T>(IEnumerable container, Comparison<T> comp)
         {
             IEnumerator iter = container.GetEnumerator();
             iter.MoveNext();
@@ -70,7 +68,7 @@ namespace iba.Utility
             return max;
         }
 
-        static public T min<T>(IEnumerable container, CompareDelegate<T> comp)
+        static public T min<T>(IEnumerable container, Comparison<T> comp)
         {
             IEnumerator iter = container.GetEnumerator();
             iter.MoveNext();

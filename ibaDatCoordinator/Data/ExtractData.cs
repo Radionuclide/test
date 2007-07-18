@@ -15,7 +15,6 @@ namespace iba.Data
             m_destinationMap = String.Empty;
             m_toFile = false;
             m_subfolderChoice = SubfolderChoiceB.DAY;
-            m_numbFolders = 10;
             m_fileType = ExtractFileType.BINARY;
             m_monitorData = new MonitorData();
         }
@@ -46,13 +45,6 @@ namespace iba.Data
         {
             get { return m_fileType; }
             set { m_fileType = value; }
-        }
-
-        private uint m_numbFolders;
-        public uint SubfoldersNumber
-        {
-            get { return m_numbFolders; }
-            set { m_numbFolders = value; }
         }
 
         private MonitorData m_monitorData;

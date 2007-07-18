@@ -122,7 +122,7 @@ namespace iba
         {
         }
 
-        public void TestScript(string scriptfile, string arguments)
+        public int TestScript(string scriptfile, string arguments)
         {
             using (Process ibaProc = new Process())
             {
@@ -130,7 +130,14 @@ namespace iba
                 ibaProc.StartInfo.FileName = scriptfile;
                 ibaProc.StartInfo.Arguments = arguments;
                 ibaProc.Start();
+                return ibaProc.ExitCode;
             }
+        }
+
+        public void TestNotifier(ConfigurationData m_data)
+        {
+            Notifier notifier = new Notifier(m_data);
+            notifier.Test();
         }
     }
 
@@ -321,11 +328,24 @@ namespace iba
             LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
         }
 
-        public void TestScript(string scriptfile, string arguments)
+        public int TestScript(string scriptfile, string arguments)
         {
             try
             {
-                m_com.TestScript(scriptfile,arguments);
+                return m_com.TestScript(scriptfile,arguments);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+                return -1;
+            }
+        }
+
+        public void TestNotifier(ConfigurationData m_data)
+        {
+            try
+            {
+                m_com.TestNotifier(m_data);
             }
             catch (SocketException)
             {

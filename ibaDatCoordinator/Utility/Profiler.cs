@@ -123,6 +123,27 @@ namespace iba.Utility
 			key.Close();	
 		}
 
+        public static bool KeyExists(string section)
+        {
+            try
+            {
+                string keyName = @"Software\iba\DATCoordinator";
+                if (section != String.Empty)
+                    keyName = keyName + @"\" + section;
+
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName);
+                if (key != null)
+                {
+                    key.Close();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return false;
+        }
+        
 		private static RegistryKey GetKey(string section, bool bWriteable)
 		{
 			try

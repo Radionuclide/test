@@ -168,6 +168,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error cleaning up directories: .
+        /// </summary>
+        internal static string CleanupDirectoriesFailed {
+            get {
+                return ResourceManager.GetString("CleanupDirectoriesFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing.
         /// </summary>
         internal static string closing {
@@ -460,6 +469,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Fax {
+            get {
+                object obj = ResourceManager.GetObject("Fax", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Specified directory does not exist.
         /// </summary>
@@ -581,7 +597,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to script failed.
+        ///   Looks up a localized string similar to script failed with exitcode: {0}.
         /// </summary>
         internal static string logBatchfileFailed {
             get {
@@ -1053,6 +1069,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap NewDocument {
+            get {
+                object obj = ResourceManager.GetObject("NewDocument", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Extract Task.
         /// </summary>
@@ -1160,11 +1183,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No previous output file generated to use in the script.
+        ///   Looks up a localized string similar to Previous task did not generate a file to use in the script arguments.
         /// </summary>
         internal static string NoPreviousOutPutFile {
             get {
                 return ResourceManager.GetString("NoPreviousOutPutFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous task did not generate a file to copy.
+        /// </summary>
+        internal static string NoPreviousOutPutFileToCopy {
+            get {
+                return ResourceManager.GetString("NoPreviousOutPutFileToCopy", resourceCulture);
             }
         }
         
@@ -1228,6 +1260,15 @@ namespace iba.Properties {
         internal static string notifyIconMenuItemStopService {
             get {
                 return ResourceManager.GetString("notifyIconMenuItemStopService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator notifications test message.
+        /// </summary>
+        internal static string notifyTestMessage {
+            get {
+                return ResourceManager.GetString("notifyTestMessage", resourceCulture);
             }
         }
         
@@ -1625,6 +1666,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send a test message.
+        /// </summary>
+        internal static string testNotifications {
+            get {
+                return ResourceManager.GetString("testNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stopped.
         /// </summary>
         internal static string textFileStopped {
@@ -1676,6 +1726,51 @@ namespace iba.Properties {
         internal static string toolTipAutoStart {
             get {
                 return ResourceManager.GetString("toolTipAutoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for test file.
+        /// </summary>
+        internal static string tooltipBrowseTestFile {
+            get {
+                return ResourceManager.GetString("tooltipBrowseTestFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test script.
+        /// </summary>
+        internal static string tooltipExecuteScript {
+            get {
+                return ResourceManager.GetString("tooltipExecuteScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New script.
+        /// </summary>
+        internal static string tooltipNewScript {
+            get {
+                return ResourceManager.GetString("tooltipNewScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open script from file.
+        /// </summary>
+        internal static string tooltipOpenScript {
+            get {
+                return ResourceManager.GetString("tooltipOpenScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save script to file.
+        /// </summary>
+        internal static string tooltipSaveScript {
+            get {
+                return ResourceManager.GetString("tooltipSaveScript", resourceCulture);
             }
         }
         

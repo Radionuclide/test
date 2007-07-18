@@ -118,60 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rb1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 3</value>
-  </data>
-  <data name="m_rb1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 22</value>
-  </data>
-  <data name="m_rb1stFailure.Text" xml:space="preserve">
-    <value>à la 1ère erreur</value>
-  </data>
-  <data name="m_rbAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 22</value>
-  </data>
-  <data name="m_rbAlways.Text" xml:space="preserve">
-    <value>toujours</value>
-  </data>
-  <data name="m_rbFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 31</value>
-  </data>
-  <data name="m_rbFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 22</value>
-  </data>
-  <data name="m_rbFailure.Text" xml:space="preserve">
-    <value>en cas d'erreur</value>
-  </data>
-  <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 22</value>
-  </data>
-  <data name="m_rbDisabled.Text" xml:space="preserve">
-    <value>jamais</value>
-  </data>
-  <data name="m_rbSucces.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 3</value>
-  </data>
-  <data name="m_rbSucces.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 22</value>
-  </data>
-  <data name="m_rbSucces.Text" xml:space="preserve">
-    <value>en cas de réussite</value>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Exécuter</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 13</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Nom tâche de copier:</value>
-  </data>
-  <data name="m_nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 26</value>
-  </data>
-  <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>400, 20</value>
-  </data>
   <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 79</value>
   </data>
@@ -202,50 +148,20 @@
   <data name="label2.Text" xml:space="preserve">
     <value>Nombre max. sous-répertoires</value>
   </data>
-  <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 27</value>
-  </data>
-  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 19</value>
-  </data>
   <data name="m_rbOriginal.Text" xml:space="preserve">
     <value>garder la structure originale </value>
-  </data>
-  <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>400, 27</value>
-  </data>
-  <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 19</value>
   </data>
   <data name="m_rbNONE.Text" xml:space="preserve">
     <value>aucun</value>
   </data>
-  <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 18</value>
-  </data>
   <data name="m_rbHour.Text" xml:space="preserve">
     <value>toutes les heures</value>
-  </data>
-  <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 3</value>
-  </data>
-  <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 18</value>
   </data>
   <data name="m_rbDay.Text" xml:space="preserve">
     <value>tous les jours</value>
   </data>
-  <data name="m_rbWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>400, 3</value>
-  </data>
-  <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 18</value>
-  </data>
   <data name="m_rbWeek.Text" xml:space="preserve">
     <value>toutes les semaines</value>
-  </data>
-  <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 19</value>
   </data>
   <data name="m_rbMonth.Text" xml:space="preserve">
     <value>tous les mois</value>
@@ -269,51 +185,9 @@
     <value>Cible</value>
   </data>
   <data name="m_cbRemoveSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 17</value>
+    <value>151, 17</value>
   </data>
   <data name="m_cbRemoveSource.Text" xml:space="preserve">
-    <value>Supprimer le fichier de donnée original</value>
-  </data>
-  <data name="m_rbNot1stFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 3</value>
-  </data>
-  <data name="m_rbNot1stFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 22</value>
-  </data>
-  <data name="m_rbNot1stFailure.Text" xml:space="preserve">
-    <value>à la 1ère erreur</value>
-  </data>
-  <data name="m_rbNotAlways.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 22</value>
-  </data>
-  <data name="m_rbNotAlways.Text" xml:space="preserve">
-    <value>toujours</value>
-  </data>
-  <data name="m_rbNotFailure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 31</value>
-  </data>
-  <data name="m_rbNotFailure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 22</value>
-  </data>
-  <data name="m_rbNotFailure.Text" xml:space="preserve">
-    <value>en cas d'erreur</value>
-  </data>
-  <data name="m_rbNotDisabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 22</value>
-  </data>
-  <data name="m_rbNotDisabled.Text" xml:space="preserve">
-    <value>jamais</value>
-  </data>
-  <data name="m_rbNotSuccess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 3</value>
-  </data>
-  <data name="m_rbNotSuccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 22</value>
-  </data>
-  <data name="m_rbNotSuccess.Text" xml:space="preserve">
-    <value>en cas de réussite</value>
-  </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Supprimer le fichier original</value>
   </data>
 </root>

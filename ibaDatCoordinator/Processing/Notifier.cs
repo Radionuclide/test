@@ -11,14 +11,14 @@ namespace iba.Processing
     class Notifier
     {
         private ConfigurationData m_cd;
-        private SortedDictionary<TaskData, List<string> > m_successes;
-        private SortedDictionary<TaskData, List<string> > m_failures;
+        private SortedDictionary<TaskData, List<string>> m_successes;
+        private SortedDictionary<TaskData, List<string>> m_failures;
 
         public Notifier(ConfigurationData cd)
         {
             m_cd = cd;
-            m_successes = new SortedDictionary<TaskData,List<string>>();
-            m_failures = new SortedDictionary<TaskData,List<string>>();
+            m_successes = new SortedDictionary<TaskData, List<string>>();
+            m_failures = new SortedDictionary<TaskData, List<string>>();
         }
 
         public void AddSuccess(TaskData task, string datfile)
@@ -53,7 +53,7 @@ namespace iba.Processing
 
         string composeMessage(bool isEmail)
         {
-            string message ="";
+            string message = "";
             string newline = isEmail ? "\n" : Environment.NewLine;
             lock (m_listLock)
             {
@@ -72,7 +72,7 @@ namespace iba.Processing
                     message += line + "\n";
                     foreach (string s in pair.Value)
                     {
-                        message += "    " + s + "\n"; 
+                        message += "    " + s + "\n";
                     }
                 }
             }
@@ -133,7 +133,15 @@ namespace iba.Processing
                 // host, port, and credentials.
                 SmtpClient client = new SmtpClient();
                 client.Host = m_cd.NotificationData.SMTPServer;
-                client.UseDefaultCredentials = true;
+                if (m_cd.NotificationData.AuthenticationRequired)
+                {
+                    System.Net.NetworkCredential SMTPUserInfo = new System.Net.NetworkCredential(m_cd.NotificationData.Username, m_cd.NotificationData.Password);
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = SMTPUserInfo;
+                }
+                else
+                    client.UseDefaultCredentials = true;
+
                 try
                 {
                     client.Send(message);
@@ -211,6 +219,100 @@ namespace iba.Processing
             string msgname,
             string fromname,
             string buf,
-            int buflen); 
+            int buflen);
+
+        public void Test()
+        {
+            if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
+            {
+                MailAddress to = null;
+                string logFailed = null;
+                try
+                {
+                    to = new MailAddress(m_cd.NotificationData.Email);
+                }
+                catch (ArgumentNullException)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+                }
+                catch (ArgumentException)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+                }
+                catch (FormatException)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+                }
+                if (logFailed != null)
+                {
+                    throw new Exception(logFailed);
+                }
+
+                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
+                MailMessage message = new MailMessage(from, to);
+                message.Subject = iba.Properties.Resources.NotificationEmailSubject;
+                message.IsBodyHtml = false;
+                message.Body = iba.Properties.Resources.notifyTestMessage;
+                // Use the application or machine configuration to get the 
+                // host, port, and credentials.
+                SmtpClient client = new SmtpClient();
+                client.Host = m_cd.NotificationData.SMTPServer;
+                if (m_cd.NotificationData.AuthenticationRequired)
+                {
+                    System.Net.NetworkCredential SMTPUserInfo = new System.Net.NetworkCredential(m_cd.NotificationData.Username, m_cd.NotificationData.Password);
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = SMTPUserInfo;
+                }
+                else
+                    client.UseDefaultCredentials = true;
+
+                try
+                {
+                    client.Send(message);
+                }
+                catch (InvalidOperationException e1)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e1.Message;
+                }
+                catch (SmtpFailedRecipientException e2)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e2.Message;
+                }
+                catch (SmtpException e3)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e3.Message;
+                }
+                if (logFailed != null && LogData.Data.Logger.IsOpen)
+                {
+                    throw new Exception(logFailed);
+                }
+            }
+            else // net send
+            {
+                string message = iba.Properties.Resources.notifyTestMessage;
+                string logFailed = iba.Properties.Resources.logNotificationFailed;
+                int returnval = NetMessageBufferSend(null, m_cd.NotificationData.Host, null, message, message.Length * 2 + 2);
+                switch (returnval)
+                {
+                    case NERR_NameNotFound:
+                        logFailed += ": " + iba.Properties.Resources.logNotificationNameNotFound;
+                        goto case 666;
+                    case NERR_NetworkError:
+                        logFailed += ": " + iba.Properties.Resources.logNotificationNetworkError;
+                        goto case 666;
+                    case ERROR_NOT_SUPPORTED:
+                        logFailed += ": " + iba.Properties.Resources.logNotificationNotSupported;
+                        goto case 666;
+                    case ERROR_INVALID_PARAMETER:
+                        logFailed += ": " + iba.Properties.Resources.logNotifcationInvalidParameter;
+                        goto case 666;
+                    case ERROR_ACCESS_DENIED:
+                        logFailed += ": " + iba.Properties.Resources.logNotificationAccessDenied;
+                        goto case 666;
+                    case 666:
+                        throw new Exception(logFailed);
+                }
+            }
+        }
     }
 }

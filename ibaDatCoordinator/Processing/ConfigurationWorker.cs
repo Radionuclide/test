@@ -982,6 +982,11 @@ namespace iba.Processing
                                     m_toProcessFiles.Add(filename);
                                 break;
                             case DatFileStatus.State.NO_ACCESS:
+                                lock (m_candidateNewFiles)
+                                {
+                                    if (m_candidateNewFiles.Contains(filename))
+                                        break; //file being written and allready monitored
+                                }
                                 lock (m_processedFiles)
                                 {
                                     if (!m_processedFiles.Contains(filename))
@@ -1131,9 +1136,14 @@ namespace iba.Processing
                         {
                             Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
                         }
-                        guidstring.Trim(new char[] { ';' });
-                        guids = new List<string>(guidstring.Split(new char[] { ';' }));
-                        guids.Sort();
+                        if (!string.IsNullOrEmpty(guidstring))
+                        {
+                            guidstring = guidstring.Trim(new char[] { ';' });
+                            guids = new List<string>(guidstring.Split(new char[] { ';' }));
+                            guids.Sort();
+                        }
+                        else
+                            guids = new List<string>();
 
                         //get outputfiles
                         string outputfilesString = "";
@@ -1148,13 +1158,21 @@ namespace iba.Processing
                         {
                             Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
                         }
-                        outputfilesString.Trim(new char[] { ';' });
-                        List<string> outputfilesKeyValuesString = new List<string>(outputfilesString.Split(new char[] { ';' }));
-                        SortedList<string,string> keyvalues = new SortedList<string,string>();
-                        foreach (string pairString in outputfilesKeyValuesString)
+                        SortedList<string, string> keyvalues = null;
+                        if (!string.IsNullOrEmpty(outputfilesString))
                         {
-                            string[] splitted = pairString.Split(new char[] { '|' });
-                            keyvalues.Add(splitted[0], splitted[1]);
+                            outputfilesString = outputfilesString.Trim(new char[] { ';' });
+                            List<string> outputfilesKeyValuesString = new List<string>(outputfilesString.Split(new char[] { ';' }));
+                            keyvalues = new SortedList<string, string>();
+                            foreach (string pairString in outputfilesKeyValuesString)
+                            {
+                                string[] splitted = pairString.Split(new char[] { '|' });
+                                keyvalues.Add(splitted[0], splitted[1]);
+                            }
+                        }
+                        else
+                        {
+                            keyvalues = new SortedList<string, string>();
                         }
 
                         lock (m_sd.DatFileStates)
@@ -1163,7 +1181,7 @@ namespace iba.Processing
                             foreach (TaskData task in m_cd.Tasks)
                             {
                                 string key = task.Guid.ToString();
-                                if (guids.BinarySearch(key) > 0)
+                                if (guids.BinarySearch(key) >= 0)
                                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                                 if (keyvalues.ContainsKey(key))
                                     m_sd.DatFileStates[filename].OutputFiles.Add(task, keyvalues[key]);
@@ -1299,7 +1317,7 @@ namespace iba.Processing
                         }
                         continue;
                     }
-                    if (!(task is BatchFileData))
+                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData))
                     {
                         m_outPutFile = null;
                     }
@@ -1548,6 +1566,7 @@ namespace iba.Processing
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, task);
                 }
@@ -1677,26 +1696,16 @@ namespace iba.Processing
                     }
                 }
             }
-            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY?"dat":"txt");
-            //arg += ":" + Path.Combine(dir, actualFileName + ext);
-            string arg = Path.Combine(dir, actualFileName + "." + ext);
+            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY?".dat":".txt");
+            string arg = Path.Combine(dir, actualFileName + ext);
             if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE)
             {
-                List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
-                while (subdirs.Count > task.SubfoldersNumber)
+                try
                 {
-                    DateTime oldestDate = DateTime.MaxValue;
-                    string candidate = Algorithms.min<string>(subdirs);
-                    try
-                    {
-                        Directory.Delete(candidate, true);
-                    }
-                    catch
-                    {
-                        Log(Logging.Level.Warning, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + candidate, filename);
-                        break;
-                    }
-                    subdirs.Remove(candidate);
+                    CleanupDirs(filename, task, ext);
+                }
+                catch
+                {
                 }
             }
             return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
@@ -1875,26 +1884,17 @@ namespace iba.Processing
                         }
                     }
                 }
-                string ext = task.Extension;
+                string ext = "." + task.Extension;
                 //arg += ":" + Path.Combine(dir, actualFileName + ext);
-                arg = Path.Combine(dir, actualFileName + "." + ext);
+                arg = Path.Combine(dir, actualFileName + ext);
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE)
                 {
-                    List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
-                    while (subdirs.Count > task.SubfoldersNumber)
+                    try
                     {
-                        DateTime oldestDate = DateTime.MaxValue;
-                        string candidate = Algorithms.min<string>(subdirs);
-                        try
-                        {
-                            Directory.Delete(candidate, true);
-                        }
-                        catch
-                        {
-                            Log(Logging.Level.Warning, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + candidate, filename);
-                            break;
-                        }
-                        subdirs.Remove(candidate);
+                        CleanupDirs(filename, task, ext);
+                    }
+                    catch
+                    {
                     }
                 }
                 arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
@@ -1915,7 +1915,11 @@ namespace iba.Processing
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(""); });
                     //Thread.Sleep(500);
                     //code on succes
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                    }
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportSuccess, filename, task);
                 }
             }
@@ -1965,6 +1969,63 @@ namespace iba.Processing
             }
         }
 
+        private void CleanupDirs(string filename, TaskDataUNC task, string extension)
+        {
+            string rootmap = task.DestinationMapUNC;
+            try
+            {
+                List<string> subdirs = GetDeepestDirectories(rootmap);
+                subdirs.Sort(delegate(string dir1, string dir2)
+                {
+                    return (new DirectoryInfo(dir2)).LastWriteTime.CompareTo((new DirectoryInfo(dir1)).LastWriteTime);
+                }); //oldest dirs last
+                for (int i = subdirs.Count - 1; i >= task.SubfoldersNumber;i--)
+                {
+                    string dir = subdirs[i];
+                    try
+                    {
+                        foreach (string file in Directory.GetFiles(dir, "*" + extension))
+                        {
+                            File.Delete(file);
+                        }
+                        while (dir.Length > rootmap.Length)
+                        {
+                            DirectoryInfo dirinf = new DirectoryInfo(dir);
+                            if (dirinf.GetFiles().Length == 0 && dirinf.GetDirectories().Length == 0)
+                                Directory.Delete(dir, false);
+                            else break;
+                        }
+                    }
+                    catch
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + dir, filename, task);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.CleanupDirectoriesFailed + ": " + ex.Message, filename,task);
+            }
+        }
+
+        private List<string> GetDeepestDirectories(string dir)
+        {
+            List<string> subdirs = new List<string>(Directory.GetDirectories(dir));
+            if (subdirs.Count == 0)
+            {
+                subdirs.Add(dir);
+                return subdirs;
+            }
+            else
+            {
+                List<string> deepestdirs = new List<string>();
+                foreach (string subdir in subdirs)
+                {
+                    deepestdirs.AddRange(GetDeepestDirectories(subdir));
+                }
+                return deepestdirs;
+            }
+        }
 
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
@@ -1978,6 +2039,22 @@ namespace iba.Processing
                 }
                 return;
             }
+
+            string fileToCopy = filename;
+
+            if (task.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT)
+            {
+                if (m_outPutFile == null)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    return;
+                }
+                if (m_outPutFile != null)
+                    fileToCopy = m_outPutFile;
+            }
+            m_outPutFile = null;
+
 
             if (!Path.IsPathRooted(dir))
             {  //get Absolute path relative to dir
@@ -2045,42 +2122,34 @@ namespace iba.Processing
             
             if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE)
             {
-                List<string> subdirs = new List<string>(Directory.GetDirectories(maindir));
-                while (subdirs.Count > task.SubfoldersNumber)
+                try
                 {
-                    DateTime oldestDate = DateTime.MaxValue;
-                    string candidate = Algorithms.min<string>(subdirs);
-                    try
-                    {
-                        Directory.Delete(candidate, true);
-                    }
-                    catch
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + candidate, filename);
-                        break;
-                    }
-                    subdirs.Remove(candidate);
+                    string extension = new FileInfo(fileToCopy).Extension;
+                    CleanupDirs(filename, task, extension);
+                }
+                catch
+                {
                 }
             }
-
-            string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(filename)));
+            string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
             try
             {
                 if (task.RemoveSource)
                 {
-                    File.Copy(filename, dest,true);
-                    File.Delete(filename);
+                    File.Copy(fileToCopy, dest,true);
+                    File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
                 }
                 else
                 {
-                    File.Copy(filename,dest,true);
+                    File.Copy(fileToCopy, dest, true);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                 }
                 m_outPutFile = dest;
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
                 }
             }
             catch
@@ -2163,7 +2232,7 @@ namespace iba.Processing
                         else
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            string msg = String.Format(iba.Properties.Resources.logBatchfileFailed, ibaProc.ExitCode);
+                            string msg = String.Format(string.Format(iba.Properties.Resources.logBatchfileFailed,ibaProc.ExitCode), ibaProc.ExitCode);
                             Log(Logging.Level.Exception, msg, filename,task);
                         }
                     }

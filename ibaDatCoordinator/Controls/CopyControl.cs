@@ -48,6 +48,8 @@ namespace iba.Controls
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
+            m_rbDatFile.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE;
+            m_rbOriginal.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
         }
 
         public void SaveData()
@@ -60,6 +62,12 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.SAME;
+
+            if (m_rbOriginal.Checked)
+                m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
+            else if (m_rbDatFile.Checked)
+                m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.DATFILE;
+
             m_data.SubfoldersNumber = (uint)m_folderNumber.Value;
 
             m_data.Password = m_tbPass.Text;

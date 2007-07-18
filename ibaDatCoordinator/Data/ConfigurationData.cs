@@ -317,6 +317,34 @@ namespace iba.Data
             set { m_smtpServer = value; }
         }
 
+        private bool m_authenticationRequired;
+        public bool AuthenticationRequired
+        {
+            get { return m_authenticationRequired; }
+            set { m_authenticationRequired = value; }
+        }
+
+        private string m_pass;
+        [XmlIgnore]
+        public string Password
+        {
+            get { return m_pass; }
+            set { m_pass = value; }
+        }
+
+        public string PasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_pass); }
+            set { m_pass = Crypt.Decrypt(value); }
+        }
+        
+        private string m_username;
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
         public enum NotifyOutputChoice { EMAIL, NETSEND };
         private NotifyOutputChoice m_outputChoice;
         public NotifyOutputChoice NotifyOutput
@@ -354,6 +382,9 @@ namespace iba.Data
             m_time = new TimeSpan(0, 10, 0);
             m_outputChoice = NotifyOutputChoice.EMAIL;
             m_notifyImmediately = true;
+            m_username = "";
+            m_pass = "";
+            m_authenticationRequired = false;
         }
 
         public object Clone()
@@ -365,6 +396,9 @@ namespace iba.Data
             nd.m_notifyImmediately = m_notifyImmediately;
             nd.m_outputChoice = m_outputChoice;
             nd.m_smtpServer = m_smtpServer;
+            nd.m_authenticationRequired = m_authenticationRequired;
+            nd.m_pass = m_pass;
+            nd.m_username = m_username;
             return nd;
         }
     }
