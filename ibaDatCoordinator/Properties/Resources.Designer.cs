@@ -579,6 +579,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The .dat file is corrupt are is not a valid iba .dat file.
+        /// </summary>
+        internal static string InvalidDatFile {
+            get {
+                return ResourceManager.GetString("InvalidDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The notification e-mail address is invalid or not supplied.
         /// </summary>
         internal static string invalidEmail {

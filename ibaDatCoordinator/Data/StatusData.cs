@@ -20,7 +20,8 @@ namespace iba.Data
             NO_ACCESS = 6,
             COMPLETED_TRUE = 7,
             COMPLETED_FALSE = 8,
-            TRIED_TOO_MANY_TIMES = 9
+            TRIED_TOO_MANY_TIMES = 9,
+            INVALID_DATFILE = 10
         }
 
         private int m_timesTried;
@@ -127,7 +128,6 @@ namespace iba.Data
             bool bMoveAll = (newConf == null) || !newConf.LimitTimesTried;
             lock (m_processedFiles)
             {
-                m_processedFilesCopy.Clear();
                 lock (m_permanentErrorFiles)
                 {
                     for(int i = m_permanentErrorFiles.Count-1; i >= 0; i--)
@@ -148,7 +148,7 @@ namespace iba.Data
                     }
                 }
             }
-            TakeCopyOfFileList();
+            MergeProcessedAndToProcessLists();
             UpdatingFileList = false;
             PermanentErrorFilesChanged = true;
         }
@@ -197,85 +197,54 @@ namespace iba.Data
             }
         }
 
-        private Set<String> m_readFiles;
-        public Set<String> ReadFiles
+        private FileSetWithTimeStamps m_readFiles;
+        public FileSetWithTimeStamps ReadFiles
         {
             get { return m_readFiles; }
             set { m_readFiles = value; }
         }
-        private Set<String> m_processedFiles;
-        public Set<String> ProcessedFiles
+        private FileSetWithTimeStamps m_processedFiles;
+        public FileSetWithTimeStamps ProcessedFiles
         {
             get { return m_processedFiles; }
             set { m_processedFiles = value; }
         }
-        private Set<String> m_permanentErrorFiles;
-        public Set<String> PermanentErrorFiles
+        private FileSetWithTimeStamps m_permanentErrorFiles;
+        public FileSetWithTimeStamps PermanentErrorFiles
         {
             get { return m_permanentErrorFiles; }
             set { m_permanentErrorFiles = value; }
         }
 
-        private Set<String> m_readFilesCopy;
-        public Set<String> ReadFilesCopy
+        private FileSetWithTimeStamps m_filesCopy;
+        public FileSetWithTimeStamps FilesCopy
         {
-            get { return m_readFilesCopy; }
-            set { m_readFilesCopy = value; m_changed = true; }
+            get { return m_filesCopy; }
+            set { m_filesCopy = value; m_changed = true; }
         }
-        private Set<String> m_processedFilesCopy;
-        public Set<String> ProcessedFilesCopy
-        {
-            get { return m_processedFilesCopy; }
-            set { m_processedFilesCopy = value; m_changed = true; }
-        }
-        private Set<String> m_permanentErrorFilesCopy;
-        public Set<String> PermanentErrorFilesCopy
+
+
+        private List<String> m_permanentErrorFilesCopy;
+        public List<String> PermanentErrorFilesCopy
         {
             get { return m_permanentErrorFilesCopy; }
             set { m_permanentErrorFilesCopy = value; }
         }
 
-        public void TakeCopyOfFileList()
+        public void MergeProcessedAndToProcessLists()
         {
-            lock (m_processedFilesCopy)
+            lock (m_filesCopy)
             {
-                m_processedFilesCopy.Clear();
                 lock (m_processedFiles)
                 {
-                    //foreach(string filename in m_processedFiles)
-                    //{
-                    //    if (filename == null)
-                    //    {
-                    //        System.Diagnostics.Debug.WriteLine("ProcessedFiles");
-                    //    }
-                    //}
-                    m_processedFilesCopy.AddRange(m_processedFiles);
-                }
-            }
-            lock (m_readFilesCopy)
-            {
-                //foreach (string filename in m_readFilesCopy)
-                //{
-                //    if (filename == null)
-                //    {
-                //        System.Diagnostics.Debug.WriteLine("ReadFilesCopy");
-                //    }
-                //}
-                m_readFilesCopy.Clear();
-                lock (m_readFiles)
-                {
-                    m_readFilesCopy.AddRange(m_readFiles);
+                    lock (m_readFiles)
+                    {
+                        m_filesCopy = FileSetWithTimeStamps.Merge(m_processedFiles, m_readFiles);
+                    }
                 }
             }
             lock (m_permanentErrorFilesCopy)
             {
-                //foreach (string filename in m_permanentFilesCopy)
-                //{
-                //    if (filename == null)
-                //    {
-                //        System.Diagnostics.Debug.WriteLine("PermanentFilesCopy");
-                //    }
-                //}
                 m_permanentErrorFilesCopy.Clear();
                 lock (m_permanentErrorFiles)
                 {
@@ -302,12 +271,11 @@ namespace iba.Data
         public StatusData(ConfigurationData dat)
         {
             m_cf = dat;
-            m_processedFiles = new Set<string>();
-            m_readFiles = new Set<string>();
-            m_permanentErrorFiles = new Set<string>();
-            m_processedFilesCopy = new Set<string>();
-            m_readFilesCopy = new Set<string>();
-            m_permanentErrorFilesCopy = new Set<string>();
+            m_processedFiles = new FileSetWithTimeStamps();
+            m_readFiles = new FileSetWithTimeStamps();
+            m_permanentErrorFiles = new FileSetWithTimeStamps();
+            m_filesCopy = new FileSetWithTimeStamps();
+            m_permanentErrorFilesCopy = new List<string>();
             m_datFileStates = new STLLikeMap<string, DatFileStatus>();
             m_updatingFileList = false;
             m_changed = false;
@@ -330,17 +298,9 @@ namespace iba.Data
             }
             returnValue.m_permanentErrorFiles = returnValue.m_readFiles = returnValue.m_processedFiles = null; //dont copy, causes deadlocks and is data that is not referenced
 
-            lock (m_processedFilesCopy)
+            lock (m_filesCopy)
             {
-                returnValue.m_processedFilesCopy.AddRange(m_processedFilesCopy);
-            }
-            lock (m_readFilesCopy)
-            {
-                returnValue.m_readFilesCopy.AddRange(m_readFilesCopy);
-            }
-            lock (m_readFilesCopy)
-            {
-                returnValue.m_readFilesCopy.AddRange(m_readFilesCopy);
+                returnValue.m_filesCopy = m_filesCopy.Clone();
             }
             lock (m_permanentErrorFilesCopy)
             {

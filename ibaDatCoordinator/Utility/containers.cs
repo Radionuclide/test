@@ -47,6 +47,60 @@ namespace iba.Utility
     }
 
     [Serializable]
+    public class ComparablePair<TFirst, TSecond> : IComparable< ComparablePair<TFirst,TSecond> >
+        where TFirst : IComparable<TFirst>
+        where TSecond : IComparable<TSecond>
+    {
+        public ComparablePair(TFirst first, TSecond second)
+        {
+            _First = first;
+            _Second = second;
+        }
+
+        public TFirst First
+        {
+            get { return _First; }
+            set { _First = value; }
+        }
+
+        private TFirst _First;
+
+        public TSecond Second
+        {
+            get { return _Second; }
+            set { _Second = value; }
+        }
+
+        private TSecond _Second;
+
+        #region IComparable<ComparablePair<TFirst,TSecond> > Members
+
+        //lexicographic compare
+        public int CompareTo(ComparablePair<TFirst, TSecond> other)
+        {
+            int c1 = _First.CompareTo(other._First);
+            return c1 == 0 ? _Second.CompareTo(other._Second) : c1;
+        }
+
+        #endregion
+
+        public class BackwardsLexicographicComparer : IComparer<ComparablePair<TFirst,TSecond> >
+        {
+
+            #region IComparer<ComparablePair<TFirst,TSecond>> Members
+
+            public int Compare(ComparablePair<TFirst, TSecond> x, ComparablePair<TFirst, TSecond> y)
+            {
+                int c1 = x._Second.CompareTo(y._Second);
+                return c1 == 0 ? x._First.CompareTo(y._First) : c1;
+            }
+
+            #endregion
+        }
+    }
+
+
+    [Serializable]
     public class BiMap<S, T>
         where S : IComparable<S>
         where T : IComparable<T>
@@ -156,6 +210,13 @@ namespace iba.Utility
 
         private enum SetOperationKind {UNION,INTERSECTION,DIFFERENCE }
 
+        public Set<T> Clone()
+        {
+            Set<T> answer = new Set<T>();
+            (answer as List<T>).AddRange(this);
+            return answer;
+        }
+
         public static Set<T> Union(Set<T> A, Set<T> B)
         {
             return SetOperation(A, B, SetOperationKind.UNION);
@@ -236,5 +297,5 @@ namespace iba.Utility
                 }
             }
         }
-    }
+    }  
 }

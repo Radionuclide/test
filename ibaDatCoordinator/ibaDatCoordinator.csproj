@@ -221,6 +221,7 @@
     </Compile>
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Utility\NotifyIconEx.cs">
@@ -252,7 +253,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

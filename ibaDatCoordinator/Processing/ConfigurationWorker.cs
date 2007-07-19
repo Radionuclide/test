@@ -74,8 +74,8 @@ namespace iba.Processing
             m_stop = false;
             UpdateConfiguration();
             m_sd = new StatusData(m_cd);
-            m_sd.ProcessedFiles = m_processedFiles = new Set<string>();
-            m_sd.ReadFiles = m_toProcessFiles = new Set<string>();
+            m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
+            m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
@@ -259,16 +259,16 @@ namespace iba.Processing
             m_cd = cd.Clone_AlsoCopyGuids();
             m_sd = new StatusData(cd);
             m_stop = true;
-            m_sd.ProcessedFiles = m_processedFiles = new Set<string>();
-            m_sd.ReadFiles = m_toProcessFiles = new Set<string>();
+            m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
+            m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
             m_waitEvent = new AutoResetEvent(false);
             m_notifier = new Notifier(cd);
             m_candidateNewFiles = new List<string>();
             m_listUpdatingLock = new Object();
         }       
                 
-        Set<string> m_processedFiles;
-        Set<string> m_toProcessFiles;
+        FileSetWithTimeStamps m_processedFiles;
+        FileSetWithTimeStamps m_toProcessFiles;
         List<string> m_candidateNewFiles;
         List<string> m_newFiles;
 
@@ -477,9 +477,7 @@ namespace iba.Processing
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
-                                int index = m_toProcessFiles.IndexOf(file);
-                                if (index >= 0)
-                                    m_toProcessFiles.RemoveAt(index);
+                                m_toProcessFiles.Remove(file);
                             }
                             UpdateConfiguration();
                             if (m_previousRunExecutable != m_cd.IbaAnalyzerExe)
@@ -1003,6 +1001,7 @@ namespace iba.Processing
                                     m_sd.DatFileStates[filename] = status;
                                 }
                                 break;
+                            case DatFileStatus.State.INVALID_DATFILE:
                             case DatFileStatus.State.RUNNING:
                                 break;
                             case DatFileStatus.State.TRIED_TOO_MANY_TIMES:
@@ -1027,7 +1026,7 @@ namespace iba.Processing
                     m_sd.Changed = true;
                     m_sd.PermanentErrorFilesChanged = bPermanentErrorFilesChanged;
                 }
-                m_sd.TakeCopyOfFileList();
+                m_sd.MergeProcessedAndToProcessLists();
                 m_sd.UpdatingFileList = false;
             }
             else
@@ -1052,7 +1051,7 @@ namespace iba.Processing
                     {
                         time = null;
                     }
-                    if (time != null) ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename);
                 }
                 catch (FileLoadException) //no access
                 {
@@ -1076,6 +1075,11 @@ namespace iba.Processing
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     }
                     return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
+                }
+                catch (ArgumentException)
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
+                    return DatFileStatus.State.INVALID_DATFILE;
                 }
                 catch (Exception ex)
                 {

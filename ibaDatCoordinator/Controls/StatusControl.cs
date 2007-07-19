@@ -23,9 +23,7 @@ namespace iba.Controls
             InitializeComponent();
             InitializeIcons();
         }
-
        
-        #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         StatusData m_data;
 
@@ -221,67 +219,36 @@ namespace iba.Controls
             //text += "processedFiles: " + m_data.ProcessedFiles.Count.ToString() + Environment.NewLine;
             //text += "readFiles: " + m_data.ReadFiles.Count.ToString() + Environment.NewLine;
             m_statusRunningText.Text = text;
-            SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>> contents = new SortedDictionary<DateTime, KeyValuePair<string, DatFileStatus>>();
+            List<Pair<string, DatFileStatus> > contents = new List<Pair<string, DatFileStatus> >();
 
-            lock (m_data.ProcessedFilesCopy)
+            lock (m_data.FilesCopy)
             {
-                foreach (string file in m_data.ProcessedFilesCopy)
+                foreach (string file in m_data.FilesCopy)
+                {
                     lock (m_data.DatFileStates)
                     {
-                        try
-                        {
-                            if (File.Exists(file))
-                            {
-                                FileInfo f = new FileInfo(file);
-                                DatFileStatus dfs = null;
-                                if (m_data.DatFileStates.ContainsKey(file))
-                                    dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                                contents[f.LastWriteTime] =
-                                    new KeyValuePair<string, DatFileStatus>(file, dfs);
-                            }
-                        }
-                        catch //if network disconnection shouldh happen
-                        {
-                        }
+                        DatFileStatus dfs = null;
+                        if (m_data.DatFileStates.ContainsKey(file))
+                            dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
+                        contents.Add(new Pair<string, DatFileStatus>(file, dfs));
                     }
-            }
-            lock (m_data.ReadFilesCopy)
-            {
-                foreach (string file in m_data.ReadFilesCopy)
-                    lock (m_data.DatFileStates)
-                    {
-                        try
-                        {
-                            if (File.Exists(file))
-                            {
-                                FileInfo f = new FileInfo(file);
-                                DatFileStatus dfs = null;
-                                if (m_data.DatFileStates.ContainsKey(file))
-                                    dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                                contents[f.LastWriteTime] =
-                                    new KeyValuePair<string, DatFileStatus>(file, dfs);
-                            }
-                        }
-                        catch //if network disconnection should happen
-                        {
-                        }
-                    }
+                }
             }
 
             m_gridView.RowCount = contents.Count;
             int count = 0;
-            foreach (KeyValuePair<DateTime, KeyValuePair<string, DatFileStatus>> it in contents)
+            foreach (Pair<string, DatFileStatus> it in contents)
             {
-                m_gridView.Rows[count].Cells[0].Value = it.Value.Key;
+                m_gridView.Rows[count].Cells[0].Value = it.First;
                 List<bool> blank = new List<bool>();
                 for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
                     blank.Add(true);
-                if (it.Value.Value != null)
+                if (it.Second != null)
                 {
-                    m_gridView.Rows[count].Cells[1].Value = it.Value.Value.TimesTried;
+                    m_gridView.Rows[count].Cells[1].Value = it.Second.TimesTried;
                     Bitmap bitmap = null;
                     text = String.Empty;
-                    foreach (KeyValuePair<TaskData, DatFileStatus.State> pair in it.Value.Value.States)
+                    foreach (KeyValuePair<TaskData, DatFileStatus.State> pair in it.Second.States)
                     {
                         if (pair.Key is ReportData)
                             bitmap = m_reportIcons[pair.Value];
@@ -321,7 +288,7 @@ namespace iba.Controls
             }
             m_refreshTimer.Enabled = true;
         }
-        #endregion
+
 
         private void m_confNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
