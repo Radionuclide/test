@@ -142,7 +142,7 @@ namespace iba.Utility
             public string Current
             {
                 get {
-                    return _enumerator.Current.First;
+                    return _enumerator.Current == null?null:_enumerator.Current.First;
                 }
             }
 

@@ -13,8 +13,6 @@ using iba.Utility;
 
 namespace Alunorf_sinec_h1_plugin
 {
-   
-
     [Serializable]
     public class NqsServerStatusses
     {

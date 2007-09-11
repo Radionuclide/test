@@ -579,7 +579,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The .dat file is corrupt are is not a valid iba .dat file.
+        ///   Looks up a localized string similar to The .dat file is corrupt or is not a valid iba .dat file.
         /// </summary>
         internal static string InvalidDatFile {
             get {

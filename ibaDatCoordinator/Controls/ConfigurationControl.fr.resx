@@ -275,27 +275,6 @@
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Nom de configuration:</value>
   </data>
-  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 77</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 13</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>ordinateur:</value>
-  </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 51</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 13</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>serveur smtp:</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>récipient:</value>
-  </data>
   <data name="m_rbNetSend.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 17</value>
   </data>

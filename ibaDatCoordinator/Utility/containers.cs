@@ -248,7 +248,9 @@ namespace iba.Utility
                 return result;
             }
             IEnumerator<T> Ait = A.GetEnumerator();
+            Ait.MoveNext();
             IEnumerator<T> Bit = B.GetEnumerator();
+            Bit.MoveNext();
             while (true)
             {
                 int compare = Ait.Current.CompareTo(Bit.Current);

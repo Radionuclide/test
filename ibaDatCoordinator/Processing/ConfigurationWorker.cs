@@ -1058,15 +1058,22 @@ namespace iba.Processing
                     //reason 1, because of RUNNING
                     lock (m_sd.DatFileStates)
                     {
-                        foreach (DatFileStatus.State stat in m_sd.DatFileStates[filename].States.Values)
-                            if (stat == DatFileStatus.State.RUNNING)
-                                return DatFileStatus.State.RUNNING;
+                        if (m_sd.DatFileStates.ContainsKey(filename))
+                            foreach (DatFileStatus.State stat in m_sd.DatFileStates[filename].States.Values)
+                                if (stat == DatFileStatus.State.RUNNING)
+                                    return DatFileStatus.State.RUNNING;
                     }
                     try
                     {
                         FileAttributes at = File.GetAttributes(filename);
                         if (at != FileAttributes.ReadOnly)
-                            Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                        {
+                            lock (m_candidateNewFiles)
+                            {
+                                if (!m_candidateNewFiles.Contains(filename))
+                                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                            }
+                        }
                         else
                             Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
                     }
@@ -1352,7 +1359,7 @@ namespace iba.Processing
                     else if (task is CopyMoveTaskData)
                     {
                         CopyMoveTaskData dat = task as CopyMoveTaskData;
-                        if (dat.RemoveSource)
+                        if (dat.RemoveSource && dat.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
                         {
                             try
                             {
@@ -1995,9 +2002,11 @@ namespace iba.Processing
                         while (dir.Length > rootmap.Length)
                         {
                             DirectoryInfo dirinf = new DirectoryInfo(dir);
+                            string parentdir = dirinf.Parent.FullName;
                             if (dirinf.GetFiles().Length == 0 && dirinf.GetDirectories().Length == 0)
                                 Directory.Delete(dir, false);
                             else break;
+                            dir = parentdir;
                         }
                     }
                     catch

@@ -206,7 +206,7 @@ servicecopy:
 
   ;german resources for the plugin
   SetOutPath "$PluginPath\de"
-  File "..\Alunorf-sinec-h1-plugin\bin\Release\de\Alunorf-sinec-h1-plugin.resources.dll"
+  File "..\Passolo\de\Alunorf-sinec-h1-plugin.resources.dll"
 
   ;H1 driver
   SetOutPath "$PluginPath\H1Driver"

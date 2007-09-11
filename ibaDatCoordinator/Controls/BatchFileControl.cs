@@ -88,6 +88,9 @@ namespace iba.Controls
                 m_rbPrevOutput.Checked = true;
             }
             m_batchFileTextBox.Text = m_data.BatchFile;
+            m_argumentsTextBox.Text = m_data.Arguments;
+            m_datFileTextBox.Text = m_data.TestDatFile;
+
             if (File.Exists(m_batchFileTextBox.Text) && loadBatchFile())
             {
                 m_executeBatchFile.Enabled = true;

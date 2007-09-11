@@ -447,9 +447,9 @@ namespace iba.Data
                 string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
                 string filename = "";
                 if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
-                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\DatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
                 else
-                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\DatCoordinator\ibaDatCoordinaterLog.txt");;
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt");;
                 FileBackup.Backup(filename, Path.GetDirectoryName(filename), appState == ApplicationState.CLIENTDISCONNECTED?"ibaDatCoordinatorLog_disconnected":"ibaDatCoordinatorLog", 10);
                 FileLogger fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
                 fileLogger.IsBufferingEnabled = false;

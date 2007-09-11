@@ -44,12 +44,12 @@ namespace iba.Controls
             m_rbDay.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.DAY;
             m_rbWeek.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.WEEK;
             m_rbOriginal.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME;
-             m_checkPathButton.Image = null;
+            m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             m_rbDatFile.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE;
-            m_rbOriginal.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
+            m_rbPrevOutput.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
         }
 
         public void SaveData()
@@ -63,7 +63,7 @@ namespace iba.Controls
             if (m_rbMonth.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.SAME;
 
-            if (m_rbOriginal.Checked)
+            if (m_rbPrevOutput.Checked)
                 m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
             else if (m_rbDatFile.Checked)
                 m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.DATFILE;
@@ -90,7 +90,7 @@ namespace iba.Controls
                 m_targetFolderTextBox.Text = m_folderBrowserDialog1.SelectedPath;
         }
 
-          private void m_checkPathButton_Click(object sender, EventArgs e)
+        private void m_checkPathButton_Click(object sender, EventArgs e)
         {
             SaveData();
             string errormessage = null;

@@ -154,7 +154,7 @@
       <DependentUpon>ReportControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ServiceSettingsControl.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ServiceSettingsControl.Designer.cs">
       <DependentUpon>ServiceSettingsControl.cs</DependentUpon>

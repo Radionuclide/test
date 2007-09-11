@@ -788,6 +788,6 @@
     <value>Save script to file</value>
   </data>
   <data name="InvalidDatFile" xml:space="preserve">
-    <value>The .dat file is corrupt are is not a valid iba .dat file</value>
+    <value>The .dat file is corrupt or is not a valid iba .dat file</value>
   </data>
 </root>

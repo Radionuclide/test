@@ -71,6 +71,7 @@ namespace Alunorf_plugin_test
             {
                 m_messageQueue.Add(go);
             }
+            SetMessage("go added to messagequeue");
 
             //m_waitSendEvent = new AutoResetEvent(false);
             //m_waitSendEvent.WaitOne(1000 * ((int) (m_nudSendTimeout.Value + m_nudAckTimeout.Value)), true);
@@ -310,10 +311,11 @@ namespace Alunorf_plugin_test
                     case CH1Manager.H1Result.ALL_CLEAR:
                         {
                             m_pcConnected = ConnectionState.CONNECTED;
+                            SetMessage("state is connected");
                             //send INI telegram
-                            IniTelegram init = new IniTelegram(m_idCounter, m_messagesCount++);
-                            m_idCounter += 2;
-                            SendTelegram(init, "init");
+                            //IniTelegram init = new IniTelegram(m_idCounter, m_messagesCount++);
+                            //m_idCounter += 2;
+                            //SendTelegram(init, "init");
                             break;
                         }
                     case CH1Manager.H1Result.WAIT_CONNECT:
@@ -329,9 +331,9 @@ namespace Alunorf_plugin_test
                             m_pcConnected = ConnectionState.CONNECTED;
                             SetMessage("worker thread: connected");
                             //send INI telegram
-                            IniTelegram init = new IniTelegram(m_idCounter, m_messagesCount++);
-                            m_idCounter += 2;
-                            SendTelegram(init, "init");
+                            //IniTelegram init = new IniTelegram(m_idCounter, m_messagesCount++);
+                            //m_idCounter += 2;
+                            //SendTelegram(init, "init");
                         }
                         else
                         {
@@ -369,7 +371,7 @@ namespace Alunorf_plugin_test
                 {
                     m_retryConnect = true;
                     m_pcConnected = ConnectionState.DISCONNECTED;
-                    SetMessage("Live message not acknowledged");
+                    SetMessage("Live message not acknowledged, state is disconnected");
                     return;
                 }
                 m_acknowledgements["live"] = false;
@@ -391,7 +393,7 @@ namespace Alunorf_plugin_test
             int i = 0;
             for (; result == CH1Manager.H1Result.WAIT_CONNECT && i < 10; i++ )
             {
-                SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString());
+                SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString() + telegram.GetType().ToString());
                 succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
                 Thread.Sleep(500);
             }
@@ -450,7 +452,7 @@ namespace Alunorf_plugin_test
                                 SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
                                 m_idCounter += 2;
                                 m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
-                                SetMessage("acknowledgement to init recieved: " + ack.AktId.ToString());
+                                SetMessage("acknowledgement to init recieved, state is ready: " + ack.AktId.ToString());
                                 SetMessage("Please press te GO button: " + ack.AktId.ToString());
                             }
                             else if (id == "live")
@@ -488,6 +490,7 @@ namespace Alunorf_plugin_test
                                 SetMessage("qdt telegram recieved: " + qdt.AktId.ToString()+", written to " + filename);
                                 if (!SendTelegram(ackqdt))
                                 {
+                                    SetMessage("could not set ack to qdt: state is disconnected");
                                     m_pcConnected = ConnectionState.DISCONNECTED;
                                     m_retryConnect = true;
                                 }
@@ -497,11 +500,12 @@ namespace Alunorf_plugin_test
                                 IniTelegram ini = wrap.InnerTelegram as IniTelegram;
                                 if (ini != null)
                                 {
-                                    m_pcConnected = m_pcConnected == ConnectionState.READY ? ConnectionState.READY:ConnectionState.CONNECTED;
+                                    m_pcConnected = ConnectionState.READY;
                                     AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
                                     SetMessage("ini telegram recieved: " + ini.AktId.ToString() + ", please send a GO");
                                     if (!SendTelegram(ackini,"init_pc"))
                                     {
+                                        SetMessage("could not send ack to ini: state is disconnected");
                                         m_pcConnected = ConnectionState.DISCONNECTED;
                                         m_retryConnect = true;
                                     }
@@ -511,6 +515,7 @@ namespace Alunorf_plugin_test
                                         m_idCounter += 2;
                                         if (!SendTelegram(go, "go"))
                                         {
+                                            SetMessage("could not send a further go: state is disconnected");
                                             m_pcConnected = ConnectionState.DISCONNECTED;
                                             m_retryConnect = true;
                                         }
@@ -525,6 +530,7 @@ namespace Alunorf_plugin_test
                                         AckTelegram acklive = new AckTelegram(live.AktId, m_messagesCount++);
                                         if (!SendTelegram(acklive))
                                         {
+                                            SetMessage("could not set ack to live: state is disconnected");
                                             m_pcConnected = ConnectionState.DISCONNECTED;
                                             m_retryConnect = true;
                                         }
