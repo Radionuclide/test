@@ -76,6 +76,7 @@ namespace iba.Processing
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
+            m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
@@ -98,8 +99,8 @@ namespace iba.Processing
                 if (m_toUpdate.NotificationData.TimeInterval < m_cd.NotificationData.TimeInterval 
                     && !m_toUpdate.NotificationData.NotifyImmediately)
                 {
-                    if (notifyTimer == null) notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
-                    notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
+                    if (m_notifyTimer == null) m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
+                    m_notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                 }
                 if (m_toUpdate.RescanEnabled)
                 {
@@ -215,6 +216,45 @@ namespace iba.Processing
                 }
                 m_notifier = new Notifier(m_cd);
 
+                //update unc tasks
+                List<Guid> toDelete = new List<Guid>();
+                //remove old
+                foreach(KeyValuePair<Guid,FileQuotaCleanup> pair in m_quotaCleanups)
+                {
+                    TaskDataUNC task = m_cd.Tasks.Find(delegate(TaskData t){return t.Guid == pair.Key;}) as TaskDataUNC;
+                    if (task == null || task.OutputLimitChoice != TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        toDelete.Add(pair.Key);
+                    else
+                    {
+                        ExtractData ed = task as ExtractData;
+                        if (ed != null)
+                        {
+                            if (ed.ExtractToFile)
+                                pair.Value.ResetTask(task, ed.FileType== ExtractData.ExtractFileType.BINARY?".dat":".txt");
+                            else
+                                toDelete.Add(pair.Key);
+                        }
+                        else 
+                        {
+                            CopyMoveTaskData cmtd = task as CopyMoveTaskData;
+                            if (cmtd != null)
+                                pair.Value.ResetTask(task,".dat");
+                            else
+                            {
+                                ReportData rd = task as ReportData;
+                                if (rd != null && rd.Output == ReportData.OutputChoice.FILE)
+                                    pair.Value.ResetTask(task,"." + rd.Extension);
+                                else 
+                                    toDelete.Add(pair.Key);
+                            }
+                        }
+                    }
+
+                }
+                //no need to add new tasks to the list, they will get added when first executed
+                foreach (Guid guid in toDelete)
+                    m_quotaCleanups.Remove(guid);
+
                 //lastly, execute plugin actions that need to happen in the case of an update
                 foreach (TaskData t in m_cd.Tasks)
                 {
@@ -311,20 +351,20 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(datfile, task, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
-            if (level == Logging.Level.Exception)
-            {
-                if (message != null && message.Contains("The operation"))
-                {
-                    string debug = message;                
-                }
-            }
+            //if (level == Logging.Level.Exception)
+            //{
+            //    if (message != null && message.Contains("The operation"))
+            //    {
+            //        string debug = message;                
+            //    }
+            //}
         }
 
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
 
         private string m_previousRunExecutable;
 
-        private System.Threading.Timer notifyTimer;
+        private System.Threading.Timer m_notifyTimer;
         private System.Threading.Timer reprocessErrorsTimer;
         private System.Threading.Timer rescanTimer;
         private System.Threading.Timer retryAccessTimer;
@@ -354,12 +394,10 @@ namespace iba.Processing
                 return;
             }
 
-            bool bInitialScan = true;
             bool bPostpone = false;
             int minutes = 5;
             try
             {
-                Profiler.ProfileBool(true, "Settings", "DoInitialScan", ref bInitialScan, true);
                 Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, false);
                 Profiler.ProfileInt(true, "Settings", "PostponeMinutes", ref minutes, minutes);
             }
@@ -387,7 +425,7 @@ namespace iba.Processing
             try
             {
                 Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-                if (bInitialScan)
+                if (m_cd.InitialScanEnabled)
                 {
                     updateDatFileList(WhatToUpdate.ALL);
                 }
@@ -397,7 +435,7 @@ namespace iba.Processing
                     m_sd.Started = false;
                     return;
                 }
-                notifyTimer = null;
+                m_notifyTimer = null;
                 try
                 {
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
@@ -415,8 +453,8 @@ namespace iba.Processing
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
-                        notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
-                        notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
+                        m_notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
+                        m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
                     }
 
                     //do initializations of custom tasks
@@ -495,10 +533,10 @@ namespace iba.Processing
                 finally
                 {
                     m_bTimersstopped = true;
-                    if (notifyTimer != null)
+                    if (m_notifyTimer != null)
                     {
-                        notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                        notifyTimer.Dispose();
+                        m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        m_notifyTimer.Dispose();
                         m_notifier.Send(); //send one last time
                     }
                     if (rescanTimer != null)
@@ -591,8 +629,7 @@ namespace iba.Processing
                         Stop = true;
                         return;
                     }
-                    string version = FileVersionInfo.GetVersionInfo(m_cd.IbaAnalyzerExe).FileVersion;
-                    if (version.CompareTo("5.0") < 0)
+                    if (!VersionCheck.CheckVersion(m_cd.IbaAnalyzerExe,"5.0"))
                     {
                         Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
                         m_sd.Started = false;
@@ -822,11 +859,14 @@ namespace iba.Processing
 
         private void OnNotifyTimerTick(object ignoreMe)
         {
-            if (m_bTimersstopped || m_stop) return;
-            notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            m_notifier.Send();
-            if (!m_bTimersstopped && !m_stop)
-                notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+            lock (m_notifier)
+            {
+                if (m_bTimersstopped || m_stop) return;
+                m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                m_notifier.Send();
+                if (!m_bTimersstopped && !m_stop)
+                    m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+            }
         }
 
         private void OnTestLicenseTimerTick(object ignoreMe)
@@ -1220,7 +1260,7 @@ namespace iba.Processing
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
-                catch
+                catch //no status field
                 {
                     ibaDatFile.Close();
                     ibaDatFile.OpenForUpdate(filename);
@@ -1417,23 +1457,49 @@ namespace iba.Processing
                             && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
                             completeSucces = false;
                         if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
-                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
-                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
+                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE)
                             && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
                         {
-                            m_notifier.AddSuccess(task, DatFile);
-                            if (m_cd.NotificationData.NotifyImmediately)
-                                m_notifier.Send();
+                            lock (m_notifier)
+                            {
+                                m_notifier.AddSuccess(task, DatFile);
+                                if (m_cd.NotificationData.NotifyImmediately)
+                                    m_notifier.Send();
+                                else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
+                                {
+                                    //restart timer;
+                                    if (m_notifyTimer == null)
+                                        m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
+                                    m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                                    m_notifier.Send();
+                                    if (!m_bTimersstopped && !m_stop)
+                                        m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+                                }
+                            }
                         }
-                        else if ((DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
-                                && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS
-                                && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.TRIED_TOO_MANY_TIMES) 
+                        else if ((((DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
+                                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS
+                                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.TRIED_TOO_MANY_TIMES))
+                                    || m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
                                 && (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
-                            || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
+                                    || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
                         {
-                            m_notifier.AddFailure(task, DatFile);
-                            if (m_cd.NotificationData.NotifyImmediately)
-                                m_notifier.Send();
+                            lock (m_notifier)
+                            {
+                                m_notifier.AddFailure(task, DatFile);
+                                if (m_cd.NotificationData.NotifyImmediately)
+                                    m_notifier.Send();
+                                else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
+                                {
+                                    //restart timer;
+                                    if (m_notifyTimer == null)
+                                        m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
+                                    m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                                    m_notifier.Send();
+                                    if (!m_bTimersstopped && !m_stop)
+                                        m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+                                }
+                            }
                         }
                     }
                     if (m_stop)
@@ -1568,6 +1634,8 @@ namespace iba.Processing
                         if (outFile == null) return;
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
                         m_outPutFile = outFile;
+                        if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
                     }
                     else
                     {
@@ -1709,15 +1777,15 @@ namespace iba.Processing
             }
             string ext = (task.FileType == ExtractData.ExtractFileType.BINARY?".dat":".txt");
             string arg = Path.Combine(dir, actualFileName + ext);
-            if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE)
+            try
             {
-                try
-                {
+                if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                     CleanupDirs(filename, task, ext);
-                }
-                catch
-                {
-                }
+                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, ext);
+            }
+            catch
+            {
             }
             return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
@@ -1898,16 +1966,16 @@ namespace iba.Processing
                 string ext = "." + task.Extension;
                 //arg += ":" + Path.Combine(dir, actualFileName + ext);
                 arg = Path.Combine(dir, actualFileName + ext);
-                if (task.Subfolder != ReportData.SubfolderChoice.NONE)
+                try
                 {
-                    try
-                    {
+                    if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                         CleanupDirs(filename, task, ext);
-                    }
-                    catch
-                    {
-                    }
+                    else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        CleanupWithQuota(filename, task, ext);
                 }
+                catch
+                {
+                }               
                 arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
             }
 
@@ -1921,6 +1989,8 @@ namespace iba.Processing
                     {
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
                         m_outPutFile = arg;
+                        if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
                     }
                     else
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(""); });
@@ -2132,18 +2202,21 @@ namespace iba.Processing
                     }
                 }
             }
-            
-            if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE)
+
+            try
             {
-                try
+                string extension = new FileInfo(fileToCopy).Extension;
+                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                 {
-                    string extension = new FileInfo(fileToCopy).Extension;
                     CleanupDirs(filename, task, extension);
                 }
-                catch
-                {
-                }
+                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, extension);
             }
+            catch
+            {
+            }
+
             string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
             try
             {
@@ -2159,6 +2232,9 @@ namespace iba.Processing
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                 }
                 m_outPutFile = dest;
+                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
@@ -2180,6 +2256,15 @@ namespace iba.Processing
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
             }
+        }
+
+        private SortedDictionary<Guid, FileQuotaCleanup> m_quotaCleanups;
+
+        private void CleanupWithQuota(string filename, TaskDataUNC task, string extension)
+        {
+            if (!m_quotaCleanups.ContainsKey(task.Guid))
+                m_quotaCleanups.Add(task.Guid,new FileQuotaCleanup(task,extension));
+            m_quotaCleanups[task.Guid].Clean();
         }
 
         private void Batchfile(string filename,BatchFileData task)

@@ -46,8 +46,6 @@ namespace iba.Controls
             m_targetFolderTextBox.Text = m_data.DestinationMap;
             m_rbFile.Checked = m_data.ExtractToFile;
             m_rbDbase.Checked = !m_data.ExtractToFile;
-
-
             m_panelFile.Enabled = m_rbFile.Checked;
 
             m_rbNONE.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.NONE;
@@ -59,7 +57,11 @@ namespace iba.Controls
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
-            m_folderNumber.Value = m_data.SubfoldersNumber;
+
+            m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
+            m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            m_nudDirs.Value = m_data.SubfoldersNumber;
+            m_nudQuota.Value = m_data.Quota;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -68,8 +70,7 @@ namespace iba.Controls
 
             try
             {
-                string version = FileVersionInfo.GetVersionInfo(m_data.ParentConfigurationData.IbaAnalyzerExe).FileVersion;
-                m_monitorGroup.Enabled = (version.CompareTo("5.8.1") >= 0);
+                m_monitorGroup.Enabled = VersionCheck.CheckVersion(m_data.ParentConfigurationData.IbaAnalyzerExe, "5.8.1");
             }
             catch
             {
@@ -96,7 +97,9 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.SAME;
-            m_data.SubfoldersNumber = (uint) m_folderNumber.Value;
+            m_data.SubfoldersNumber = (uint) m_nudDirs.Value;
+            m_data.Quota = (uint) m_nudQuota.Value;
+            m_data.OutputLimitChoice = m_rbLimitDirectories.Checked?TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories:TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
@@ -190,6 +193,26 @@ namespace iba.Controls
         {
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
+        }
+
+        private void m_rbLimitUsageChoiceChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked) 
+            {
+                if (rb == m_rbLimitDirectories)
+                {
+                    m_rbQuota.Checked = false;
+                    m_nudQuota.Enabled = false;
+                    m_nudDirs.Enabled = true;
+                }
+                else
+                {
+                    m_rbLimitDirectories.Checked = false;
+                    m_nudQuota.Enabled = true;
+                    m_nudDirs.Enabled = false;
+                }
+            }
         }
     }
 }

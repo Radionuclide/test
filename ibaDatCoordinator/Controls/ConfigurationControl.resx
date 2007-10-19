@@ -117,1878 +117,1143 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_nameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>569, 157</value>
+  <data name="m_nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 26</value>
   </data>
-  <data name="&gt;&gt;m_tbUserName.Name" xml:space="preserve">
-    <value>m_tbUserName</value>
-  </data>
-  <data name="m_retryUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 93</value>
-  </data>
-  <data name="&gt;&gt;m_openFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_cbRescanEnabled.Text" xml:space="preserve">
-    <value>Rescan for unprocessed .dat files every</value>
+  <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>396, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_tbMailPass.Name" xml:space="preserve">
-    <value>m_tbMailPass</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_rbImmediate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_subMapsCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 45</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_newTaskToolstrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>596, 52</value>
-  </data>
-  <data name="groupBox2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_refreshDats.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Executable:</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="m_rbEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 17</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_failTimeUpDown.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
-  </data>
-  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label10.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_analyserTextBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
+  <data name="&gt;&gt;m_nameTextBox.Name" xml:space="preserve">
+    <value>m_nameTextBox</value>
   </data>
-  <data name="&gt;&gt;m_cbRetry.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_nameTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_cbRetry.Text" xml:space="preserve">
-    <value>Retry failed operations maximum</value>
+  <data name="&gt;&gt;m_nameTextBox.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;m_tbUserName.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;m_nameTextBox.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="labelmailpass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 13</value>
+  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
   </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 29</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Job name:</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 19</value>
   </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;labelmailpass.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="labelnetsendhost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 127</value>
-  </data>
-  <data name="&gt;&gt;labelmailsmtp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="labelmailpass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>250, 103</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Dat file directory:</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_datDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
-  <data name="m_nameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="m_stopButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_applyToRunningButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_rbNetSend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 17</value>
-  </data>
-  <data name="m_rbImmediate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 17</value>
-  </data>
-  <data name="&gt;&gt;m_subMapsCheckBox.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="labelmailrecipient.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_autoStartCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbNetSend.Text" xml:space="preserve">
-    <value>net send</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_nameTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_newBatchfileButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_browseFolderButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_testNotification.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="labelmailpass.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="m_autoStartCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_datDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_newBatchfileButton.Name" xml:space="preserve">
-    <value>m_newBatchfileButton</value>
+  <data name="m_datDirTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 19</value>
   </data>
-  <data name="m_testNotification.Location" type="System.Drawing.Point, System.Drawing">
-    <value>499, 61</value>
+  <data name="m_datDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 20</value>
   </data>
-  <data name="m_failTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_datDirTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_datDirTextBox.Name" xml:space="preserve">
+    <value>m_datDirTextBox</value>
+  </data>
+  <data name="&gt;&gt;m_datDirTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_datDirTextBox.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_datDirTextBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_scanTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 63</value>
+  </data>
+  <data name="m_scanTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
   </data>
-  <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="m_scanTimeUpDown.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_nudNotifyTime.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_scanTimeUpDown.Name" xml:space="preserve">
+    <value>m_scanTimeUpDown</value>
+  </data>
+  <data name="&gt;&gt;m_scanTimeUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scanTimeUpDown.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_scanTimeUpDown.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>311, 65</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_subMapsCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_subMapsCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_subMapsCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 61</value>
+  </data>
+  <data name="m_subMapsCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 17</value>
+  </data>
+  <data name="m_subMapsCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="m_subMapsCheckBox.Text" xml:space="preserve">
     <value>Check subdirectories</value>
   </data>
-  <data name="&gt;&gt;m_cbAuthentication.Name" xml:space="preserve">
-    <value>m_cbAuthentication</value>
+  <data name="&gt;&gt;m_subMapsCheckBox.Name" xml:space="preserve">
+    <value>m_subMapsCheckBox</value>
   </data>
-  <data name="groupBox3.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_subMapsCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_refreshDats.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_subMapsCheckBox.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_subMapsCheckBox.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Name" xml:space="preserve">
+    <value>m_tbPass</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Name" xml:space="preserve">
+    <value>m_tbUserName</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Name" xml:space="preserve">
+    <value>m_checkPathButton</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label4.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_checkPathButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Name" xml:space="preserve">
+    <value>m_browseFolderButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 238</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 101</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_newTaskToolstrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Dat files</value>
   </data>
-  <data name="m_rbEmail.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_tbPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 71</value>
+  </data>
+  <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 20</value>
+  </data>
+  <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Name" xml:space="preserve">
+    <value>m_tbPass</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ConfigurationControl</value>
+  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_startButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 74</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbUserName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 45</value>
+  </data>
+  <data name="m_tbUserName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 20</value>
+  </data>
+  <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Name" xml:space="preserve">
+    <value>m_tbUserName</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 48</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_rbTime.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>348, 45</value>
+  </data>
+  <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Name" xml:space="preserve">
+    <value>m_checkPathButton</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>481, 15</value>
+  </data>
+  <data name="m_browseFolderButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Name" xml:space="preserve">
+    <value>m_browseFolderButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_refreshDats.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_refreshDats.Location" type="System.Drawing.Point, System.Drawing">
+    <value>527, 64</value>
+  </data>
+  <data name="m_refreshDats.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_refreshDats.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;m_refreshDats.Name" xml:space="preserve">
+    <value>m_refreshDats</value>
+  </data>
+  <data name="&gt;&gt;m_refreshDats.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_refreshDats.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_refreshDats.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 20</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 63</value>
+  </data>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cbInitialScan.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cbInitialScan.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>413, 20</value>
+  <data name="m_cbInitialScan.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Name" xml:space="preserve">
-    <value>m_failTimeUpDown</value>
+  <data name="m_cbInitialScan.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 41</value>
+  </data>
+  <data name="m_cbInitialScan.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 17</value>
+  </data>
+  <data name="m_cbInitialScan.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="m_cbInitialScan.Text" xml:space="preserve">
+    <value>Do initial scan for .dat files unprocessed by previous session</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScan.Name" xml:space="preserve">
+    <value>m_cbInitialScan</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScan.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScan.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScan.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_cbRetry.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbRetry.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 115</value>
+  </data>
+  <data name="m_cbRetry.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 17</value>
+  </data>
+  <data name="m_cbRetry.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_cbRetry.Text" xml:space="preserve">
+    <value>Retry failed operations maximum</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Name" xml:space="preserve">
+    <value>m_cbRetry</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_retryUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 115</value>
+  </data>
+  <data name="m_retryUpDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 20</value>
+  </data>
+  <data name="m_retryUpDown.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Name" xml:space="preserve">
+    <value>m_retryUpDown</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>311, 117</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 13</value>
+  </data>
+  <data name="label14.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>times</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_cbRescanEnabled.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbRescanEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 64</value>
+  </data>
+  <data name="m_cbRescanEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 17</value>
+  </data>
+  <data name="m_cbRescanEnabled.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbRescanEnabled.Text" xml:space="preserve">
+    <value>Rescan for unprocessed .dat files every</value>
+  </data>
+  <data name="&gt;&gt;m_cbRescanEnabled.Name" xml:space="preserve">
+    <value>m_cbRescanEnabled</value>
+  </data>
+  <data name="&gt;&gt;m_cbRescanEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRescanEnabled.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_cbRescanEnabled.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>435, 64</value>
+  </data>
+  <data name="m_stopButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_stopButton.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Name" xml:space="preserve">
+    <value>m_stopButton</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_applyToRunningButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="m_applyToRunningButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_applyToRunningButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>498, 43</value>
+    <value>481, 65</value>
   </data>
-  <data name="&gt;&gt;m_tbMailPass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_applyToRunningButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
   </data>
-  <data name="m_failTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 67</value>
-  </data>
-  <data name="&gt;&gt;m_tbMailUsername.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbSMTP.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 44</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Name" xml:space="preserve">
-    <value>m_analyserTextBox</value>
-  </data>
-  <data name="&gt;&gt;m_datDirTextBox.Name" xml:space="preserve">
-    <value>m_datDirTextBox</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_scanTimeUpDown.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_cbAuthentication.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;labelmailrecipient.Name" xml:space="preserve">
-    <value>labelmailrecipient</value>
-  </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="m_startButton.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_rbEmail.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;labelmailuser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_subMapsCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_analyserTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label12.Name" xml:space="preserve">
-    <value>label12</value>
-  </data>
-  <data name="label14.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="labelmailpass.Text" xml:space="preserve">
-    <value>password:</value>
-  </data>
-  <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;m_checkPathButton.Name" xml:space="preserve">
-    <value>m_checkPathButton</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="m_newCopyTaskButton.Text" xml:space="preserve">
-    <value>toolStripButton2</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_subMapsCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>443, 61</value>
-  </data>
-  <data name="m_newExtractButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;m_subMapsCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_refreshDats.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="m_tbPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_checkPathButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>620, 740</value>
-  </data>
-  <data name="groupBox6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_testNotification.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelmailpass.Name" xml:space="preserve">
-    <value>labelmailpass</value>
-  </data>
-  <data name="m_tbSMTP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_testNotification.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="labelmailsmtp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
-  </data>
-  <data name="&gt;&gt;labelnetsendhost.Name" xml:space="preserve">
-    <value>labelnetsendhost</value>
-  </data>
-  <data name="m_newBatchfileButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelmailrecipient.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_subMapsCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_refreshDats.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_subMapsCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 17</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="m_analyserTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_refreshDats.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_newCopyTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_tbMailPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_newReportButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_newExtractButton.Text" xml:space="preserve">
-    <value>toolStripButton2</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.ZOrder" xml:space="preserve">
+  <data name="m_applyToRunningButton.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_subMapsCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_rbEmail.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_autoStartCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 19</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_browseFolderButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 179</value>
-  </data>
-  <data name="labelmailrecipient.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Name" xml:space="preserve">
-    <value>m_nudNotifyTime</value>
-  </data>
-  <data name="labelnetsendhost.Text" xml:space="preserve">
-    <value>host:</value>
-  </data>
-  <data name="m_stopButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.Name" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Name" xml:space="preserve">
-    <value>m_tbEmail</value>
-  </data>
-  <data name="&gt;&gt;m_nameTextBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_newExtractButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="labelmailuser.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="labelmailrecipient.Text" xml:space="preserve">
-    <value>recipient:</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_rbNetSend.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
-    <value>m_toolTip</value>
-  </data>
-  <data name="&gt;&gt;m_tbPass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Name" xml:space="preserve">
-    <value>m_cbRescanEnabled</value>
-  </data>
-  <data name="m_tbMailPass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
-  </data>
-  <data name="&gt;&gt;m_tbMailUsername.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Name" xml:space="preserve">
-    <value>m_folderBrowserDialog1</value>
-  </data>
-  <data name="m_tbEmail.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;groupBox6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 13</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Name" xml:space="preserve">
-    <value>m_rbNetSend</value>
-  </data>
-  <data name="m_scanTimeUpDown.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_scanTimeUpDown.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="labelmailsmtp.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_newTaskToolstrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_tbMailUsername.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_autoStartCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>minutes</value>
-  </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 89</value>
-  </data>
-  <data name="&gt;&gt;labelmailpass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_datDirTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_datDirTextBox.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="m_tbMailUsername.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthentication.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_newExtractButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_autoStartCheckBox.Text" xml:space="preserve">
-    <value>Automatically start on load</value>
-  </data>
-  <data name="labelmailsmtp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 51</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="m_tbMailUsername.Location" type="System.Drawing.Point, System.Drawing">
-    <value>331, 74</value>
-  </data>
-  <data name="m_rbNetSend.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_refreshDats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>544, 42</value>
-  </data>
-  <data name="m_tbMailPass.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="labelmailuser.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label14.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_enableCheckBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 71</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.Name" xml:space="preserve">
-    <value>m_applyToRunningButton</value>
-  </data>
-  <data name="m_newBatchfileButton.Text" xml:space="preserve">
-    <value>toolStripButton1</value>
-  </data>
-  <data name="m_datDirTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_nudNotifyTime.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_cbRetry.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbUserName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 101</value>
-  </data>
-  <data name="m_tbMailUsername.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;labelmailrecipient.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_tbNetSend.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_rbEmail.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;m_browseFolderButton.Name" xml:space="preserve">
-    <value>m_browseFolderButton</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="labelmailpass.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_nudNotifyTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 20</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
-    <value>m_browseExecutableButton</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>311, 43</value>
-  </data>
-  <data name="m_enableCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_startButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_nameTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_cbRescanEnabled.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Name" xml:space="preserve">
-    <value>m_startButton</value>
-  </data>
-  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 476</value>
-  </data>
-  <data name="&gt;&gt;m_newIfTaskButton.Name" xml:space="preserve">
-    <value>m_newIfTaskButton</value>
-  </data>
-  <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 19</value>
-  </data>
-  <data name="m_failTimeUpDown.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_subfolderGroupBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_newCopyTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 74</value>
-  </data>
-  <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_tbEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_enableCheckBox.Text" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
-  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 399</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudNotifyTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_testNotification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_browseExecutableButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>406, 42</value>
-  </data>
-  <data name="m_newBatchfileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_refreshDats.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_newIfTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 17</value>
-  </data>
-  <data name="m_rbNetSend.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="labelmailrecipient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 13</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Name" xml:space="preserve">
-    <value>m_rbEmail</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>times</value>
-  </data>
-  <data name="labelnetsendhost.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelmailuser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 26</value>
-  </data>
-  <data name="&gt;&gt;m_subMapsCheckBox.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="m_enableCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_cbRetry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 17</value>
-  </data>
-  <data name="m_retryUpDown.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_browseFolderButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
-  <data name="labelnetsendhost.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="labelmailsmtp.Text" xml:space="preserve">
-    <value>smtp-server:</value>
-  </data>
-  <data name="m_newCopyTaskButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_tbUserName.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="labelmailuser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>250, 77</value>
   </data>
   <data name="m_applyToRunningButton.Text" xml:space="preserve">
     <value>
 </value>
   </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
-    <value>m_autoStartCheckBox</value>
-  </data>
-  <data name="m_cbRetry.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 93</value>
-  </data>
-  <data name="m_tbNetSend.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 20</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>minutes</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="labelmailpass.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_newReportButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>498, 15</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="m_cbRescanEnabled.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelnetsendhost.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_newTaskToolstrip.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Username:</value>
-  </data>
-  <data name="&gt;&gt;m_tbPass.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="m_cbAuthentication.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 76</value>
-  </data>
-  <data name="m_cbAuthentication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 17</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Cyclus</value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 63</value>
-  </data>
-  <data name="m_rbEmail.Text" xml:space="preserve">
-    <value>e-mail</value>
-  </data>
-  <data name="m_browseExecutableButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_newExtractButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbMailPass.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="m_rbTime.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelmailsmtp.Name" xml:space="preserve">
-    <value>labelmailsmtp</value>
-  </data>
-  <data name="m_newReportButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>544, 17</value>
-  </data>
-  <data name="m_newCopyTaskButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
-  </data>
-  <data name="&gt;&gt;m_scanTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_newIfTaskButton.Text" xml:space="preserve">
-    <value>toolStripButton2</value>
-  </data>
-  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 28</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 219</value>
-  </data>
-  <data name="m_newExtractButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;labelnetsendhost.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_nameTextBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="m_enableCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 124</value>
-  </data>
-  <data name="m_autoStartCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 17</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>ibaAnalyzer</value>
-  </data>
-  <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_datDirTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_nudNotifyTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 42</value>
-  </data>
-  <data name="m_tbMailUsername.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>311, 69</value>
-  </data>
-  <data name="&gt;&gt;m_testNotification.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_cbAuthentication.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_newReportButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 71</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Parent" xml:space="preserve">
-    <value>groupBox6</value>
-  </data>
-  <data name="&gt;&gt;m_scanTimeUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Name" xml:space="preserve">
-    <value>m_stopButton</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="labelnetsendhost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="labelmailsmtp.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tbSMTP.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_newCopyTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_autoStartCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_cbAuthentication.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_applyToRunningButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_rbImmediate.Text" xml:space="preserve">
-    <value>Notify immediately</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_newReportButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 67</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_cbAuthentication.Text" xml:space="preserve">
-    <value>Authentication required:</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_testNotification.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbNetSend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="labelmailuser.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="groupBox7.Text" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 45</value>
-  </data>
-  <data name="labelmailuser.Text" xml:space="preserve">
-    <value>username:</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_newIfTaskButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_cbRescanEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 42</value>
-  </data>
-  <data name="m_newTaskToolstrip.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="m_tbNetSend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 125</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_applyToRunningButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Dat files</value>
-  </data>
-  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 261</value>
-  </data>
-  <data name="&gt;&gt;m_newTaskToolstrip.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="labelmailsmtp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label12.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;m_applyToRunningButton.Name" xml:space="preserve">
+    <value>m_applyToRunningButton</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;labelmailuser.Name" xml:space="preserve">
-    <value>labelmailuser</value>
-  </data>
-  <data name="m_tbMailUsername.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_rbTime.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>569, 73</value>
-  </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>Retry failed operations every</value>
-  </data>
-  <data name="m_rbEmail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 23</value>
-  </data>
-  <data name="&gt;&gt;m_rbEmail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_cbRetry.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_refreshDats.Name" xml:space="preserve">
-    <value>m_refreshDats</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="m_tbUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_newIfTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 29</value>
-  </data>
-  <data name="m_tbEmail.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_tbEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
-  </data>
-  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>311, 95</value>
-  </data>
-  <data name="groupBox6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;m_newCopyTaskButton.Name" xml:space="preserve">
-    <value>m_newCopyTaskButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="m_analyserTextBox.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_testNotification.Name" xml:space="preserve">
-    <value>m_testNotification</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbPass.Name" xml:space="preserve">
-    <value>m_tbPass</value>
-  </data>
-  <data name="m_tbEmail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="m_scanTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 41</value>
-  </data>
-  <data name="m_rbNetSend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="groupBox4.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_testNotification.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="labelmailsmtp.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Name" xml:space="preserve">
-    <value>m_rbImmediate</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_applyToRunningButton.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
+  <data name="&gt;&gt;m_applyToRunningButton.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
-  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_startButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;m_retryUpDown.Name" xml:space="preserve">
-    <value>m_retryUpDown</value>
-  </data>
-  <data name="&gt;&gt;m_scanTimeUpDown.Name" xml:space="preserve">
-    <value>m_scanTimeUpDown</value>
-  </data>
-  <data name="&gt;&gt;m_checkPathButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>New Task</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthentication.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>389, 64</value>
   </data>
   <data name="m_startButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
-  <data name="&gt;&gt;m_datDirTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthentication.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="m_cbRescanEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 17</value>
-  </data>
-  <data name="m_tbMailPass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>331, 100</value>
-  </data>
-  <data name="&gt;&gt;m_analyserTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbMailPass.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_newIfTaskButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_stopButton.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="groupBox7.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_analyserTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 25</value>
-  </data>
-  <data name="&gt;&gt;m_tbEmail.ZOrder" xml:space="preserve">
+  <data name="m_startButton.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 19</value>
-  </data>
-  <data name="&gt;&gt;labelmailpass.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 326</value>
-  </data>
-  <data name="m_cbRetry.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_rbTime.Text" xml:space="preserve">
-    <value>Notify at most every</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="labelmailpass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;m_nameTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_newBatchfileButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_rbImmediate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="groupBox6.Text" xml:space="preserve">
-    <value>Notifications</value>
-  </data>
-  <data name="m_rbTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 42</value>
-  </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
-    <value>m_enableCheckBox</value>
-  </data>
-  <data name="m_retryUpDown.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_browseExecutableButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>498, 17</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>minutes</value>
-  </data>
-  <data name="label11.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_rbTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 17</value>
-  </data>
-  <data name="&gt;&gt;m_rbImmediate.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Name" xml:space="preserve">
-    <value>m_tbSMTP</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_tbMailPass.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="labelmailrecipient.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="&gt;&gt;labelnetsendhost.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_retryUpDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 20</value>
-  </data>
-  <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="m_rbImmediate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 19</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
-    <value>m_openFileDialog1</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_newTaskToolstrip.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_nameTextBox.Name" xml:space="preserve">
-    <value>m_nameTextBox</value>
-  </data>
-  <data name="&gt;&gt;labelnetsendhost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_refreshDats.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_rbEmail.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 740</value>
-  </data>
-  <data name="m_browseExecutableButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;labelmailuser.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="labelmailuser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
-  </data>
-  <data name="m_newExtractButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
+  <data name="&gt;&gt;m_startButton.Name" xml:space="preserve">
+    <value>m_startButton</value>
   </data>
   <data name="&gt;&gt;m_startButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_tbNetSend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 91</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 13</value>
+  </data>
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Retry failed operations every</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_autoStartCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_autoStartCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_autoStartCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 19</value>
+  </data>
+  <data name="m_autoStartCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 17</value>
+  </data>
+  <data name="m_autoStartCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_autoStartCheckBox.Text" xml:space="preserve">
+    <value>Automatically start on load</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
+    <value>m_autoStartCheckBox</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_enableCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_enableCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_enableCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 19</value>
   </data>
-  <data name="m_tbSMTP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 48</value>
+  <data name="m_enableCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 17</value>
   </data>
-  <data name="&gt;&gt;m_rbImmediate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.Name" xml:space="preserve">
-    <value>m_cbRetry</value>
-  </data>
-  <data name="&gt;&gt;m_tbNetSend.Name" xml:space="preserve">
-    <value>m_tbNetSend</value>
-  </data>
-  <data name="m_newIfTaskButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 13</value>
-  </data>
-  <data name="m_newIfTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="labelmailrecipient.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 25</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 48</value>
-  </data>
-  <data name="m_tbSMTP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Dat file directory:</value>
-  </data>
-  <data name="m_newReportButton.Text" xml:space="preserve">
-    <value>toolStripButton1</value>
-  </data>
-  <data name="&gt;&gt;labelmailsmtp.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="labelnetsendhost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 13</value>
-  </data>
-  <data name="m_scanTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 20</value>
-  </data>
-  <data name="&gt;&gt;m_rbTime.Name" xml:space="preserve">
-    <value>m_rbTime</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="m_newTaskToolstrip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="m_newTaskToolstrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;labelmailrecipient.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_browseExecutableButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_rbNetSend.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_subMapsCheckBox.Name" xml:space="preserve">
-    <value>m_subMapsCheckBox</value>
-  </data>
-  <data name="m_checkPathButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="m_rbImmediate.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_newTaskToolstrip.Name" xml:space="preserve">
-    <value>m_newTaskToolstrip</value>
-  </data>
-  <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_tbSMTP.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
+  <data name="m_enableCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_browseExecutableButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+  <data name="m_enableCheckBox.Text" xml:space="preserve">
+    <value>Enabled</value>
   </data>
-  <data name="m_tbPass.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
+    <value>m_enableCheckBox</value>
   </data>
-  <data name="m_datDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;labelmailsmtp.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
-  <data name="m_applyToRunningButton.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
-  <data name="&gt;&gt;m_newExtractButton.Name" xml:space="preserve">
-    <value>m_newExtractButton</value>
+  <data name="m_failTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>239, 89</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Job name:</value>
+  <data name="m_failTimeUpDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 20</value>
   </data>
-  <data name="m_newBatchfileButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
+  <data name="m_failTimeUpDown.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>452, 42</value>
+  <data name="&gt;&gt;m_failTimeUpDown.Name" xml:space="preserve">
+    <value>m_failTimeUpDown</value>
   </data>
-  <data name="&gt;&gt;labelmailuser.Parent" xml:space="preserve">
-    <value>m_subfolderGroupBox</value>
+  <data name="&gt;&gt;m_failTimeUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label11.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
-  <data name="m_datDirTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 19</value>
+  <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbNetSend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 125</value>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_testNotification.TabIndex" type="System.Int32, mscorlib">
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>311, 91</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 69</value>
+  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 89</value>
+  </data>
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 143</value>
+  </data>
+  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Cyclus</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
+    <value>m_browseExecutableButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Name" xml:space="preserve">
+    <value>m_analyserTextBox</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 345</value>
+  </data>
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 67</value>
+  </data>
+  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_browseExecutableButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_browseExecutableButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>481, 17</value>
+  </data>
+  <data name="m_browseExecutableButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_browseExecutableButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Name" xml:space="preserve">
+    <value>m_browseExecutableButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_browseExecutableButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>527, 17</value>
+  </data>
+  <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 28</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Executable:</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_analyserTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_analyserTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 25</value>
+  </data>
+  <data name="m_analyserTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 20</value>
+  </data>
+  <data name="m_analyserTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Name" xml:space="preserve">
+    <value>m_analyserTextBox</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_analyserTextBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>190, 17</value>
+  </metadata>
+  <metadata name="m_newTaskToolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 16</value>
+  </metadata>
+  <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Name" xml:space="preserve">
+    <value>m_newTaskToolstrip</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 418</value>
+  </data>
+  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 71</value>
+  </data>
+  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>New Task</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_newTaskToolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 16</value>
+  </metadata>
+  <data name="m_newTaskToolstrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_newTaskToolstrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="m_newTaskToolstrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>596, 52</value>
+  </data>
+  <data name="m_newTaskToolstrip.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_newTaskToolstrip.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Name" xml:space="preserve">
+    <value>m_newTaskToolstrip</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;m_newTaskToolstrip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_newReportButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="m_newReportButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2005,55 +1270,784 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
-    <value>groupBox6</value>
+  <data name="m_newReportButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
   </data>
-  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_newReportButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
-    <value>m_newReportButton</value>
+  <data name="m_newReportButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
   </data>
-  <data name="&gt;&gt;m_cbRescanEnabled.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="m_newReportButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
   </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_newExtractButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="m_tbUserName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 20</value>
+  <data name="m_newExtractButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
   </data>
-  <data name="m_cbRescanEnabled.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="m_newExtractButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
   </data>
-  <data name="m_rbImmediate.ToolTip" xml:space="preserve">
-    <value />
+  <data name="m_newExtractButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newExtractButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newExtractButton.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
   </data>
   <data name="m_newBatchfileButton.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="m_newBatchfileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newBatchfileButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newBatchfileButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newBatchfileButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newBatchfileButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
+  <data name="m_newCopyTaskButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newCopyTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newCopyTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newCopyTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newCopyTaskButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newCopyTaskButton.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
+  </data>
+  <data name="m_newIfTaskButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newIfTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_newIfTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newIfTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newIfTaskButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_newIfTaskButton.Text" xml:space="preserve">
+    <value>toolStripButton2</value>
+  </data>
+  <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="labelmailpass.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelmailpass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelmailpass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>250, 103</value>
+  </data>
+  <data name="labelmailpass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="labelmailpass.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="labelmailpass.Text" xml:space="preserve">
+    <value>password:</value>
+  </data>
+  <data name="&gt;&gt;labelmailpass.Name" xml:space="preserve">
+    <value>labelmailpass</value>
+  </data>
+  <data name="&gt;&gt;labelmailpass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelmailpass.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;labelmailpass.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbMailPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tbMailPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 100</value>
+  </data>
+  <data name="m_tbMailPass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 20</value>
+  </data>
+  <data name="m_tbMailPass.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailPass.Name" xml:space="preserve">
+    <value>m_tbMailPass</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailPass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailPass.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailPass.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="labelmailuser.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelmailuser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelmailuser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>250, 77</value>
+  </data>
+  <data name="labelmailuser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="labelmailuser.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="labelmailuser.Text" xml:space="preserve">
+    <value>username:</value>
+  </data>
+  <data name="&gt;&gt;labelmailuser.Name" xml:space="preserve">
+    <value>labelmailuser</value>
+  </data>
+  <data name="&gt;&gt;labelmailuser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelmailuser.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;labelmailuser.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbMailUsername.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tbMailUsername.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 74</value>
+  </data>
+  <data name="m_tbMailUsername.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 20</value>
+  </data>
+  <data name="m_tbMailUsername.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
   <data name="&gt;&gt;m_tbMailUsername.Name" xml:space="preserve">
     <value>m_tbMailUsername</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailUsername.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailUsername.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_tbMailUsername.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_cbAuthentication.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAuthentication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>89, 76</value>
+  </data>
+  <data name="m_cbAuthentication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 17</value>
+  </data>
+  <data name="m_cbAuthentication.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_cbAuthentication.Text" xml:space="preserve">
+    <value>Authentication required:</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthentication.Name" xml:space="preserve">
+    <value>m_cbAuthentication</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthentication.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthentication.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthentication.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_testNotification.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_testNotification.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_testNotification.Location" type="System.Drawing.Point, System.Drawing">
+    <value>499, 61</value>
+  </data>
+  <data name="m_testNotification.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_testNotification.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_testNotification.Name" xml:space="preserve">
+    <value>m_testNotification</value>
+  </data>
+  <data name="&gt;&gt;m_testNotification.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_testNotification.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_testNotification.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="labelnetsendhost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelnetsendhost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelnetsendhost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>119, 127</value>
+  </data>
+  <data name="labelnetsendhost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 13</value>
+  </data>
+  <data name="labelnetsendhost.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="labelnetsendhost.Text" xml:space="preserve">
+    <value>host:</value>
+  </data>
+  <data name="&gt;&gt;labelnetsendhost.Name" xml:space="preserve">
+    <value>labelnetsendhost</value>
+  </data>
+  <data name="&gt;&gt;labelnetsendhost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelnetsendhost.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;labelnetsendhost.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="labelmailsmtp.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelmailsmtp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelmailsmtp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>85, 51</value>
+  </data>
+  <data name="labelmailsmtp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 13</value>
+  </data>
+  <data name="labelmailsmtp.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="labelmailsmtp.Text" xml:space="preserve">
+    <value>smtp-server:</value>
+  </data>
+  <data name="&gt;&gt;labelmailsmtp.Name" xml:space="preserve">
+    <value>labelmailsmtp</value>
+  </data>
+  <data name="&gt;&gt;labelmailsmtp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelmailsmtp.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;labelmailsmtp.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="labelmailrecipient.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelmailrecipient.Location" type="System.Drawing.Point, System.Drawing">
+    <value>86, 25</value>
+  </data>
+  <data name="labelmailrecipient.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="labelmailrecipient.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="labelmailrecipient.Text" xml:space="preserve">
+    <value>recipient:</value>
+  </data>
+  <data name="&gt;&gt;labelmailrecipient.Name" xml:space="preserve">
+    <value>labelmailrecipient</value>
+  </data>
+  <data name="&gt;&gt;labelmailrecipient.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelmailrecipient.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;labelmailrecipient.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_rbNetSend.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbNetSend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbNetSend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 125</value>
+  </data>
+  <data name="m_rbNetSend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 17</value>
+  </data>
+  <data name="m_rbNetSend.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_rbNetSend.Text" xml:space="preserve">
+    <value>net send</value>
+  </data>
+  <data name="&gt;&gt;m_rbNetSend.Name" xml:space="preserve">
+    <value>m_rbNetSend</value>
+  </data>
+  <data name="&gt;&gt;m_rbNetSend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNetSend.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_rbNetSend.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_tbSMTP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tbSMTP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 48</value>
+  </data>
+  <data name="m_tbSMTP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 20</value>
+  </data>
+  <data name="m_tbSMTP.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbSMTP.Name" xml:space="preserve">
+    <value>m_tbSMTP</value>
+  </data>
+  <data name="&gt;&gt;m_tbSMTP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbSMTP.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_tbSMTP.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_tbEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tbEmail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 22</value>
+  </data>
+  <data name="m_tbEmail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 20</value>
+  </data>
+  <data name="m_tbEmail.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbEmail.Name" xml:space="preserve">
+    <value>m_tbEmail</value>
+  </data>
+  <data name="&gt;&gt;m_tbEmail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbEmail.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_tbEmail.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_rbEmail.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbEmail.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbEmail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 23</value>
+  </data>
+  <data name="m_rbEmail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 17</value>
+  </data>
+  <data name="m_rbEmail.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbEmail.Text" xml:space="preserve">
+    <value>e-mail</value>
+  </data>
+  <data name="&gt;&gt;m_rbEmail.Name" xml:space="preserve">
+    <value>m_rbEmail</value>
+  </data>
+  <data name="&gt;&gt;m_rbEmail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbEmail.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_rbEmail.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_tbNetSend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tbNetSend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 125</value>
+  </data>
+  <data name="m_tbNetSend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 20</value>
+  </data>
+  <data name="m_tbNetSend.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;m_tbNetSend.Name" xml:space="preserve">
+    <value>m_tbNetSend</value>
+  </data>
+  <data name="&gt;&gt;m_tbNetSend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbNetSend.Parent" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_tbNetSend.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 19</value>
+  </data>
+  <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>569, 157</value>
+  </data>
+  <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_subfolderGroupBox.Text" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Name" xml:space="preserve">
+    <value>m_subfolderGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.Parent" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="groupBox6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="groupBox7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>227, 44</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_nudNotifyTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 42</value>
+  </data>
+  <data name="m_nudNotifyTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 20</value>
+  </data>
+  <data name="m_nudNotifyTime.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_nudNotifyTime.Name" xml:space="preserve">
+    <value>m_nudNotifyTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudNotifyTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudNotifyTime.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;m_nudNotifyTime.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_rbTime.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>190, 17</value>
+  <data name="m_rbTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 42</value>
+  </data>
+  <data name="m_rbTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 17</value>
+  </data>
+  <data name="m_rbTime.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbTime.Text" xml:space="preserve">
+    <value>Notify at most every</value>
+  </data>
+  <data name="&gt;&gt;m_rbTime.Name" xml:space="preserve">
+    <value>m_rbTime</value>
+  </data>
+  <data name="&gt;&gt;m_rbTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbTime.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;m_rbTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbImmediate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbImmediate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbImmediate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 19</value>
+  </data>
+  <data name="m_rbImmediate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 17</value>
+  </data>
+  <data name="m_rbImmediate.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbImmediate.Text" xml:space="preserve">
+    <value>Notify immediately every instance</value>
+  </data>
+  <data name="&gt;&gt;m_rbImmediate.Name" xml:space="preserve">
+    <value>m_rbImmediate</value>
+  </data>
+  <data name="&gt;&gt;m_rbImmediate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbImmediate.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;m_rbImmediate.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 179</value>
+  </data>
+  <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>570, 73</value>
+  </data>
+  <data name="groupBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox7.Text" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.Parent" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 495</value>
+  </data>
+  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 261</value>
+  </data>
+  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="groupBox6.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Name" xml:space="preserve">
+    <value>groupBox6</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>291, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>71</value>
   </metadata>
-  <metadata name="m_newTaskToolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 16</value>
-  </metadata>
-  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>291, 17</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 760</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>620, 760</value>
+  </data>
+  <data name="&gt;&gt;m_folderBrowserDialog1.Name" xml:space="preserve">
+    <value>m_folderBrowserDialog1</value>
+  </data>
+  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
+    <value>m_toolTip</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newReportButton.Name" xml:space="preserve">
+    <value>m_newReportButton</value>
+  </data>
+  <data name="&gt;&gt;m_newReportButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newExtractButton.Name" xml:space="preserve">
+    <value>m_newExtractButton</value>
+  </data>
+  <data name="&gt;&gt;m_newExtractButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newBatchfileButton.Name" xml:space="preserve">
+    <value>m_newBatchfileButton</value>
+  </data>
+  <data name="&gt;&gt;m_newBatchfileButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newCopyTaskButton.Name" xml:space="preserve">
+    <value>m_newCopyTaskButton</value>
+  </data>
+  <data name="&gt;&gt;m_newCopyTaskButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newIfTaskButton.Name" xml:space="preserve">
+    <value>m_newIfTaskButton</value>
+  </data>
+  <data name="&gt;&gt;m_newIfTaskButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
+    <value>m_openFileDialog1</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ConfigurationControl</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

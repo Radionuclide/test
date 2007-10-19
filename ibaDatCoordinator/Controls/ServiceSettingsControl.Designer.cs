@@ -34,7 +34,6 @@ namespace iba.Controls
             this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_cbInitialScan = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
@@ -80,18 +79,11 @@ namespace iba.Controls
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.m_cbInitialScan);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.m_nudPostponeTime);
             this.groupBox1.Controls.Add(this.m_cbPostpone);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            // 
-            // m_cbInitialScan
-            // 
-            resources.ApplyResources(this.m_cbInitialScan, "m_cbInitialScan");
-            this.m_cbInitialScan.Name = "m_cbInitialScan";
-            this.m_cbInitialScan.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -149,7 +141,6 @@ namespace iba.Controls
         private System.Windows.Forms.ComboBox m_comboPriority;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox m_cbPostpone;
-        private System.Windows.Forms.CheckBox m_cbInitialScan;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown m_nudPostponeTime;
 

@@ -9,11 +9,21 @@ namespace iba.Data
     [Serializable]
     public abstract class TaskDataUNC : TaskData
     {
+        public enum OutputLimitChoiceEnum {LimitDirectories,LimitDiskspace}
+        private OutputLimitChoiceEnum m_outputLimitChoice;
+        public OutputLimitChoiceEnum OutputLimitChoice
+        {
+            get { return m_outputLimitChoice; }
+            set { m_outputLimitChoice = value; }
+        }
+
         public TaskDataUNC(ConfigurationData parent) : base(parent) {
             m_pass = "";
             m_username = "";
             m_destinationMapUNC = "";
             m_numbFolders = 10;
+            m_quota = 1024;
+            m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
         }
 
         protected uint m_numbFolders;
@@ -21,6 +31,13 @@ namespace iba.Data
         {
             get { return m_numbFolders; }
             set { m_numbFolders = value; }
+        }
+
+        protected uint m_quota;
+        public uint Quota
+        {
+            get { return m_quota; }
+            set { m_quota = value; }
         }
 
         public TaskDataUNC() : this(null) { }
@@ -42,6 +59,17 @@ namespace iba.Data
         public void UpdateUNC()
         {
             m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
+        }
+
+        public void CopyUNCData(TaskDataUNC uncdat)
+        {
+            uncdat.m_destinationMap = m_destinationMap;
+            uncdat.m_numbFolders = m_numbFolders;
+            uncdat.m_username = m_username;
+            uncdat.m_pass = m_pass;
+            uncdat.m_destinationMapUNC = m_destinationMapUNC;
+            uncdat.m_quota = m_quota;
+            uncdat.m_outputLimitChoice = m_outputLimitChoice;
         }
 
         protected string m_username;

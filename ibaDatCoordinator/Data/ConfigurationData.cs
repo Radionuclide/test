@@ -126,6 +126,13 @@ namespace iba.Data
             set { m_reproccessTime = new TimeSpan(value); }
         }
 
+        private bool m_bInitialScanEnabled;
+        public bool InitialScanEnabled
+        {
+            get { return m_bInitialScanEnabled; }
+            set { m_bInitialScanEnabled = value; }
+        }
+
         private bool m_bRescanEnabled;
         public bool RescanEnabled
         {
@@ -204,6 +211,7 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
+            m_bInitialScanEnabled = true;
             m_bRescanEnabled = true;
             m_datDirectory = System.Environment.CurrentDirectory;
             try
@@ -247,6 +255,7 @@ namespace iba.Data
             cd.m_datDirectory = m_datDirectory;
             cd.m_doSubDirs = m_doSubDirs;
             cd.m_reproccessTime = m_reproccessTime;
+            cd.m_bInitialScanEnabled = m_bInitialScanEnabled;
             cd.m_rescanTime = m_rescanTime;
             cd.m_notify = m_notify.Clone() as NotificationData;
             cd.m_bRescanEnabled = m_bRescanEnabled;

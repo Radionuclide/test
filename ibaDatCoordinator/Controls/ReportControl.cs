@@ -68,7 +68,12 @@ namespace iba.Controls
             m_rbMonth.Checked = m_data.Subfolder == ReportData.SubfolderChoice.MONTH;
             m_rbDay.Checked = m_data.Subfolder == ReportData.SubfolderChoice.DAY;
             m_rbWeek.Checked = m_data.Subfolder == ReportData.SubfolderChoice.WEEK;
-            m_folderNumber.Value = m_data.SubfoldersNumber;
+
+            m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
+            m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            m_nudDirs.Value = m_data.SubfoldersNumber;
+            m_nudQuota.Value = m_data.Quota;
+            
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
             m_panelFile.Enabled = m_rbFile.Checked;
@@ -80,8 +85,7 @@ namespace iba.Controls
 
             try
             {
-                string version = FileVersionInfo.GetVersionInfo(m_data.ParentConfigurationData.IbaAnalyzerExe).FileVersion;
-                m_monitorGroup.Enabled = (version.CompareTo("5.8.1") >= 0);
+                m_monitorGroup.Enabled = VersionCheck.CheckVersion(m_data.ParentConfigurationData.IbaAnalyzerExe, "5.8.1");
             }
             catch
             {
@@ -109,7 +113,10 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = ReportData.SubfolderChoice.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = ReportData.SubfolderChoice.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ReportData.SubfolderChoice.SAME;
-            m_data.SubfoldersNumber = (uint)m_folderNumber.Value;
+
+            m_data.SubfoldersNumber = (uint)m_nudDirs.Value;
+            m_data.Quota = (uint)m_nudQuota.Value;
+            m_data.OutputLimitChoice = m_rbLimitDirectories.Checked ? TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories : TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
@@ -205,5 +212,26 @@ namespace iba.Controls
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
         }
+
+        private void m_rbLimitUsageChoiceChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                if (rb == m_rbLimitDirectories)
+                {
+                    m_rbQuota.Checked = false;
+                    m_nudQuota.Enabled = false;
+                    m_nudDirs.Enabled = true;
+                }
+                else
+                {
+                    m_rbLimitDirectories.Checked = false;
+                    m_nudQuota.Enabled = true;
+                    m_nudDirs.Enabled = false;
+                }
+            }
+        }
+
     }
 }

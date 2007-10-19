@@ -158,12 +158,12 @@ namespace iba
             SaveRightPaneControl();
             if (!m_actualClose && Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
-                if (m_tryConnectTimer != null)
-                {
-                    m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                    m_tryConnectTimer.Dispose();
-                    m_tryConnectTimer = null;
-                }
+                //if (m_tryConnectTimer != null)
+                //{
+                //    m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                //    m_tryConnectTimer.Dispose();
+                //    m_tryConnectTimer = null;
+                //}
                 if (WindowState != FormWindowState.Minimized)
                 {
                     WindowState = FormWindowState.Minimized;
@@ -223,7 +223,17 @@ namespace iba
 
         public void fromStatusToConfiguration()
         {
-            ConfigurationData dat = (m_statusTreeView.SelectedNode.Tag as StatusTreeItemData).StatusData.CorrConfigurationData;
+            StatusData sd = null;
+            StatusTreeItemData stid = m_statusTreeView.SelectedNode.Tag as StatusTreeItemData;
+            if (stid == null)
+            {
+                StatusPermanentlyErrorFilesTreeItemData speftid = m_statusTreeView.SelectedNode.Tag as StatusPermanentlyErrorFilesTreeItemData;
+                if (speftid == null) return;
+                sd = speftid.StatusData;
+            }
+            else
+                sd = stid.StatusData;
+            ConfigurationData dat = sd.CorrConfigurationData;
             foreach (TreeNode confCandidate in m_configTreeView.Nodes)
             {
                 ConfigurationTreeItemData dat2 = (confCandidate.Tag as ConfigurationTreeItemData);
@@ -1153,8 +1163,7 @@ namespace iba
                     m_menuItems[(int)MenuItemsEnum.NewTask].Enabled = !started;
                     try
                     {
-                        string version = FileVersionInfo.GetVersionInfo((data as ConfigurationTreeItemData).ConfigurationData.IbaAnalyzerExe).FileVersion;
-                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = (version.CompareTo("5.3.4") >= 0);
+                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = VersionCheck.CheckVersion((data as ConfigurationTreeItemData).ConfigurationData.IbaAnalyzerExe, "5.3.4");
                     }
                     catch //version could not be determined
                     {
@@ -1417,7 +1426,8 @@ namespace iba
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode node = m_configTreeView.SelectedNode;
-            Delete(node);
+            if (m_configTreeView.Focused)
+                Delete(node);
         }
 
         private string m_filename;

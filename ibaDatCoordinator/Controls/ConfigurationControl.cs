@@ -95,6 +95,7 @@ namespace iba.Controls
                         
             m_scanTimeUpDown.Value = (decimal) m_data.RescanTimeInterval.TotalMinutes;
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked = m_data.RescanEnabled;
+            m_cbInitialScanEnabled.Checked = m_data.InitialScanEnabled;
             m_failTimeUpDown.Value = (decimal)m_data.ReprocessErrorsTimeInterval.TotalMinutes;
             m_retryUpDown.Value = (decimal) m_data.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
@@ -163,8 +164,7 @@ namespace iba.Controls
             m_tbUserName.Text = m_data.Username;
             try
             {
-                string version = FileVersionInfo.GetVersionInfo(m_data.IbaAnalyzerExe).FileVersion;
-                m_newIfTaskButton.Enabled = (version.CompareTo("5.3.4") >= 0);
+                m_newIfTaskButton.Enabled = VersionCheck.CheckVersion(m_data.IbaAnalyzerExe,"5.3.4");
             }
             catch
             {
@@ -183,6 +183,7 @@ namespace iba.Controls
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
             m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
             m_data.RescanEnabled = m_cbRescanEnabled.Checked;
+            m_data.InitialScanEnabled = m_cbInitialScanEnabled.Checked;
             m_data.NrTryTimes = (int) m_retryUpDown.Value;
             m_data.LimitTimesTried = m_cbRetry.Checked;
 

@@ -74,14 +74,12 @@ namespace iba.Data
             rd.m_wtodo = m_wtodo;
             rd.m_name = m_name;
             rd.m_pdoFile = m_pdoFile;
-            rd.m_numbFolders = m_numbFolders;
             rd.m_subfolderChoice = m_subfolderChoice;
             rd.m_outputChoice = m_outputChoice;
-            rd.m_destinationMap = m_destinationMap;
             rd.m_notify = m_notify;
-            rd.m_username = m_username;
-            rd.m_pass = m_pass;
-            rd.m_destinationMapUNC = m_destinationMapUNC;
+
+            CopyUNCData(rd);
+
             rd.m_extension = m_extension;
             rd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return rd;

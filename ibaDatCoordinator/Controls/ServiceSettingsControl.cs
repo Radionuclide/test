@@ -45,11 +45,8 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            bool bInitialScan = true; 
-            Profiler.ProfileBool(true, "Settings", "DoInitialScan", ref bInitialScan, true);
-            m_cbInitialScan.Checked = bInitialScan;
             bool bPostpone = false;
-            Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, false);
+            Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, true);
             m_cbPostpone.Checked = bPostpone;
             int minutes = 5;
             Profiler.ProfileInt(true, "Settings", "PostponeMinutes", ref minutes, minutes);
@@ -107,8 +104,6 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            bool bInitialScan = m_cbInitialScan.Checked;
-            Profiler.ProfileBool(false, "Settings", "DoInitialScan", ref bInitialScan, true);
             bool bPostpone = m_cbPostpone.Checked;
             Profiler.ProfileBool(false, "Settings", "DoPostponeProcessing", ref bPostpone, true);
             int minutes = (int) m_nudPostponeTime.Value;

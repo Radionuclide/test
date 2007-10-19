@@ -39,8 +39,6 @@ namespace iba.Controls
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.m_folderNumber = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbHour = new System.Windows.Forms.RadioButton();
             this.m_rbDay = new System.Windows.Forms.RadioButton();
@@ -67,17 +65,29 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_rbQuota = new System.Windows.Forms.RadioButton();
+            this.m_nudQuota = new System.Windows.Forms.NumericUpDown();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.m_rbLimitDirectories = new System.Windows.Forms.RadioButton();
+            this.m_nudDirs = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
             this.m_panelFile.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -151,35 +161,9 @@ namespace iba.Controls
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.m_folderNumber);
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
-            // m_folderNumber
-            // 
-            resources.ApplyResources(this.m_folderNumber, "m_folderNumber");
-            this.m_folderNumber.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_folderNumber.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_folderNumber.Name = "m_folderNumber";
-            this.m_folderNumber.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // tableLayoutPanel3
             // 
@@ -379,6 +363,89 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.m_rbQuota);
+            this.panel2.Controls.Add(this.m_nudQuota);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // m_rbQuota
+            // 
+            resources.ApplyResources(this.m_rbQuota, "m_rbQuota");
+            this.m_rbQuota.Name = "m_rbQuota";
+            this.m_rbQuota.TabStop = true;
+            this.m_rbQuota.UseVisualStyleBackColor = true;
+            this.m_rbQuota.CheckedChanged += new System.EventHandler(this.m_rbLimitUsageChoiceChanged);
+            // 
+            // m_nudQuota
+            // 
+            resources.ApplyResources(this.m_nudQuota, "m_nudQuota");
+            this.m_nudQuota.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.m_nudQuota.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudQuota.Name = "m_nudQuota";
+            this.m_nudQuota.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.m_rbLimitDirectories);
+            this.panel3.Controls.Add(this.m_nudDirs);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // m_rbLimitDirectories
+            // 
+            resources.ApplyResources(this.m_rbLimitDirectories, "m_rbLimitDirectories");
+            this.m_rbLimitDirectories.Name = "m_rbLimitDirectories";
+            this.m_rbLimitDirectories.TabStop = true;
+            this.m_rbLimitDirectories.UseVisualStyleBackColor = true;
+            this.m_rbLimitDirectories.CheckedChanged += new System.EventHandler(this.m_rbLimitUsageChoiceChanged);
+            // 
+            // m_nudDirs
+            // 
+            resources.ApplyResources(this.m_nudDirs, "m_nudDirs");
+            this.m_nudDirs.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudDirs.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudDirs.Name = "m_nudDirs";
+            this.m_nudDirs.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // ReportControl
             // 
             resources.ApplyResources(this, "$this");
@@ -394,8 +461,6 @@ namespace iba.Controls
             this.m_subfolderGroupBox.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_folderNumber)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -404,6 +469,13 @@ namespace iba.Controls
             this.m_monitorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -419,8 +491,6 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbNONE;
         private System.Windows.Forms.RadioButton m_rbWeek;
         private System.Windows.Forms.RadioButton m_rbDay;
-        private System.Windows.Forms.NumericUpDown m_folderNumber;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton m_rbMonth;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Panel panel1;
@@ -448,6 +518,14 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton m_rbQuota;
+        private System.Windows.Forms.NumericUpDown m_nudQuota;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.RadioButton m_rbLimitDirectories;
+        private System.Windows.Forms.NumericUpDown m_nudDirs;
 
     }
 }

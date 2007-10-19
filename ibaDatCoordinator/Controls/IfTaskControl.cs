@@ -56,14 +56,12 @@ namespace iba.Controls
 
             try
             {
-                string version = FileVersionInfo.GetVersionInfo(m_data.ParentConfigurationData.IbaAnalyzerExe).FileVersion;
-                m_monitorGroup.Enabled = (version.CompareTo("5.8.1") >= 0);
+                m_monitorGroup.Enabled = VersionCheck.CheckVersion(m_data.ParentConfigurationData.IbaAnalyzerExe, "5.8.1");
             }
             catch
             {
                 m_monitorGroup.Enabled = false;
             }
-
         }
 
         public void SaveData()

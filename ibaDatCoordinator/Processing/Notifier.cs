@@ -19,6 +19,7 @@ namespace iba.Processing
             m_cd = cd;
             m_successes = new SortedDictionary<TaskData, List<string>>();
             m_failures = new SortedDictionary<TaskData, List<string>>();
+            m_lastSend = DateTime.Now - TimeSpan.FromDays(1.0); //set it to yesterday
         }
 
         public void AddSuccess(TaskData task, string datfile)
@@ -80,6 +81,7 @@ namespace iba.Processing
         }
 
         private const int NERR_BASE = 2100;
+        private const int NERR_Success = 0;
         private const int NERR_NameNotFound = NERR_BASE + 173; /* The message alias could not be found on the network. */
         private const int NERR_NetworkError = NERR_BASE + 36;  /* A general network error occurred. */
         private const int ERROR_NOT_SUPPORTED = 50;
@@ -87,6 +89,14 @@ namespace iba.Processing
         private const int ERROR_ACCESS_DENIED = 5;
 
         private Object m_listLock = new Object();
+        private DateTime m_lastSend;
+
+        public DateTime LastSendTime
+        {
+            get { return m_lastSend; }
+            set { m_lastSend = value; }
+        }
+
 
         public void Send()
         {
@@ -145,6 +155,7 @@ namespace iba.Processing
                 try
                 {
                     client.Send(message);
+                    m_lastSend = DateTime.Now;
                 }
                 catch (InvalidOperationException e1)
                 {
@@ -194,6 +205,9 @@ namespace iba.Processing
                                 LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
                                 LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
                             }
+                            break;
+                        case NERR_Success:
+                            m_lastSend = DateTime.Now; 
                             break;
                     }
                 }

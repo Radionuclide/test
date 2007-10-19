@@ -575,7 +575,19 @@ namespace iba.Utility
 		/// <param name="password">Password</param>
 		/// <returns>nothing, just hooks up to remote share</returns>
 		public static int ConnectToComputer(string UNCcomputer, string username, string password) 
-		{  
+		{
+            if (!username.Contains(@"\"))
+            {
+                //Remove the slashes from the computer name
+                string computer = UNCcomputer;
+                if (computer.StartsWith(@"\\"))
+                    computer = computer.Remove(0, 2);
+                int index = computer.IndexOf('\\');
+                if (index > 0)
+                    computer = computer.Substring(0, index);
+                username = computer + @"\" + username;   //Add computername to username
+            }
+
 			NETRESOURCE nr = new NETRESOURCE();
 			nr.iScope = 2;
 			nr.iType = RESOURCETYPE_DISK;

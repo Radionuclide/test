@@ -60,15 +60,11 @@ namespace iba.Data
             ed.m_name = m_name;
             ed.m_wtodo= m_wtodo;
             ed.m_pdoFile = m_pdoFile;
-            ed.m_destinationMap = m_destinationMap;
             ed.m_toFile = m_toFile;
             ed.m_notify = m_notify;
             ed.m_subfolderChoice = m_subfolderChoice;
-            ed.m_numbFolders = m_numbFolders;
             ed.m_fileType = m_fileType;
-            ed.m_username = m_username;
-            ed.m_pass = m_pass;
-            ed.m_destinationMapUNC = m_destinationMapUNC;
+            CopyUNCData(ed);
             ed.m_monitorData = (MonitorData) m_monitorData.Clone();
             return ed;
         }
