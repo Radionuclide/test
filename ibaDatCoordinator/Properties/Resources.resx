@@ -790,4 +790,19 @@
   <data name="InvalidDatFile" xml:space="preserve">
     <value>The .dat file is corrupt or is not a valid iba .dat file</value>
   </data>
+  <data name="logCleanupErrorRemoveDirectory" xml:space="preserve">
+    <value>Error cleaning up files, failed to remove directory '{0}' : {1}</value>
+  </data>
+  <data name="logCleanupErrorRemoveFile" xml:space="preserve">
+    <value>Error cleaning up files, failed to remove old file '{0}' : {1}</value>
+  </data>
+  <data name="logCleanupSuccessRemoveEmptyDirectory" xml:space="preserve">
+    <value>File cleanup: Succesfully removed empty directory '{0}'</value>
+  </data>
+  <data name="logCleanupSuccessRemoveFile" xml:space="preserve">
+    <value>File cleanup: Succesfully removed old file  '{0}'</value>
+  </data>
+  <data name="logCleanupSuccessRemoveOldDirectory" xml:space="preserve">
+    <value>File cleanup: Succesfully removed old directory '{0}'</value>
+  </data>
 </root>

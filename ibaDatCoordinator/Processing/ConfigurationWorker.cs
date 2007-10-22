@@ -76,7 +76,6 @@ namespace iba.Processing
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
-            m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
@@ -305,6 +304,7 @@ namespace iba.Processing
             m_notifier = new Notifier(cd);
             m_candidateNewFiles = new List<string>();
             m_listUpdatingLock = new Object();
+            m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -351,13 +351,13 @@ namespace iba.Processing
                 LogExtraData data = new LogExtraData(datfile, task, m_cd);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
-            //if (level == Logging.Level.Exception)
-            //{
-            //    if (message != null && message.Contains("The operation"))
-            //    {
-            //        string debug = message;                
-            //    }
-            //}
+            if (level == Logging.Level.Exception)
+            {
+                if (message != null && message.Contains("The operation"))
+                {
+                    string debug = message;                
+                }
+            }
         }
 
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
@@ -1698,6 +1698,18 @@ namespace iba.Processing
 
         private string GetExtractFileName(string filename, ExtractData task)
         {
+            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+            try
+            {
+                if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                    CleanupDirs(filename, task, ext);
+                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, ext);
+            }
+            catch
+            {
+            }
+
             string actualFileName = Path.GetFileNameWithoutExtension(filename);
             string dir = task.DestinationMap;
             if (String.IsNullOrEmpty(dir))
@@ -1775,18 +1787,7 @@ namespace iba.Processing
                     }
                 }
             }
-            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY?".dat":".txt");
             string arg = Path.Combine(dir, actualFileName + ext);
-            try
-            {
-                if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                    CleanupDirs(filename, task, ext);
-                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    CleanupWithQuota(filename, task, ext);
-            }
-            catch
-            {
-            }
             return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
@@ -1885,6 +1886,18 @@ namespace iba.Processing
             }
             if (task.Output != ReportData.OutputChoice.PRINT)
             {
+                string ext = "." + task.Extension;
+                try
+                {
+                    if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                        CleanupDirs(filename, task, ext);
+                    else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        CleanupWithQuota(filename, task, ext);
+                }
+                catch
+                {
+                }               
+
                 string actualFileName = Path.GetFileNameWithoutExtension(filename);
                 string dir = task.DestinationMapUNC;
                 if (String.IsNullOrEmpty(dir))
@@ -1963,19 +1976,7 @@ namespace iba.Processing
                         }
                     }
                 }
-                string ext = "." + task.Extension;
-                //arg += ":" + Path.Combine(dir, actualFileName + ext);
                 arg = Path.Combine(dir, actualFileName + ext);
-                try
-                {
-                    if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                        CleanupDirs(filename, task, ext);
-                    else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                        CleanupWithQuota(filename, task, ext);
-                }
-                catch
-                {
-                }               
                 arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
             }
 
@@ -2074,14 +2075,19 @@ namespace iba.Processing
                             DirectoryInfo dirinf = new DirectoryInfo(dir);
                             string parentdir = dirinf.Parent.FullName;
                             if (dirinf.GetFiles().Length == 0 && dirinf.GetDirectories().Length == 0)
+                            {
                                 Directory.Delete(dir, false);
+                                string message = string.Format(iba.Properties.Resources.logCleanupSuccessRemoveOldDirectory, dir);
+                                Log(Logging.Level.Info, message, filename, task);
+                            }
                             else break;
                             dir = parentdir;
                         }
+                        
                     }
                     catch
                     {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + dir, filename, task);
+                        Log(Logging.Level.Warning, iba.Properties.Resources.logRemoveDirectoryFailed + ": " + dir, filename, task);
                     }
                 }
             }
@@ -2112,6 +2118,21 @@ namespace iba.Processing
 
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
+            try
+            {
+                string extension = new FileInfo(filename).Extension;
+                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                {
+                    CleanupDirs(filename, task, extension);
+                }
+                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, extension);
+            }
+            catch
+            {
+            }
+            
+            
             string dir = task.DestinationMapUNC;
             if (String.IsNullOrEmpty(dir))
             {
@@ -2202,21 +2223,6 @@ namespace iba.Processing
                     }
                 }
             }
-
-            try
-            {
-                string extension = new FileInfo(fileToCopy).Extension;
-                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                {
-                    CleanupDirs(filename, task, extension);
-                }
-                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    CleanupWithQuota(filename, task, extension);
-            }
-            catch
-            {
-            }
-
             string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
             try
             {
@@ -2264,7 +2270,7 @@ namespace iba.Processing
         {
             if (!m_quotaCleanups.ContainsKey(task.Guid))
                 m_quotaCleanups.Add(task.Guid,new FileQuotaCleanup(task,extension));
-            m_quotaCleanups[task.Guid].Clean();
+            m_quotaCleanups[task.Guid].Clean(filename);
         }
 
         private void Batchfile(string filename,BatchFileData task)

@@ -651,6 +651,51 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error cleaning up files, failed to remove directory &apos;{0}&apos; : {1}.
+        /// </summary>
+        internal static string logCleanupErrorRemoveDirectory {
+            get {
+                return ResourceManager.GetString("logCleanupErrorRemoveDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error cleaning up files, failed to remove old file &apos;{0}&apos; : {1}.
+        /// </summary>
+        internal static string logCleanupErrorRemoveFile {
+            get {
+                return ResourceManager.GetString("logCleanupErrorRemoveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File cleanup: Succesfully removed empty directory &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCleanupSuccessRemoveEmptyDirectory {
+            get {
+                return ResourceManager.GetString("logCleanupSuccessRemoveEmptyDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File cleanup: Succesfully removed old file  &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCleanupSuccessRemoveFile {
+            get {
+                return ResourceManager.GetString("logCleanupSuccessRemoveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File cleanup: Succesfully removed old directory &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCleanupSuccessRemoveOldDirectory {
+            get {
+                return ResourceManager.GetString("logCleanupSuccessRemoveOldDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to started processing configuration.
         /// </summary>
         internal static string logConfigurationStarted {
