@@ -26,9 +26,36 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.8.3.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.8.4.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.8.4 - 23/10/2007</P>
+<P class="header2">New features</P>
+<ul>
+<li>When generating files with the report task or extract task and with the copy task, you can select
+to clean up older generated output files according to a quota instead of limiting the number of generated directories.</li>
+</ul>
+<P class="header2">Enhancements</P>
+<UL>
+	<LI> The periodic notifications are altered so that the first notification is sent immediately if there
+	hasn't been a notification before it in the selected time interval, in previous versions the notification was only
+	sent after the selected time interval was passed.
+	</LI>
+	<LI> The option to skip the first initial scan for unprocessed .dat files is moved from the service settings to
+	the job level.
+	</LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+	<LI> After stopping the service, mimimizing the client and then restarting the service, the client would not
+	reconnect to the service.
+	</LI>
+    <LI> In the status pane, when viewing permanently failed .dat files, trying to go to the job configuration panel through the link
+    caused an unhandled exception.
+	</LI>
+</UL>
+
 
 <P class="header1">Version 1.8.3 - 11/09/2007</P>
 <P class="header2">Bugfixes</P>
