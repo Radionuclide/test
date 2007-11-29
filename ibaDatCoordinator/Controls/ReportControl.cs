@@ -151,7 +151,7 @@ namespace iba.Controls
                 {
                     ibaProc.EnableRaisingEvents = false;
                     ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = m_pdoFileTextBox.Text;
+                    ibaProc.StartInfo.Arguments = "\"" + m_pdoFileTextBox.Text + "\"";
                     ibaProc.Start();
                 }
             }

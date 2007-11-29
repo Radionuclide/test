@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iba;
 using IBAFILESLib;
+using System.Globalization;
 
 namespace Alunorf_sinec_h1_plugin 
 {
@@ -702,7 +703,7 @@ namespace Alunorf_sinec_h1_plugin
                         SByte val;
                         try
                         {
-                            val = SByte.Parse(data);
+                            val = SByte.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -715,7 +716,7 @@ namespace Alunorf_sinec_h1_plugin
                         Int16 val;
                         try
                         {
-                            val = Int16.Parse(data);
+                            val = Int16.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -728,7 +729,7 @@ namespace Alunorf_sinec_h1_plugin
                         Int32 val;
                         try
                         {
-                            val = Int32.Parse(data);
+                            val = Int32.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -741,7 +742,7 @@ namespace Alunorf_sinec_h1_plugin
                         Byte val;
                         try
                         {
-                            val = Byte.Parse(data);
+                            val = Byte.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -754,7 +755,7 @@ namespace Alunorf_sinec_h1_plugin
                         UInt16 val;
                         try
                         {
-                            val = UInt16.Parse(data);
+                            val = UInt16.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -767,7 +768,7 @@ namespace Alunorf_sinec_h1_plugin
                         UInt32 val;
                         try
                         {
-                            val = UInt32.Parse(data);
+                            val = UInt32.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {
@@ -780,7 +781,7 @@ namespace Alunorf_sinec_h1_plugin
                         float val;
                         try
                         {
-                            val = float.Parse(data);
+                            val = float.Parse(data, CultureInfo.InvariantCulture);
                         }
                         catch
                         {

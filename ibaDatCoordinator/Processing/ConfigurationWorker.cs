@@ -1130,7 +1130,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception, ex.Message, filename);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
                     return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
                 }
 

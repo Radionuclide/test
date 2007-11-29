@@ -510,6 +510,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Problem opening .dat file with ibaFile:.
+        /// </summary>
+        internal static string ibaFileProblem {
+            get {
+                return ResourceManager.GetString("ibaFileProblem", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap ibalogo_transparent {
             get {
                 object obj = ResourceManager.GetObject("ibalogo_transparent", resourceCulture);
