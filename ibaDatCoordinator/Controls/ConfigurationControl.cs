@@ -221,6 +221,7 @@ namespace iba.Controls
         private void OnClickFolderBrowserButton(object sender, EventArgs e)
         {
             m_folderBrowserDialog1.ShowNewFolderButton = false;
+            m_folderBrowserDialog1.SelectedPath = m_datDirTextBox.Text;
             DialogResult result = m_folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
                 m_datDirTextBox.Text = m_folderBrowserDialog1.SelectedPath;

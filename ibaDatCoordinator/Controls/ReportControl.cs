@@ -165,6 +165,7 @@ namespace iba.Controls
         {
             m_folderBrowserDialog1.ShowNewFolderButton = true;
             DialogResult result = m_folderBrowserDialog1.ShowDialog();
+            m_folderBrowserDialog1.SelectedPath = m_targetFolderTextBox.Text;
             if (result == DialogResult.OK)
                 m_targetFolderTextBox.Text = m_folderBrowserDialog1.SelectedPath;
         }
