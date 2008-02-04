@@ -130,6 +130,11 @@ namespace iba
                 ibaProc.StartInfo.FileName = scriptfile;
                 ibaProc.StartInfo.Arguments = arguments;
                 ibaProc.Start();
+                if (!ibaProc.WaitForExit(15 * 3600 * 1000))
+                {   //wait max 15 minutes
+                    ibaProc.Kill();
+                    return -666;
+                }
                 return ibaProc.ExitCode;
             }
         }
