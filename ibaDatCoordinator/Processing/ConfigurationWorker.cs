@@ -2325,19 +2325,30 @@ namespace iba.Processing
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logBatchfileStarted, filename,task);
-                    ibaProc.WaitForExit();
-                    lock (m_sd.DatFileStates)
+                    if (!ibaProc.WaitForExit(15 * 3600 * 1000))
                     {
-                        if (ibaProc.ExitCode == 0)
-                        {
-                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                            Log(Logging.Level.Info, iba.Properties.Resources.logBatchfileSuccess, filename,task);
-                        }
-                        else
+                        lock (m_sd.DatFileStates)
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            string msg = String.Format(string.Format(iba.Properties.Resources.logBatchfileFailed,ibaProc.ExitCode), ibaProc.ExitCode);
-                            Log(Logging.Level.Exception, msg, filename,task);
+                            string msg = iba.Properties.Resources.logBatchfileTimeout;
+                            Log(Logging.Level.Exception, msg, filename, task);
+                        }
+                    }
+                    else
+                    {
+                        lock (m_sd.DatFileStates)
+                        {
+                            if (ibaProc.ExitCode == 0)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                Log(Logging.Level.Info, iba.Properties.Resources.logBatchfileSuccess, filename, task);
+                            }
+                            else
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                                string msg = String.Format(string.Format(iba.Properties.Resources.logBatchfileFailed, ibaProc.ExitCode), ibaProc.ExitCode);
+                                Log(Logging.Level.Exception, msg, filename, task);
+                            }
                         }
                     }
                 }
