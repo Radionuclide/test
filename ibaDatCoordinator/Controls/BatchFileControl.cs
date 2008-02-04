@@ -143,6 +143,11 @@ namespace iba.Controls
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 {
                     exitCode = Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
+                    if (exitCode == -666)
+                    {
+                        MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        exitCode = 0;
+                    }
                 }
                 else
                 {
@@ -152,7 +157,14 @@ namespace iba.Controls
                         ibaProc.StartInfo.FileName = m_batchFileTextBox.Text;
                         ibaProc.StartInfo.Arguments = arguments;
                         ibaProc.Start();
-                        exitCode = ibaProc.ExitCode;
+                        if(!ibaProc.WaitForExit(15 * 3600 * 1000))
+                        {   //wait max 15 minutes
+                            ibaProc.Kill();
+                            MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            exitCode = 0;
+                        }
+                        else
+                            exitCode = ibaProc.ExitCode;
                     }
                 }
                 if (exitCode != 0)
