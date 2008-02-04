@@ -1,6 +1,12 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB8B16C7-4591-4250-A8CB-EBB66086D05C}"
+	ProjectSection(SolutionItems) = preProject
+		Installer\datcoor.nsi = Installer\datcoor.nsi
+		Installer\readme.htm = Installer\readme.htm
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alunorf-sinec-h1-plugin", "Alunorf-sinec-h1-plugin\Alunorf-sinec-h1-plugin.csproj", "{64BC4718-3E53-4184-8B5E-0927382EF8C1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "H1Protocol", "H1Protocol\H1Protocol.vcproj", "{A1B35688-5CD7-4931-9258-A4939CAA749A}"
@@ -18,12 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinator", "ibaDatCoordinator\ibaDatCoordinator.csproj", "{03EFD2FC-187D-42A5-B3A7-38232B4FF060}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinatorService", "ibaDatCoordinatorService\ibaDatCoordinatorService.csproj", "{8B2378DF-7A1D-4D46-B4C0-EE8CFEB94DA2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB8B16C7-4591-4250-A8CB-EBB66086D05C}"
-	ProjectSection(SolutionItems) = preProject
-		Installer\datcoor.nsi = Installer\datcoor.nsi
-		Installer\readme.htm = Installer\readme.htm
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
