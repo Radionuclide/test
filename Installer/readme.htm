@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>DatCoordinatorInstall_v1.8.7.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>DatCoordinatorInstall_v1.8.9.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,10 +26,17 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.8.7.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.8.9.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
-<P class="header1">Version 1.8.8 - 04/02/2008</P>
+<P class="header1">Version 1.8.9 - 11/02/2008</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI>  IbaDatCoordinator restarts ibaAnalyzer after a certain number of times ibaAnalyzer has done a report or extraction or evaluated an expression. 
+    This is to free any memory leaked by ibaAnalyzer or one of its components.
+    The number of times before ibaDatCoordinator restarts ibaAnalyzer can be modified in the XML configuration file, but is not available in the status program to prevent inexperienced users from tampering with it.
+	</LI>
+</UL>
 <P class="header2">Bugfixes</P>
 <UL>
     <LI>  There was a problem with testing a script in the script configuration control.
@@ -39,7 +46,7 @@ Execute ibaDatCoordinatorInstall_v1.8.7.exe and follow instructions.</p>
 <P class="header1">Version 1.8.7 - 30/11/2007</P>
 <P class="header2">Bugfixes</P>
 <UL>
-    <LI>  New version of ibaFiles included, which allows longer technostrings/infofields (upto 10000 charachters) not only to be read, but also to be written.
+    <LI>  New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters) not only to be read, but also to be written.
 	</LI>
 </UL>
 
@@ -56,7 +63,7 @@ Execute ibaDatCoordinatorInstall_v1.8.7.exe and follow instructions.</p>
 <UL>
 	<LI> In the ibaAnalyzer task control panes, there was a problem opening ibaAnalyzer if the analyzer path contained spaces.
 	</LI>
-    <LI> New version of ibaFiles included, which allows longer technostrings/infofields (upto 10000 charachters).
+    <LI> New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters).
 	</LI>
 </UL>
 

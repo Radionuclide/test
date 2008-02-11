@@ -111,7 +111,14 @@ namespace iba.Data
             get { return m_doSubDirs; }
             set { m_doSubDirs = value; }
         }
-     
+
+        private int m_restartIbaAnalyzer;
+        public int TimesAfterWhichtToRestartIbaAnalyzer
+        {
+            get { return m_restartIbaAnalyzer; }
+            set { m_restartIbaAnalyzer = value; }
+        }
+
         private TimeSpan m_reproccessTime;
         [XmlIgnore]
         public TimeSpan ReprocessErrorsTimeInterval
@@ -211,6 +218,7 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
+            m_restartIbaAnalyzer = 1000;
             m_bInitialScanEnabled = true;
             m_bRescanEnabled = true;
             m_datDirectory = System.Environment.CurrentDirectory;
@@ -254,6 +262,7 @@ namespace iba.Data
             cd.m_autoStart = m_autoStart;
             cd.m_datDirectory = m_datDirectory;
             cd.m_doSubDirs = m_doSubDirs;
+            cd.m_restartIbaAnalyzer = m_restartIbaAnalyzer;
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_bInitialScanEnabled = m_bInitialScanEnabled;
             cd.m_rescanTime = m_rescanTime;

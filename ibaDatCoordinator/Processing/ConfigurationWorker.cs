@@ -373,6 +373,7 @@ namespace iba.Processing
         bool m_bTimersstopped;
 
         private FileSystemWatcher fswt = null;
+        private int m_nrIbaAnalyzerCalls = 0;
 
         private void Run()
         {
@@ -617,6 +618,7 @@ namespace iba.Processing
 
         private void StartIbaAnalyzer()
         {
+            m_nrIbaAnalyzerCalls = 0;
             //register this
             if (m_previousRunExecutable != m_cd.IbaAnalyzerExe)
             {
@@ -687,6 +689,7 @@ namespace iba.Processing
 
         private void StopIbaAnalyzer(bool stop)
         {
+            m_nrIbaAnalyzerCalls = 0;
             try
             {
                 if (m_ibaAnalyzer == null)
@@ -718,7 +721,6 @@ namespace iba.Processing
                     StartIbaAnalyzer();
                     return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1383,10 +1385,12 @@ namespace iba.Processing
                     if (task is ReportData)
                     {
                         Report(DatFile,task as ReportData);
+                        m_nrIbaAnalyzerCalls++;
                     }
                     else if (task is ExtractData)
                     {
                         Extract(DatFile,task as ExtractData);
+                        m_nrIbaAnalyzerCalls++;
                     }
                     else if (task is BatchFileData)
                     {
@@ -1395,6 +1399,7 @@ namespace iba.Processing
                     else if (task is IfTaskData)
                     {
                         IfTask(DatFile, task as IfTaskData);
+                        m_nrIbaAnalyzerCalls++;
                     }
                     else if (task is CopyMoveTaskData)
                     {
@@ -1519,7 +1524,13 @@ namespace iba.Processing
                     StopIbaAnalyzer(false);
                     StartIbaAnalyzer();
                 }
-                
+
+                if (m_nrIbaAnalyzerCalls > m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
+                {
+                    StopIbaAnalyzer(false);
+                    StartIbaAnalyzer();
+                }
+               
                 IbaFileUpdater ibaDatFile = new IbaFileClass();
                 DateTime time = File.GetLastWriteTime(DatFile);
                 try
