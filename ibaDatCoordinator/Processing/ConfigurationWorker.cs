@@ -657,6 +657,7 @@ namespace iba.Processing
             //start the com object
             try
             {
+                Log(iba.Logging.Level.Info, string.Format("New ibaAnalyzer started with process ID: {0}", m_ibaAnalyzer.GetProcessID()));
                 m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
             }
             catch (Exception)
@@ -669,7 +670,6 @@ namespace iba.Processing
                     ibaProc.StartInfo.Arguments = "/regserver";
                     ibaProc.Start();
                     ibaProc.WaitForExit(10000);
-
                     m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
                 }
                 catch (Exception ex2)
@@ -679,6 +679,15 @@ namespace iba.Processing
                     Stop = true;
                     return;
                 }
+            }
+            
+            try
+            {
+                Log(iba.Logging.Level.Info, string.Format("New ibaAnalyzer started with process ID: {0}", m_ibaAnalyzer.GetProcessID()));
+            }
+            catch
+            {
+                Log(iba.Logging.Level.Warning, "New ibaAnalyzer started, could not get ProcessID");
             }
         }
 
@@ -1512,6 +1521,33 @@ namespace iba.Processing
                         if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
                         break;
                     }
+                    if (m_cd.BRestartIbaAnalyzer && m_nrIbaAnalyzerCalls >= m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
+                    {
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                        try
+                        {
+                            FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
+                            fs.Close();
+                            fs.Dispose();
+                            m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(Logging.Level.Exception, ex.Message);
+                            try
+                            {
+                                m_ibaAnalyzer.CloseDataFiles();
+                            }
+                            catch
+                            {
+                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                                StopIbaAnalyzer(false);
+                                StartIbaAnalyzer();
+                            }
+                            return;
+                        }
+                    }
                 }
 
                 try
@@ -1525,11 +1561,7 @@ namespace iba.Processing
                     StartIbaAnalyzer();
                 }
 
-                if (m_nrIbaAnalyzerCalls > m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
-                {
-                    StopIbaAnalyzer(false);
-                    StartIbaAnalyzer();
-                }
+
                
                 IbaFileUpdater ibaDatFile = new IbaFileClass();
                 DateTime time = File.GetLastWriteTime(DatFile);

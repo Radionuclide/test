@@ -170,6 +170,9 @@ namespace iba.Controls
             {
                 m_newIfTaskButton.Enabled = false;
             }
+
+            m_nudRestartIbaAnalyzer.Value = (decimal)m_data.TimesAfterWhichtToRestartIbaAnalyzer;
+            m_cbRestartIbaAnalyzer.Checked = m_nudRestartIbaAnalyzer.Enabled = m_data.BRestartIbaAnalyzer;
         }
 
         public void SaveData()
@@ -200,6 +203,8 @@ namespace iba.Controls
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
+            m_data.BRestartIbaAnalyzer = m_cbRestartIbaAnalyzer.Checked;
+            m_data.TimesAfterWhichtToRestartIbaAnalyzer = (int) m_nudRestartIbaAnalyzer.Value;
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
@@ -505,6 +510,11 @@ namespace iba.Controls
             m_tbMailPass.Enabled = labelmailpass.Enabled
             = m_tbMailUsername.Enabled = labelmailuser.Enabled
             = m_cbAuthentication.Checked && m_rbEmail.Checked;
+        }
+
+        private void m_cbRestartIbaAnalyzer_CheckedChanged(object sender, EventArgs e)
+        {
+            m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
         }
     }
 }
