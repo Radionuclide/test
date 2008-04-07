@@ -119,6 +119,13 @@ namespace iba.Data
             set { m_restartIbaAnalyzer = value; }
         }
 
+        private bool m_ibaAnalyzerSleepsWhenNoDatFiles;
+        public bool IbaAnalyzerSleepsWhenNoDatFiles
+        {
+            get { return m_ibaAnalyzerSleepsWhenNoDatFiles; }
+            set { m_ibaAnalyzerSleepsWhenNoDatFiles = value; }
+        }
+
         private bool m_bRestartIbaAnalyzer = true;
         public bool BRestartIbaAnalyzer
         {
@@ -227,6 +234,7 @@ namespace iba.Data
             m_autoStart = false;
             m_doSubDirs = false;
             m_restartIbaAnalyzer = 1;
+            m_ibaAnalyzerSleepsWhenNoDatFiles = true;
             m_bRestartIbaAnalyzer = true;
             m_bInitialScanEnabled = true;
             m_bRescanEnabled = true;
@@ -273,6 +281,7 @@ namespace iba.Data
             cd.m_doSubDirs = m_doSubDirs;
             cd.m_restartIbaAnalyzer = m_restartIbaAnalyzer;
             cd.m_bRestartIbaAnalyzer = m_bRestartIbaAnalyzer;
+            cd.m_ibaAnalyzerSleepsWhenNoDatFiles = m_ibaAnalyzerSleepsWhenNoDatFiles;
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_bInitialScanEnabled = m_bInitialScanEnabled;
             cd.m_rescanTime = m_rescanTime;

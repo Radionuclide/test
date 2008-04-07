@@ -206,6 +206,8 @@ namespace iba.Controls
                     return;
                 }
             }
+            else
+                m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.Guid);
             if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;
@@ -229,8 +231,10 @@ namespace iba.Controls
                     {
                         DatFileStatus dfs = null;
                         if (m_data.DatFileStates.ContainsKey(file))
+                        {
                             dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                        contents.Add(new Pair<string, DatFileStatus>(file, dfs));
+                            contents.Add(new Pair<string, DatFileStatus>(file, dfs));
+                        }
                     }
                 }
             }

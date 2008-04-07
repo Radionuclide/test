@@ -477,6 +477,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem monitoring .dat directory &apos;{0}&apos; : &quot;{1}&quot;.
+        /// </summary>
+        internal static string FileSystemWatcherProblem {
+            get {
+                return ResourceManager.GetString("FileSystemWatcherProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified directory does not exist.
         /// </summary>
         internal static string FolderDoesNotExist {
@@ -498,6 +507,24 @@ namespace iba.Properties {
         internal static string IbaAnalyzerExecutableDoesNotExist {
             get {
                 return ResourceManager.GetString("IbaAnalyzerExecutableDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New ibaAnalyzer started with process ID: {0}.
+        /// </summary>
+        internal static string IbaAnalyzerRestart {
+            get {
+                return ResourceManager.GetString("IbaAnalyzerRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New ibaAnalyzer started.
+        /// </summary>
+        internal static string IbaAnalyzerRestart2 {
+            get {
+                return ResourceManager.GetString("IbaAnalyzerRestart2", resourceCulture);
             }
         }
         
@@ -651,11 +678,29 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking for .dat files.
+        ///   Looks up a localized string similar to Scanning for .dat files for which operations failed.
         /// </summary>
-        internal static string logCheckingForNewDatFiles {
+        internal static string logCheckingForErrorDatFiles {
             get {
-                return ResourceManager.GetString("logCheckingForNewDatFiles", resourceCulture);
+                return ResourceManager.GetString("logCheckingForErrorDatFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started scanning directory for unprocessed .dat files.
+        /// </summary>
+        internal static string logCheckingForUnprocessedDatFiles {
+            get {
+                return ResourceManager.GetString("logCheckingForUnprocessedDatFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished scanning directory for unprocessed .dat files.
+        /// </summary>
+        internal static string logCheckingForUnprocessedDatFilesFinished {
+            get {
+                return ResourceManager.GetString("logCheckingForUnprocessedDatFilesFinished", resourceCulture);
             }
         }
         

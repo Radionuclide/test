@@ -763,22 +763,28 @@ namespace iba
             {
                 string msg = null;
                 if (node.Tag is ConfigurationTreeItemData)
+                {
+                    if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started) return;
                     msg = String.Format(iba.Properties.Resources.deleteConfigurationQuestion, node.Text);
-                else if (node.Tag is BatchFileTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteBatchfileQuestion, node.Text,node.Parent.Text);
-                else if (node.Tag is ReportTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteReportQuestion, node.Text, node.Parent.Text);
-                else if (node.Tag is ExtractTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteExtractQuestion, node.Text, node.Parent.Text);
-                else if (node.Tag is CopyTaskTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteCopyTaskQuestion, node.Text, node.Parent.Text);
-                else if (node.Tag is IfTaskTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteIfTaskQuestion, node.Text, node.Parent.Text);
-                else if (node.Tag is CustomTaskTreeItemData)
-                    msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion, 
-                    ((CustomTaskTreeItemData)(node.Tag)).CustomTaskData.Plugin.NameInfo,
-                        node.Text, node.Parent.Text);
-
+                }
+                else if (node.Parent != null && node.Parent.Tag is ConfigurationTreeItemData)
+                {
+                    if (TaskManager.Manager.GetStatus((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started) return;
+                    if (node.Tag is BatchFileTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteBatchfileQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is ReportTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteReportQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is ExtractTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteExtractQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is CopyTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteCopyTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is IfTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteIfTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is CustomTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
+                        ((CustomTaskTreeItemData)(node.Tag)).CustomTaskData.Plugin.NameInfo,
+                            node.Text, node.Parent.Text);
+                }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
                 if (res != DialogResult.Yes)

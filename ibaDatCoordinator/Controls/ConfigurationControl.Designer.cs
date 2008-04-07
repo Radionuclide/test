@@ -62,6 +62,9 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
+            this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
             this.m_browseExecutableButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -96,9 +99,7 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
-            this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.m_cbCloseIbaAnalyzer = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -106,13 +107,13 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.m_newTaskToolstrip.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudNotifyTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).BeginInit();
             this.SuspendLayout();
             // 
             // m_nameTextBox
@@ -375,6 +376,7 @@ namespace iba.Controls
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.m_cbCloseIbaAnalyzer);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.m_cbRestartIbaAnalyzer);
             this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
@@ -384,6 +386,38 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.m_analyserTextBox);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // m_cbRestartIbaAnalyzer
+            // 
+            resources.ApplyResources(this.m_cbRestartIbaAnalyzer, "m_cbRestartIbaAnalyzer");
+            this.m_cbRestartIbaAnalyzer.Name = "m_cbRestartIbaAnalyzer";
+            this.m_cbRestartIbaAnalyzer.UseVisualStyleBackColor = true;
+            this.m_cbRestartIbaAnalyzer.CheckedChanged += new System.EventHandler(this.m_cbRestartIbaAnalyzer_CheckedChanged);
+            // 
+            // m_nudRestartIbaAnalyzer
+            // 
+            resources.ApplyResources(this.m_nudRestartIbaAnalyzer, "m_nudRestartIbaAnalyzer");
+            this.m_nudRestartIbaAnalyzer.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.m_nudRestartIbaAnalyzer.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudRestartIbaAnalyzer.Name = "m_nudRestartIbaAnalyzer";
+            this.m_nudRestartIbaAnalyzer.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // m_browseExecutableButton
             // 
@@ -633,37 +667,11 @@ namespace iba.Controls
             // 
             this.m_openFileDialog1.FileName = "openFileDialog1";
             // 
-            // m_nudRestartIbaAnalyzer
+            // m_cbCloseIbaAnalyzer
             // 
-            resources.ApplyResources(this.m_nudRestartIbaAnalyzer, "m_nudRestartIbaAnalyzer");
-            this.m_nudRestartIbaAnalyzer.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.m_nudRestartIbaAnalyzer.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_nudRestartIbaAnalyzer.Name = "m_nudRestartIbaAnalyzer";
-            this.m_nudRestartIbaAnalyzer.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // m_cbRestartIbaAnalyzer
-            // 
-            resources.ApplyResources(this.m_cbRestartIbaAnalyzer, "m_cbRestartIbaAnalyzer");
-            this.m_cbRestartIbaAnalyzer.Name = "m_cbRestartIbaAnalyzer";
-            this.m_cbRestartIbaAnalyzer.UseVisualStyleBackColor = true;
-            this.m_cbRestartIbaAnalyzer.CheckedChanged += new System.EventHandler(this.m_cbRestartIbaAnalyzer_CheckedChanged);
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
+            resources.ApplyResources(this.m_cbCloseIbaAnalyzer, "m_cbCloseIbaAnalyzer");
+            this.m_cbCloseIbaAnalyzer.Name = "m_cbCloseIbaAnalyzer";
+            this.m_cbCloseIbaAnalyzer.UseVisualStyleBackColor = true;
             // 
             // ConfigurationControl
             // 
@@ -688,6 +696,7 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.m_newTaskToolstrip.ResumeLayout(false);
@@ -698,7 +707,6 @@ namespace iba.Controls
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudNotifyTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -774,5 +782,6 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
+        private System.Windows.Forms.CheckBox m_cbCloseIbaAnalyzer;
     }
 }

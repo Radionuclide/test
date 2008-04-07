@@ -520,7 +520,8 @@ namespace iba.Processing
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetStatus(guid);
+                //if remote, get a copy instead of the status itself
+                return Program.CommunicationObject.Manager.GetStatusCopy(guid);
             }
             catch (SocketException)
             {

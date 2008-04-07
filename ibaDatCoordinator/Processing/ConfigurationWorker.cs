@@ -27,7 +27,7 @@ namespace iba.Processing
         private Notifier m_notifier;
         public StatusData Status
         {
-            get { return m_sd; }
+            get { return m_sd.Clone(); }
         }
 
         private bool m_stop;
@@ -254,6 +254,7 @@ namespace iba.Processing
                 foreach (Guid guid in toDelete)
                     m_quotaCleanups.Remove(guid);
 
+                m_needIbaAnalyzer = false;
                 //lastly, execute plugin actions that need to happen in the case of an update
                 foreach (TaskData t in m_cd.Tasks)
                 {
@@ -284,6 +285,11 @@ namespace iba.Processing
                         if (!w.OnApply(c_new.Plugin, m_cd))
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
+
+
+                    //see if a report or extract or if task is present
+                    if (t is ExtractData || t is ReportData || t is IfTaskData)
+                        m_needIbaAnalyzer = true;
                 }
 
                 Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
@@ -311,6 +317,7 @@ namespace iba.Processing
         FileSetWithTimeStamps m_toProcessFiles;
         List<string> m_candidateNewFiles;
         List<string> m_newFiles;
+        List<string> m_directoryFiles;
 
         private void Log(Logging.Level level, string message)
         {
@@ -370,7 +377,8 @@ namespace iba.Processing
         private System.Threading.Timer retryAccessTimer;
         private System.Threading.Timer testLicenseTimer;
 
-        bool m_bTimersstopped;
+        private bool m_bTimersstopped;
+        private bool m_needIbaAnalyzer;
 
         private FileSystemWatcher fswt = null;
         private int m_nrIbaAnalyzerCalls = 0;
@@ -425,12 +433,15 @@ namespace iba.Processing
 
             try
             {
-                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+                //Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 if (m_cd.InitialScanEnabled)
                 {
-                    updateDatFileList(WhatToUpdate.ALL);
+                    Thread initialScanThread = new Thread(OnRescanTimerTick);
+                    initialScanThread.Name = "initial scan thread";
+                    initialScanThread.Priority = ThreadPriority.BelowNormal;
+                    initialScanThread.Start();
                 }
-                Thread.CurrentThread.Priority = ThreadPriority.Normal;
+                //Thread.CurrentThread.Priority = ThreadPriority.Normal;
                 if (m_stop)
                 {
                     m_sd.Started = false;
@@ -470,7 +481,7 @@ namespace iba.Processing
                         }
                     }
 
-                    StartIbaAnalyzer();
+                    if (m_needIbaAnalyzer && !m_cd.IbaAnalyzerSleepsWhenNoDatFiles) StartIbaAnalyzer();
                     while (!m_stop)
                     {
                         while (true)
@@ -519,13 +530,22 @@ namespace iba.Processing
                                 m_toProcessFiles.Remove(file);
                             }
                             UpdateConfiguration();
-                            if (m_previousRunExecutable != m_cd.IbaAnalyzerExe)
+                            if (m_needIbaAnalyzer && m_previousRunExecutable != m_cd.IbaAnalyzerExe && m_ibaAnalyzer != null)
                             {
                                 StopIbaAnalyzer();
                                 StartIbaAnalyzer();
                             }
+                            else if (m_needIbaAnalyzer && m_ibaAnalyzer == null)
+                            {
+                                StartIbaAnalyzer();
+                            }
+                            else if (!m_needIbaAnalyzer && m_ibaAnalyzer != null)
+                            {
+                                StopIbaAnalyzer();
+                            }
                         }
                         //stop the com object
+                        if (m_cd.IbaAnalyzerSleepsWhenNoDatFiles) StopIbaAnalyzer();
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
@@ -587,7 +607,11 @@ namespace iba.Processing
             networkErrorOccured = true;
             fswt.Dispose();
             fswt = null;
-            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC,e.GetException().Message));
+            //can also happen without that connection is lost, alter error message
+            if (m_cd.DatDirectory==m_cd.DatDirectoryUNC)
+                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.FileSystemWatcherProblem, m_cd.DatDirectoryUNC, e.GetException().Message));
+            else
+                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC,e.GetException().Message));
         }
 
         private bool TestLicensePlugins()
@@ -843,25 +867,24 @@ namespace iba.Processing
 
         private void OnRescanTimerTick(object ignoreMe)
         {
+            if (networkErrorOccured) return; //wait until problem is fixed
             if (m_bTimersstopped || m_stop || rescanTimer==null) return;
-            rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            lock (m_listUpdatingLock)
-            {
-                if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ALL);
-                m_waitEvent.Set();
-            }
-            if (!m_bTimersstopped && !m_stop)
+            if (rescanTimer != null)
+                rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            ScanDirectory();
+            if (!m_bTimersstopped && !m_stop && rescanTimer!=null)
                 rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
         }
 
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
             if (networkErrorOccured) return; //wait until problem is fixed
-            if (m_bTimersstopped || m_stop) return;
+            if (m_bTimersstopped || m_stop || reprocessErrorsTimer==null) return;
             reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
             lock (m_listUpdatingLock)
             {
-                if (!networkErrorOccured) updateDatFileList(WhatToUpdate.ERRORS);
+                Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForErrorDatFiles);
+                updateDatFileList(WhatToUpdate.ERRORS);
                 m_waitEvent.Set();
             }
             if (!m_bTimersstopped && !m_stop)
@@ -891,200 +914,363 @@ namespace iba.Processing
             }
         }
 
-        private enum WhatToUpdate { ALL, NEW, ERRORS };
-        private void updateDatFileList(WhatToUpdate what)
+        private enum WhatToUpdate {NEW, ERRORS, DIRECTORY};
+
+        private void ScanDirectory()
         {
-            if (what != WhatToUpdate.NEW) Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForNewDatFiles);
+            Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFiles);
             string datDir = m_cd.DatDirectoryUNC;
-            FileInfo[] fileInfos = null;
-            if (Directory.Exists(datDir))
-            {
-                m_sd.UpdatingFileList = true;
-                lock (m_processedFiles)
-                {
-                    if (what != WhatToUpdate.ALL)
-                    {
-                        int count = m_processedFiles.Count;
-                        fileInfos = new FileInfo[count];
-
-                        if (what == WhatToUpdate.ERRORS)
-                        {
-                            for (int i = 0; i < count; i++)
-                            {
-                                lock (m_sd.DatFileStates)
-                                {
-                                    if (File.Exists(m_processedFiles[i])
-                                        && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
-                                    {
-                                        fileInfos[i] = new FileInfo(m_processedFiles[i]);
-                                    }
-                                    else
-                                        fileInfos[i] = null;
-                                }
-                            }
-
-                        }
-                        else //NEW
-                        {
-                            count = m_newFiles.Count;
-                            fileInfos = new FileInfo[count];
-                            for (int i = 0; i < count; i++)
-                            {
-                                string filename = m_newFiles[i];
-                                if (File.Exists(filename)
-                                    && (!m_sd.DatFileStates.ContainsKey(filename)))
-                                {
-                                    fileInfos[i] = new FileInfo(m_newFiles[i]);
-                                }
-                                else
-                                    fileInfos[i] = null;
-                            }
-                            m_newFiles.Clear();
-                        }
-
-                        for (int i = 0; i < count; i++)
-                        {
-                            if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
-                                m_processedFiles.Remove(fileInfos[i].FullName);
-                        }
-
-                        count = m_processedFiles.Count;
-
-                        for (int i = 0; i < count; i++)
-                        {
-                            string filename = m_processedFiles[i];
-                            lock (m_sd.DatFileStates)
-                            {
-                                bool allclear = true;
-                                if (m_sd.DatFileStates.ContainsKey(filename))
-                                    foreach (TaskData dat in m_cd.Tasks)
-                                    {
-                                        if (dat.Enabled)
-                                            allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
-                                                && !shouldTaskBeDone(dat, filename);
-                                        if (!allclear) break;
-                                    }
-                                if (allclear)
-                                {
-                                    m_processedFiles.Remove(filename);
-                                    lock (m_sd.DatFileStates)
-                                    {
-                                        if (m_sd.DatFileStates.ContainsKey(filename))
-                                            m_sd.DatFileStates.Remove(filename);
-                                    }
-                                    i--;
-                                    count--;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        m_processedFiles.Clear();
-                        m_sd.DatFileStates.Clear();
-                    }
-                }
-                lock (m_toProcessFiles)
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(datDir);
-                    if (what == WhatToUpdate.ALL)
-                    {
-                        try
-                        {
-                            fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                        }
-                        catch
-                        {
-                            m_sd.UpdatingFileList = false;
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
-                            return;
-                        }
-                        m_toProcessFiles.Clear();
-                    }
-                    bool bPermanentErrorFilesChanged = false;
-                    foreach (FileInfo fi in fileInfos)
-                    {
-                        if (m_stop) break;
-                        if (fi == null) continue;
-                        string filename = fi.FullName;
-                        switch (ProcessDatfileReadyness(filename))
-                        {
-                            case DatFileStatus.State.NOT_STARTED:
-                                if (!m_toProcessFiles.Contains(filename))
-                                    m_toProcessFiles.Add(filename);
-                                lock (m_sd.DatFileStates)
-                                {
-                                    m_sd.DatFileStates[filename] = new DatFileStatus();
-                                }
-                                break;
-                            case DatFileStatus.State.COMPLETED_SUCCESFULY:
-                                lock (m_sd.DatFileStates)
-                                {
-                                    if (m_sd.DatFileStates.ContainsKey(filename))
-                                        m_sd.DatFileStates.Remove(filename);
-                                }
-                                break; //do not add
-                            case DatFileStatus.State.MEMORY_EXCEEDED:
-                            case DatFileStatus.State.TIMED_OUT:
-                            case DatFileStatus.State.COMPLETED_FAILURE:
-                                if (!m_toProcessFiles.Contains(filename))
-                                    m_toProcessFiles.Add(filename);
-                                break;
-                            case DatFileStatus.State.NO_ACCESS:
-                                lock (m_candidateNewFiles)
-                                {
-                                    if (m_candidateNewFiles.Contains(filename))
-                                        break; //file being written and allready monitored
-                                }
-                                lock (m_processedFiles)
-                                {
-                                    if (!m_processedFiles.Contains(filename))
-                                        m_processedFiles.Add(filename);
-                                }
-                                DatFileStatus status = new DatFileStatus();
-                                lock (m_sd.DatFileStates)
-                                {
-                                    status.TimesTried = m_sd.DatFileStates[filename].TimesTried;
-                                    foreach (TaskData dat in m_cd.Tasks)
-                                    {
-                                        if (dat.Enabled) status.States[dat] = DatFileStatus.State.NO_ACCESS;
-                                    }
-                                    m_sd.DatFileStates[filename] = status;
-                                }
-                                break;
-                            case DatFileStatus.State.INVALID_DATFILE:
-                            case DatFileStatus.State.RUNNING:
-                                break;
-                            case DatFileStatus.State.TRIED_TOO_MANY_TIMES:
-                                lock (m_sd.PermanentErrorFiles)
-                                {
-                                    m_sd.PermanentErrorFiles.Add(filename);
-                                    bPermanentErrorFilesChanged = true;
-                                }
-                                //DatFileStatus status2 = new DatFileStatus();
-                                //lock (m_sd.DatFileStates)
-                                //{
-                                //    status2.TimesTried = m_sd.DatFileStates[filename].TimesTried;
-                                //    foreach (TaskData dat in m_cd.Tasks)
-                                //    {
-                                //        if (dat.Enabled) status2.States[dat] = DatFileStatus.State.TRIED_TOO_MANY_TIMES;
-                                //    }
-                                //    m_sd.DatFileStates[filename] = status2;
-                                //}
-                                break;
-                        }
-                    }
-                    m_sd.Changed = true;
-                    m_sd.PermanentErrorFilesChanged = bPermanentErrorFilesChanged;
-                }
-                m_sd.MergeProcessedAndToProcessLists();
-                m_sd.UpdatingFileList = false;
-            }
-            else
+            if (!Directory.Exists(datDir))
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                return;
+            }
+ 
+            //before we do any damage, see if we can get the file info, otherwise quit it.
+            DirectoryInfo dirInfo = new DirectoryInfo(datDir);
+            FileInfo[] fileInfos = null;
+            m_sd.UpdatingFileList = true;
+            try
+            {
+                fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
+                {
+                    int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
+                    return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
+                }); //oldest files first
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                return;
+            }
+            //second step, clear processed files
+            lock (m_listUpdatingLock)
+            {
+                lock (m_processedFiles)
+                {
+                    lock (m_sd.DatFileStates)
+                    {
+                        foreach (string file in m_processedFiles)
+                        {
+                            if (m_sd.DatFileStates.ContainsKey(file))
+                                m_sd.DatFileStates.Remove(file);
+                        }
+                    }
+                    m_processedFiles.Clear();
+                }
+                m_sd.MergeProcessedAndToProcessLists();
+            }
+
+            int count = 0;
+            m_directoryFiles = new List<string>();
+            m_sd.UpdatingFileList = false;
+            foreach (FileInfo info in fileInfos)
+            {
+                if (m_stop) break;
+                string filename = info.FullName;
+                lock (m_toProcessFiles)
+                {
+                    if (m_toProcessFiles.Contains(filename))
+                        continue;
+                }
+                lock (m_candidateNewFiles)
+                {
+                    if (m_toProcessFiles.Contains(filename))
+                        continue;
+                }
+                if (!IsInvalidOrProcessed(filename))
+                {
+                    lock (m_candidateNewFiles)
+                    {
+                        if (!m_candidateNewFiles.Contains(filename))
+                        {
+                            m_directoryFiles.Add(filename);
+                            count++;
+                        }
+                    }
+                }
+                if (count >= 10)
+                {
+                    lock (m_listUpdatingLock)
+                    {
+                        updateDatFileList(WhatToUpdate.DIRECTORY);
+                    }
+                    m_waitEvent.Set(); //if main thread was waiting, let it continue
+                    count = 0;
+                    m_directoryFiles.Clear();
+                }
+                else
+                    Thread.Sleep(0);
+            }
+            if (count > 0 && !m_stop)
+            {
+                lock (m_listUpdatingLock)
+                {
+                    updateDatFileList(WhatToUpdate.DIRECTORY);
+                }
+            }
+            Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFilesFinished);
+        }
+
+        private bool IsInvalidOrProcessed(string DatFile)
+        {   //returns true if processed flag is found or this is not an ibaFile
+            //in both cases the file can be ignored for further processing
+            FileStream fs;
+            try
+            {
+                fs = new FileStream(DatFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+            }
+            catch
+            {
+                return false; //can't open it, let UpdateFiles handle this case
+            }
+            
+            Byte [] myBytes = new Byte[4];
+            try
+            {
+                fs.Read(myBytes, 0, 4);
+                System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+                string str = enc.GetString(myBytes);
+                if (str != "PDA1" && str != "PDA2" && str != "QDR1")
+                    return true;
+                fs.Read(myBytes, 0, 4);
+                fs.Read(myBytes, 0, 4);
+                uint offset = System.BitConverter.ToUInt32(myBytes, 0);
+                if (offset < fs.Length)
+                    fs.Seek(offset, SeekOrigin.Begin);
+                else
+                {
+                    fs.Close();
+                    fs.Dispose();
+                    return true;
+                }
+
+                bool succes = false;
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    while (true)
+                    {
+                        String line = sr.ReadLine();
+                        if (line == null) break;
+                        else if (line.StartsWith("endASCII")) break;
+                        else if (line.StartsWith("status"))
+                        {
+                            if (line == "status:processed")
+                            {
+                                succes = true;
+                                break;
+                            }
+                        }
+                        else if (line.StartsWith("$DATCOOR_status"))
+                        {
+                            if (line == "$DATCOOR_status:processed")
+                            {
+                                succes = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                fs.Close();
+                fs.Dispose();
+                return succes;
+            }
+            catch
+            {
+                fs.Close();
+                fs.Dispose();
+                return true; // when failing in this stage it is not a PDA file, ignore this file
             }
         }
+
+        private void updateDatFileList(WhatToUpdate what)
+        {
+            string datDir = m_cd.DatDirectoryUNC;
+            FileInfo[] fileInfos = null;
+            m_sd.UpdatingFileList = true;
+            lock (m_processedFiles)
+            {
+                int count = m_processedFiles.Count;
+                fileInfos = new FileInfo[count];
+
+                if (what == WhatToUpdate.ERRORS)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        lock (m_sd.DatFileStates)
+                        {
+                            if (File.Exists(m_processedFiles[i])
+                                && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
+                            {
+                                fileInfos[i] = new FileInfo(m_processedFiles[i]);
+                            }
+                            else
+                                fileInfos[i] = null;
+                        }
+                    }
+
+                }
+                else if (what == WhatToUpdate.NEW)//NEW
+                {
+                    count = m_newFiles.Count;
+                    fileInfos = new FileInfo[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        string filename = m_newFiles[i];
+                        if (File.Exists(filename)
+                            && (!m_sd.DatFileStates.ContainsKey(filename)))
+                        {
+                            fileInfos[i] = new FileInfo(m_newFiles[i]);
+                        }
+                        else
+                            fileInfos[i] = null;
+                    }
+                    m_newFiles.Clear();
+                }
+                else if (what == WhatToUpdate.DIRECTORY)//DIRECTORY
+                {
+                    count = m_directoryFiles.Count;
+                    fileInfos = new FileInfo[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        string filename = m_directoryFiles[i];
+                        if (File.Exists(filename)
+                            && (!m_sd.DatFileStates.ContainsKey(filename)))
+                        {
+                            fileInfos[i] = new FileInfo(m_directoryFiles[i]);
+                        }
+                        else
+                            fileInfos[i] = null;
+                    }
+                    m_directoryFiles.Clear();
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
+                        m_processedFiles.Remove(fileInfos[i].FullName);
+                }
+
+                count = m_processedFiles.Count;
+                List<string> toCleanup = new List<string>();
+                for (int i = 0; i < count; i++)
+                {
+                    string filename = m_processedFiles[i];
+                    lock (m_sd.DatFileStates)
+                    {
+                        bool allclear = true;
+                        if (m_sd.DatFileStates.ContainsKey(filename))
+                            foreach (TaskData dat in m_cd.Tasks)
+                            {
+                                if (dat.Enabled)
+                                    allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
+                                        && !shouldTaskBeDone(dat, filename);
+                                if (!allclear) break;
+                            }
+                        if (allclear)
+                        {
+                            toCleanup.Add(filename);
+                        }
+                    }
+                    //keep the 5 most recent
+                }
+
+                while (toCleanup.Count > 5)
+                {
+                    string filename = toCleanup[0];
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_processedFiles.Remove(filename);
+                        if (m_sd.DatFileStates.ContainsKey(filename))
+                            m_sd.DatFileStates.Remove(filename);
+                    }
+                    toCleanup.RemoveAt(0);
+                }
+            }
+            lock (m_toProcessFiles)
+            {
+                bool bPermanentErrorFilesChanged = false;
+                foreach (FileInfo fi in fileInfos)
+                {
+                    if (m_stop) break;
+                    if (fi == null) continue;
+                    string filename = fi.FullName;
+                    switch (ProcessDatfileReadyness(filename))
+                    {
+                        case DatFileStatus.State.NOT_STARTED:
+                            if (!m_toProcessFiles.Contains(filename))
+                                m_toProcessFiles.Add(filename);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename] = new DatFileStatus();
+                            }
+                            break;
+                        case DatFileStatus.State.COMPLETED_SUCCESFULY:
+                            lock (m_sd.DatFileStates)
+                            {
+                                if (m_sd.DatFileStates.ContainsKey(filename))
+                                    m_sd.DatFileStates.Remove(filename);
+                            }
+                            break; //do not add
+                        case DatFileStatus.State.MEMORY_EXCEEDED:
+                        case DatFileStatus.State.TIMED_OUT:
+                        case DatFileStatus.State.COMPLETED_FAILURE:
+                            if (!m_toProcessFiles.Contains(filename))
+                                m_toProcessFiles.Add(filename);
+                            break;
+                        case DatFileStatus.State.NO_ACCESS:
+                            lock (m_candidateNewFiles)
+                            {
+                                if (m_candidateNewFiles.Contains(filename))
+                                    break; //file being written and allready monitored
+                            }
+                            lock (m_processedFiles)
+                            {
+                                if (!m_processedFiles.Contains(filename))
+                                    m_processedFiles.Add(filename);
+                            }
+                            DatFileStatus status = new DatFileStatus();
+                            lock (m_sd.DatFileStates)
+                            {
+                                status.TimesTried = m_sd.DatFileStates[filename].TimesTried;
+                                foreach (TaskData dat in m_cd.Tasks)
+                                {
+                                    if (dat.Enabled) status.States[dat] = DatFileStatus.State.NO_ACCESS;
+                                }
+                                m_sd.DatFileStates[filename] = status;
+                            }
+                            break;
+                        case DatFileStatus.State.INVALID_DATFILE:
+                        case DatFileStatus.State.RUNNING:
+                            break;
+                        case DatFileStatus.State.TRIED_TOO_MANY_TIMES:
+                            lock (m_sd.PermanentErrorFiles)
+                            {
+                                m_sd.PermanentErrorFiles.Add(filename);
+                                bPermanentErrorFilesChanged = true;
+                            }
+                            //DatFileStatus status2 = new DatFileStatus();
+                            //lock (m_sd.DatFileStates)
+                            //{
+                            //    status2.TimesTried = m_sd.DatFileStates[filename].TimesTried;
+                            //    foreach (TaskData dat in m_cd.Tasks)
+                            //    {
+                            //        if (dat.Enabled) status2.States[dat] = DatFileStatus.State.TRIED_TOO_MANY_TIMES;
+                            //    }
+                            //    m_sd.DatFileStates[filename] = status2;
+                            //}
+                            break;
+                    }
+                    Thread.Sleep(0); //allow other threads like filesystemwatcher
+                }
+                m_sd.Changed = true;
+                m_sd.PermanentErrorFilesChanged = bPermanentErrorFilesChanged;
+            }
+            m_sd.UpdatingFileList = false;
+            m_sd.MergeProcessedAndToProcessLists();
+        }
+
 
         private DatFileStatus.State ProcessDatfileReadyness(string filename)
         {
@@ -1337,7 +1523,12 @@ namespace iba.Processing
 
         private void ProcessDatfile(string DatFile)
         {
-            lock(m_listUpdatingLock)
+            if (m_needIbaAnalyzer)
+            {
+                if (m_ibaAnalyzer == null) StartIbaAnalyzer();
+                if (m_ibaAnalyzer == null) return;
+            }
+            lock (m_listUpdatingLock)
             {
                 lock (m_processedFiles)
                 {
@@ -1350,11 +1541,12 @@ namespace iba.Processing
                     FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
                     fs.Close();
                     fs.Dispose();
-                    m_ibaAnalyzer.OpenDataFile(0,DatFile);
+                    if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0,DatFile);
                 }
                 catch (Exception ex)
                 {
                     Log(Logging.Level.Exception,ex.Message);
+                    if (!m_needIbaAnalyzer) return;
                     try
                     {
                         m_ibaAnalyzer.CloseDataFiles();
@@ -1362,8 +1554,11 @@ namespace iba.Processing
                     catch
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
-                        StopIbaAnalyzer(false);
-                        StartIbaAnalyzer();
+                        if (m_needIbaAnalyzer)
+                        {
+                            StopIbaAnalyzer(false);
+                            StartIbaAnalyzer();
+                        }
                     }
                     return;
                 }
@@ -1422,8 +1617,11 @@ namespace iba.Processing
                             catch
                             {
                                 Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
-                                StopIbaAnalyzer(false);
-                                StartIbaAnalyzer();
+                                if (m_needIbaAnalyzer)
+                                {
+                                    StopIbaAnalyzer(false);
+                                    StartIbaAnalyzer();
+                                }
                             }
                             CopyDatFile(DatFile, dat);
                             if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
@@ -1448,8 +1646,11 @@ namespace iba.Processing
                                     catch
                                     {
                                         Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
-                                        StopIbaAnalyzer(false);
-                                        StartIbaAnalyzer();
+                                        if (m_needIbaAnalyzer)
+                                        {
+                                            StopIbaAnalyzer(false);
+                                            StartIbaAnalyzer();
+                                        }
                                     }
                                     return;
                                 }
@@ -1521,7 +1722,7 @@ namespace iba.Processing
                         if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
                         break;
                     }
-                    if (m_cd.BRestartIbaAnalyzer && m_nrIbaAnalyzerCalls >= m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
+                    if (m_needIbaAnalyzer && m_cd.BRestartIbaAnalyzer && m_nrIbaAnalyzerCalls >= m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
                     {
                         StopIbaAnalyzer(false);
                         StartIbaAnalyzer();
@@ -1550,17 +1751,19 @@ namespace iba.Processing
                     }
                 }
 
-                try
+                if (m_needIbaAnalyzer)
                 {
-                    m_ibaAnalyzer.CloseDataFiles();
+                    try
+                    {
+                        m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                        StopIbaAnalyzer(false);
+                        StartIbaAnalyzer();
+                    }
                 }
-                catch
-                {
-                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
-                    StopIbaAnalyzer(false);
-                    StartIbaAnalyzer();
-                }
-
 
                
                 IbaFileUpdater ibaDatFile = new IbaFileClass();

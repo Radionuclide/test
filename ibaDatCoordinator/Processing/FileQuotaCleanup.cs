@@ -20,7 +20,6 @@ namespace iba.Processing
             m_files = new List<String>();
             m_extension = extension;
             Reset();
-            //TODO: set up lists;
         }
 
         public void AddFile(string filename)
@@ -87,7 +86,7 @@ namespace iba.Processing
 
         public void Clean(string datfile)
         {
-            while (m_size > (m_task.Quota * 1024 * 1024) && m_files.Count > 0)
+            while (m_size > (((ulong) (m_task.Quota)) * 1024 * 1024) && m_files.Count > 0)
             {
                 string file = m_files[0];
                 try

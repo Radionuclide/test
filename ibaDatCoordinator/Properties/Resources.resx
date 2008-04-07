@@ -328,8 +328,8 @@
   <data name="niConnected" xml:space="preserve">
     <value>ibaDatCoordinator (connected)</value>
   </data>
-  <data name="logCheckingForNewDatFiles" xml:space="preserve">
-    <value>Checking for .dat files</value>
+  <data name="logCheckingForErrorDatFiles" xml:space="preserve">
+    <value>Scanning for .dat files for which operations failed</value>
   </data>
   <data name="statText3" xml:space="preserve">
     <value>stopped</value>
@@ -807,5 +807,20 @@
   </data>
   <data name="ibaFileProblem" xml:space="preserve">
     <value>Problem opening .dat file with ibaFile:</value>
+  </data>
+  <data name="IbaAnalyzerRestart" xml:space="preserve">
+    <value>New ibaAnalyzer started with process ID: {0}</value>
+  </data>
+  <data name="IbaAnalyzerRestart2" xml:space="preserve">
+    <value>New ibaAnalyzer started</value>
+  </data>
+  <data name="FileSystemWatcherProblem" xml:space="preserve">
+    <value>Problem monitoring .dat directory '{0}' : "{1}"</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFiles" xml:space="preserve">
+    <value>Started scanning directory for unprocessed .dat files</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFilesFinished" xml:space="preserve">
+    <value>Finished scanning directory for unprocessed .dat files</value>
   </data>
 </root>

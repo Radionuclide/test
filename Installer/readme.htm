@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>DatCoordinatorInstall_v1.8.9.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>DatCoordinatorInstall_v1.9.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,15 +26,33 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.8.9.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.9.0.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
-<P class="header1">Version 1.8.9 - 11/02/2008</P>
+
+<P class="header1">Version 1.9.0 - 7/04/2008</P>
 <P class="header2">Enhancements</P>
 <UL>
-    <LI>  IbaDatCoordinator restarts ibaAnalyzer after a certain number of times ibaAnalyzer has done a report or extraction or evaluated an expression. 
+    <LI>  Initial scans and cyclic scans for unprocessed .dat files are now run on a separate thread so that the execution of tasks is not halted.
+	</LI>
+    <LI>  No instances of ibaAnalyzer are started anymore when there are no tasks defined requiring ibaAnalyzer.
+	</LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI>  You could delete tasks when the job was running. This should have been disabled.
+	</LI>
+    <LI>  Cleanup strategy of file output producing tasks was faulty when limiting the used diskspace to an amount over 2 GByte.
+	</LI>
+</UL>
+
+<P class="header1">Version 1.8.10 - 12/02/2008</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI>  You can select to have IbaDatCoordinator restarting ibaAnalyzer after a certain number of times ibaAnalyzer has done a report or extraction or evaluated an expression. 
     This is to free any memory leaked by ibaAnalyzer or one of its components.
-    The number of times before ibaDatCoordinator restarts ibaAnalyzer can be modified in the XML configuration file, but is not available in the status program to prevent inexperienced users from tampering with it.
+	</LI>
+    <LI>  You can select to have IbaDatCoordinator closing ibaAnalyzer if there are currently no files left to process. This way there is only an ibaAnalyzer process in memory when there are files to process.
 	</LI>
 </UL>
 <P class="header2">Bugfixes</P>

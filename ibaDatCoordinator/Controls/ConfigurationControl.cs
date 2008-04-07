@@ -173,6 +173,7 @@ namespace iba.Controls
 
             m_nudRestartIbaAnalyzer.Value = (decimal)m_data.TimesAfterWhichtToRestartIbaAnalyzer;
             m_cbRestartIbaAnalyzer.Checked = m_nudRestartIbaAnalyzer.Enabled = m_data.BRestartIbaAnalyzer;
+            m_cbCloseIbaAnalyzer.Checked = m_data.IbaAnalyzerSleepsWhenNoDatFiles;
         }
 
         public void SaveData()
@@ -205,10 +206,9 @@ namespace iba.Controls
             m_data.UpdateUNC();
             m_data.BRestartIbaAnalyzer = m_cbRestartIbaAnalyzer.Checked;
             m_data.TimesAfterWhichtToRestartIbaAnalyzer = (int) m_nudRestartIbaAnalyzer.Value;
-
+            m_data.IbaAnalyzerSleepsWhenNoDatFiles = m_cbCloseIbaAnalyzer.Checked;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
-
         }
 
         public void LeaveCleanup() {}
