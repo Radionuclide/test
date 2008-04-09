@@ -42,6 +42,13 @@ namespace iba.Data
             set { m_activeNode = value; }
         }
 
+        private bool m_binary;
+        public bool Binary
+        {
+            get { return m_binary; }
+            set { m_binary = value; }
+        }
+
         public WatchDogData()
         { 
             //default settings
@@ -50,6 +57,7 @@ namespace iba.Data
             m_portNr = 40002;
             m_address = "";
             m_activeNode = false;
+            m_binary = false;
         }
 
         public object Clone()
@@ -60,6 +68,7 @@ namespace iba.Data
             wd.m_cycleTime = m_cycleTime;
             wd.m_enabled = m_enabled;
             wd.m_portNr = m_portNr;
+            wd.m_binary = m_binary;
             return wd;
         }
 
@@ -71,7 +80,8 @@ namespace iba.Data
                 && temp.m_address == m_address
                 && temp.m_cycleTime == m_cycleTime
                 && temp.m_enabled == m_enabled
-                && temp.m_portNr == m_portNr;
+                && temp.m_portNr == m_portNr
+                && temp.m_binary == m_binary;
         }
 
         public override int GetHashCode()
@@ -80,7 +90,8 @@ namespace iba.Data
                 ^ m_address.GetHashCode()
                 ^ m_cycleTime.GetHashCode()
                 ^ m_enabled.GetHashCode()
-                ^ m_portNr.GetHashCode();
+                ^ m_portNr.GetHashCode()
+                ^ m_binary.GetHashCode();
         }
     }
 }

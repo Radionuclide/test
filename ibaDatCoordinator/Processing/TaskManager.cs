@@ -6,6 +6,7 @@ using iba.Data;
 using System.Net.Sockets;
 using iba.Utility;
 using iba.Plugins;
+using System.Runtime.InteropServices;
 
 namespace iba.Processing
 {
@@ -371,19 +372,96 @@ namespace iba.Processing
             StringBuilder message = new StringBuilder();
             lock (m_workers)
             {
-                foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> val in m_workers)
+                List<ConfigurationData> confs = Configurations;
+                confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+
+                foreach (ConfigurationData conf in confs)
                 {
-                    message.Append(val.Key.Name);
+                    StatusData s = m_workers[conf].Status;
+                    message.Append(conf.Name);
                     message.Append(':');
-                    message.Append(val.Value.Status.ReadFiles.Count);
+                    message.Append(s.Started?"started,":"stopped,");
+                    message.Append(s.ReadFiles.Count);
                     message.Append(" todo,");
-                    message.Append(val.Value.Status.ProcessedFiles.Count);
+                    message.Append(s.ProcessedFiles.Count);
                     message.Append(" done,");
-                    message.Append(val.Value.Status.CountErrors());
-                    message.Append(" erroneous;");
+                    message.Append(s.CountErrors());
+                    message.Append(" failed,");
+                    message.Append(s.PermanentErrorFiles.Count);
+                    message.Append(" perm. failed;");
                 }
             }
             return message.ToString();
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct BinaryWatchdogMessageLine
+        {
+            public int state;
+            public int todoCount;
+            public int doneCount;
+            public int errorCount;
+            public int permErrorCount;
+            public int reserved1;
+            public int reserved2;
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct BinaryWatchdogMessage
+        {
+            public int counter;
+            public int version;
+            public int reserved1;
+            public int reserved2;
+
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst = 16)]
+            public BinaryWatchdogMessageLine[] jobs;
+        }
+
+        private int m_watchdogCounter;
+
+        public unsafe byte[] GetStatusForWatchdogBinary()
+        {
+            BinaryWatchdogMessage pMsg = new BinaryWatchdogMessage();
+            
+            pMsg.counter = m_watchdogCounter++;
+            pMsg.version = 1; //version 1
+            pMsg.reserved1 = 0;
+            pMsg.reserved2 = 0;
+            pMsg.jobs = new BinaryWatchdogMessageLine[16];
+            lock (m_workers)
+            {
+                List<ConfigurationData> confs = Configurations;
+                confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                for (int i = 0; i < Math.Min(16,confs.Count); i++)
+                {
+                    StatusData s = m_workers[confs[i]].Status;
+                    pMsg.jobs[i].state = s.Started ? 1 : 0;
+                    pMsg.jobs[i].todoCount = s.ReadFiles.Count;
+                    pMsg.jobs[i].doneCount = s.ProcessedFiles.Count;
+                    pMsg.jobs[i].errorCount = s.CountErrors();
+                    pMsg.jobs[i].permErrorCount = s.PermanentErrorFiles.Count;
+                    pMsg.jobs[i].reserved1 = 0;
+                    pMsg.jobs[i].reserved2 = 0;
+                }
+                for (int i = confs.Count; i < 16; i++)
+                {
+                    pMsg.jobs[i].state = 0;
+                    pMsg.jobs[i].todoCount = 0;
+                    pMsg.jobs[i].doneCount = 0;
+                    pMsg.jobs[i].errorCount = 0;
+                    pMsg.jobs[i].permErrorCount = 0;
+                    pMsg.jobs[i].reserved1 = 0;
+                    pMsg.jobs[i].reserved2 = 0;
+                }
+            }
+           
+            byte[] answer = new byte[Marshal.SizeOf(typeof(BinaryWatchdogMessage))];
+            fixed (byte* pAnswer = &answer[0])
+            {
+                Marshal.StructureToPtr(pMsg, new IntPtr(pAnswer), false);
+            }
+            return answer;
         }
     }
 

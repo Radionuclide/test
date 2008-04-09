@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>DatCoordinatorInstall_v1.9.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>DatCoordinatorInstall_v1.9.1.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,9 +26,24 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.9.0.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.9.1.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.9.1 - 9/04/2008</P>
+<P class="header2">New features</P>
+<UL>
+    <LI>  Copy/Move task extended to a Copy/Move/Delete task.
+	</LI>
+    <LI>  Watchdog extended so that you can select to have a binary message (with data at fixed offsets) instead of a text message. The text message itself is extended
+    to provide information whether or not the job is started and the number of files which ibaDatCoordinator has tried to process the set maximum number of times without success.
+	</LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI>  The current file the DatCoordinator was processing was sometimes not visible in status view.
+	</LI>
+</UL>
 
 <P class="header1">Version 1.9.0 - 7/04/2008</P>
 <P class="header2">Enhancements</P>

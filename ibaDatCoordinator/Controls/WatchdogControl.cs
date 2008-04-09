@@ -27,6 +27,8 @@ namespace iba.Controls
             m_data = datasource as WatchDogData;
             m_rbActiveNode.Checked = m_data.ActiveNode;
             m_rbPassiveNode.Checked = !m_data.ActiveNode;
+            m_rbBinary.Checked = m_data.Binary;
+            m_rbText.Checked = !m_data.Binary;
             m_timerStatus.Enabled = m_enableCheckBox.Checked = m_data.Enabled;
             m_cycleUpDown.Value = m_data.CycleTime;
             m_tbHost.Text = m_data.Address;
@@ -44,6 +46,7 @@ namespace iba.Controls
             m_data.CycleTime = (int) m_cycleUpDown.Value;
             m_data.ActiveNode = m_rbActiveNode.Checked;
             m_data.Enabled = m_enableCheckBox.Checked;
+            m_data.Binary = m_rbBinary.Checked;
             TaskManager.Manager.ReplaceWatchdogData(m_data.Clone() as WatchDogData);
             m_timerStatus.Enabled = false;
         }

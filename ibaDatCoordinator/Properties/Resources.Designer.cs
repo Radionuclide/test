@@ -804,6 +804,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed to delete file.
+        /// </summary>
+        internal static string logDeleteTaskFailed {
+            get {
+                return ResourceManager.GetString("logDeleteTaskFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to file successfully deleted.
+        /// </summary>
+        internal static string logDeleteTaskSuccess {
+            get {
+                return ResourceManager.GetString("logDeleteTaskSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to extractor failed.
         /// </summary>
         internal static string logExtractFailed {

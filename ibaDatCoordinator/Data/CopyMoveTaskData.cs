@@ -14,10 +14,19 @@ namespace iba.Data
             set { m_removeSource = value; }
         }
 
-        public CopyMoveTaskData(ConfigurationData parent) : base(parent)
+        bool m_delete;
+        public bool ActionDelete
+        {
+            get { return m_delete; }
+            set { m_delete = value; }
+        }
+
+        public CopyMoveTaskData(ConfigurationData parent)
+            : base(parent)
         {
             m_name = iba.Properties.Resources.copyTitle;
             m_removeSource = false;
+            m_delete = false;
             m_subfolderChoice = SubfolderChoiceA.NONE;
             m_whatFile = WhatFileEnumA.DATFILE;
         }
@@ -49,6 +58,7 @@ namespace iba.Data
         {
             CopyMoveTaskData cd = new CopyMoveTaskData(null);
             cd.m_removeSource = m_removeSource;
+            cd.m_delete = m_delete;
             cd.m_subfolderChoice = m_subfolderChoice;
             cd.m_wtodo = m_wtodo;
 

@@ -47,10 +47,13 @@ namespace iba.Controls
             backgroundWorker1.RunWorkerAsync();
         }
 
+        private bool m_stop;
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             IbaFileUpdater ibaDatFile = new IbaFileClass();
-            for (int count = 0; count < m_files.Count; count++)
+            m_stop = false;
+            for (int count = 0; count < m_files.Count && !m_stop; count++)
             {
                 string filename = m_files[count];
                 DateTime time = DateTime.Now;
@@ -98,6 +101,11 @@ namespace iba.Controls
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            m_stop = true;
         }
     }
 

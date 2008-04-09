@@ -47,11 +47,15 @@ namespace iba.Controls
             this.m_rbPassiveNode = new System.Windows.Forms.RadioButton();
             this.m_rbActiveNode = new System.Windows.Forms.RadioButton();
             this.m_timerStatus = new System.Windows.Forms.Timer(this.components);
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.m_rbBinary = new System.Windows.Forms.RadioButton();
+            this.m_rbText = new System.Windows.Forms.RadioButton();
             this.m_statusGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_cycleUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_statusGroupBox
@@ -178,10 +182,33 @@ namespace iba.Controls
             this.m_timerStatus.Interval = 500;
             this.m_timerStatus.Tick += new System.EventHandler(this.m_timerStatus_Tick);
             // 
+            // groupBox4
+            // 
+            resources.ApplyResources(this.groupBox4, "groupBox4");
+            this.groupBox4.Controls.Add(this.m_rbBinary);
+            this.groupBox4.Controls.Add(this.m_rbText);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.TabStop = false;
+            // 
+            // m_rbBinary
+            // 
+            resources.ApplyResources(this.m_rbBinary, "m_rbBinary");
+            this.m_rbBinary.Name = "m_rbBinary";
+            this.m_rbBinary.TabStop = true;
+            this.m_rbBinary.UseVisualStyleBackColor = true;
+            // 
+            // m_rbText
+            // 
+            resources.ApplyResources(this.m_rbText, "m_rbText");
+            this.m_rbText.Name = "m_rbText";
+            this.m_rbText.TabStop = true;
+            this.m_rbText.UseVisualStyleBackColor = true;
+            // 
             // WatchdogControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
@@ -197,6 +224,8 @@ namespace iba.Controls
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -220,5 +249,8 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbActiveNode;
         private System.Windows.Forms.Timer m_timerStatus;
         private System.Windows.Forms.Button m_ApplyButton;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton m_rbBinary;
+        private System.Windows.Forms.RadioButton m_rbText;
     }
 }

@@ -823,4 +823,10 @@
   <data name="logCheckingForUnprocessedDatFilesFinished" xml:space="preserve">
     <value>Finished scanning directory for unprocessed .dat files</value>
   </data>
+  <data name="logDeleteTaskFailed" xml:space="preserve">
+    <value>failed to delete file</value>
+  </data>
+  <data name="logDeleteTaskSuccess" xml:space="preserve">
+    <value>file successfully deleted</value>
+  </data>
 </root>

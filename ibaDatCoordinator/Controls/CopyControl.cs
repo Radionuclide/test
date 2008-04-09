@@ -36,13 +36,26 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as CopyMoveTaskData;
             m_targetFolderTextBox.Text = m_data.DestinationMap;
-            m_cbRemoveSource.Checked = m_data.RemoveSource;
+
+            if (m_data.ActionDelete)
+            {
+                m_rbDelete.Checked = true;
+                m_rbCopy.Checked = false;
+                m_rbMove.Checked = false;
+                m_gbTarget.Enabled = false;
+            }
+            else
+            {
+                m_gbTarget.Enabled = true;
+                m_rbDelete.Checked = false;
+                m_rbCopy.Checked = !m_data.RemoveSource;
+                m_rbMove.Checked = m_data.RemoveSource;
+            }
 
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_nudDirs.Value = m_data.SubfoldersNumber;
             m_nudQuota.Value = m_data.Quota;
-            
             
             m_rbNONE.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.NONE;
             m_rbHour.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.HOUR;
@@ -60,7 +73,9 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_data.RemoveSource = m_cbRemoveSource.Checked;
+            m_data.RemoveSource = m_rbMove.Checked || m_rbDelete.Checked;
+            m_data.ActionDelete = m_rbDelete.Checked;
+            
             m_data.DestinationMap = m_targetFolderTextBox.Text;
             if (m_rbNONE.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.NONE;
             if (m_rbHour.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.HOUR;
@@ -149,6 +164,11 @@ namespace iba.Controls
                     m_nudDirs.Enabled = false;
                 }
             }
+        }
+
+        private void m_rbDelete_CheckedChanged(object sender, EventArgs e)
+        {
+            m_gbTarget.Enabled = !m_rbDelete.Checked;
         }
 
     }

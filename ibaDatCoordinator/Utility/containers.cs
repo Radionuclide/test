@@ -260,9 +260,8 @@ namespace iba.Utility
                         (result as List<T>).Add(Ait.Current);
                     if (!Ait.MoveNext())
                     {
-                        if (kind == SetOperationKind.UNION) 
-                            while (Bit.MoveNext())
-                                (result as List<T>).Add(Bit.Current);
+                        if (kind == SetOperationKind.UNION)
+                            do (result as List<T>).Add(Bit.Current);while (Bit.MoveNext());
                         return result;
                     }
                 }
@@ -273,8 +272,7 @@ namespace iba.Utility
                     if (!Bit.MoveNext())
                     {
                         if (kind != SetOperationKind.INTERSECTION) 
-                            while (Ait.MoveNext())
-                                (result as List<T>).Add(Ait.Current);
+                            do (result as List<T>).Add(Ait.Current); while (Ait.MoveNext());
                         return result;
                     }
                 }
@@ -284,16 +282,14 @@ namespace iba.Utility
                         (result as List<T>).Add(Ait.Current);
                     if (!Ait.MoveNext())
                     {
-                        if (kind == SetOperationKind.UNION) 
-                            while (Bit.MoveNext())
-                                (result as List<T>).Add(Bit.Current);
+                        if (kind == SetOperationKind.UNION)
+                            do (result as List<T>).Add(Bit.Current); while (Bit.MoveNext());
                         return result;
                     }
                     if (!Bit.MoveNext())
                     {
-                        if (kind != SetOperationKind.INTERSECTION) 
-                            while (Ait.MoveNext())
-                                (result as List<T>).Add(Ait.Current);
+                        if (kind != SetOperationKind.INTERSECTION)
+                            do (result as List<T>).Add(Ait.Current); while (Ait.MoveNext());
                         return result;
                     }
                 }

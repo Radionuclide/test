@@ -27,7 +27,7 @@ namespace iba.Processing
         private Notifier m_notifier;
         public StatusData Status
         {
-            get { return m_sd.Clone(); }
+            get { return m_sd; }
         }
 
         private bool m_stop;
@@ -433,6 +433,7 @@ namespace iba.Processing
 
             try
             {
+                m_bTimersstopped = false;
                 //Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 if (m_cd.InitialScanEnabled)
                 {
@@ -452,16 +453,9 @@ namespace iba.Processing
                 {
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
-                    if (m_cd.RescanEnabled)
-                    {
-                        rescanTimer = new System.Threading.Timer(new TimerCallback(OnRescanTimerTick));
-                        rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
-                    }
-                    else rescanTimer = null;
-                    
+                   
                     retryAccessTimer = new System.Threading.Timer(new TimerCallback(OnAddNewDatFileTimerTick));
                     retryAccessTimer.Change(1000, Timeout.Infinite); //hard coded, each second see if no new files are available
-                    m_bTimersstopped = false;
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
@@ -944,6 +938,7 @@ namespace iba.Processing
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                 return;
             }
+
             //second step, clear processed files
             lock (m_listUpdatingLock)
             {
@@ -1612,7 +1607,7 @@ namespace iba.Processing
                         {
                             try
                             {
-                                m_ibaAnalyzer.CloseDataFiles();
+                                if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
                             }
                             catch
                             {
@@ -1634,7 +1629,7 @@ namespace iba.Processing
                             {
                                 try
                                 {
-                                    m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                                    if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0, DatFile);
                                 }
                                 catch (Exception ex)
                                 {
@@ -2364,144 +2359,158 @@ namespace iba.Processing
 
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
-            try
-            {
-                string extension = new FileInfo(filename).Extension;
-                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                {
-                    CleanupDirs(filename, task, extension);
-                }
-                else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    CleanupWithQuota(filename, task, extension);
-            }
-            catch
-            {
-            }
-            
-            
-            string dir = task.DestinationMapUNC;
-            if (String.IsNullOrEmpty(dir))
-            {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                return;
-            }
-
+            string dest = null;
             string fileToCopy = filename;
-
-            if (task.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT)
-            {
-                if (m_outPutFile == null)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
-                    return;
-                }
-                if (m_outPutFile != null)
-                    fileToCopy = m_outPutFile;
-            }
-            m_outPutFile = null;
-
-
-            if (!Path.IsPathRooted(dir))
-            {  //get Absolute path relative to dir
-                dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
-            }
-            else dir = task.DestinationMapUNC;
-            string maindir = dir;
-
-            if (dir == m_cd.DatDirectoryUNC)
-            {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                return;
-            }
-
-            if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
-            {
-                string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
-                string s1 = Path.GetFullPath(filename);
-                string s0 = s1.Remove(0, s2.Length + 1);
-                dir = Path.GetDirectoryName(Path.Combine(dir, s0));
-            }
-            if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.SAME)
-            {
-                dir = Path.Combine(dir, SubFolder(task.Subfolder));
-            }
-            if (!Directory.Exists(dir))
+            if (!task.ActionDelete)
             {
                 try
                 {
-                    Directory.CreateDirectory(dir);
+                    string extension = new FileInfo(filename).Extension;
+                    if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                    {
+                        CleanupDirs(filename, task, extension);
+                    }
+                    else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        CleanupWithQuota(filename, task, extension);
                 }
                 catch
                 {
-                    bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                }
+
+
+                string dir = task.DestinationMapUNC;
+                if (String.IsNullOrEmpty(dir))
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
+                    lock (m_sd.DatFileStates)
                     {
-                        failed = false;
-                        if (!Directory.Exists(dir))
-                        {
-                            try
-                            {
-                                Directory.CreateDirectory(dir);
-                            }
-                            catch
-                            {
-                                failed = true;
-                            }
-                        }
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
-                    if (failed)
+                    return;
+                }
+
+                if (task.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT)
+                {
+                    if (m_outPutFile == null)
                     {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                        lock (m_sd.DatFileStates)
-                        {
-                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                        }
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
                         return;
                     }
+                    if (m_outPutFile != null)
+                        fileToCopy = m_outPutFile;
                 }
+                m_outPutFile = null;
+
+
+                if (!Path.IsPathRooted(dir))
+                {  //get Absolute path relative to dir
+                    dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
+                }
+                else dir = task.DestinationMapUNC;
+                string maindir = dir;
+
+                if (dir == m_cd.DatDirectoryUNC)
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
+
+                if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
+                {
+                    string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
+                    string s1 = Path.GetFullPath(filename);
+                    string s0 = s1.Remove(0, s2.Length + 1);
+                    dir = Path.GetDirectoryName(Path.Combine(dir, s0));
+                }
+                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.SAME)
+                {
+                    dir = Path.Combine(dir, SubFolder(task.Subfolder));
+                }
+                if (!Directory.Exists(dir))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    catch
+                    {
+                        bool failed = true;
+                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        {
+                            failed = false;
+                            if (!Directory.Exists(dir))
+                            {
+                                try
+                                {
+                                    Directory.CreateDirectory(dir);
+                                }
+                                catch
+                                {
+                                    failed = true;
+                                }
+                            }
+                        }
+                        if (failed)
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+                    }
+                }
+                dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
             }
-            string dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
             try
             {
-                if (task.RemoveSource)
+                if (task.ActionDelete)
                 {
-                    File.Copy(fileToCopy, dest,true);
+                    File.Delete(fileToCopy);
+                    Log(Logging.Level.Info, iba.Properties.Resources.logDeleteTaskSuccess, filename, task);
+                    m_outPutFile = null;
+                }
+                else if (task.RemoveSource)
+                {
+                    File.Copy(fileToCopy, dest, true);
                     File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
+                    m_outPutFile = dest;
                 }
                 else
                 {
                     File.Copy(fileToCopy, dest, true);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
+                    m_outPutFile = dest;
                 }
-                m_outPutFile = dest;
-                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                if (!task.ActionDelete && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
                     m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
 
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                    m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                    if (!task.ActionDelete) m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
                 }
             }
             catch
             {
-                if (task.RemoveSource)
+                if (task.ActionDelete)
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logDeleteTaskFailed, filename, task);
+                }
+                else if (task.RemoveSource)
                 {
                     Log(Logging.Level.Exception, iba.Properties.Resources.logMoveTaskFailed, filename, task);
                 }
                 else
                 {
-                    Log(Logging.Level.Exception,iba.Properties.Resources.logCopyTaskFailed, filename, task);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logCopyTaskFailed, filename, task);
                 }
                 lock (m_sd.DatFileStates)
                 {

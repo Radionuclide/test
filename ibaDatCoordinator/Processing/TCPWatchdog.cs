@@ -162,18 +162,28 @@ namespace iba.Processing
 
         Byte[] CreateWatchdogMessage()
         {
-            string message = string.Format("{0},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"));
-            string result = null;
-            //todo: get function from taskmanager
-            if (m_com != null)
-                result = m_com.Manager.GetStatusForWatchdog();
+            if (m_settings.Binary)
+            {
+                if (m_com != null)
+                    return m_com.Manager.GetStatusForWatchdogBinary();
+                else
+                    return TaskManager.Manager.GetStatusForWatchdogBinary();
+            }
             else
-                result = TaskManager.Manager.GetStatusForWatchdog();
-            message += result;
+            {
+                string message = string.Format("{0},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"));
+                string result = null;
+                //todo: get function from taskmanager
+                if (m_com != null)
+                    result = m_com.Manager.GetStatusForWatchdog();
+                else
+                    result = TaskManager.Manager.GetStatusForWatchdog();
+                message += result;
 
-            Byte[] data = new Byte[message.Length];
-            m_coder.GetBytes(message.ToCharArray(), 0, message.Length, data, 0, true);
-            return data;
+                Byte[] data = new Byte[message.Length];
+                m_coder.GetBytes(message.ToCharArray(), 0, message.Length, data, 0, true);
+                return data;
+            }
         }
 
         private void Run()
