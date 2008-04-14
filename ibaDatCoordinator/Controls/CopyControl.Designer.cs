@@ -57,20 +57,19 @@ namespace iba.Controls
             this.label1 = new System.Windows.Forms.Label();
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.m_cbRemoveSource = new System.Windows.Forms.CheckBox();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_rbMove = new System.Windows.Forms.RadioButton();
             this.m_rbDelete = new System.Windows.Forms.RadioButton();
             this.m_rbCopy = new System.Windows.Forms.RadioButton();
-            this.m_rbMove = new System.Windows.Forms.RadioButton();
             this.m_gbTarget.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -93,7 +92,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
             this.m_gbTarget.Controls.Add(this.m_tbPass);
             this.m_gbTarget.Controls.Add(this.label12);
-            this.m_gbTarget.Controls.Add(this.m_cbRemoveSource);
             this.m_gbTarget.Controls.Add(this.m_tbUserName);
             this.m_gbTarget.Controls.Add(this.label4);
             this.m_gbTarget.Controls.Add(this.m_checkPathButton);
@@ -317,6 +315,13 @@ namespace iba.Controls
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.TabStop = false;
             // 
+            // tableLayoutPanel4
+            // 
+            resources.ApplyResources(this.tableLayoutPanel4, "tableLayoutPanel4");
+            this.tableLayoutPanel4.Controls.Add(this.m_rbPrevOutput, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.m_rbDatFile, 0, 0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            // 
             // m_rbPrevOutput
             // 
             resources.ApplyResources(this.m_rbPrevOutput, "m_rbPrevOutput");
@@ -330,19 +335,6 @@ namespace iba.Controls
             this.m_rbDatFile.Name = "m_rbDatFile";
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
-            // 
-            // m_cbRemoveSource
-            // 
-            resources.ApplyResources(this.m_cbRemoveSource, "m_cbRemoveSource");
-            this.m_cbRemoveSource.Name = "m_cbRemoveSource";
-            this.m_cbRemoveSource.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel4
-            // 
-            resources.ApplyResources(this.tableLayoutPanel4, "tableLayoutPanel4");
-            this.tableLayoutPanel4.Controls.Add(this.m_rbPrevOutput, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.m_rbDatFile, 0, 0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             // 
             // groupBox1
             // 
@@ -385,6 +377,13 @@ namespace iba.Controls
             this.tableLayoutPanel6.Controls.Add(this.m_rbCopy, 0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             // 
+            // m_rbMove
+            // 
+            resources.ApplyResources(this.m_rbMove, "m_rbMove");
+            this.m_rbMove.Name = "m_rbMove";
+            this.m_rbMove.TabStop = true;
+            this.m_rbMove.UseVisualStyleBackColor = true;
+            // 
             // m_rbDelete
             // 
             resources.ApplyResources(this.m_rbDelete, "m_rbDelete");
@@ -399,13 +398,6 @@ namespace iba.Controls
             this.m_rbCopy.Name = "m_rbCopy";
             this.m_rbCopy.TabStop = true;
             this.m_rbCopy.UseVisualStyleBackColor = true;
-            // 
-            // m_rbMove
-            // 
-            resources.ApplyResources(this.m_rbMove, "m_rbMove");
-            this.m_rbMove.Name = "m_rbMove";
-            this.m_rbMove.TabStop = true;
-            this.m_rbMove.UseVisualStyleBackColor = true;
             // 
             // CopyControl
             // 
@@ -458,7 +450,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox m_targetFolderTextBox;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.CheckBox m_cbRemoveSource;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
         private System.Windows.Forms.RadioButton m_rbOriginal;
         private System.Windows.Forms.TextBox m_tbPass;
