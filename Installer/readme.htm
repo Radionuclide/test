@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>DatCoordinatorInstall_v1.9.1.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.9.3.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,9 +26,32 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.9.1.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.9.3.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+<P class="header1">Version 1.9.3 - 16/06/2008</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI> When cyclic rescanning for unprocessed .dat files is enabled, the number of files that can be added to the list of .dat files to process is now limited to 10000.
+	</LI>
+	<LI> The algorithm to cleanup files when a filesize quota is set (for tasks generating files as output) has been improved in performance.
+	</LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+	<LI> The algorithm to cleanup files failed when the output directory was the disks root directory.
+	</LI>
+	<LI> A crash occasionally happened when updating a running job.
+	</LI>
+</UL>
+
+<P class="section">Version history</P>
+<P class="header1">Version 1.9.2 - 16/04/2008</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI> Extended the logging for the Copy/Move task.
+	</LI>
+</UL>
 
 <P class="header1">Version 1.9.1 - 9/04/2008</P>
 <P class="header2">New features</P>

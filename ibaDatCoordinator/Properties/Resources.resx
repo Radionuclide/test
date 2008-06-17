@@ -829,4 +829,7 @@
   <data name="logDeleteTaskSuccess" xml:space="preserve">
     <value>file successfully deleted</value>
   </data>
+  <data name="determiningQuota" xml:space="preserve">
+    <value>Determining file sizes in the output directory for the quota limitation.</value>
+  </data>
 </root>

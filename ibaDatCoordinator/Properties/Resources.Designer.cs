@@ -396,6 +396,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Determining file sizes in the output directory for the quota limitation..
+        /// </summary>
+        internal static string determiningQuota {
+            get {
+                return ResourceManager.GetString("determiningQuota", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon disconnectedIcon {
             get {
                 object obj = ResourceManager.GetObject("disconnectedIcon", resourceCulture);
