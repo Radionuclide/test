@@ -282,6 +282,7 @@ namespace iba.Data
             m_started = false;
         }
 
+        //eventually I'd like this method removed.
         public StatusData Clone()
         {
             StatusData returnValue = new StatusData(m_cf);
@@ -307,6 +308,142 @@ namespace iba.Data
                 returnValue.m_permanentErrorFilesCopy.AddRange(m_permanentErrorFilesCopy);
             }
             return returnValue;
+        }
+
+        public MinimalStatusData GetMinimalStatusData(bool permanentError)
+        {
+            int filesCount = permanentError?m_permanentErrorFiles.Count:Math.Min(m_filesCopy.Count, 200);
+            MinimalStatusData answer = new MinimalStatusData(filesCount);
+            answer.Started = m_started;
+            answer.UpdatingFileList = m_updatingFileList;
+            answer.CorrConfigurationGuid = m_cf.Guid;
+            if (permanentError)
+            {
+                answer.Changed = m_permanentErrorFilesChanged;
+                m_permanentErrorFilesChanged = false;
+                lock (m_permanentErrorFilesCopy)
+                {
+                    foreach (string file in m_permanentErrorFilesCopy)
+                    {
+                        lock (m_datFileStates)
+                        {
+                            if (m_datFileStates.ContainsKey(file))
+                            {
+                                DatFileStatus dfs = m_datFileStates[file];
+                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(dfs.States.Count);
+                                newdfs.Filename = file;
+                                newdfs.TimesTried = dfs.TimesTried;
+                                foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
+                                {
+                                    newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                }
+                                answer.Files.Add(newdfs);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                answer.Changed = m_changed;
+                m_changed = false;
+                lock (m_filesCopy)
+                {
+                    foreach (string file in m_filesCopy)
+                    {
+                        lock (m_datFileStates)
+                        {
+                            if (m_datFileStates.ContainsKey(file))
+                            {
+                                DatFileStatus dfs = m_datFileStates[file];
+                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(dfs.States.Count);
+                                newdfs.Filename = file;
+                                newdfs.TimesTried = dfs.TimesTried;
+                                foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
+                                {
+                                    newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                }
+                                answer.Files.Add(newdfs);
+                            }
+                        }
+                    }
+                }
+            }
+            return answer;
+        }
+    }
+
+    //statusData reduced to what needs to be known for the statuscontrol (permanent error control)
+    [Serializable]
+    public class MinimalStatusData
+    {
+        private Guid m_cdGuid;
+        public Guid CorrConfigurationGuid
+        {
+            get { return m_cdGuid; }
+            set { m_cdGuid = value; }
+        }
+
+        private bool m_changed;
+        public bool Changed
+        {
+            get { return m_changed; }
+            set { m_changed = value; }
+        }
+
+        private bool m_started;
+        public bool Started
+        {
+            get { return m_started; }
+            set { m_started = value; }
+        }
+
+        private bool m_updatingFileList;
+        public bool UpdatingFileList
+        {
+            get { return m_updatingFileList; }
+            set { m_updatingFileList = value; }
+        }
+
+        List<MinimalDatFileStatus> m_files;
+        public List<MinimalDatFileStatus> Files
+        {
+            get { return m_files; }
+            set { m_files = value; }
+        }
+
+        public MinimalStatusData(int filesCount)
+        {
+            m_files = new List<MinimalDatFileStatus>(filesCount);
+        }
+    }
+    
+    
+    public class MinimalDatFileStatus
+    {
+        private string m_filename;
+        public string Filename
+        {
+            get { return m_filename; }
+            set { m_filename = value; }
+        }
+        private int m_timesTried;
+        public int TimesTried
+        {
+            get { return m_timesTried; }
+            set { m_timesTried = value; }
+        }
+
+        private DatFileStatus.State[] m_taskStates;
+        public DatFileStatus.State[] TaskStates
+        {
+            get { return m_taskStates; }
+            set { m_taskStates = value; }
+        }
+
+        public MinimalDatFileStatus(int size)
+        {
+            m_taskStates = new DatFileStatus.State[size];
         }
     }
 }

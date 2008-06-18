@@ -554,7 +554,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_statusPane) return;
                         StatusTreeItemData data = node.Tag as StatusTreeItemData;
                         ctrl = data.CreateControl();
-                        SetRightPaneControl(ctrl, title, data.StatusData);
+                        SetRightPaneControl(ctrl, title, data.StatusData.GetMinimalStatusData(false));
                         pasteToolStripMenuItem.Enabled = false;
                         copyToolStripMenuItem.Enabled = false;
                         cutToolStripMenuItem.Enabled = false;
@@ -566,7 +566,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_statusPane) return;
                         StatusPermanentlyErrorFilesTreeItemData data = node.Tag as StatusPermanentlyErrorFilesTreeItemData;
                         ctrl = data.CreateControl();
-                        SetRightPaneControl(ctrl, title, data.StatusData);
+                        SetRightPaneControl(ctrl, title, data.StatusData.GetMinimalStatusData(true));
                         pasteToolStripMenuItem.Enabled = false;
                         copyToolStripMenuItem.Enabled = false;
                         cutToolStripMenuItem.Enabled = false;
@@ -580,7 +580,7 @@ namespace iba
                         ctrl = data.CreateControl();
                         SetRightPaneControl(ctrl, title, data.ConfigurationData);
                         pasteToolStripMenuItem.Enabled = m_cd_copy != null;
-                        bool started = TaskManager.Manager.GetStatus(data.ConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.ConfigurationData.Guid);
                         if (m_task_copy != null && !m_confCopiedMostRecent)
                             pasteToolStripMenuItem.Enabled = !started;
                         copyToolStripMenuItem.Enabled = true;
@@ -593,7 +593,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         BatchFileTreeItemData data = node.Tag as BatchFileTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.BatchFileData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.BatchFileData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.BatchFileData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -606,7 +606,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         ReportTreeItemData data = node.Tag as ReportTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.ReportData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.ReportData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.ReportData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -619,7 +619,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         ExtractTreeItemData data = node.Tag as ExtractTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.ExtractData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.ExtractData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.ExtractData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -632,7 +632,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         CopyTaskTreeItemData data = node.Tag as CopyTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.CopyTaskData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.CopyTaskData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.CopyTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -645,7 +645,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         IfTaskTreeItemData data = node.Tag as IfTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.IfTaskData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.IfTaskData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.IfTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -658,7 +658,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_configPane) return;
                         CustomTaskTreeItemData data = node.Tag as CustomTaskTreeItemData;
                         ctrl = data.CreateControl();
-                        bool started = TaskManager.Manager.GetStatus(data.CustomTaskData.ParentConfigurationData.Guid).Started;
+                        bool started = TaskManager.Manager.IsJobStarted(data.CustomTaskData.ParentConfigurationData.Guid);
                         SetRightPaneControl(ctrl, title, data.CustomTaskData);
                         pasteToolStripMenuItem.Enabled = (m_task_copy != null && !started);
                         copyToolStripMenuItem.Enabled = true;
@@ -764,12 +764,12 @@ namespace iba
                 string msg = null;
                 if (node.Tag is ConfigurationTreeItemData)
                 {
-                    if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started) return;
+                    if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid)) return;
                     msg = String.Format(iba.Properties.Resources.deleteConfigurationQuestion, node.Text);
                 }
                 else if (node.Parent != null && node.Parent.Tag is ConfigurationTreeItemData)
                 {
-                    if (TaskManager.Manager.GetStatus((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started) return;
+                    if (TaskManager.Manager.IsJobStarted((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid)) return;
                     if (node.Tag is BatchFileTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteBatchfileQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is ReportTreeItemData)
@@ -793,7 +793,7 @@ namespace iba
             //Delete node in tree
             if (node.Tag is ConfigurationTreeItemData)
             {
-                if (TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started)
+                if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid))
                     return;
                 int newIndex = node.Index - 1;
                 m_configTreeView.SelectedNode = null;
@@ -815,7 +815,7 @@ namespace iba
                 if (nextNode == null) nextNode = node.PrevNode;
                 if (nextNode == null) nextNode = node.Parent;
                 ConfigurationData confParent = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
-                if (TaskManager.Manager.GetStatus(confParent.Guid).Started) return;
+                if (TaskManager.Manager.IsJobStarted(confParent.Guid)) return;
 
                 m_configTreeView.SelectedNode = null;
                 TaskData task = null;
@@ -1149,9 +1149,9 @@ namespace iba
             {
                 bool started = false;
                 if (node.Parent != null) //tasknode
-                    started = TaskManager.Manager.GetStatus((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
+                    started = TaskManager.Manager.IsJobStarted((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
                 else if (node.Tag is ConfigurationTreeItemData)
-                    started = TaskManager.Manager.GetStatus((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
+                    started = TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
 
                 TreeItemData data = node.Tag as TreeItemData;
                 m_configTreeView.SelectedNode = node;
@@ -1786,7 +1786,7 @@ namespace iba
             
             foreach (ConfigurationData data in TaskManager.Manager.Configurations)
             {
-                bool started = TaskManager.Manager.GetStatus(data.Guid).Started;
+                bool started = TaskManager.Manager.IsJobStarted(data.Guid);
                 if (data.Enabled)
                 {
                     allEnabledStarted = allEnabledStarted && started;
@@ -1952,19 +1952,19 @@ namespace iba
             }
             else if ((targetNode == draggedNode) && !(draggedNode.Tag is ConfigurationTreeItemData))
             {
-                if (TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started)
+                if (TaskManager.Manager.IsJobStarted((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid))
                     e.Effect = DragDropEffects.None; //do not modify a running configuration    
                 else e.Effect = DragDropEffects.Copy;
             }
             else if (!(draggedNode.Tag is ConfigurationTreeItemData))
             {
-                bool moveAllowed = !TaskManager.Manager.GetStatus((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
+                bool moveAllowed = !TaskManager.Manager.IsJobStarted((draggedNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
                 bool placeAllowed = false;
 
                 if (targetNode.Tag is ConfigurationTreeItemData)
-                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
+                    placeAllowed = !TaskManager.Manager.IsJobStarted((targetNode.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
                 else
-                    placeAllowed = !TaskManager.Manager.GetStatus((targetNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid).Started;
+                    placeAllowed = !TaskManager.Manager.IsJobStarted((targetNode.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
 
                 if (!placeAllowed)
                     e.Effect = DragDropEffects.None;

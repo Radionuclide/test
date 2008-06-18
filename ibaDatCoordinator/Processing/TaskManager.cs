@@ -217,11 +217,6 @@ namespace iba.Processing
                 kvp.Value.Join(60000);
         }
 
-        virtual public StatusData GetStatus(ConfigurationData data)
-        {
-            return m_workers[data].Status;
-        }
-
         virtual public StatusData GetStatus(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
@@ -229,6 +224,34 @@ namespace iba.Processing
                 if (pair.Key.Guid == guid) return pair.Value.Status;
             }
             throw new KeyNotFoundException(guid.ToString() + " not found");
+
+        }
+
+        virtual public ConfigurationData GetConfiguration(Guid guid)
+        {
+            foreach (ConfigurationData cd in m_workers.Keys)
+            {
+                if (cd.Guid == guid) return cd;
+            }
+            throw new KeyNotFoundException(guid.ToString() + " not found");
+        }
+
+        virtual public MinimalStatusData GetMinimalStatus(Guid guid, bool permanentError)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.Guid == guid) return pair.Value.Status.GetMinimalStatusData(permanentError);
+            }
+            throw new KeyNotFoundException(guid.ToString() + " not found");
+        }
+
+        virtual public bool IsJobStarted(Guid guid)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key.Guid == guid) return pair.Value.Status.Started;
+            }
+            return false;
         }
         
         virtual public PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
@@ -581,19 +604,6 @@ namespace iba.Processing
             }
         }
 
-        public override StatusData GetStatus(ConfigurationData data)
-        {
-            try
-            {
-                return Program.CommunicationObject.Manager.GetStatus(data);
-            }
-            catch (SocketException)
-            {
-                Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetStatus(data);
-            }
-        }
-
         public override StatusData GetStatus(Guid guid)
         {
             try
@@ -607,6 +617,46 @@ namespace iba.Processing
                 return Manager.GetStatus(guid);
             }
         }
+
+        public override bool IsJobStarted(Guid guid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.IsJobStarted(guid);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+                return Manager.IsJobStarted(guid);
+            }
+        }
+
+        public override ConfigurationData GetConfiguration(Guid guid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetConfiguration(guid);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+                return Manager.GetConfiguration(guid);
+            }
+        }
+
+        public override MinimalStatusData GetMinimalStatus(Guid guid, bool permanentError)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetMinimalStatus(guid, permanentError); 
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+                return Manager.GetMinimalStatus(guid,permanentError);
+            }
+        }
+
 
         public override PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {

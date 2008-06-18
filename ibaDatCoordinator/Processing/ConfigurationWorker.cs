@@ -1285,6 +1285,7 @@ namespace iba.Processing
                 Nullable<DateTime> time = null;
                 try
                 {
+                    ibaDatFile.OpenForUpdate(filename);
                     try
                     {
                         time = File.GetLastWriteTime(filename);
@@ -1293,7 +1294,7 @@ namespace iba.Processing
                     {
                         time = null;
                     }
-                    ibaDatFile.OpenForUpdate(filename);
+                    
                 }
                 catch (FileLoadException) //no access
                 {
@@ -1772,10 +1773,11 @@ namespace iba.Processing
 
                
                 IbaFileUpdater ibaDatFile = new IbaFileClass();
-                DateTime time = File.GetLastWriteTime(DatFile);
+                Nullable<DateTime> time = null;
                 try
                 {
                     ibaDatFile.OpenForUpdate(DatFile);
+                    time = File.GetLastWriteTime(DatFile);
                 }
                 catch //happens when timed out and proc has not released its resources yet
                 {
@@ -1812,7 +1814,7 @@ namespace iba.Processing
                     ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
                 }
                 ibaDatFile.Close();
-                File.SetLastWriteTime(DatFile, time);
+                if (time != null) File.SetLastWriteTime(DatFile, time.Value);
                 m_sd.Changed = true;
             }
         }

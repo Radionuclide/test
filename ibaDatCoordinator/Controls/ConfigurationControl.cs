@@ -109,7 +109,7 @@ namespace iba.Controls
                 m_stopButton.Enabled = false;
                 m_refreshDats.Enabled = true;
             }
-            else if (TaskManager.Manager.GetStatus(m_data.Guid).Started)
+            else if (TaskManager.Manager.IsJobStarted(m_data.Guid))
             {
                 m_applyToRunningButton.Enabled = true;
                 m_startButton.Enabled = false;

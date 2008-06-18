@@ -25,9 +25,8 @@ namespace iba.Controls
         }
        
         IPropertyPaneManager m_manager;
-        StatusData m_data;
+        MinimalStatusData m_data;
 
-        private enum TaskChoice {REPORT,EXTRACT,BATCHFILE}
 
         Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons;
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
@@ -158,15 +157,15 @@ namespace iba.Controls
             return combinedBitmap;
         }
 
+        private ConfigurationData m_cd;
+
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
-            m_data = datasource as StatusData;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED) //refresh
-                m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.Guid);
-
-            m_confNameLinkLabel.Text = m_data.CorrConfigurationData.Name;
-            int count = m_data.CorrConfigurationData.Tasks.Count;
+            m_data = datasource as MinimalStatusData;
+            m_cd = TaskManager.Manager.GetConfiguration(m_data.CorrConfigurationGuid);
+            m_confNameLinkLabel.Text = m_cd.Name;
+            int count = m_cd.Tasks.Count;
             if (m_gridView.ColumnCount != (count + 2))
             {
                 m_gridView.ColumnCount = 2;
@@ -174,7 +173,7 @@ namespace iba.Controls
                 for(int i = 0; i < cols.Length;i++) cols[i] = new DataGridViewImageColumn();
                 m_gridView.Columns.AddRange(cols);
             }
-            foreach (TaskData task in m_data.CorrConfigurationData.Tasks)
+            foreach (TaskData task in m_cd.Tasks)
                 m_gridView.Columns[task.Index + 2].HeaderText = task.Name;
 
             OnChangedData(null, null);
@@ -194,20 +193,8 @@ namespace iba.Controls
         public void OnChangedData(object sender, EventArgs e)
         {
             m_refreshTimer.Enabled = false;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED) //refresh
-            {
-                try
-                {
-                    m_data = TaskManager.Manager.GetStatusCopy(m_data.CorrConfigurationData.Guid);
-                }
-                catch (SocketException) //shouldn't happen but just in case
-                {
-                    m_refreshTimer.Enabled = true;
-                    return;
-                }
-            }
-            else
-                m_data = TaskManager.Manager.GetStatus(m_data.CorrConfigurationData.Guid);
+            if (sender != null) //refresh
+               m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
             if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;
@@ -221,63 +208,47 @@ namespace iba.Controls
             //text += "processedFiles: " + m_data.ProcessedFiles.Count.ToString() + Environment.NewLine;
             //text += "readFiles: " + m_data.ReadFiles.Count.ToString() + Environment.NewLine;
             m_statusRunningText.Text = text;
-            List<Pair<string, DatFileStatus> > contents = new List<Pair<string, DatFileStatus> >();
-
-            lock (m_data.FilesCopy)
-            {
-                foreach (string file in m_data.FilesCopy)
-                {
-                    lock (m_data.DatFileStates)
-                    {
-                        DatFileStatus dfs = null;
-                        if (m_data.DatFileStates.ContainsKey(file))
-                        {
-                            dfs = (DatFileStatus)m_data.DatFileStates[file].Clone();
-                            contents.Add(new Pair<string, DatFileStatus>(file, dfs));
-                        }
-                    }
-                }
-            }
-
-            m_gridView.RowCount = contents.Count;
+            m_gridView.RowCount = m_data.Files.Count;
             int count = 0;
-            foreach (Pair<string, DatFileStatus> it in contents)
+            foreach (MinimalDatFileStatus dfs in m_data.Files)
             {
-                m_gridView.Rows[count].Cells[0].Value = it.First;
+                m_gridView.Rows[count].Cells[0].Value = dfs.Filename;
                 List<bool> blank = new List<bool>();
                 for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
                     blank.Add(true);
-                if (it.Second != null)
+                if (dfs.TaskStates != null)
                 {
-                    m_gridView.Rows[count].Cells[1].Value = it.Second.TimesTried;
+                    m_gridView.Rows[count].Cells[1].Value = dfs.TimesTried;
                     Bitmap bitmap = null;
                     text = String.Empty;
-                    foreach (KeyValuePair<TaskData, DatFileStatus.State> pair in it.Second.States)
+                    for (int i = 0; i < dfs.TaskStates.Length; i++)
                     {
-                        if (pair.Key is ReportData)
-                            bitmap = m_reportIcons[pair.Value];
-                        else if (pair.Key is ExtractData)
-                            bitmap = m_extractIcons[pair.Value];
-                        else if (pair.Key is BatchFileData)
-                            bitmap = m_batchfileIcons[pair.Value];
-                        else if (pair.Key is CopyMoveTaskData)
-                            bitmap = m_copydatIcons[pair.Value];
-                        else if (pair.Key is IfTaskData)
-                            bitmap = m_conditionIcons[pair.Value];
-                        else if (pair.Key is CustomTaskData)
+                        TaskData task = m_cd.Tasks[i];
+                        DatFileStatus.State value = dfs.TaskStates[i];
+                        if (task is ReportData)
+                            bitmap = m_reportIcons[value];
+                        else if (task is ExtractData)
+                            bitmap = m_extractIcons[value];
+                        else if (task is BatchFileData)
+                            bitmap = m_batchfileIcons[value];
+                        else if (task is CopyMoveTaskData)
+                            bitmap = m_copydatIcons[value];
+                        else if (task is IfTaskData)
+                            bitmap = m_conditionIcons[value];
+                        else if (task is CustomTaskData)
                         {
-                            CustomTaskData cust = (CustomTaskData) pair.Key;
+                            CustomTaskData cust = (CustomTaskData)task;
                             string name = cust.Plugin.NameInfo;
-                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
-                            bitmap = m_customtaskIcons[index][pair.Value];
+                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo ii) { return ii.Name == name; });
+                            bitmap = m_customtaskIcons[index][value];
                         }
-                        text = m_taskTexts[pair.Value];
-                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[pair.Key.Index + 2] as DataGridViewImageCell;
-                        blank[pair.Key.Index + 2] = false;
+                        text = m_taskTexts[value];
+                        DataGridViewImageCell cell = m_gridView.Rows[count].Cells[i + 2] as DataGridViewImageCell;
+                        blank[i + 2] = false;
                         if ((cell.Value as Bitmap) != bitmap)
                         {
                             cell.Value = bitmap;
-                            if (pair.Value == DatFileStatus.State.RUNNING)
+                            if (value == DatFileStatus.State.RUNNING)
                                 m_gridView.CurrentCell = cell;
                         }
                         if (cell.ToolTipText != text)
