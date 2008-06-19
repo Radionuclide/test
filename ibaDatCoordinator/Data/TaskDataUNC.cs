@@ -17,6 +17,13 @@ namespace iba.Data
             set { m_outputLimitChoice = value; }
         }
 
+        private bool m_overwriteFiles;
+        public bool OverwriteFiles
+        {
+            get { return m_overwriteFiles; }
+            set { m_overwriteFiles = value; }
+        }
+
         public TaskDataUNC(ConfigurationData parent) : base(parent) {
             m_pass = "";
             m_username = "";
@@ -24,6 +31,7 @@ namespace iba.Data
             m_numbFolders = 10;
             m_quota = 1024;
             m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
+            m_overwriteFiles = false;
         }
 
         protected uint m_numbFolders;
@@ -70,6 +78,7 @@ namespace iba.Data
             uncdat.m_destinationMapUNC = m_destinationMapUNC;
             uncdat.m_quota = m_quota;
             uncdat.m_outputLimitChoice = m_outputLimitChoice;
+            uncdat.m_overwriteFiles = m_overwriteFiles;
         }
 
         protected string m_username;

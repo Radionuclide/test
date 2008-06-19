@@ -223,17 +223,17 @@ namespace iba
 
         public void fromStatusToConfiguration()
         {
-            StatusData sd = null;
+            ConfigurationData dat = null;
             StatusTreeItemData stid = m_statusTreeView.SelectedNode.Tag as StatusTreeItemData;
             if (stid == null)
             {
                 StatusPermanentlyErrorFilesTreeItemData speftid = m_statusTreeView.SelectedNode.Tag as StatusPermanentlyErrorFilesTreeItemData;
                 if (speftid == null) return;
-                sd = speftid.StatusData;
+                dat = speftid.CorrConfigurationData;
             }
             else
-                sd = stid.StatusData;
-            ConfigurationData dat = sd.CorrConfigurationData;
+                dat = stid.CorrConfigurationData;
+
             foreach (TreeNode confCandidate in m_configTreeView.Nodes)
             {
                 ConfigurationTreeItemData dat2 = (confCandidate.Tag as ConfigurationTreeItemData);
@@ -261,7 +261,7 @@ namespace iba
                     TreeNode statNode = null;
                     foreach (TreeNode statCandidate in m_statusTreeView.Nodes)
                     {
-                        if ((statCandidate.Tag as StatusTreeItemData).StatusData.CorrConfigurationData.Guid == dat.Guid)
+                        if ((statCandidate.Tag as StatusTreeItemData).CorrConfigurationData.Guid == dat.Guid)
                         {
                             statNode = statCandidate;
                             break;
@@ -297,7 +297,7 @@ namespace iba
                 if (statNode != null && statNode.Parent != null) statNode = statNode.Parent; //was on permanent error files
                 if (statNode != null)
                 {
-                    ConfigurationData confDat = (statNode.Tag as StatusTreeItemData).StatusData.CorrConfigurationData;
+                    ConfigurationData confDat = (statNode.Tag as StatusTreeItemData).CorrConfigurationData;
 
                     foreach (TreeNode confCandidateNode in m_configTreeView.Nodes)
                     {
@@ -504,18 +504,18 @@ namespace iba
             m_statusTreeView.BeginUpdate();
             m_statusTreeView.Nodes.Clear();
 
-            List<StatusData> stats = TaskManager.Manager.Statuses;
-            stats.Sort(delegate(StatusData a, StatusData b) { return a.CorrConfigurationData.TreePosition.CompareTo(b.CorrConfigurationData.TreePosition); });
-            foreach (StatusData statIt in stats)
+            List<ConfigurationData> confs = TaskManager.Manager.Configurations;
+            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach (ConfigurationData confIt in confs)
             {
-                TreeNode statNode = new TreeNode(statIt.CorrConfigurationData.Name,0, 0);
-                statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, statIt);
-                MainForm.strikeOutNodeText(statNode, !statIt.CorrConfigurationData.Enabled);
+                TreeNode statNode = new TreeNode(confIt.Name,0, 0);
+                statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
+                MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
                 m_statusTreeView.Nodes.Add(statNode);
-                if (statIt.CorrConfigurationData.LimitTimesTried)
+                if (confIt.LimitTimesTried)
                 {
                     TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 1, 1);
-                    permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, statIt);
+                    permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, confIt);
                     statNode.Nodes.Add(permFailedNode);
                 }
             }
@@ -554,7 +554,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_statusPane) return;
                         StatusTreeItemData data = node.Tag as StatusTreeItemData;
                         ctrl = data.CreateControl();
-                        SetRightPaneControl(ctrl, title, data.StatusData.GetMinimalStatusData(false));
+                        SetRightPaneControl(ctrl, title, TaskManager.Manager.GetMinimalStatus(data.CorrConfigurationData.Guid,false));
                         pasteToolStripMenuItem.Enabled = false;
                         copyToolStripMenuItem.Enabled = false;
                         cutToolStripMenuItem.Enabled = false;
@@ -566,7 +566,7 @@ namespace iba
                         if (m_navBar.SelectedPane != m_statusPane) return;
                         StatusPermanentlyErrorFilesTreeItemData data = node.Tag as StatusPermanentlyErrorFilesTreeItemData;
                         ctrl = data.CreateControl();
-                        SetRightPaneControl(ctrl, title, data.StatusData.GetMinimalStatusData(true));
+                        SetRightPaneControl(ctrl, title, TaskManager.Manager.GetMinimalStatus(data.CorrConfigurationData.Guid,true));
                         pasteToolStripMenuItem.Enabled = false;
                         copyToolStripMenuItem.Enabled = false;
                         cutToolStripMenuItem.Enabled = false;

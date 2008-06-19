@@ -283,7 +283,7 @@ namespace iba.Data
         }
 
         //eventually I'd like this method removed.
-        public StatusData Clone()
+        /*public StatusData Clone()
         {
             StatusData returnValue = new StatusData(m_cf);
             returnValue.m_changed = m_changed;
@@ -308,7 +308,7 @@ namespace iba.Data
                 returnValue.m_permanentErrorFilesCopy.AddRange(m_permanentErrorFilesCopy);
             }
             return returnValue;
-        }
+        }*/
 
         public MinimalStatusData GetMinimalStatusData(bool permanentError)
         {
@@ -347,6 +347,7 @@ namespace iba.Data
             {
                 answer.Changed = m_changed;
                 m_changed = false;
+                int count = 0;
                 lock (m_filesCopy)
                 {
                     foreach (string file in m_filesCopy)
@@ -364,7 +365,9 @@ namespace iba.Data
                                     newdfs.TaskStates[pair.Key.Index] = pair.Value;
                                 }
                                 answer.Files.Add(newdfs);
+                                count++;
                             }
+                            if (count > 200) break; //only show 200 entries at once
                         }
                     }
                 }
@@ -417,8 +420,8 @@ namespace iba.Data
             m_files = new List<MinimalDatFileStatus>(filesCount);
         }
     }
-    
-    
+
+    [Serializable]
     public class MinimalDatFileStatus
     {
         private string m_filename;

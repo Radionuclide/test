@@ -70,6 +70,7 @@ namespace iba.Controls
             this.m_rbMove = new System.Windows.Forms.RadioButton();
             this.m_rbDelete = new System.Windows.Forms.RadioButton();
             this.m_rbCopy = new System.Windows.Forms.RadioButton();
+            this.m_cbOverwrite = new System.Windows.Forms.CheckBox();
             this.m_gbTarget.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -90,6 +91,7 @@ namespace iba.Controls
             // m_gbTarget
             // 
             resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
+            this.m_gbTarget.Controls.Add(this.m_cbOverwrite);
             this.m_gbTarget.Controls.Add(this.m_tbPass);
             this.m_gbTarget.Controls.Add(this.label12);
             this.m_gbTarget.Controls.Add(this.m_tbUserName);
@@ -399,6 +401,14 @@ namespace iba.Controls
             this.m_rbCopy.TabStop = true;
             this.m_rbCopy.UseVisualStyleBackColor = true;
             // 
+            // m_cbOverwrite
+            // 
+            resources.ApplyResources(this.m_cbOverwrite, "m_cbOverwrite");
+            this.m_cbOverwrite.Checked = true;
+            this.m_cbOverwrite.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbOverwrite.Name = "m_cbOverwrite";
+            this.m_cbOverwrite.UseVisualStyleBackColor = true;
+            // 
             // CopyControl
             // 
             resources.ApplyResources(this, "$this");
@@ -477,5 +487,6 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbMove;
         private System.Windows.Forms.RadioButton m_rbDelete;
         private System.Windows.Forms.RadioButton m_rbCopy;
+        private System.Windows.Forms.CheckBox m_cbOverwrite;
     }
 }

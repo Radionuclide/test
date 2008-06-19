@@ -357,7 +357,7 @@ namespace iba.Controls
             MainForm.strikeOutNodeText(m_manager.LeftTree.SelectedNode, !m_enableCheckBox.Checked);
 
             foreach (TreeNode node in m_manager.getLeftTree("status").Nodes)
-                if ((node.Tag as StatusTreeItemData).StatusData.CorrConfigurationData == m_data)
+                if ((node.Tag as StatusTreeItemData).CorrConfigurationData.Guid == m_data.Guid)
                     MainForm.strikeOutNodeText(node, !m_enableCheckBox.Checked);
             if (!m_enableCheckBox.Checked)
                 TaskManager.Manager.StopConfiguration(m_data.Guid);

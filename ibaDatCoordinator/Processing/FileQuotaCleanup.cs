@@ -23,13 +23,26 @@ namespace iba.Processing
             Reset();
         }
 
-        public void AddFile(string filename)
+        public void AddFile(string filename, bool bAddFileName)
         {
             try
             {
                 FileInfo inf = new FileInfo(filename);
                 m_size += (ulong)inf.Length;
-                m_files.AddLast(filename);
+                if (bAddFileName)
+                    m_files.AddLast(filename);
+            }
+            catch
+            {
+            }
+        }
+
+        public void RemoveFile(string filename)
+        {
+            try
+            {
+                FileInfo inf = new FileInfo(filename);
+                m_size -= (ulong)inf.Length;
             }
             catch
             {
@@ -264,5 +277,7 @@ namespace iba.Processing
                 return false;
             }
         }
+
+
     }
 }

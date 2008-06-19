@@ -75,6 +75,7 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_cbOverwrite = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -166,6 +167,7 @@ namespace iba.Controls
             // m_panelFile
             // 
             resources.ApplyResources(this.m_panelFile, "m_panelFile");
+            this.m_panelFile.Controls.Add(this.m_cbOverwrite);
             this.m_panelFile.Controls.Add(this.m_tbPass);
             this.m_panelFile.Controls.Add(this.label3);
             this.m_panelFile.Controls.Add(this.m_targetFolderTextBox);
@@ -466,6 +468,14 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // m_cbOverwrite
+            // 
+            resources.ApplyResources(this.m_cbOverwrite, "m_cbOverwrite");
+            this.m_cbOverwrite.Checked = true;
+            this.m_cbOverwrite.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbOverwrite.Name = "m_cbOverwrite";
+            this.m_cbOverwrite.UseVisualStyleBackColor = true;
+            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
@@ -551,6 +561,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton m_rbQuota;
         private System.Windows.Forms.NumericUpDown m_nudQuota;
+        private System.Windows.Forms.CheckBox m_cbOverwrite;
 
     }
 }

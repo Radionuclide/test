@@ -292,10 +292,10 @@ namespace iba
     #region StatusTreeItemData
     public class StatusTreeItemData : TreeItemData
     {
-        public StatusTreeItemData(IPropertyPaneManager propManager, StatusData stat)
+        public StatusTreeItemData(IPropertyPaneManager propManager, ConfigurationData dat)
             : base(propManager)
         {
-            m_stat = stat;
+            m_conf = dat;
         }
 
         public override string What
@@ -303,11 +303,11 @@ namespace iba
             get { return "Status"; }
         }
 
-        protected StatusData m_stat;
+        protected ConfigurationData m_conf;
 
-        public StatusData StatusData
+        public ConfigurationData CorrConfigurationData
         {
-            get { return m_stat; }
+            get { return m_conf; }
         }
 
         public override Control CreateControl()
@@ -326,10 +326,10 @@ namespace iba
     #region StatusPermanentlyErrorFilesTreeItemData
     public class StatusPermanentlyErrorFilesTreeItemData : TreeItemData
     {
-        public StatusPermanentlyErrorFilesTreeItemData(IPropertyPaneManager propManager, StatusData stat)
+        public StatusPermanentlyErrorFilesTreeItemData(IPropertyPaneManager propManager, ConfigurationData dat)
             : base(propManager)
         {
-            m_stat = stat;
+            m_conf = dat;
         }
 
         public override string What
@@ -337,11 +337,11 @@ namespace iba
             get { return "PermanentlyErrorFiles"; }
         }
 
-        protected StatusData m_stat;
+        protected ConfigurationData m_conf;
 
-        public StatusData StatusData
+        public ConfigurationData CorrConfigurationData
         {
-            get { return m_stat; }
+            get { return m_conf; }
         }
 
         public override Control CreateControl()

@@ -77,6 +77,7 @@ namespace iba.Controls
                 m_monitorGroup.Enabled = false;
             }
 
+            m_cbOverwrite.Checked = m_data.OverwriteFiles;
 
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
@@ -100,6 +101,7 @@ namespace iba.Controls
             m_data.SubfoldersNumber = (uint) m_nudDirs.Value;
             m_data.Quota = (uint) m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked?TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories:TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            m_data.OverwriteFiles = m_cbOverwrite.Checked;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;

@@ -82,6 +82,8 @@ namespace iba.Controls
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = m_data.MonitorData.MemoryLimit;
             m_nudTime.Value = m_data.MonitorData.TimeLimit.Minutes;
+            m_cbOverwrite.Checked = m_data.OverwriteFiles;
+
 
             try
             {
@@ -117,6 +119,7 @@ namespace iba.Controls
             m_data.SubfoldersNumber = (uint)m_nudDirs.Value;
             m_data.Quota = (uint)m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked ? TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories : TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            m_data.OverwriteFiles = m_cbOverwrite.Checked;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;

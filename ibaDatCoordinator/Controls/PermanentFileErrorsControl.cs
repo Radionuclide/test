@@ -226,7 +226,7 @@ namespace iba.Controls
         {
             m_refreshTimer.Enabled = false;
             if (sender != null) //refresh
-                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid, false);
+                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid, true);
             if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;

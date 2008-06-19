@@ -1885,10 +1885,17 @@ namespace iba.Processing
                     {
                         string outFile = GetExtractFileName(filename, task);
                         if (outFile == null) return;
+                        bool bAddFile = true;
+                        if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(outFile))
+                        {
+                            bAddFile = false;
+                            m_quotaCleanups[task.Guid].RemoveFile(outFile);
+                        }
+
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
                         m_outPutFile = outFile;
                         if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
                     }
                     else
                     {
@@ -2041,7 +2048,10 @@ namespace iba.Processing
                 }
             }
             string arg = Path.Combine(dir, actualFileName + ext);
-            return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+            if (task.OverwriteFiles)
+                return arg;
+            else
+                return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
         private string SubFolder(ReportData.SubfolderChoice choice)
@@ -2230,7 +2240,8 @@ namespace iba.Processing
                     }
                 }
                 arg = Path.Combine(dir, actualFileName + ext);
-                arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+                if (!task.OverwriteFiles)
+                    arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
             }
 
             try
@@ -2241,10 +2252,16 @@ namespace iba.Processing
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
                     if (task.Output != ReportData.OutputChoice.PRINT)
                     {
+                        bool bAddFile = true;
+                        if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(arg))
+                        {
+                            bAddFile = false;
+                            m_quotaCleanups[task.Guid].RemoveFile(arg);
+                        }
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
                         m_outPutFile = arg;
                         if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
                     }
                     else
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(""); });
@@ -2478,10 +2495,13 @@ namespace iba.Processing
                         }
                     }
                 }
-                dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(Path.Combine(dir, Path.GetFileName(fileToCopy)));
+                dest = Path.Combine(dir, Path.GetFileName(fileToCopy));
+                if (!task.OverwriteFiles)
+                    dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(dest);
             }
             try
             {
+                bool bAddFile = true;
                 if (task.ActionDelete)
                 {
                     File.Delete(fileToCopy);
@@ -2490,6 +2510,11 @@ namespace iba.Processing
                 }
                 else if (task.RemoveSource)
                 {
+                    if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
+                    {
+                        bAddFile = false;
+                        m_quotaCleanups[task.Guid].RemoveFile(dest);
+                    }
                     File.Copy(fileToCopy, dest, true);
                     File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
@@ -2497,12 +2522,17 @@ namespace iba.Processing
                 }
                 else
                 {
+                    if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
+                    {
+                        bAddFile = false;
+                        m_quotaCleanups[task.Guid].RemoveFile(dest);
+                    }
                     File.Copy(fileToCopy, dest, true);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFile = dest;
                 }
                 if (!task.ActionDelete && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
 
                 lock (m_sd.DatFileStates)
                 {

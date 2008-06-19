@@ -124,17 +124,47 @@
   <data name="m_panelFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbOverwrite.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbOverwrite.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbOverwrite.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 226</value>
+  </data>
+  <data name="m_cbOverwrite.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 17</value>
+  </data>
+  <data name="m_cbOverwrite.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_cbOverwrite.Text" xml:space="preserve">
+    <value>Overwrite existing files in target directory</value>
+  </data>
+  <data name="&gt;&gt;m_cbOverwrite.Name" xml:space="preserve">
+    <value>m_cbOverwrite</value>
+  </data>
+  <data name="&gt;&gt;m_cbOverwrite.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbOverwrite.Parent" xml:space="preserve">
+    <value>m_panelFile</value>
+  </data>
+  <data name="&gt;&gt;m_cbOverwrite.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_tbPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tbPass.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 66</value>
   </data>
   <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 20</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
@@ -148,7 +178,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -178,7 +208,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_tbUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -202,7 +232,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -232,7 +262,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -259,7 +289,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_subfolderGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -283,7 +313,7 @@
     <value>22, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Mb</value>
@@ -313,7 +343,7 @@
     <value>141, 17</value>
   </data>
   <data name="m_rbQuota.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="m_rbQuota.Text" xml:space="preserve">
     <value>Limit diskspace usage to</value>
@@ -340,7 +370,7 @@
     <value>78, 20</value>
   </data>
   <data name="m_nudQuota.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_nudQuota.Name" xml:space="preserve">
     <value>m_nudQuota</value>
@@ -391,7 +421,7 @@
     <value>126, 17</value>
   </data>
   <data name="m_rbLimitDirectories.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="m_rbLimitDirectories.Text" xml:space="preserve">
     <value>Limit subdirectories to</value>
@@ -418,7 +448,7 @@
     <value>78, 20</value>
   </data>
   <data name="m_nudDirs.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_nudDirs.Name" xml:space="preserve">
     <value>m_nudDirs</value>
@@ -469,7 +499,7 @@
     <value>521, 49</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -739,7 +769,7 @@
     <value>527, 110</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
     <value>tableLayoutPanel2</value>
@@ -778,7 +808,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_subfolderGroupBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -802,7 +832,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -829,7 +859,7 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_targetFolderTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -853,13 +883,13 @@
     <value>m_panelFile</value>
   </data>
   <data name="&gt;&gt;m_targetFolderTextBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_panelFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 43</value>
   </data>
   <data name="m_panelFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>548, 223</value>
+    <value>548, 247</value>
   </data>
   <data name="m_panelFile.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -958,7 +988,7 @@
     <value>0, 81</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 273</value>
+    <value>566, 295</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1255,13 +1285,13 @@
     <value>5</value>
   </data>
   <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 360</value>
+    <value>0, 382</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>566, 73</value>
   </data>
   <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_monitorGroup.Text" xml:space="preserve">
     <value>Monitor ibaAnalyzer</value>
@@ -1288,7 +1318,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 440</value>
+    <value>566, 460</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>

@@ -217,15 +217,15 @@ namespace iba.Processing
                 kvp.Value.Join(60000);
         }
 
-        virtual public StatusData GetStatus(Guid guid)
-        {
-            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
-            {
-                if (pair.Key.Guid == guid) return pair.Value.Status;
-            }
-            throw new KeyNotFoundException(guid.ToString() + " not found");
+        //virtual public StatusData GetStatus(Guid guid)
+        //{
+        //    foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+        //    {
+        //        if (pair.Key.Guid == guid) return pair.Value.Status;
+        //    }
+        //    throw new KeyNotFoundException(guid.ToString() + " not found");
 
-        }
+        //}
 
         virtual public ConfigurationData GetConfiguration(Guid guid)
         {
@@ -264,14 +264,14 @@ namespace iba.Processing
             return null;
         }
 
-        virtual public StatusData GetStatusCopy(Guid guid)
-        {
-            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
-            {
-                if (pair.Key.Guid == guid) return pair.Value.Status.Clone();
-            }
-            throw new KeyNotFoundException(guid.ToString() + " not found");
-        }
+        //virtual public StatusData GetStatusCopy(Guid guid)
+        //{
+        //    foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+        //    {
+        //        if (pair.Key.Guid == guid) return pair.Value.Status.Clone();
+        //    }
+        //    throw new KeyNotFoundException(guid.ToString() + " not found");
+        //}
 
         public enum AlterPermanentFileErrorListWhatToDo { AFTERDELETE, AFTERREFRESH };
         virtual public void AlterPermanentFileErrorList(AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
@@ -353,16 +353,6 @@ namespace iba.Processing
             }
         }
 
-        virtual public List<StatusData> Statuses
-        {
-            get 
-            {
-                List<StatusData> theStati = new List<StatusData>();
-                foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
-                    theStati.Add(kvp.Value.Status);
-                return theStati;
-            }
-        }
 
         virtual public List<ConfigurationData> Configurations
         {
@@ -604,19 +594,19 @@ namespace iba.Processing
             }
         }
 
-        public override StatusData GetStatus(Guid guid)
-        {
-            try
-            {
-                //if remote, get a copy instead of the status itself
-                return Program.CommunicationObject.Manager.GetStatusCopy(guid);
-            }
-            catch (SocketException)
-            {
-                Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetStatus(guid);
-            }
-        }
+        //public override StatusData GetStatus(Guid guid)
+        //{
+        //    try
+        //    {
+        //        //if remote, get a copy instead of the status itself
+        //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
+        //    }
+        //    catch (SocketException)
+        //    {
+        //        Program.CommunicationObject.HandleBrokenConnection();
+        //        return Manager.GetStatus(guid);
+        //    }
+        //}
 
         public override bool IsJobStarted(Guid guid)
         {
@@ -671,18 +661,18 @@ namespace iba.Processing
             }
         }
 
-        public override StatusData GetStatusCopy(Guid guid)
-        {
-            try
-            {
-                return Program.CommunicationObject.Manager.GetStatusCopy(guid);
-            }
-            catch (SocketException)
-            {
-                Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetStatusCopy(guid);
-            }
-        }
+        //public override StatusData GetStatusCopy(Guid guid)
+        //{
+        //    try
+        //    {
+        //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
+        //    }
+        //    catch (SocketException)
+        //    {
+        //        Program.CommunicationObject.HandleBrokenConnection();
+        //        return Manager.GetStatusCopy(guid);
+        //    }
+        //}
 
         public override void AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
         {
@@ -797,23 +787,6 @@ namespace iba.Processing
                 Program.CommunicationObject.HandleBrokenConnection();
             }
         }                        
-
-        public override List<StatusData> Statuses
-        {
-            get
-            {
-                try
-                {
-                    return Program.CommunicationObject.Manager.Statuses;
-                }
-                catch (SocketException)
-                {
-                    Program.CommunicationObject.HandleBrokenConnection();
-                    return Manager.Statuses;
-                }
-            }
-        }
-
 
         public override void StopAllConfigurations()
         {
