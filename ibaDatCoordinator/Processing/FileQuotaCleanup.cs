@@ -158,8 +158,12 @@ namespace iba.Processing
                 {
                     if (!File.Exists(file))
                     {
-                        Reset();
-                        continue;
+                        if (Directory.Exists(m_task.DestinationMapUNC))
+                        { //file was deleted manually
+                            Reset();
+                            continue;
+                        }
+                        else return; //forget about cleanup until problem is fixed.
                     }
                     string origPath = (new DirectoryInfo(m_task.DestinationMapUNC)).FullName;
                     FileInfo inf = new FileInfo(file);

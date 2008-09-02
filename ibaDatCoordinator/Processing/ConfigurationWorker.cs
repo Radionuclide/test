@@ -776,7 +776,7 @@ namespace iba.Processing
 
         private void OnAddNewDatFileTimerTick(object ignoreMe)
         {
-            if (m_bTimersstopped || m_stop) return;
+            if (m_bTimersstopped || m_stop || retryAccessTimer == null) return;
             retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
             List<string> toRemove = new List<string>();
