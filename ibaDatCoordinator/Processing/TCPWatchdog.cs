@@ -80,6 +80,12 @@ namespace iba.Processing
 
         private void Start()
         {
+            if (m_com==null) //we are not on the server
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                    return;
+            }
+
             m_bStopThread = false;
             m_thread = new Thread(new ThreadStart(Run));
             m_thread.Name = "TCP/IP watchdog thread";

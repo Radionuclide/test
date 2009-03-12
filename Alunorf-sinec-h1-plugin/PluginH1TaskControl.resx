@@ -271,7 +271,7 @@
     <value>m_nqs1MAC</value>
   </data>
   <data name="&gt;&gt;m_nqs1MAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nqs1MAC.Parent" xml:space="preserve">
     <value>NQS1</value>
@@ -535,7 +535,7 @@
     <value>m_nqs2MAC</value>
   </data>
   <data name="&gt;&gt;m_nqs2MAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nqs2MAC.Parent" xml:space="preserve">
     <value>NQS2</value>
@@ -922,7 +922,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 346</value>
+    <value>557, 384</value>
   </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1309,7 +1309,7 @@
     <value>m_ownMAC</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Parent" xml:space="preserve">
     <value>macGroupbox</value>

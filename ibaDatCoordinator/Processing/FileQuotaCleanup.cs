@@ -93,13 +93,13 @@ namespace iba.Processing
                             }
                             catch (Exception ex)
                             {
-                                Log(iba.Logging.Level.Exception, ex.Message, "");
+                                Log(iba.Logging.Level.Exception, ex.Message + " (getting directories(1))", "");
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Log(iba.Logging.Level.Exception, ex.Message, "");
+                        Log(iba.Logging.Level.Exception, ex.Message + " (getting directories(2))", "");
                     }
                 }
                 foreach (string file in Directory.GetFiles(m_task.DestinationMapUNC,"*" + m_extension,SearchOption.TopDirectoryOnly))
@@ -115,7 +115,7 @@ namespace iba.Processing
                     }
                     catch (Exception ex)
                     {
-                        Log(iba.Logging.Level.Exception, ex.Message, "");
+                        Log(iba.Logging.Level.Exception, ex.Message + " (getting files in directories)", "");
                     }
                 }
                 //Log(iba.Logging.Level.Exception, String.Format("size after counting {0}",m_size) , "");
@@ -133,9 +133,9 @@ namespace iba.Processing
 
                 //Log(iba.Logging.Level.Exception, "finished sorting", "");
             }
-            catch
+            catch (Exception)
             {
-                //Log(iba.Logging.Level.Exception, "2:)" + ex.Message, "");
+                //Log(iba.Logging.Level.Exception, "General exception while tallying the files for cleanup: " + ex.Message, "");
                 m_files.Clear();
             }
         }
@@ -151,8 +151,15 @@ namespace iba.Processing
 
         public void Clean(string datfile)
         {
+            //bool bFirst = true;
             while (m_size > (((ulong) (m_task.Quota)) * 1024 * 1024) && m_files.Count > 0)
             {
+                //if (bFirst)
+                //{
+                //    //string message = String.Format("Quota Exceeded: filesize: {0}  Quota: {1} Cleaning up files", m_size, m_task.Quota);
+                //    //Log(iba.Logging.Level.Warning, message, datfile);
+                //    bFirst = false;
+                //}
                 string file = m_files.First.Value;
                 try
                 {
@@ -160,10 +167,17 @@ namespace iba.Processing
                     {
                         if (Directory.Exists(m_task.DestinationMapUNC))
                         { //file was deleted manually
+                            //string message = String.Format("File {0} does not exist anymore", file);
+                            //Log(iba.Logging.Level.Warning, message, datfile);
                             Reset();
                             continue;
                         }
-                        else return; //forget about cleanup until problem is fixed.
+                        else
+                        {
+                            //string message = String.Format("File {0} does not exist anymore, neither does the folder {1}, Cleanup suspended", file, m_task.DestinationMapUNC);
+                            //Log(iba.Logging.Level.Warning, message, datfile);
+                            return; //forget about cleanup until problem is fixed.
+                        }
                     }
                     string origPath = (new DirectoryInfo(m_task.DestinationMapUNC)).FullName;
                     FileInfo inf = new FileInfo(file);
@@ -210,6 +224,11 @@ namespace iba.Processing
                 }
                 m_files.RemoveFirst();
             }
+            //if (bFirst)
+            //{
+            //    string message = String.Format("Quota Not Exceeded: filesize: {0}  Quota: {1}", m_size, m_task.Quota);
+            //    Log(iba.Logging.Level.Warning, message, datfile);
+            //}
         }
 
         [StructLayout(LayoutKind.Sequential)]

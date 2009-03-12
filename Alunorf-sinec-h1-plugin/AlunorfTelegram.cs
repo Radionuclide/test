@@ -73,7 +73,7 @@ namespace Alunorf_sinec_h1_plugin
         public bool WriteHeader(H1ByteStream stream)
         {
             bool ok = stream.WriteByte(97);
-            if (ok) ok = stream.WriteByte(4); //this is a guess, I don't know protocolversion
+            if (ok) ok = stream.WriteByte(1); //this is a guess, I don't know protocolversion
             if (ok) ok = stream.WriteByte(m_TlgArt);
             if (ok) ok = stream.WriteByte(0); // filler
             if (ok) ok = stream.WriteUInt16(m_AktId);
@@ -627,15 +627,15 @@ namespace Alunorf_sinec_h1_plugin
                         errPos = count;
                         errInInfo = true;
                         filewriter.Close();
-                        return;
+                        throw new Exception("Error reading infofield at pos "+errPos.ToString());
                     }
                 }
-                catch
+                catch (Exception inner)
                 {
                     errPos = count;
                     errInInfo = true;
                     filewriter.Close();
-                    return;
+                    throw new Exception("Error reading infofield at pos " + errPos.ToString(),inner); 
                 }
             }
 
@@ -665,14 +665,31 @@ namespace Alunorf_sinec_h1_plugin
                     channelwriter.xOffset = offset;
                     for (int i = 0; i < 400; i++) channelwriter.WriteData(vals[i]);
                 }
-                catch
+                catch (Exception inner)
                 {
                     errPos = count;
                     errInInfo = false;
-                    break;
+                    throw new Exception("Error reading signal at pos " + errPos.ToString(), inner); 
                 }
             }
-            filewriter.Close();
+            if (count == 0) //when no signals, write a dummy one, others ibaFiles won't write the file
+            {
+                IbaChannelWriter channelwriter;
+                filewriter.CreateAnalogChannel(0, 0, "dummysignal", 1, out channelwriter);
+                channelwriter.LengthBased = 1;
+                channelwriter.xOffset = 0;
+                channelwriter.WriteData(1.0f);
+                channelwriter.WriteData(2.0f);
+                channelwriter.WriteData(3.0f);
+            }
+            try
+            {
+                filewriter.Close();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public override bool WriteBody(H1ByteStream stream)
@@ -698,96 +715,48 @@ namespace Alunorf_sinec_h1_plugin
                     string type = rec.DataType.Substring(0, pos);
                     System.Diagnostics.Trace.WriteLine("after pos:" + pos.ToString() + " size:  " + size.ToString() + " type: " + type.ToString());
 
-                    if (type == "int" && size == 1)
+
+                    if (type != "char")
                     {
-                        SByte val;
-                        try
+                        double tval; 
+                        if (!double.TryParse(data, NumberStyles.Float,CultureInfo.InvariantCulture, out tval)) tval = -1;
+
+                        if (type == "int")
                         {
-                            val = SByte.Parse(data, CultureInfo.InvariantCulture);
+                            switch (size)
+                            {
+                                case 1: m_stream.WriteSByte ((SByte) tval); break;
+                                case 2:  m_stream.WriteInt16 ((Int16) tval); break;
+                                case 4: m_stream.WriteInt32 ((Int32) tval); break;
+                                default:
+                                    errPos = count;
+                                    errInInfo = true;
+                                    return false;
+                            }
                         }
-                        catch
+                        else if (type == "u. int")
                         {
-                            val = -1;
+                            switch (size)
+                            {
+                                case 1: m_stream.WriteByte ((Byte) tval); break;
+                                case 2:  m_stream.WriteUInt16 ((UInt16) tval); break;
+                                case 4: m_stream.WriteUInt32 ((UInt32) tval); break;
+                                default:
+                                    errPos = count;
+                                    errInInfo = true;
+                                    return false;
+                            }
                         }
-                        m_stream.WriteSByte(val);
-                    }
-                    else if (type == "int" && size == 2)
-                    {
-                        Int16 val;
-                        try
+                        else if (type == "float" && size == 4)
                         {
-                            val = Int16.Parse(data, CultureInfo.InvariantCulture);
+                            m_stream.WriteFloat32((float) tval);
                         }
-                        catch
+                        else
                         {
-                            val = -1;
+                            errPos = count;
+                            errInInfo = true;
+                            return false;
                         }
-                        m_stream.WriteInt16(val);
-                    }
-                    else if (type == "int" && size == 4)
-                    {
-                        Int32 val;
-                        try
-                        {
-                            val = Int32.Parse(data, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            val = -1;
-                        }
-                        m_stream.WriteInt32(val);
-                    }
-                    else if (type == "u. int" && size == 1)
-                    {
-                        Byte val;
-                        try
-                        {
-                            val = Byte.Parse(data, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            val = Byte.MaxValue;
-                        }
-                        m_stream.WriteByte(val);
-                    }
-                    else if (type == "u. int" && size == 2)
-                    {
-                        UInt16 val;
-                        try
-                        {
-                            val = UInt16.Parse(data, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            val = UInt16.MaxValue;
-                        }
-                        m_stream.WriteUInt16(val);
-                    }
-                    else if (type == "u. int" && size == 4)
-                    {
-                        UInt32 val;
-                        try
-                        {
-                            val = UInt32.Parse(data, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            val = UInt32.MaxValue;
-                        }
-                        m_stream.WriteUInt32(val);
-                    }
-                    else if (type == "float" && size == 4)
-                    {
-                        float val;
-                        try
-                        {
-                            val = float.Parse(data, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            val = float.NaN;
-                        }
-                        m_stream.WriteFloat32(val);
                     }
                     else if (type == "char" && size > 0)
                         m_stream.WriteString(data, size);

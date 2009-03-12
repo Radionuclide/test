@@ -20,7 +20,7 @@ namespace iba {
 		m_lastError = m_driverloaded?"":LoadError(DRIVER_LOAD_FAILED);
 		m_sp = new map<unsigned short, H1_SENDPARAMS*>();
 		m_rp = new map<unsigned short, H1_RECPARAMS*>();
-		m_blockedBytes = new unsigned char [4096];
+		m_blockedBytes = new unsigned char [16*4096];
 		m_blockpos = 0;
 	}
 

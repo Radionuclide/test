@@ -330,12 +330,19 @@ namespace iba.Data
                             if (m_datFileStates.ContainsKey(file))
                             {
                                 DatFileStatus dfs = m_datFileStates[file];
-                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(dfs.States.Count);
+                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
                                 newdfs.TimesTried = dfs.TimesTried;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
                                 {
-                                    newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                    //try
+                                    //{
+                                        newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                    //}
+                                    //catch (Exception ex)
+                                    //{
+                                    //    throw new Exception(pair.Key.Index.ToString(), ex);
+                                   // }
                                 }
                                 answer.Files.Add(newdfs);
                             }
@@ -357,12 +364,19 @@ namespace iba.Data
                             if (m_datFileStates.ContainsKey(file))
                             {
                                 DatFileStatus dfs = m_datFileStates[file];
-                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(dfs.States.Count);
+                                MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
                                 newdfs.TimesTried = dfs.TimesTried;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
                                 {
-                                    newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                    //try
+                                    //{
+                                        newdfs.TaskStates[pair.Key.Index] = pair.Value;
+                                    //}
+                                    //catch (Exception ex)
+                                    //{
+                                    //    throw new Exception(pair.Key.Index.ToString() + " states.count: " + dfs.States.Count.ToString() + "act size:" + newdfs.TaskStates.Length.ToString(), ex);
+                                    //}
                                 }
                                 answer.Files.Add(newdfs);
                                 count++;

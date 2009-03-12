@@ -18,8 +18,21 @@ namespace iba.Processing
             if (data == null || analyzer == null || (!data.MonitorTime && !data.MonitorMemoryUsage)) return;
             try
             {
-                if (analyzer.GetVersion().CompareTo("ibaAnalyzer 5.8.1") < 0)
-                    return; //wrong version
+                string version = analyzer.GetVersion();
+                int startindex = version.IndexOf(' ')+1;
+                int stopindex = startindex + 1;
+                while(stopindex < version.Length && (char.IsDigit(version[stopindex]) || version[stopindex] == '.'))
+                    stopindex++;
+                string [] nrs = version.Substring(startindex, stopindex-startindex).Split('.');
+                if (nrs.Length < 3) return;
+                int major;
+                if (!Int32.TryParse(nrs[0],out major)) return;
+                int minor;
+                if (!Int32.TryParse(nrs[1],out minor)) return;
+                int bugfix;
+                if (!Int32.TryParse(nrs[2],out bugfix)) return;
+                if (major < 5 || (major==5&&minor<8) || (major==5&&minor==8 && bugfix < 1)) return;
+
                 m_process = Process.GetProcessById(analyzer.GetProcessID());
                 if (m_process == null) return;
             }

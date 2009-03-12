@@ -517,7 +517,16 @@ namespace iba.Processing
                                 }
                                 break;
                             }
-                            ProcessDatfile(file);
+                            try
+                            {
+                                ProcessDatfile(file);
+                            }
+                            catch (Exception ex)
+                            {
+                                m_stop = true;
+                                Log(iba.Logging.Level.Exception,ex.Message,file);
+                            }
+
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
@@ -666,7 +675,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception, ex.Message);
+                    Log(Logging.Level.Exception, ex.Message + "(starting ibaAnalyzer)");
                     m_sd.Started = false;
                     Stop = true;
                     return;
@@ -692,7 +701,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex2)
                 {
-                    Log(Logging.Level.Exception, ex2.Message);
+                    Log(Logging.Level.Exception, ex2.Message + " (registering ibaAnalyzer)");
                     m_sd.Started = false;
                     Stop = true;
                     return;
@@ -726,7 +735,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Log(Logging.Level.Exception, ex.Message);
+                Log(Logging.Level.Exception, ex.Message + " (stopping ibaAnalyzer)");
                 if (stop)
                 {
                     m_sd.Started = false;
@@ -751,7 +760,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Log(Logging.Level.Exception, ex.Message);
+                Log(Logging.Level.Exception, ex.Message + " (getting ibaAnalyzer errormessage)");
                 StopIbaAnalyzer(false);
                 StartIbaAnalyzer();
                 return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
@@ -1014,6 +1023,7 @@ namespace iba.Processing
                 {
                     updateDatFileList(WhatToUpdate.DIRECTORY);
                 }
+                m_waitEvent.Set();
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFilesFinished);
         }
@@ -1551,7 +1561,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception,ex.Message);
+                    Log(Logging.Level.Exception,ex.Message + "( processing .dat file)" );
                     if (!m_needIbaAnalyzer) return;
                     try
                     {
@@ -1644,7 +1654,7 @@ namespace iba.Processing
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log(Logging.Level.Exception, ex.Message);
+                                    Log(Logging.Level.Exception, ex.Message + "( setting not processed succesfully flags)");
                                     try
                                     {
                                         m_ibaAnalyzer.CloseDataFiles();
@@ -1741,7 +1751,7 @@ namespace iba.Processing
                         }
                         catch (Exception ex)
                         {
-                            Log(Logging.Level.Exception, ex.Message);
+                            Log(Logging.Level.Exception, ex.Message + " (restarting ibaAnalyzer after given number of calls) ");
                             try
                             {
                                 m_ibaAnalyzer.CloseDataFiles();
@@ -1814,7 +1824,16 @@ namespace iba.Processing
                     ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
                 }
                 ibaDatFile.Close();
-                if (time != null) File.SetLastWriteTime(DatFile, time.Value);
+                if (time != null)
+                {
+                    try
+                    {
+                        File.SetLastWriteTime(DatFile, time.Value);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
                 m_sd.Changed = true;
             }
         }

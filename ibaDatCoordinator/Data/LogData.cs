@@ -191,7 +191,11 @@ namespace iba.Data
                     _event.Message });
                 DataGridViewCellStyle style = m_grid.Rows[index].Cells[4].Style;
                 if (_event.Level == Logging.Level.Warning) style.ForeColor = Color.Orange;
-                else if (_event.Level == Logging.Level.Info) style.ForeColor = Color.Green;
+                else if (_event.Level == Logging.Level.Info)
+                {
+                    style.ForeColor = Color.Green;
+                    Program.MainForm.StatusBarLabel.Text = "";
+                }
                 else if (_event.Level == Logging.Level.Exception)
                 {
                     style.ForeColor = Color.Red;

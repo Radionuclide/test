@@ -40,6 +40,7 @@ namespace Alunorf_sinec_h1_plugin
             this.dataGridViewTextBoxComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_splitContainer = new System.Windows.Forms.SplitContainer();
             this.NQS1 = new System.Windows.Forms.GroupBox();
+            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS1_NQS = new System.Windows.Forms.TextBox();
@@ -48,6 +49,7 @@ namespace Alunorf_sinec_h1_plugin
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NQS2 = new System.Windows.Forms.GroupBox();
+            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS2 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS2_NQS = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -77,12 +79,10 @@ namespace Alunorf_sinec_h1_plugin
             this.m_nudTryconnectTimeout = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.macGroupbox = new System.Windows.Forms.GroupBox();
+            this.m_ownMAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_tabControl = new System.Windows.Forms.TabControl();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
-            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
-            this.m_ownMAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_splitContainer2.Panel1.SuspendLayout();
             this.m_splitContainer2.Panel2.SuspendLayout();
             this.m_splitContainer2.SuspendLayout();
@@ -125,11 +125,11 @@ namespace Alunorf_sinec_h1_plugin
             this.m_tvMessages.HideSelection = false;
             this.m_tvMessages.Name = "m_tvMessages";
             this.m_tvMessages.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragDrop);
-            this.m_tvMessages.DragOver += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragOver);
             this.m_tvMessages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_tvMessages_AfterSelect);
+            this.m_tvMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_tvMessages_MouseDown);
             this.m_tvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_tvMessages_KeyDown);
             this.m_tvMessages.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_tvMessages_ItemDrag);
-            this.m_tvMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_tvMessages_MouseDown);
+            this.m_tvMessages.DragOver += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragOver);
             // 
             // m_contextMenu
             // 
@@ -154,8 +154,9 @@ namespace Alunorf_sinec_h1_plugin
             this.dataGridViewTextBoxComment});
             resources.ApplyResources(this.m_datagvMessages, "m_datagvMessages");
             this.m_datagvMessages.Name = "m_datagvMessages";
-            this.m_datagvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagvMessages_KeyDown);
             this.m_datagvMessages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_datagvMessages_CellValueChanged);
+            this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
+            this.m_datagvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagvMessages_KeyDown);
             // 
             // m_columnFieldname
             // 
@@ -256,6 +257,13 @@ namespace Alunorf_sinec_h1_plugin
             this.NQS1.Name = "NQS1";
             this.NQS1.TabStop = false;
             // 
+            // m_nqs1MAC
+            // 
+            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
+            this.m_nqs1MAC.Name = "m_nqs1MAC";
+            // 
             // m_statusNQS1
             // 
             resources.ApplyResources(this.m_statusNQS1, "m_statusNQS1");
@@ -305,6 +313,13 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.NQS2, "NQS2");
             this.NQS2.Name = "NQS2";
             this.NQS2.TabStop = false;
+            // 
+            // m_nqs2MAC
+            // 
+            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
+            this.m_nqs2MAC.Name = "m_nqs2MAC";
             // 
             // m_statusNQS2
             // 
@@ -535,6 +550,13 @@ namespace Alunorf_sinec_h1_plugin
             this.macGroupbox.Name = "macGroupbox";
             this.macGroupbox.TabStop = false;
             // 
+            // m_ownMAC
+            // 
+            this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_ownMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_ownMAC, "m_ownMAC");
+            this.m_ownMAC.Name = "m_ownMAC";
+            // 
             // m_tabControl
             // 
             this.m_tabControl.Controls.Add(this.tabPage1);
@@ -542,27 +564,6 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.m_tabControl, "m_tabControl");
             this.m_tabControl.Name = "m_tabControl";
             this.m_tabControl.SelectedIndex = 0;
-            // 
-            // m_nqs1MAC
-            // 
-            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
-            this.m_nqs1MAC.Name = "m_nqs1MAC";
-            // 
-            // m_nqs2MAC
-            // 
-            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
-            this.m_nqs2MAC.Name = "m_nqs2MAC";
-            // 
-            // m_ownMAC
-            // 
-            this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_ownMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_ownMAC, "m_ownMAC");
-            this.m_ownMAC.Name = "m_ownMAC";
             // 
             // PluginH1TaskControl
             // 

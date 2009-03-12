@@ -14,14 +14,14 @@ namespace Alunorf_plugin_test
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //try
-           // {
+            try
+            {
                 Application.Run(new MainForm());
-          //  }
-         //   catch (Exception ex)
-        //    {
-          //      MessageBox.Show(ex.ToString());
-        //    }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

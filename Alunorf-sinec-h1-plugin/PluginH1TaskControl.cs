@@ -658,5 +658,33 @@ namespace Alunorf_sinec_h1_plugin
             }
 
         }
+
+        private void m_datagvMessages_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            //store a string representation of the row number in 'strRowNumber'
+            string strRowNumber = (e.RowIndex + 1).ToString();
+
+            //prepend leading zeros to the string if necessary to improve
+            //appearance. For example, if there are ten rows in the grid,
+            //row seven will be numbered as "07" instead of "7". Similarly, if 
+            //there are 100 rows in the grid, row seven will be numbered as "007".
+            while (strRowNumber.Length < m_datagvMessages.RowCount.ToString().Length) strRowNumber = "0" + strRowNumber;
+
+            //determine the display size of the row number string using
+            //the DataGridView's current font.
+            SizeF size = e.Graphics.MeasureString(strRowNumber, this.Font);
+
+            //adjust the width of the column that contains the row header cells 
+            //if necessary
+            if (m_datagvMessages.RowHeadersWidth < (int)(size.Width + 20)) m_datagvMessages.RowHeadersWidth = (int)(size.Width + 20);
+
+            //this brush will be used to draw the row number string on the
+            //row header cell using the system's current ControlText color
+            Brush b = SystemBrushes.ControlText;
+
+            //draw the row number string on the current row header cell using
+            //the brush defined above and the DataGridView's default font
+            e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
+        }
     }
 }
