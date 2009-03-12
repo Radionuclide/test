@@ -152,7 +152,7 @@ namespace iba.Data
                 m_maxRows = value;
                 Profiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
                 if (m_control != null) //gui present
-                    if (m_grid.Rows.Count > m_maxRows) m_control.Invoke(m_clearSomeRowsDelegate);
+                    if (m_grid.Rows.Count > m_maxRows) m_control.BeginInvoke(m_clearSomeRowsDelegate);
             }
         }
 

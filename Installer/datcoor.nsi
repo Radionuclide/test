@@ -282,7 +282,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaFiles.dll"
+  File "..\Dependencies\ibaFilesSetup.exe"
   File "..\Dependencies\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic.DLL"
@@ -302,8 +302,9 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
 
-  ;Register ibaFiles COM dll
-  RegDll "$INSTDIR\ibaFiles.dll"
+  ;Install ibaFiles
+  DetailPrint $(TEXT_IBAFILES_INSTALL)
+  nsExec::Exec '"$INSTDIR\Server\ibaFilesSetup" /S'
 
   ;Create uninstall shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
@@ -318,7 +319,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOverwrite on
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaFiles.dll"
+  File "..\Dependencies\ibaFilesSetup.exe"
   File "..\Dependencies\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic.DLL"
@@ -340,9 +341,10 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
 
-  ;Register ibaFiles COM dll
-  RegDll "$INSTDIR\ibaFiles.dll"
-
+  ;Install ibaFiles
+  DetailPrint $(TEXT_IBAFILES_INSTALL)
+  nsExec::Exec '"$INSTDIR\Server\ibaFilesSetup" /S'
+  
   DetailPrint $(TEXT_SERVICE_INSTALL)
   nsSCMEx::Install /NOUNLOAD "ibaDatCoordinatorService" "iba DatCoordinator Service" 0x010 2 "$INSTDIR\ibaDatCoordinatorService.exe" "" "" "" ""
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "1"
@@ -403,18 +405,14 @@ SectionEnd
 
 
 Function un.UninstallTasks
-  ;Unregister ibaFiles dll
-  ;UnRegDll "$INSTDIR\ibaFiles.dll"
-
-  ;Delete files
-  ;Delete "$INSTDIR\ibaFiles.dll"
-
   ClearErrors
   Delete "$INSTDIR\ibaDatCoordinator.exe"
   IfErrors 0 +2
     Call un.stillRunning
   Delete "$INSTDIR\ibaLogger.dll"
   Delete "$INSTDIR\Eyefinder.dll"
+  Delete "$INSTDIR\DatCoUtil.dll"
+  Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\Interop.IBAFILESLib.dll"
   Delete "$INSTDIR\Interop.IbaAnalyzer.dll"
@@ -423,6 +421,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp90.dll"
   Delete "$INSTDIR\msvcm90.dll"
   Delete "$INSTDIR\Microsoft.VC90.CRT.manifest"
+  Delete "$INSTDIR\ibaFilesSetup.exe"
   Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
   RMDir "$INSTDIR\de"
@@ -697,6 +696,7 @@ LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_ENGLISH} "Choose whether or 
 LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordinator as a service"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordinator as stand alone executable"
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
+LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
@@ -726,6 +726,7 @@ LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie ob der i
 LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator als Dienst installieren"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
+LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
@@ -755,3 +756,4 @@ LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_FRENCH} "Choisir si l'ibaDat
 LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme service"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoordinator comme exécutable autonome"
 LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
+LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"

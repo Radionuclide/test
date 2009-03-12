@@ -30,8 +30,19 @@ Execute ibaDatCoordinatorInstall_v1.9.7.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
-<P class="header1">Version 1.9.7 - 10/03/2009</P>
-<P class="header2">Beta version with extra logging for a particular problem with one customer</P>
+<P class="header1">Version 1.9.7 - 12/03/2009</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI> Fixed installer and build options so ibaDatCoordinator can be installed and runs on Windows 2008 64 bit server .
+    </LI>
+    <LI> Uses the new ibaFiles with the new ibaFiles installer.
+    </LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> When the service was stopped, a watchdog could be started, resulting in two watchdogs when the service restarted.
+    </LI>
+</UL>
 
 <P class="header1">Version 1.9.6 - 22/10/2008</P>
 <P class="header2">Bugfixes</P>

@@ -33,6 +33,7 @@ namespace iba.Controls
             m_cycleUpDown.Value = m_data.CycleTime;
             m_tbHost.Text = m_data.Address;
             m_tbPort.Text = m_data.PortNr.ToString();
+            m_ApplyButton.Enabled = Program.RunsWithService != Program.ServiceEnum.DISCONNECTED;
         }
 
         public void SaveData()

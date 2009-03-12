@@ -675,7 +675,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception, ex.Message + "(starting ibaAnalyzer)");
+                    Log(Logging.Level.Exception, ex.Message);
                     m_sd.Started = false;
                     Stop = true;
                     return;
@@ -701,7 +701,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex2)
                 {
-                    Log(Logging.Level.Exception, ex2.Message + " (registering ibaAnalyzer)");
+                    Log(Logging.Level.Exception, ex2.Message);
                     m_sd.Started = false;
                     Stop = true;
                     return;
@@ -735,7 +735,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Log(Logging.Level.Exception, ex.Message + " (stopping ibaAnalyzer)");
+                Log(Logging.Level.Exception, ex.Message);
                 if (stop)
                 {
                     m_sd.Started = false;
@@ -760,7 +760,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Log(Logging.Level.Exception, ex.Message + " (getting ibaAnalyzer errormessage)");
+                Log(Logging.Level.Exception, ex.Message);
                 StopIbaAnalyzer(false);
                 StartIbaAnalyzer();
                 return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
@@ -1561,7 +1561,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception,ex.Message + "( processing .dat file)" );
+                    Log(Logging.Level.Exception,ex.Message);
                     if (!m_needIbaAnalyzer) return;
                     try
                     {
@@ -1654,7 +1654,7 @@ namespace iba.Processing
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log(Logging.Level.Exception, ex.Message + "( setting not processed succesfully flags)");
+                                    Log(Logging.Level.Exception, ex.Message);
                                     try
                                     {
                                         m_ibaAnalyzer.CloseDataFiles();
@@ -1751,7 +1751,7 @@ namespace iba.Processing
                         }
                         catch (Exception ex)
                         {
-                            Log(Logging.Level.Exception, ex.Message + " (restarting ibaAnalyzer after given number of calls) ");
+                            Log(Logging.Level.Exception, ex.Message);
                             try
                             {
                                 m_ibaAnalyzer.CloseDataFiles();
