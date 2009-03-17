@@ -167,7 +167,7 @@ namespace iba.Processing
                             SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                             Stop = true;
                         }
-                        else
+                        else if (m_cd.DetectNewFiles)
                         {
                             fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
                             fswt.NotifyFilter = NotifyFilters.FileName;
@@ -179,6 +179,12 @@ namespace iba.Processing
                             networkErrorOccured = false;
                             tickCount = 0;
                         }
+                    }
+
+                    if (!m_cd.DetectNewFiles && fswt != null)
+                    {
+                        fswt.Dispose();
+                        fswt = null;
                     }
 
                     //also update statusdata
@@ -852,14 +858,20 @@ namespace iba.Processing
                 if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))
                 {
                     if (fswt != null)
+                    {
                         fswt.Dispose();
-                    fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
-                    fswt.NotifyFilter = NotifyFilters.FileName;
-                    fswt.IncludeSubdirectories = m_cd.SubDirs;
-                    fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
-                    fswt.Error += new ErrorEventHandler(OnFileSystemError);
-                    fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
-                    fswt.EnableRaisingEvents = true;
+                        fswt = null;
+                    }
+                    if (m_cd.DetectNewFiles)
+                    {
+                        fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                        fswt.NotifyFilter = NotifyFilters.FileName;
+                        fswt.IncludeSubdirectories = m_cd.SubDirs;
+                        fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
+                        fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                        fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
+                        fswt.EnableRaisingEvents = true;
+                    }
                     networkErrorOccured = false;
                     Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
                 }

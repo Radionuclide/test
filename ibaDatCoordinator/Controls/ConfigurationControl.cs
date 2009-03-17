@@ -174,6 +174,7 @@ namespace iba.Controls
             m_nudRestartIbaAnalyzer.Value = (decimal)m_data.TimesAfterWhichtToRestartIbaAnalyzer;
             m_cbRestartIbaAnalyzer.Checked = m_nudRestartIbaAnalyzer.Enabled = m_data.BRestartIbaAnalyzer;
             m_cbCloseIbaAnalyzer.Checked = m_data.IbaAnalyzerSleepsWhenNoDatFiles;
+            m_cbDetectNewFiles.Checked = m_data.DetectNewFiles;
         }
 
         public void SaveData()
@@ -207,6 +208,9 @@ namespace iba.Controls
             m_data.BRestartIbaAnalyzer = m_cbRestartIbaAnalyzer.Checked;
             m_data.TimesAfterWhichtToRestartIbaAnalyzer = (int) m_nudRestartIbaAnalyzer.Value;
             m_data.IbaAnalyzerSleepsWhenNoDatFiles = m_cbCloseIbaAnalyzer.Checked;
+
+            m_data.DetectNewFiles = m_cbDetectNewFiles.Checked;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
         }
@@ -436,6 +440,7 @@ namespace iba.Controls
         private void m_cbRescanEnabled_CheckedChanged(object sender, EventArgs e)
         {
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked;
+            if (!m_cbRescanEnabled.Checked) m_cbDetectNewFiles.Checked = true;
         }
 
 
@@ -515,6 +520,11 @@ namespace iba.Controls
         private void m_cbRestartIbaAnalyzer_CheckedChanged(object sender, EventArgs e)
         {
             m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
+        }
+
+        private void m_cbDetectNewFiles_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!m_cbDetectNewFiles.Checked) m_cbRescanEnabled.Checked = true;
         }
     }
 }

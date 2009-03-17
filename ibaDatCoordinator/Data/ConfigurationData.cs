@@ -162,6 +162,14 @@ namespace iba.Data
             set { m_bRescanEnabled = value; }
         }
 
+        private bool m_bDetectNewFiles;
+        public bool DetectNewFiles
+        {
+            get { return m_bDetectNewFiles; }
+            set { m_bDetectNewFiles = value; }
+        }
+      
+
         private bool m_bLimitTimesTried;
         public bool LimitTimesTried
         {
@@ -237,6 +245,7 @@ namespace iba.Data
             m_ibaAnalyzerSleepsWhenNoDatFiles = true;
             m_bRestartIbaAnalyzer = true;
             m_bInitialScanEnabled = true;
+            m_bDetectNewFiles = true;
             m_bRescanEnabled = true;
             m_datDirectory = System.Environment.CurrentDirectory;
             try
@@ -281,6 +290,7 @@ namespace iba.Data
             cd.m_doSubDirs = m_doSubDirs;
             cd.m_restartIbaAnalyzer = m_restartIbaAnalyzer;
             cd.m_bRestartIbaAnalyzer = m_bRestartIbaAnalyzer;
+            cd.m_bDetectNewFiles = m_bDetectNewFiles;
             cd.m_ibaAnalyzerSleepsWhenNoDatFiles = m_ibaAnalyzerSleepsWhenNoDatFiles;
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_bInitialScanEnabled = m_bInitialScanEnabled;

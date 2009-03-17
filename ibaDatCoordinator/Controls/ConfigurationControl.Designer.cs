@@ -47,6 +47,7 @@ namespace iba.Controls
             this.m_refreshDats = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_cbRetry = new System.Windows.Forms.CheckBox();
             this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
@@ -62,6 +63,7 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.m_cbCloseIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
@@ -99,7 +101,6 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.m_cbCloseIbaAnalyzer = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -242,6 +243,7 @@ namespace iba.Controls
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.m_cbDetectNewFiles);
             this.groupBox3.Controls.Add(this.m_cbInitialScanEnabled);
             this.groupBox3.Controls.Add(this.m_cbRetry);
             this.groupBox3.Controls.Add(this.m_retryUpDown);
@@ -260,6 +262,13 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // m_cbDetectNewFiles
+            // 
+            resources.ApplyResources(this.m_cbDetectNewFiles, "m_cbDetectNewFiles");
+            this.m_cbDetectNewFiles.Name = "m_cbDetectNewFiles";
+            this.m_cbDetectNewFiles.UseVisualStyleBackColor = true;
+            this.m_cbDetectNewFiles.CheckedChanged += new System.EventHandler(this.m_cbDetectNewFiles_CheckedChanged);
             // 
             // m_cbInitialScanEnabled
             // 
@@ -386,6 +395,12 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.m_analyserTextBox);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // m_cbCloseIbaAnalyzer
+            // 
+            resources.ApplyResources(this.m_cbCloseIbaAnalyzer, "m_cbCloseIbaAnalyzer");
+            this.m_cbCloseIbaAnalyzer.Name = "m_cbCloseIbaAnalyzer";
+            this.m_cbCloseIbaAnalyzer.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -667,12 +682,6 @@ namespace iba.Controls
             // 
             this.m_openFileDialog1.FileName = "openFileDialog1";
             // 
-            // m_cbCloseIbaAnalyzer
-            // 
-            resources.ApplyResources(this.m_cbCloseIbaAnalyzer, "m_cbCloseIbaAnalyzer");
-            this.m_cbCloseIbaAnalyzer.Name = "m_cbCloseIbaAnalyzer";
-            this.m_cbCloseIbaAnalyzer.UseVisualStyleBackColor = true;
-            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -783,5 +792,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbCloseIbaAnalyzer;
+        private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
     }
 }
