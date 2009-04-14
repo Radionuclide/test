@@ -127,6 +127,7 @@ namespace iba.Utility
             
             foreach (TaskData dat in conf.Tasks)
             {
+                if (!dat.Enabled) continue;
                 TaskDataUNC datUNC = dat as TaskDataUNC;
                 if (datUNC != null && IsUNC(datUNC.DestinationMapUNC))
                 {
@@ -174,7 +175,14 @@ namespace iba.Utility
 
         public string ComputerName(string path)
         {
-            return Path.GetPathRoot(path);
+            try
+            {
+                return Path.GetPathRoot(path);
+            }
+            catch 
+            {
+                return "";
+            }
         }
 
         public void ReleaseFromConfiguration(ConfigurationData conf)

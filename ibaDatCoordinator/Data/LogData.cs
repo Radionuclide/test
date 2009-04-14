@@ -194,7 +194,7 @@ namespace iba.Data
                 else if (_event.Level == Logging.Level.Info)
                 {
                     style.ForeColor = Color.Green;
-                    Program.MainForm.StatusBarLabel.Text = "";
+                    Program.MainForm.StatusBarLabel.Text = "";//any positive message clears the status bar
                 }
                 else if (_event.Level == Logging.Level.Exception)
                 {

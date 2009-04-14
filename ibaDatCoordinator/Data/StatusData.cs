@@ -222,8 +222,7 @@ namespace iba.Data
             get { return m_filesCopy; }
             set { m_filesCopy = value; m_changed = true; }
         }
-
-
+        
         private List<String> m_permanentErrorFilesCopy;
         public List<String> PermanentErrorFilesCopy
         {

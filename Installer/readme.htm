@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.9.8.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.9.9.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,15 +26,29 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.9.8.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.9.9.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.9.9 - 9/04/2009</P>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> File quotas could not be reduced without restarting ibaDatCoordinator.
+    </LI>
+    <LI> With automatic filedetection disabled, ibaDatCoordinator did not automatically reconnect to shared network folders anymore.
+    </LI>
+</UL>
 
 <P class="header1">Version 1.9.8 - 17/03/2009</P>
 <P class="header2">New features</P>
 <UL>
     <LI>  The ability to disable instantaneous file processing (and only do periodic file processing)
 	</LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> No connections to shares for directories specified in disabled tasks are made anymore.
+    </LI>
 </UL>
 
 <P class="header1">Version 1.9.7 - 12/03/2009</P>

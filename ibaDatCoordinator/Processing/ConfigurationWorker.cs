@@ -176,9 +176,9 @@ namespace iba.Processing
                             fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
                             fswt.Error += new ErrorEventHandler(OnFileSystemError);
                             fswt.EnableRaisingEvents = true;
-                            networkErrorOccured = false;
-                            tickCount = 0;
                         }
+                        tickCount = 0;
+                        networkErrorOccured = false;
                     }
 
                     if (!m_cd.DetectNewFiles && fswt != null)
@@ -882,7 +882,12 @@ namespace iba.Processing
 
         private void OnRescanTimerTick(object ignoreMe)
         {
-            if (networkErrorOccured) return; //wait until problem is fixed
+            if (networkErrorOccured)
+            {
+                if (!m_bTimersstopped && !m_stop && rescanTimer != null)
+                    rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
+                return; //wait until problem is fixed
+            }
             if (m_bTimersstopped || m_stop || rescanTimer==null) return;
             if (rescanTimer != null)
                 rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -893,7 +898,12 @@ namespace iba.Processing
 
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
-            if (networkErrorOccured) return; //wait until problem is fixed
+            if (networkErrorOccured)
+            {
+                if (!m_bTimersstopped && !m_stop && reprocessErrorsTimer != null)
+                    reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                return; //wait until problem is fixed
+            }
             if (m_bTimersstopped || m_stop || reprocessErrorsTimer==null) return;
             reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
             lock (m_listUpdatingLock)
@@ -1005,14 +1015,17 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                if (!IsInvalidOrProcessed(filename))
+                lock (m_listUpdatingLock)
                 {
-                    lock (m_candidateNewFiles)
+                    if (!IsInvalidOrProcessed(filename))
                     {
-                        if (!m_candidateNewFiles.Contains(filename))
+                        lock (m_candidateNewFiles)
                         {
-                            m_directoryFiles.Add(filename);
-                            count++;
+                            if (!m_candidateNewFiles.Contains(filename))
+                            {
+                                m_directoryFiles.Add(filename);
+                                count++;
+                            }
                         }
                     }
                 }
@@ -1806,7 +1819,10 @@ namespace iba.Processing
                     m_sd.Changed = true;
                     return;
                 }
-                m_sd.DatFileStates[DatFile].TimesTried++;
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[DatFile].TimesTried++;
+                }
                 if (completeSucces)
                 {
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");

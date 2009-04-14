@@ -57,6 +57,7 @@ namespace iba.Processing
                 m_task = newTask;
                 Reset();
             }
+            m_task.Quota = newTask.Quota;
         }
         
         struct DateAndName
