@@ -141,6 +141,7 @@ namespace iba.Controls
             // 
             // m_scanTimeUpDown
             // 
+            this.m_scanTimeUpDown.DecimalPlaces = 1;
             resources.ApplyResources(this.m_scanTimeUpDown, "m_scanTimeUpDown");
             this.m_scanTimeUpDown.Maximum = new decimal(new int[] {
             600,
@@ -151,7 +152,7 @@ namespace iba.Controls
             1,
             0,
             0,
-            0});
+            65536});
             this.m_scanTimeUpDown.Name = "m_scanTimeUpDown";
             this.m_scanTimeUpDown.Value = new decimal(new int[] {
             10,
@@ -359,6 +360,7 @@ namespace iba.Controls
             // 
             // m_failTimeUpDown
             // 
+            this.m_failTimeUpDown.DecimalPlaces = 1;
             resources.ApplyResources(this.m_failTimeUpDown, "m_failTimeUpDown");
             this.m_failTimeUpDown.Maximum = new decimal(new int[] {
             600,
@@ -369,7 +371,7 @@ namespace iba.Controls
             1,
             0,
             0,
-            0});
+            65536});
             this.m_failTimeUpDown.Name = "m_failTimeUpDown";
             this.m_failTimeUpDown.Value = new decimal(new int[] {
             10,

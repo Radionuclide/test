@@ -327,11 +327,8 @@ namespace iba.Processing
 
         private void Log(Logging.Level level, string message)
         {
-            if (LogData.Data.Logger.IsOpen)
-            {
-                LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
-                LogData.Data.Logger.Log(level, message, (object)data);
-            }
+            LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
+            LogData.Data.Log(level, message, (object)data);
             if (level == Logging.Level.Exception)
             {
                 if (message.Contains("The operation"))
@@ -343,11 +340,8 @@ namespace iba.Processing
 
         private void Log(Logging.Level level, string message, string datfile)
         {
-            if (LogData.Data.Logger.IsOpen)
-            {
-                LogExtraData data = new LogExtraData(datfile, null, m_cd);
-                LogData.Data.Logger.Log(level, message, (object)data);
-            }
+            LogExtraData data = new LogExtraData(datfile, null, m_cd);
+            LogData.Data.Log(level, message, (object)data);
             if (level == Logging.Level.Exception)
             {
                 if (message.Contains("The operation"))
@@ -359,16 +353,13 @@ namespace iba.Processing
 
         private void Log(Logging.Level level, string message, string datfile, TaskData task)
         {
-            if (LogData.Data.Logger.IsOpen)
-            {
-                LogExtraData data = new LogExtraData(datfile, task, m_cd);
-                LogData.Data.Logger.Log(level, message, (object)data);
-            }
+            LogExtraData data = new LogExtraData(datfile, task, m_cd);
+            LogData.Data.Log(level, message, (object)data);
             if (level == Logging.Level.Exception)
             {
                 if (message != null && message.Contains("The operation"))
                 {
-                    string debug = message;                
+                    string debug = message;
                 }
             }
         }

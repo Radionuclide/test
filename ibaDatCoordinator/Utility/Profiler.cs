@@ -131,7 +131,8 @@ namespace iba.Utility
                 if (section != String.Empty)
                     keyName = keyName + @"\" + section;
 
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName);
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName);
+                key = Registry.CurrentUser.OpenSubKey(keyName);
                 if (key != null)
                 {
                     key.Close();
@@ -152,9 +153,9 @@ namespace iba.Utility
 				if(section != String.Empty)
 					keyName = keyName + @"\" + section;
 
-				RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, bWriteable);
+				RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, bWriteable);
 				if(key == null)
-					key = Registry.LocalMachine.CreateSubKey(keyName);
+					key = Registry.CurrentUser.CreateSubKey(keyName);
 				return key;
 			}
 			catch(Exception)

@@ -78,7 +78,7 @@ namespace iba.Data
         {
             try
             {
-                LogData.Data.Logger.Log(Level.GetLevel(priority), message, dat);
+                LogData.Data.Log(Level.GetLevel(priority), message, dat);
             }
             catch (Exception ex)
             {
@@ -402,6 +402,7 @@ namespace iba.Data
         {
             get 
             {
+                if (m_logger == null || !m_logger.IsOpen) return 0;
                 if (m_data.Logger.ChildCount > 0)
                     return (m_data.Logger.Children[0] as GridViewLogger).MaxRows;
                 else
@@ -409,10 +410,13 @@ namespace iba.Data
             }
             set
             {
-                if (m_data.Logger.ChildCount > 0)
-                    (m_data.Logger.Children[0] as GridViewLogger).MaxRows = value;
-                else
-                    (m_data.Logger as GridViewLogger).MaxRows = value;
+                if (m_logger != null && m_logger.IsOpen)
+                {
+                    if (m_data.Logger.ChildCount > 0)
+                        (m_data.Logger.Children[0] as GridViewLogger).MaxRows = value;
+                    else
+                        (m_data.Logger as GridViewLogger).MaxRows = value;
+                }
             }
         }
 
@@ -430,9 +434,22 @@ namespace iba.Data
             m_logger = null; //expect to be set in Logger
         }
 
+        public void Log(Level level, string message, object data)
+        {
+            if (m_logger != null && m_logger.IsOpen)
+            m_logger.Log(level, message, data);
+        }
+
+        public void Log(Level level, string message)
+        {
+            if (m_logger != null && m_logger.IsOpen)
+                m_logger.Log(level, message);
+        }
+
         static public void StopLogger()
         {
-            m_data.Logger.Close();
+            if (m_data != null && m_data.m_logger != null && m_data.m_logger.IsOpen)
+                m_data.Logger.Close();
         }
 
         public enum ApplicationState {CLIENTDISCONNECTED,CLIENTCONNECTED,CLIENTSTANDALONE, SERVICE};
@@ -454,7 +471,24 @@ namespace iba.Data
                     filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
                 else
                     filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt");;
-                FileBackup.Backup(filename, Path.GetDirectoryName(filename), appState == ApplicationState.CLIENTDISCONNECTED?"ibaDatCoordinatorLog_disconnected":"ibaDatCoordinatorLog", 10);
+                if (File.Exists(filename))
+                {
+                    try
+                    {
+                        FileBackup.Backup(filename, Path.GetDirectoryName(filename), appState == ApplicationState.CLIENTDISCONNECTED ? "ibaDatCoordinatorLog_disconnected" : "ibaDatCoordinatorLog", 10);
+                        File.Delete(filename);
+                    }
+                    catch (Exception)
+                    {
+                        rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+                        filename = "";
+                        if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
+                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
+                        else
+                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt"); ;
+                    }
+                }
+
                 FileLogger fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
                 fileLogger.IsBufferingEnabled = false;
                 fileLogger.IsContextEnabled = true;
@@ -477,7 +511,14 @@ namespace iba.Data
             m_data.Logger.AutoFlushInterval = 1000;
             m_data.Logger.BufferSize = 1000;
             m_data.Logger.Level = Level.All;
-            m_data.Logger.Open();
+            try
+            {
+                m_data.Logger.Open();
+            }
+            catch
+            {
+                m_data.Logger = null;
+            }
         }
 
         private ApplicationState m_appState;

@@ -43,8 +43,7 @@ namespace iba
             }
             catch (Exception)
             {
-                if (LogData.Data.Logger.IsOpen)
-                    LogData.Data.Logger.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
+                LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
             }
         }
 
@@ -92,8 +91,14 @@ namespace iba
 
         public bool ForwardEvents
         {
-            get { return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding; }
-            set { if (LogData.Data.Logger.ChildCount>0)
+            get 
+            {
+                if (LogData.Data.Logger == null) return false;
+                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding; 
+            }
+            set 
+            {
+                if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
                 (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding = value; 
             }
         }
@@ -101,7 +106,8 @@ namespace iba
         public void Logging_setEventForwarder(EventForwarder ev)
         {
             ForwardEvents = true;
-            (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).Forwarder = ev;
+            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
+                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).Forwarder = ev;
         }
 
         public string Logging_fileName
@@ -114,8 +120,7 @@ namespace iba
 
         public void Logging_Log(string message)
         {
-            if (LogData.Data.Logger.IsOpen) 
-                LogData.Data.Logger.Log(Logging.Level.Info, message);
+            LogData.Data.Logger.Log(Logging.Level.Info, message);
         }
 
         public void TestConnection() //does nothing
@@ -292,8 +297,7 @@ namespace iba
             catch (SocketException)
             {
                 HandleBrokenConnection();
-                if (LogData.Data.Logger.IsOpen)
-                    LogData.Data.Logger.Log(Logging.Level.Info, message);
+                LogData.Data.Log(Logging.Level.Info, message);
             }
         }
 
@@ -323,14 +327,15 @@ namespace iba
             Program.MainForm.SetRenderer();
             TaskManager.Manager.StopAllConfigurations();
             //logger resetten
-            LogData.Data.Logger.Close();
+            LogData.StopLogger();
             GridViewLogger gv = null;
             if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
                 gv = LogData.Data.Logger.Children[0] as GridViewLogger;
             else
                 gv = LogData.Data.Logger as GridViewLogger;
 
-            LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
+            if (gv != null)
+                LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
         }
 
         public int TestScript(string scriptfile, string arguments)

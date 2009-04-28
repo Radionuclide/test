@@ -69,8 +69,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                   if (LogData.Data.Logger.IsOpen)
-                       LogData.Data.Logger.Log(Logging.Level.Exception, string.Format(iba.Properties.Resources.wdErrorStop,ex.Message));
+                    LogData.Data.Log(Logging.Level.Exception, string.Format(iba.Properties.Resources.wdErrorStop, ex.Message));
                 }
                 m_thread = null;
             }
@@ -155,8 +154,7 @@ namespace iba.Processing
             }
             catch (SocketException ex)
             {
-                if (LogData.Data.Logger.IsOpen)
-                    LogData.Data.Logger.Log(Logging.Level.Exception, string.Format(iba.Properties.Resources.wdErrorAccept,ex.Message));
+                LogData.Data.Log(Logging.Level.Exception, string.Format(iba.Properties.Resources.wdErrorAccept,ex.Message));
                 if (m_serverSocket == lSocket)
                     m_serverSocket = null;
             }
@@ -231,8 +229,7 @@ namespace iba.Processing
                     catch (Exception ex)
                     {
                        m_statusString = string.Format(iba.Properties.Resources.wdErrorConnect, ex.Message);
-                       if (LogData.Data.Logger.IsOpen)
-                           LogData.Data.Logger.Log(Logging.Level.Exception, m_statusString);
+                       LogData.Data.Log(Logging.Level.Exception, m_statusString);
                     }
                 }
 
@@ -255,8 +252,7 @@ namespace iba.Processing
                             catch (Exception ex)
                             {
                                 string errMessage = string.Format(iba.Properties.Resources.wdErrorSend,ex.Message);
-                                if (LogData.Data.Logger.IsOpen)
-                                    LogData.Data.Logger.Log(Logging.Level.Exception, errMessage);
+                                LogData.Data.Log(Logging.Level.Exception, errMessage);
                                 m_dataSockets.RemoveAt(i);
                                 try
                                 {
