@@ -962,6 +962,7 @@ namespace iba.Processing
             catch
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                m_sd.UpdatingFileList = false;
                 return;
             }
 

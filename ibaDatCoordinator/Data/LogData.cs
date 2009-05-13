@@ -149,7 +149,7 @@ namespace iba.Data
             get { return m_maxRows; }
             set
             {
-                m_maxRows = value;
+                m_maxRows = Math.Max(1,value);
                 Profiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
                 if (m_control != null) //gui present
                     if (m_grid.Rows.Count > m_maxRows) m_control.BeginInvoke(m_clearSomeRowsDelegate);
@@ -166,7 +166,7 @@ namespace iba.Data
 
             int rowpos = freeze ? m_grid.FirstDisplayedScrollingRowIndex:-1;
 
-            while (m_grid.Rows.Count >= m_maxRows)
+            while (m_grid.Rows.Count >= m_maxRows && m_grid.Rows.Count > 0)
             {
                 m_grid.Rows.RemoveAt(0);
                 rowpos -= 1;
@@ -402,7 +402,8 @@ namespace iba.Data
         {
             get 
             {
-                if (m_logger == null || !m_logger.IsOpen) return 0;
+                //if (m_logger == null || !m_logger.IsOpen) return 0;
+                if (m_logger == null) return 50;
                 if (m_data.Logger.ChildCount > 0)
                     return (m_data.Logger.Children[0] as GridViewLogger).MaxRows;
                 else

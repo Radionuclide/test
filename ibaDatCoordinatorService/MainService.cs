@@ -54,6 +54,7 @@ namespace iba.Services
                             m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
                             m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
                             confs = dat.Configurations;
+                            if (dat.LogItemCount == 0) dat.LogItemCount = 50;
                             LogData.Data.MaxRows = dat.LogItemCount;
                         }
                         foreach (ConfigurationData dat in confs)

@@ -195,15 +195,14 @@ namespace iba.Controls
             m_refreshTimer.Enabled = false;
             if (sender != null) //refresh
                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
-            if (!m_data.Changed && sender != null)
+            if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
+            else this.Cursor = Cursors.Default; if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;
                 return;
             }
             m_data.Changed = false;
             //wait cursor
-            if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
-            else this.Cursor = Cursors.Default;
             string text = String.Format(iba.Properties.Resources.statText1, m_data.Started ? iba.Properties.Resources.statText2 : iba.Properties.Resources.statText3) + Environment.NewLine;
             //text += "processedFiles: " + m_data.ProcessedFiles.Count.ToString() + Environment.NewLine;
             //text += "readFiles: " + m_data.ReadFiles.Count.ToString() + Environment.NewLine;

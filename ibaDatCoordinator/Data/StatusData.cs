@@ -281,34 +281,6 @@ namespace iba.Data
             m_started = false;
         }
 
-        //eventually I'd like this method removed.
-        /*public StatusData Clone()
-        {
-            StatusData returnValue = new StatusData(m_cf);
-            returnValue.m_changed = m_changed;
-            returnValue.m_permanentErrorFilesChanged = m_permanentErrorFilesChanged;
-            //clear these after have taking the copy;
-            m_changed = m_permanentErrorFilesChanged = false;
-            returnValue.m_started = m_started;
-            returnValue.m_updatingFileList = m_updatingFileList;
-            lock (m_datFileStates)
-            {
-                foreach (KeyValuePair<string, DatFileStatus> pair in m_datFileStates)
-                    returnValue.m_datFileStates.Add((string) pair.Key.Clone(), (DatFileStatus) pair.Value.Clone());
-            }
-            returnValue.m_permanentErrorFiles = returnValue.m_readFiles = returnValue.m_processedFiles = null; //dont copy, causes deadlocks and is data that is not referenced
-
-            lock (m_filesCopy)
-            {
-                returnValue.m_filesCopy = m_filesCopy.Clone();
-            }
-            lock (m_permanentErrorFilesCopy)
-            {
-                returnValue.m_permanentErrorFilesCopy.AddRange(m_permanentErrorFilesCopy);
-            }
-            return returnValue;
-        }*/
-
         public MinimalStatusData GetMinimalStatusData(bool permanentError)
         {
             int filesCount = permanentError?m_permanentErrorFiles.Count:Math.Min(m_filesCopy.Count, 200);

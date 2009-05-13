@@ -227,12 +227,7 @@ namespace iba.Controls
             m_refreshTimer.Enabled = false;
             if (sender != null) //refresh
                 m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid, true);
-            if (!m_data.Changed && sender != null)
-            {
-                m_refreshTimer.Enabled = true;
-                return;
-            }
-            m_data.Changed = false; 
+
             //wait cursor
             if (m_data.UpdatingFileList)
             {
@@ -244,6 +239,12 @@ namespace iba.Controls
                 m_deleteDats.Enabled = m_refreshDats.Enabled = true;
                 this.Cursor = Cursors.Default;
             }
+            if (!m_data.Changed && sender != null)
+            {
+                m_refreshTimer.Enabled = true;
+                return;
+            }
+            m_data.Changed = false; 
 
             DetermineCheckedFiles();
             m_gridView.RowCount = m_data.Files.Count; 

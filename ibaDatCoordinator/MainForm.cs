@@ -150,8 +150,6 @@ namespace iba
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnClosing(e);
-
             if (WindowState != FormWindowState.Minimized || Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 FormStateSerializer.SaveSettings(this, "MainForm");
 
@@ -175,7 +173,6 @@ namespace iba
             
             string s = String.IsNullOrEmpty(m_filename) ? "not set" : m_filename;
             Profiler.ProfileString(false, "LastState", "LastSavedFile", ref s, "not set");
-            LogData.Data.Logger.Close();
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
             {
@@ -208,6 +205,8 @@ namespace iba
                     waiter.ShowDialog(this);
                 }
             }
+            LogData.Data.Logger.Close();
+            base.OnClosing(e);
         }
 
         bool bHandleResize = false;
@@ -343,7 +342,7 @@ namespace iba
                 statusToolStripMenuItem.Enabled = true;
                 configurationToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
-                m_EntriesNumericUpDown1.Value = LogData.Data.MaxRows;
+                m_EntriesNumericUpDown1.Value = Math.Max(1,LogData.Data.MaxRows);
                 settingsToolStripMenuItem.Enabled = true;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
@@ -1567,6 +1566,7 @@ namespace iba
                         TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
                         TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
                         confs = dat.Configurations;
+                        if (dat.LogItemCount == 0) dat.LogItemCount = 50;
                         LogData.Data.MaxRows = dat.LogItemCount;
                     }
                     m_filename = filename;
@@ -1731,7 +1731,7 @@ namespace iba
 
         private void m_EntriesNumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            LogData.Data.MaxRows = (int) m_EntriesNumericUpDown1.Value;
+            LogData.Data.MaxRows = Math.Max(1,(int) m_EntriesNumericUpDown1.Value);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.LoggerMaxRows = LogData.Data.MaxRows;
         }
