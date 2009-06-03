@@ -150,6 +150,46 @@ namespace iba {
 		}
 	}
 
+	bool CH1Manager::SetStationAddress2(array<Byte>^ oldPhysicalMacAdress, array<Byte>^ newStationMacAdress)
+	{
+		if (!m_driverloaded) 
+		{
+			return false;
+		}
+		for (unsigned short i = 0; i < 4; i++)
+		{
+			unsigned char address[14];
+			memset(address,0,sizeof(address));
+			int error = H1HoleStationsAdresseKarte(address,i);
+			if (error)
+			{
+				m_lastError = LoadError(ERR_STATION_ADDRESS) + ": " + error.ToString();
+				return false;
+			}
+			bool adressfound = true;
+			for (int j = 0; j < 6 && adressfound; j++)
+				if (oldPhysicalMacAdress[j] != address[j+6])
+					adressfound = false;
+			if (adressfound)
+			{
+				memset(address,0,sizeof(address));
+				for (int j = 0; j < 6 && adressfound; j++)
+				{
+					address[j] = newStationMacAdress[j];
+				}
+				error = H1SetzeStationsAdresseKarte(address,i);
+				if (error)
+				{
+					m_lastError = LoadError(ERR_STATION_ADDRESS) + ": " + error.ToString();
+					return false;
+				}
+				return true;
+			}
+		}
+		m_lastError = LoadError(ERR_STATION_ADDRESS) + ": none of the first four network cards has the correct MAC adress" ;
+		return false;
+	}
+
 	bool CH1Manager::Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout)
 	{
 		//delete obsolete send parameters and recieve parameters

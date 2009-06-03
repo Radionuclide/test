@@ -58,6 +58,7 @@ namespace iba {
 				OPERATING_SYSTEM_ERROR=21			// Own error code for operating system error,e.g. disconnected cable
 		};
 		bool SetStationAddress(array<Byte>^ ownMacAdress);
+		bool SetStationAddress2(array<Byte>^ oldPhysicalMacAdress, array<Byte>^ newStationAdress);
 		bool Connect(u_short% vnr, int priority, bool active,  array<Byte>^ otherMacAdress,  String^ ownTSAP, String^ destTSAP, H1Result% result, int timeout);
 		property String^ LastError{ String^ get(); }
 		bool DisconnectAll();

@@ -10,7 +10,7 @@ namespace Alunorf_sinec_h1_plugin
     /// Data type for holding MAC Addresses
     /// </summary>
     [Serializable]
-    public class MacAddr
+    public class MacAddr : IComparable<MacAddr>
     {
         #region Constructor
         /************************************************/
@@ -219,6 +219,50 @@ namespace Alunorf_sinec_h1_plugin
 
 
         /************************************************/
+        #endregion
+
+        #region IComparable<MacAddr> Members
+
+        public int CompareTo(MacAddr other)
+        {
+            int t = FirstByte.CompareTo(other.FirstByte);
+            if (t != 0)
+                return t;
+            t = SecondByte.CompareTo(other.SecondByte);
+            if (t != 0)
+                return t;
+            t = ThirdByte.CompareTo(other.ThirdByte);
+            if (t != 0)
+                return t;
+            t = FourthByte.CompareTo(other.FourthByte);
+            if (t != 0)
+                return t;
+            t = FifthByte.CompareTo(other.FifthByte);
+            if (t != 0)
+                return t;
+            t = SixthByte.CompareTo(other.SixthByte);
+            if (t != 0)
+                return t;
+            return 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MacAddr)) return false;
+            return (CompareTo(obj as MacAddr) == 0);
+        }
+
+        public override int GetHashCode()
+        {
+            int val = FirstByte;
+            val += SecondByte;
+            val += ThirdByte;
+            val += FourthByte;
+            val += FifthByte;
+            val += SixthByte;
+            return val;
+        }
+
         #endregion
     }
 }

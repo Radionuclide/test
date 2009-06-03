@@ -2,8 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Sinec-H1 Plugin Installer"
-!define PRODUCT_VERSION "1.2"
-!define PRODUCT_PUBLISHER "iba Benelux"
+!define PRODUCT_VERSION "1.3"
+!define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
 ;--------------------------------

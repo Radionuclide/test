@@ -91,6 +91,14 @@ namespace Alunorf_sinec_h1_plugin
             set { m_ownAddress = value; }
         }
 
+        private byte[] m_pcMAC;
+        public byte[] pcMAC
+        {
+            get { return m_pcMAC; }
+            set { m_pcMAC = value; }
+        }
+
+
         private byte[] m_NQSAddress1;
         public byte[] NQSAddress1
         {
@@ -226,6 +234,7 @@ namespace Alunorf_sinec_h1_plugin
             //    m_ownAddress = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
             //}
 
+            m_pcMAC = new Byte[] { 0, 0, 0, 0, 0, 0 };
             m_ownAddress = new Byte[] { 0x00, 0x15, 0xBA, 0x00, 0x03, 0x7A };
             m_NQSAddress1 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x01 };
             m_NQSAddress2 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x02 };
@@ -259,6 +268,7 @@ namespace Alunorf_sinec_h1_plugin
         public object Clone()
         {
             PluginH1Task ht = new PluginH1Task(m_nameInfo, m_datcoHost, null);
+            ht.m_pcMAC = m_pcMAC;
             ht.m_NQSAddress1 = m_NQSAddress1;
             ht.m_NQSAddress2 = m_NQSAddress2;
             ht.m_NQS_TSAPforNQS1 = m_NQS_TSAPforNQS1;
