@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Xml.Serialization;
-using System.Management;
 using iba.Plugins;
 
 namespace Alunorf_sinec_h1_plugin
@@ -22,8 +21,6 @@ namespace Alunorf_sinec_h1_plugin
         private static readonly int SIGNALS_INDEX = 2;
         private static readonly int TELEGRAM_NEW_INDEX = 3;
 
-        private List<MacAddr> m_macs;
-        
         public PluginH1TaskControl(IDatCoHost host)
         {
             m_datcoHost = host;
@@ -35,34 +32,6 @@ namespace Alunorf_sinec_h1_plugin
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.signal);
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.telegram_new);
             m_tvMessages.ImageList = telegramImageList;
-
-            ManagementObjectSearcher query = null;
-            ManagementObjectCollection queryCollection = null;
-
-            m_macs = new List<MacAddr>();
-            try
-            {
-                query = new ManagementObjectSearcher("SELECT * FROM Win32_NetworkAdapter");
-                queryCollection = query.Get();
-                foreach (ManagementObject mo in queryCollection)
-                {
-                    if (mo["MacAddress"] != null)
-                    {
-                        if (mo["PNPDeviceID"] != null && !mo["PNPDeviceID"].ToString().StartsWith("PCI"))
-                           continue;
-                       m_macs.Add(new MacAddr(mo["MacAddress"].ToString()));
-                       m_cbAdapters.Items.Add(mo["Caption"].ToString());
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-            if (m_macs.Count > 0)
-            {
-                m_cbAdapters.SelectedIndex = 0;
-            }
         }
 
         private void m_pcmac1_Validating(object sender, CancelEventArgs e)
@@ -139,23 +108,6 @@ namespace Alunorf_sinec_h1_plugin
             m_nudSendTimeout.Value = (decimal)m_data.SendTimeOut;
             m_nudAckTimeout.Value = (decimal)m_data.AckTimeOut;
             m_refreshTimer.Start();
-
-            temp = new MacAddr();
-            temp.FirstByte = m_data.pcMAC[0];
-            temp.SecondByte = m_data.pcMAC[1];
-            temp.ThirdByte = m_data.pcMAC[2];
-            temp.FourthByte = m_data.pcMAC[3];
-            temp.FifthByte = m_data.pcMAC[4];
-            temp.SixthByte = m_data.pcMAC[5];
-            for (int i = 0; i < m_macs.Count; i++)
-            {
-                if (temp.Equals(m_macs[i]))
-                {
-                    m_cbAdapters.SelectedIndex = i;
-                    return;
-                }
-            }
-            m_cbAdapters.SelectedIndex = (m_cbAdapters.Items.Count>0)?0:-1;
         }
 
         private void BuildTree()
@@ -241,27 +193,6 @@ namespace Alunorf_sinec_h1_plugin
             m_data.OwnTSAPforNQS2 = m_tbTSAP_NQS2_PC.Text;
             m_data.NQS_TSAPforNQS1 = m_tbTSAP_NQS1_NQS.Text;
             m_data.NQS_TSAPforNQS2 = m_tbTSAP_NQS2_NQS.Text;
-
-            if (m_cbAdapters.SelectedIndex >= 0)
-            {
-                temp= m_macs[m_cbAdapters.SelectedIndex];
-                m_data.pcMAC[0] = temp.FirstByte;
-                m_data.pcMAC[1] = temp.SecondByte;
-                m_data.pcMAC[2] = temp.ThirdByte;
-                m_data.pcMAC[3] = temp.FourthByte;
-                m_data.pcMAC[4] = temp.FifthByte;
-                m_data.pcMAC[5] = temp.SixthByte;
-
-            }
-            else
-            {
-                m_data.pcMAC[0] = 0;
-                m_data.pcMAC[1] = 0;
-                m_data.pcMAC[2] = 0;
-                m_data.pcMAC[3] = 0;
-                m_data.pcMAC[4] = 0;
-                m_data.pcMAC[5] = 0;
-            }
 
             m_data.RetryConnectTimeInterval = (int)m_nudRetryConnectTimeInterval.Value;
             m_data.ConnectionTimeOut = (int)m_nudTryconnectTimeout.Value;
@@ -754,16 +685,6 @@ namespace Alunorf_sinec_h1_plugin
             //draw the row number string on the current row header cell using
             //the brush defined above and the DataGridView's default font
             e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
-        }
-
-        private void m_cbAdapters_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = m_cbAdapters.SelectedIndex;
-            if (index >= 0)
-                m_lblMACVal.Text = m_macs[index].Address;
-            else
-                m_lblMACVal.Text = "";
-
         }
     }
 }

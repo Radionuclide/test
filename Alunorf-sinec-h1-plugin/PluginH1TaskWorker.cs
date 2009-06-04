@@ -101,12 +101,7 @@ namespace Alunorf_sinec_h1_plugin
             m_readStarted1 = m_readStarted2 = false;
             m_logger.Open();
 
-            bool ok = false;
-            if (m_data.pcMAC[0] == 0 && m_data.pcMAC[1] == 0 && m_data.pcMAC[2] == 0
-                && m_data.pcMAC[3] == 0 && m_data.pcMAC[4] == 0 && m_data.pcMAC[5] == 0)
-                ok = m_h1manager.SetStationAddress(m_data.OwnAddress);
-            else
-                ok = m_h1manager.SetStationAddress2(m_data.pcMAC, m_data.OwnAddress);
+            bool ok = m_h1manager.SetStationAddress(m_data.OwnAddress);
             if (ok)
                 ok = m_h1manager.SetSendTimeout(m_data.SendTimeOut);
             if (!ok)

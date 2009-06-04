@@ -715,7 +715,7 @@
     <value>11</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 271</value>
+    <value>0, 248</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>557, 81</value>
@@ -742,7 +742,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_splitContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 85</value>
+    <value>0, 62</value>
   </data>
   <data name="m_nqs1MAC.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 32</value>
@@ -757,7 +757,7 @@
     <value>m_nqs1MAC</value>
   </data>
   <data name="&gt;&gt;m_nqs1MAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nqs1MAC.Parent" xml:space="preserve">
     <value>NQS1</value>
@@ -1021,7 +1021,7 @@
     <value>m_nqs2MAC</value>
   </data>
   <data name="&gt;&gt;m_nqs2MAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nqs2MAC.Parent" xml:space="preserve">
     <value>NQS2</value>
@@ -1296,120 +1296,6 @@
   <data name="macGroupbox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_cbAdapters.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cbAdapters.Location" type="System.Drawing.Point, System.Drawing">
-    <value>321, 32</value>
-  </data>
-  <data name="m_cbAdapters.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 21</value>
-  </data>
-  <data name="m_cbAdapters.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_cbAdapters.Name" xml:space="preserve">
-    <value>m_cbAdapters</value>
-  </data>
-  <data name="&gt;&gt;m_cbAdapters.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAdapters.Parent" xml:space="preserve">
-    <value>macGroupbox</value>
-  </data>
-  <data name="&gt;&gt;m_cbAdapters.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label19.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label19.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>318, 16</value>
-  </data>
-  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 13</value>
-  </data>
-  <data name="label19.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label19.Text" xml:space="preserve">
-    <value>Network adapter:</value>
-  </data>
-  <data name="&gt;&gt;label19.Name" xml:space="preserve">
-    <value>label19</value>
-  </data>
-  <data name="&gt;&gt;label19.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label19.Parent" xml:space="preserve">
-    <value>macGroupbox</value>
-  </data>
-  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblMACVal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblMACVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblMACVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 53</value>
-  </data>
-  <data name="m_lblMACVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
-  <data name="m_lblMACVal.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_lblMACVal.Text" xml:space="preserve">
-    <value>MacVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblMACVal.Name" xml:space="preserve">
-    <value>m_lblMACVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblMACVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMACVal.Parent" xml:space="preserve">
-    <value>macGroupbox</value>
-  </data>
-  <data name="&gt;&gt;m_lblMACVal.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label18.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 53</value>
-  </data>
-  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
-  </data>
-  <data name="label18.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label18.Text" xml:space="preserve">
-    <value>MAC address:</value>
-  </data>
-  <data name="&gt;&gt;label18.Name" xml:space="preserve">
-    <value>label18</value>
-  </data>
-  <data name="&gt;&gt;label18.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label18.Parent" xml:space="preserve">
-    <value>macGroupbox</value>
-  </data>
-  <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1438,7 +1324,7 @@
     <value>macGroupbox</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="m_ownMAC.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 19</value>
@@ -1453,19 +1339,19 @@
     <value>m_ownMAC</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Type" xml:space="preserve">
-    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ISEAGE.May610.Diagrammer.matb, Alunorf-sinec-h1-plugin, Version=1.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.Parent" xml:space="preserve">
     <value>macGroupbox</value>
   </data>
   <data name="&gt;&gt;m_ownMAC.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="macGroupbox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="macGroupbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 79</value>
+    <value>557, 56</value>
   </data>
   <data name="macGroupbox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
