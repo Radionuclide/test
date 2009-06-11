@@ -56,9 +56,8 @@ namespace iba {
 
 	bool CDongleInfo::IsPluginLicensed(int pluginbit)
 	{
-		if (pluginbit == 0) return true;
-		if (pluginbit < 1 || pluginbit > 7 || !dongleFound) return false;
-		Byte mask = 1 << (pluginbit-1);
+		if (pluginbit < 0 || pluginbit > 7 || !dongleFound) return false;
+		Byte mask = 1 << pluginbit;
 		return ((readByte & 	mask) == mask);
 	};
 

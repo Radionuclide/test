@@ -475,67 +475,74 @@ namespace Alunorf_plugin_test
                         else
                         {
                             QdtTelegram qdt = wrap.InnerTelegram as QdtTelegram;
-                            if (qdt != null)
+                            try
                             {
-//                                string filename = "qdt" + qdt.AktId.ToString() + ".txt";
-                                string filename = "qdt" + qdt.AktId.ToString() + ".dat";
-                                filename = Path.Combine(m_outputDir.Text, filename);
-                                //using (StreamWriter w = File.AppendText(filename))
-                                //{
-                                //    w.Write(qdt.Interpret(m_telegrams));
-                                //    w.Close();
-                                //}
-                                qdt.WriteToDatFile(m_telegrams, filename);
-                                AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
-                                SetMessage("qdt telegram recieved: " + qdt.AktId.ToString()+", written to " + filename);
-                                if (!SendTelegram(ackqdt))
+                                if (qdt != null)
                                 {
-                                    SetMessage("could not set ack to qdt: state is disconnected");
-                                    m_pcConnected = ConnectionState.DISCONNECTED;
-                                    m_retryConnect = true;
-                                }
-                            }
-                            else
-                            {
-                                IniTelegram ini = wrap.InnerTelegram as IniTelegram;
-                                if (ini != null)
-                                {
-                                    m_pcConnected = ConnectionState.READY;
-                                    AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
-                                    SetMessage("ini telegram recieved: " + ini.AktId.ToString() + ", please send a GO");
-                                    if (!SendTelegram(ackini,"init_pc"))
+                                    //                                string filename = "qdt" + qdt.AktId.ToString() + ".txt";
+                                    string filename = "qdt" + qdt.AktId.ToString() + ".dat";
+                                    filename = Path.Combine(m_outputDir.Text, filename);
+                                    //using (StreamWriter w = File.AppendText(filename))
+                                    //{
+                                    //    w.Write(qdt.Interpret(m_telegrams));
+                                    //    w.Close();
+                                    //}
+                                    qdt.WriteToDatFile(m_telegrams, filename);
+                                    AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
+                                    SetMessage("qdt telegram recieved: " + qdt.AktId.ToString() + ", written to " + filename);
+                                    if (!SendTelegram(ackqdt))
                                     {
-                                        SetMessage("could not send ack to ini: state is disconnected");
+                                        SetMessage("could not set ack to qdt: state is disconnected");
                                         m_pcConnected = ConnectionState.DISCONNECTED;
                                         m_retryConnect = true;
-                                    }
-                                    if (m_sendFurtherGoes)
-                                    {
-                                        GoTelegram go = new GoTelegram(m_idCounter , m_messagesCount++);
-                                        m_idCounter += 2;
-                                        if (!SendTelegram(go, "go"))
-                                        {
-                                            SetMessage("could not send a further go: state is disconnected");
-                                            m_pcConnected = ConnectionState.DISCONNECTED;
-                                            m_retryConnect = true;
-                                        }
                                     }
                                 }
                                 else
                                 {
-                                    LiveTelegram live = wrap.InnerTelegram as LiveTelegram;
-                                    if (live != null)
+                                    IniTelegram ini = wrap.InnerTelegram as IniTelegram;
+                                    if (ini != null)
                                     {
-                                        SetMessage("live telegram recieved: " + live.AktId.ToString());
-                                        AckTelegram acklive = new AckTelegram(live.AktId, m_messagesCount++);
-                                        if (!SendTelegram(acklive))
+                                        m_pcConnected = ConnectionState.READY;
+                                        AckTelegram ackini = new AckTelegram(ini.AktId, m_messagesCount++);
+                                        SetMessage("ini telegram recieved: " + ini.AktId.ToString() + ", please send a GO");
+                                        if (!SendTelegram(ackini, "init_pc"))
                                         {
-                                            SetMessage("could not set ack to live: state is disconnected");
+                                            SetMessage("could not send ack to ini: state is disconnected");
                                             m_pcConnected = ConnectionState.DISCONNECTED;
                                             m_retryConnect = true;
                                         }
+                                        if (m_sendFurtherGoes)
+                                        {
+                                            GoTelegram go = new GoTelegram(m_idCounter, m_messagesCount++);
+                                            m_idCounter += 2;
+                                            if (!SendTelegram(go, "go"))
+                                            {
+                                                SetMessage("could not send a further go: state is disconnected");
+                                                m_pcConnected = ConnectionState.DISCONNECTED;
+                                                m_retryConnect = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        LiveTelegram live = wrap.InnerTelegram as LiveTelegram;
+                                        if (live != null)
+                                        {
+                                            SetMessage("live telegram recieved: " + live.AktId.ToString());
+                                            AckTelegram acklive = new AckTelegram(live.AktId, m_messagesCount++);
+                                            if (!SendTelegram(acklive))
+                                            {
+                                                SetMessage("could not set ack to live: state is disconnected");
+                                                m_pcConnected = ConnectionState.DISCONNECTED;
+                                                m_retryConnect = true;
+                                            }
+                                        }
                                     }
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.ToString());
                             }
                         }
                     }

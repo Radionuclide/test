@@ -656,7 +656,6 @@ namespace Alunorf_sinec_h1_plugin
                 else
                     e.Effect = DragDropEffects.Move;
             }
-
         }
 
         private void m_datagvMessages_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
