@@ -188,7 +188,7 @@ namespace Alunorf_plugin_test
                         m_messages.Rows[m_messages.RowCount - 1].Cells[1].Value = message;
                     }
 
-                    if (m_logger.IsOpen)
+                    if (m_logger != null && m_logger.IsOpen)
                         m_logger.Log(Level.Info, message);
 
                 }

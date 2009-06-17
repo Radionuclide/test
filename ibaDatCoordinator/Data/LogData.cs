@@ -402,8 +402,7 @@ namespace iba.Data
         {
             get 
             {
-                //if (m_logger == null || !m_logger.IsOpen) return 0;
-                if (m_logger == null) return 50;
+                if (m_data == null || m_data.Logger == null) return 50;
                 if (m_data.Logger.ChildCount > 0)
                     return (m_data.Logger.Children[0] as GridViewLogger).MaxRows;
                 else
@@ -411,7 +410,7 @@ namespace iba.Data
             }
             set
             {
-                if (m_logger != null && m_logger.IsOpen)
+                if (m_data != null && m_data.Logger != null)
                 {
                     if (m_data.Logger.ChildCount > 0)
                         (m_data.Logger.Children[0] as GridViewLogger).MaxRows = value;
