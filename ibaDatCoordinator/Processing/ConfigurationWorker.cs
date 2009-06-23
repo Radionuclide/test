@@ -91,6 +91,38 @@ namespace iba.Processing
             set { m_toUpdate = value; }
         }
 
+        private object m_fswtLock;
+        void DisposeFswt()
+        {
+            lock (m_fswtLock)
+            {
+                if (fswt != null)
+                {
+                    fswt.Dispose();
+                    fswt = null;
+                }
+            }
+        }
+        void RenewFswt()
+        {
+            lock (m_fswtLock)
+            {
+                if (fswt != null)
+                {
+                    fswt.Dispose();
+                    fswt = null;
+                }
+                fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                fswt.NotifyFilter = NotifyFilters.FileName;
+                fswt.IncludeSubdirectories = m_cd.SubDirs;
+                fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
+                fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
+                fswt.Error += new ErrorEventHandler(OnFileSystemError);
+                fswt.EnableRaisingEvents = true;
+            }
+        }
+
+
         private bool UpdateConfiguration()
         {
             if (m_toUpdate != null)
@@ -131,11 +163,7 @@ namespace iba.Processing
                     }
                     if (m_sd.Started)
                     {
-                        if (fswt != null)
-                        {
-                            fswt.Dispose();
-                            fswt = null;
-                        }
+                        DisposeFswt();
                         SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                     }
                     ConfigurationData oldConfigurationData = m_cd;
@@ -169,23 +197,15 @@ namespace iba.Processing
                         }
                         else if (m_cd.DetectNewFiles)
                         {
-                            fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
-                            fswt.NotifyFilter = NotifyFilters.FileName;
-                            fswt.IncludeSubdirectories = m_cd.SubDirs;
-                            fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
-                            fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
-                            fswt.Error += new ErrorEventHandler(OnFileSystemError);
-                            fswt.EnableRaisingEvents = true;
+                            RenewFswt();
                         }
                         tickCount = 0;
                         networkErrorOccured = false;
                     }
 
-                    if (!m_cd.DetectNewFiles && fswt != null)
-                    {
-                        fswt.Dispose();
-                        fswt = null;
-                    }
+                    if (!m_cd.DetectNewFiles)
+                        DisposeFswt();
+
 
                     //also update statusdata
                     m_sd.CorrConfigurationData = m_cd;
@@ -317,6 +337,7 @@ namespace iba.Processing
             m_candidateNewFiles = new List<string>();
             m_listUpdatingLock = new Object();
             m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
+            m_fswtLock = new Object();
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -589,8 +610,7 @@ namespace iba.Processing
             }
             finally
             {
-                if (fswt != null) fswt.Dispose();
-                fswt = null;
+                DisposeFswt();
             }
 
             m_sd.Started = false;
@@ -605,8 +625,7 @@ namespace iba.Processing
         void OnFileSystemError(object sender, ErrorEventArgs e)
         {
             networkErrorOccured = true;
-            fswt.Dispose();
-            fswt = null;
+            DisposeFswt();
             //can also happen without that connection is lost, alter error message
             if (m_cd.DatDirectory==m_cd.DatDirectoryUNC)
                 Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.FileSystemWatcherProblem, m_cd.DatDirectoryUNC, e.GetException().Message));
@@ -786,9 +805,9 @@ namespace iba.Processing
             retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
             bool changed = false;
             List<string> toRemove = new List<string>();
-            m_newFiles = new Set<string>();
             lock (m_listUpdatingLock)
             {
+                m_newFiles = new Set<string>();
                 lock (m_candidateNewFiles)
                 {
                     if (m_skipAddNewDatFileTimerTick)
@@ -848,21 +867,10 @@ namespace iba.Processing
                 tickCount = 0;
                 if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))
                 {
-                    if (fswt != null)
-                    {
-                        fswt.Dispose();
-                        fswt = null;
-                    }
                     if (m_cd.DetectNewFiles)
-                    {
-                        fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
-                        fswt.NotifyFilter = NotifyFilters.FileName;
-                        fswt.IncludeSubdirectories = m_cd.SubDirs;
-                        fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
-                        fswt.Error += new ErrorEventHandler(OnFileSystemError);
-                        fswt.Renamed += new RenamedEventHandler(OnNewDatFileOrRenameFile);
-                        fswt.EnableRaisingEvents = true;
-                    }
+                        RenewFswt();
+                    else
+                        DisposeFswt();
                     networkErrorOccured = false;
                     Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
                 }
