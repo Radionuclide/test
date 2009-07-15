@@ -14,7 +14,6 @@ namespace iba.Data
             m_name = iba.Properties.Resources.extractTitle;
             m_destinationMap = String.Empty;
             m_toFile = false;
-            m_subfolderChoice = SubfolderChoiceB.DAY;
             m_fileType = ExtractFileType.BINARY;
             m_monitorData = new MonitorData();
         }
@@ -28,15 +27,6 @@ namespace iba.Data
         {
             get { return m_toFile; }
             set { m_toFile = value; }
-        }
-
-        //letter B appended because of name collision in XML serialisation
-        public enum SubfolderChoiceB { SAME, NONE, HOUR, DAY, WEEK, MONTH };
-        private SubfolderChoiceB m_subfolderChoice;
-        public SubfolderChoiceB Subfolder
-        {
-            get { return m_subfolderChoice; }
-            set { m_subfolderChoice = value; }
         }
 
         public enum ExtractFileType { TEXT, BINARY };
@@ -62,7 +52,6 @@ namespace iba.Data
             ed.m_pdoFile = m_pdoFile;
             ed.m_toFile = m_toFile;
             ed.m_notify = m_notify;
-            ed.m_subfolderChoice = m_subfolderChoice;
             ed.m_fileType = m_fileType;
             CopyUNCData(ed);
             ed.m_monitorData = (MonitorData) m_monitorData.Clone();

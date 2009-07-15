@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using iba.Data;
-using IBAFILESLib;
+using ibaFilesLiteLib;
 
 namespace iba.Controls
 {
@@ -51,7 +51,7 @@ namespace iba.Controls
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            IbaFileUpdater ibaDatFile = new IbaFileClass();
+            IbaFile ibaDatFile = new IbaFileClass();
             m_stop = false;
             for (int count = 0; count < m_files.Count && !m_stop; count++)
             {

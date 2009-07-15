@@ -39,20 +39,10 @@ namespace iba.Data
             set { if (m_allowedExtensions.Contains(value)) m_extension = value;}
         }
 
-
-        public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH };
-        private SubfolderChoice m_subfolderChoice;
-        public SubfolderChoice Subfolder
-        {
-            get { return m_subfolderChoice; }
-            set { m_subfolderChoice = value; }
-        }
-
         public ReportData(ConfigurationData parent) : base(parent)
         {
             m_name = iba.Properties.Resources.reportTitle;
             m_outputChoice = OutputChoice.FILE;
-            m_subfolderChoice = SubfolderChoice.DAY;
             m_extension = "pdf";
             m_monitorData = new MonitorData();
         }
@@ -74,7 +64,6 @@ namespace iba.Data
             rd.m_wtodo = m_wtodo;
             rd.m_name = m_name;
             rd.m_pdoFile = m_pdoFile;
-            rd.m_subfolderChoice = m_subfolderChoice;
             rd.m_outputChoice = m_outputChoice;
             rd.m_notify = m_notify;
 

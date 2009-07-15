@@ -32,6 +32,7 @@ namespace iba.Data
             m_quota = 1024;
             m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
             m_overwriteFiles = false;
+            m_subfolderChoice = SubfolderChoice.DAY;
         }
 
         protected uint m_numbFolders;
@@ -39,6 +40,15 @@ namespace iba.Data
         {
             get { return m_numbFolders; }
             set { m_numbFolders = value; }
+        }
+
+        //letter B appended because of name collision in XML serialisation
+        public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH };
+        protected SubfolderChoice m_subfolderChoice;
+        public SubfolderChoice Subfolder
+        {
+            get { return m_subfolderChoice; }
+            set { m_subfolderChoice = value; }
         }
 
         protected uint m_quota;
@@ -79,6 +89,7 @@ namespace iba.Data
             uncdat.m_quota = m_quota;
             uncdat.m_outputLimitChoice = m_outputLimitChoice;
             uncdat.m_overwriteFiles = m_overwriteFiles;
+            uncdat.m_subfolderChoice = m_subfolderChoice;
         }
 
         protected string m_username;

@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using iba.Data;
-using IBAFILESLib;
+using ibaFilesLiteLib;
 using iba.Utility;
 using iba.Plugins;
 using System.Windows.Forms;
@@ -1316,7 +1316,7 @@ namespace iba.Processing
         {
             try
             {
-                IbaFileUpdater ibaDatFile = new IbaFileClass();
+                IbaFile ibaDatFile = new IbaFileClass();
                 Nullable<DateTime> time = null;
                 try
                 {
@@ -1807,7 +1807,7 @@ namespace iba.Processing
                 }
 
                
-                IbaFileUpdater ibaDatFile = new IbaFileClass();
+                IbaFile ibaDatFile = new IbaFileClass();
                 Nullable<DateTime> time = null;
                 try
                 {
@@ -2008,7 +2008,7 @@ namespace iba.Processing
             string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
             try
             {
-                if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                     CleanupDirs(filename, task, ext);
                 else if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
                     CleanupWithQuota(filename, task, ext);
@@ -2047,15 +2047,15 @@ namespace iba.Processing
                 return null;
             }
 
-            if (m_cd.SubDirs && task.Subfolder == ExtractData.SubfolderChoiceB.SAME)
+            if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
                 string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
                 string s0 = s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
             }
-            if (task.Subfolder != ExtractData.SubfolderChoiceB.NONE
-                && task.Subfolder != ExtractData.SubfolderChoiceB.SAME)
+            if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
+                && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
             {
                 dir = Path.Combine(dir, SubFolder(task.Subfolder));
             }
@@ -2121,48 +2121,6 @@ namespace iba.Processing
                     return null;
             }
 	    }
-
-        private string SubFolder(CopyMoveTaskData.SubfolderChoiceA choice)
-        {
-            DateTime now = DateTime.Now;
-            switch (choice)
-            {
-                case CopyMoveTaskData.SubfolderChoiceA.HOUR:
-                    return now.ToString("yyMMddHH");
-                case CopyMoveTaskData.SubfolderChoiceA.DAY:
-                    return now.ToString("yyMMdd");
-                case CopyMoveTaskData.SubfolderChoiceA.MONTH:
-                    return now.ToString("yyMM");
-                case CopyMoveTaskData.SubfolderChoiceA.WEEK:
-                    {
-                        int weekNr = GetWeekNumber(now);
-                        return (now.Year - 2000).ToString("d2") + weekNr.ToString("d2");
-                    }
-                default:
-                    return null;
-            }
-        }
-
-        private string SubFolder(ExtractData.SubfolderChoiceB choice)
-        {
-            DateTime now = DateTime.Now;
-            switch (choice)
-            {
-                case ExtractData.SubfolderChoiceB.HOUR:
-                    return now.ToString("yyMMddHH");
-                case ExtractData.SubfolderChoiceB.DAY:
-                    return now.ToString("yyMMdd");
-                case ExtractData.SubfolderChoiceB.MONTH:
-                    return now.ToString("yyMM");
-                case ExtractData.SubfolderChoiceB.WEEK:
-                    {
-                        int weekNr = GetWeekNumber(now);
-                        return (now.Year - 2000).ToString("d2") + weekNr.ToString("d2");
-                    }
-                default:
-                    return null;
-            }
-        }
 
         private int GetWeekNumber(DateTime date)
         {
@@ -2442,7 +2400,7 @@ namespace iba.Processing
                 try
                 {
                     string extension = new FileInfo(filename).Extension;
-                    if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                    if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                     {
                         CleanupDirs(filename, task, extension);
                     }
@@ -2496,14 +2454,14 @@ namespace iba.Processing
                     return;
                 }
 
-                if (m_cd.SubDirs && task.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME) //concatenate subfolder corresponding to dat subfolder
+                if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME) //concatenate subfolder corresponding to dat subfolder
                 {
                     string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                     string s1 = Path.GetFullPath(filename);
                     string s0 = s1.Remove(0, s2.Length + 1);
                     dir = Path.GetDirectoryName(Path.Combine(dir, s0));
                 }
-                if (task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.NONE && task.Subfolder != CopyMoveTaskData.SubfolderChoiceA.SAME)
+                if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
                 {
                     dir = Path.Combine(dir, SubFolder(task.Subfolder));
                 }

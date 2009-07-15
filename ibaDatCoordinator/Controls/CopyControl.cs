@@ -57,12 +57,12 @@ namespace iba.Controls
             m_nudDirs.Value = m_data.SubfoldersNumber;
             m_nudQuota.Value = m_data.Quota;
             
-            m_rbNONE.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.NONE;
-            m_rbHour.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.HOUR;
-            m_rbMonth.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.MONTH;
-            m_rbDay.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.DAY;
-            m_rbWeek.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.WEEK;
-            m_rbOriginal.Checked = m_data.Subfolder == CopyMoveTaskData.SubfolderChoiceA.SAME;
+            m_rbNONE.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.NONE;
+            m_rbHour.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.HOUR;
+            m_rbMonth.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.MONTH;
+            m_rbDay.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.DAY;
+            m_rbWeek.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.WEEK;
+            m_rbOriginal.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.SAME;
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
@@ -78,12 +78,12 @@ namespace iba.Controls
             m_data.ActionDelete = m_rbDelete.Checked;
             
             m_data.DestinationMap = m_targetFolderTextBox.Text;
-            if (m_rbNONE.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.NONE;
-            if (m_rbHour.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.HOUR;
-            if (m_rbDay.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.DAY;
-            if (m_rbWeek.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.WEEK;
-            if (m_rbMonth.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.MONTH;
-            if (m_rbOriginal.Checked) m_data.Subfolder = CopyMoveTaskData.SubfolderChoiceA.SAME;
+            if (m_rbNONE.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.NONE;
+            if (m_rbHour.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.HOUR;
+            if (m_rbDay.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.DAY;
+            if (m_rbWeek.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.WEEK;
+            if (m_rbMonth.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.MONTH;
+            if (m_rbOriginal.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.SAME;
 
             if (m_rbPrevOutput.Checked)
                 m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;

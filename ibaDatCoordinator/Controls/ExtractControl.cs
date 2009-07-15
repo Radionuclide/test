@@ -48,12 +48,12 @@ namespace iba.Controls
             m_rbDbase.Checked = !m_data.ExtractToFile;
             m_panelFile.Enabled = m_rbFile.Checked;
 
-            m_rbNONE.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.NONE;
-            m_rbOriginal.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.SAME;
-            m_rbHour.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.HOUR;
-            m_rbMonth.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.MONTH;
-            m_rbDay.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.DAY;
-            m_rbWeek.Checked = m_data.Subfolder == ExtractData.SubfolderChoiceB.WEEK;
+            m_rbNONE.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.NONE;
+            m_rbOriginal.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.SAME;
+            m_rbHour.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.HOUR;
+            m_rbMonth.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.MONTH;
+            m_rbDay.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.DAY;
+            m_rbWeek.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.WEEK;
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
@@ -92,12 +92,12 @@ namespace iba.Controls
             m_data.ExtractToFile = m_rbFile.Checked;
             m_data.FileType = m_rbBinaryFile.Checked?ExtractData.ExtractFileType.BINARY:ExtractData.ExtractFileType.TEXT;
 
-            if (m_rbNONE.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.NONE;
-            if (m_rbHour.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.HOUR;
-            if (m_rbDay.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.DAY;
-            if (m_rbWeek.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.WEEK;
-            if (m_rbMonth.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.MONTH;
-            if (m_rbOriginal.Checked) m_data.Subfolder = ExtractData.SubfolderChoiceB.SAME;
+            if (m_rbNONE.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.NONE;
+            if (m_rbHour.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.HOUR;
+            if (m_rbDay.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.DAY;
+            if (m_rbWeek.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.WEEK;
+            if (m_rbMonth.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.MONTH;
+            if (m_rbOriginal.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.SAME;
             m_data.SubfoldersNumber = (uint) m_nudDirs.Value;
             m_data.Quota = (uint) m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked?TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories:TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;

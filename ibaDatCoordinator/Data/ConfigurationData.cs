@@ -198,8 +198,7 @@ namespace iba.Data
             get { return m_rescanTime.Ticks; }
             set { m_rescanTime = new TimeSpan(value); }
         }
-
-
+        
         private bool m_enabled;
         public bool Enabled
         {

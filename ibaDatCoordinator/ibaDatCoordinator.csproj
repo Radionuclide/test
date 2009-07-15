@@ -201,6 +201,7 @@
     <Compile Include="Data\StatusData.cs" />
     <Compile Include="Data\TaskData.cs" />
     <Compile Include="Data\TaskDataUNC.cs" />
+    <Compile Include="Data\UpdateDataTask.cs" />
     <Compile Include="Data\WatchDogData.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
@@ -528,9 +529,9 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
-    <COMReference Include="IBAFILESLib">
-      <Guid>{10FC9C2E-670C-41B4-B967-B2EF8DF25FE3}</Guid>
-      <VersionMajor>1</VersionMajor>
+    <COMReference Include="ibaFilesLiteLib">
+      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
+      <VersionMajor>4</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>

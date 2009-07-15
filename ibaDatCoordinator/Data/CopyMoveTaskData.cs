@@ -27,7 +27,7 @@ namespace iba.Data
             m_name = iba.Properties.Resources.copyTitle;
             m_removeSource = false;
             m_delete = false;
-            m_subfolderChoice = SubfolderChoiceA.NONE;
+            m_subfolderChoice = SubfolderChoice.NONE;
             m_whatFile = WhatFileEnumA.DATFILE;
         }
 
@@ -40,15 +40,6 @@ namespace iba.Data
             set { m_whatFile = value; }
         }
 
-        //letter A added because namecollision in XML-Serialiser with SubFolderCHoice from reportdata
-        public enum SubfolderChoiceA { NONE, HOUR, DAY, WEEK, MONTH,SAME};
-        private SubfolderChoiceA m_subfolderChoice;
-        public SubfolderChoiceA Subfolder
-        {
-            get { return m_subfolderChoice; }
-            set { m_subfolderChoice = value; }
-        }
-
         public CopyMoveTaskData()
             : this(null)
         {
@@ -59,14 +50,13 @@ namespace iba.Data
             CopyMoveTaskData cd = new CopyMoveTaskData(null);
             cd.m_removeSource = m_removeSource;
             cd.m_delete = m_delete;
-            cd.m_subfolderChoice = m_subfolderChoice;
             cd.m_wtodo = m_wtodo;
 
             CopyUNCData(cd);
             
             cd.m_name = m_name;
             cd.m_notify = m_notify;
-            
+          
             
             cd.m_whatFile = m_whatFile;
             return cd;
