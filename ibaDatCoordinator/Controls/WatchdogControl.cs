@@ -29,6 +29,7 @@ namespace iba.Controls
             m_rbPassiveNode.Checked = !m_data.ActiveNode;
             m_rbBinary.Checked = m_data.Binary;
             m_rbText.Checked = !m_data.Binary;
+            m_tbStatus.Text = "";
             m_timerStatus.Enabled = m_enableCheckBox.Checked = m_data.Enabled;
             m_cycleUpDown.Value = m_data.CycleTime;
             m_tbHost.Text = m_data.Address;

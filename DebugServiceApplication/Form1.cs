@@ -80,10 +80,7 @@ namespace iba
                             LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
                             return;
                         }
-                        m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
-                        m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
-                        confs = dat.Configurations;
-                        LogData.Data.MaxRows = dat.LogItemCount;
+                        confs = dat.ApplyToManager(m_communicationObject.Manager);
                     }
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();
                     m_communicationObject.Manager.Configurations = confs;

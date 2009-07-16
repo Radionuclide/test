@@ -318,19 +318,34 @@ namespace iba.Processing
         }
 
         //singleton construction
-        private static TaskManager theTaskManager=null;
-        private static TaskManagerWrapper RemoteTaskManager = null;
+        private static TaskManager theTaskManager=null; 
+        //theTaskmanager has a triple purpose
+        //1:) If standalone it is simply THE manager
+        //2:) When installed as service and connected it is
+        //      On the server instance of TaskManager: THE taskmanager
+        //      On the client instance of TaskManager: nothing
+        //3:) When installed as service and disconnected
+        //      On the client instance of TaskManager: A temporary manager, allowing you to set settings that can be uploaded when reconnected
+        //      On the server instance of Taskmanager (on condition that server is alive): another manager, that might be downloaded when reconnected
+        private static TaskManagerWrapper RemoteTaskManager = null; 
+        //wrapper, i.e. this should be returned when running on the client and being connected, 
+        // it delegates calls to theTaskManager on the serverside through the communication object
 
         public TaskManager()
         {
             m_workers = new SortedDictionary<ConfigurationData, ConfigurationWorker>();
             m_watchdog = new TCPWatchdog();
+            m_doPostPone = true;
+            m_postponeMinutes = 5;
+            m_processPriority = (int)System.Diagnostics.ProcessPriorityClass.Normal;
         }
         
         public static TaskManager Manager
         {
             get
             {
+                if (Program.IsServer) //was set by the service
+                    return theTaskManager;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && RemoteTaskManager != null)
                 {
                     return RemoteTaskManager;
@@ -353,6 +368,17 @@ namespace iba.Processing
             }
         }
 
+        public static TaskManager ClientManager //to be called from client, gets the client manager;
+        {
+            get
+            {
+                return theTaskManager;
+            }
+            set
+            {
+                theTaskManager = value;
+            }
+        }
 
         virtual public List<ConfigurationData> Configurations
         {
@@ -382,29 +408,36 @@ namespace iba.Processing
         //can't be called remote, so no virtual
         public string GetStatusForWatchdog()
         {
-            StringBuilder message = new StringBuilder();
-            lock (m_workers)
+            try
             {
-                List<ConfigurationData> confs = Configurations;
-                confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-
-                foreach (ConfigurationData conf in confs)
+                StringBuilder message = new StringBuilder();
+                lock (m_workers)
                 {
-                    StatusData s = m_workers[conf].Status;
-                    message.Append(conf.Name);
-                    message.Append(':');
-                    message.Append(s.Started?"started,":"stopped,");
-                    message.Append(s.ReadFiles.Count);
-                    message.Append(" todo,");
-                    message.Append(s.ProcessedFiles.Count);
-                    message.Append(" done,");
-                    message.Append(s.CountErrors());
-                    message.Append(" failed,");
-                    message.Append(s.PermanentErrorFiles.Count);
-                    message.Append(" perm. failed;");
+                    List<ConfigurationData> confs = Configurations;
+                    confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+
+                    foreach (ConfigurationData conf in confs)
+                    {
+                        StatusData s = m_workers[conf].Status;
+                        message.Append(conf.Name);
+                        message.Append(':');
+                        message.Append(s.Started ? "started," : "stopped,");
+                        message.Append(s.ReadFiles.Count);
+                        message.Append(" todo,");
+                        message.Append(s.ProcessedFiles.Count);
+                        message.Append(" done,");
+                        message.Append(s.CountErrors());
+                        message.Append(" failed,");
+                        message.Append(s.PermanentErrorFiles.Count);
+                        message.Append(" perm. failed;");
+                    }
                 }
+                return message.ToString();
             }
-            return message.ToString();
+            catch
+            {
+                return null;
+            }
         }
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -435,46 +468,87 @@ namespace iba.Processing
 
         public unsafe byte[] GetStatusForWatchdogBinary()
         {
-            BinaryWatchdogMessage pMsg = new BinaryWatchdogMessage();
-            
-            pMsg.counter = m_watchdogCounter++;
-            pMsg.version = 1; //version 1
-            pMsg.reserved1 = 0;
-            pMsg.reserved2 = 0;
-            pMsg.jobs = new BinaryWatchdogMessageLine[16];
-            lock (m_workers)
+            try
             {
-                List<ConfigurationData> confs = Configurations;
-                confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-                for (int i = 0; i < Math.Min(16,confs.Count); i++)
+                BinaryWatchdogMessage pMsg = new BinaryWatchdogMessage();
+
+                pMsg.counter = m_watchdogCounter++;
+                pMsg.version = 1; //version 1
+                pMsg.reserved1 = 0;
+                pMsg.reserved2 = 0;
+                pMsg.jobs = new BinaryWatchdogMessageLine[16];
+                lock (m_workers)
                 {
-                    StatusData s = m_workers[confs[i]].Status;
-                    pMsg.jobs[i].state = s.Started ? 1 : 0;
-                    pMsg.jobs[i].todoCount = s.ReadFiles.Count;
-                    pMsg.jobs[i].doneCount = s.ProcessedFiles.Count;
-                    pMsg.jobs[i].errorCount = s.CountErrors();
-                    pMsg.jobs[i].permErrorCount = s.PermanentErrorFiles.Count;
-                    pMsg.jobs[i].reserved1 = 0;
-                    pMsg.jobs[i].reserved2 = 0;
+                    List<ConfigurationData> confs = Configurations;
+                    confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                    for (int i = 0; i < Math.Min(16, confs.Count); i++)
+                    {
+                        StatusData s = m_workers[confs[i]].Status;
+                        pMsg.jobs[i].state = s.Started ? 1 : 0;
+                        pMsg.jobs[i].todoCount = s.ReadFiles.Count;
+                        pMsg.jobs[i].doneCount = s.ProcessedFiles.Count;
+                        pMsg.jobs[i].errorCount = s.CountErrors();
+                        pMsg.jobs[i].permErrorCount = s.PermanentErrorFiles.Count;
+                        pMsg.jobs[i].reserved1 = 0;
+                        pMsg.jobs[i].reserved2 = 0;
+                    }
+                    for (int i = confs.Count; i < 16; i++)
+                    {
+                        pMsg.jobs[i].state = 0;
+                        pMsg.jobs[i].todoCount = 0;
+                        pMsg.jobs[i].doneCount = 0;
+                        pMsg.jobs[i].errorCount = 0;
+                        pMsg.jobs[i].permErrorCount = 0;
+                        pMsg.jobs[i].reserved1 = 0;
+                        pMsg.jobs[i].reserved2 = 0;
+                    }
                 }
-                for (int i = confs.Count; i < 16; i++)
+
+                byte[] answer = new byte[Marshal.SizeOf(typeof(BinaryWatchdogMessage))];
+                fixed (byte* pAnswer = &answer[0])
                 {
-                    pMsg.jobs[i].state = 0;
-                    pMsg.jobs[i].todoCount = 0;
-                    pMsg.jobs[i].doneCount = 0;
-                    pMsg.jobs[i].errorCount = 0;
-                    pMsg.jobs[i].permErrorCount = 0;
-                    pMsg.jobs[i].reserved1 = 0;
-                    pMsg.jobs[i].reserved2 = 0;
+                    Marshal.StructureToPtr(pMsg, new IntPtr(pAnswer), false);
+                }
+                return answer;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        bool m_doPostPone;
+        virtual public bool DoPostponeProcessing
+        {
+            get { return m_doPostPone; }
+            set { m_doPostPone = value; }
+        }
+
+        int m_postponeMinutes;
+        virtual public int PostponeMinutes
+        {
+            get { return m_postponeMinutes; }
+            set { m_postponeMinutes = value; }
+        }
+
+        int m_processPriority;
+        virtual public int ProcessPriority
+        {
+            get { return m_processPriority; }
+            set { 
+                m_processPriority = value;
+                System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) value;
+                if (Program.IsServer || Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.GetCurrentProcess().PriorityClass = pc;
+                    }
+                    catch
+                    { }
                 }
             }
-           
-            byte[] answer = new byte[Marshal.SizeOf(typeof(BinaryWatchdogMessage))];
-            fixed (byte* pAnswer = &answer[0])
-            {
-                Marshal.StructureToPtr(pMsg, new IntPtr(pAnswer), false);
-            }
-            return answer;
         }
     }
 
@@ -883,6 +957,90 @@ namespace iba.Processing
                 Program.CommunicationObject.HandleBrokenConnection();
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
                 return false;
+            }
+        }
+
+        public override bool DoPostponeProcessing
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.DoPostponeProcessing;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.DoPostponeProcessing;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.DoPostponeProcessing = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.DoPostponeProcessing = value;
+                }
+            }
+        }
+
+        public override int PostponeMinutes
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.PostponeMinutes;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.PostponeMinutes;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.PostponeMinutes = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.PostponeMinutes = value;
+                }
+            }
+        }
+
+       public override int ProcessPriority
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.ProcessPriority;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.ProcessPriority;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.ProcessPriority = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.ProcessPriority = value;
+                }
             }
         }
     }

@@ -182,6 +182,12 @@
     <Compile Include="Controls\StopWaitDialog.Designer.cs">
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UpdateDataTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UpdateDataTaskControl.Designer.cs">
+      <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WatchdogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -435,6 +441,9 @@
     <EmbeddedResource Include="Controls\StopWaitDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UpdateDataTaskControl.resx">
+      <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WatchdogControl.de.resx">
       <SubType>Designer</SubType>

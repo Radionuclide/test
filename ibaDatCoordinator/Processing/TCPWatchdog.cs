@@ -182,6 +182,7 @@ namespace iba.Processing
                     result = m_com.Manager.GetStatusForWatchdog();
                 else
                     result = TaskManager.Manager.GetStatusForWatchdog();
+                if (result == null) return null;
                 message += result;
 
                 Byte[] data = new Byte[message.Length];
@@ -237,38 +238,40 @@ namespace iba.Processing
                 if (bConnected && m_dataSockets.Count > 0)
                 {
                     Byte[] data = CreateWatchdogMessage();
-
-                    lock (m_socketLock)
+                    if (data != null)
                     {
-                        for (int i = m_dataSockets.Count-1; i >= 0; i--)
+                        lock (m_socketLock)
                         {
-                            Socket dataSocket = m_dataSockets[i];
-                            try
+                            for (int i = m_dataSockets.Count - 1; i >= 0; i--)
                             {
-                                dataSocket.Send(data);
-                                while (dataSocket.Available > 0)
-                                    dataSocket.Receive(buffer); //other side shouldn't send, disregard in buffer
-                            }
-                            catch (Exception ex)
-                            {
-                                string errMessage = string.Format(iba.Properties.Resources.wdErrorSend,ex.Message);
-                                LogData.Data.Log(Logging.Level.Exception, errMessage);
-                                m_dataSockets.RemoveAt(i);
+                                Socket dataSocket = m_dataSockets[i];
                                 try
                                 {
-                                    dataSocket.Close();
+                                    dataSocket.Send(data);
+                                    while (dataSocket.Available > 0)
+                                        dataSocket.Receive(buffer); //other side shouldn't send, disregard in buffer
                                 }
-                                catch{}
-
-                                if (m_settings.ActiveNode)
+                                catch (Exception ex)
                                 {
-                                    m_serverSocket = null;
-                                    bConnected = false;
-                                    bReconnectNeeded = true;
-                                    m_statusString = errMessage;
+                                    string errMessage = string.Format(iba.Properties.Resources.wdErrorSend, ex.Message);
+                                    LogData.Data.Log(Logging.Level.Exception, errMessage);
+                                    m_dataSockets.RemoveAt(i);
+                                    try
+                                    {
+                                        dataSocket.Close();
+                                    }
+                                    catch { }
+
+                                    if (m_settings.ActiveNode)
+                                    {
+                                        m_serverSocket = null;
+                                        bConnected = false;
+                                        bReconnectNeeded = true;
+                                        m_statusString = errMessage;
+                                    }
+                                    else
+                                        UpdateStatusString();
                                 }
-                                else
-                                    UpdateStatusString();
                             }
                         }
                     }

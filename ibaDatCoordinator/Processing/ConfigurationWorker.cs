@@ -401,6 +401,7 @@ namespace iba.Processing
         private FileSystemWatcher fswt = null;
         private int m_nrIbaAnalyzerCalls = 0;
 
+
         private void Run()
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
@@ -421,16 +422,8 @@ namespace iba.Processing
                 return;
             }
 
-            bool bPostpone = false;
-            int minutes = 5;
-            try
-            {
-                Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, false);
-                Profiler.ProfileInt(true, "Settings", "PostponeMinutes", ref minutes, minutes);
-            }
-            catch
-            {
-            }
+            bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
+            int minutes = TaskManager.Manager.PostponeMinutes;
 
             //wait until computer is fully started (if selected so)
             if (bPostpone)

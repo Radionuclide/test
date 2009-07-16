@@ -25,12 +25,16 @@ namespace iba
             set { m_comWrapper = value; }
         }
 
+        //IsServer means that we are part of a service;
+        static public bool IsServer = true;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string [] args)
         {
+            IsServer = false;
             //System.Threading.Thread.CurrentThread.CurrentCulture =
             //    new System.Globalization.CultureInfo("fr-fr");
             //System.Threading.Thread.CurrentThread.CurrentUICulture =

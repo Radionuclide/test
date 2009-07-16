@@ -35,6 +35,7 @@ namespace iba.Services
                 LogData.InitializeLogger(null, null, LogData.ApplicationState.SERVICE); //dummy gridlogger
                 PluginManager.Manager.LoadPlugins();
                 m_communicationObject = new CommunicationObject();
+                TaskManager.Manager = m_communicationObject.Manager;
 
                 string filename = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved.xml");
                 m_communicationObject.FileName = filename;
@@ -51,11 +52,7 @@ namespace iba.Services
                         {
                             ibaDatCoordinatorData dat = null;
                                 dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
-                            m_communicationObject.Manager.ReplaceWatchdogData(dat.WatchDogData);
-                            m_communicationObject.Manager.WatchDog.Settings = dat.WatchDogData;
-                            confs = dat.Configurations;
-                            if (dat.LogItemCount == 0) dat.LogItemCount = 50;
-                            LogData.Data.MaxRows = dat.LogItemCount;
+                            confs = dat.ApplyToManager(m_communicationObject.Manager);
                         }
                         foreach (ConfigurationData dat in confs)
                         {

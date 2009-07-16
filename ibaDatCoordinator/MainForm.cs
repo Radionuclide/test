@@ -349,7 +349,11 @@ namespace iba
             {
                 SaveRightPaneControl();
                 Control ctrl = propertyPanes["watchdogControl"] as Control;
-                if (ctrl == null) ctrl = new WatchdogControl();
+                if (ctrl == null)
+                {
+                    ctrl = new WatchdogControl();
+                    propertyPanes["watchdogControl"] = ctrl;
+                }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.watchdogTitle, TaskManager.Manager.WatchDogData.Clone());
                 watchdogToolStripMenuItem.Enabled = false; 
                 pasteToolStripMenuItem.Enabled = false;
@@ -365,7 +369,11 @@ namespace iba
             {
                 SaveRightPaneControl();
                 Control ctrl = propertyPanes["settingsControl"] as Control;
-                if (ctrl == null) ctrl = new ServiceSettingsControl();
+                if (ctrl == null)
+                {
+                    ctrl = new ServiceSettingsControl();
+                    propertyPanes["settingsControl"] = ctrl;
+                }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.settingsTitle, null);
                 pasteToolStripMenuItem.Enabled = false;
                 copyToolStripMenuItem.Enabled = false;
@@ -378,7 +386,28 @@ namespace iba
                 settingsToolStripMenuItem.Enabled = false;
             }
         }
-        
+
+
+        private void ReloadRightPane()
+        { //only handles the cases of settings or watchdog panes, the rest is handled differently
+            if (m_navBar.SelectedPane == m_watchdogPane)
+            {
+                WatchdogControl pane = propertyPanes["watchdogControl"] as WatchdogControl;
+                if (pane!=null)
+                {
+                    pane.LoadData(TaskManager.Manager.WatchDogData.Clone(), this);
+                }
+            }
+            else if (m_navBar.SelectedPane == m_settingsPane)
+            {
+                ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
+                if (pane!=null)
+                {
+                    pane.LoadData(null, this);
+                }
+            }
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -1463,11 +1492,7 @@ namespace iba
                 {
                     using (StreamWriter myWriter = new StreamWriter(m_filename))
                     {
-                        ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
-                            TaskManager.Manager.WatchDogData,
-                            TaskManager.Manager.Configurations, 
-                            LogData.Data.MaxRows
-                            );
+                        ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                         mySerializer.Serialize(myWriter, dat);
                     }
                 }
@@ -1488,11 +1513,7 @@ namespace iba
             {
                 using (StringWriter myWriter = new StringWriter(sb))
                 {
-                    ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
-                        TaskManager.Manager.WatchDogData,
-                        TaskManager.Manager.Configurations,
-                        LogData.Data.MaxRows
-                        );
+                    ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                     mySerializer.Serialize(myWriter, dat);
                 }
             }
@@ -1550,6 +1571,7 @@ namespace iba
             loadFromFile(m_openFileDialog.FileName,false);
             loadConfigurations();
             loadStatuses();
+            ReloadRightPane();
         }
 
         private bool loadFromFile(string filename, bool beSilent)
@@ -1563,11 +1585,7 @@ namespace iba
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
                         ibaDatCoordinatorData dat = (ibaDatCoordinatorData) mySerializer.Deserialize(myFileStream);
-                        TaskManager.Manager.ReplaceWatchdogData(dat.WatchDogData);
-                        TaskManager.Manager.WatchDog.Settings = dat.WatchDogData;
-                        confs = dat.Configurations;
-                        if (dat.LogItemCount == 0) dat.LogItemCount = 50;
-                        LogData.Data.MaxRows = dat.LogItemCount;
+                        confs = dat.ApplyToManager(TaskManager.Manager);
                     }
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
@@ -2089,12 +2107,19 @@ namespace iba
                         MethodInvoker m = delegate()
                         {
                             Program.RunsWithService = Program.ServiceEnum.CONNECTED;
-                            TaskManager.Manager = null; //remove previous client taskmanager so it does not stay
+                            ibaDatCoordinatorData data = null;
+                            if (TaskManager.ClientManager != null)
+                            {
+                                data = ibaDatCoordinatorData.Create(TaskManager.ClientManager);
+                            }
+                            TaskManager.ClientManager = null; //remove previous client taskmanager so it does not stay
                             // alive during the online session
                             Program.CommunicationObject = wrapper;
                             if (NeedUploadToServer())
                             {
                                 //initialise with configurations;
+                                SaveRightPaneControl();
+                                if (data != null) data.ApplyToManager(TaskManager.Manager);
                                 ReplaceManagerFromTree(TaskManager.Manager);
                                 foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                                 {
@@ -2104,11 +2129,13 @@ namespace iba
                                     loadStatuses();
                                 else if (m_navBar.SelectedPane == m_configPane)
                                     loadConfigurations();
+                                ReloadRightPane();
                             }
                             else //download
                             {
                                 loadConfigurations();
                                 loadStatuses();
+                                ReloadRightPane();
                             }
                             UpdateButtons();
                         };

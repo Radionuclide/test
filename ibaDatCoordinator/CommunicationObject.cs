@@ -33,28 +33,13 @@ namespace iba
             {
                 using (StreamWriter myWriter = new StreamWriter(m_filename))
                 {
-                    ibaDatCoordinatorData dat = new ibaDatCoordinatorData(
-                        Manager.WatchDogData,
-                        Manager.Configurations,
-                        LogData.Data.MaxRows
-                        );
+                    ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(m_manager);
                     mySerializer.Serialize(myWriter, dat);
                 }
             }
             catch (Exception)
             {
                 LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
-            }
-        }
-
-        public void SetPriority(System.Diagnostics.ProcessPriorityClass priority)
-        {
-            try
-            {
-                System.Diagnostics.Process.GetCurrentProcess().PriorityClass = priority;
-            }
-            catch
-            {
             }
         }
 
@@ -183,11 +168,6 @@ namespace iba
             {
                 HandleBrokenConnection();
             }
-        }
-
-        public void SetPriority(System.Diagnostics.ProcessPriorityClass priority)
-        {
-            m_com.SetPriority(priority);
         }
 
         public int LoggerMaxRows

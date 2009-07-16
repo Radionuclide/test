@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using iba.Utility;
+using iba.Processing;
 
 namespace iba.Controls
 {
@@ -45,14 +46,11 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            bool bPostpone = false;
-            Profiler.ProfileBool(true, "Settings", "DoPostponeProcessing", ref bPostpone, true);
+            bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
             m_cbPostpone.Checked = bPostpone;
-            int minutes = 5;
-            Profiler.ProfileInt(true, "Settings", "PostponeMinutes", ref minutes, minutes);
+            int minutes = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Value = (decimal)minutes;
-            int iPc = (int)System.Diagnostics.ProcessPriorityClass.Normal;
-            Profiler.ProfileInt(true, "Settings", "ProcessPriority", ref iPc, iPc);
+            int iPc = TaskManager.Manager.ProcessPriority;
             System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
             switch (pc)
             {
@@ -105,9 +103,9 @@ namespace iba.Controls
                 service.Close();
             }
             bool bPostpone = m_cbPostpone.Checked;
-            Profiler.ProfileBool(false, "Settings", "DoPostponeProcessing", ref bPostpone, true);
+            TaskManager.Manager.DoPostponeProcessing = bPostpone;
             int minutes = (int) m_nudPostponeTime.Value;
-            Profiler.ProfileInt(false, "Settings", "PostponeMinutes", ref minutes, 5);
+            TaskManager.Manager.PostponeMinutes = minutes;
             
             int iPc = 2;
             switch (m_comboPriority.SelectedIndex)
@@ -119,22 +117,8 @@ namespace iba.Controls
                 case 4: iPc = (int)System.Diagnostics.ProcessPriorityClass.High; break;
                 case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
             }
-            Profiler.ProfileInt(false, "Settings", "ProcessPriority", ref iPc, (int)System.Diagnostics.ProcessPriorityClass.Normal);
+            TaskManager.Manager.ProcessPriority = iPc;
             //set actual priority;
-            System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-            {
-                try
-                {
-                    System.Diagnostics.Process.GetCurrentProcess().PriorityClass = pc;
-                }
-                catch
-                {}
-            }
-            else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                Program.CommunicationObject.SetPriority(pc);
-            }
         }
 
         #endregion
