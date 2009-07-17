@@ -207,7 +207,7 @@
     <Compile Include="Data\StatusData.cs" />
     <Compile Include="Data\TaskData.cs" />
     <Compile Include="Data\TaskDataUNC.cs" />
-    <Compile Include="Data\UpdateDataTask.cs" />
+    <Compile Include="Data\UpdateDataTaskData.cs" />
     <Compile Include="Data\WatchDogData.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">

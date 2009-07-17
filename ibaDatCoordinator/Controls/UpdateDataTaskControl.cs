@@ -23,14 +23,14 @@ namespace iba.Controls
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
-        UpdateDataTask m_data;
+        UpdateDataTaskData m_data;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
-            m_data = datasource as UpdateDataTask;
+            m_data = datasource as UpdateDataTaskData;
             
-            
+            //output file stuff
             m_targetFolderTextBox.Text = m_data.DestinationMap;
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
@@ -48,6 +48,14 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
+
+
+            //database stuff
+            m_tbDatabaseName.Text = m_data.DbName;
+            m_tbTableName.Text = m_data.DbTblName;
+            m_tbDbUsername.Text = m_data.DbUserName;
+            m_tbDbPass.Text = m_data.DbPassword;
+
         }
 
         public void LeaveCleanup()

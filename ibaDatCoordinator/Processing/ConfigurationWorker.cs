@@ -936,8 +936,11 @@ namespace iba.Processing
         private void ScanDirectory()
         {
             if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
+            {  
             //don't add any extra (and hope that it will be small enough for the next timer tick
                 return;
+                Log(Logging.Level.Info, "failsafe 1, more than 10000 to process files");
+            }
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFiles);
 
             string datDir = m_cd.DatDirectoryUNC;
@@ -953,12 +956,15 @@ namespace iba.Processing
             m_sd.UpdatingFileList = true;
             try
             {
+                Log(Logging.Level.Exception, "getting files");
                 fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                Log(Logging.Level.Exception, "sorting them");
                 Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
                 {
                     int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
                     return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
                 }); //oldest files first
+                Log(Logging.Level.Exception, "finished sorting");
             }
             catch
             {
@@ -997,6 +1003,7 @@ namespace iba.Processing
                     if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
                         //don't add any extra (and hope that it will be small enough for the next timer tick
                     {
+                        Log(Logging.Level.Info, "failsafe 2, more than 10000 to process files");
                         m_directoryFiles.Clear();
                         return;
                     }
@@ -1008,32 +1015,32 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                lock (m_listUpdatingLock)
+                if (!IsInvalidOrProcessed(filename))
                 {
-                    if (!IsInvalidOrProcessed(filename))
+                    lock (m_candidateNewFiles)
                     {
-                        lock (m_candidateNewFiles)
+                        if (!m_candidateNewFiles.Contains(filename))
                         {
-                            if (!m_candidateNewFiles.Contains(filename))
-                            {
-                                m_directoryFiles.Add(filename);
-                                count++;
-                            }
+                            Log(Logging.Level.Info, "adding file to temp list");
+                            m_directoryFiles.Add(filename);
+                            count++;
                         }
                     }
                 }
-                if (count >= 10)
+
+                if (count >= 50)
                 {
+                    Log(Logging.Level.Info, "more than 50 files gathered in scan, updating list");
                     lock (m_listUpdatingLock)
                     {
                         updateDatFileList(WhatToUpdate.DIRECTORY);
                     }
+                    Log(Logging.Level.Info, "finished updating list, signaling processor to continue");
                     m_waitEvent.Set(); //if main thread was waiting, let it continue
                     count = 0;
                     m_directoryFiles.Clear();
                 }
-                else
-                    Thread.Sleep(0);
+                Thread.Sleep(0);
             }
             if (count > 0 && !m_stop)
             {

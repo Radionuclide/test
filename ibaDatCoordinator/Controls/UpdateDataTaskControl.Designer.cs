@@ -31,6 +31,7 @@
             this.m_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.m_browseFolderButton = new System.Windows.Forms.Button();
             this.m_gbTarget = new System.Windows.Forms.GroupBox();
+            this.m_btBrowseTarget = new System.Windows.Forms.Button();
             this.m_cbOverwrite = new System.Windows.Forms.CheckBox();
             this.m_tbPass = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -59,28 +60,27 @@
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
             this.m_serverBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.m_cbProvider = new System.Windows.Forms.ComboBox();
-            this.m_tbDatabaseName = new System.Windows.Forms.TextBox();
-            this.m_rbNT = new System.Windows.Forms.RadioButton();
-            this.m_rbOtherAuth = new System.Windows.Forms.RadioButton();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.m_panelAuth = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.m_tbTableName = new System.Windows.Forms.TextBox();
+            this.m_tbDbPass = new System.Windows.Forms.TextBox();
+            this.m_rbNT = new System.Windows.Forms.RadioButton();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_rbOtherAuth = new System.Windows.Forms.RadioButton();
+            this.m_tbDbUsername = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.m_btTestConnection = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.m_rbLocal = new System.Windows.Forms.RadioButton();
-            this.m_rbServer = new System.Windows.Forms.RadioButton();
-            this.m_btBrowseTarget = new System.Windows.Forms.Button();
-            this.m_tbServer = new System.Windows.Forms.TextBox();
+            this.m_tbTableName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_computer = new System.Windows.Forms.Panel();
             this.m_btBrowseServer = new System.Windows.Forms.Button();
+            this.m_tbServer = new System.Windows.Forms.TextBox();
+            this.m_rbServer = new System.Windows.Forms.RadioButton();
+            this.m_rbLocal = new System.Windows.Forms.RadioButton();
+            this.label10 = new System.Windows.Forms.Label();
+            this.m_tbDatabaseName = new System.Windows.Forms.TextBox();
+            this.m_cbProvider = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.m_gbTarget.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -93,7 +93,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.m_panelAuth.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.m_computer.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_browseFolderButton
@@ -128,6 +128,17 @@
             this.m_gbTarget.TabIndex = 1;
             this.m_gbTarget.TabStop = false;
             this.m_gbTarget.Text = "Target";
+            // 
+            // m_btBrowseTarget
+            // 
+            this.m_btBrowseTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_btBrowseTarget.Image = global::iba.Properties.Resources.open;
+            this.m_btBrowseTarget.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_btBrowseTarget.Location = new System.Drawing.Point(504, 19);
+            this.m_btBrowseTarget.Name = "m_btBrowseTarget";
+            this.m_btBrowseTarget.Size = new System.Drawing.Size(40, 40);
+            this.m_btBrowseTarget.TabIndex = 2;
+            this.m_btBrowseTarget.UseVisualStyleBackColor = true;
             // 
             // m_cbOverwrite
             // 
@@ -473,7 +484,7 @@
             this.groupBox1.Controls.Add(this.m_btTestConnection);
             this.groupBox1.Controls.Add(this.m_tbTableName);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.panel4);
+            this.groupBox1.Controls.Add(this.m_computer);
             this.groupBox1.Controls.Add(this.m_tbDatabaseName);
             this.groupBox1.Controls.Add(this.m_cbProvider);
             this.groupBox1.Controls.Add(this.label5);
@@ -485,38 +496,40 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Database info";
             // 
-            // label3
+            // m_panelAuth
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Database provider:";
+            this.m_panelAuth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_panelAuth.Controls.Add(this.label8);
+            this.m_panelAuth.Controls.Add(this.m_tbDbPass);
+            this.m_panelAuth.Controls.Add(this.m_rbNT);
+            this.m_panelAuth.Controls.Add(this.label6);
+            this.m_panelAuth.Controls.Add(this.m_rbOtherAuth);
+            this.m_panelAuth.Controls.Add(this.m_tbDbUsername);
+            this.m_panelAuth.Controls.Add(this.label7);
+            this.m_panelAuth.Location = new System.Drawing.Point(3, 81);
+            this.m_panelAuth.Name = "m_panelAuth";
+            this.m_panelAuth.Size = new System.Drawing.Size(337, 102);
+            this.m_panelAuth.TabIndex = 5;
             // 
-            // label5
+            // label8
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 52);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Database name:";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 6);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(78, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Authentication:";
             // 
-            // m_cbProvider
+            // m_tbDbPass
             // 
-            this.m_cbProvider.FormattingEnabled = true;
-            this.m_cbProvider.Location = new System.Drawing.Point(115, 22);
-            this.m_cbProvider.Name = "m_cbProvider";
-            this.m_cbProvider.Size = new System.Drawing.Size(135, 21);
-            this.m_cbProvider.TabIndex = 1;
-            // 
-            // m_tbDatabaseName
-            // 
-            this.m_tbDatabaseName.Location = new System.Drawing.Point(115, 49);
-            this.m_tbDatabaseName.Name = "m_tbDatabaseName";
-            this.m_tbDatabaseName.Size = new System.Drawing.Size(135, 20);
-            this.m_tbDatabaseName.TabIndex = 4;
+            this.m_tbDbPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tbDbPass.Location = new System.Drawing.Point(191, 78);
+            this.m_tbDbPass.Name = "m_tbDbPass";
+            this.m_tbDbPass.Size = new System.Drawing.Size(131, 20);
+            this.m_tbDbPass.TabIndex = 6;
+            this.m_tbDbPass.UseSystemPasswordChar = true;
             // 
             // m_rbNT
             // 
@@ -529,6 +542,16 @@
             this.m_rbNT.Text = "Use Windows NT authentication";
             this.m_rbNT.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label6.Location = new System.Drawing.Point(129, 81);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Password:";
+            // 
             // m_rbOtherAuth
             // 
             this.m_rbOtherAuth.AutoSize = true;
@@ -540,6 +563,15 @@
             this.m_rbOtherAuth.Text = "Specify authentication info";
             this.m_rbOtherAuth.UseVisualStyleBackColor = true;
             // 
+            // m_tbDbUsername
+            // 
+            this.m_tbDbUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tbDbUsername.Location = new System.Drawing.Point(191, 52);
+            this.m_tbDbUsername.Name = "m_tbDbUsername";
+            this.m_tbDbUsername.Size = new System.Drawing.Size(131, 20);
+            this.m_tbDbUsername.TabIndex = 4;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -549,92 +581,6 @@
             this.label7.Size = new System.Drawing.Size(58, 13);
             this.label7.TabIndex = 3;
             this.label7.Text = "Username:";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(191, 52);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(131, 20);
-            this.textBox2.TabIndex = 4;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label6.Location = new System.Drawing.Point(129, 81);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(56, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Password:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(191, 78);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(131, 20);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.UseSystemPasswordChar = true;
-            // 
-            // m_panelAuth
-            // 
-            this.m_panelAuth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_panelAuth.Controls.Add(this.label8);
-            this.m_panelAuth.Controls.Add(this.textBox1);
-            this.m_panelAuth.Controls.Add(this.m_rbNT);
-            this.m_panelAuth.Controls.Add(this.label6);
-            this.m_panelAuth.Controls.Add(this.m_rbOtherAuth);
-            this.m_panelAuth.Controls.Add(this.textBox2);
-            this.m_panelAuth.Controls.Add(this.label7);
-            this.m_panelAuth.Location = new System.Drawing.Point(3, 81);
-            this.m_panelAuth.Name = "m_panelAuth";
-            this.m_panelAuth.Size = new System.Drawing.Size(337, 102);
-            this.m_panelAuth.TabIndex = 5;
-            // 
-            // panel4
-            // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel4.Controls.Add(this.m_btBrowseServer);
-            this.panel4.Controls.Add(this.m_tbServer);
-            this.panel4.Controls.Add(this.m_rbServer);
-            this.panel4.Controls.Add(this.m_rbLocal);
-            this.panel4.Controls.Add(this.label10);
-            this.panel4.Location = new System.Drawing.Point(253, 16);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(307, 88);
-            this.panel4.TabIndex = 2;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(9, 6);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(78, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Authentication:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 196);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Table name:";
-            // 
-            // m_tbTableName
-            // 
-            this.m_tbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tbTableName.Location = new System.Drawing.Point(103, 193);
-            this.m_tbTableName.Name = "m_tbTableName";
-            this.m_tbTableName.Size = new System.Drawing.Size(202, 20);
-            this.m_tbTableName.TabIndex = 8;
             // 
             // m_btTestConnection
             // 
@@ -646,25 +592,57 @@
             this.m_btTestConnection.Text = "Test database connection";
             this.m_btTestConnection.UseVisualStyleBackColor = true;
             // 
-            // label10
+            // m_tbTableName
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 9);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(55, 13);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Computer:";
+            this.m_tbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tbTableName.Location = new System.Drawing.Point(103, 193);
+            this.m_tbTableName.Name = "m_tbTableName";
+            this.m_tbTableName.Size = new System.Drawing.Size(202, 20);
+            this.m_tbTableName.TabIndex = 8;
             // 
-            // m_rbLocal
+            // label9
             // 
-            this.m_rbLocal.AutoSize = true;
-            this.m_rbLocal.Location = new System.Drawing.Point(64, 7);
-            this.m_rbLocal.Name = "m_rbLocal";
-            this.m_rbLocal.Size = new System.Drawing.Size(94, 17);
-            this.m_rbLocal.TabIndex = 1;
-            this.m_rbLocal.TabStop = true;
-            this.m_rbLocal.Text = "Local machine";
-            this.m_rbLocal.UseVisualStyleBackColor = true;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 196);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(66, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Table name:";
+            // 
+            // m_computer
+            // 
+            this.m_computer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_computer.Controls.Add(this.m_btBrowseServer);
+            this.m_computer.Controls.Add(this.m_tbServer);
+            this.m_computer.Controls.Add(this.m_rbServer);
+            this.m_computer.Controls.Add(this.m_rbLocal);
+            this.m_computer.Controls.Add(this.label10);
+            this.m_computer.Location = new System.Drawing.Point(253, 16);
+            this.m_computer.Name = "m_computer";
+            this.m_computer.Size = new System.Drawing.Size(307, 88);
+            this.m_computer.TabIndex = 2;
+            // 
+            // m_btBrowseServer
+            // 
+            this.m_btBrowseServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_btBrowseServer.Image = global::iba.Properties.Resources.open;
+            this.m_btBrowseServer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_btBrowseServer.Location = new System.Drawing.Point(257, 42);
+            this.m_btBrowseServer.Name = "m_btBrowseServer";
+            this.m_btBrowseServer.Size = new System.Drawing.Size(40, 40);
+            this.m_btBrowseServer.TabIndex = 4;
+            this.m_btBrowseServer.UseVisualStyleBackColor = true;
+            // 
+            // m_tbServer
+            // 
+            this.m_tbServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_tbServer.Location = new System.Drawing.Point(93, 53);
+            this.m_tbServer.Name = "m_tbServer";
+            this.m_tbServer.Size = new System.Drawing.Size(158, 20);
+            this.m_tbServer.TabIndex = 3;
             // 
             // m_rbServer
             // 
@@ -677,36 +655,63 @@
             this.m_rbServer.Text = "Database server:";
             this.m_rbServer.UseVisualStyleBackColor = true;
             // 
-            // m_btBrowseTarget
+            // m_rbLocal
             // 
-            this.m_btBrowseTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_btBrowseTarget.Image = global::iba.Properties.Resources.open;
-            this.m_btBrowseTarget.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btBrowseTarget.Location = new System.Drawing.Point(504, 19);
-            this.m_btBrowseTarget.Name = "m_btBrowseTarget";
-            this.m_btBrowseTarget.Size = new System.Drawing.Size(40, 40);
-            this.m_btBrowseTarget.TabIndex = 2;
-            this.m_btBrowseTarget.UseVisualStyleBackColor = true;
+            this.m_rbLocal.AutoSize = true;
+            this.m_rbLocal.Location = new System.Drawing.Point(64, 7);
+            this.m_rbLocal.Name = "m_rbLocal";
+            this.m_rbLocal.Size = new System.Drawing.Size(94, 17);
+            this.m_rbLocal.TabIndex = 1;
+            this.m_rbLocal.TabStop = true;
+            this.m_rbLocal.Text = "Local machine";
+            this.m_rbLocal.UseVisualStyleBackColor = true;
             // 
-            // m_tbServer
+            // label10
             // 
-            this.m_tbServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tbServer.Location = new System.Drawing.Point(93, 53);
-            this.m_tbServer.Name = "m_tbServer";
-            this.m_tbServer.Size = new System.Drawing.Size(158, 20);
-            this.m_tbServer.TabIndex = 3;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 9);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(55, 13);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Computer:";
             // 
-            // m_btBrowseServer
+            // m_tbDatabaseName
             // 
-            this.m_btBrowseServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_btBrowseServer.Image = global::iba.Properties.Resources.open;
-            this.m_btBrowseServer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btBrowseServer.Location = new System.Drawing.Point(257, 42);
-            this.m_btBrowseServer.Name = "m_btBrowseServer";
-            this.m_btBrowseServer.Size = new System.Drawing.Size(40, 40);
-            this.m_btBrowseServer.TabIndex = 4;
-            this.m_btBrowseServer.UseVisualStyleBackColor = true;
+            this.m_tbDatabaseName.Location = new System.Drawing.Point(115, 49);
+            this.m_tbDatabaseName.Name = "m_tbDatabaseName";
+            this.m_tbDatabaseName.Size = new System.Drawing.Size(135, 20);
+            this.m_tbDatabaseName.TabIndex = 4;
+            // 
+            // m_cbProvider
+            // 
+            this.m_cbProvider.FormattingEnabled = true;
+            this.m_cbProvider.Items.AddRange(new object[] {
+            "Sql-server",
+            "ODBC-database",
+            "Oracle",
+            "DB2-UDB"});
+            this.m_cbProvider.Location = new System.Drawing.Point(115, 22);
+            this.m_cbProvider.Name = "m_cbProvider";
+            this.m_cbProvider.Size = new System.Drawing.Size(135, 21);
+            this.m_cbProvider.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 52);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Database name:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Database provider:";
             // 
             // UpdateDataTaskControl
             // 
@@ -734,8 +739,8 @@
             this.groupBox1.PerformLayout();
             this.m_panelAuth.ResumeLayout(false);
             this.m_panelAuth.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.m_computer.ResumeLayout(false);
+            this.m_computer.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -778,14 +783,14 @@
         private System.Windows.Forms.TextBox m_tbDatabaseName;
         private System.Windows.Forms.ComboBox m_cbProvider;
         private System.Windows.Forms.Panel m_panelAuth;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox m_tbDbPass;
         private System.Windows.Forms.RadioButton m_rbNT;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton m_rbOtherAuth;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox m_tbDbUsername;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel m_computer;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox m_tbTableName;
         private System.Windows.Forms.Button m_btTestConnection;
