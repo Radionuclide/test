@@ -33,6 +33,7 @@ namespace iba.Data
             m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
+            m_doDirCleanup = false;
         }
 
         protected uint m_numbFolders;
@@ -113,5 +114,13 @@ namespace iba.Data
             get { return Crypt.Encrypt(m_pass); }
             set { m_pass = Crypt.Decrypt(value); }
         }
+
+        [XmlIgnore]
+        public bool DoDirCleanupNow
+        {
+            get { return m_doDirCleanup; }
+            set { m_doDirCleanup = value; }
+        }
+        private bool m_doDirCleanup;
     }
 }

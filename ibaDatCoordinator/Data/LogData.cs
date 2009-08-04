@@ -58,6 +58,8 @@ namespace iba.Data
             if (ld.TaskData != null) taskname = ld.TaskData.Name;
             string confname = "";
             if (ld.ConfigurationData != null) confname = ld.ConfigurationData.Name;
+            string filename = "";
+            if (ld.DatFile != null) filename = ld.DatFile;
             return "[" + confname + "]\t[" + taskname + "]\t[" + ld.DatFile + "]";
         }
 

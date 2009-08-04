@@ -58,7 +58,6 @@
             this.m_rbMonth = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
-            this.m_serverBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.m_panelAuth = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
@@ -139,6 +138,7 @@
             this.m_btBrowseTarget.Size = new System.Drawing.Size(40, 40);
             this.m_btBrowseTarget.TabIndex = 2;
             this.m_btBrowseTarget.UseVisualStyleBackColor = true;
+            this.m_btBrowseTarget.Click += new System.EventHandler(this.m_btBrowseTarget_Click);
             // 
             // m_cbOverwrite
             // 
@@ -202,6 +202,7 @@
             this.m_checkPathButton.Size = new System.Drawing.Size(40, 40);
             this.m_checkPathButton.TabIndex = 5;
             this.m_checkPathButton.UseVisualStyleBackColor = true;
+            this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
             // m_subfolderGroupBox
             // 
@@ -530,6 +531,7 @@
             this.m_tbDbPass.Size = new System.Drawing.Size(131, 20);
             this.m_tbDbPass.TabIndex = 6;
             this.m_tbDbPass.UseSystemPasswordChar = true;
+            this.m_tbDbPass.TextChanged += new System.EventHandler(this.m_tbDbUsername_TextChanged);
             // 
             // m_rbNT
             // 
@@ -571,6 +573,7 @@
             this.m_tbDbUsername.Name = "m_tbDbUsername";
             this.m_tbDbUsername.Size = new System.Drawing.Size(131, 20);
             this.m_tbDbUsername.TabIndex = 4;
+            this.m_tbDbUsername.TextChanged += new System.EventHandler(this.m_tbDbUsername_TextChanged);
             // 
             // label7
             // 
@@ -634,6 +637,7 @@
             this.m_btBrowseServer.Size = new System.Drawing.Size(40, 40);
             this.m_btBrowseServer.TabIndex = 4;
             this.m_btBrowseServer.UseVisualStyleBackColor = true;
+            this.m_btBrowseServer.Click += new System.EventHandler(this.m_btBrowseServer_Click);
             // 
             // m_tbServer
             // 
@@ -694,6 +698,7 @@
             this.m_cbProvider.Name = "m_cbProvider";
             this.m_cbProvider.Size = new System.Drawing.Size(135, 21);
             this.m_cbProvider.TabIndex = 1;
+            this.m_cbProvider.SelectedIndexChanged += new System.EventHandler(this.m_cbProvider_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -776,7 +781,6 @@
         private System.Windows.Forms.RadioButton m_rbMonth;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox m_targetFolderTextBox;
-        private System.Windows.Forms.FolderBrowserDialog m_serverBrowserDialog;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;

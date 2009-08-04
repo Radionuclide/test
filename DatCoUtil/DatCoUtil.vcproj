@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DatCoUtil"
 	ProjectGUID="{3F16623A-6C9F-4D79-8A6B-351A39BF91A9}"
 	RootNamespace="DatCoUtil"
@@ -190,6 +190,26 @@
 				>
 			</File>
 			<File
+				RelativePath=".\browser.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\DongleInfo.cpp"
 				>
 			</File>
@@ -219,6 +239,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\browser.h"
+				>
+			</File>
 			<File
 				RelativePath=".\DongleInfo.h"
 				>

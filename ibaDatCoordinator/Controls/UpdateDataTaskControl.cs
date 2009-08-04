@@ -55,7 +55,13 @@ namespace iba.Controls
             m_tbTableName.Text = m_data.DbTblName;
             m_tbDbUsername.Text = m_data.DbUserName;
             m_tbDbPass.Text = m_data.DbPassword;
-
+            m_tbServer.Text = m_data.DbServer;
+            m_rbServer.Checked = m_data.DbNamedServer;
+            m_rbLocal.Checked = !m_data.DbNamedServer;
+            m_cbProvider.SelectedIndex = (int)m_data.DbProvider;
+            m_rbNT.Checked = m_data.DbAuthenticateNT;
+            m_rbOtherAuth.Checked = !m_data.DbAuthenticateNT;
+            m_cbProvider_SelectedIndexChanged(null, null);
         }
 
         public void LeaveCleanup()
@@ -80,10 +86,89 @@ namespace iba.Controls
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
+
+
+            //save database stuff
+            m_data.DbName = m_tbDatabaseName.Text;
+            m_data.DbTblName = m_tbTableName.Text;
+            m_data.DbUserName = m_tbDbUsername.Text;
+            m_data.DbPassword = m_tbDbPass.Text;
+            m_data.DbServer = m_tbServer.Text;
+            m_data.DbNamedServer = m_rbServer.Checked;
+            m_data.DbProvider =  (UpdateDataTaskData.DbProviderEnum) m_cbProvider.SelectedIndex;
+            m_data.DbAuthenticateNT = m_rbNT.Checked;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
         #endregion
+
+        private void m_cbProvider_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_cbProvider.SelectedIndex == 0) //Msql
+            {
+                m_computer.Enabled = true;
+                m_rbNT.Enabled = true;
+            }
+            else if (m_cbProvider.SelectedIndex > 0) //other
+            {
+                m_rbServer.Checked = false;
+                m_rbLocal.Checked = true;
+                m_computer.Enabled = false;
+                m_rbNT.Checked = false;
+                m_rbOtherAuth.Checked = true;
+                m_rbNT.Enabled = false;
+            }
+        }
+
+        private void m_tbDbUsername_TextChanged(object sender, EventArgs e)
+        {
+            m_rbNT.Checked = false;
+            m_rbOtherAuth.Checked = true;
+        }
+
+        private void m_checkPathButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            string errormessage = null;
+            bool ok;
+            using (WaitCursor wait = new WaitCursor())
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_targetFolderTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+                else
+                    ok = SharesHandler.TestPath(Shares.PathToUnc(m_targetFolderTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, true);
+            }
+            if (ok)
+            {
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumup;
+            }
+            else
+            {
+                MessageBox.Show(errormessage, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                m_checkPathButton.Text = null;
+                m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
+            }
+            ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void m_btBrowseTarget_Click(object sender, EventArgs e)
+        {
+            m_folderBrowserDialog.ShowNewFolderButton = true;
+            m_folderBrowserDialog.SelectedPath = m_targetFolderTextBox.Text;
+            DialogResult result = m_folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+                m_targetFolderTextBox.Text = m_folderBrowserDialog.SelectedPath;
+        }
+
+        private void m_btBrowseServer_Click(object sender, EventArgs e)
+        {
+            string computer = BrowseForComputer.Browse();
+            m_tbServer.Text = computer;
+            m_rbServer.Checked = true;
+            m_rbLocal.Checked = false;
+        }
     }
 }
