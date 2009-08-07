@@ -79,6 +79,7 @@ namespace iba.Controls
             this.m_newBatchfileButton = new System.Windows.Forms.ToolStripButton();
             this.m_newCopyTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newIfTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newUpdateDataTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.labelmailpass = new System.Windows.Forms.Label();
             this.m_tbMailPass = new System.Windows.Forms.TextBox();
@@ -101,6 +102,7 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -480,7 +482,9 @@ namespace iba.Controls
             this.m_newExtractButton,
             this.m_newBatchfileButton,
             this.m_newCopyTaskButton,
-            this.m_newIfTaskButton});
+            this.m_newIfTaskButton,
+            this.m_newUpdateDataTaskButton,
+            this.m_newPauseTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -518,6 +522,13 @@ namespace iba.Controls
             this.m_newIfTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newIfTaskButton.Name = "m_newIfTaskButton";
             this.m_newIfTaskButton.Click += new System.EventHandler(this.m_newIfTaskButton_Click);
+            // 
+            // m_newUpdateDataTaskButton
+            // 
+            resources.ApplyResources(this.m_newUpdateDataTaskButton, "m_newUpdateDataTaskButton");
+            this.m_newUpdateDataTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newUpdateDataTaskButton.Name = "m_newUpdateDataTaskButton";
+            this.m_newUpdateDataTaskButton.Click += new System.EventHandler(this.m_newUpdateDataTaskButton_Click);
             // 
             // m_subfolderGroupBox
             // 
@@ -684,6 +695,13 @@ namespace iba.Controls
             // 
             this.m_openFileDialog1.FileName = "openFileDialog1";
             // 
+            // m_newPauseTaskButton
+            // 
+            resources.ApplyResources(this.m_newPauseTaskButton, "m_newPauseTaskButton");
+            this.m_newPauseTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newPauseTaskButton.Name = "m_newPauseTaskButton";
+            this.m_newPauseTaskButton.Click += new System.EventHandler(this.m_newPauseTaskButton_Click);
+            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -795,5 +813,7 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbCloseIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
+        private System.Windows.Forms.ToolStripButton m_newUpdateDataTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newPauseTaskButton;
     }
 }

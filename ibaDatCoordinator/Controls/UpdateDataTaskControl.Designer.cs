@@ -508,9 +508,9 @@
             this.m_panelAuth.Controls.Add(this.m_rbOtherAuth);
             this.m_panelAuth.Controls.Add(this.m_tbDbUsername);
             this.m_panelAuth.Controls.Add(this.label7);
-            this.m_panelAuth.Location = new System.Drawing.Point(3, 81);
+            this.m_panelAuth.Location = new System.Drawing.Point(3, 90);
             this.m_panelAuth.Name = "m_panelAuth";
-            this.m_panelAuth.Size = new System.Drawing.Size(337, 102);
+            this.m_panelAuth.Size = new System.Drawing.Size(337, 101);
             this.m_panelAuth.TabIndex = 5;
             // 
             // label8
@@ -599,7 +599,7 @@
             // 
             this.m_tbTableName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tbTableName.Location = new System.Drawing.Point(103, 193);
+            this.m_tbTableName.Location = new System.Drawing.Point(103, 197);
             this.m_tbTableName.Name = "m_tbTableName";
             this.m_tbTableName.Size = new System.Drawing.Size(202, 20);
             this.m_tbTableName.TabIndex = 8;
@@ -607,7 +607,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 196);
+            this.label9.Location = new System.Drawing.Point(12, 200);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(66, 13);
             this.label9.TabIndex = 7;
@@ -624,7 +624,7 @@
             this.m_computer.Controls.Add(this.label10);
             this.m_computer.Location = new System.Drawing.Point(253, 16);
             this.m_computer.Name = "m_computer";
-            this.m_computer.Size = new System.Drawing.Size(307, 88);
+            this.m_computer.Size = new System.Drawing.Size(307, 90);
             this.m_computer.TabIndex = 2;
             // 
             // m_btBrowseServer
@@ -632,7 +632,7 @@
             this.m_btBrowseServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btBrowseServer.Image = global::iba.Properties.Resources.open;
             this.m_btBrowseServer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btBrowseServer.Location = new System.Drawing.Point(257, 42);
+            this.m_btBrowseServer.Location = new System.Drawing.Point(257, 40);
             this.m_btBrowseServer.Name = "m_btBrowseServer";
             this.m_btBrowseServer.Size = new System.Drawing.Size(40, 40);
             this.m_btBrowseServer.TabIndex = 4;
@@ -643,7 +643,7 @@
             // 
             this.m_tbServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_tbServer.Location = new System.Drawing.Point(93, 53);
+            this.m_tbServer.Location = new System.Drawing.Point(93, 51);
             this.m_tbServer.Name = "m_tbServer";
             this.m_tbServer.Size = new System.Drawing.Size(158, 20);
             this.m_tbServer.TabIndex = 3;
@@ -681,7 +681,7 @@
             // 
             // m_tbDatabaseName
             // 
-            this.m_tbDatabaseName.Location = new System.Drawing.Point(115, 49);
+            this.m_tbDatabaseName.Location = new System.Drawing.Point(115, 56);
             this.m_tbDatabaseName.Name = "m_tbDatabaseName";
             this.m_tbDatabaseName.Size = new System.Drawing.Size(135, 20);
             this.m_tbDatabaseName.TabIndex = 4;
@@ -703,7 +703,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 52);
+            this.label5.Location = new System.Drawing.Point(12, 59);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 3;

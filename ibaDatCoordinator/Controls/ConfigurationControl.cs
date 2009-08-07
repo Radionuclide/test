@@ -25,13 +25,17 @@ namespace iba.Controls
             m_newReportButton.Image = Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle);
             m_newExtractButton.Image = Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle);
             m_newCopyTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.copydat_running.Handle);
-            m_newIfTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle); 
+            m_newIfTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle);
+            m_newUpdateDataTaskButton.Image = iba.Properties.Resources.updatedatatask;
+            m_newPauseTaskButton.Image = iba.Properties.Resources.pausetask;
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
             m_newBatchfileButton.ToolTipText = iba.Properties.Resources.batchfileButton;
             m_newCopyTaskButton.ToolTipText = iba.Properties.Resources.copytaskButton;
             m_newIfTaskButton.ToolTipText = iba.Properties.Resources.iftaskButton;
+            m_newUpdateDataTaskButton.ToolTipText = iba.Properties.Resources.updatedatataskButton;
+            m_newPauseTaskButton.ToolTipText = iba.Properties.Resources.pausetaskButton;
 
             m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.startButton);
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
@@ -328,6 +332,38 @@ namespace iba.Controls
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(condo.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
             newNode.Tag = new IfTaskTreeItemData(m_manager, condo);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
+        }
+
+        private void m_newUpdateDataTaskButton_Click(object sender, EventArgs e)
+        {
+            UpdateDataTaskData udt = new UpdateDataTaskData(m_data);
+            new SetNextName(udt);
+            m_data.Tasks.Add(udt);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(udt.Name, MainForm.UPDATEDATATASK_INDEX, MainForm.UPDATEDATATASK_INDEX);
+            newNode.Tag = new UpdateDataTaskTreeItemData(m_manager, udt);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+            (m_manager as MainForm).m_rightPane_Enter(null, null);
+        }
+
+        private void m_newPauseTaskButton_Click(object sender, EventArgs e)
+        {
+            PauseTaskData pause = new PauseTaskData(m_data);
+            new SetNextName(pause);
+            m_data.Tasks.Add(pause);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(pause.Name, MainForm.PAUSETASK_INDEX, MainForm.PAUSETASK_INDEX);
+            newNode.Tag = new PauseTaskTreeItemData(m_manager, pause);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)

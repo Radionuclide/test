@@ -87,6 +87,12 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.batchfileTitle;
             else if (this is CopyMoveTaskData)
                 m_name = iba.Properties.Resources.copyTitle;
+            else if (this is IfTaskData)
+                m_name = iba.Properties.Resources.iftaskTitle;
+            else if (this is UpdateDataTaskData)
+                m_name = iba.Properties.Resources.updateDataTaskTitle;
+            else if (this is PauseTaskData)
+                m_name = iba.Properties.Resources.pauseTaskTitle;
         }
 
         public int CompareTo(TaskData other)

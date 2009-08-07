@@ -110,6 +110,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PauseTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PauseTaskControl.Designer.cs">
+      <DependentUpon>PauseTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RemoveMarkingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +209,7 @@
     <Compile Include="Data\IfTaskData.cs" />
     <Compile Include="Data\LogData.cs" />
     <Compile Include="Data\MonitorData.cs" />
+    <Compile Include="Data\PauseTaskData.cs" />
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
     <Compile Include="Data\TaskData.cs" />
@@ -242,6 +249,7 @@
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
+    <Compile Include="Utility\GraphicsUtilities.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Utility\NotifyIconEx.cs">
       <SubType>Component</SubType>
@@ -325,6 +333,9 @@
     <EmbeddedResource Include="Controls\ConfigurationControl.fr.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PauseTaskControl.resx">
+      <DependentUpon>PauseTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RemoveMarkingsDialog.de.resx">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
@@ -623,6 +634,8 @@
     <None Include="Resources\brokenfile.ico" />
     <None Include="Resources\NewDocument.bmp" />
     <None Include="Resources\Fax.bmp" />
+    <None Include="Resources\updatedatatask.png" />
+    <None Include="Resources\time.png" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

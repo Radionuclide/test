@@ -373,7 +373,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_testButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 19</value>
+    <value>507, 20</value>
   </data>
   <data name="m_testButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>

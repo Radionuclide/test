@@ -21,14 +21,8 @@ namespace iba
         protected IPropertyPaneManager manager;
         public virtual Control CreateControl() {return null;}
         public abstract string What { get; }
-        public virtual object GetDataSource()
-        {
-            return null;
-        }
 
-        //public virtual void SetupPopupMenu(ArrayList items)
-        //{
-        //}
+        public virtual object DataSource { get { return null; } set { } }
 	}
 	#endregion
 
@@ -59,11 +53,29 @@ namespace iba
 
         protected ConfigurationData m_conf;
 
+        public override object DataSource
+        {
+            get
+            {
+                return m_conf;
+            }
+            set
+            {
+                m_conf = value as ConfigurationData;
+            }
+        }
+
         public ConfigurationData ConfigurationData
-		{
-			get {return m_conf;}
-            set { m_conf = value; }
-		}
+        {
+            get
+            {
+                return m_conf;
+            }
+            set
+            {
+                m_conf = value;
+            }
+        }
 
 		public override Control CreateControl()
 		{
@@ -94,10 +106,16 @@ namespace iba
 
         protected ReportData m_rep;
 
-        public ReportData ReportData
+        public override object DataSource
         {
-            get { return m_rep; }
-            set { m_rep = value; }
+            get
+            {
+                return m_rep;
+            }
+            set
+            {
+                m_rep = value as ReportData;
+            }
         }
 
         public override Control CreateControl()
@@ -129,10 +147,16 @@ namespace iba
 
         protected CopyMoveTaskData m_cop;
 
-        public CopyMoveTaskData CopyTaskData
+        public override object DataSource
         {
-            get { return m_cop; }
-            set { m_cop = value; }
+            get
+            {
+                return m_cop;
+            }
+            set
+            {
+                m_cop = value as CopyMoveTaskData;
+            }
         }
 
         public override Control CreateControl()
@@ -164,10 +188,16 @@ namespace iba
 
         protected ExtractData m_ext;
 
-        public ExtractData ExtractData
+        public override object DataSource
         {
-            get { return m_ext; }
-            set { m_ext = value; }
+            get
+            {
+                return m_ext;
+            }
+            set
+            {
+                m_ext = value as ExtractData;
+            }
         }
 
         public override Control CreateControl()
@@ -199,10 +229,16 @@ namespace iba
 
         protected BatchFileData m_bat;
 
-        public BatchFileData BatchFileData
+        public override object DataSource
         {
-            get { return m_bat; }
-            set { m_bat=value; }
+            get
+            {
+                return m_bat;
+            }
+            set
+            {
+                m_bat = value as BatchFileData;
+            }
         }
 
         public override Control CreateControl()
@@ -234,10 +270,16 @@ namespace iba
 
         protected IfTaskData m_ift;
 
-        public IfTaskData IfTaskData
+        public override object DataSource
         {
-            get { return m_ift; }
-            set { m_ift = value; }
+            get
+            {
+                return m_ift;
+            }
+            set
+            {
+                m_ift = value as IfTaskData;
+            }
         }
 
         public override Control CreateControl()
@@ -247,6 +289,88 @@ namespace iba
             {
                 ctrl = new CommonTaskControl(new IfTaskControl());
                 manager.PropertyPanes["IfTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
+    #region UpdateDataTaskTreeItemData
+    public class UpdateDataTaskTreeItemData : TreeItemData
+    {
+        public UpdateDataTaskTreeItemData(IPropertyPaneManager propManager, UpdateDataTaskData udt)
+            : base(propManager)
+        {
+            m_udt = udt;
+        }
+
+        public override string What
+        {
+            get { return "UpdateDataTask"; }
+        }
+
+        protected UpdateDataTaskData m_udt;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_udt;
+            }
+            set
+            {
+                m_udt = value as UpdateDataTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["UpdateDataTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new UpdateDataTaskControl());
+                manager.PropertyPanes["UpdateDataTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
+    #region PauseTaskTreeItemData
+    public class PauseTaskTreeItemData : TreeItemData
+    {
+        public PauseTaskTreeItemData(IPropertyPaneManager propManager, PauseTaskData pt)
+            : base(propManager)
+        {
+            m_pt = pt;
+        }
+
+        public override string What
+        {
+            get { return "PauseTask"; }
+        }
+
+        protected PauseTaskData m_pt;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_pt;
+            }
+            set
+            {
+                m_pt = value as PauseTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["PauseTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new PauseTaskControl());
+                manager.PropertyPanes["PauseTaskControl"] = ctrl;
             }
             return ctrl;
         }
@@ -269,19 +393,25 @@ namespace iba
 
         protected CustomTaskData m_cust;
 
-        public CustomTaskData CustomTaskData
+        public override object DataSource
         {
-            get { return m_cust; }
-            set { m_cust = value; }
+            get
+            {
+                return m_cust;
+            }
+            set
+            {
+                m_cust = value as CustomTaskData;
+            }
         }
 
         public override Control CreateControl()
         {
-            string id = CustomTaskData.Plugin.NameInfo + "Control";
+            string id = m_cust.Plugin.NameInfo + "Control";
             Control ctrl = manager.PropertyPanes[id] as Control;
             if (ctrl == null)
             {
-                ctrl = new CommonTaskControl(CustomTaskData.Plugin.GetControl() as Control);
+                ctrl = new CommonTaskControl(m_cust.Plugin.GetControl() as Control);
                 manager.PropertyPanes[id] = ctrl;
             }
             return ctrl;
@@ -308,6 +438,18 @@ namespace iba
         public ConfigurationData CorrConfigurationData
         {
             get { return m_conf; }
+        }
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_conf;
+            }
+            set
+            {
+                m_conf = value as ConfigurationData;
+            }
         }
 
         public override Control CreateControl()
@@ -342,6 +484,18 @@ namespace iba
         public ConfigurationData CorrConfigurationData
         {
             get { return m_conf; }
+        }
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_conf;
+            }
+            set
+            {
+                m_conf = value as ConfigurationData;
+            }
         }
 
         public override Control CreateControl()

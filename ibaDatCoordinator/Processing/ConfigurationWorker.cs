@@ -262,14 +262,32 @@ namespace iba.Processing
                             {
                                 CopyMoveTaskData cmtd = task as CopyMoveTaskData;
                                 if (cmtd != null)
-                                    pair.Value.ResetTask(task, ".dat");
+                                {
+                                    if (cmtd.ActionDelete)
+                                        toDelete.Add(pair.Key);
+                                    else
+                                        pair.Value.ResetTask(task, ".dat");
+                                }
                                 else
                                 {
                                     ReportData rd = task as ReportData;
-                                    if (rd != null && rd.Output == ReportData.OutputChoice.FILE)
-                                        pair.Value.ResetTask(task, "." + rd.Extension);
+                                    if (rd != null)
+                                    {
+                                        if (rd.Output == ReportData.OutputChoice.FILE)
+                                            pair.Value.ResetTask(task, "." + rd.Extension);
+                                        else
+                                            toDelete.Add(pair.Key);
+                                    }
                                     else
-                                        toDelete.Add(pair.Key);
+                                    {
+                                        UpdateDataTaskData ud = task as UpdateDataTaskData;
+                                        if (ud != null)
+                                        {
+                                            pair.Value.ResetTask(task, ".dat");
+                                        }
+                                        else
+                                            toDelete.Add(pair.Key);
+                                    }
                                 }
                             }
                         }
@@ -1627,6 +1645,14 @@ namespace iba.Processing
                         IfTask(DatFile, task as IfTaskData);
                         m_nrIbaAnalyzerCalls++;
                     }
+                    else if (task is UpdateDataTaskData)
+                    {
+                        UpdateDataTask(DatFile, task as UpdateDataTaskData);
+                    }
+                    else if (task is PauseTaskData)
+                    {
+                        PauseTask(DatFile, task as PauseTaskData);
+                    }
                     else if (task is CopyMoveTaskData)
                     {
                         CopyMoveTaskData dat = task as CopyMoveTaskData;
@@ -1638,7 +1664,7 @@ namespace iba.Processing
                             }
                             catch
                             {
-                                Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
+                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
                                 if (m_needIbaAnalyzer)
                                 {
                                     StopIbaAnalyzer(false);
@@ -1667,7 +1693,7 @@ namespace iba.Processing
                                     }
                                     catch
                                     {
-                                        Log(iba.Logging.Level.Exception,iba.Properties.Resources.IbaAnalyzerUndeterminedError,DatFile,task);
+                                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
                                         if (m_needIbaAnalyzer)
                                         {
                                             StopIbaAnalyzer(false);
@@ -2094,18 +2120,18 @@ namespace iba.Processing
                 return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
-        private string SubFolder(ReportData.SubfolderChoice choice)
+        private string SubFolder(TaskDataUNC.SubfolderChoice choice)
         {
 	        DateTime now = DateTime.Now;
             switch (choice)
             {
-                case ReportData.SubfolderChoice.HOUR:
+                case TaskDataUNC.SubfolderChoice.HOUR:
                     return now.ToString("yyMMddHH");
-                case ReportData.SubfolderChoice.DAY:
+                case TaskDataUNC.SubfolderChoice.DAY:
                     return now.ToString("yyMMdd");
-                case ReportData.SubfolderChoice.MONTH:
+                case TaskDataUNC.SubfolderChoice.MONTH:
                     return now.ToString("yyMM");
-                case ReportData.SubfolderChoice.WEEK:
+                case TaskDataUNC.SubfolderChoice.WEEK:
                 {
                     int weekNr = GetWeekNumber(now);
                     return (now.Year - 2000).ToString("d2") + weekNr.ToString("d2");
@@ -2789,6 +2815,48 @@ namespace iba.Processing
                     }
                 }
             }
+        }
+
+        private void PauseTask(string DatFile, PauseTaskData pauseTaskData)
+        {
+            TimeSpan duration = pauseTaskData.Interval;
+            DateTime startTime;
+            if (pauseTaskData.MeasureFromFileTime)
+            {
+                try
+                {
+                    startTime = (new FileInfo(DatFile)).LastWriteTime;
+                }
+                catch 
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logPauseFailed, DatFile, pauseTaskData);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[DatFile].States[pauseTaskData] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
+            }
+            else
+            {
+                startTime = DateTime.Now;
+            }
+            DateTime nextTime = startTime + duration;
+
+            while (DateTime.Now < nextTime)
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            }
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[DatFile].States[pauseTaskData] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+            }
+        }
+
+        private void UpdateDataTask(string DatFile, UpdateDataTaskData updateDataTaskData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

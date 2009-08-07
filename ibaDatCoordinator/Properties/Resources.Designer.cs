@@ -370,6 +370,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Pause options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deletePauseTaskQuestion {
+            get {
+                return ResourceManager.GetString("deletePauseTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete selected files.
         /// </summary>
         internal static string deletePermanentErrorFilesButton {
@@ -393,6 +402,15 @@ namespace iba.Properties {
         internal static string deleteTitle {
             get {
                 return ResourceManager.GetString("deleteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Update Data options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteUpdateDataTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteUpdateDataTaskQuestion", resourceCulture);
             }
         }
         
@@ -1054,6 +1072,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed to determine the time the .dat file was last modified.
+        /// </summary>
+        internal static string logPauseFailed {
+            get {
+                return ResourceManager.GetString("logPauseFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error loading assembly {0} : &apos;{1}&apos;.
         /// </summary>
         internal static string logPluginLoadError {
@@ -1230,6 +1257,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Pause Task.
+        /// </summary>
+        internal static string NewPauseTaskTitle {
+            get {
+                return ResourceManager.GetString("NewPauseTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Report Task.
         /// </summary>
         internal static string NewReportTitle {
@@ -1244,6 +1280,15 @@ namespace iba.Properties {
         internal static string NewTaskTitle {
             get {
                 return ResourceManager.GetString("NewTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Update Data Task.
+        /// </summary>
+        internal static string NewUpdateDataTaskTitle {
+            get {
+                return ResourceManager.GetString("NewUpdateDataTaskTitle", resourceCulture);
             }
         }
         
@@ -1436,6 +1481,31 @@ namespace iba.Properties {
         internal static string pasteTitle {
             get {
                 return ResourceManager.GetString("pasteTitle", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pausetask {
+            get {
+                object obj = ResourceManager.GetObject("pausetask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new pause task.
+        /// </summary>
+        internal static string pausetaskButton {
+            get {
+                return ResourceManager.GetString("pausetaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        internal static string pauseTaskTitle {
+            get {
+                return ResourceManager.GetString("pauseTaskTitle", resourceCulture);
             }
         }
         
@@ -1954,8 +2024,24 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap updatedatatask {
+            get {
+                object obj = ResourceManager.GetObject("updatedatatask", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
-        ///   Looks up a localized string similar to Update.
+        ///   Looks up a localized string similar to add a new update data task.
+        /// </summary>
+        internal static string updatedatataskButton {
+            get {
+                return ResourceManager.GetString("updatedatataskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update data.
         /// </summary>
         internal static string updateDataTaskTitle {
             get {

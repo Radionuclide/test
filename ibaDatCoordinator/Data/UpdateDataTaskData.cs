@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    class UpdateDataTaskData : TaskDataUNC
+    public class UpdateDataTaskData : TaskDataUNC
     {
         public UpdateDataTaskData(ConfigurationData parent)
             : base(parent)
@@ -21,16 +21,18 @@ namespace iba.Data
             m_dbNamedServer = false;
         }
 
+        public UpdateDataTaskData()
+            : this(null)
+        {
+        }
 
         public override object Clone()
         {
             UpdateDataTaskData ud = new UpdateDataTaskData(null);
-            ud.m_wtodo = m_wtodo;
-
             CopyUNCData(ud);
-
             ud.m_name = m_name;
             ud.m_notify = m_notify;
+            ud.m_wtodo = m_wtodo;
 
             ud.m_dbProvider = m_dbProvider;
             ud.m_dbAuthenticateNT = m_dbAuthenticateNT;

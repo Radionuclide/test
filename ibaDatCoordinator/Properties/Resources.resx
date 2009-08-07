@@ -833,6 +833,36 @@
     <value>Determining file sizes in the output directory for the quota limitation.</value>
   </data>
   <data name="updateDataTaskTitle" xml:space="preserve">
-    <value>Update</value>
+    <value>Update data</value>
+  </data>
+  <data name="deleteUpdateDataTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Update Data options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewUpdateDataTaskTitle" xml:space="preserve">
+    <value>New Update Data Task</value>
+  </data>
+  <data name="updatedatatask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\updatedatatask.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="updatedatataskButton" xml:space="preserve">
+    <value>add a new update data task</value>
+  </data>
+  <data name="deletePauseTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Pause options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="logPauseFailed" xml:space="preserve">
+    <value>failed to determine the time the .dat file was last modified</value>
+  </data>
+  <data name="NewPauseTaskTitle" xml:space="preserve">
+    <value>New Pause Task</value>
+  </data>
+  <data name="pausetask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\time.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pausetaskButton" xml:space="preserve">
+    <value>add a new pause task</value>
+  </data>
+  <data name="pauseTaskTitle" xml:space="preserve">
+    <value>Pause</value>
   </data>
 </root>

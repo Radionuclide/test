@@ -28,7 +28,7 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons;
+        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons;
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
@@ -42,8 +42,10 @@ namespace iba.Controls
             m_batchfileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_copydatIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_conditionIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_updateIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
-
+            
 
             m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)
@@ -97,6 +99,26 @@ namespace iba.Controls
             m_conditionIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
             m_conditionIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
             m_conditionIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle)));
+
+            m_updateIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
+            m_updateIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.updatedatatask);
+            m_updateIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.updatedatatask));
+            m_updateIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
+
+            m_pauseIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.pausetask);
+            m_pauseIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.pausetask));
+            m_pauseIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.pausetask));
 
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
@@ -234,6 +256,10 @@ namespace iba.Controls
                             bitmap = m_copydatIcons[value];
                         else if (task is IfTaskData)
                             bitmap = m_conditionIcons[value];
+                        else if (task is UpdateDataTaskData)
+                            bitmap = m_updateIcons[value];
+                        else if (task is PauseTaskData)
+                            bitmap = m_pauseIcons[value];
                         else if (task is CustomTaskData)
                         {
                             CustomTaskData cust = (CustomTaskData)task;
