@@ -134,6 +134,11 @@ namespace iba
             Notifier notifier = new Notifier(m_data);
             notifier.Test();
         }
+
+        public string TestDbTaskConnection(UpdateDataTaskData udt)
+        {
+            return UpdateDataTaskWorker.TestConnecton(udt);
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -328,6 +333,19 @@ namespace iba
             {
                 HandleBrokenConnection();
                 return -1;
+            }
+        }
+
+        public string TestDbTaskConnection(UpdateDataTaskData udt)
+        {
+            try
+            {
+                return m_com.TestDbTaskConnection(udt);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+                return null;
             }
         }
 

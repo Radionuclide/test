@@ -664,7 +664,7 @@
   <data name="logLicenseStopped" xml:space="preserve">
     <value>Stopped the job because no license was found for one or more custom tasks</value>
   </data>
-  <data name="logTaskNotLicensed" xml:space="preserve">
+  <data name="logCustomTaskNotLicensed" xml:space="preserve">
     <value>No license found for custom task '{0}'</value>
   </data>
   <data name="logNoOutputPathSpecified" xml:space="preserve">
@@ -864,5 +864,68 @@
   </data>
   <data name="pauseTaskTitle" xml:space="preserve">
     <value>Pause</value>
+  </data>
+  <data name="logNoLicenseFound" xml:space="preserve">
+    <value>could not find license information</value>
+  </data>
+  <data name="logNoLicenseUpdateDataTask" xml:space="preserve">
+    <value>update data task is not licensed</value>
+  </data>
+  <data name="logUDTaskSuccess" xml:space="preserve">
+    <value>update data task successfully completed</value>
+  </data>
+  <data name="logUDTConnectFailed" xml:space="preserve">
+    <value>Update data task failed to connect to database</value>
+  </data>
+  <data name="logUDTIbaFilesFailed" xml:space="preserve">
+    <value>Update data task: Failed to initialize ibaFiles</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFilesLimitReached" xml:space="preserve">
+    <value>Stopped scanning for unprocessed .dat files because more than 10000 files are ready to be processed</value>
+  </data>
+  <data name="logIbaFilesCouldNotBeCreated" xml:space="preserve">
+    <value>ibaFiles class could not be created</value>
+  </data>
+  <data name="logUDTColumnMissing" xml:space="preserve">
+    <value>column '{0}' is missing from database table</value>
+  </data>
+  <data name="logUDTCreationTime" xml:space="preserve">
+    <value>database data creation time:</value>
+  </data>
+  <data name="logUDTDataBaseError" xml:space="preserve">
+    <value>error retrieving data from database</value>
+  </data>
+  <data name="logUDTFinalFileCopyProblem" xml:space="preserve">
+    <value>could not copy the .dat file to target directory</value>
+  </data>
+  <data name="logUDTibaFilesOpenProblem" xml:space="preserve">
+    <value>ibaFiles could not open the .dat file for updating</value>
+  </data>
+  <data name="logUDTibaFilesWriteProblem" xml:space="preserve">
+    <value>could not write new infofields from database table to .dat file</value>
+  </data>
+  <data name="logUDTMarkProcessedProblem" xml:space="preserve">
+    <value>could not mark the .dat file as processed in the database table</value>
+  </data>
+  <data name="logUDTNoResults" xml:space="preserve">
+    <value>no entry in database table found corresponding to the .dat file</value>
+  </data>
+  <data name="logUDTNotReadyYet" xml:space="preserve">
+    <value>new data not yet marked as ready to process in database table</value>
+  </data>
+  <data name="logUDTStarted" xml:space="preserve">
+    <value>update data task started</value>
+  </data>
+  <data name="logUDTTempFileCopyProblem" xml:space="preserve">
+    <value>could not copy the .dat file to temporary directory</value>
+  </data>
+  <data name="logTaskNotLicensed" xml:space="preserve">
+    <value>No license found for this task. Contact iba for licensing information.</value>
+  </data>
+  <data name="logUDTColumnIsNull" xml:space="preserve">
+    <value>column '{0}' is NULL</value>
+  </data>
+  <data name="logUDTConnectSuccess" xml:space="preserve">
+    <value>Connection with the database was succesfully established.</value>
   </data>
 </root>

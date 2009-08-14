@@ -33,8 +33,10 @@ namespace iba
         public static readonly int IFTASK_INDEX = 5;
         public static readonly int UPDATEDATATASK_INDEX = 6;
         public static readonly int PAUSETASK_INDEX = 7;
+        // add here any additional indices for new tasks, increase the next numbers
         public static readonly int NEWCONF_INDEX = 8;
         public static readonly int CUSTOMTASK_INDEX = 9;
+        public static readonly int NR_TASKS = 8; 
 
         public MainForm()
         {
@@ -1062,6 +1064,7 @@ namespace iba
         {
             MyImageList il = new MyImageList();
             ImageList menuImages = new ImageList();
+            menuImages.ColorDepth = ColorDepth.Depth32Bit;
             menuImages.Images.Add(iba.Properties.Resources.cut);
             menuImages.Images.Add(iba.Properties.Resources.copy);
             menuImages.Images.Add(iba.Properties.Resources.paste);
@@ -1075,6 +1078,7 @@ namespace iba
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
+
             int customcount = PluginManager.Manager.PluginInfos.Count;
             m_menuItems = new MenuCommand[13 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new MenuCommand(iba.Properties.Resources.deleteTitle, il.List, MyImageList.Delete, Shortcut.Del, new EventHandler(OnDeleteMenuItem));
@@ -1086,14 +1090,17 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewReport] = new MenuCommand(iba.Properties.Resources.NewReportTitle, menuImages, 3, Shortcut.None, new EventHandler(OnNewReportMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewExtract] = new MenuCommand(iba.Properties.Resources.NewExtractTitle, menuImages, 4, Shortcut.None, new EventHandler(OnNewExtractMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new MenuCommand(iba.Properties.Resources.NewBatchfileTitle, menuImages, 5, Shortcut.None, new EventHandler(OnNewBatchfileMenuItem));
-            m_menuItems[(int) MenuItemsEnum.NewCopyTask] = new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages, 6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewCopyTask] = new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages, 6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewIfTask] = new MenuCommand(iba.Properties.Resources.NewIfTaskTitle, menuImages, 7, Shortcut.None, new EventHandler(OnNewIfTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new MenuCommand(iba.Properties.Resources.NewUpdateDataTaskTitle, menuImages, 8, Shortcut.None, new EventHandler(OnNewUpdateDataTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new MenuCommand(iba.Properties.Resources.NewPauseTaskTitle, menuImages, 9, Shortcut.None, new EventHandler(OnNewPauseTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new MenuCommand(iba.Properties.Resources.NewUpdateDataTaskTitle, Shortcut.None, new EventHandler(OnNewUpdateDataTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask].Image = iba.Properties.Resources.updatedatatask;//png, don't use imagelist because imagelist has problem with alpha channel pixels in the png
+            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new MenuCommand(iba.Properties.Resources.NewPauseTaskTitle, Shortcut.None, new EventHandler(OnNewPauseTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewPauseTask].Image = iba.Properties.Resources.pausetask;//png, don't use imagelist because imagelist has problem with alpha channel pixels in the png
+
             for (int i = 0; i < customcount; i++)
             {
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
-                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, 8+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, NR_TASKS+2+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
             }
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
@@ -1304,6 +1311,24 @@ namespace iba
 
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
         {
+            CDongleInfo info;
+            bool IsLicensed = false;
+            try
+            {
+                info = CDongleInfo.ReadDongle();
+                if (info.IsPluginLicensed(2))
+                    IsLicensed = true;
+            }
+            catch 
+            {
+            }
+            if (!IsLicensed)
+            {
+                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                return;
+            }
+
             MenuCommand mc = (MenuCommand)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
@@ -1492,6 +1517,7 @@ namespace iba
                 catch (Exception ex)
                 {
                     MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();

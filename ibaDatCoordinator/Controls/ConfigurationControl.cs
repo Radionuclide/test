@@ -342,6 +342,22 @@ namespace iba.Controls
 
         private void m_newUpdateDataTaskButton_Click(object sender, EventArgs e)
         {
+            bool IsLicensed = false;
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+                if (info.IsPluginLicensed(2))
+                    IsLicensed = true;
+            }
+            catch 
+            {
+            }
+            if (!IsLicensed)
+            {
+                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                return;
+            }
             UpdateDataTaskData udt = new UpdateDataTaskData(m_data);
             new SetNextName(udt);
             m_data.Tasks.Add(udt);

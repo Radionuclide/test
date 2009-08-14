@@ -594,6 +594,7 @@
             this.m_btTestConnection.TabIndex = 6;
             this.m_btTestConnection.Text = "Test database connection";
             this.m_btTestConnection.UseVisualStyleBackColor = true;
+            this.m_btTestConnection.Click += new System.EventHandler(this.m_btTestConnection_Click);
             // 
             // m_tbTableName
             // 

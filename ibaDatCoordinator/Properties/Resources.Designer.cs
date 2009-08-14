@@ -732,6 +732,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopped scanning for unprocessed .dat files because more than 10000 files are ready to be processed.
+        /// </summary>
+        internal static string logCheckingForUnprocessedDatFilesLimitReached {
+            get {
+                return ResourceManager.GetString("logCheckingForUnprocessedDatFilesLimitReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error cleaning up files, failed to remove directory &apos;{0}&apos; : {1}.
         /// </summary>
         internal static string logCleanupErrorRemoveDirectory {
@@ -822,6 +831,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No license found for custom task &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCustomTaskNotLicensed {
+            get {
+                return ResourceManager.GetString("logCustomTaskNotLicensed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to specified .dat folder does not exist.
         /// </summary>
         internal static string logDatDirError {
@@ -897,6 +915,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("logging", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaFiles class could not be created.
+        /// </summary>
+        internal static string logIbaFilesCouldNotBeCreated {
+            get {
+                return ResourceManager.GetString("logIbaFilesCouldNotBeCreated", resourceCulture);
             }
         }
         
@@ -987,6 +1014,24 @@ namespace iba.Properties {
         internal static string logNoExtractPdo {
             get {
                 return ResourceManager.GetString("logNoExtractPdo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not find license information.
+        /// </summary>
+        internal static string logNoLicenseFound {
+            get {
+                return ResourceManager.GetString("logNoLicenseFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update data task is not licensed.
+        /// </summary>
+        internal static string logNoLicenseUpdateDataTask {
+            get {
+                return ResourceManager.GetString("logNoLicenseUpdateDataTask", resourceCulture);
             }
         }
         
@@ -1153,7 +1198,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No license found for custom task &apos;{0}&apos;.
+        ///   Looks up a localized string similar to No license found for this task. Contact iba for licensing information..
         /// </summary>
         internal static string logTaskNotLicensed {
             get {
@@ -1176,6 +1221,150 @@ namespace iba.Properties {
         internal static string logTitle {
             get {
                 return ResourceManager.GetString("logTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update data task successfully completed.
+        /// </summary>
+        internal static string logUDTaskSuccess {
+            get {
+                return ResourceManager.GetString("logUDTaskSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to column &apos;{0}&apos; is NULL.
+        /// </summary>
+        internal static string logUDTColumnIsNull {
+            get {
+                return ResourceManager.GetString("logUDTColumnIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to column &apos;{0}&apos; is missing from database table.
+        /// </summary>
+        internal static string logUDTColumnMissing {
+            get {
+                return ResourceManager.GetString("logUDTColumnMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update data task failed to connect to database.
+        /// </summary>
+        internal static string logUDTConnectFailed {
+            get {
+                return ResourceManager.GetString("logUDTConnectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection with the database was succesfully established..
+        /// </summary>
+        internal static string logUDTConnectSuccess {
+            get {
+                return ResourceManager.GetString("logUDTConnectSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to database data creation time:.
+        /// </summary>
+        internal static string logUDTCreationTime {
+            get {
+                return ResourceManager.GetString("logUDTCreationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to error retrieving data from database.
+        /// </summary>
+        internal static string logUDTDataBaseError {
+            get {
+                return ResourceManager.GetString("logUDTDataBaseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not copy the .dat file to target directory.
+        /// </summary>
+        internal static string logUDTFinalFileCopyProblem {
+            get {
+                return ResourceManager.GetString("logUDTFinalFileCopyProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update data task: Failed to initialize ibaFiles.
+        /// </summary>
+        internal static string logUDTIbaFilesFailed {
+            get {
+                return ResourceManager.GetString("logUDTIbaFilesFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaFiles could not open the .dat file for updating.
+        /// </summary>
+        internal static string logUDTibaFilesOpenProblem {
+            get {
+                return ResourceManager.GetString("logUDTibaFilesOpenProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not write new infofields from database table to .dat file.
+        /// </summary>
+        internal static string logUDTibaFilesWriteProblem {
+            get {
+                return ResourceManager.GetString("logUDTibaFilesWriteProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not mark the .dat file as processed in the database table.
+        /// </summary>
+        internal static string logUDTMarkProcessedProblem {
+            get {
+                return ResourceManager.GetString("logUDTMarkProcessedProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no entry in database table found corresponding to the .dat file.
+        /// </summary>
+        internal static string logUDTNoResults {
+            get {
+                return ResourceManager.GetString("logUDTNoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to new data not yet marked as ready to process in database table.
+        /// </summary>
+        internal static string logUDTNotReadyYet {
+            get {
+                return ResourceManager.GetString("logUDTNotReadyYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update data task started.
+        /// </summary>
+        internal static string logUDTStarted {
+            get {
+                return ResourceManager.GetString("logUDTStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not copy the .dat file to temporary directory.
+        /// </summary>
+        internal static string logUDTTempFileCopyProblem {
+            get {
+                return ResourceManager.GetString("logUDTTempFileCopyProblem", resourceCulture);
             }
         }
         

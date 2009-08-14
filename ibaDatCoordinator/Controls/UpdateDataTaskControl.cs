@@ -170,5 +170,24 @@ namespace iba.Controls
             m_rbServer.Checked = true;
             m_rbLocal.Checked = false;
         }
+
+        private void m_btTestConnection_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            try
+            {
+                string message = null;
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    message = Program.CommunicationObject.TestDbTaskConnection(m_data);
+                else
+                    message = UpdateDataTaskWorker.TestConnecton(m_data);
+                if (message != null)
+                    MessageBox.Show(this, message, "ibaDatCoordinator", MessageBoxButtons.OK, iba.Properties.Resources.logUDTConnectSuccess == message ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

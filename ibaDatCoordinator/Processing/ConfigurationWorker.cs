@@ -363,6 +363,7 @@ namespace iba.Processing
             m_listUpdatingLock = new Object();
             m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
             m_fswtLock = new Object();
+            m_udtWorkers = new SortedDictionary<Guid,UpdateDataTaskWorker>();
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -370,6 +371,7 @@ namespace iba.Processing
         List<string> m_candidateNewFiles;
         List<string> m_newFiles;
         List<string> m_directoryFiles;
+        SortedDictionary<Guid, UpdateDataTaskWorker> m_udtWorkers;
 
         private void Log(Logging.Level level, string message)
         {
@@ -561,6 +563,13 @@ namespace iba.Processing
                         }
                         //stop the com object
                         if (m_cd.IbaAnalyzerSleepsWhenNoDatFiles) StopIbaAnalyzer();
+
+                        //clean up any updatetaskworkers //closes database connections and ibaFiles instances
+                        foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
+                        {
+                            udt.Dispose();
+                        }
+                        m_udtWorkers.Clear();
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
@@ -640,7 +649,7 @@ namespace iba.Processing
                     if (!info.PluginsLicensed() || !info.IsPluginLicensed(cust.Plugin.DongleBitPos))
                     {
                         ok = false;
-                        Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logTaskNotLicensed,task.Name));
+                        Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed,task.Name));
                     }
                 }
             }
@@ -939,6 +948,7 @@ namespace iba.Processing
             if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
             {  
             //don't add any extra (and hope that it will be small enough for the next timer tick
+                Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFilesLimitReached);
                 return;
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFiles);
@@ -1000,6 +1010,7 @@ namespace iba.Processing
                     if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
                         //don't add any extra (and hope that it will be small enough for the next timer tick
                     {
+                        Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFilesLimitReached);
                         m_directoryFiles.Clear();
                         return;
                     }
@@ -2010,19 +2021,8 @@ namespace iba.Processing
             }
         }
 
-        private string GetExtractFileName(string filename, ExtractData task)
+        private string GetDirectoryName(string filename, TaskDataUNC task)
         {
-            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
-            try
-            {
-                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    CleanupWithQuota(filename, task, ext);
-            }
-            catch
-            {
-            }
-
-            string actualFileName = Path.GetFileNameWithoutExtension(filename);
             string dir = task.DestinationMap;
             if (String.IsNullOrEmpty(dir))
             {
@@ -2039,7 +2039,7 @@ namespace iba.Processing
                 dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
             }
             else dir = task.DestinationMapUNC;
-            
+
             string maindir = dir;
 
             if (dir == m_cd.DatDirectoryUNC)
@@ -2064,6 +2064,27 @@ namespace iba.Processing
             {
                 dir = Path.Combine(dir, SubFolder(task.Subfolder));
             }
+            return dir;
+        }
+
+
+
+        private string GetExtractFileName(string filename, ExtractData task)
+        {
+            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+            try
+            {
+                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, ext);
+            }
+            catch
+            {
+            }
+
+            string actualFileName = Path.GetFileNameWithoutExtension(filename);
+
+            string dir = GetDirectoryName(filename, task);
+            if (dir == null) return null;
             if (!Directory.Exists(dir))
             {
                 try
@@ -2451,11 +2472,14 @@ namespace iba.Processing
         {
             string dest = null;
             string fileToCopy = filename;
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
             if (!task.ActionDelete)
             {
-
-
-
                 string dir = task.DestinationMapUNC;
                 if (String.IsNullOrEmpty(dir))
                 {
@@ -2817,22 +2841,26 @@ namespace iba.Processing
             }
         }
 
-        private void PauseTask(string DatFile, PauseTaskData pauseTaskData)
+        private void PauseTask(string filename, PauseTaskData task)
         {
-            TimeSpan duration = pauseTaskData.Interval;
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+            TimeSpan duration = task.Interval;
             DateTime startTime;
-            if (pauseTaskData.MeasureFromFileTime)
+            if (task.MeasureFromFileTime)
             {
                 try
                 {
-                    startTime = (new FileInfo(DatFile)).LastWriteTime;
+                    startTime = (new FileInfo(filename)).LastWriteTime;
                 }
                 catch 
                 {
-                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logPauseFailed, DatFile, pauseTaskData);
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logPauseFailed, filename, task);
                     lock (m_sd.DatFileStates)
                     {
-                        m_sd.DatFileStates[DatFile].States[pauseTaskData] = DatFileStatus.State.COMPLETED_FAILURE;
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
                     return;
                 }
@@ -2850,13 +2878,166 @@ namespace iba.Processing
 
             lock (m_sd.DatFileStates)
             {
-                m_sd.DatFileStates[DatFile].States[pauseTaskData] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
             }
         }
 
-        private void UpdateDataTask(string DatFile, UpdateDataTaskData updateDataTaskData)
+        private void UpdateDataTask(string filename, UpdateDataTaskData task)
         {
-            throw new NotImplementedException();
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
+
+            string ext = ".dat";
+            try
+            {
+                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    CleanupWithQuota(filename, task, ext);
+            }
+            catch
+            {
+            }
+            Log(Logging.Level.Info, iba.Properties.Resources.logUDTStarted, filename, task);
+
+            bool doInit = false;
+
+            if (!m_udtWorkers.ContainsKey(task.Guid))
+            {
+                m_udtWorkers[task.Guid] = new UpdateDataTaskWorker(task);
+                doInit = true;
+            }
+            UpdateDataTaskWorker worker = m_udtWorkers[task.Guid];
+
+            if (doInit || worker.TimesCalled > 100)
+            {
+                try
+                {
+                    worker.Init();
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, ex.Message, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    worker.Dispose();
+                    m_udtWorkers.Remove(task.Guid);
+                    return;
+                }
+            }
+
+
+
+            string dir = null;
+            try
+            {
+                dir = GetDirectoryName(filename, task);
+                if (dir == null) return;
+                if (!Directory.Exists(dir))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    catch
+                    {
+                        bool failed = true;
+                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        {
+                            failed = false;
+                            if (!Directory.Exists(dir))
+                            {
+                                try
+                                {
+                                    Directory.CreateDirectory(dir);
+                                }
+                                catch
+                                {
+                                    failed = true;
+                                }
+                            }
+                        }
+                        if (failed)
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+                    }
+                    //new directory created, do directory cleanup if that is the setting
+                    if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                        task.DoDirCleanupNow = true;
+                }
+                if (task.DoDirCleanupNow)
+                {
+                    try
+                    {
+                        CleanupDirs(filename, task, ext);
+                    }
+                    catch
+                    {
+                    }
+                    task.DoDirCleanupNow = false;
+                }
+            }
+            catch (Exception ex) //sort of unexpected error;
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            string outfile = null;
+            try
+            {
+                outfile = worker.DoWork(dir, filename);
+                m_outPutFile = outfile;
+            }
+            catch (Exception ex)
+            {
+                Log(iba.Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                if (worker.FatalError)
+                {
+                    worker.Dispose();
+                    m_udtWorkers.Remove(task.Guid);
+                }
+                return;
+            }
+
+            try
+            {
+                if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                {
+                    if (worker.FileOverWritten)
+                    {
+                        m_quotaCleanups[task.Guid].RemoveFile(outfile);
+                        m_quotaCleanups[task.Guid].AddFile(outfile, false);
+                    }
+                    m_quotaCleanups[task.Guid].AddFile(outfile, true);
+                }
+            }
+            catch
+            {
+            }
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+            }
+            Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
         }
     }
 }

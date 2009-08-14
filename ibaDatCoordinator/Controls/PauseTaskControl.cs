@@ -36,7 +36,7 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_data.MeasureFromFileTime = m_rbAbsolutePause.Checked;
+            m_data.MeasureFromFileTime = m_rbDatFileTime.Checked;
             m_data.Interval = TimeSpan.FromSeconds((double)m_nudInterval.Value);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
