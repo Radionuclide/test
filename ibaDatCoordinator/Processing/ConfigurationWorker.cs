@@ -890,7 +890,7 @@ namespace iba.Processing
                     rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
                 return; //wait until problem is fixed
             }
-            if (m_bTimersstopped || m_stop || rescanTimer==null) return;
+            if (m_bTimersstopped || m_stop) return;
             if (rescanTimer != null)
                 rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ScanDirectory();
@@ -1474,10 +1474,17 @@ namespace iba.Processing
                             foreach (TaskData task in m_cd.Tasks)
                             {
                                 string key = task.Guid.ToString();
-                                if (guids.BinarySearch(key) >= 0)
-                                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                                if (keyvalues.ContainsKey(key))
-                                    m_sd.DatFileStates[filename].OutputFiles.Add(task, keyvalues[key]);
+                                try
+                                {
+                                    if (guids.BinarySearch(key) >= 0)
+                                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                    if (keyvalues.ContainsKey(key))
+                                        m_sd.DatFileStates[filename].OutputFiles.Add(task, keyvalues[key]);
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception("location1", ex);
+                                }
                             }
                         }
                         ibaDatFile.Close();
@@ -2848,12 +2855,13 @@ namespace iba.Processing
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
             }
             TimeSpan duration = task.Interval;
-            DateTime startTime;
+            DateTime startTime = DateTime.Now;
             if (task.MeasureFromFileTime)
             {
                 try
                 {
-                    startTime = (new FileInfo(filename)).LastWriteTime;
+                    DateTime lastWriteTime = (new FileInfo(filename)).LastWriteTime;
+                    if (lastWriteTime < startTime) startTime = lastWriteTime;
                 }
                 catch 
                 {
@@ -2865,13 +2873,10 @@ namespace iba.Processing
                     return;
                 }
             }
-            else
-            {
-                startTime = DateTime.Now;
-            }
+
             DateTime nextTime = startTime + duration;
 
-            while (DateTime.Now < nextTime)
+            while (DateTime.Now < nextTime && !m_stop)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(0.5));
             }

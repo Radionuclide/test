@@ -92,8 +92,8 @@ namespace iba.Processing
                         OleDbConnectionStringBuilder builder = new OleDbConnectionStringBuilder();
                         builder.Provider = "OraOLEDB.Oracle";
                         builder.DataSource = udt.DbName;
-                        builder["User ID"] = udt.Username;
-                        builder["Password"] = udt.Password;
+                        builder["User Id"] = udt.DbUserName;
+                        builder["Password"] = udt.DbPassword;
                         connection.ConnectionString = builder.ConnectionString;
                         return connection;
                     }
@@ -103,8 +103,8 @@ namespace iba.Processing
                         OleDbConnectionStringBuilder builder = new OleDbConnectionStringBuilder();
                         builder.Provider = "IBMDADB2.1";
                         builder.DataSource = udt.DbName;
-                        builder["User ID"] = udt.Username;
-                        builder["Password"] = udt.Password;
+                        builder["User ID"] = udt.DbUserName;
+                        builder["Password"] = udt.DbPassword;
                         connection.ConnectionString = builder.ConnectionString;
                         return connection;
                     }
@@ -132,7 +132,7 @@ namespace iba.Processing
         }
 
         private IbaFile m_ibaFileUpdater;
-        DbConnection m_connection;
+        private DbConnection m_connection;
 
         private DateTime m_created;
         private int m_timesCalled;
@@ -210,8 +210,8 @@ namespace iba.Processing
                             throw new ApplicationException(iba.Properties.Resources.logUDTNotReadyYet 
                                 + (creationTimeGotten?(" - " + iba.Properties.Resources.logUDTCreationTime + " " + Created.ToString()):""));
                         newFileName = dbdr.GetString(columnOrds[1]) + ".dat";
-                        System.Globalization.CultureInfo oldCulture = System.Threading.Thread.CurrentThread.CurrentUICulture;
-                        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+                        System.Globalization.CultureInfo oldCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
                         for (int i = 0; i < dbdr.FieldCount; i++)
                         {
                             if (columnOrds[0] == i || columnOrds[1] == i || columnOrds[2] == i || columnOrds[3] == i || columnOrds[4] == i || dbdr.IsDBNull(i))
@@ -222,7 +222,7 @@ namespace iba.Processing
                                 res = res.Remove(9999);
                             newInfoFields.Add(dbdr.GetName(i), res);
                         }
-                        System.Threading.Thread.CurrentThread.CurrentUICulture = oldCulture;
+                        System.Threading.Thread.CurrentThread.CurrentCulture = oldCulture;
                     }
                 }
             }

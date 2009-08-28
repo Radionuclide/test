@@ -97,6 +97,32 @@ namespace iba.Utility
 
             #endregion
         }
+
+        public class CompareOnFirstComparer : IComparer<ComparablePair<TFirst, TSecond>>
+        {
+
+            #region IComparer<ComparablePair<TFirst,TSecond>> Members
+
+            public int Compare(ComparablePair<TFirst, TSecond> x, ComparablePair<TFirst, TSecond> y)
+            {
+                return x._First.CompareTo(y._First);
+            }
+
+            #endregion
+        }
+
+        public class CompareOnSecondComparer : IComparer<ComparablePair<TFirst, TSecond>>
+        {
+
+            #region IComparer<ComparablePair<TFirst,TSecond>> Members
+
+            public int Compare(ComparablePair<TFirst, TSecond> x, ComparablePair<TFirst, TSecond> y)
+            {
+                return x._Second.CompareTo(y._Second);
+            }
+
+            #endregion
+        }
     }
 
 
@@ -172,12 +198,20 @@ namespace iba.Utility
 
     [Serializable]
     public class Set<T> : List<T>
-        where T:IComparable<T>
     {
+        IComparer<T> m_comparer;
+
         public new void Add(T elem)
         {
-            int pos = BinarySearch(elem);
-            if (pos < 0) Insert(~pos, elem);
+            try
+            {
+                int pos = BinarySearch(elem,m_comparer);
+                if (pos < 0) Insert(~pos, elem);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("location2", ex);
+            }
         }
         
         public new void  AddRange(IEnumerable<T> elems)
@@ -187,54 +221,97 @@ namespace iba.Utility
         
         public Set()
         {
+            if (!typeof(IComparable<T>).IsAssignableFrom(typeof(T)))
+                throw new Exception("elements of this set are not sortable by default, use constructor with comparer argument");
+            m_comparer = Comparer<T>.Default;
+        }
 
+        public Set(IComparer<T> comparer)
+        {
+            m_comparer = comparer;
         }
 
         public new int IndexOf(T elem)
         {
-            return Math.Max(-1, BinarySearch(elem));
+            try
+            {
+                return BinarySearch(elem,m_comparer);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("location3", ex);
+
+            }
         }
 
 	    public new bool Contains(T elem )
 	    { 
-		    return BinarySearch( elem ) >= 0;
+            try
+            {
+		        return BinarySearch( elem,m_comparer ) >= 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("location4", ex);
+            }
+
 	    }
 
         public new bool Remove(T elem)
         {
-            int pos = BinarySearch(elem);
-            if (pos < 0) return false;
-            else RemoveAt(pos);
-            return true;
+            try
+            {
+                int pos = BinarySearch(elem,m_comparer);
+                if (pos < 0) return false;
+                else RemoveAt(pos);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("location5", ex);
+            }
         }
 
         private enum SetOperationKind {UNION,INTERSECTION,DIFFERENCE }
 
         public Set<T> Clone()
         {
-            Set<T> answer = new Set<T>();
+            Set<T> answer = new Set<T>(m_comparer);
             (answer as List<T>).AddRange(this);
             return answer;
         }
 
         public static Set<T> Union(Set<T> A, Set<T> B)
         {
-            return SetOperation(A, B, SetOperationKind.UNION);
+            return SetOperation(A, B, SetOperationKind.UNION, A.m_comparer);
         }
 
         public static Set<T> Intersection(Set<T> A, Set<T> B)
         {
-            return SetOperation(A, B, SetOperationKind.INTERSECTION);
+            return SetOperation(A, B, SetOperationKind.INTERSECTION, A.m_comparer);
         }
 
         public static Set<T> Difference(Set<T> A, Set<T> B)
         {
-            return SetOperation(A, B, SetOperationKind.DIFFERENCE);
+            return SetOperation(A, B, SetOperationKind.DIFFERENCE, null);
         }
-        
-        private static Set<T> SetOperation(Set<T> A, Set<T> B, SetOperationKind kind)
+
+        public static Set<T> Union(Set<T> A, Set<T> B, IComparer<T> setChooser)
         {
-            Set<T> result = new Set<T>();
+            return SetOperation(A, B, SetOperationKind.UNION, setChooser);
+        }
+
+        public static Set<T> Intersection(Set<T> A, Set<T> B, IComparer<T> setChooser)
+        {
+            return SetOperation(A, B, SetOperationKind.INTERSECTION, setChooser);
+        }
+
+        
+        private static Set<T> SetOperation(Set<T> A, Set<T> B, SetOperationKind kind, IComparer<T> setChooser)
+        {
+            if (A.m_comparer.GetType() != B.m_comparer.GetType()) throw new Exception("Sets are not compatable because they have a different comparer");
+            IComparer<T> comparer = A.m_comparer;
+            Set<T> result = new Set<T>(A.m_comparer);
             if (A.Count == 0) 
             {
                 if (kind == SetOperationKind.UNION)
@@ -253,7 +330,7 @@ namespace iba.Utility
             Bit.MoveNext();
             while (true)
             {
-                int compare = Ait.Current.CompareTo(Bit.Current);
+                int compare = comparer.Compare(Ait.Current,Bit.Current);
                 if (compare < 0)
                 {
                     if (kind != SetOperationKind.INTERSECTION) 
@@ -279,11 +356,11 @@ namespace iba.Utility
                 else //equality
                 {
                     if (kind != SetOperationKind.DIFFERENCE) 
-                        (result as List<T>).Add(Ait.Current);
+                        (result as List<T>).Add(setChooser.Compare(Ait.Current,Bit.Current)>0?Bit.Current:Ait.Current);
                     if (!Ait.MoveNext())
                     {
                         if (kind == SetOperationKind.UNION)
-                            do (result as List<T>).Add(Bit.Current); while (Bit.MoveNext());
+                            while (Bit.MoveNext()) { (result as List<T>).Add(Bit.Current); };
                         return result;
                     }
                     if (!Bit.MoveNext())

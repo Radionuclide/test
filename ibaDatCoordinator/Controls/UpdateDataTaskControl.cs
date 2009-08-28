@@ -177,10 +177,13 @@ namespace iba.Controls
             try
             {
                 string message = null;
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                    message = Program.CommunicationObject.TestDbTaskConnection(m_data);
-                else
-                    message = UpdateDataTaskWorker.TestConnecton(m_data);
+                using (WaitCursor wait = new WaitCursor())
+                {
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                        message = Program.CommunicationObject.TestDbTaskConnection(m_data);
+                    else
+                        message = UpdateDataTaskWorker.TestConnecton(m_data);
+                }
                 if (message != null)
                     MessageBox.Show(this, message, "ibaDatCoordinator", MessageBoxButtons.OK, iba.Properties.Resources.logUDTConnectSuccess == message ? MessageBoxIcon.Information : MessageBoxIcon.Error);
             }

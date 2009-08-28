@@ -1371,7 +1371,7 @@ namespace iba
             confData.Tasks.Add(pause);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(pause.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
+            TreeNode newNode = new TreeNode(pause.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
             newNode.Tag = new PauseTaskTreeItemData(this, pause);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
