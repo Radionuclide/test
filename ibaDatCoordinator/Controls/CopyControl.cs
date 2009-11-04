@@ -70,6 +70,7 @@ namespace iba.Controls
             m_rbDatFile.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
+            m_cbTakeDatTime.Checked = m_data.UseDatModTimeForDirs;
         }
 
         public void SaveData()
@@ -94,6 +95,7 @@ namespace iba.Controls
             m_data.Quota = (uint)m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked ? TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories : TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_data.OverwriteFiles = m_cbOverwrite.Checked;
+            m_data.UseDatModTimeForDirs = m_cbTakeDatTime.Checked;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;

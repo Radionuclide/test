@@ -80,6 +80,7 @@ namespace iba.Controls
             this.m_newCopyTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newIfTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newUpdateDataTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.labelmailpass = new System.Windows.Forms.Label();
             this.m_tbMailPass = new System.Windows.Forms.TextBox();
@@ -102,7 +103,6 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -530,6 +530,13 @@ namespace iba.Controls
             this.m_newUpdateDataTaskButton.Name = "m_newUpdateDataTaskButton";
             this.m_newUpdateDataTaskButton.Click += new System.EventHandler(this.m_newUpdateDataTaskButton_Click);
             // 
+            // m_newPauseTaskButton
+            // 
+            resources.ApplyResources(this.m_newPauseTaskButton, "m_newPauseTaskButton");
+            this.m_newPauseTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newPauseTaskButton.Name = "m_newPauseTaskButton";
+            this.m_newPauseTaskButton.Click += new System.EventHandler(this.m_newPauseTaskButton_Click);
+            // 
             // m_subfolderGroupBox
             // 
             resources.ApplyResources(this.m_subfolderGroupBox, "m_subfolderGroupBox");
@@ -694,13 +701,6 @@ namespace iba.Controls
             // m_openFileDialog1
             // 
             this.m_openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // m_newPauseTaskButton
-            // 
-            resources.ApplyResources(this.m_newPauseTaskButton, "m_newPauseTaskButton");
-            this.m_newPauseTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.m_newPauseTaskButton.Name = "m_newPauseTaskButton";
-            this.m_newPauseTaskButton.Click += new System.EventHandler(this.m_newPauseTaskButton_Click);
             // 
             // ConfigurationControl
             // 

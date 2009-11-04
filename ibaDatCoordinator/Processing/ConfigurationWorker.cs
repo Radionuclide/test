@@ -364,6 +364,7 @@ namespace iba.Processing
             m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
             m_fswtLock = new Object();
             m_udtWorkers = new SortedDictionary<Guid,UpdateDataTaskWorker>();
+            m_onNewDatFileOrRenameFileLastCalled = DateTime.MinValue;
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -786,6 +787,8 @@ namespace iba.Processing
             }
         }
 
+        private DateTime m_onNewDatFileOrRenameFileLastCalled;
+
         private void OnNewDatFileOrRenameFile(object sender, FileSystemEventArgs args)
         {
             string filename = args.FullPath;
@@ -794,7 +797,10 @@ namespace iba.Processing
                 if (!m_candidateNewFiles.Contains(filename))
                 {
                     m_candidateNewFiles.Add(filename);
-                    m_skipAddNewDatFileTimerTick = true; //wait one tick before checking access, to let PDA do stuff
+                    DateTime now = DateTime.Now;
+                    if (now > m_onNewDatFileOrRenameFileLastCalled + TimeSpan.FromSeconds(2)) //if .dat files arrive to fast don't wait a second for processing them
+                        m_skipAddNewDatFileTimerTick = true; //wait one tick before checking access, to let PDA do stuff
+                    m_onNewDatFileOrRenameFileLastCalled = now;
                 }
             }
         }
@@ -841,7 +847,7 @@ namespace iba.Processing
                             toRemove.Add(filename);
                             changed = changed || doit;
                         }
-                        catch //no access, do not remove from the list yet (unless the file doesnt exist), make available again when acces to it is restored
+                        catch//no access, do not remove from the list yet (unless the file doesnt exist), make available again when acces to it is restored
                         {
                             try
                             {
@@ -1495,13 +1501,23 @@ namespace iba.Processing
                             Log(Logging.Level.Warning, iba.Properties.Resources.TriedToManyTimes, filename);
                             return DatFileStatus.State.TRIED_TOO_MANY_TIMES;
                         }
-                        try{if (time != null) File.SetLastWriteTime(filename, time.Value);}catch{}
+                        try
+                        {
+                            if (time != null) File.SetLastWriteTime(filename, time.Value);
+                        }
+                        catch
+                        {
+                        }
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                     else if (status == "restart" || status == "readyToProcess")
                     {
                         ibaDatFile.Close();
                         return DatFileStatus.State.NOT_STARTED;
+                    }
+                    else if (status == "")
+                    {
+                        throw new Exception("no info field present");
                     }
                     else
                     {
@@ -1548,6 +1564,17 @@ namespace iba.Processing
         }
 
         private AutoResetEvent m_waitEvent;
+
+        private void ClearInfo(string dest)
+        {
+            IbaFile a = new IbaFileClass();
+            a.OpenForUpdate(dest);
+            a.WriteInfoField("$DATCOOR_status", "");
+            a.WriteInfoField("$DATCOOR_TasksDone", "");
+            a.WriteInfoField("$DATCOOR_times_tried", "0");
+            a.WriteInfoField("$DATCOOR_OutputFiles", "");
+            a.Close();
+        }
 
         private bool shouldTaskBeDone(TaskData task, string filename)
         {
@@ -1951,6 +1978,7 @@ namespace iba.Processing
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
+                    Log(Logging.Level.Info, "opening analysis");
                     mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
                     Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
                     if (task.ExtractToFile)
@@ -2002,9 +2030,9 @@ namespace iba.Processing
                 StopIbaAnalyzer();
                 StartIbaAnalyzer();
             }
-            catch
+            catch (Exception ex)
             {
-                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                Log(Logging.Level.Exception, ex.Message + "   " + IbaAnalyzerErrorMessage(), filename, task);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -2069,7 +2097,7 @@ namespace iba.Processing
             if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
                 && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
             {
-                dir = Path.Combine(dir, SubFolder(task.Subfolder));
+                dir = Path.Combine(dir, SubFolder(task.Subfolder,task.UseDatModTimeForDirs?filename:null));
             }
             return dir;
         }
@@ -2148,21 +2176,32 @@ namespace iba.Processing
                 return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
-        private string SubFolder(TaskDataUNC.SubfolderChoice choice)
+        private string SubFolder(TaskDataUNC.SubfolderChoice choice, String filename)
         {
-	        DateTime now = DateTime.Now;
+	        DateTime dt = DateTime.Now;
+            if (filename != null)
+            {
+                try
+                {
+                    dt = File.GetLastWriteTime(filename);
+                }
+                catch
+                {
+                    dt = DateTime.Now;
+                }
+            }
             switch (choice)
             {
                 case TaskDataUNC.SubfolderChoice.HOUR:
-                    return now.ToString("yyMMddHH");
+                    return dt.ToString("yyMMddHH");
                 case TaskDataUNC.SubfolderChoice.DAY:
-                    return now.ToString("yyMMdd");
+                    return dt.ToString("yyMMdd");
                 case TaskDataUNC.SubfolderChoice.MONTH:
-                    return now.ToString("yyMM");
+                    return dt.ToString("yyMM");
                 case TaskDataUNC.SubfolderChoice.WEEK:
                 {
-                    int weekNr = GetWeekNumber(now);
-                    return (now.Year - 2000).ToString("d2") + weekNr.ToString("d2");
+                    int weekNr = GetWeekNumber(dt);
+                    return (dt.Year - 2000).ToString("d2") + weekNr.ToString("d2");
                 }
                 default:
                     return null;
@@ -2251,7 +2290,7 @@ namespace iba.Processing
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE 
                     && task.Subfolder != ReportData.SubfolderChoice.SAME)
                 {
-                    dir = Path.Combine(dir, SubFolder(task.Subfolder));
+                    dir = Path.Combine(dir, SubFolder(task.Subfolder, task.UseDatModTimeForDirs ? filename : null));
                 }
                 if (!Directory.Exists(dir))
                 {
@@ -2550,7 +2589,7 @@ namespace iba.Processing
                 }
                 if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
                 {
-                    dir = Path.Combine(dir, SubFolder(task.Subfolder));
+                    dir = Path.Combine(dir, SubFolder(task.Subfolder, task.UseDatModTimeForDirs ? filename : null));
                 }
                 if (!Directory.Exists(dir))
                 {
@@ -2621,6 +2660,8 @@ namespace iba.Processing
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
+                    //write empty infofields in file
+                    //ClearInfo(dest);
                     File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
                     m_outPutFile = dest;
@@ -2633,9 +2674,14 @@ namespace iba.Processing
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
+                    //write empty infofields in file
+                    //ClearInfo(dest);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFile = dest;
                 }
+
+
+
                 if (!task.ActionDelete && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
                     m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
 

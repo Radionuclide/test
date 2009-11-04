@@ -1446,7 +1446,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Pause Task.
+        ///   Looks up a localized string similar to Add Pause Task.
         /// </summary>
         internal static string NewPauseTaskTitle {
             get {
@@ -1473,7 +1473,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Update Data Task.
+        ///   Looks up a localized string similar to Add Update Data Task.
         /// </summary>
         internal static string NewUpdateDataTaskTitle {
             get {

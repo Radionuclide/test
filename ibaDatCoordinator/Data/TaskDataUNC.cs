@@ -34,6 +34,7 @@ namespace iba.Data
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
             m_doDirCleanup = false;
+            m_useDatModTimeForDirs = false;
         }
 
         protected uint m_numbFolders;
@@ -75,6 +76,14 @@ namespace iba.Data
             set { m_destinationMapUNC = value; }
         }
 
+        protected bool m_useDatModTimeForDirs;
+        public bool UseDatModTimeForDirs
+        {
+            get { return m_useDatModTimeForDirs; }
+            set { m_useDatModTimeForDirs = value; }
+        }
+
+
         public void UpdateUNC()
         {
             m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
@@ -91,6 +100,7 @@ namespace iba.Data
             uncdat.m_outputLimitChoice = m_outputLimitChoice;
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
+            uncdat.m_useDatModTimeForDirs = m_useDatModTimeForDirs;
         }
 
         protected string m_username;

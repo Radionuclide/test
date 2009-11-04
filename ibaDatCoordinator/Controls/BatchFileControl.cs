@@ -301,6 +301,7 @@ namespace iba.Controls
                             btext += str + Environment.NewLine;
                     }
                     m_textEditor.Text = btext;
+                    m_textEditor.Refresh();
                     //if (ifd.Extension == ".bat" || ifd.Extension == ".BAT")
                     //    m_textEditor.SetHighlighting("Default");
                     if (ifd.Extension == ".vbs" || ifd.Extension == ".VBS")
@@ -311,8 +312,9 @@ namespace iba.Controls
                     //    m_textEditor.SetHighlighting("C#");
                     else
                         m_textEditor.SetHighlighting("Default");
-                    //m_textEditor.Text = btext;
-                    m_textEditor.Invalidate();
+
+                    //m_textEditor.Invalidate();
+                    //m_textEditor.Update();
                 }
                 else
                 {

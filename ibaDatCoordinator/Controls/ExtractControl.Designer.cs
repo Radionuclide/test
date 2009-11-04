@@ -76,6 +76,8 @@ namespace iba.Controls
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
             this.m_cbOverwrite = new System.Windows.Forms.CheckBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -92,6 +94,7 @@ namespace iba.Controls
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_rbTextFile
@@ -247,7 +250,8 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.panel3, 0, 1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             // 
             // tableLayoutPanel3
@@ -476,6 +480,20 @@ namespace iba.Controls
             this.m_cbOverwrite.Name = "m_cbOverwrite";
             this.m_cbOverwrite.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.m_cbTakeDatTime);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // m_cbTakeDatTime
+            // 
+            resources.ApplyResources(this.m_cbTakeDatTime, "m_cbTakeDatTime");
+            this.m_cbTakeDatTime.Checked = true;
+            this.m_cbTakeDatTime.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbTakeDatTime.Name = "m_cbTakeDatTime";
+            this.m_cbTakeDatTime.UseVisualStyleBackColor = true;
+            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
@@ -509,6 +527,8 @@ namespace iba.Controls
             this.m_monitorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -562,6 +582,8 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbQuota;
         private System.Windows.Forms.NumericUpDown m_nudQuota;
         private System.Windows.Forms.CheckBox m_cbOverwrite;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.CheckBox m_cbTakeDatTime;
 
     }
 }

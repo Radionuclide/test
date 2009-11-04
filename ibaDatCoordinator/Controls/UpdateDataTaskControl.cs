@@ -48,7 +48,7 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
-
+            m_cbTakeDatTime.Checked = m_data.UseDatModTimeForDirs;
 
             //database stuff
             m_tbDatabaseName.Text = m_data.DbName;
@@ -82,6 +82,7 @@ namespace iba.Controls
             m_data.Quota = (uint)m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked ? TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories : TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_data.OverwriteFiles = m_cbOverwrite.Checked;
+            m_data.UseDatModTimeForDirs = m_cbTakeDatTime.Checked;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
@@ -184,8 +185,10 @@ namespace iba.Controls
                     else
                         message = UpdateDataTaskWorker.TestConnecton(m_data);
                 }
-                if (message != null)
-                    MessageBox.Show(this, message, "ibaDatCoordinator", MessageBoxButtons.OK, iba.Properties.Resources.logUDTConnectSuccess == message ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+                if (message != null && message == "success")
+                    MessageBox.Show(this, iba.Properties.Resources.logUDTConnectSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else if (message != null)
+                    MessageBox.Show(this, message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {

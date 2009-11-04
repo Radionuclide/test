@@ -53,7 +53,7 @@ namespace iba.Controls
 
         private void m_dataGridView_Scroll(object sender, ScrollEventArgs e)
         {
-            if (m_dataGridView.FirstDisplayedScrollingRowIndex + m_dataGridView.DisplayedRowCount(true) >= m_dataGridView.RowCount)
+            if (m_dataGridView.FirstDisplayedScrollingRowIndex==0)
                 m_freeze = false;
         }
 

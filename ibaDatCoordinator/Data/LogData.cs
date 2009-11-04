@@ -160,8 +160,6 @@ namespace iba.Data
 
         private void update(Event _event)
         {
-            int index;
-
             LogControl lc = (m_control as LogControl);
             
             bool freeze = lc!= null && lc.Freeze;
@@ -170,28 +168,28 @@ namespace iba.Data
 
             while (m_grid.Rows.Count >= m_maxRows && m_grid.Rows.Count > 0)
             {
-                m_grid.Rows.RemoveAt(0);
-                rowpos -= 1;
+                m_grid.Rows.RemoveAt(m_grid.Rows.Count-1);
             }
             
             LogExtraData data = _event.Data as LogExtraData;
             lock (m_grid.Rows)
             {
                 if (data == null)
-                    index = m_grid.Rows.Add(new Object[] { 
+                    m_grid.Rows.Insert(0,new Object[] { 
                     _event.Timestamp, 
                     String.Empty,
                     String.Empty, 
                     String.Empty, 
                     _event.Message });
                 else
-                    index = m_grid.Rows.Add(new Object[] { 
+                    m_grid.Rows.Insert(0,new Object[] { 
                      _event.Timestamp, 
                     data.ConfigurationData==null?String.Empty:data.ConfigurationData.Name, 
                     data.TaskData == null?String.Empty:data.TaskData.Name, 
                     data.DatFile, 
                     _event.Message });
-                DataGridViewCellStyle style = m_grid.Rows[index].Cells[4].Style;
+                rowpos++;
+                DataGridViewCellStyle style = m_grid.Rows[0].Cells[4].Style;
                 if (_event.Level == Logging.Level.Warning) style.ForeColor = Color.Orange;
                 else if (_event.Level == Logging.Level.Info)
                 {
@@ -209,13 +207,13 @@ namespace iba.Data
                 }
                 if (!freeze)
                 {
-                    m_grid.Rows[index].Selected = true;
+                    m_grid.Rows[0].Selected = true;
                     if (lc != null) lc.Freeze = false;
                 }
             }
             try
             {
-                if (freeze && rowpos > 0)
+                if (freeze && rowpos > 0 && rowpos < m_grid.Rows.Count)
                     m_grid.FirstDisplayedScrollingRowIndex = rowpos;
             }
             catch

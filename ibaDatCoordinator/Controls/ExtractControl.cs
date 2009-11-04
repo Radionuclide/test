@@ -78,7 +78,7 @@ namespace iba.Controls
             }
 
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
-
+            m_cbTakeDatTime.Checked = m_data.UseDatModTimeForDirs;
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
@@ -102,6 +102,7 @@ namespace iba.Controls
             m_data.Quota = (uint) m_nudQuota.Value;
             m_data.OutputLimitChoice = m_rbLimitDirectories.Checked?TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories:TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_data.OverwriteFiles = m_cbOverwrite.Checked;
+            m_data.UseDatModTimeForDirs = m_cbTakeDatTime.Checked;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;

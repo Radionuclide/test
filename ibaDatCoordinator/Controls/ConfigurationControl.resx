@@ -1100,7 +1100,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>527, 14</value>
+    <value>527, 13</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -2110,17 +2110,17 @@
   <data name="&gt;&gt;m_newUpdateDataTaskButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
-    <value>m_openFileDialog1</value>
-  </data>
-  <data name="&gt;&gt;m_openFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_newPauseTaskButton.Name" xml:space="preserve">
     <value>m_newPauseTaskButton</value>
   </data>
   <data name="&gt;&gt;m_newPauseTaskButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
+    <value>m_openFileDialog1</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConfigurationControl</value>

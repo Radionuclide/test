@@ -203,15 +203,8 @@ namespace iba.Utility
 
         public new void Add(T elem)
         {
-            try
-            {
-                int pos = BinarySearch(elem,m_comparer);
-                if (pos < 0) Insert(~pos, elem);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("location2", ex);
-            }
+            int pos = BinarySearch(elem,m_comparer);
+            if (pos < 0) Insert(~pos, elem);
         }
         
         public new void  AddRange(IEnumerable<T> elems)
@@ -233,43 +226,20 @@ namespace iba.Utility
 
         public new int IndexOf(T elem)
         {
-            try
-            {
-                return BinarySearch(elem,m_comparer);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("location3", ex);
-
-            }
+            return BinarySearch(elem,m_comparer);
         }
 
 	    public new bool Contains(T elem )
 	    { 
-            try
-            {
-		        return BinarySearch( elem,m_comparer ) >= 0;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("location4", ex);
-            }
-
+            return BinarySearch( elem,m_comparer ) >= 0;
 	    }
 
         public new bool Remove(T elem)
         {
-            try
-            {
-                int pos = BinarySearch(elem,m_comparer);
-                if (pos < 0) return false;
-                else RemoveAt(pos);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("location5", ex);
-            }
+            int pos = BinarySearch(elem, m_comparer);
+            if (pos < 0) return false;
+            else RemoveAt(pos);
+            return true;
         }
 
         private enum SetOperationKind {UNION,INTERSECTION,DIFFERENCE }

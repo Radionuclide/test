@@ -118,17 +118,48 @@ namespace iba.Processing
 
         static public string TestConnecton(UpdateDataTaskData udt)
         {
-            try
+            using (DbConnection con = Connection(udt))
             {
-                DbConnection con = Connection(udt);
-                con.Open();
-                con.Dispose();
+                try
+                {
+                    con.Open();
+                }
+                catch (Exception ex)
+                {
+                    return iba.Properties.Resources.logUDTConnectFailed + ": " + ex.Message;
+                }
+
+                try
+                {
+                    using (DbCommand cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = String.Format("SELECT * FROM {0}", udt.DbTblName);
+                        using (DbDataReader dbdr = cmd.ExecuteReader())
+                        {
+                            dbdr.Read();
+                            int[] columnOrds = { -1, -1, -1, -1, -1 };
+                            string[] columnNames = { "ID_REF", "ID_NEW", "READY_TO_PROCESS", "PROCESSED", "CREATED" };
+
+                            for (int i = 0; i < 5; i++)
+                            {
+                                try
+                                {
+                                    columnOrds[i] = dbdr.GetOrdinal(columnNames[i]);
+                                }
+                                catch (IndexOutOfRangeException)
+                                {
+                                    return String.Format(iba.Properties.Resources.logUDTColumnMissing, columnNames[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return iba.Properties.Resources.logUDTDataBaseError + ": " + ex.Message;
+                }
             }
-            catch (Exception ex)
-            {
-                return iba.Properties.Resources.logUDTConnectFailed + ": " + ex.Message;
-            }
-            return iba.Properties.Resources.logUDTConnectSuccess;
+            return "success";
         }
 
         private IbaFile m_ibaFileUpdater;
@@ -253,6 +284,10 @@ namespace iba.Processing
                 {
                     foreach (KeyValuePair<string, string> pair in newInfoFields)
                         m_ibaFileUpdater.WriteInfoField(pair.Key, pair.Value);
+                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_TasksDone", "");
+                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_times_tried", "0");
+                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_OutputFiles", "");
                     m_ibaFileUpdater.Close();
                 }
                 catch (Exception ex)
