@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinatorService", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RohWriter", "RohWriter\RohWriter.vcproj", "{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RohPlugin", "RohPlugin\RohPlugin.csproj", "{FE90F614-BA97-4B9B-83E2-280FA2480B81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,16 @@ Global
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|Win32.ActiveCfg = Release|Win32
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|Win32.Build.0 = Release|Win32
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
