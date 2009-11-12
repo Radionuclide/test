@@ -61,7 +61,6 @@ namespace Alunorf_sinec_h1_plugin
             this.label10 = new System.Windows.Forms.Label();
             this.m_splitContainer = new System.Windows.Forms.SplitContainer();
             this.NQS1 = new System.Windows.Forms.GroupBox();
-            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS1_NQS = new System.Windows.Forms.TextBox();
@@ -70,7 +69,6 @@ namespace Alunorf_sinec_h1_plugin
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NQS2 = new System.Windows.Forms.GroupBox();
-            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS2 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS2_NQS = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -80,10 +78,12 @@ namespace Alunorf_sinec_h1_plugin
             this.label6 = new System.Windows.Forms.Label();
             this.macGroupbox = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.m_ownMAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_tabControl = new System.Windows.Forms.TabControl();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
+            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
+            this.m_ownMAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_splitContainer2.Panel1.SuspendLayout();
             this.m_splitContainer2.Panel2.SuspendLayout();
             this.m_splitContainer2.SuspendLayout();
@@ -444,13 +444,6 @@ namespace Alunorf_sinec_h1_plugin
             this.NQS1.Name = "NQS1";
             this.NQS1.TabStop = false;
             // 
-            // m_nqs1MAC
-            // 
-            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
-            this.m_nqs1MAC.Name = "m_nqs1MAC";
-            // 
             // m_statusNQS1
             // 
             resources.ApplyResources(this.m_statusNQS1, "m_statusNQS1");
@@ -501,13 +494,6 @@ namespace Alunorf_sinec_h1_plugin
             this.NQS2.Name = "NQS2";
             this.NQS2.TabStop = false;
             // 
-            // m_nqs2MAC
-            // 
-            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
-            this.m_nqs2MAC.Name = "m_nqs2MAC";
-            // 
             // m_statusNQS2
             // 
             resources.ApplyResources(this.m_statusNQS2, "m_statusNQS2");
@@ -557,13 +543,6 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
-            // m_ownMAC
-            // 
-            this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_ownMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_ownMAC, "m_ownMAC");
-            this.m_ownMAC.Name = "m_ownMAC";
-            // 
             // m_tabControl
             // 
             this.m_tabControl.Controls.Add(this.tabPage1);
@@ -571,6 +550,27 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.m_tabControl, "m_tabControl");
             this.m_tabControl.Name = "m_tabControl";
             this.m_tabControl.SelectedIndex = 0;
+            // 
+            // m_nqs1MAC
+            // 
+            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
+            this.m_nqs1MAC.Name = "m_nqs1MAC";
+            // 
+            // m_nqs2MAC
+            // 
+            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
+            this.m_nqs2MAC.Name = "m_nqs2MAC";
+            // 
+            // m_ownMAC
+            // 
+            this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_ownMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_ownMAC, "m_ownMAC");
+            this.m_ownMAC.Name = "m_ownMAC";
             // 
             // PluginH1TaskControl
             // 

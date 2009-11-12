@@ -44,6 +44,16 @@ namespace iba {
 		String^ Kommentare;
 		String^ Kurzbezeichner;
 		String^ Parameter;
+		RohWriterInput()
+		{
+			Kommentare = "";
+			Kurzbezeichner = "";
+			Parameter = "";
+			StichDaten = gcnew array<RohWriterDataLineInput^>(0);
+			KopfDaten = gcnew array<RohWriterDataLineInput^>(0);
+			SchlussDaten = gcnew array<RohWriterDataLineInput^>(0);
+			Kanalen = gcnew array<RohWriterChannelLineInput^>(0);
+		}
 	};
 
 	public ref class RohWriter

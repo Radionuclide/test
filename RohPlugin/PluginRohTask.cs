@@ -150,6 +150,27 @@ namespace Alunorf_roh_plugin
             m_parentJob = parentJob;
             m_datcoHost = host;
             m_nameInfo = name;
+            m_rohInput = new iba.RohWriterInput();
+            m_rohInput.Kurzbezeichner =
+              "FA_NR                            AuftV___                          \r\n" +
+              "STUECK_NR                        STnrV___                          \r\n" +
+              "TEILBAND_NR                      TBnrV___                          \r\n" +
+              "BANDBREITE                       breiVbd_                          \r\n" +
+              "DICKE_SOLL                       Dik_SAL_                          \r\n" +
+              "DICKE_EINLAUF                    Dik_SEL_                          \r\n" +
+              "LEGIERUNG                        Leg_V___                          \r\n" +
+              "DATUM                            DmUtIbS_                          \r\n" +
+              "BUNDMASSE                        m___Vcl_                          \r\n" +
+              "ANLAGE                           anlage                            \r\n" +
+              "SYSTEM                           system                            \r\n" +
+              "DATENART                         datenart                          \r\n" +
+              "SPEICHER                         Permanen                          \r\n" +
+              "QUALITAET                        QZPLMG2_                          \r\n";
+            m_ftpDirectory = "";
+            m_ftpHost = "";
+            m_ftpPort = 21;
+            m_ftpUser = "";
+            m_ftpPass = "";
         }
     }
 
