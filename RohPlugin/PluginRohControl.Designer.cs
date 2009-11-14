@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.m_tabControl = new System.Windows.Forms.TabControl();
             this.m_stichTab = new System.Windows.Forms.TabPage();
             this.m_datagvStich = new System.Windows.Forms.DataGridView();
@@ -37,6 +38,7 @@
             this.m_stichColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_stichColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.m_kommentareTab = new System.Windows.Forms.TabPage();
+            this.m_kommentare = new System.Windows.Forms.TextBox();
             this.m_kopfTab = new System.Windows.Forms.TabPage();
             this.m_datagvKopf = new System.Windows.Forms.DataGridView();
             this.m_kopfColumnInfoField = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,9 +54,19 @@
             this.m_schlussColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_schlussColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.m_kurzbezeichnerTab = new System.Windows.Forms.TabPage();
+            this.m_kurzbezeichner = new System.Windows.Forms.TextBox();
             this.m_parameterTab = new System.Windows.Forms.TabPage();
+            this.m_parameter = new System.Windows.Forms.TextBox();
             this.m_kanalTab = new System.Windows.Forms.TabPage();
             this.m_datagvKanalbeschreibung = new System.Windows.Forms.DataGridView();
+            this.m_kanalColumnInfoField = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnBezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnKurz = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.m_kanalColumnKennung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnSollwert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnStutz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_ftpTab = new System.Windows.Forms.TabPage();
             this.m_ftpPassword = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -71,17 +83,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_selectButton = new System.Windows.Forms.Button();
-            this.m_kanalColumnInfoField = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnBezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnKurz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.m_kanalColumnKennung = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnSollwert = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnStutz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kommentare = new System.Windows.Forms.TextBox();
-            this.m_kurzbezeichner = new System.Windows.Forms.TextBox();
-            this.m_parameter = new System.Windows.Forms.TextBox();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_tabControl.SuspendLayout();
             this.m_stichTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvStich)).BeginInit();
@@ -115,6 +118,7 @@
             this.m_tabControl.SelectedIndex = 0;
             this.m_tabControl.Size = new System.Drawing.Size(565, 410);
             this.m_tabControl.TabIndex = 0;
+            this.m_tabControl.SelectedIndexChanged += new System.EventHandler(this.m_tabControl_SelectedIndexChanged);
             // 
             // m_stichTab
             // 
@@ -141,6 +145,8 @@
             this.m_datagvStich.Name = "m_datagvStich";
             this.m_datagvStich.Size = new System.Drawing.Size(551, 378);
             this.m_datagvStich.TabIndex = 1;
+            this.m_datagvStich.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
+            this.m_datagvStich.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
             // m_stichColumnInfoField
             // 
@@ -204,6 +210,16 @@
             this.m_kommentareTab.Text = "Kommentare";
             this.m_kommentareTab.UseVisualStyleBackColor = true;
             // 
+            // m_kommentare
+            // 
+            this.m_kommentare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_kommentare.Location = new System.Drawing.Point(3, 3);
+            this.m_kommentare.Multiline = true;
+            this.m_kommentare.Name = "m_kommentare";
+            this.m_kommentare.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.m_kommentare.Size = new System.Drawing.Size(551, 378);
+            this.m_kommentare.TabIndex = 0;
+            // 
             // m_kopfTab
             // 
             this.m_kopfTab.Controls.Add(this.m_datagvKopf);
@@ -229,6 +245,8 @@
             this.m_datagvKopf.Name = "m_datagvKopf";
             this.m_datagvKopf.Size = new System.Drawing.Size(551, 378);
             this.m_datagvKopf.TabIndex = 2;
+            this.m_datagvKopf.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
+            this.m_datagvKopf.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
             // m_kopfColumnInfoField
             // 
@@ -306,6 +324,8 @@
             this.m_datagvSchluss.Name = "m_datagvSchluss";
             this.m_datagvSchluss.Size = new System.Drawing.Size(551, 378);
             this.m_datagvSchluss.TabIndex = 2;
+            this.m_datagvSchluss.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
+            this.m_datagvSchluss.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
             // m_schlussColumnInfoField
             // 
@@ -369,6 +389,16 @@
             this.m_kurzbezeichnerTab.Text = "Kurzbezeichner";
             this.m_kurzbezeichnerTab.UseVisualStyleBackColor = true;
             // 
+            // m_kurzbezeichner
+            // 
+            this.m_kurzbezeichner.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_kurzbezeichner.Location = new System.Drawing.Point(3, 3);
+            this.m_kurzbezeichner.Multiline = true;
+            this.m_kurzbezeichner.Name = "m_kurzbezeichner";
+            this.m_kurzbezeichner.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.m_kurzbezeichner.Size = new System.Drawing.Size(551, 378);
+            this.m_kurzbezeichner.TabIndex = 1;
+            // 
             // m_parameterTab
             // 
             this.m_parameterTab.Controls.Add(this.m_parameter);
@@ -379,6 +409,16 @@
             this.m_parameterTab.TabIndex = 5;
             this.m_parameterTab.Text = "Parameter";
             this.m_parameterTab.UseVisualStyleBackColor = true;
+            // 
+            // m_parameter
+            // 
+            this.m_parameter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_parameter.Location = new System.Drawing.Point(3, 3);
+            this.m_parameter.Multiline = true;
+            this.m_parameter.Name = "m_parameter";
+            this.m_parameter.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.m_parameter.Size = new System.Drawing.Size(551, 378);
+            this.m_parameter.TabIndex = 2;
             // 
             // m_kanalTab
             // 
@@ -408,7 +448,84 @@
             this.m_datagvKanalbeschreibung.Name = "m_datagvKanalbeschreibung";
             this.m_datagvKanalbeschreibung.Size = new System.Drawing.Size(551, 378);
             this.m_datagvKanalbeschreibung.TabIndex = 3;
+            this.m_datagvKanalbeschreibung.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvKanalbeschreibung.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.m_datagvKanalbeschreibung_EditingControlShowing);
+            this.m_datagvKanalbeschreibung.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
+            // 
+            // m_kanalColumnInfoField
+            // 
+            this.m_kanalColumnInfoField.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnInfoField.FillWeight = 25F;
+            this.m_kanalColumnInfoField.HeaderText = "iba Infofeld";
+            this.m_kanalColumnInfoField.Name = "m_kanalColumnInfoField";
+            this.m_kanalColumnInfoField.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnBezeichnung
+            // 
+            this.m_kanalColumnBezeichnung.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnBezeichnung.FillWeight = 30F;
+            this.m_kanalColumnBezeichnung.HeaderText = "Bezeichnung";
+            this.m_kanalColumnBezeichnung.MaxInputLength = 30;
+            this.m_kanalColumnBezeichnung.Name = "m_kanalColumnBezeichnung";
+            this.m_kanalColumnBezeichnung.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnKurz
+            // 
+            this.m_kanalColumnKurz.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnKurz.FillWeight = 20F;
+            this.m_kanalColumnKurz.HeaderText = "KurzBezeichnung";
+            this.m_kanalColumnKurz.MaxInputLength = 8;
+            this.m_kanalColumnKurz.Name = "m_kanalColumnKurz";
+            this.m_kanalColumnKurz.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnEinheit
+            // 
+            this.m_kanalColumnEinheit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnEinheit.FillWeight = 15F;
+            this.m_kanalColumnEinheit.HeaderText = "Einheit";
+            this.m_kanalColumnEinheit.MaxInputLength = 8;
+            this.m_kanalColumnEinheit.Name = "m_kanalColumnEinheit";
+            this.m_kanalColumnEinheit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnDataType
+            // 
+            this.m_kanalColumnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnDataType.FillWeight = 10F;
+            this.m_kanalColumnDataType.HeaderText = "Datentyp";
+            this.m_kanalColumnDataType.Items.AddRange(new object[] {
+            "F",
+            "F4",
+            "F8",
+            "I",
+            "I2",
+            "I4",
+            "C"});
+            this.m_kanalColumnDataType.MaxDropDownItems = 10;
+            this.m_kanalColumnDataType.Name = "m_kanalColumnDataType";
+            // 
+            // m_kanalColumnKennung
+            // 
+            this.m_kanalColumnKennung.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnKennung.FillWeight = 15F;
+            this.m_kanalColumnKennung.HeaderText = "Kennung";
+            this.m_kanalColumnKennung.Name = "m_kanalColumnKennung";
+            this.m_kanalColumnKennung.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnSollwert
+            // 
+            this.m_kanalColumnSollwert.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnSollwert.FillWeight = 20F;
+            this.m_kanalColumnSollwert.HeaderText = "Sollwert";
+            this.m_kanalColumnSollwert.Name = "m_kanalColumnSollwert";
+            this.m_kanalColumnSollwert.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_kanalColumnStutz
+            // 
+            this.m_kanalColumnStutz.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnStutz.FillWeight = 20F;
+            this.m_kanalColumnStutz.HeaderText = "Stützstellen";
+            this.m_kanalColumnStutz.Name = "m_kanalColumnStutz";
+            this.m_kanalColumnStutz.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // m_ftpTab
             // 
@@ -540,12 +657,14 @@
             // m_browseDatFileButton
             // 
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_browseDatFileButton.Image = global::Alunorf_roh_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browseDatFileButton.Location = new System.Drawing.Point(460, 6);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(40, 40);
             this.m_browseDatFileButton.TabIndex = 13;
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
+            this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
             // 
             // label3
             // 
@@ -569,117 +688,14 @@
             // m_selectButton
             // 
             this.m_selectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_selectButton.Image = global::Alunorf_roh_plugin.Properties.Resources.select;
             this.m_selectButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_selectButton.Location = new System.Drawing.Point(506, 6);
             this.m_selectButton.Name = "m_selectButton";
             this.m_selectButton.Size = new System.Drawing.Size(40, 40);
             this.m_selectButton.TabIndex = 14;
             this.m_selectButton.UseVisualStyleBackColor = true;
-            // 
-            // m_kanalColumnInfoField
-            // 
-            this.m_kanalColumnInfoField.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnInfoField.FillWeight = 25F;
-            this.m_kanalColumnInfoField.HeaderText = "iba Infofeld";
-            this.m_kanalColumnInfoField.Name = "m_kanalColumnInfoField";
-            this.m_kanalColumnInfoField.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnBezeichnung
-            // 
-            this.m_kanalColumnBezeichnung.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnBezeichnung.FillWeight = 30F;
-            this.m_kanalColumnBezeichnung.HeaderText = "Bezeichnung";
-            this.m_kanalColumnBezeichnung.MaxInputLength = 30;
-            this.m_kanalColumnBezeichnung.Name = "m_kanalColumnBezeichnung";
-            this.m_kanalColumnBezeichnung.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnKurz
-            // 
-            this.m_kanalColumnKurz.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnKurz.FillWeight = 20F;
-            this.m_kanalColumnKurz.HeaderText = "KurzBezeichnung";
-            this.m_kanalColumnKurz.MaxInputLength = 8;
-            this.m_kanalColumnKurz.Name = "m_kanalColumnKurz";
-            this.m_kanalColumnKurz.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnEinheit
-            // 
-            this.m_kanalColumnEinheit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnEinheit.FillWeight = 15F;
-            this.m_kanalColumnEinheit.HeaderText = "Einheit";
-            this.m_kanalColumnEinheit.MaxInputLength = 8;
-            this.m_kanalColumnEinheit.Name = "m_kanalColumnEinheit";
-            this.m_kanalColumnEinheit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnDataType
-            // 
-            this.m_kanalColumnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnDataType.FillWeight = 10F;
-            this.m_kanalColumnDataType.HeaderText = "Datentyp";
-            this.m_kanalColumnDataType.Items.AddRange(new object[] {
-            "F",
-            "F4",
-            "F8",
-            "I",
-            "I2",
-            "I4",
-            "C"});
-            this.m_kanalColumnDataType.MaxDropDownItems = 10;
-            this.m_kanalColumnDataType.Name = "m_kanalColumnDataType";
-            // 
-            // m_kanalColumnKennung
-            // 
-            this.m_kanalColumnKennung.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnKennung.FillWeight = 15F;
-            this.m_kanalColumnKennung.HeaderText = "Kennung";
-            this.m_kanalColumnKennung.Name = "m_kanalColumnKennung";
-            this.m_kanalColumnKennung.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnSollwert
-            // 
-            this.m_kanalColumnSollwert.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnSollwert.FillWeight = 20F;
-            this.m_kanalColumnSollwert.HeaderText = "Sollwert";
-            this.m_kanalColumnSollwert.Name = "m_kanalColumnSollwert";
-            this.m_kanalColumnSollwert.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kanalColumnStutz
-            // 
-            this.m_kanalColumnStutz.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_kanalColumnStutz.FillWeight = 20F;
-            this.m_kanalColumnStutz.HeaderText = "Stützstellen";
-            this.m_kanalColumnStutz.Name = "m_kanalColumnStutz";
-            this.m_kanalColumnStutz.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_kommentare
-            // 
-            this.m_kommentare.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_kommentare.Location = new System.Drawing.Point(3, 3);
-            this.m_kommentare.Multiline = true;
-            this.m_kommentare.Name = "m_kommentare";
-            this.m_kommentare.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_kommentare.Size = new System.Drawing.Size(551, 378);
-            this.m_kommentare.TabIndex = 0;
-            // 
-            // m_kurzbezeichner
-            // 
-            this.m_kurzbezeichner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_kurzbezeichner.Location = new System.Drawing.Point(3, 3);
-            this.m_kurzbezeichner.Multiline = true;
-            this.m_kurzbezeichner.Name = "m_kurzbezeichner";
-            this.m_kurzbezeichner.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_kurzbezeichner.Size = new System.Drawing.Size(551, 378);
-            this.m_kurzbezeichner.TabIndex = 1;
-            // 
-            // m_parameter
-            // 
-            this.m_parameter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_parameter.Location = new System.Drawing.Point(3, 3);
-            this.m_parameter.Multiline = true;
-            this.m_parameter.Name = "m_parameter";
-            this.m_parameter.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_parameter.Size = new System.Drawing.Size(551, 378);
-            this.m_parameter.TabIndex = 2;
+            this.m_selectButton.Click += new System.EventHandler(this.m_selectButton_Click);
             // 
             // PluginRohControl
             // 
@@ -769,5 +785,7 @@
         private System.Windows.Forms.TextBox m_kommentare;
         private System.Windows.Forms.TextBox m_kurzbezeichner;
         private System.Windows.Forms.TextBox m_parameter;
+        private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.OpenFileDialog m_openFileDialog;
     }
 }

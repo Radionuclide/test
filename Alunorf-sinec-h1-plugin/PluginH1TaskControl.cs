@@ -371,7 +371,7 @@ namespace Alunorf_sinec_h1_plugin
                     }
                 }
             }
-            catch (ExternalException)
+            catch 
             {
             }
         }

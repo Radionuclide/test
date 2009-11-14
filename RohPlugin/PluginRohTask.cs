@@ -78,6 +78,13 @@ namespace Alunorf_roh_plugin
             return m_worker;
         }
 
+        private string m_templateDatFile;
+        public string TemplateDatFile
+        {
+            get { return m_templateDatFile; }
+            set { m_templateDatFile = value; }
+        }
+
         public void SetWorker(IPluginTaskWorker worker)
         {
             m_worker = worker as PluginRohWorker;

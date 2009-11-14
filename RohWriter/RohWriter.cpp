@@ -34,7 +34,7 @@ namespace iba {
 		try
 		{
 			ibaFile->Open(datname);
-		}
+		} 
 		catch (Exception^ ex)
 		{
 			errorMessage = ex->Message;
@@ -294,7 +294,7 @@ namespace iba {
 			for each (RohWriterChannelLineInput^ channel in input->Kanalen)
 			{
 				p0 = p2;
-				strcpy(buf,"kanal    planSAL_ ;\n");
+				strcpy(buf,"kanal             ;\n");
 				String^ tmp = channel->KurzBezeichnung + "        ";
 				strncpy(buf+9,context.marshal_as<const char*>(tmp), 8);
 				Write(buf,strlen(buf));		

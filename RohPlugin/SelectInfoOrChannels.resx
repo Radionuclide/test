@@ -117,19 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_kanalColumnKennung.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_kanalColumnSollwert.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_kanalColumnStutz.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>118, 17</value>
-  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwoJBg
+        SDBgSDBgSDBgSDBgSDBgSDBgSDBgSDBgSDBgSDAAAAAAAAAAAAAAAAAAAACwoJD///+woJCwoJCwoJCw
+        oJCwoJCwoJCwoJCwoJBgSDAAAAAAAAAAAAAAAAAAAACwoJD/////////+P/w8PDw6ODw4NDg0NDgyMDg
+        yMBgSDAAAAAAAAAAAAAAAP8AAP+woJAAAP//////////+PDw8PAAAP8AAP/g0MDgyMAAAP8AAAAAAAAA
+        AP8AAP8AAP+woJAAAP////////////8AAP/w6ODw4OAAAP/gyMAAAP8AAAAAAAAAAP8AAAAAAADAqJAA
+        AP////////////8AAP/w8PDw6OAAAP/gyMAAAP8AAAAAAAAAAP8AAAAAAADAqKAAAP////////////8A
+        AP//+PDw6OAAAP/gyMAAAP8AAAAAAAAAAP8AAAAAAADAsKAAAP8AAP////////8AAP//+P/w8PAAAP/g
+        yMAAAP8AAAAAAAAAAP8AAAAAAADQsKAAAP////8AAP////////8AAP8AAP/w8PDgyMAAAP8AAP8AAP8A
+        AAAAAAAAAADQuKD////////////////////////////gyMDgyMAAAP8AAAAAAAAAAAAAAAAAAADQuLD/
+        //////////////////////+woJBgSDBgSDAAAP8AAAAAAAAAAAAAAAAAAADQwLD/////////////////
+        ///////AqJDQyMBgSDAAAP8AAAAAAAAAAAAAAAAAAADgwLD////////////////////////AqKBgSDDk
+        0skAAAAAAAAAAAAAAAAAAAAAAADgwLDgwLDgwLDgwLDgwLDQwLDQuLDQsKDk0skAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAwAcAAMAH
+        AADABwAAAAYAAAAGAADABgAAwAYAAMAGAADAAQAAwAcAAMAHAADABwAAwA8AAMAfAAD//wAA
+</value>
+  </data>
 </root>

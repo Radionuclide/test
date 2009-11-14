@@ -60,10 +60,101 @@ namespace Alunorf_roh_plugin.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to The .dat file {0} could not be read.
+        /// </summary>
+        internal static string DatFileCouldNotBeOpened {
+            get {
+                return ResourceManager.GetString("DatFileCouldNotBeOpened", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap left {
+            get {
+                object obj = ResourceManager.GetObject("left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap open {
+            get {
+                object obj = ResourceManager.GetObject("open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap right {
+            get {
+                object obj = ResourceManager.GetObject("right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Icon RohTask {
             get {
                 object obj = ResourceManager.GetObject("RohTask", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap select {
+            get {
+                object obj = ResourceManager.GetObject("select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select channels for additional Kanalbeschreibung table entries.
+        /// </summary>
+        internal static string SelectKanal {
+            get {
+                return ResourceManager.GetString("SelectKanal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select infofields for additional Kopfdaten table entries.
+        /// </summary>
+        internal static string SelectKopf {
+            get {
+                return ResourceManager.GetString("SelectKopf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select infofields for additional Schlussdaten table entries.
+        /// </summary>
+        internal static string SelectSchluss {
+            get {
+                return ResourceManager.GetString("SelectSchluss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select infofields for additional Stichdaten table entries.
+        /// </summary>
+        internal static string SelectStich {
+            get {
+                return ResourceManager.GetString("SelectStich", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for template .dat file.
+        /// </summary>
+        internal static string tooltipBrowse {
+            get {
+                return ResourceManager.GetString("tooltipBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select infofields and channels from .dat file.
+        /// </summary>
+        internal static string tooltipSelect {
+            get {
+                return ResourceManager.GetString("tooltipSelect", resourceCulture);
             }
         }
     }
