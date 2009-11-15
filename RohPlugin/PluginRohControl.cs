@@ -132,6 +132,7 @@ namespace Alunorf_roh_plugin
                 grid.Rows[i].Cells[6].Value = dataset2[i].Sollwert;
                 grid.Rows[i].Cells[7].Value = dataset2[i].Stutzstellen;
             }
+            m_tabControl.SelectedIndex = m_data.SelectedTab;
             m_datFileTextBox_TextChanged(null, null);
         }
 
@@ -146,7 +147,7 @@ namespace Alunorf_roh_plugin
             m_data.RohInput.Parameter = m_parameter.Text;
             m_data.RohInput.Kommentare = m_kommentare.Text;
             m_data.RohInput.Kurzbezeichner = m_kurzbezeichner.Text;
-
+            m_data.SelectedTab = m_tabControl.SelectedIndex;
             iba.RohWriterDataLineInput[][] datasets = { m_data.RohInput.StichDaten, m_data.RohInput.KopfDaten, m_data.RohInput.SchlussDaten};
             DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
             DataGridView grid = null;
@@ -154,9 +155,8 @@ namespace Alunorf_roh_plugin
             for (int j = 0; j < 3; j++)
             {
                 grid = grids[j];
-                iba.RohWriterDataLineInput[] dataset = datasets[j];
                 count = grid.RowCount;
-                Array.Resize(ref dataset,count);
+                iba.RohWriterDataLineInput[] dataset = new iba.RohWriterDataLineInput[count];
                 count2=0;
                 for (int i = 0; i < count; i++)
                 {
@@ -195,10 +195,14 @@ namespace Alunorf_roh_plugin
                     dataset[count2++] = line;
                 }
                 Array.Resize(ref dataset, count2);
+                datasets[j] = dataset;
             }
+            m_data.RohInput.StichDaten = datasets[0]; 
+            m_data.RohInput.KopfDaten = datasets[1];
+            m_data.RohInput.SchlussDaten = datasets[2]; 
             grid = m_datagvKanalbeschreibung;
-            iba.RohWriterChannelLineInput[] dataset2 = m_data.RohInput.Kanalen;
             count = grid.RowCount;
+            iba.RohWriterChannelLineInput[] dataset2 = new iba.RohWriterChannelLineInput[count];
             Array.Resize(ref dataset2, count);
             count2 = 0;
             for (int i = 0; i < count; i++)
@@ -251,6 +255,7 @@ namespace Alunorf_roh_plugin
                 dataset2[count2++] = line;
             }
             Array.Resize(ref dataset2, count2);
+            m_data.RohInput.Kanalen = dataset2;
         }
 
         public void LeaveCleanup()
@@ -258,15 +263,6 @@ namespace Alunorf_roh_plugin
         }
 
         #endregion
-
-        private void m_datagvKanalbeschreibung_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            if ((int)(((System.Windows.Forms.DataGridView)(sender)).CurrentCell.ColumnIndex) == 5) //Kennung column
-            {
-                e.Control.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextboxNumeric_KeyPress);
-
-            }   
-        }
 
         private void m_datagv_KeyDown(object sender, KeyEventArgs e)
         {
@@ -289,9 +285,14 @@ namespace Alunorf_roh_plugin
                     col = Algorithms.min<DataGridViewCell>(grid.SelectedCells, delegate(DataGridViewCell a, DataGridViewCell b) { return a.ColumnIndex - b.ColumnIndex; }).ColumnIndex;
                 }
 
-                if (e.Control && e.KeyCode == Keys.V && Clipboard.ContainsData(DataFormats.CommaSeparatedValue))
+                if (e.Control && e.KeyCode == Keys.V)
                 {
                     object o = Clipboard.GetData(DataFormats.CommaSeparatedValue);
+                    if (o == null)
+                        o = Clipboard.GetData(DataFormats.UnicodeText);
+                    if (o == null)
+                        o = Clipboard.GetData(DataFormats.Text);
+                    if (o == null) return;
                     Stream stream = o as Stream;
                     String asstring = o as String;
                     TextReader sr = null;
@@ -309,7 +310,8 @@ namespace Alunorf_roh_plugin
                             }
                             while (row + 1 >= grid.RowCount) //always leav
                                 grid.RowCount++;
-                            string[] sr_array = s.Split(',');
+                            char[] delims = { ',', ';', '\t' };
+                            string[] sr_array = s.Split(delims);
                             if (sr_array.Length == grid.ColumnCount+1 && string.IsNullOrEmpty(sr_array[0])) //when copying entire row unfortunately the header seems to be copied as well
                             {
                                 string[] sr_arrayCopy = new string[sr_array.Length - 1];
@@ -334,7 +336,7 @@ namespace Alunorf_roh_plugin
                                         goto case 2;
                                     case 4: //datatyp
                                         DataGridViewComboBoxCell cell = (grid.Rows[row].Cells[col2] as DataGridViewComboBoxCell);
-                                        if (cell.Items.Contains(temp))
+                                        if (!cell.Items.Contains(temp))
                                             temp = "C";
                                         break;
                                     case 5: //kennung ->needs to be an int
@@ -350,17 +352,6 @@ namespace Alunorf_roh_plugin
                                         break;
                                 }
                                 (grid.Rows[row].Cells[col2]).Value = temp;
-
-                                if (col2 == 0 || col2 == 2) //comment or field 
-                                    (grid.Rows[row].Cells[col2]).Value = sr_array[col2 - col];
-                                else if (col2 == 1)
-                                {
-                                    DataGridViewComboBoxCell cell = (grid.Rows[row].Cells[col2] as DataGridViewComboBoxCell);
-                                    string key = sr_array[col2 - col].ToLower().Replace(" ", null);
-                                    if (cell.Items.Contains(key))
-                                        cell.Value = key;
-                                }
-                                else break;
                             }
                             row++;
                         }
@@ -370,7 +361,7 @@ namespace Alunorf_roh_plugin
                         sr.Dispose();
                     }
                 }
-                else if (e.Control && e.KeyCode == Keys.Up)
+                else if (e.Alt && e.KeyCode == Keys.Up)
                 {
                     if (grid.SelectedRows != null && grid.SelectedRows.Count == 1 && grid.SelectedRows[0].Index > 0)
                     {
@@ -378,20 +369,15 @@ namespace Alunorf_roh_plugin
                         for (int i = 0; i < grid.ColumnCount; i++)
                         {
                             object temp = grid.Rows[index].Cells[i].Value;
-                            grid.Rows[index].Cells[i].Value = grid.Rows[index-1].Cells[i].Value;
+                            grid.Rows[index].Cells[i].Value = grid.Rows[index - 1].Cells[i].Value;
                             grid.Rows[index - 1].Cells[i].Value = temp;
-                            if (grid.CurrentCell.RowIndex == index)
-                            {
-                                grid.CurrentCell = grid.Rows[index - 1].Cells[grid.CurrentCell.ColumnIndex];
-                                grid.Rows[index].Selected = false;
-                                grid.Rows[index - 1].Selected = true;
-                            }
+
                         }
                     }
                 }
-                else if (e.Control && e.KeyCode == Keys.Down)
+                else if (e.Alt && e.KeyCode == Keys.Down)
                 {
-                    if (grid.SelectedRows != null && grid.SelectedRows.Count == 1 && grid.SelectedRows[0].Index < grid.RowCount-1)
+                    if (grid.SelectedRows != null && grid.SelectedRows.Count == 1 && grid.SelectedRows[0].Index < grid.RowCount - 2)
                     {
                         int index = grid.SelectedRows[0].Index;
                         for (int i = 0; i < grid.ColumnCount; i++)
@@ -399,12 +385,6 @@ namespace Alunorf_roh_plugin
                             object temp = grid.Rows[index].Cells[i].Value;
                             grid.Rows[index].Cells[i].Value = grid.Rows[index + 1].Cells[i].Value;
                             grid.Rows[index + 1].Cells[i].Value = temp;
-                            if (grid.CurrentCell.RowIndex == index)
-                            {
-                                grid.CurrentCell = grid.Rows[index + 1].Cells[grid.CurrentCell.ColumnIndex];
-                                grid.Rows[index].Selected = false;
-                                grid.Rows[index+1].Selected = true;
-                            }
                         }
                     }
                 }
@@ -412,29 +392,6 @@ namespace Alunorf_roh_plugin
             catch 
             {
             }
-        }
-
-        private void TextboxNumeric_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            Boolean nonNumberEntered;
-
-            nonNumberEntered = true;
-
-            if ((e.KeyChar >= 48 && e.KeyChar <= 57))
-            {
-                nonNumberEntered = false;
-            }
-
-            if (nonNumberEntered == true)
-            {
-                // Stop the character from being entered into the control since it is non-numerical.
-                e.Handled = true;
-            }
-            else
-            {
-                e.Handled = false;
-            }
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -446,6 +403,7 @@ namespace Alunorf_roh_plugin
 
         private void m_datagv_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
+            base.OnLoad(e);
             DataGridView grid = sender as DataGridView;
             if (grid == null) return;
             //store a string representation of the row number in 'strRowNumber'
@@ -511,15 +469,17 @@ namespace Alunorf_roh_plugin
             else if (m_tabControl.SelectedTab == m_kanalTab)
             {
                 dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectKanal;
-                grid = m_datagvSchluss;
+                grid = m_datagvKanalbeschreibung;
                 dlg.SelectChannels = true;
             }
             else return;
+            dlg.DatFile = m_datFileTextBox.Text;
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
                 int startrow = grid.Rows.Count - 1;
-                while (startrow > 0 && grid.Rows[startrow].Cells[0].Value == null || (grid.Rows[startrow].Cells[0].Value as string) == "")
+                while (startrow >= 0 && (grid.Rows[startrow].Cells[0].Value == null || (grid.Rows[startrow].Cells[0].Value as string) == ""))
                     startrow--;
+                startrow++;
                 string[] results = dlg.SelectedItems();
                 if (results.Length == 0) return;
                 while (startrow + results.Length >= grid.RowCount) //always leav
@@ -543,7 +503,9 @@ namespace Alunorf_roh_plugin
         private void m_tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             m_selectButton.Enabled = m_bDatFileExists &&
-                m_tabControl.SelectedTab == m_stichTab || m_tabControl.SelectedTab == m_kopfTab || m_tabControl.SelectedTab == m_schlussTab || m_tabControl.SelectedTab == m_kanalTab;
+                (
+                m_tabControl.SelectedTab == m_stichTab || m_tabControl.SelectedTab == m_kopfTab || 
+                m_tabControl.SelectedTab == m_schlussTab || m_tabControl.SelectedTab == m_kanalTab);
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
@@ -623,6 +585,18 @@ namespace Alunorf_roh_plugin
                 if (rohWriterChannelLineInput == rohWriterChannelLineInputArray[i])
                     return i+1;
             return -1;
+        }
+
+        private void m_datagvKanalbeschreibung_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (m_datagvKanalbeschreibung.Columns[e.ColumnIndex] == m_kanalColumnKennung)
+            {
+                int d;
+                if (e.FormattedValue != null && !string.IsNullOrEmpty(e.FormattedValue.ToString()) && !Int32.TryParse(e.FormattedValue.ToString(), out d))
+                {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 

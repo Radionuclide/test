@@ -133,6 +133,15 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kennung must be an integer.
+        /// </summary>
+        internal static string KennungNotANumber {
+            get {
+                return ResourceManager.GetString("KennungNotANumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Kopfdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
         /// </summary>
         internal static string KopfDataNotFound {

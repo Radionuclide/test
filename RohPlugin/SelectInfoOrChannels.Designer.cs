@@ -47,7 +47,9 @@
             this.m_lbIba.FormattingEnabled = true;
             this.m_lbIba.Location = new System.Drawing.Point(3, 3);
             this.m_lbIba.Name = "m_lbIba";
+            this.m_lbIba.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.m_lbIba.Size = new System.Drawing.Size(171, 238);
+            this.m_lbIba.Sorted = true;
             this.m_lbIba.TabIndex = 0;
             // 
             // m_lbRoh
@@ -56,8 +58,8 @@
             this.m_lbRoh.FormattingEnabled = true;
             this.m_lbRoh.Location = new System.Drawing.Point(230, 3);
             this.m_lbRoh.Name = "m_lbRoh";
+            this.m_lbRoh.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.m_lbRoh.Size = new System.Drawing.Size(171, 238);
-            this.m_lbRoh.Sorted = true;
             this.m_lbRoh.TabIndex = 1;
             // 
             // button1

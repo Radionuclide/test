@@ -141,6 +141,9 @@
   <data name="KanalDataNotFound" xml:space="preserve">
     <value>Error:  Kanalbeschreibung table line {1}: channel '{0}' not found in the .dat file</value>
   </data>
+  <data name="KennungNotANumber" xml:space="preserve">
+    <value>Kennung must be an integer</value>
+  </data>
   <data name="KopfDataNotFound" xml:space="preserve">
     <value>Error: Kopfdaten table line {1}: infofield '{0}' not found in the .dat file</value>
   </data>

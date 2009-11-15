@@ -41,9 +41,12 @@ namespace iba {
 		array<RohWriterDataLineInput^>^ KopfDaten;
 		array<RohWriterDataLineInput^>^ SchlussDaten;
 		array<RohWriterChannelLineInput^>^ Kanalen;
-		String^ Kommentare;
-		String^ Kurzbezeichner;
-		String^ Parameter;
+		[NonSerialized]
+		String^ Kommentare; //serialization of this is done in PluginRohTask (multiline have trouble)
+		[NonSerialized]
+		String^ Kurzbezeichner; //idem
+		[NonSerialized]
+		String^ Parameter; //idem
 		RohWriterInput()
 		{
 			Kommentare = "";

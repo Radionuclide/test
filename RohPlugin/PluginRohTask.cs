@@ -9,7 +9,7 @@ using System.IO;
 namespace Alunorf_roh_plugin
 {
     [Serializable]
-    class PluginRohTask : IPluginTaskData
+    public class PluginRohTask : IPluginTaskData
     {
         #region IPluginTaskData Members
 
@@ -131,6 +131,7 @@ namespace Alunorf_roh_plugin
             rt.FtpUser = FtpUser;
             rt.FtpPassword = FtpPassword;
             rt.FtpPort = FtpPort;
+            rt.SelectedTab = SelectedTab;
             BinaryFormatter bf = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
             bf.Serialize(ms, RohInput);
@@ -157,6 +158,7 @@ namespace Alunorf_roh_plugin
             m_parentJob = parentJob;
             m_datcoHost = host;
             m_nameInfo = name;
+            m_selectedTab = 0;
             m_rohInput = new iba.RohWriterInput();
             m_rohInput.Kurzbezeichner =
               "FA_NR                            AuftV___                          \r\n" +
@@ -178,6 +180,103 @@ namespace Alunorf_roh_plugin
             m_ftpPort = 21;
             m_ftpUser = "";
             m_ftpPass = "";
+        }
+
+        public string[] RohInputKommentareMultiLine
+        {
+            get 
+            {
+                if (m_rohInput == null || m_rohInput.Kommentare == null) return null;
+                string[] splitted = m_rohInput.Kommentare.Replace("\r\n","\n").Split('\n');
+                //count empty strings at the end
+                int count = 0;
+                for (int j = splitted.Length - 1; j >= 0; j--)
+                {
+                    if (String.IsNullOrEmpty(splitted[j])) count++;
+                    else break;
+                }
+                if (count > 0) Array.Resize(ref splitted, splitted.Length - count);
+                return splitted;
+            }
+            set
+            {
+                if (m_rohInput != null || m_rohInput.Kommentare != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string s in value)
+                    {
+                        sb.AppendLine(s);
+                    }
+                    m_rohInput.Kommentare = sb.ToString();
+                }
+            }
+        }
+
+        public string[] RohInputParameterMultiLine
+        {
+            get
+            {
+                if (m_rohInput == null && m_rohInput.Parameter == null) return null;
+                string[] splitted = m_rohInput.Parameter.Replace("\r\n", "\n").Split('\n');
+                //count empty strings at the end
+                int count = 0;
+                for (int j = splitted.Length - 1; j >= 0; j--)
+                {
+                    if (String.IsNullOrEmpty(splitted[j])) count++;
+                    else break;
+                }
+                if (count > 0) Array.Resize(ref splitted, splitted.Length - count);
+                return splitted;
+            }
+            set
+            {
+                if (m_rohInput != null && m_rohInput.Parameter != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string s in value)
+                    {
+                        sb.AppendLine(s);
+                    }
+                    m_rohInput.Parameter = sb.ToString();
+                }
+            }
+        }
+
+        public string[] RohInputKurzbezeichnerMultiLine
+        {
+            get
+            {
+                if (m_rohInput == null || m_rohInput.Kurzbezeichner == null) return null;
+                string[] splitted = m_rohInput.Kurzbezeichner.Replace("\r\n", "\n").Split('\n');
+                //count empty strings at the end
+                int count = 0;
+                for (int j = splitted.Length - 1; j >= 0; j--)
+                {
+                    if (String.IsNullOrEmpty(splitted[j])) count++;
+                    else break;
+                }
+                if (count > 0) Array.Resize(ref splitted, splitted.Length - count);
+                return splitted;
+            }
+            set
+            {
+                if (m_rohInput != null && m_rohInput.Kurzbezeichner != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string s in value)
+                    {
+                        sb.AppendLine(s);
+                    }
+                    m_rohInput.Kurzbezeichner = sb.ToString();
+                }
+            }
+        }
+
+        private int m_selectedTab;
+        public int SelectedTab
+        {
+            get { return m_selectedTab; }
+            set { m_selectedTab = value; }
         }
     }
 

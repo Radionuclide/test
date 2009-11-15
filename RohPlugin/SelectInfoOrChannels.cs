@@ -38,6 +38,7 @@ namespace Alunorf_roh_plugin
 
         protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
             try
             {
                 IbaFileReader ibaFile = new IbaFileClass();
@@ -99,7 +100,7 @@ namespace Alunorf_roh_plugin
                                 }
                             }
                         }
-                        else
+                        else if (reader.QueryInfoByName("hidden")!="1")
                         {
                             if (String.IsNullOrEmpty(name)) continue;
                             ExtraData ed = new ExtraData();
@@ -120,6 +121,8 @@ namespace Alunorf_roh_plugin
                             else
                                 ed.kurz = name.Length > 8 ? name.Substring(0, 8) : name;
                             ed.kurz = ed.kurz.Replace(' ', '_');
+                            AdditionalInfos.Add(name, ed);
+                            m_lbIba.Items.Add(name);
                         }
                     }
                 }
@@ -146,14 +149,14 @@ namespace Alunorf_roh_plugin
                         else
                             ed.dt = "C";
                         AdditionalInfos.Add(name,ed);
-                        m_lbIba.Items.Add(name);
 			        }
                 }
                 ibaFile.Close();
             }
             catch
             {
-                throw new Exception(String.Format(Alunorf_roh_plugin.Properties.Resources.DatFileCouldNotBeOpened, m_datFile));
+                MessageBox.Show(String.Format(Alunorf_roh_plugin.Properties.Resources.DatFileCouldNotBeOpened, m_datFile), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
             }
         }
 

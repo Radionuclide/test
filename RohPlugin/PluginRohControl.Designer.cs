@@ -79,13 +79,13 @@
             this.m_ftpHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_Panel = new System.Windows.Forms.Panel();
+            this.m_testRohButton = new System.Windows.Forms.Button();
             this.m_browseDatFileButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_selectButton = new System.Windows.Forms.Button();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_testRohButton = new System.Windows.Forms.Button();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_tabControl.SuspendLayout();
             this.m_stichTab.SuspendLayout();
@@ -451,7 +451,7 @@
             this.m_datagvKanalbeschreibung.Size = new System.Drawing.Size(551, 378);
             this.m_datagvKanalbeschreibung.TabIndex = 3;
             this.m_datagvKanalbeschreibung.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
-            this.m_datagvKanalbeschreibung.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.m_datagvKanalbeschreibung_EditingControlShowing);
+            this.m_datagvKanalbeschreibung.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.m_datagvKanalbeschreibung_CellValidating);
             this.m_datagvKanalbeschreibung.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
             // m_kanalColumnInfoField
@@ -657,6 +657,17 @@
             this.m_Panel.Size = new System.Drawing.Size(565, 52);
             this.m_Panel.TabIndex = 1;
             // 
+            // m_testRohButton
+            // 
+            this.m_testRohButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_testRohButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_testRohButton.Location = new System.Drawing.Point(515, 6);
+            this.m_testRohButton.Name = "m_testRohButton";
+            this.m_testRohButton.Size = new System.Drawing.Size(40, 40);
+            this.m_testRohButton.TabIndex = 15;
+            this.m_testRohButton.UseVisualStyleBackColor = true;
+            this.m_testRohButton.Click += new System.EventHandler(this.m_testRohButton_Click);
+            // 
             // m_browseDatFileButton
             // 
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -700,17 +711,6 @@
             this.m_selectButton.TabIndex = 14;
             this.m_selectButton.UseVisualStyleBackColor = true;
             this.m_selectButton.Click += new System.EventHandler(this.m_selectButton_Click);
-            // 
-            // m_testRohButton
-            // 
-            this.m_testRohButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_testRohButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testRohButton.Location = new System.Drawing.Point(515, 6);
-            this.m_testRohButton.Name = "m_testRohButton";
-            this.m_testRohButton.Size = new System.Drawing.Size(40, 40);
-            this.m_testRohButton.TabIndex = 15;
-            this.m_testRohButton.UseVisualStyleBackColor = true;
-            this.m_testRohButton.Click += new System.EventHandler(this.m_testRohButton_Click);
             // 
             // PluginRohControl
             // 
