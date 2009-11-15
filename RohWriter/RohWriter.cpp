@@ -342,7 +342,7 @@ namespace iba {
 			SetErrorMessageFromHResult(hr);
 			return 8;
 		}
-		catch (Exception^ ex) //unexpected error while writing stuff
+		catch (Exception^ ex) //unexpected error 
 		{
 			errorMessage = ex->Message;
 			return 9;

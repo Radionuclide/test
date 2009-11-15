@@ -85,6 +85,8 @@
             this.m_selectButton = new System.Windows.Forms.Button();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.m_testRohButton = new System.Windows.Forms.Button();
+            this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_tabControl.SuspendLayout();
             this.m_stichTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvStich)).BeginInit();
@@ -644,6 +646,7 @@
             // 
             // m_Panel
             // 
+            this.m_Panel.Controls.Add(this.m_testRohButton);
             this.m_Panel.Controls.Add(this.m_browseDatFileButton);
             this.m_Panel.Controls.Add(this.label3);
             this.m_Panel.Controls.Add(this.m_datFileTextBox);
@@ -659,7 +662,7 @@
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browseDatFileButton.Image = global::Alunorf_roh_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(460, 6);
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(423, 6);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(40, 40);
             this.m_browseDatFileButton.TabIndex = 13;
@@ -682,20 +685,32 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.m_datFileTextBox.Location = new System.Drawing.Point(108, 17);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(346, 20);
+            this.m_datFileTextBox.Size = new System.Drawing.Size(309, 20);
             this.m_datFileTextBox.TabIndex = 12;
+            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // m_selectButton
             // 
             this.m_selectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_selectButton.Image = global::Alunorf_roh_plugin.Properties.Resources.select;
             this.m_selectButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_selectButton.Location = new System.Drawing.Point(506, 6);
+            this.m_selectButton.Location = new System.Drawing.Point(469, 6);
             this.m_selectButton.Name = "m_selectButton";
             this.m_selectButton.Size = new System.Drawing.Size(40, 40);
             this.m_selectButton.TabIndex = 14;
             this.m_selectButton.UseVisualStyleBackColor = true;
             this.m_selectButton.Click += new System.EventHandler(this.m_selectButton_Click);
+            // 
+            // m_testRohButton
+            // 
+            this.m_testRohButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_testRohButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_testRohButton.Location = new System.Drawing.Point(515, 6);
+            this.m_testRohButton.Name = "m_testRohButton";
+            this.m_testRohButton.Size = new System.Drawing.Size(40, 40);
+            this.m_testRohButton.TabIndex = 15;
+            this.m_testRohButton.UseVisualStyleBackColor = true;
+            this.m_testRohButton.Click += new System.EventHandler(this.m_testRohButton_Click);
             // 
             // PluginRohControl
             // 
@@ -787,5 +802,7 @@
         private System.Windows.Forms.TextBox m_parameter;
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
+        private System.Windows.Forms.Button m_testRohButton;
+        private System.Windows.Forms.SaveFileDialog m_saveFileDialog;
     }
 }

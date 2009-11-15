@@ -120,6 +120,30 @@
   <data name="DatFileCouldNotBeOpened" xml:space="preserve">
     <value>The .dat file {0} could not be read</value>
   </data>
+  <data name="ErrorDatUnexpected" xml:space="preserve">
+    <value>Unexpected error while reading .dat file: {0}</value>
+  </data>
+  <data name="ErrorIbaFiles" xml:space="preserve">
+    <value>Error: could not create ibaFiles instance: {0}</value>
+  </data>
+  <data name="ErrorIbaFilesOpen" xml:space="preserve">
+    <value>Error: could not open .dat file: {0}</value>
+  </data>
+  <data name="ErrorRohUnexpected" xml:space="preserve">
+    <value>Unexpected error while writing .roh file: {0}</value>
+  </data>
+  <data name="ErrorRohWrite" xml:space="preserve">
+    <value>Error: could not write .roh file: {0}</value>
+  </data>
+  <data name="ErrorUnexpected" xml:space="preserve">
+    <value>Unexpected error: {0}</value>
+  </data>
+  <data name="KanalDataNotFound" xml:space="preserve">
+    <value>Error:  Kanalbeschreibung table line {1}: channel '{0}' not found in the .dat file</value>
+  </data>
+  <data name="KopfDataNotFound" xml:space="preserve">
+    <value>Error: Kopfdaten table line {1}: infofield '{0}' not found in the .dat file</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="left" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\left.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -132,6 +156,9 @@
   </data>
   <data name="RohTask" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RohTask.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SchlussDataNotFound" xml:space="preserve">
+    <value>Error: Schlussdaten table line {1}: infofield '{0}' not found in the .dat file</value>
   </data>
   <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SychronizeList.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -147,6 +174,12 @@
   </data>
   <data name="SelectStich" xml:space="preserve">
     <value>Select infofields for additional Stichdaten table entries</value>
+  </data>
+  <data name="StichDataNotFound" xml:space="preserve">
+    <value>Error: Stichdaten table line {1}: infofield '{0}' not found in the .dat file</value>
+  </data>
+  <data name="TestSuccess" xml:space="preserve">
+    <value>.roh file succesfully written</value>
   </data>
   <data name="tooltipBrowse" xml:space="preserve">
     <value>Browse for template .dat file</value>

@@ -22,6 +22,7 @@ namespace Alunorf_roh_plugin
             ((Bitmap)m_selectButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_selectButton, Alunorf_roh_plugin.Properties.Resources.tooltipSelect);
             m_toolTip.SetToolTip(m_browseDatFileButton, Alunorf_roh_plugin.Properties.Resources.tooltipBrowse);
+            m_testRohButton.Image = Alunorf_roh_plugin.Properties.Resources.RohTask.ToBitmap();
         }
 
         #region IPluginControl Members
@@ -131,6 +132,7 @@ namespace Alunorf_roh_plugin
                 grid.Rows[i].Cells[6].Value = dataset2[i].Sollwert;
                 grid.Rows[i].Cells[7].Value = dataset2[i].Stutzstellen;
             }
+            m_datFileTextBox_TextChanged(null, null);
         }
 
         public void SaveData()
@@ -378,6 +380,12 @@ namespace Alunorf_roh_plugin
                             object temp = grid.Rows[index].Cells[i].Value;
                             grid.Rows[index].Cells[i].Value = grid.Rows[index-1].Cells[i].Value;
                             grid.Rows[index - 1].Cells[i].Value = temp;
+                            if (grid.CurrentCell.RowIndex == index)
+                            {
+                                grid.CurrentCell = grid.Rows[index - 1].Cells[grid.CurrentCell.ColumnIndex];
+                                grid.Rows[index].Selected = false;
+                                grid.Rows[index - 1].Selected = true;
+                            }
                         }
                     }
                 }
@@ -391,6 +399,12 @@ namespace Alunorf_roh_plugin
                             object temp = grid.Rows[index].Cells[i].Value;
                             grid.Rows[index].Cells[i].Value = grid.Rows[index + 1].Cells[i].Value;
                             grid.Rows[index + 1].Cells[i].Value = temp;
+                            if (grid.CurrentCell.RowIndex == index)
+                            {
+                                grid.CurrentCell = grid.Rows[index + 1].Cells[grid.CurrentCell.ColumnIndex];
+                                grid.Rows[index].Selected = false;
+                                grid.Rows[index+1].Selected = true;
+                            }
                         }
                     }
                 }
@@ -466,7 +480,10 @@ namespace Alunorf_roh_plugin
             m_openFileDialog.FileName = "";
             m_openFileDialog.Filter = "iba DAT Datei (*.dat)|*.dat";
             if (m_openFileDialog.ShowDialog() == DialogResult.OK)
+            {
                 m_datFileTextBox.Text = m_openFileDialog.FileName;
+                m_datFileTextBox_TextChanged(null, null); //dont know if this is necessary
+            }
         }
 
         private void m_selectButton_Click(object sender, EventArgs e)
@@ -522,9 +539,90 @@ namespace Alunorf_roh_plugin
             }
         }
 
+        private bool m_bDatFileExists;
         private void m_tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            m_selectButton.Enabled = m_tabControl.SelectedTab == m_stichTab || m_tabControl.SelectedTab == m_kopfTab || m_tabControl.SelectedTab == m_schlussTab || m_tabControl.SelectedTab == m_kanalTab;
+            m_selectButton.Enabled = m_bDatFileExists &&
+                m_tabControl.SelectedTab == m_stichTab || m_tabControl.SelectedTab == m_kopfTab || m_tabControl.SelectedTab == m_schlussTab || m_tabControl.SelectedTab == m_kanalTab;
+        }
+
+        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                m_testRohButton.Enabled = m_bDatFileExists = File.Exists(m_datFileTextBox.Text);
+                m_tabControl_SelectedIndexChanged(sender, e);
+            }
+            catch
+            {
+            }
+        }
+
+        private void m_testRohButton_Click(object sender, EventArgs e)
+        {
+            m_saveFileDialog.CreatePrompt = false;
+            m_saveFileDialog.OverwritePrompt = true;
+            m_saveFileDialog.FileName = "test";
+            m_saveFileDialog.DefaultExt = "roh";
+            m_saveFileDialog.Filter = "ROH Datei (*.roh)|*.roh";
+            if (m_saveFileDialog.ShowDialog() != DialogResult.OK) return;
+            string filename = m_saveFileDialog.FileName;
+            iba.RohWriter rw = new iba.RohWriter();
+            SaveData();
+            int res = rw.Write(m_data.RohInput,m_data.TemplateDatFile,filename);
+            if (res == 0)
+                MessageBox.Show(this, Properties.Resources.TestSuccess, "ROH plugin test", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+            {
+                string errormessage = "";
+                switch (res)
+                {
+                    case 1:
+                        errormessage = string.Format(Properties.Resources.StichDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.StichDaten, rw.errorDataLineInput));
+                        break;
+                    case 2:
+                        errormessage = string.Format(Properties.Resources.KopfDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.KopfDaten, rw.errorDataLineInput));
+                        break;
+                    case 3:
+                        errormessage = string.Format(Properties.Resources.SchlussDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.SchlussDaten, rw.errorDataLineInput));
+                        break;
+                    case 4:
+                        errormessage = string.Format(Properties.Resources.KanalDataNotFound, rw.errorDataLineInput.ibaName, FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
+                        break;
+                    case 5:
+                        errormessage = string.Format(Properties.Resources.ErrorDatUnexpected, rw.errorMessage);
+                        break;
+                    case 6:
+                        errormessage = string.Format(Properties.Resources.ErrorIbaFiles, rw.errorMessage);
+                        break;
+                    case 7:
+                        errormessage = string.Format(Properties.Resources.ErrorIbaFilesOpen, rw.errorMessage);
+                        break;
+                    case 8:
+                        errormessage = string.Format(Properties.Resources.ErrorRohUnexpected, rw.errorMessage);
+                        break;
+                    default:
+                        errormessage = string.Format(Properties.Resources.ErrorUnexpected, rw.errorMessage);
+                        break;
+                }
+                MessageBox.Show(this, errormessage, "ROH plugin test", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private int FindDataLine(iba.RohWriterDataLineInput[] rohWriterDataLineInputArray, iba.RohWriterDataLineInput rohWriterDataLineInput)
+        {
+            for (int i = 0; i < rohWriterDataLineInputArray.Length; i++)
+                if (rohWriterDataLineInput == rohWriterDataLineInputArray[i])
+                    return i+1;
+            return -1;
+        }
+        
+        private int FindChannelLine(iba.RohWriterChannelLineInput[] rohWriterChannelLineInputArray, iba.RohWriterChannelLineInput rohWriterChannelLineInput)
+        {
+            for (int i = 0; i < rohWriterChannelLineInputArray.Length; i++)
+                if (rohWriterChannelLineInput == rohWriterChannelLineInputArray[i])
+                    return i+1;
+            return -1;
         }
     }
 

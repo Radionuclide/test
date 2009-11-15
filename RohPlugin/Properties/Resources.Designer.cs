@@ -69,6 +69,78 @@ namespace Alunorf_roh_plugin.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while reading .dat file: {0}.
+        /// </summary>
+        internal static string ErrorDatUnexpected {
+            get {
+                return ResourceManager.GetString("ErrorDatUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: could not create ibaFiles instance: {0}.
+        /// </summary>
+        internal static string ErrorIbaFiles {
+            get {
+                return ResourceManager.GetString("ErrorIbaFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: could not open .dat file: {0}.
+        /// </summary>
+        internal static string ErrorIbaFilesOpen {
+            get {
+                return ResourceManager.GetString("ErrorIbaFilesOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while writing .roh file: {0}.
+        /// </summary>
+        internal static string ErrorRohUnexpected {
+            get {
+                return ResourceManager.GetString("ErrorRohUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: could not write .roh file: {0}.
+        /// </summary>
+        internal static string ErrorRohWrite {
+            get {
+                return ResourceManager.GetString("ErrorRohWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error: {0}.
+        /// </summary>
+        internal static string ErrorUnexpected {
+            get {
+                return ResourceManager.GetString("ErrorUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error:  Kanalbeschreibung table line {1}: channel &apos;{0}&apos; not found in the .dat file.
+        /// </summary>
+        internal static string KanalDataNotFound {
+            get {
+                return ResourceManager.GetString("KanalDataNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Kopfdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        /// </summary>
+        internal static string KopfDataNotFound {
+            get {
+                return ResourceManager.GetString("KopfDataNotFound", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap left {
             get {
                 object obj = ResourceManager.GetObject("left", resourceCulture);
@@ -94,6 +166,15 @@ namespace Alunorf_roh_plugin.Properties {
             get {
                 object obj = ResourceManager.GetObject("RohTask", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Schlussdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        /// </summary>
+        internal static string SchlussDataNotFound {
+            get {
+                return ResourceManager.GetString("SchlussDataNotFound", resourceCulture);
             }
         }
         
@@ -137,6 +218,24 @@ namespace Alunorf_roh_plugin.Properties {
         internal static string SelectStich {
             get {
                 return ResourceManager.GetString("SelectStich", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Stichdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        /// </summary>
+        internal static string StichDataNotFound {
+            get {
+                return ResourceManager.GetString("StichDataNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .roh file succesfully written.
+        /// </summary>
+        internal static string TestSuccess {
+            get {
+                return ResourceManager.GetString("TestSuccess", resourceCulture);
             }
         }
         

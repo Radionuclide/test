@@ -105,8 +105,8 @@ namespace iba {
 			int Write(RohWriterInput^ input, String^ datfile, String^ Rohfile);
 			// return value:
 			// 0: everything OK
-			// 1: missing Kopf in .dat file -> See ErrorDataLineInput
-			// 2: missing Stich in .dat file -> See ErrorDataLineInput
+			// 1: missing Stich in .dat file -> See ErrorDataLineInput
+			// 2: missing Kopf in .dat file -> See ErrorDataLineInput
 			// 3: missing Shluss in .dat file -> See ErrorDataLineInput
 			// 4: missing channel in .dat file -> ErrorChannelLineInput
 			// 5: problem reading .dat file -> see errorMessage
