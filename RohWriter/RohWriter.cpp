@@ -152,7 +152,13 @@ namespace iba {
 					int vectorNr,rowNr;
 					int pos = vecInfo->IndexOf(".");
 					if (pos > 0 && Int32::TryParse(vecInfo->Substring(0,pos),vectorNr) && Int32::TryParse(vecInfo->Substring(pos+1),rowNr))
+					{
+						if (!vectorChannelsCopy[vectorNr])
+						{
+							vectorChannelsCopy[vectorNr] = gcnew cliext::map<int,IbaChannelReader^>();
+						}
 						vectorChannelsCopy[vectorNr][rowNr] = reader;
+					}
 				}
 			}
 		}
@@ -185,8 +191,8 @@ namespace iba {
 		hFile = CreateFile(RohFileNameStr, GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
-			errorMessage = "Failed to create .roh file";
-			return 8;
+			SetErrorMessageFromHResult(HRESULT_FROM_WIN32(GetLastError()));
+			return 10;
 		}
 		SetFileAttributes(RohFileNameStr,FILE_ATTRIBUTE_NORMAL);
 
@@ -204,13 +210,13 @@ namespace iba {
 				buf[i] = ' ';
 			buf[48] = ';';
 			buf[49] = '\n';
-			DWORD StichDatenOffsetHeaderPos = WritePartialHeaderLine("Stichdaten",input->StichDaten->Length);
+			DWORD StichDatenOffsetHeaderPos = WritePartialHeaderLine("Stichdaten",input->StichDaten->Length>0?1:0);
 			DWORD KommentareOffsetHeaderPos = WritePartialHeaderLine("Kommentare",String::IsNullOrEmpty(input->Kommentare)?0:1);
-			DWORD KopfDatenOffsetHeaderPos = WritePartialHeaderLine("Kopfdaten",input->KopfDaten->Length);
-			DWORD SchlussDatenOffsetHeaderPos = WritePartialHeaderLine("Shlussdaten",input->KopfDaten->Length);;
+			DWORD KopfDatenOffsetHeaderPos = WritePartialHeaderLine("Kopfdaten",input->KopfDaten->Length>0?1:0);
+			DWORD SchlussDatenOffsetHeaderPos = WritePartialHeaderLine("Schlussdaten",input->KopfDaten->Length>0?1:0);
 			DWORD KurzbezeichnerOffsetHeaderPos = WritePartialHeaderLine("Kurzbezeichner",String::IsNullOrEmpty(input->Kurzbezeichner)?0:1);
 			DWORD ParameterOffsetHeaderPos = WritePartialHeaderLine("Parameter",String::IsNullOrEmpty(input->Parameter)?0:1);
-			DWORD KanalbeschreibungOffsetHeaderPos = WritePartialHeaderLine("Kanalbeschreibung",input->Kanalen->Length);
+			DWORD KanalbeschreibungOffsetHeaderPos = WritePartialHeaderLine("Kanalbeschreibung",input->Kanalen->Length>0?1:0); //actually the size needs to be overwritten again later
 			cliext::vector<DWORD> channelOffsetHeaderPositions;
 			for each (RohWriterChannelLineInput^ channel in input->Kanalen)
 			{
@@ -260,7 +266,7 @@ namespace iba {
 				WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
 			}
 			p2 = GetPosition();	
-			CompleteHeaderLine(KopfDatenOffsetHeaderPos,p0,p2-p1);
+			CompleteHeaderLine(SchlussDatenOffsetHeaderPos,p0,p2-p1);
 			Seek(p2);
 			p0 = p2;
 			strcpy(buf,"kurzbezeichner    ;\n");
@@ -278,6 +284,7 @@ namespace iba {
 			p2 = GetPosition();
 			CompleteHeaderLine(ParameterOffsetHeaderPos,p0,p2-p1);
 			Seek(p2);
+			p0=p2;
 			strcpy(buf,"kanalbeschreibung ;\n");
 			Write(buf,strlen(buf));
 			p1 = GetPosition();
@@ -291,6 +298,7 @@ namespace iba {
 			Seek(p2);
 			//kanalen
 			int index = 0;
+			unsigned int maxSamples = 0;
 			for each (RohWriterChannelLineInput^ channel in input->Kanalen)
 			{
 				p0 = p2;
@@ -298,7 +306,6 @@ namespace iba {
 				String^ tmp = channel->KurzBezeichnung + "        ";
 				strncpy(buf+9,context.marshal_as<const char*>(tmp), 8);
 				Write(buf,strlen(buf));		
-				Write(buf,strlen(buf));
 				p1 = GetPosition();
 				cliext::map<String^,int>::iterator it = VectorNames.find(channel->ibaName);
 
@@ -309,24 +316,49 @@ namespace iba {
 				if (it != VectorNames.end())
 				{
 					cliext::map<int,IbaChannelReader^>^ TheVector = vectorChannelsCopy[VectorNames[channel->ibaName]];
-					TheVector[0]->QueryTimebasedData(timebase,offset,obj);
+					array<array<float>^>^ twoDArray = gcnew array<array<float>^>(TheVector->size());
+					try
+					{
+						TheVector[0]->QueryTimebasedData(timebase,offset,obj);				
+					}
+					catch (Exception^)
+					{
+						TheVector[0]->QueryLengthbasedData(timebase,offset,obj);
+					}
 					floatArray = dynamic_cast<array<float>^>(obj);
 					size = floatArray->Length;
-					WriteChannelData(floatArray,size,channel->dataType);
+					if (size > (int) maxSamples) maxSamples = size;
+					twoDArray[0] = floatArray;
 					cliext::map<int,IbaChannelReader^>::iterator it = TheVector->begin();
 					it++;
-					for (; it != TheVector->end(); it++)
+					for (int dim=1; it != TheVector->end(); it++,dim++)
 					{
-						it->second->QueryTimebasedData(timebase,offset,obj);
+						try
+						{
+							it->second->QueryTimebasedData(timebase,offset,obj);
+						}
+						catch (Exception^)
+						{
+							it->second->QueryLengthbasedData(timebase,offset,obj);
+						}
 						floatArray = dynamic_cast<array<float>^>(obj);
-						WriteChannelData(floatArray,size,channel->dataType);
+						twoDArray[dim] = floatArray;
 					}
+					WriteMultiChannelData(twoDArray,size,channel->dataType);
 				}
 				else
 				{
-					channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
+					try
+					{
+						channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
+					}
+					catch (Exception^)
+					{
+						channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+					}
 					floatArray = dynamic_cast<array<float>^>(obj);
 					size = floatArray->Length;
+					if (size > (int) maxSamples) maxSamples = size;
 					WriteChannelData(floatArray,size,channel->dataType);
 				}
 				Write((const char*)("\n"),1);
@@ -336,15 +368,36 @@ namespace iba {
 				CompleteChannelHeaderLine(channelOffsetHeaderPositions[index++],p0,p2-p1);
 				Seek(p2);
 			}
+			p2 = GetPosition();
+			Seek(KanalbeschreibungOffsetHeaderPos+44);
+			WriteASCIIUIntInFile(maxSamples);
+			CloseHandle (hFile);
+			hFile = INVALID_HANDLE_VALUE;
 		}
 		catch (HRESULT hr) //thrown by write or seek
 		{
 			SetErrorMessageFromHResult(hr);
+			try
+			{
+				CloseHandle (hFile);
+				hFile = INVALID_HANDLE_VALUE;
+			}
+			catch (...)
+			{
+			}
 			return 8;
 		}
 		catch (Exception^ ex) //unexpected error 
 		{
 			errorMessage = ex->Message;
+			try
+			{
+				CloseHandle (hFile);
+				hFile = INVALID_HANDLE_VALUE;
+			}
+			catch (...)
+			{
+			}
 			return 9;
 		}	
 
@@ -411,18 +464,18 @@ namespace iba {
 	{
 		DWORD offset = GetPosition();
 					//123456712345678123456789abc123456789abc12345	
-		char buf[] = "Kanal                                      ;\n";
+		char buf[] = "Kanal                                           ;\n";
 		strncpy(buf+7,shortName,min(8,strlen(shortName)));
-		WriteASCIIIntInBuffer(buf+7+8+12+12,nrElements);
-		Write(buf,7+8+12+12+4+2);
+		WriteASCIIIntInBuffer(buf+7+8+5+12+12,nrElements);
+		Write(buf,7+8+5+12+12+4+2);
 		return offset;
 	}
 
 	void RohWriter::CompleteChannelHeaderLine(DWORD offsetHeaderLine, DWORD offsetToData, DWORD blockSize)
 	{
-		Seek(offsetHeaderLine+7+8);
+		Seek(offsetHeaderLine+7+8+5);
 		WriteASCIIUIntInFile(offsetToData);
-		Seek(offsetHeaderLine+7+8+12);
+		Seek(offsetHeaderLine+7+8+5+12);
 		WriteASCIIUIntInFile(blockSize);
 	}
 
@@ -437,24 +490,29 @@ namespace iba {
 		{
             double tval; 
 			if (!Double::TryParse(infostr, System::Globalization::NumberStyles::Float,System::Globalization::CultureInfo::InvariantCulture, tval)) tval = -1;
-
+			String^ valStrTemp;
 			switch (line->dataType)
 			{
 				case DataTypeEnum::F:
 				case DataTypeEnum::F4:
-					valStr = context.marshal_as<const char*>(((float) tval).ToString(System::Globalization::CultureInfo::InvariantCulture));
+					valStrTemp = ((float) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
 					break;
 				case DataTypeEnum::F8:
-					valStr = context.marshal_as<const char*>(tval.ToString(System::Globalization::CultureInfo::InvariantCulture));
+					valStrTemp = tval.ToString(System::Globalization::CultureInfo::InvariantCulture);
 					break;
 				case DataTypeEnum::I:
 				case DataTypeEnum::I4:
-					valStr = context.marshal_as<const char*>(((Int32) tval).ToString(System::Globalization::CultureInfo::InvariantCulture));
+					valStrTemp = ((Int32) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
 					break;
 				case DataTypeEnum::I2:
-					valStr = context.marshal_as<const char*>(((Int16) tval).ToString(System::Globalization::CultureInfo::InvariantCulture));
+					valStrTemp = ((Int16) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
 					break;
 			}
+			if (valStrTemp->Length < 12)
+			{
+				valStrTemp = valStrTemp + gcnew String(' ',12-valStrTemp->Length);
+			}
+			valStr = context.marshal_as<const char*>(valStrTemp);
 		}
 		char buf[256];
 		String^ tmp = line->Bezeichnung;
@@ -499,9 +557,11 @@ namespace iba {
 
 	void RohWriter::WriteTextBlock(String^ block, marshal_context% context)
 	{ //filter '/r/n' to '/n'
+		if (String::IsNullOrEmpty(block)) return;
 		String^ newBlock = block->Replace("\r\n","\n");
 		if (!newBlock->EndsWith("\n"))
 			newBlock = newBlock + "\n";
+		if (newBlock == "\n") return;
 		const char* blockStr = context.marshal_as<const char*>(newBlock);
 		Write(blockStr,strlen(blockStr));
 	}
@@ -638,10 +698,45 @@ namespace iba {
 		int bufSize = dataSize*size;
 		unsigned char* buffer = new unsigned char[bufSize]; 
 		for (int i = 0; i < min(size,data->Length); i++)
-			WriteValueInBuffer(buffer + i*size, data[i],dataType);
+			WriteValueInBuffer(buffer + i*dataSize, data[i],dataType);
+		float copyVal = -1.0f;
+		if (data->Length>0) copyVal = data[data->Length-1];
 		for (int i = data->Length; i < size; i++)
-			WriteValueInBuffer(buffer + i*size, data[data->Length-1],dataType);
-		Write(buffer,size*dataSize);
+			WriteValueInBuffer(buffer + i*dataSize, copyVal, dataType);
+		Write(buffer,bufSize);
+		delete [] buffer;
+	}
+	
+	void RohWriter::WriteMultiChannelData(array<array<float>^>^ data, int size, DataTypeEnum dataType)
+	{
+		int dataSize;
+		switch (dataType)
+		{
+			case DataTypeEnum::C: dataSize = 1; break;
+			case DataTypeEnum::F: dataSize = 4;break;
+			case DataTypeEnum::F4: dataSize = 4; break;
+			case DataTypeEnum::F8: dataSize = 8;break;
+			case DataTypeEnum::I: dataSize = 4; break;
+			case DataTypeEnum::I2: dataSize = 2; break;
+			case DataTypeEnum::I4: dataSize = 4; break;
+		}
+		int bufSize = dataSize*size*data->Length;
+		unsigned char* buffer = new unsigned char[bufSize]; 
+		int offset = 0;
+		for (int i = 0; i < size; i++)
+		{
+			for each (array<float>^ column in data)
+			{
+				if (i < column->Length)
+					WriteValueInBuffer(buffer + offset, column[i], dataType);
+				else if (column->Length > 0)
+					WriteValueInBuffer(buffer + offset, column[column->Length-1], dataType);
+				else
+					WriteValueInBuffer(buffer + offset, -1.0f, dataType);
+				offset += dataSize;
+			}
+		}
+		Write(buffer,bufSize);
 		delete [] buffer;
 	}
 }

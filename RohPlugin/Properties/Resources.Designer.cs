@@ -79,6 +79,15 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Failed to upload .roh file to ftp-server: {0}.
+        /// </summary>
+        internal static string ErrorFtp {
+            get {
+                return ResourceManager.GetString("ErrorFtp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: could not create ibaFiles instance: {0}.
         /// </summary>
         internal static string ErrorIbaFiles {
@@ -93,6 +102,15 @@ namespace Alunorf_roh_plugin.Properties {
         internal static string ErrorIbaFilesOpen {
             get {
                 return ResourceManager.GetString("ErrorIbaFilesOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: could not create .roh file: {0}.
+        /// </summary>
+        internal static string ErrorRohFileCreate {
+            get {
+                return ResourceManager.GetString("ErrorRohFileCreate", resourceCulture);
             }
         }
         

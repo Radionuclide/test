@@ -190,4 +190,10 @@
   <data name="tooltipSelect" xml:space="preserve">
     <value>Select infofields and channels from .dat file</value>
   </data>
+  <data name="ErrorFtp" xml:space="preserve">
+    <value>Error: Failed to upload .roh file to ftp-server: {0}</value>
+  </data>
+  <data name="ErrorRohFileCreate" xml:space="preserve">
+    <value>Error: could not create .roh file: {0}</value>
+  </data>
 </root>

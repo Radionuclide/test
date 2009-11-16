@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.ibaFilesLiteLib, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Interop.ibaFilesLiteLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -91,16 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SychronizeList.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="ibaFilesLiteLib">
-      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\right.png" />

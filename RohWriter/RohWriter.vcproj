@@ -175,10 +175,10 @@
 			AssemblyName="System.Xml, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
 			MinFrameworkVersion="131072"
 		/>
-		<ActiveXReference
-			ControlGUID="{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}"
-			ControlVersion="4.0"
-			LocaleID="0"
+		<AssemblyReference
+			RelativePath="..\Dependencies\Interop.ibaFilesLiteLib.dll"
+			AssemblyName="Interop.ibaFilesLiteLib, Version=4.0.0.0, processorArchitecture=MSIL"
+			MinFrameworkVersion="131072"
 		/>
 	</References>
 	<Files>

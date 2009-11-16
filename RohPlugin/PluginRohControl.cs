@@ -167,7 +167,7 @@ namespace Alunorf_roh_plugin
                     iba.RohWriterDataLineInput line = new iba.RohWriterDataLineInput();
                     line.ibaName = ibaName.Trim();
                     bezeichnung = bezeichnung.Trim();
-                    if (bezeichnung.Length > 8) bezeichnung = bezeichnung.Substring(0, 8);
+                    if (bezeichnung.Length > 30) bezeichnung = bezeichnung.Substring(0, 30);
                     line.Bezeichnung = bezeichnung;
                     kurz = kurz.Trim();
                     if (kurz.Length > 8) kurz = kurz.Substring(0, 8);
@@ -214,7 +214,7 @@ namespace Alunorf_roh_plugin
                 iba.RohWriterChannelLineInput line = new iba.RohWriterChannelLineInput();
                 line.ibaName = ibaName.Trim();
                 bezeichnung = bezeichnung.Trim();
-                if (bezeichnung.Length > 8) bezeichnung = bezeichnung.Substring(0, 8);
+                if (bezeichnung.Length > 30) bezeichnung = bezeichnung.Substring(0, 30);
                 line.Bezeichnung = bezeichnung;
                 kurz = kurz.Trim();
                 if (kurz.Length > 8) kurz = kurz.Substring(0, 8);
@@ -549,7 +549,7 @@ namespace Alunorf_roh_plugin
                         errormessage = string.Format(Properties.Resources.SchlussDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.SchlussDaten, rw.errorDataLineInput));
                         break;
                     case 4:
-                        errormessage = string.Format(Properties.Resources.KanalDataNotFound, rw.errorDataLineInput.ibaName, FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
+                        errormessage = string.Format(Properties.Resources.KanalDataNotFound, rw.errorChannelLineInput.ibaName, FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
                         break;
                     case 5:
                         errormessage = string.Format(Properties.Resources.ErrorDatUnexpected, rw.errorMessage);
@@ -562,6 +562,9 @@ namespace Alunorf_roh_plugin
                         break;
                     case 8:
                         errormessage = string.Format(Properties.Resources.ErrorRohUnexpected, rw.errorMessage);
+                        break;
+                    case 10:
+                        errormessage = string.Format(Properties.Resources.ErrorRohFileCreate, rw.errorMessage);
                         break;
                     default:
                         errormessage = string.Format(Properties.Resources.ErrorUnexpected, rw.errorMessage);

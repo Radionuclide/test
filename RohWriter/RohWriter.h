@@ -103,6 +103,7 @@ namespace iba {
 			void CompleteChannelHeaderLine(DWORD offsetHeaderLine, DWORD offsetToData, DWORD blockSize);
 			DWORD WriteChannelKanalBeschreibungLine(RohWriterChannelLineInput^ line, msclr::interop::marshal_context% context);
 			void WriteChannelData(array<float>^ data, int size, DataTypeEnum dataType);
+			void WriteMultiChannelData(array<array<float>^>^ data, int size, DataTypeEnum dataType);
 			void WriteValueInBuffer(unsigned char* buffer,float value,DataTypeEnum dataType);
 		public:
 			int Write(RohWriterInput^ input, String^ datfile, String^ Rohfile);
@@ -115,8 +116,9 @@ namespace iba {
 			// 5: problem reading .dat file -> see errorMessage
 			// 6: ibaFiles Create problem -> see errorMessage
 			// 7: ibaFiles Open problem -> see errorMessage
-			// 8: problem writing .roh file -> see errorMessage
+			// 8: unexpected problem writing .roh file -> see errorMessage
 			// 9: unexpected error -> see errorMessage
+			// 10: failed to create .roh file -> see errorMessage
 			RohWriterDataLineInput^ errorDataLineInput;
 			RohWriterChannelLineInput^ errorChannelLineInput;
 			String^ errorMessage;
