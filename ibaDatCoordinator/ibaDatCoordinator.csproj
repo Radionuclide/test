@@ -252,9 +252,6 @@
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />
     <Compile Include="Utility\nextname.cs" />
-    <Compile Include="Utility\NotifyIconEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Processing\ConfigurationWorker.cs" />
     <Compile Include="Processing\TaskManager.cs" />
     <Compile Include="Program.cs" />
@@ -510,10 +507,6 @@
     <EmbeddedResource Include="UploadOrDownloadConfigurationsDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Utility\NotifyIconEx.resx">
-      <DependentUpon>NotifyIconEx.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\icons.bmp" />
   </ItemGroup>

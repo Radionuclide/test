@@ -47,14 +47,6 @@ namespace Alunorf_roh_plugin
             set { m_ftpHost = value; }
         }
 
-        int m_ftpPort;
-        public int FtpPort
-        {
-            get { return m_ftpPort; }
-            set { m_ftpPort = value; }
-        }
-        
-
         private string m_ftpDirectory;
         public string FtpDirectory
         {
@@ -130,8 +122,8 @@ namespace Alunorf_roh_plugin
             rt.FtpHost = FtpHost;
             rt.FtpUser = FtpUser;
             rt.FtpPassword = FtpPassword;
-            rt.FtpPort = FtpPort;
             rt.SelectedTab = SelectedTab;
+            rt.TemplateDatFile = TemplateDatFile;
             BinaryFormatter bf = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
             bf.Serialize(ms, RohInput);
@@ -177,9 +169,9 @@ namespace Alunorf_roh_plugin
               "QUALITAET                        QZPLMG2_                          \r\n";
             m_ftpDirectory = "";
             m_ftpHost = "";
-            m_ftpPort = 21;
             m_ftpUser = "";
             m_ftpPass = "";
+            m_templateDatFile = "";
         }
 
         public string[] RohInputKommentareMultiLine
@@ -277,6 +269,22 @@ namespace Alunorf_roh_plugin
         {
             get { return m_selectedTab; }
             set { m_selectedTab = value; }
+        }
+
+        static public int FindDataLine(iba.RohWriterDataLineInput[] rohWriterDataLineInputArray, iba.RohWriterDataLineInput rohWriterDataLineInput)
+        {
+            for (int i = 0; i < rohWriterDataLineInputArray.Length; i++)
+                if (rohWriterDataLineInput == rohWriterDataLineInputArray[i])
+                    return i + 1;
+            return -1;
+        }
+
+        static public int FindChannelLine(iba.RohWriterChannelLineInput[] rohWriterChannelLineInputArray, iba.RohWriterChannelLineInput rohWriterChannelLineInput)
+        {
+            for (int i = 0; i < rohWriterChannelLineInputArray.Length; i++)
+                if (rohWriterChannelLineInput == rohWriterChannelLineInputArray[i])
+                    return i + 1;
+            return -1;
         }
     }
 

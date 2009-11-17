@@ -72,8 +72,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.m_ftpUsername = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_nudFtpPort = new System.Windows.Forms.NumericUpDown();
             this.m_ftpDirectory = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.m_ftpHost = new System.Windows.Forms.TextBox();
@@ -100,7 +98,6 @@
             this.m_kanalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvKanalbeschreibung)).BeginInit();
             this.m_ftpTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudFtpPort)).BeginInit();
             this.m_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -535,8 +532,6 @@
             this.m_ftpTab.Controls.Add(this.label6);
             this.m_ftpTab.Controls.Add(this.m_ftpUsername);
             this.m_ftpTab.Controls.Add(this.label5);
-            this.m_ftpTab.Controls.Add(this.label4);
-            this.m_ftpTab.Controls.Add(this.m_nudFtpPort);
             this.m_ftpTab.Controls.Add(this.m_ftpDirectory);
             this.m_ftpTab.Controls.Add(this.label2);
             this.m_ftpTab.Controls.Add(this.m_ftpHost);
@@ -581,32 +576,6 @@
             this.label5.Size = new System.Drawing.Size(58, 13);
             this.label5.TabIndex = 6;
             this.label5.Text = "Username:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 79);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(29, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Port:";
-            // 
-            // m_nudFtpPort
-            // 
-            this.m_nudFtpPort.Location = new System.Drawing.Point(72, 77);
-            this.m_nudFtpPort.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.m_nudFtpPort.Name = "m_nudFtpPort";
-            this.m_nudFtpPort.Size = new System.Drawing.Size(66, 20);
-            this.m_nudFtpPort.TabIndex = 4;
-            this.m_nudFtpPort.Value = new decimal(new int[] {
-            21,
-            0,
-            0,
-            0});
             // 
             // m_ftpDirectory
             // 
@@ -737,7 +706,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvKanalbeschreibung)).EndInit();
             this.m_ftpTab.ResumeLayout(false);
             this.m_ftpTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudFtpPort)).EndInit();
             this.m_Panel.ResumeLayout(false);
             this.m_Panel.PerformLayout();
             this.ResumeLayout(false);
@@ -768,8 +736,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox m_ftpUsername;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown m_nudFtpPort;
         private System.Windows.Forms.DataGridView m_datagvStich;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnInfoField;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnBezeichnung;

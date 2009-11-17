@@ -38,8 +38,7 @@ namespace Alunorf_roh_plugin
             m_datFileTextBox.Text = m_data.TemplateDatFile;
 
             m_ftpDirectory.Text = m_data.FtpDirectory;
-            m_ftpHost.Text = m_data.FtpDirectory;
-            m_nudFtpPort.Value = m_data.FtpPort;
+            m_ftpHost.Text = m_data.FtpHost;
             m_ftpUsername.Text = m_data.FtpUser;
             m_ftpPassword.Text = m_data.FtpPassword;
 
@@ -141,7 +140,6 @@ namespace Alunorf_roh_plugin
             m_data.TemplateDatFile = m_datFileTextBox.Text;
             m_data.FtpDirectory = m_ftpDirectory.Text;
             m_data.FtpHost = m_ftpHost.Text;
-            m_data.FtpPort = (int)m_nudFtpPort.Value;
             m_data.FtpUser = m_ftpUsername.Text;
             m_data.FtpPassword = m_ftpPassword.Text;
             m_data.RohInput.Parameter = m_parameter.Text;
@@ -540,16 +538,16 @@ namespace Alunorf_roh_plugin
                 switch (res)
                 {
                     case 1:
-                        errormessage = string.Format(Properties.Resources.StichDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.StichDaten, rw.errorDataLineInput));
+                        errormessage = string.Format(Properties.Resources.StichDataNotFound, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.StichDaten, rw.errorDataLineInput));
                         break;
                     case 2:
-                        errormessage = string.Format(Properties.Resources.KopfDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.KopfDaten, rw.errorDataLineInput));
+                        errormessage = string.Format(Properties.Resources.KopfDataNotFound, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.KopfDaten, rw.errorDataLineInput));
                         break;
                     case 3:
-                        errormessage = string.Format(Properties.Resources.SchlussDataNotFound, rw.errorDataLineInput.ibaName, FindDataLine(m_data.RohInput.SchlussDaten, rw.errorDataLineInput));
+                        errormessage = string.Format(Properties.Resources.SchlussDataNotFound, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.SchlussDaten, rw.errorDataLineInput));
                         break;
                     case 4:
-                        errormessage = string.Format(Properties.Resources.KanalDataNotFound, rw.errorChannelLineInput.ibaName, FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
+                        errormessage = string.Format(Properties.Resources.KanalDataNotFound, rw.errorChannelLineInput.ibaName, PluginRohTask.FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
                         break;
                     case 5:
                         errormessage = string.Format(Properties.Resources.ErrorDatUnexpected, rw.errorMessage);
@@ -572,22 +570,6 @@ namespace Alunorf_roh_plugin
                 }
                 MessageBox.Show(this, errormessage, "ROH plugin test", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private int FindDataLine(iba.RohWriterDataLineInput[] rohWriterDataLineInputArray, iba.RohWriterDataLineInput rohWriterDataLineInput)
-        {
-            for (int i = 0; i < rohWriterDataLineInputArray.Length; i++)
-                if (rohWriterDataLineInput == rohWriterDataLineInputArray[i])
-                    return i+1;
-            return -1;
-        }
-        
-        private int FindChannelLine(iba.RohWriterChannelLineInput[] rohWriterChannelLineInputArray, iba.RohWriterChannelLineInput rohWriterChannelLineInput)
-        {
-            for (int i = 0; i < rohWriterChannelLineInputArray.Length; i++)
-                if (rohWriterChannelLineInput == rohWriterChannelLineInputArray[i])
-                    return i+1;
-            return -1;
         }
 
         private void m_datagvKanalbeschreibung_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)

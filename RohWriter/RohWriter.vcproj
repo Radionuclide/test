@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="RohWriter"
 	ProjectGUID="{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}"
 	RootNamespace="RohWriter"
@@ -85,7 +85,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;"
+				CommandLine="mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -156,6 +156,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;"
 			/>
 		</Configuration>
 	</Configurations>

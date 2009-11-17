@@ -61,7 +61,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The .dat file {0} could not be read.
+        ///   Looks up a localized string similar to Die .dat Datei {0} konnte nicht gelesen werden.
         /// </summary>
         internal static string DatFileCouldNotBeOpened {
             get {
@@ -70,7 +70,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error while reading .dat file: {0}.
+        ///   Looks up a localized string similar to Unerwarteter Fehler beim Lesen der .dat Datei: {0}.
         /// </summary>
         internal static string ErrorDatUnexpected {
             get {
@@ -79,7 +79,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Failed to upload .roh file to ftp-server: {0}.
+        ///   Looks up a localized string similar to Fehler: .roh Datei konnte nicht auf den FTP-Server hochgeladen werden: &apos;{0}&apos;.
         /// </summary>
         internal static string ErrorFtp {
             get {
@@ -88,7 +88,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: could not create ibaFiles instance: {0}.
+        ///   Looks up a localized string similar to Fehler: es konnte keine ibaFiles Instanz erstellt werden: {0}.
         /// </summary>
         internal static string ErrorIbaFiles {
             get {
@@ -97,7 +97,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: could not open .dat file: {0}.
+        ///   Looks up a localized string similar to Fehler: .dat Datei konnte nicht geöffnet werden: {0}.
         /// </summary>
         internal static string ErrorIbaFilesOpen {
             get {
@@ -106,7 +106,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: could not create .roh file: {0}.
+        ///   Looks up a localized string similar to Fehler: .roh Datei konnte nicht erzeugt werden: &apos;{0}&apos;.
         /// </summary>
         internal static string ErrorRohFileCreate {
             get {
@@ -133,7 +133,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error: {0}.
+        ///   Looks up a localized string similar to Unerwarteter Fehler: {0}.
         /// </summary>
         internal static string ErrorUnexpected {
             get {
@@ -142,7 +142,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error:  Kanalbeschreibung table line {1}: channel &apos;{0}&apos; not found in the .dat file.
+        ///   Looks up a localized string similar to Fehler: Kanalbeschreibung Tabellenzeile {1}: Kanal &apos;{0}&apos; nicht in der .dat Datei gefunden.
         /// </summary>
         internal static string KanalDataNotFound {
             get {
@@ -151,7 +151,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kennung must be an integer.
+        ///   Looks up a localized string similar to &apos;Kennung&apos; muss ein integer sein.
         /// </summary>
         internal static string KennungNotANumber {
             get {
@@ -160,7 +160,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Kopfdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        ///   Looks up a localized string similar to Fehler: Kopfdaten Tabellenzeile {1}: Infofeld &apos;{0}&apos; nicht in der .dat Datei gefunden.
         /// </summary>
         internal static string KopfDataNotFound {
             get {
@@ -197,7 +197,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Schlussdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        ///   Looks up a localized string similar to Fehler: Schlussdaten Tabellenzeile {1}: Infofeld &apos;{0}&apos; nicht in der .dat Datei gefunden.
         /// </summary>
         internal static string SchlussDataNotFound {
             get {
@@ -213,7 +213,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select channels for additional Kanalbeschreibung table entries.
+        ///   Looks up a localized string similar to Auswahl der Kanäle für weitere Tabelleneinträge der Kanalbeschreibung.
         /// </summary>
         internal static string SelectKanal {
             get {
@@ -222,7 +222,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select infofields for additional Kopfdaten table entries.
+        ///   Looks up a localized string similar to Auswahl der Infofelder für weitere Tabelleneinträge der Kopfdaten.
         /// </summary>
         internal static string SelectKopf {
             get {
@@ -231,7 +231,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select infofields for additional Schlussdaten table entries.
+        ///   Looks up a localized string similar to Auswahl der Infofelder für weitere Tabelleneinträge der Schlussdaten.
         /// </summary>
         internal static string SelectSchluss {
             get {
@@ -249,7 +249,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Stichdaten table line {1}: infofield &apos;{0}&apos; not found in the .dat file.
+        ///   Looks up a localized string similar to Fehler: Stichdaten Tabellenzeile {1}: Infofeld &apos;{0}&apos; nicht im .dat File gefunden.
         /// </summary>
         internal static string StichDataNotFound {
             get {
@@ -258,7 +258,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .roh file succesfully written.
+        ///   Looks up a localized string similar to . roh Datei wurde erfolgreich geschrieben.
         /// </summary>
         internal static string TestSuccess {
             get {
@@ -267,7 +267,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse for template .dat file.
+        ///   Looks up a localized string similar to Suchen nach Formatvorlage .dat Datei.
         /// </summary>
         internal static string tooltipBrowse {
             get {
@@ -276,7 +276,7 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select infofields and channels from .dat file.
+        ///   Looks up a localized string similar to Auswahl der Infofelder und Kanäle der .dat Datei.
         /// </summary>
         internal static string tooltipSelect {
             get {

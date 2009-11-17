@@ -133,7 +133,7 @@ namespace iba
                 m_iconMenu.RightToLeft = System.Windows.Forms.RightToLeft.No;
                 m_iconMenu.Popup += new System.EventHandler(iconMenu_PopUp);
 
-                m_iconEx = new NotifyIconEx();
+                m_iconEx = new NotifyIcon();
                 m_iconEx.ContextMenu = m_iconMenu;
                 m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
                 m_iconEx.Visible = false;
@@ -2359,8 +2359,8 @@ namespace iba
         }
 
         private QuitForm m_quitForm;
-        private NotifyIconEx m_iconEx;
-        public NotifyIconEx NotifyIcon
+        private NotifyIcon m_iconEx;
+        public NotifyIcon NotifyIcon
         {
             get { return m_iconEx; }
         }
