@@ -201,6 +201,10 @@ servicecopy:
   File "..\Alunorf-sinec-h1-plugin\bin\Release\DatCoordinatorPlugins.dll"
   File "..\Alunorf-sinec-h1-plugin\bin\Release\H1Protocol.dll"
   File "..\Dependencies\Wmknt.dll"
+  File "..\Dependencies\msvcr90.dll"
+  File "..\Dependencies\msvcp90.dll"
+  File "..\Dependencies\msvcm90.dll"
+  File "..\Dependencies\Microsoft.VC90.CRT.manifest"
   ;not copying ibaFiles as this should already be included with the datcoordinator
   ;CopyFiles "$EXEDIR\pluginFiles\*.*" "$PluginPath"
 
