@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;"
+				CommandLine="mkdir &quot;$(SolutionDir)ibaDatCoordinator\bin\Release\plugins&quot;&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)ibaDatCoordinator\bin\debug\plugins&quot;"
 			/>
 		</Configuration>
 	</Configurations>

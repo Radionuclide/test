@@ -152,8 +152,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
-copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
-copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>
