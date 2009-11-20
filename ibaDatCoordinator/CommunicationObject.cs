@@ -37,9 +37,9 @@ namespace iba
                     mySerializer.Serialize(myWriter, dat);
                 }
             }
-            catch (Exception)
+            catch (Exception ex )
             {
-                LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem);
+                LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem + ex.ToString());
             }
         }
 

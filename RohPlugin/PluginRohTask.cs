@@ -135,7 +135,7 @@ namespace Alunorf_roh_plugin
 
         #endregion
 
-         public PluginRohTask()
+        public PluginRohTask()
         {
             InitData(null, null, null);
         }
@@ -192,7 +192,7 @@ namespace Alunorf_roh_plugin
             }
             set
             {
-                if (m_rohInput != null || m_rohInput.Kommentare != null)
+                if (m_rohInput != null && m_rohInput.Kommentare != null)
                 {
                     StringBuilder sb = new StringBuilder();
                     foreach (string s in value)
@@ -208,7 +208,7 @@ namespace Alunorf_roh_plugin
         {
             get
             {
-                if (m_rohInput == null && m_rohInput.Parameter == null) return null;
+                if (m_rohInput == null || m_rohInput.Parameter == null) return null;
                 string[] splitted = m_rohInput.Parameter.Replace("\r\n", "\n").Split('\n');
                 //count empty strings at the end
                 int count = 0;

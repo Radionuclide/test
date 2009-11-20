@@ -115,7 +115,7 @@
             this.m_tabControl.Location = new System.Drawing.Point(0, 0);
             this.m_tabControl.Name = "m_tabControl";
             this.m_tabControl.SelectedIndex = 0;
-            this.m_tabControl.Size = new System.Drawing.Size(565, 410);
+            this.m_tabControl.Size = new System.Drawing.Size(565, 358);
             this.m_tabControl.TabIndex = 0;
             this.m_tabControl.SelectedIndexChanged += new System.EventHandler(this.m_tabControl_SelectedIndexChanged);
             // 
@@ -125,7 +125,7 @@
             this.m_stichTab.Location = new System.Drawing.Point(4, 22);
             this.m_stichTab.Name = "m_stichTab";
             this.m_stichTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_stichTab.Size = new System.Drawing.Size(557, 384);
+            this.m_stichTab.Size = new System.Drawing.Size(557, 332);
             this.m_stichTab.TabIndex = 0;
             this.m_stichTab.Text = "Stichdaten";
             this.m_stichTab.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             this.m_datagvStich.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_datagvStich.Location = new System.Drawing.Point(3, 3);
             this.m_datagvStich.Name = "m_datagvStich";
-            this.m_datagvStich.Size = new System.Drawing.Size(551, 378);
+            this.m_datagvStich.Size = new System.Drawing.Size(551, 326);
             this.m_datagvStich.TabIndex = 1;
             this.m_datagvStich.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvStich.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
@@ -194,7 +194,8 @@
             "I",
             "I2",
             "I4",
-            "C"});
+            "C",
+            "T"});
             this.m_stichColumnDataType.MaxDropDownItems = 10;
             this.m_stichColumnDataType.Name = "m_stichColumnDataType";
             // 
@@ -225,7 +226,7 @@
             this.m_kopfTab.Location = new System.Drawing.Point(4, 22);
             this.m_kopfTab.Name = "m_kopfTab";
             this.m_kopfTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_kopfTab.Size = new System.Drawing.Size(557, 384);
+            this.m_kopfTab.Size = new System.Drawing.Size(557, 332);
             this.m_kopfTab.TabIndex = 2;
             this.m_kopfTab.Text = "Kopfdaten";
             this.m_kopfTab.UseVisualStyleBackColor = true;
@@ -242,7 +243,7 @@
             this.m_datagvKopf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_datagvKopf.Location = new System.Drawing.Point(3, 3);
             this.m_datagvKopf.Name = "m_datagvKopf";
-            this.m_datagvKopf.Size = new System.Drawing.Size(551, 378);
+            this.m_datagvKopf.Size = new System.Drawing.Size(551, 326);
             this.m_datagvKopf.TabIndex = 2;
             this.m_datagvKopf.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvKopf.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
@@ -294,7 +295,8 @@
             "I",
             "I2",
             "I4",
-            "C"});
+            "C",
+            "T"});
             this.m_kopfColumnDataType.MaxDropDownItems = 10;
             this.m_kopfColumnDataType.Name = "m_kopfColumnDataType";
             // 
@@ -304,7 +306,7 @@
             this.m_schlussTab.Location = new System.Drawing.Point(4, 22);
             this.m_schlussTab.Name = "m_schlussTab";
             this.m_schlussTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_schlussTab.Size = new System.Drawing.Size(557, 384);
+            this.m_schlussTab.Size = new System.Drawing.Size(557, 332);
             this.m_schlussTab.TabIndex = 3;
             this.m_schlussTab.Text = "Schlussdaten";
             this.m_schlussTab.UseVisualStyleBackColor = true;
@@ -321,7 +323,7 @@
             this.m_datagvSchluss.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_datagvSchluss.Location = new System.Drawing.Point(3, 3);
             this.m_datagvSchluss.Name = "m_datagvSchluss";
-            this.m_datagvSchluss.Size = new System.Drawing.Size(551, 378);
+            this.m_datagvSchluss.Size = new System.Drawing.Size(551, 326);
             this.m_datagvSchluss.TabIndex = 2;
             this.m_datagvSchluss.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvSchluss.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
@@ -373,7 +375,8 @@
             "I",
             "I2",
             "I4",
-            "C"});
+            "C",
+            "T"});
             this.m_schlussColumnDataType.MaxDropDownItems = 10;
             this.m_schlussColumnDataType.Name = "m_schlussColumnDataType";
             // 
@@ -404,7 +407,7 @@
             this.m_parameterTab.Location = new System.Drawing.Point(4, 22);
             this.m_parameterTab.Name = "m_parameterTab";
             this.m_parameterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_parameterTab.Size = new System.Drawing.Size(557, 384);
+            this.m_parameterTab.Size = new System.Drawing.Size(557, 332);
             this.m_parameterTab.TabIndex = 5;
             this.m_parameterTab.Text = "Parameter";
             this.m_parameterTab.UseVisualStyleBackColor = true;
@@ -416,7 +419,7 @@
             this.m_parameter.Multiline = true;
             this.m_parameter.Name = "m_parameter";
             this.m_parameter.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_parameter.Size = new System.Drawing.Size(551, 378);
+            this.m_parameter.Size = new System.Drawing.Size(551, 326);
             this.m_parameter.TabIndex = 2;
             // 
             // m_kanalTab
@@ -425,7 +428,7 @@
             this.m_kanalTab.Location = new System.Drawing.Point(4, 22);
             this.m_kanalTab.Name = "m_kanalTab";
             this.m_kanalTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_kanalTab.Size = new System.Drawing.Size(557, 384);
+            this.m_kanalTab.Size = new System.Drawing.Size(557, 332);
             this.m_kanalTab.TabIndex = 6;
             this.m_kanalTab.Text = "Kanalbeschreibung";
             this.m_kanalTab.UseVisualStyleBackColor = true;
@@ -445,7 +448,7 @@
             this.m_datagvKanalbeschreibung.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_datagvKanalbeschreibung.Location = new System.Drawing.Point(3, 3);
             this.m_datagvKanalbeschreibung.Name = "m_datagvKanalbeschreibung";
-            this.m_datagvKanalbeschreibung.Size = new System.Drawing.Size(551, 378);
+            this.m_datagvKanalbeschreibung.Size = new System.Drawing.Size(551, 326);
             this.m_datagvKanalbeschreibung.TabIndex = 3;
             this.m_datagvKanalbeschreibung.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvKanalbeschreibung.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.m_datagvKanalbeschreibung_CellValidating);
@@ -498,7 +501,8 @@
             "I",
             "I2",
             "I4",
-            "C"});
+            "C",
+            "T"});
             this.m_kanalColumnDataType.MaxDropDownItems = 10;
             this.m_kanalColumnDataType.Name = "m_kanalColumnDataType";
             // 
@@ -685,8 +689,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_Panel);
             this.Controls.Add(this.m_tabControl);
+            this.Controls.Add(this.m_Panel);
             this.Name = "PluginRohControl";
             this.Size = new System.Drawing.Size(565, 410);
             this.m_tabControl.ResumeLayout(false);
@@ -737,24 +741,16 @@
         private System.Windows.Forms.TextBox m_ftpUsername;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView m_datagvStich;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnInfoField;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnBezeichnung;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnKurz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnEinheit;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_stichColumnDataType;
         private System.Windows.Forms.DataGridView m_datagvKopf;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnInfoField;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnBezeichnung;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnKurz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnEinheit;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_kopfColumnDataType;
         private System.Windows.Forms.DataGridView m_datagvSchluss;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnInfoField;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnBezeichnung;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnKurz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnEinheit;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_schlussColumnDataType;
         private System.Windows.Forms.DataGridView m_datagvKanalbeschreibung;
+        private System.Windows.Forms.TextBox m_kommentare;
+        private System.Windows.Forms.TextBox m_kurzbezeichner;
+        private System.Windows.Forms.TextBox m_parameter;
+        private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.OpenFileDialog m_openFileDialog;
+        private System.Windows.Forms.Button m_testRohButton;
+        private System.Windows.Forms.SaveFileDialog m_saveFileDialog;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnInfoField;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnBezeichnung;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKurz;
@@ -763,12 +759,20 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKennung;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnSollwert;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnStutz;
-        private System.Windows.Forms.TextBox m_kommentare;
-        private System.Windows.Forms.TextBox m_kurzbezeichner;
-        private System.Windows.Forms.TextBox m_parameter;
-        private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.OpenFileDialog m_openFileDialog;
-        private System.Windows.Forms.Button m_testRohButton;
-        private System.Windows.Forms.SaveFileDialog m_saveFileDialog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnInfoField;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnBezeichnung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnKurz;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnEinheit;
+        private System.Windows.Forms.DataGridViewComboBoxColumn m_stichColumnDataType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnInfoField;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnBezeichnung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnKurz;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kopfColumnEinheit;
+        private System.Windows.Forms.DataGridViewComboBoxColumn m_kopfColumnDataType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnInfoField;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnBezeichnung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnKurz;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnEinheit;
+        private System.Windows.Forms.DataGridViewComboBoxColumn m_schlussColumnDataType;
     }
 }

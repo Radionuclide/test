@@ -6,7 +6,7 @@ using namespace System;
 
 namespace iba {
 
-	public enum class DataTypeEnum {F,F4,F8,I,I2,I4,C};
+	public enum class DataTypeEnum {F,F4,F8,I,I2,I4,C,T};
 
 	[Serializable]
 	public ref class RohWriterDataLineInput
@@ -41,11 +41,11 @@ namespace iba {
 		array<RohWriterDataLineInput^>^ KopfDaten;
 		array<RohWriterDataLineInput^>^ SchlussDaten;
 		array<RohWriterChannelLineInput^>^ Kanalen;
-		[NonSerialized]
+		[System::Xml::Serialization::XmlIgnore]
 		String^ Kommentare; //serialization of this is done in PluginRohTask (multiline have trouble)
-		[NonSerialized]
+		[System::Xml::Serialization::XmlIgnore]
 		String^ Kurzbezeichner; //idem
-		[NonSerialized]
+		[System::Xml::Serialization::XmlIgnore]
 		String^ Parameter; //idem
 		RohWriterInput()
 		{

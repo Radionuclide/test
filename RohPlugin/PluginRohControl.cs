@@ -85,6 +85,9 @@ namespace Alunorf_roh_plugin
                         case iba.DataTypeEnum.I4:
                             grid.Rows[i].Cells[4].Value = "I4";
                             break;
+                        case iba.DataTypeEnum.T:
+                            grid.Rows[i].Cells[4].Value = "T";
+                            break;
                     }
                 }
                 grid.Rows[count].Cells[0].Value = null;
@@ -125,6 +128,9 @@ namespace Alunorf_roh_plugin
                         break;
                     case iba.DataTypeEnum.I4:
                         grid.Rows[i].Cells[4].Value = "I4";
+                        break;
+                    case iba.DataTypeEnum.T:
+                        grid.Rows[i].Cells[4].Value = "T";
                         break;
                 }
                 grid.Rows[i].Cells[5].Value = dataset2[i].Kennung.ToString();
@@ -190,6 +196,8 @@ namespace Alunorf_roh_plugin
                         line.dataType = iba.DataTypeEnum.I2;
                     else if (datatyp == "I4")
                         line.dataType = iba.DataTypeEnum.I4;
+                    else if (datatyp == "T")
+                        line.dataType = iba.DataTypeEnum.T;
                     dataset[count2++] = line;
                 }
                 Array.Resize(ref dataset, count2);
@@ -237,6 +245,8 @@ namespace Alunorf_roh_plugin
                     line.dataType = iba.DataTypeEnum.I2;
                 else if (datatyp == "I4")
                     line.dataType = iba.DataTypeEnum.I4;
+                else if (datatyp == "T")
+                    line.dataType = iba.DataTypeEnum.T;
                 string kennungstr = grid.Rows[i].Cells[5].Value as string;
                 if (kennungstr == null || !Int32.TryParse(kennungstr.Trim(), out line.Kennung))
                     line.Kennung = 0;
