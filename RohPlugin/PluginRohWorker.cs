@@ -40,7 +40,8 @@ namespace Alunorf_roh_plugin
             {
                 string root = Path.GetFileNameWithoutExtension(datFile);
                 string rohFileName = root + ".roh";
-                string tempFilePath = Path.Combine(Path.GetTempPath(), rohFileName);
+                int currentFileNr = System.Threading.Interlocked.Increment(ref filenamecount);
+                string tempFilePath = Path.Combine(Path.GetTempPath(), currentFileNr.ToString() + ".roh");
                 iba.RohWriter rw = new iba.RohWriter();
                 int res = rw.Write(m_data.RohInput, datFile, tempFilePath);
                 if (res != 0)
@@ -179,6 +180,8 @@ namespace Alunorf_roh_plugin
 
         private PluginRohTask m_data;
         private PluginRohTask m_dataToApply;
+
+        static int filenamecount;
         public PluginRohWorker(PluginRohTask data)
         {
             m_data = data;

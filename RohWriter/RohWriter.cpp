@@ -229,9 +229,14 @@ namespace iba {
 				for each (RohWriterChannelLineInput^ channel in input->Kanalen)
 				{
 					int size = 1;
-					cliext::map<String^,int>::iterator it = VectorNames.find(channel->ibaName);
-					if (it != VectorNames.end())
-						size = (channel->dataType == DataTypeEnum::T)?20:vectorChannelsCopy[it->second]->size();
+					if (channel->ibaName->Contains("400"))
+						size = 400;
+					else
+					{
+						cliext::map<String^,int>::iterator it = VectorNames.find(channel->ibaName);
+						if (it != VectorNames.end())
+							size = (channel->dataType == DataTypeEnum::T)?20:vectorChannelsCopy[it->second]->size();
+					}
 					String^ name = channel->KurzBezeichnung;
 					channelOffsetHeaderPositions.push_back(WritePartialChannelHeaderLine(context.marshal_as<const char*>(name),size));
 				}
@@ -321,6 +326,7 @@ namespace iba {
 					array<float>^ floatArray;
 					float timebase, offset;
 					Object^ obj;
+					bool L400 = channel->ibaName->Contains("400");
 					if (it != VectorNames.end())
 					{
 						cliext::map<int,IbaChannelReader^>^ TheVector = vectorChannelsCopy[VectorNames[channel->ibaName]];
@@ -365,14 +371,19 @@ namespace iba {
 							channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
 						}
 						floatArray = dynamic_cast<array<float>^>(obj);
-						size = floatArray->Length;
-						if (size > (int) maxSamples) maxSamples = size;
+						if (L400)
+							size = 400;
+						else
+						{
+							size = floatArray->Length;
+							if (size > (int) maxSamples) maxSamples = size;
+						}
 						WriteChannelData(floatArray,size,channel->dataType);
 					}
 					Write((const char*)("\n"),1);
 					p2 = GetPosition();
 					Seek(channelOffsetKanalBeschreibungPositions[index]+52+16+12+5); //complete in kanalbeschreibung number of elements
-					WriteASCIIUIntInFile((unsigned int) size);
+					WriteASCIIUIntInFile((unsigned int) L400?1:size);
 					CompleteChannelHeaderLine(channelOffsetHeaderPositions[index++],p0,p2-p1);
 					Seek(p2);
 				}

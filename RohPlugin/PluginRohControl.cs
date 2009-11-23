@@ -318,8 +318,8 @@ namespace Alunorf_roh_plugin
                             }
                             while (row + 1 >= grid.RowCount) //always leav
                                 grid.RowCount++;
-                            char[] delims = { ',', ';', '\t' };
-                            string[] sr_array = s.Split(delims);
+                            string[] sr_array = Algorithms.SplitPaste(s);
+
                             if (sr_array.Length == grid.ColumnCount+1 && string.IsNullOrEmpty(sr_array[0])) //when copying entire row unfortunately the header seems to be copied as well
                             {
                                 string[] sr_arrayCopy = new string[sr_array.Length - 1];
@@ -669,6 +669,38 @@ namespace Alunorf_roh_plugin
                 if (comp((T)iter.Current, min) < 0) min = (T)iter.Current;
             }
             return min;
+        }
+
+        static public string[] SplitPaste(string s)
+        {
+            char[] delims = { ',', ';', '\t' };
+            string[] sr_array = s.Split(delims);
+            List<string> myList = new List<string>();
+            bool concat = false;
+            string laststring  = "";
+            for (int i = 0; i < sr_array.Length; i++)
+            {
+                if (concat)
+                {
+                    laststring += ",";
+                    if (sr_array[i].EndsWith("\""))
+                    {
+                        laststring += sr_array[i].Substring(0, sr_array[i].Length - 1);
+                        concat = false;
+                        myList.Add(laststring);
+                    }
+                    else
+                        laststring += sr_array[i];
+                }
+                else if (sr_array[i].StartsWith("\""))
+                {
+                    concat = true;
+                    laststring = sr_array[i].Substring(1);
+                }
+                else
+                    myList.Add(sr_array[i]);
+            }
+            return myList.ToArray();
         }
     }
     #region SHAutoCompleteFlags

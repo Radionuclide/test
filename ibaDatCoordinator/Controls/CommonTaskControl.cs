@@ -61,6 +61,7 @@ namespace iba.Controls
             else if (m_rbDisabled.Checked)
             {
                 m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
+                taskNode.StateImageIndex = -1;
                 if (m_data.ParentConfigurationData.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data.ParentConfigurationData);
             }
             else
