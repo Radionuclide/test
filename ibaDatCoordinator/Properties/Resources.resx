@@ -928,4 +928,13 @@
   <data name="logUDTConnectSuccess" xml:space="preserve">
     <value>Connection with the database was succesfully established.</value>
   </data>
+  <data name="UnexpectedErrorProcessingDatFile" xml:space="preserve">
+    <value>Unexpected error while processing .dat file : {0}</value>
+  </data>
+  <data name="DatFileCloseFailed" xml:space="preserve">
+    <value>Failed to update .dat file status in the file :</value>
+  </data>
+  <data name="UnexpectedErrorDatFile" xml:space="preserve">
+    <value>Unexpected error while processing .dat File :</value>
+  </data>
 </root>

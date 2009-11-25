@@ -309,6 +309,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to update .dat file status in the file :.
+        /// </summary>
+        internal static string DatFileCloseFailed {
+            get {
+                return ResourceManager.GetString("DatFileCloseFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete  the Script options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteBatchfileQuestion {
@@ -2201,6 +2210,24 @@ namespace iba.Properties {
         internal static string UNCPathUnavailable {
             get {
                 return ResourceManager.GetString("UNCPathUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while processing .dat File :.
+        /// </summary>
+        internal static string UnexpectedErrorDatFile {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while processing .dat file : {0}.
+        /// </summary>
+        internal static string UnexpectedErrorProcessingDatFile {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorProcessingDatFile", resourceCulture);
             }
         }
         

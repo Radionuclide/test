@@ -538,8 +538,8 @@ namespace iba.Processing
                             }
                             catch (Exception ex)
                             {
-                                m_stop = true;
-                                Log(iba.Logging.Level.Exception,ex.Message,file);
+                                Stop = true;
+                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.Message, file);
                             }
 
                             if (m_stop) break;
@@ -624,7 +624,7 @@ namespace iba.Processing
 
 
         private bool networkErrorOccured = false;
-        int tickCount = 0;
+        private int tickCount = 0;
 
         void OnFileSystemError(object sender, ErrorEventArgs e)
         {
@@ -632,9 +632,9 @@ namespace iba.Processing
             DisposeFswt();
             //can also happen without that connection is lost, alter error message
             if (m_cd.DatDirectory==m_cd.DatDirectoryUNC)
-                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.FileSystemWatcherProblem, m_cd.DatDirectoryUNC, e.GetException().Message));
+                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.FileSystemWatcherProblem, m_cd.DatDirectoryUNC, e==null?"":e.GetException().Message));
             else
-                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC,e.GetException().Message));
+                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC, e == null ? "" : e.GetException().Message));
         }
 
         private bool TestLicensePlugins()
@@ -869,7 +869,8 @@ namespace iba.Processing
                 }
             }
 
-            if (!changed && networkErrorOccured) tickCount++;
+            if (!changed && networkErrorOccured)
+                tickCount++;
 
             if (tickCount >= 20) //retry restoring dataaccess every minute
             {
@@ -1903,7 +1904,19 @@ namespace iba.Processing
                 {
                     ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
                 }
-                ibaDatFile.Close();
+                try
+                {
+                    ibaDatFile.Close();
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, DatFile);
+                    lock (m_sd.DatFileStates)
+                    {
+                        foreach( TaskData t in m_cd.Tasks)
+                            m_sd.DatFileStates[DatFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                }
                 if (time != null)
                 {
                     try
@@ -1978,7 +1991,6 @@ namespace iba.Processing
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
-                    Log(Logging.Level.Info, "opening analysis");
                     mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
                     Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
                     if (task.ExtractToFile)

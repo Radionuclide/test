@@ -594,7 +594,9 @@ namespace iba.Utility
 			nr.iDisplayType = 2;
 			nr.iUsage = 1;
 			nr.sRemoteName = UNCcomputer;
-			return WNetAddConnection2(ref nr, password, username, 0);
+			int error = WNetAddConnection2(ref nr, password, username, 0);
+            //if (error == 1219) return 0;
+            return error;
 		}
 
 		/// <summary>

@@ -28,7 +28,7 @@ namespace iba.Utility
 		        }
 		        catch(Exception ex)
 		        {
-			        errorMsg= ex.Message;
+			        errorMsg = ex.Message;
 			        return false;
 		        }
 	        }
