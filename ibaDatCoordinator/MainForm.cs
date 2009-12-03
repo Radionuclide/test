@@ -1458,28 +1458,40 @@ namespace iba
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = m_configTreeView.SelectedNode; 
-            copyNode(node);
-            Delete(node, false);
+            if (m_configTreeView.Focused)
+            {
+                TreeNode node = m_configTreeView.SelectedNode;
+                copyNode(node);
+                Delete(node, false);
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = m_configTreeView.SelectedNode;
-            copyNode(node);
+            if (m_configTreeView.Focused)
+            {
+                TreeNode node = m_configTreeView.SelectedNode;
+                copyNode(node);
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = m_configTreeView.SelectedNode;
-            pasteNode(node);
+            if (m_configTreeView.Focused)
+            {
+                TreeNode node = m_configTreeView.SelectedNode;
+                pasteNode(node);
+            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = m_configTreeView.SelectedNode;
             if (m_configTreeView.Focused)
-                Delete(node);
+            {
+                TreeNode node = m_configTreeView.SelectedNode;
+                if (m_configTreeView.Focused)
+                    Delete(node);
+            }
         }
 
         private string m_filename;

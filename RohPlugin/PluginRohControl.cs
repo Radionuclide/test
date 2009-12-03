@@ -22,6 +22,7 @@ namespace Alunorf_roh_plugin
             ((Bitmap)m_selectButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_selectButton, Alunorf_roh_plugin.Properties.Resources.tooltipSelect);
             m_toolTip.SetToolTip(m_browseDatFileButton, Alunorf_roh_plugin.Properties.Resources.tooltipBrowse);
+            m_toolTip.SetToolTip(m_testRohButton, Alunorf_roh_plugin.Properties.Resources.tooltipTest);
             m_testRohButton.Image = Alunorf_roh_plugin.Properties.Resources.RohTask.ToBitmap();
         }
 
@@ -45,6 +46,7 @@ namespace Alunorf_roh_plugin
             m_parameter.Text = m_data.RohInput.Parameter;
             m_kurzbezeichner.Text = m_data.RohInput.Kurzbezeichner;
             m_kommentare.Text = m_data.RohInput.Kommentare;
+            m_filePrefix.Text = m_data.FilePrefix;
 
             iba.RohWriterDataLineInput[][] datasets = { m_data.RohInput.StichDaten, m_data.RohInput.KopfDaten, m_data.RohInput.SchlussDaten};
             DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
@@ -133,9 +135,10 @@ namespace Alunorf_roh_plugin
                         grid.Rows[i].Cells[4].Value = "T";
                         break;
                 }
-                grid.Rows[i].Cells[5].Value = dataset2[i].Kennung.ToString();
-                grid.Rows[i].Cells[6].Value = dataset2[i].Sollwert;
-                grid.Rows[i].Cells[7].Value = dataset2[i].Stutzstellen;
+                grid.Rows[i].Cells[5].Value = dataset2[i].Faktor.ToString();
+                grid.Rows[i].Cells[6].Value = dataset2[i].Kennung.ToString();
+                grid.Rows[i].Cells[7].Value = dataset2[i].Sollwert;
+                grid.Rows[i].Cells[8].Value = dataset2[i].Stutzstellen;
             }
             m_tabControl.SelectedIndex = m_data.SelectedTab;
             m_datFileTextBox_TextChanged(null, null);
@@ -152,6 +155,8 @@ namespace Alunorf_roh_plugin
             m_data.RohInput.Kommentare = m_kommentare.Text;
             m_data.RohInput.Kurzbezeichner = m_kurzbezeichner.Text;
             m_data.SelectedTab = m_tabControl.SelectedIndex;
+            m_data.FilePrefix = m_filePrefix.Text;
+
             iba.RohWriterDataLineInput[][] datasets = { m_data.RohInput.StichDaten, m_data.RohInput.KopfDaten, m_data.RohInput.SchlussDaten};
             DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
             DataGridView grid = null;
@@ -247,15 +252,18 @@ namespace Alunorf_roh_plugin
                     line.dataType = iba.DataTypeEnum.I4;
                 else if (datatyp == "T")
                     line.dataType = iba.DataTypeEnum.T;
-                string kennungstr = grid.Rows[i].Cells[5].Value as string;
+                string factorstr = grid.Rows[i].Cells[5].Value as string;
+                if (factorstr == null || !Double.TryParse(factorstr.Trim(), out line.Faktor))
+                    line.Faktor = 1.0;
+                string kennungstr = grid.Rows[i].Cells[6].Value as string;
                 if (kennungstr == null || !Int32.TryParse(kennungstr.Trim(), out line.Kennung))
                     line.Kennung = 0;
-                string sollwert = grid.Rows[i].Cells[6].Value as string;
+                string sollwert = grid.Rows[i].Cells[7].Value as string;
                 if (sollwert == null) sollwert = "";
                 sollwert = sollwert.Trim();
                 if (sollwert.Length > 8) sollwert = sollwert.Substring(0, 8);
                 line.Sollwert = sollwert;
-                string stutz = grid.Rows[i].Cells[7].Value as string;
+                string stutz = grid.Rows[i].Cells[8].Value as string;
                 if (stutz == null) stutz = "";
                 stutz = stutz.Trim();
                 if (stutz.Length > 8) stutz = stutz.Substring(0, 8);
@@ -588,6 +596,14 @@ namespace Alunorf_roh_plugin
             {
                 int d;
                 if (e.FormattedValue != null && !string.IsNullOrEmpty(e.FormattedValue.ToString()) && !Int32.TryParse(e.FormattedValue.ToString(), out d))
+                {
+                    e.Cancel = true;
+                }
+            }
+            else if (m_datagvKanalbeschreibung.Columns[e.ColumnIndex] == m_kanalColumnFaktor)
+            {
+                double d;
+                if (e.FormattedValue != null && !string.IsNullOrEmpty(e.FormattedValue.ToString()) && !Double.TryParse(e.FormattedValue.ToString(), out d))
                 {
                     e.Cancel = true;
                 }

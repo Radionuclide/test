@@ -29,8 +29,14 @@ namespace iba {
 			String^ Einheit;
 			DataTypeEnum dataType;
 			int Kennung;
+			double Faktor;
 			String^ Sollwert;
 			String^ Stutzstellen;
+			RohWriterChannelLineInput()
+			{
+				Faktor = 1.0;
+				Kennung = 0;
+			}
 	};
 
 	[Serializable]

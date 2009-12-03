@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Roh Plugin Installer"
-!define PRODUCT_VERSION "1.0"
+!define PRODUCT_VERSION "1.1"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -134,6 +134,7 @@ standalonecopy:
   File "..\Dependencies\Microsoft.VC90.CRT.manifest"
   File "..\RohPlugin\bin\Release\Alunorf_roh_plugin.dll"
   File "..\RohPlugin\bin\Release\RohWriter.dll"
+  File "..\Dependencies\Microsoft.VisualC.STLCLR.dll"
   IfErrors standalonecopyError standalonecopyOk
 standalonecopyError:
   MessageBox MB_ICONSTOP $(FAILED_COPY)
@@ -188,6 +189,7 @@ servicecopy:
   File "..\Dependencies\msvcr90.dll"
   File "..\Dependencies\msvcp90.dll"
   File "..\Dependencies\msvcm90.dll"
+  File "..\Dependencies\Microsoft.VisualC.STLCLR.dll"
   File "..\Dependencies\Microsoft.VC90.CRT.manifest"
   File "..\RohPlugin\bin\Release\Alunorf_roh_plugin.dll"
   File "..\RohPlugin\bin\Release\RohWriter.dll"

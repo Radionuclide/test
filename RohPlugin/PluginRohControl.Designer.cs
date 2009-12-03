@@ -59,15 +59,9 @@
             this.m_parameter = new System.Windows.Forms.TextBox();
             this.m_kanalTab = new System.Windows.Forms.TabPage();
             this.m_datagvKanalbeschreibung = new System.Windows.Forms.DataGridView();
-            this.m_kanalColumnInfoField = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnBezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnKurz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.m_kanalColumnKennung = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnSollwert = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_kanalColumnStutz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_ftpTab = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_filePrefix = new System.Windows.Forms.TextBox();
             this.m_ftpPassword = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_ftpUsername = new System.Windows.Forms.TextBox();
@@ -85,6 +79,15 @@
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.m_kanalColumnInfoField = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnBezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnKurz = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnEinheit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.m_kanalColumnFaktor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnKennung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnSollwert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_kanalColumnStutz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_tabControl.SuspendLayout();
             this.m_stichTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvStich)).BeginInit();
@@ -205,7 +208,7 @@
             this.m_kommentareTab.Location = new System.Drawing.Point(4, 22);
             this.m_kommentareTab.Name = "m_kommentareTab";
             this.m_kommentareTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_kommentareTab.Size = new System.Drawing.Size(557, 384);
+            this.m_kommentareTab.Size = new System.Drawing.Size(557, 332);
             this.m_kommentareTab.TabIndex = 1;
             this.m_kommentareTab.Text = "Kommentare";
             this.m_kommentareTab.UseVisualStyleBackColor = true;
@@ -217,7 +220,7 @@
             this.m_kommentare.Multiline = true;
             this.m_kommentare.Name = "m_kommentare";
             this.m_kommentare.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_kommentare.Size = new System.Drawing.Size(551, 378);
+            this.m_kommentare.Size = new System.Drawing.Size(551, 326);
             this.m_kommentare.TabIndex = 0;
             // 
             // m_kopfTab
@@ -386,7 +389,7 @@
             this.m_kurzbezeichnerTab.Location = new System.Drawing.Point(4, 22);
             this.m_kurzbezeichnerTab.Name = "m_kurzbezeichnerTab";
             this.m_kurzbezeichnerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_kurzbezeichnerTab.Size = new System.Drawing.Size(557, 384);
+            this.m_kurzbezeichnerTab.Size = new System.Drawing.Size(557, 332);
             this.m_kurzbezeichnerTab.TabIndex = 4;
             this.m_kurzbezeichnerTab.Text = "Kurzbezeichner";
             this.m_kurzbezeichnerTab.UseVisualStyleBackColor = true;
@@ -398,7 +401,7 @@
             this.m_kurzbezeichner.Multiline = true;
             this.m_kurzbezeichner.Name = "m_kurzbezeichner";
             this.m_kurzbezeichner.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.m_kurzbezeichner.Size = new System.Drawing.Size(551, 378);
+            this.m_kurzbezeichner.Size = new System.Drawing.Size(551, 326);
             this.m_kurzbezeichner.TabIndex = 1;
             // 
             // m_parameterTab
@@ -442,6 +445,7 @@
             this.m_kanalColumnKurz,
             this.m_kanalColumnEinheit,
             this.m_kanalColumnDataType,
+            this.m_kanalColumnFaktor,
             this.m_kanalColumnKennung,
             this.m_kanalColumnSollwert,
             this.m_kanalColumnStutz});
@@ -454,11 +458,184 @@
             this.m_datagvKanalbeschreibung.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.m_datagvKanalbeschreibung_CellValidating);
             this.m_datagvKanalbeschreibung.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
+            // m_ftpTab
+            // 
+            this.m_ftpTab.Controls.Add(this.label4);
+            this.m_ftpTab.Controls.Add(this.m_filePrefix);
+            this.m_ftpTab.Controls.Add(this.m_ftpPassword);
+            this.m_ftpTab.Controls.Add(this.label6);
+            this.m_ftpTab.Controls.Add(this.m_ftpUsername);
+            this.m_ftpTab.Controls.Add(this.label5);
+            this.m_ftpTab.Controls.Add(this.m_ftpDirectory);
+            this.m_ftpTab.Controls.Add(this.label2);
+            this.m_ftpTab.Controls.Add(this.m_ftpHost);
+            this.m_ftpTab.Controls.Add(this.label1);
+            this.m_ftpTab.Location = new System.Drawing.Point(4, 22);
+            this.m_ftpTab.Name = "m_ftpTab";
+            this.m_ftpTab.Padding = new System.Windows.Forms.Padding(3);
+            this.m_ftpTab.Size = new System.Drawing.Size(557, 332);
+            this.m_ftpTab.TabIndex = 7;
+            this.m_ftpTab.Text = "FTP";
+            this.m_ftpTab.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(19, 177);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 36);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Dateinamen Prefix:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // m_filePrefix
+            // 
+            this.m_filePrefix.Location = new System.Drawing.Point(91, 181);
+            this.m_filePrefix.Name = "m_filePrefix";
+            this.m_filePrefix.Size = new System.Drawing.Size(189, 20);
+            this.m_filePrefix.TabIndex = 10;
+            // 
+            // m_ftpPassword
+            // 
+            this.m_ftpPassword.Location = new System.Drawing.Point(91, 129);
+            this.m_ftpPassword.Name = "m_ftpPassword";
+            this.m_ftpPassword.Size = new System.Drawing.Size(189, 20);
+            this.m_ftpPassword.TabIndex = 9;
+            this.m_ftpPassword.UseSystemPasswordChar = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(24, 132);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Password:";
+            // 
+            // m_ftpUsername
+            // 
+            this.m_ftpUsername.Location = new System.Drawing.Point(91, 103);
+            this.m_ftpUsername.Name = "m_ftpUsername";
+            this.m_ftpUsername.Size = new System.Drawing.Size(189, 20);
+            this.m_ftpUsername.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(24, 106);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Username:";
+            // 
+            // m_ftpDirectory
+            // 
+            this.m_ftpDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ftpDirectory.Location = new System.Drawing.Point(91, 51);
+            this.m_ftpDirectory.Name = "m_ftpDirectory";
+            this.m_ftpDirectory.Size = new System.Drawing.Size(424, 20);
+            this.m_ftpDirectory.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(24, 54);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Directory:";
+            // 
+            // m_ftpHost
+            // 
+            this.m_ftpHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ftpHost.Location = new System.Drawing.Point(91, 25);
+            this.m_ftpHost.Name = "m_ftpHost";
+            this.m_ftpHost.Size = new System.Drawing.Size(424, 20);
+            this.m_ftpHost.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Host:";
+            // 
+            // m_Panel
+            // 
+            this.m_Panel.Controls.Add(this.m_testRohButton);
+            this.m_Panel.Controls.Add(this.m_browseDatFileButton);
+            this.m_Panel.Controls.Add(this.label3);
+            this.m_Panel.Controls.Add(this.m_datFileTextBox);
+            this.m_Panel.Controls.Add(this.m_selectButton);
+            this.m_Panel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.m_Panel.Location = new System.Drawing.Point(0, 358);
+            this.m_Panel.Name = "m_Panel";
+            this.m_Panel.Size = new System.Drawing.Size(565, 52);
+            this.m_Panel.TabIndex = 1;
+            // 
+            // m_testRohButton
+            // 
+            this.m_testRohButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_testRohButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_testRohButton.Location = new System.Drawing.Point(515, 6);
+            this.m_testRohButton.Name = "m_testRohButton";
+            this.m_testRohButton.Size = new System.Drawing.Size(40, 40);
+            this.m_testRohButton.TabIndex = 15;
+            this.m_testRohButton.UseVisualStyleBackColor = true;
+            this.m_testRohButton.Click += new System.EventHandler(this.m_testRohButton_Click);
+            // 
+            // m_browseDatFileButton
+            // 
+            this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_browseDatFileButton.Image = global::Alunorf_roh_plugin.Properties.Resources.open;
+            this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(423, 6);
+            this.m_browseDatFileButton.Name = "m_browseDatFileButton";
+            this.m_browseDatFileButton.Size = new System.Drawing.Size(40, 40);
+            this.m_browseDatFileButton.TabIndex = 13;
+            this.m_browseDatFileButton.UseVisualStyleBackColor = true;
+            this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(7, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Vorlage .dat Datei:";
+            // 
+            // m_datFileTextBox
+            // 
+            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_datFileTextBox.Location = new System.Drawing.Point(108, 17);
+            this.m_datFileTextBox.Name = "m_datFileTextBox";
+            this.m_datFileTextBox.Size = new System.Drawing.Size(309, 20);
+            this.m_datFileTextBox.TabIndex = 12;
+            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
+            // 
+            // m_selectButton
+            // 
+            this.m_selectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_selectButton.Image = global::Alunorf_roh_plugin.Properties.Resources.select;
+            this.m_selectButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_selectButton.Location = new System.Drawing.Point(469, 6);
+            this.m_selectButton.Name = "m_selectButton";
+            this.m_selectButton.Size = new System.Drawing.Size(40, 40);
+            this.m_selectButton.TabIndex = 14;
+            this.m_selectButton.UseVisualStyleBackColor = true;
+            this.m_selectButton.Click += new System.EventHandler(this.m_selectButton_Click);
+            // 
             // m_kanalColumnInfoField
             // 
             this.m_kanalColumnInfoField.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.m_kanalColumnInfoField.FillWeight = 25F;
-            this.m_kanalColumnInfoField.HeaderText = "iba Infofeld";
+            this.m_kanalColumnInfoField.HeaderText = "iba Kanal";
             this.m_kanalColumnInfoField.Name = "m_kanalColumnInfoField";
             this.m_kanalColumnInfoField.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
@@ -506,6 +683,13 @@
             this.m_kanalColumnDataType.MaxDropDownItems = 10;
             this.m_kanalColumnDataType.Name = "m_kanalColumnDataType";
             // 
+            // m_kanalColumnFaktor
+            // 
+            this.m_kanalColumnFaktor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_kanalColumnFaktor.FillWeight = 15F;
+            this.m_kanalColumnFaktor.HeaderText = "Faktor";
+            this.m_kanalColumnFaktor.Name = "m_kanalColumnFaktor";
+            // 
             // m_kanalColumnKennung
             // 
             this.m_kanalColumnKennung.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -529,161 +713,6 @@
             this.m_kanalColumnStutz.HeaderText = "Stützstellen";
             this.m_kanalColumnStutz.Name = "m_kanalColumnStutz";
             this.m_kanalColumnStutz.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_ftpTab
-            // 
-            this.m_ftpTab.Controls.Add(this.m_ftpPassword);
-            this.m_ftpTab.Controls.Add(this.label6);
-            this.m_ftpTab.Controls.Add(this.m_ftpUsername);
-            this.m_ftpTab.Controls.Add(this.label5);
-            this.m_ftpTab.Controls.Add(this.m_ftpDirectory);
-            this.m_ftpTab.Controls.Add(this.label2);
-            this.m_ftpTab.Controls.Add(this.m_ftpHost);
-            this.m_ftpTab.Controls.Add(this.label1);
-            this.m_ftpTab.Location = new System.Drawing.Point(4, 22);
-            this.m_ftpTab.Name = "m_ftpTab";
-            this.m_ftpTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_ftpTab.Size = new System.Drawing.Size(557, 384);
-            this.m_ftpTab.TabIndex = 7;
-            this.m_ftpTab.Text = "FTP";
-            this.m_ftpTab.UseVisualStyleBackColor = true;
-            // 
-            // m_ftpPassword
-            // 
-            this.m_ftpPassword.Location = new System.Drawing.Point(72, 129);
-            this.m_ftpPassword.Name = "m_ftpPassword";
-            this.m_ftpPassword.Size = new System.Drawing.Size(189, 20);
-            this.m_ftpPassword.TabIndex = 9;
-            this.m_ftpPassword.UseSystemPasswordChar = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 132);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(56, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Password:";
-            // 
-            // m_ftpUsername
-            // 
-            this.m_ftpUsername.Location = new System.Drawing.Point(72, 103);
-            this.m_ftpUsername.Name = "m_ftpUsername";
-            this.m_ftpUsername.Size = new System.Drawing.Size(189, 20);
-            this.m_ftpUsername.TabIndex = 7;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 106);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Username:";
-            // 
-            // m_ftpDirectory
-            // 
-            this.m_ftpDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_ftpDirectory.Location = new System.Drawing.Point(72, 51);
-            this.m_ftpDirectory.Name = "m_ftpDirectory";
-            this.m_ftpDirectory.Size = new System.Drawing.Size(424, 20);
-            this.m_ftpDirectory.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Directory:";
-            // 
-            // m_ftpHost
-            // 
-            this.m_ftpHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_ftpHost.Location = new System.Drawing.Point(72, 25);
-            this.m_ftpHost.Name = "m_ftpHost";
-            this.m_ftpHost.Size = new System.Drawing.Size(424, 20);
-            this.m_ftpHost.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Host:";
-            // 
-            // m_Panel
-            // 
-            this.m_Panel.Controls.Add(this.m_testRohButton);
-            this.m_Panel.Controls.Add(this.m_browseDatFileButton);
-            this.m_Panel.Controls.Add(this.label3);
-            this.m_Panel.Controls.Add(this.m_datFileTextBox);
-            this.m_Panel.Controls.Add(this.m_selectButton);
-            this.m_Panel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.m_Panel.Location = new System.Drawing.Point(0, 358);
-            this.m_Panel.Name = "m_Panel";
-            this.m_Panel.Size = new System.Drawing.Size(565, 52);
-            this.m_Panel.TabIndex = 1;
-            // 
-            // m_testRohButton
-            // 
-            this.m_testRohButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_testRohButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testRohButton.Location = new System.Drawing.Point(515, 6);
-            this.m_testRohButton.Name = "m_testRohButton";
-            this.m_testRohButton.Size = new System.Drawing.Size(40, 40);
-            this.m_testRohButton.TabIndex = 15;
-            this.m_testRohButton.UseVisualStyleBackColor = true;
-            this.m_testRohButton.Click += new System.EventHandler(this.m_testRohButton_Click);
-            // 
-            // m_browseDatFileButton
-            // 
-            this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browseDatFileButton.Image = global::Alunorf_roh_plugin.Properties.Resources.open;
-            this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(423, 6);
-            this.m_browseDatFileButton.Name = "m_browseDatFileButton";
-            this.m_browseDatFileButton.Size = new System.Drawing.Size(40, 40);
-            this.m_browseDatFileButton.TabIndex = 13;
-            this.m_browseDatFileButton.UseVisualStyleBackColor = true;
-            this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(18, 20);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "template .dat file:";
-            // 
-            // m_datFileTextBox
-            // 
-            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_datFileTextBox.Location = new System.Drawing.Point(108, 17);
-            this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(309, 20);
-            this.m_datFileTextBox.TabIndex = 12;
-            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
-            // 
-            // m_selectButton
-            // 
-            this.m_selectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_selectButton.Image = global::Alunorf_roh_plugin.Properties.Resources.select;
-            this.m_selectButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_selectButton.Location = new System.Drawing.Point(469, 6);
-            this.m_selectButton.Name = "m_selectButton";
-            this.m_selectButton.Size = new System.Drawing.Size(40, 40);
-            this.m_selectButton.TabIndex = 14;
-            this.m_selectButton.UseVisualStyleBackColor = true;
-            this.m_selectButton.Click += new System.EventHandler(this.m_selectButton_Click);
             // 
             // PluginRohControl
             // 
@@ -751,14 +780,6 @@
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.Button m_testRohButton;
         private System.Windows.Forms.SaveFileDialog m_saveFileDialog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnInfoField;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnBezeichnung;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKurz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnEinheit;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_kanalColumnDataType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKennung;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnSollwert;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnStutz;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnInfoField;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnBezeichnung;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_stichColumnKurz;
@@ -774,5 +795,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnKurz;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_schlussColumnEinheit;
         private System.Windows.Forms.DataGridViewComboBoxColumn m_schlussColumnDataType;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox m_filePrefix;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnInfoField;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnBezeichnung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKurz;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnEinheit;
+        private System.Windows.Forms.DataGridViewComboBoxColumn m_kanalColumnDataType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnFaktor;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnKennung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnSollwert;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_kanalColumnStutz;
     }
 }

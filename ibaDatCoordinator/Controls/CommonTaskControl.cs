@@ -37,6 +37,7 @@ namespace iba.Controls
 
             pluginControl.Dock = DockStyle.Fill;
             this.m_pluginPanel.Controls.Add(pluginControl);
+            pluginControl.Parent = this.m_pluginPanel;
 
         }
 

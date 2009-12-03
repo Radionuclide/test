@@ -130,10 +130,10 @@
     <value>Fehler: .dat Datei konnte nicht geöffnet werden: {0}</value>
   </data>
   <data name="ErrorRohUnexpected" xml:space="preserve">
-    <value>Unexpected error while writing .roh file: {0}</value>
+    <value>Unerwarteter Fehler beim Schreiben der .roh Datei: {0}</value>
   </data>
   <data name="ErrorRohWrite" xml:space="preserve">
-    <value>Error: could not write .roh file: {0}</value>
+    <value>Fehler: .roh Datei konnte nicht geschrieben werden: {0}</value>
   </data>
   <data name="ErrorUnexpected" xml:space="preserve">
     <value>Unerwarteter Fehler: {0}</value>
@@ -195,5 +195,14 @@
   </data>
   <data name="ErrorRohFileCreate" xml:space="preserve">
     <value>Fehler: .roh Datei konnte nicht erzeugt werden: '{0}'</value>
+  </data>
+  <data name="tooltipTest" xml:space="preserve">
+    <value>.roh Test Datei erstellen</value>
+  </data>
+  <data name="ChannelAllreadyPresent" xml:space="preserve">
+    <value>Warning, channel with duplicate name  found in .dat file: '{0}'</value>
+  </data>
+  <data name="InfoAllreadyPresent" xml:space="preserve">
+    <value>Warning, info field with duplicate name found in .dat file: '{0}'</value>
   </data>
 </root>

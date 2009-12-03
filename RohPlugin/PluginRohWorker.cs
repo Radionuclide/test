@@ -39,7 +39,7 @@ namespace Alunorf_roh_plugin
             try
             {
                 string root = Path.GetFileNameWithoutExtension(datFile);
-                string rohFileName = root + ".roh";
+                string rohFileName = (m_data.FilePrefix == null ? "" : m_data.FilePrefix) + root + ".roh";
                 int currentFileNr = System.Threading.Interlocked.Increment(ref filenamecount);
                 string tempFilePath = Path.Combine(Path.GetTempPath(), currentFileNr.ToString() + ".roh");
                 iba.RohWriter rw = new iba.RohWriter();

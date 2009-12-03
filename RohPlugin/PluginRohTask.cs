@@ -54,6 +54,13 @@ namespace Alunorf_roh_plugin
             set { m_ftpDirectory = value; }
         }
 
+        private string m_filePrefix;
+        public string FilePrefix
+        {
+            get { return m_filePrefix; }
+            set { m_filePrefix = value; }
+        }
+
         [NonSerialized]
         private PluginRohControl m_control;
         public IPluginControl GetControl()
@@ -76,6 +83,7 @@ namespace Alunorf_roh_plugin
             get { return m_templateDatFile; }
             set { m_templateDatFile = value; }
         }
+
 
         public void SetWorker(IPluginTaskWorker worker)
         {
@@ -122,6 +130,7 @@ namespace Alunorf_roh_plugin
             rt.FtpHost = FtpHost;
             rt.FtpUser = FtpUser;
             rt.FtpPassword = FtpPassword;
+            rt.FilePrefix = FilePrefix;
             rt.SelectedTab = SelectedTab;
             rt.TemplateDatFile = TemplateDatFile;
             BinaryFormatter bf = new BinaryFormatter();
@@ -172,6 +181,7 @@ namespace Alunorf_roh_plugin
             m_ftpUser = "";
             m_ftpPass = "";
             m_templateDatFile = "";
+            m_filePrefix = "";
         }
 
         public string[] RohInputKommentareMultiLine

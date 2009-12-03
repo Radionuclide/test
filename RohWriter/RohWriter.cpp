@@ -85,6 +85,22 @@ namespace iba {
 							requiredInfoFields.erase(it);
 							infoFieldsCopy.insert(cliext::pair<String^,String^>(name,value));
 						}
+						else if (name->EndsWith("_i0"))
+						{
+							String^ shortername = name->Substring(0,name->Length - 3);
+							it = requiredInfoFields.find(shortername);
+							if (it == requiredInfoFields.end()) continue;
+							String^ longername = shortername + "_i1";
+							if (ibaFile->IsInfoPresent(longername) != 0)
+							{
+								unsigned int low = 0, high = 0;
+								UInt32::TryParse(value,low);
+								UInt32::TryParse(ibaFile->QueryInfoByName(longername),high);
+								requiredInfoFields.erase(it);
+								value = ((int)(low + (high << 16))).ToString(System::Globalization::CultureInfo::InvariantCulture);
+								infoFieldsCopy.insert(cliext::pair<String^,String^>(shortername,value));
+							}
+						}
 					}
 				}
 			}
@@ -634,7 +650,12 @@ namespace iba {
 			case DataTypeEnum::I4: strncpy(buf+46,"I4    ",6); dataSize = 4; break;
 		}
 		for (int i = 52; i < 90; i++) buf[i] = ' ';
-		WriteASCIIIntInBuffer(buf+52,1); //If Faktor DOES happen to be important, write factor here
+		//WriteASCIIIntInBuffer(buf+52,1); //If Faktor DOES happen to be important, write factor here
+		tmp = (line->Faktor).ToString(System::Globalization::CultureInfo::InvariantCulture);
+		const char* factorStr = context.marshal_as<const char*>(tmp);
+		nameSize = min(strlen(factorStr),16);
+		strncpy(buf+52, factorStr,nameSize);
+
 		WriteASCIIIntInBuffer(buf+52+16,line->Kennung);
 		WriteASCIIIntInBuffer(buf+52+16+12,dataSize);
 		//WriteASCIIIntInBuffer(buf+52+16+12+5,dim); //not known at the moment, write in later
@@ -737,7 +758,7 @@ namespace iba {
 			case DataTypeEnum::F4: dataSize = 4; break;
 			case DataTypeEnum::F8: dataSize = 8;break;
 			case DataTypeEnum::I: dataSize = 4; break;
-			case DataTypeEnum::I2: dataSize = 1; break;
+			case DataTypeEnum::I2: dataSize = 1; break;//apparently an I2 is a byte to, very weird
 			case DataTypeEnum::I4: dataSize = 4; break;
 		}
 		int bufSize = dataSize*size;

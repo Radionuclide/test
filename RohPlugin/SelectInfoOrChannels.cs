@@ -55,6 +55,8 @@ namespace Alunorf_roh_plugin
                         if (String.IsNullOrEmpty(name) && String.IsNullOrEmpty(value)) break; //no more infofields
                         if (name.StartsWith("Vector_name_", StringComparison.InvariantCultureIgnoreCase))
                         {
+                            if (AdditionalInfos.ContainsKey(value))
+                                continue;
                             ExtraData ed = new ExtraData();
                             ed.unit = ""; //fill in later
                             ed.dt = "F";
@@ -103,6 +105,12 @@ namespace Alunorf_roh_plugin
                         else if (reader.QueryInfoByName("hidden")!="1")
                         {
                             if (String.IsNullOrEmpty(name)) continue;
+                            if (AdditionalInfos.ContainsKey(name))
+                            {
+                                String err = String.Format(Properties.Resources.ChannelAllreadyPresent, name);
+                                MessageBox.Show(err, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                continue;
+                            }
                             ExtraData ed = new ExtraData();
                             ed.unit = reader.QueryInfoByName("unit");
                             ed.dt = "F";
@@ -134,7 +142,23 @@ namespace Alunorf_roh_plugin
 				        String value;
 				        ibaFile.QueryInfoByIndex(i, out name, out value);
 				        if (String.IsNullOrEmpty(name) && String.IsNullOrEmpty(value)) break; //no more infofields
+                        if (name.EndsWith("_i0")) //parse ints that are written as two int16s
+                        {
+                            if (ibaFile.IsInfoPresent(name.Substring(0, name.Length - 1)+"1") != 0)
+                            {
+                                name = name.Substring(0, name.Length - 3);
+                            }
+                        }
+                        else if (name.EndsWith("_i1") && ibaFile.IsInfoPresent(name.Substring(0, name.Length - 1)+"0") != 0)
+                            continue;
+                        if (AdditionalInfos.ContainsKey(name))
+                        {
+                            String err = String.Format(Properties.Resources.InfoAllreadyPresent, name);
+                            MessageBox.Show(err, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            continue;
+                        }
                         m_lbIba.Items.Add(name);
+                       
                         ExtraData ed = new ExtraData();
                         ed.unit = "";
                         ed.description = name.Length>30?name.Substring(0,30):name;
