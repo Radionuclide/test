@@ -195,5 +195,25 @@ namespace iba.Controls
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void m_rbLimitUsageChoiceChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                if (rb == m_rbLimitDirectories)
+                {
+                    m_rbQuota.Checked = false;
+                    m_nudQuota.Enabled = false;
+                    m_nudDirs.Enabled = true;
+                }
+                else
+                {
+                    m_rbLimitDirectories.Checked = false;
+                    m_nudQuota.Enabled = true;
+                    m_nudDirs.Enabled = false;
+                }
+            }
+        }
     }
 }

@@ -206,6 +206,7 @@
             this.m_rbQuota.Name = "m_rbQuota";
             this.m_rbQuota.TabStop = true;
             this.m_rbQuota.UseVisualStyleBackColor = true;
+            this.m_rbQuota.CheckedChanged += new System.EventHandler(this.m_rbLimitUsageChoiceChanged);
             // 
             // m_nudQuota
             // 
@@ -240,6 +241,7 @@
             this.m_rbLimitDirectories.Name = "m_rbLimitDirectories";
             this.m_rbLimitDirectories.TabStop = true;
             this.m_rbLimitDirectories.UseVisualStyleBackColor = true;
+            this.m_rbLimitDirectories.CheckedChanged += new System.EventHandler(this.m_rbLimitUsageChoiceChanged);
             // 
             // m_nudDirs
             // 
