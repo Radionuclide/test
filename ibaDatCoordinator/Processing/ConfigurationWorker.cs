@@ -539,7 +539,7 @@ namespace iba.Processing
                             catch (Exception ex)
                             {
                                 Stop = true;
-                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.Message, file);
+                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), file);
                             }
 
                             if (m_stop) break;
@@ -1859,53 +1859,55 @@ namespace iba.Processing
                     }
                 }
 
-               
-                IbaFile ibaDatFile = new IbaFileClass();
                 Nullable<DateTime> time = null;
+
                 try
                 {
-                    ibaDatFile.OpenForUpdate(DatFile);
-                    time = File.GetLastWriteTime(DatFile);
-                }
-                catch //happens when timed out and proc has not released its resources yet
-                {
-                    m_sd.Changed = true;
-                    return;
-                }
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[DatFile].TimesTried++;
-                }
-                if (completeSucces)
-                {
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
-                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
-                }
-                else
-                {
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
-                    //write GUIDs of those that were succesfull
+                    IbaFile ibaDatFile = new IbaFileClass();
+                    try
+                    {
+                        ibaDatFile.OpenForUpdate(DatFile);
+                        time = File.GetLastWriteTime(DatFile);
+                    }
+                    catch //happens when timed out and proc has not released its resources yet
+                    {
+                        m_sd.Changed = true;
+                        return;
+                    }
                     lock (m_sd.DatFileStates)
                     {
-                        string guids = "";
-                        string outputfiles = "";
-                        foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
-                            if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
-                            {
-                                guids += stat.Key.Guid.ToString() + ";";
-                                if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
-                                    outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
-                            }
-                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
-                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                        m_sd.DatFileStates[DatFile].TimesTried++;
                     }
-                }
-                lock (m_sd.DatFileStates)
-                {
-                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
-                }
-                try
-                {
+
+                    if (completeSucces)
+                    {
+                        ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
+                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
+                    }
+                    else
+                    {
+                        ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
+                        //write GUIDs of those that were succesfull
+                        lock (m_sd.DatFileStates)
+                        {
+                            string guids = "";
+                            string outputfiles = "";
+                            foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
+                                if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                                {
+                                    guids += stat.Key.Guid.ToString() + ";";
+                                    if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
+                                        outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
+                                }
+                            ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                        }
+                    }
+
+                    lock (m_sd.DatFileStates)
+                    {
+                        ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
+                    }
                     ibaDatFile.Close();
                 }
                 catch (Exception ex)
