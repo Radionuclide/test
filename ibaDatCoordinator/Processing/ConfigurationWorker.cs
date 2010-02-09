@@ -1389,10 +1389,14 @@ namespace iba.Processing
                     try
                     {
                         status = ibaDatFile.QueryInfoByName("$DATCOOR_status");
+                        if (string.IsNullOrEmpty(status))
+                            throw new Exception("no info field present");
                     }
                     catch //old way
                     {
                         status = ibaDatFile.QueryInfoByName("status");
+                        if (string.IsNullOrEmpty(status))
+                            throw new Exception("no info field present");
                     }
                     if (status == "processed")
                     {
@@ -1423,6 +1427,8 @@ namespace iba.Processing
                             try
                             {
                                 guidstring = ibaDatFile.QueryInfoByName("$DATCOOR_TasksDone");
+                                if (string.IsNullOrEmpty(guidstring))
+                                    throw new Exception("no info field present");
                             }
                             catch //old way
                             {
@@ -1534,16 +1540,20 @@ namespace iba.Processing
                     String frames = null;
                     try
                     {
-                        ibaDatFile.QueryInfoByName("frames");
+                        frames = ibaDatFile.QueryInfoByName("frames");
                     }
                     catch
                     {
                     }
-                    if (frames != null && frames == "1000000000")
+                    if (String.IsNullOrEmpty(frames) || frames == "1000000000")
                     {
+                        try { 
+                            ibaDatFile.Close(); 
+                        }
+                        catch { }
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
-                        try { if (time != null) File.SetLastWriteTime(filename, time.Value); }catch {} 
-                        return DatFileStatus.State.COMPLETED_FAILURE;
+                        //try { if (time != null) File.SetLastWriteTime(filename, time.Value); }catch {} 
+                        return DatFileStatus.State.NO_ACCESS;
                     }
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
                     ibaDatFile.Close();
