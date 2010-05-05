@@ -376,5 +376,12 @@ namespace iba.Controls
                 m_gridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            DatFiles.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            m_attempts.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+        }
     }
 }

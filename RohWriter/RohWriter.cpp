@@ -484,14 +484,14 @@ namespace iba {
 	DWORD RohWriter::WritePartialHeaderLine(const char* headerName, int nrElements)
 	{ //writes the headerline but without offset and blocksize //filled in later
 		DWORD offset = GetPosition();
-		char buf[50];
+		char buf[51];
 		int nameSize = strlen(headerName);
 		strncpy(buf,headerName,nameSize);
-		for (int i = nameSize; i < 48; i++) buf[i] = ' ';
+		for (int i = nameSize; i < 49; i++) buf[i] = ' ';
 		WriteASCIIIntInBuffer(buf+44,nrElements);
-		buf[48] = ';';
-		buf[49] = '\n';
-		Write(buf,50);
+		buf[49] = ';';
+		buf[50] = '\n';
+		Write(buf,51);
 		return offset;
 	}
 	

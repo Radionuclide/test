@@ -81,12 +81,13 @@ namespace iba.Processing
                 {
                     try
                     {
-                        foreach (string file in Directory.GetFiles(dir, "*" + m_extension, SearchOption.AllDirectories))
+                        DirectoryInfo dirinf = new DirectoryInfo(dir);
+                        List<FileInfo> fileinfs = Utility.PathUtil.GetFilesInSubsSafe("*" + m_extension, dirinf);
+                        foreach (FileInfo inf in fileinfs)
                         {
                             try
                             {
-                                FileInfo inf = new FileInfo(file);
-                                datNam.filename = file;
+                                datNam.filename = inf.FullName;
                                 datNam.time = inf.LastWriteTime;
                                 DateAndNames.Add(datNam);
                                 m_size += (ulong)inf.Length;

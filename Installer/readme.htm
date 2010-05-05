@@ -7,7 +7,7 @@
  p.section    {color: plum; font-size: 20px; font-weight: bold}
  p.header1    {color: white; background-color: ForestGreen; font-size: 16px; font-weight: bold; padding: 2px}
  p.header2    {color: black; font-size: 14px; font-weight: bold}
- li.highlight {color: red; font-size: 14px; font-weigth: bold}
+ li.highlight {color: red; font-size: 14px; font-weight: bold}
 </style>
 <TITLE>iba DatCoordinator ReadMe</TITLE>
 </HEAD>
@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.14.8.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.14.9.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,9 +26,27 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.14.8.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.14.9.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.14.9 - 18/03/2010</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI>  The job or status tree has been made resizable.
+    </LI>
+    <LI>  Limit of the copy task increased to 10 Terra bytes.
+    </LI>
+</UL>
+<P class="header2">BugFixes</P>
+<UL>
+    <LI>  Variety of problems when selecting for directory structure to keep the original structure and the original source directory was a root folder.
+    </LI>
+    <LI>  When browsing for the ibaAnalyzer executable, the nonsensical text "OpenFileDialog1" was suggested for the filename.
+    </LI>
+    <LI>  Under certain circumstances, the "permanent errors" tab gave an exception when shown.
+    </LI>
+</UL>
 
 <P class="header1">Version 1.14.8 - 28/01/2010</P>
 <P class="header2">BugFix</P>

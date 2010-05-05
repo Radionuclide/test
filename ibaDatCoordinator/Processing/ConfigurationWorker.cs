@@ -973,7 +973,13 @@ namespace iba.Processing
             m_sd.UpdatingFileList = true;
             try
             {
-                fileInfos = dirInfo.GetFiles("*.dat", m_cd.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                if (m_cd.SubDirs)
+                {
+                    List<FileInfo> fileInfosList = Utility.PathUtil.GetFilesInSubsSafe("*.dat", dirInfo);
+                    fileInfos = fileInfosList.ToArray();
+                }
+                else
+                    fileInfos = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
                 Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
                 {
                     int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
@@ -1382,6 +1388,8 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
                     return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
                 }
+
+                Stopwatch st = new Stopwatch();
 
                 try
                 {
@@ -2115,7 +2123,7 @@ namespace iba.Processing
             {   //concatenate subfolder corresponding to dat subfolder
                 string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
-                string s0 = s1.Remove(0, s2.Length + 1);
+                string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
             }
             if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
@@ -2308,7 +2316,7 @@ namespace iba.Processing
                 {   //concatenate subfolder corresponding to dat subfolder
                     string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                     string s1 = Path.GetFullPath(filename);
-                    string s0 = s1.Remove(0, s2.Length + 1);
+                    string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
                     dir = Path.GetDirectoryName(Path.Combine(dir, s0));
                 }
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE 
@@ -2608,7 +2616,7 @@ namespace iba.Processing
                 {
                     string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
                     string s1 = Path.GetFullPath(filename);
-                    string s0 = s1.Remove(0, s2.Length + 1);
+                    string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
                     dir = Path.GetDirectoryName(Path.Combine(dir, s0));
                 }
                 if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
@@ -3003,8 +3011,6 @@ namespace iba.Processing
                     return;
                 }
             }
-
-
 
             string dir = null;
             try

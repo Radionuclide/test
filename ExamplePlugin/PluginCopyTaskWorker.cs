@@ -59,7 +59,7 @@ namespace ExamplePlugin
             {
                 string s2 = Path.GetFullPath(m_parentJob.DatDirectoryUNC);
                 string s1 = Path.GetFullPath(filename);
-                string s0 = s1.Remove(0, s2.Length + 1);
+                string s0 = s2.EndsWith(@"\")?s1.Remove(0, s2.Length):s1.Remove(0, s2.Length + 1);
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
             }
             if (m_data.Subfolder != PluginCopyTask.SubfolderChoiceC.NONE && m_data.Subfolder != PluginCopyTask.SubfolderChoiceC.SAME)

@@ -102,7 +102,8 @@ namespace iba.Controls
             // 
             // DatFiles
             // 
-            this.DatFiles.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DatFiles.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DatFiles.FillWeight = 90F;
             resources.ApplyResources(this.DatFiles, "DatFiles");
             this.DatFiles.Name = "DatFiles";
             this.DatFiles.ReadOnly = true;
@@ -110,8 +111,8 @@ namespace iba.Controls
             // 
             // m_attempts
             // 
-            this.m_attempts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.m_attempts.FillWeight = 20F;
+            this.m_attempts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.m_attempts.FillWeight = 15F;
             resources.ApplyResources(this.m_attempts, "m_attempts");
             this.m_attempts.Name = "m_attempts";
             this.m_attempts.ReadOnly = true;

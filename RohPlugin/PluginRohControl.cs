@@ -24,6 +24,7 @@ namespace Alunorf_roh_plugin
             m_toolTip.SetToolTip(m_browseDatFileButton, Alunorf_roh_plugin.Properties.Resources.tooltipBrowse);
             m_toolTip.SetToolTip(m_testRohButton, Alunorf_roh_plugin.Properties.Resources.tooltipTest);
             m_testRohButton.Image = Alunorf_roh_plugin.Properties.Resources.RohTask.ToBitmap();
+            m_kurzbezeichner.Font = m_parameter.Font = m_kommentare.Font = new Font(FontFamily.GenericMonospace, 8, FontStyle.Regular);
         }
 
         #region IPluginControl Members

@@ -700,7 +700,7 @@ namespace iba.Controls
             // 
             // m_openFileDialog1
             // 
-            this.m_openFileDialog1.FileName = "openFileDialog1";
+            this.m_openFileDialog1.FileName = "";
             // 
             // ConfigurationControl
             // 

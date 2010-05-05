@@ -33,10 +33,29 @@ namespace iba.Controls
             if (Directory.Exists(datDir))
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(datDir);
-                FileInfo[] fileInfos = dirInfo.GetFiles("*.dat", data.SubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                foreach (FileInfo fi in fileInfos)
+                try
                 {
-                    m_files.Add(fi.FullName);
+                    if (data.SubDirs)
+                    {
+                        List<FileInfo> fileInfos = Utility.PathUtil.GetFilesInSubsSafe("*.dat",dirInfo);
+                        foreach (FileInfo fi in fileInfos)
+                        {
+                            m_files.Add(fi.FullName);
+                        }
+                    }
+                    else
+                    {
+                    //List<FileInfo> fileInfos = Utility.FileUtilities.GetFilesSave(
+                        FileInfo[] fileInfos = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
+                        foreach (FileInfo fi in fileInfos)
+                        {
+                            m_files.Add(fi.FullName);
+                        }
+                    }
+                }
+                catch //ignore directories one has no access to
+                {
+
                 }
             }
         }

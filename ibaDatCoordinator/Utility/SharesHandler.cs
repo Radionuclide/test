@@ -13,6 +13,7 @@ namespace iba.Utility
         public static bool TestPath(string path, string userName, string passWord, out string errorMsg, bool createallowed)
         {
 	        errorMsg = String.Empty;
+            bool doNotDisconnect = false; //set to true to avoid disconnecting the unc path
             if(path.StartsWith(@"\\"))
 	        {
 		        try
@@ -20,10 +21,15 @@ namespace iba.Utility
 			        //First add connection
 			        String computer = Path.GetPathRoot(path);
 			        int error = Shares.ConnectToComputer(computer, userName, passWord);
-			        if(error != 0)
+			        if(error != 0 )
 			        {
-				        errorMsg = (new System.ComponentModel.Win32Exception(error)).Message;
-				        return false;
+                        if (!Directory.Exists(computer))
+                        {
+                            errorMsg = (new System.ComponentModel.Win32Exception(error)).Message;
+                            return false;
+                        } //in case computer exists, the connect was not necessary
+                        else
+                            doNotDisconnect = true;
 			        }
 		        }
 		        catch(Exception ex)
@@ -52,7 +58,7 @@ namespace iba.Utility
 	        }
 	        finally
 	        {
-		        if(path.StartsWith(@"\\"))
+		        if(path.StartsWith(@"\\") && !doNotDisconnect)
 		        {
 			        //Cancel connection
 			        String computer = Path.GetPathRoot(path);
@@ -93,6 +99,8 @@ namespace iba.Utility
                         m_connectedComputers.Add(computer, 1);
                         return 1;
                     }
+                    else if (Directory.Exists(computer)) //already available, do not add
+                        return 1;
                     else return 0;
                 }
             }

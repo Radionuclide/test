@@ -205,7 +205,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_nudQuota, "m_nudQuota");
             this.m_nudQuota.Maximum = new decimal(new int[] {
-            1000000,
+            10000000,
             0,
             0,
             0});

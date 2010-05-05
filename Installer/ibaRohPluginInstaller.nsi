@@ -2,7 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Roh Plugin Installer"
-!define PRODUCT_VERSION "1.1"
+!define PRODUCT_VERSION "1.3"
+!define PRODUCT_FILE_VERSION "1.3.0.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -64,10 +65,20 @@ ${StrLoc}
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "ibaRohPluginInstaller.exe"
+OutFile "ibaRohPluginInstaller_v${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator\plugins"
 ShowInstDetails show
 BrandingText "iba AG"
+
+
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright © 2006 iba AG"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
+VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 Section "MainSection" SEC01
 

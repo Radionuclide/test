@@ -38,7 +38,6 @@ namespace iba
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.m_EntriesNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.m_statusPane = new TD.Eyefinder.NavigationPane();
@@ -76,6 +75,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -83,14 +83,14 @@ namespace iba
             this.m_statusStrip.SuspendLayout();
             this.m_navBar.SuspendLayout();
             this.m_loggingPane.SuspendLayout();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_EntriesNumericUpDown1)).BeginInit();
             this.m_statusPane.SuspendLayout();
             this.m_configPane.SuspendLayout();
             this.panel1.SuspendLayout();
             this.m_menuStrip.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -103,8 +103,7 @@ namespace iba
             // toolStripContainer1.ContentPanel
             // 
             resources.ApplyResources(this.toolStripContainer1.ContentPanel, "toolStripContainer1.ContentPanel");
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.m_rightPane);
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.m_navBar);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer2);
             resources.ApplyResources(this.toolStripContainer1, "toolStripContainer1");
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -132,8 +131,8 @@ namespace iba
             resources.ApplyResources(this.m_rightPane, "m_rightPane");
             this.m_rightPane.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.m_rightPane.Name = "m_rightPane";
-            this.m_rightPane.Enter += new System.EventHandler(this.m_rightPane_Enter);
             this.m_rightPane.Leave += new System.EventHandler(this.m_rightPane_Leave);
+            this.m_rightPane.Enter += new System.EventHandler(this.m_rightPane_Enter);
             // 
             // m_navBar
             // 
@@ -143,11 +142,11 @@ namespace iba
             this.m_navBar.Controls.Add(this.m_statusPane);
             this.m_navBar.Controls.Add(this.m_configPane);
             this.m_navBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this.m_navBar.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             resources.ApplyResources(this.m_navBar, "m_navBar");
+            this.m_navBar.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.m_navBar.SelectedPane = this.m_settingsPane;
+            this.m_navBar.SelectedPane = this.m_loggingPane;
             this.m_navBar.ShowPanes = 5;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 
@@ -163,22 +162,10 @@ namespace iba
             // 
             // m_loggingPane
             // 
-            this.m_loggingPane.Controls.Add(this.splitContainer1);
+            this.m_loggingPane.Controls.Add(this.m_EntriesNumericUpDown1);
+            this.m_loggingPane.Controls.Add(this.label1);
             resources.ApplyResources(this.m_loggingPane, "m_loggingPane");
             this.m_loggingPane.Name = "m_loggingPane";
-            // 
-            // splitContainer1
-            // 
-            resources.ApplyResources(this.splitContainer1, "splitContainer1");
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.m_EntriesNumericUpDown1);
             // 
             // label1
             // 
@@ -233,11 +220,11 @@ namespace iba
             this.m_configTreeView.HideSelection = false;
             this.m_configTreeView.Name = "m_configTreeView";
             this.m_configTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragDrop);
-            this.m_configTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragOver);
             this.m_configTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnConfigurationTreeViewAfterSelect);
+            this.m_configTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_configTreeView_MouseDown);
             this.m_configTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_configTreeView_KeyDown);
             this.m_configTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_configTreeView_ItemDrag);
-            this.m_configTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_configTreeView_MouseDown);
+            this.m_configTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragOver);
             // 
             // panel1
             // 
@@ -440,6 +427,19 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
+            // splitContainer2
+            // 
+            resources.ApplyResources(this.splitContainer2, "splitContainer2");
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.m_navBar);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.m_rightPane);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -459,16 +459,16 @@ namespace iba
             this.m_statusStrip.PerformLayout();
             this.m_navBar.ResumeLayout(false);
             this.m_loggingPane.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.ResumeLayout(false);
+            this.m_loggingPane.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_EntriesNumericUpDown1)).EndInit();
             this.m_statusPane.ResumeLayout(false);
             this.m_configPane.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.m_menuStrip.ResumeLayout(false);
             this.m_menuStrip.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -502,7 +502,6 @@ namespace iba
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private TD.Eyefinder.NavigationPane m_loggingPane;
         private System.Windows.Forms.ToolStripMenuItem loggingToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown m_EntriesNumericUpDown1;
         private System.Windows.Forms.Panel panel1;
@@ -520,6 +519,7 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem watchdogToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_settingsPane;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
 

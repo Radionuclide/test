@@ -82,7 +82,7 @@ namespace iba
             ImageList confsImageList = new ImageList();
             confsImageList.Images.Add(iba.Properties.Resources.configuration);
             confsImageList.Images.Add(iba.Properties.Resources.report_running);
-            confsImageList.Images.Add(iba.Properties.Resources.extract_running);
+            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.extract_running.ToBitmap()));
             confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
             confsImageList.Images.Add(iba.Properties.Resources.copydat_running);
             confsImageList.Images.Add(iba.Properties.Resources.iftask);

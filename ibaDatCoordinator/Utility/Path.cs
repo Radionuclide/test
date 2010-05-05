@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace iba.Utility
 {
@@ -10,7 +11,7 @@ namespace iba.Utility
 
         static PathUtil()
 		{
-			rootPath = System.IO.Path.GetDirectoryName(typeof(PathUtil).Assembly.Location);
+			rootPath = Path.GetDirectoryName(typeof(PathUtil).Assembly.Location);
 			rootPath += @"\\";
 		}
 
@@ -37,5 +38,36 @@ namespace iba.Utility
 	        else
 		        return rootPath + relPath;
         }
-	}
+
+        public static List<FileInfo> GetFilesInSubsSafe(string search, DirectoryInfo dir)
+        {
+            List<FileInfo> result = new List<FileInfo>();
+            if (dir==null) return result;
+            try
+            {
+                result.AddRange(dir.GetFiles(search));
+            }
+            catch
+            {
+            }
+            try
+            {
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    try
+                    {
+                        result.AddRange(GetFilesInSubsSafe(search, subdir));
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return result;
+        }
+    }
 }

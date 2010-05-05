@@ -201,6 +201,9 @@
   <data name="DatFiles.MinimumWidth" type="System.Int32, mscorlib">
     <value>204</value>
   </data>
+  <data name="DatFiles.Width" type="System.Int32, mscorlib">
+    <value>419</value>
+  </data>
   <metadata name="m_attempts.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -309,12 +312,6 @@
   <data name="&gt;&gt;m_refreshTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
-    <value>m_toolTip</value>
-  </data>
-  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_check.Name" xml:space="preserve">
     <value>m_check</value>
   </data>
@@ -332,6 +329,12 @@
   </data>
   <data name="&gt;&gt;m_attempts.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
+    <value>m_toolTip</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PermanentFileErrorsControl</value>
