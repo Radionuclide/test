@@ -619,8 +619,15 @@ namespace iba.Utility
 		public static string PathToUnc(string fileName, bool convertLocalPaths) 
 		{
 			if (null == fileName || 0 == fileName.Length) return string.Empty;
-			
-			fileName = Path.GetFullPath(fileName);
+
+            try
+            {
+                fileName = Path.GetFullPath(fileName);
+            }
+            catch
+            {
+                return fileName;
+            }
 			if (!IsValidFilePath(fileName)) return fileName;
 			
 			int nRet = 0;

@@ -173,11 +173,13 @@ namespace iba.Processing
     {
         public IbaAnalyzerExceedingTimeLimitException(string message)
             : base(message)
-        {}
+        {
+        }
 
         public IbaAnalyzerExceedingTimeLimitException()
             : base(iba.Properties.Resources.errAnalyzerTime)
-        { }
+        {
+        }
 
     }
 
@@ -185,10 +187,12 @@ namespace iba.Processing
     {
         public IbaAnalyzerExceedingMemoryLimitException(string message)
             : base(message)
-        { }
+        {
+        }
 
         public IbaAnalyzerExceedingMemoryLimitException()
             : base(iba.Properties.Resources.errAnalyzerMemory)
-        { }
+        {
+        }
     }
 }

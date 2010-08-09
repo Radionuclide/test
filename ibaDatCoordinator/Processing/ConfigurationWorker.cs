@@ -98,6 +98,9 @@ namespace iba.Processing
             {
                 if (fswt != null)
                 {
+                    fswt.Created -= new FileSystemEventHandler(OnNewDatFileOrRenameFile);
+                    fswt.Renamed -= new RenamedEventHandler(OnNewDatFileOrRenameFile);
+                    fswt.Error -= new ErrorEventHandler(OnFileSystemError);
                     fswt.Dispose();
                     fswt = null;
                 }
@@ -107,11 +110,7 @@ namespace iba.Processing
         {
             lock (m_fswtLock)
             {
-                if (fswt != null)
-                {
-                    fswt.Dispose();
-                    fswt = null;
-                }
+                DisposeFswt();
                 fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
                 fswt.NotifyFilter = NotifyFilters.FileName;
                 fswt.IncludeSubdirectories = m_cd.SubDirs;
@@ -831,6 +830,10 @@ namespace iba.Processing
                         FileStream fs = null;
                         try
                         {
+                            //if marked by PDA as offline, don't process this file yet
+                            if ((File.GetAttributes(filename) & FileAttributes.Offline) == FileAttributes.Offline)
+                                continue;
+
                             fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
                             fs.Close();
                             fs.Dispose();

@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.14.9.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.14.11.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,9 +26,36 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.14.9.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.14.11.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.14.11 - 9/08/2010</P>
+</UL>
+<P class="header2">BugFixes</P>
+<UL>
+    <LI>  Certain types of invalid paths caused ibaDatCoordinator to throw an uncatched exception when pressing the "Test Path" button.
+    </LI>
+</UL>
+
+<P class="header1">Version 1.14.10 - 5/08/2010</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI>  ibaDatCoorditator is modified to not process files that have the 'offline' attribute. This attribute is set by PDA to indicate that it is still busy with the .dat file.
+    </LI>
+	<LI>  Installer adapted so ibaDatCoordinator installs under windows 7
+    </LI>
+</UL>
+<P class="header2">BugFixes</P>
+<UL>
+    <LI>  Spurious debug log message removed.
+    </LI>
+    <LI>  When logging in simultaneously as a different user (for example through remote login) a new client was started causing all sorts of problems.
+    </LI>
+	<LI>  "New"-button in the batch file editing control did not work anymore
+    </LI>
+</UL>
+
 
 <P class="header1">Version 1.14.9 - 18/03/2010</P>
 <P class="header2">Enhancements</P>

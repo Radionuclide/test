@@ -280,8 +280,9 @@ namespace iba.Controls
         private void m_newButton_Click(object sender, EventArgs e)
         {
             m_textEditor.Text = "";
+            m_textEditor.Refresh();
             //m_textEditor.SetHighlighting("VBNET");
-            m_textEditor.Invalidate(); 
+            //m_textEditor.Invalidate(); 
             m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
             m_saveButton.Enabled = m_bChanged = false;
         }

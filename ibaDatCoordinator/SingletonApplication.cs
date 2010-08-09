@@ -22,17 +22,31 @@ namespace iba
 			{
 				//Activate app that is already running
                 IntPtr handle = FindWindow(null, "ibaDatCoordinatorStatusCloseForm");
-				if(handle.ToInt32() != 0)
-    				iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);  
+                if (handle.ToInt32() != 0)
+                    iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
+                else
+                    MessageBox.Show(iba.Properties.Resources.AllReadyRunningOtherUser, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return true;
 			}
 		}
+
 		static bool IsFirstInstance()
 		{
-			m_Mutex = new System.Threading.Mutex(false, "ibaDatCoordinatorServerStatus Mutex");
-			bool owned = false;
-			owned = m_Mutex.WaitOne(TimeSpan.Zero, false);
-			return owned ;
+            try
+            {
+                m_Mutex = new System.Threading.Mutex(false, "Global\\ibaDatCoordinatorServerStatus Mutex");
+                bool owned = false;
+                owned = m_Mutex.WaitOne(TimeSpan.Zero, false);
+                return owned;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+            catch (Exception)
+            {
+                return true;
+            }
 		}
 
 		static void OnExit(object sender,EventArgs args)

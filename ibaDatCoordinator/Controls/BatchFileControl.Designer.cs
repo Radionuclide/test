@@ -72,6 +72,7 @@ namespace iba.Controls
             this.m_newButton.Image = global::iba.Properties.Resources.NewDocument;
             this.m_newButton.Name = "m_newButton";
             this.m_newButton.UseVisualStyleBackColor = true;
+            this.m_newButton.Click += new System.EventHandler(this.m_newButton_Click);
             // 
             // m_textEditor
             // 
