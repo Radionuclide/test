@@ -698,10 +698,6 @@ namespace iba.Controls
             this.m_rbImmediate.UseVisualStyleBackColor = true;
             this.m_rbImmediate.CheckedChanged += new System.EventHandler(this.m_rbImmediate_CheckedChanged);
             // 
-            // m_openFileDialog1
-            // 
-            this.m_openFileDialog1.FileName = "";
-            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");

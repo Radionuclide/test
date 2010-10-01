@@ -940,4 +940,10 @@
   <data name="AllReadyRunningOtherUser" xml:space="preserve">
     <value>ibaDatCoordinator client already running (perhaps under a different user)</value>
   </data>
+  <data name="DeleteFilesProblem" xml:space="preserve">
+    <value>Problem deleting  .dat Files:</value>
+  </data>
+  <data name="RemoveMarkingsProblem" xml:space="preserve">
+    <value>Problem removing markings from .dat Files: </value>
+  </data>
 </root>

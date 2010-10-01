@@ -242,5 +242,25 @@ namespace iba.Utility
                 else return m_handler = new SharesHandler();
             }
         }
+
+
+        public void ReleaseReferenceDirect(string path)
+        {
+             if (IsUNC(path))
+                 Release(ComputerName(path));
+        }
+
+        public void AddReferenceDirect(string path, string username, string pass, out string error)
+        {
+            error = String.Empty;
+            if (IsUNC(path))
+            {
+                if (AddReference(ComputerName(path), username, pass) == 0)
+                {
+                    error = (new System.ComponentModel.Win32Exception(error)).Message;
+                    return;
+                }
+            }
+        }
     }
 }

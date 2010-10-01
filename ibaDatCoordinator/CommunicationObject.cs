@@ -16,6 +16,17 @@ using System.Diagnostics;
  */
 namespace iba
 {
+
+    public class FileProcessingProgressBar : MarshalByRefObject
+    {
+        public virtual bool UpdateProgress(string file, int count) {return true;}
+        public virtual string Error
+        {
+            get { return "";}
+            set { }
+        }
+    }
+
     public class CommunicationObject: MarshalByRefObject
     {
         private TaskManager m_manager;
@@ -138,6 +149,67 @@ namespace iba
         public string TestDbTaskConnection(UpdateDataTaskData udt)
         {
             return UpdateDataTaskWorker.TestConnecton(udt);
+        }
+
+        public void RemoveMarkings(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                {
+                    if (!String.IsNullOrEmpty(fp.ErrorString))
+                        myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + fp.ErrorString;
+                    else
+                    {
+                        List<string> files = fp.FindFiles(recursive);
+                        if (files != null && files.Count > 0)
+                        {
+                            myBar.UpdateProgress("filescount", files.Count);
+                            fp.RemoveMarkings(files, myBar);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
+        }
+
+        public void DeleteFiles(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                {
+                    if (!String.IsNullOrEmpty(fp.ErrorString))
+                        myBar.Error = iba.Properties.Resources.DeleteFilesProblem + fp.ErrorString;
+                    else
+                        fp.RemoveFiles(files, myBar);
+                }
+            }
+            catch (Exception ex)
+            {
+                myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
+        }
+
+        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                {
+                    if (!String.IsNullOrEmpty(fp.ErrorString))
+                        myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + fp.ErrorString;
+                    else
+                        fp.RemoveMarkings(files, myBar);
+                }
+            }
+            catch (Exception ex)
+            {
+                myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
         }
     }
 
@@ -272,7 +344,6 @@ namespace iba
             }
         }
 
-
         public void Logging_Log(string message)
         {
             try
@@ -354,6 +425,42 @@ namespace iba
             try
             {
                 m_com.TestNotifier(m_data);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+            }
+        }
+
+        public void RemoveMarkings(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.RemoveMarkings(path, username, pass, recursive,myBar);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+            }
+        }
+
+        public void DeleteFiles(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.DeleteFiles(path,  username,  pass, files, myBar);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+            }
+        }
+
+        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.RemoveMarkings(path,  username,  pass, files, myBar);
             }
             catch (SocketException)
             {

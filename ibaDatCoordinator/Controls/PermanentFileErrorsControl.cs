@@ -334,7 +334,7 @@ namespace iba.Controls
         private void m_deleteDats_Click(object sender, EventArgs e)
         {
             DetermineCheckedFiles();
-            DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_checkedFiles);
+            DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_cd.DatDirectoryUNC,m_cd.Username, m_cd.Password, m_checkedFiles);
             dlg.StartPosition = FormStartPosition.CenterParent;
             dlg.ShowDialog(this);
             TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERDELETE, m_data.CorrConfigurationGuid, m_checkedFiles);
@@ -343,7 +343,7 @@ namespace iba.Controls
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
             DetermineCheckedFiles();
-            RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_checkedFiles);
+            RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles);
             dlg.StartPosition = FormStartPosition.CenterParent;
             dlg.ShowDialog(this);
             TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERREFRESH, m_data.CorrConfigurationGuid, m_checkedFiles);
