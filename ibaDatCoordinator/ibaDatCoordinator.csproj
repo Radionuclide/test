@@ -279,16 +279,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Resources\Start.bmp" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="SingletonApplication.cs" />
     <Compile Include="Utility\algorithms.cs" />
     <Compile Include="Utility\containers.cs" />
@@ -631,6 +622,7 @@
     <None Include="Resources\Fax.bmp" />
     <None Include="Resources\updatedatatask.png" />
     <None Include="Resources\time.png" />
+    <None Include="Resources\application--pencil.png" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

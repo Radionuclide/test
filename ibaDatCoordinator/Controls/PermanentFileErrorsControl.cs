@@ -333,6 +333,10 @@ namespace iba.Controls
 
         private void m_deleteDats_Click(object sender, EventArgs e)
         {
+            DialogResult res = MessageBox.Show(this, iba.Properties.Resources.deletePermanentErrorFilesWarning,
+            iba.Properties.Resources.deletePermanentErrorFilesButton, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (res != DialogResult.Yes)
+                return;
             DetermineCheckedFiles();
             DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_cd.DatDirectoryUNC,m_cd.Username, m_cd.Password, m_checkedFiles);
             dlg.StartPosition = FormStartPosition.CenterParent;
@@ -342,6 +346,11 @@ namespace iba.Controls
 
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
+            DialogResult res = MessageBox.Show(this, iba.Properties.Resources.refreshPermanentErrorFilesWarning,
+                iba.Properties.Resources.refreshDatButton, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (res != DialogResult.Yes)
+                return;
+
             DetermineCheckedFiles();
             RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles);
             dlg.StartPosition = FormStartPosition.CenterParent;

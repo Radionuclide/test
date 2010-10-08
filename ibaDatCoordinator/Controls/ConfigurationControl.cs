@@ -13,6 +13,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Processing;
 using iba.Plugins;
+using Microsoft.Win32;
 
 namespace iba.Controls
 {
@@ -68,13 +69,12 @@ namespace iba.Controls
             base.OnLoad(e);
             WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-            WindowsAPI.SHAutoComplete(m_analyserTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
         }
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         ConfigurationData m_data;
+        string ibaAnalyzerExe;
        
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -85,7 +85,18 @@ namespace iba.Controls
             m_subMapsCheckBox.Checked = m_data.SubDirs;
             m_autoStartCheckBox.Checked = m_data.AutoStart;
             m_enableCheckBox.Checked = m_data.Enabled;
-            m_analyserTextBox.Text = m_data.IbaAnalyzerExe;
+
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                 object o = key.GetValue("");
+                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+                m_lblIbaAnalyzerPath.Text = ibaAnalyzerExe;
+            }
+            catch
+            {
+                m_lblIbaAnalyzerPath.Text = ibaAnalyzerExe =iba.Properties.Resources.noIbaAnalyser;
+            }
 
             if (m_failTimeUpDown.Minimum >  (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Minimum);
@@ -104,7 +115,7 @@ namespace iba.Controls
             m_retryUpDown.Value = (decimal) m_data.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
 
-            m_executeIBAAButton.Enabled = File.Exists(m_analyserTextBox.Text);
+            m_executeIBAAButton.Enabled = File.Exists(m_lblIbaAnalyzerPath.Text);
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
@@ -168,7 +179,7 @@ namespace iba.Controls
             m_tbUserName.Text = m_data.Username;
             try
             {
-                m_newIfTaskButton.Enabled = VersionCheck.CheckVersion(m_data.IbaAnalyzerExe,"5.3.4");
+                m_newIfTaskButton.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe,"5.3.4");
             }
             catch
             {
@@ -188,7 +199,6 @@ namespace iba.Controls
             m_data.SubDirs = m_subMapsCheckBox.Checked;
             m_data.Enabled = m_enableCheckBox.Checked;
             m_data.AutoStart = m_autoStartCheckBox.Checked;
-            m_data.IbaAnalyzerExe = m_analyserTextBox.Text;
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Value);
             m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
             m_data.RescanEnabled = m_cbRescanEnabled.Checked;
@@ -246,18 +256,13 @@ namespace iba.Controls
             {
                 Process ibaProc = new Process();
                 ibaProc.EnableRaisingEvents = false;
-                ibaProc.StartInfo.FileName = m_analyserTextBox.Text;
+                ibaProc.StartInfo.FileName = m_lblIbaAnalyzerPath.Text;
                 ibaProc.Start();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void m_analyserTextBox_TextChanged(object sender, EventArgs e)
-        {
-            m_executeIBAAButton.Enabled = File.Exists(m_analyserTextBox.Text);
         }
 
         private void m_newReportButton_Click(object sender, EventArgs e)
@@ -414,15 +419,6 @@ namespace iba.Controls
             if (t != null) t.UpdateButtons();
         }
 
-        private void m_browseExecutableButton_Click(object sender, EventArgs e)
-        {
-            m_openFileDialog1.CheckFileExists = true;
-            m_openFileDialog1.Filter = "executables (*.exe)|*.exe";
-            DialogResult result = m_openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-                m_analyserTextBox.Text = m_openFileDialog1.FileName;
-        }
-
         private void m_startButton_Click(object sender, EventArgs e)
         {
             SaveData();
@@ -460,6 +456,11 @@ namespace iba.Controls
 
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
+            DialogResult res = MessageBox.Show(this, iba.Properties.Resources.refreshDatWarning,
+            iba.Properties.Resources.refreshDatButton, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (res != DialogResult.Yes)
+                return;
+
             SaveData();
             using (RemoveMarkingsDialog dialog = new RemoveMarkingsDialog(m_data))
             {

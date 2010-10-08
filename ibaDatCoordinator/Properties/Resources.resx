@@ -206,7 +206,7 @@
     <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
   </data>
   <data name="refreshDatButton" xml:space="preserve">
-    <value>Remove the "allready processed" mark from the dat files</value>
+    <value>Remove the "already processed" mark from the .dat files</value>
   </data>
   <data name="logExtractTimeout" xml:space="preserve">
     <value>extracting timed out</value>
@@ -945,5 +945,23 @@
   </data>
   <data name="RemoveMarkingsProblem" xml:space="preserve">
     <value>Problem removing markings from .dat Files: </value>
+  </data>
+  <data name="deletePermanentErrorFilesWarning" xml:space="preserve">
+    <value>Are you sure you want to permanently delete all selected files ?</value>
+  </data>
+  <data name="refreshDatWarning" xml:space="preserve">
+    <value>Are you sure you want to reprocess all .dat files ?</value>
+  </data>
+  <data name="refreshPermanentErrorFilesWarning" xml:space="preserve">
+    <value>Are you sure you want to reprocess all selected files ?</value>
+  </data>
+  <data name="RegisterIbaAnalyzer" xml:space="preserve">
+    <value>Register this ibaAnalyzer</value>
+  </data>
+  <data name="DirectoryFound" xml:space="preserve">
+    <value>Creation of directory '{0}' detected, monitoring will be restarted...</value>
+  </data>
+  <data name="Register" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application--pencil.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -9,8 +9,15 @@ namespace iba.Utility
     {
         public static bool CheckVersion(string file, string version)
         {
-            string ver = FileVersionInfo.GetVersionInfo(file).FileVersion;
-            return (new Version(ver)) >= (new Version(version));
+            try
+            {
+                string ver = FileVersionInfo.GetVersionInfo(file).FileVersion;
+                return (new Version(ver)) >= (new Version(version));
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

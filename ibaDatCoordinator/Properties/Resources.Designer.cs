@@ -415,6 +415,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to permanently delete all selected files ?.
+        /// </summary>
+        internal static string deletePermanentErrorFilesWarning {
+            get {
+                return ResourceManager.GetString("deletePermanentErrorFilesWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Report options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteReportQuestion {
@@ -447,6 +456,15 @@ namespace iba.Properties {
         internal static string determiningQuota {
             get {
                 return ResourceManager.GetString("determiningQuota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creation of directory &apos;{0}&apos; detected, monitoring will be restarted....
+        /// </summary>
+        internal static string DirectoryFound {
+            get {
+                return ResourceManager.GetString("DirectoryFound", resourceCulture);
             }
         }
         
@@ -1774,7 +1792,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove the &quot;allready processed&quot; mark from the dat files.
+        ///   Looks up a localized string similar to Remove the &quot;already processed&quot; mark from the .dat files.
         /// </summary>
         internal static string refreshDatButton {
             get {
@@ -1790,11 +1808,45 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reprocess all .dat files ?.
+        /// </summary>
+        internal static string refreshDatWarning {
+            get {
+                return ResourceManager.GetString("refreshDatWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove markings from selected files so they will be reprocessed..
         /// </summary>
         internal static string refreshPermanentErrorFilesButton {
             get {
                 return ResourceManager.GetString("refreshPermanentErrorFilesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reprocess all selected files ?.
+        /// </summary>
+        internal static string refreshPermanentErrorFilesWarning {
+            get {
+                return ResourceManager.GetString("refreshPermanentErrorFilesWarning", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Register {
+            get {
+                object obj = ResourceManager.GetObject("Register", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register this ibaAnalyzer.
+        /// </summary>
+        internal static string RegisterIbaAnalyzer {
+            get {
+                return ResourceManager.GetString("RegisterIbaAnalyzer", resourceCulture);
             }
         }
         

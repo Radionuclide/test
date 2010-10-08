@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using iba.Utility;
 using iba.Processing;
+using System.IO;
+using System.Diagnostics;
 
 namespace iba.Controls
 {
@@ -22,6 +24,7 @@ namespace iba.Controls
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
                 m_cbAutoStart.Visible = false;
             }
+            m_toolTip.SetToolTip(m_registerButton,iba.Properties.Resources.RegisterIbaAnalyzer);
         }
 
         #region IPropertyPane Members
@@ -73,7 +76,26 @@ namespace iba.Controls
                     m_comboPriority.SelectedIndex = 5;
                     break;
             }
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                object o = key.GetValue("");
+                m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
+            }
+            catch
+            {
+                m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
+            }
+            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            WindowsAPI.SHAutoComplete(m_tbAnalyzerExe.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+        } 
 
         public void LeaveCleanup()
         {
@@ -122,6 +144,64 @@ namespace iba.Controls
         }
 
         #endregion
+
+        private void m_browseIbaAnalyzerButton_Click(object sender, EventArgs e)
+        {
+            m_openFileDialog.Filter = "ibaAnalyzer Executable (*.exe)|*.exe";
+            try
+            {
+                if (File.Exists(m_tbAnalyzerExe.Text))
+                    m_openFileDialog.FileName = m_tbAnalyzerExe.Text;
+            }
+            catch
+            {
+
+            }
+            DialogResult result = m_openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+                m_tbAnalyzerExe.Text = m_openFileDialog.FileName;
+        }
+
+        private void m_executeIBAAButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Process ibaProc = new Process())
+                {
+                    ibaProc.EnableRaisingEvents = false;
+                    ibaProc.StartInfo.FileName = m_tbAnalyzerExe.Text;
+                    ibaProc.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void m_registerButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Process ibaProc = new Process())
+                {
+                    ibaProc.EnableRaisingEvents = false;
+                    ibaProc.StartInfo.FileName = m_tbAnalyzerExe.Text;
+                    ibaProc.StartInfo.Arguments = "/regserver";
+                    ibaProc.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
+        {
+            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+        }
     }
 
     internal enum ServiceStart

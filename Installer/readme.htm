@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.14.11.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.15.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,15 +26,30 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.14.11.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.15.0.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
-<P class="header1">Version 1.14.11 - 9/08/2010</P>
+<P class="header1">Version 1.15.0 - 7/10/2010</P>
+</UL>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI>  You now get a warning when trying to refresh or delete .dat files, you then have the option to cancel the operation.
+    </LI>
+    <LI>  You are no longer allowed to specify the ibaAnalyzer that will be used for the extract, conditional and report tasks, the default registered ibaAnalyzer is used. 
+	As a convenience you do have however the option to browse for an ibaAnalyzer and register it in the settings tab.
+    </LI>
+	<LI>  When the .dat directory that a job is supposed to monitor is missing, this no longer causes the job to stop. 
+	Instead the job will periodically check if the directory is created in the mean time and recommence processing .dat files as soon as the directory is created and .dat files start to arrive.
+    </LI>
+	<LI>  A couple of typos in the German dialogs fixed.
+    </LI>
 </UL>
 <P class="header2">BugFixes</P>
 <UL>
     <LI>  Certain types of invalid paths caused ibaDatCoordinator to throw an uncatched exception when pressing the "Test Path" button.
+    </LI>
+    <LI>  Deleting and refreshing .dat files was done on the client side instead of the server side. This caused problems if the system user and client user didn't have the same privileges.
     </LI>
 </UL>
 

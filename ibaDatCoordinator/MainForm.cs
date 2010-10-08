@@ -19,6 +19,7 @@ using iba.Controls;
 using iba.Utility;
 using iba.Processing;
 using iba.Plugins;
+using Microsoft.Win32;
 
 namespace iba
 {
@@ -1133,6 +1134,8 @@ namespace iba
             NewCustomTask = 13
         }
 
+        private string ibaAnalyzerExe;
+
         private void m_configTreeView_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
@@ -1161,9 +1164,24 @@ namespace iba
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = (m_cd_copy != null || m_task_copy != null) && !started;
                     items.Add(MenuItemsEnum.NewTask);
                     m_menuItems[(int)MenuItemsEnum.NewTask].Enabled = !started;
+
                     try
                     {
-                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = VersionCheck.CheckVersion((data as ConfigurationTreeItemData).ConfigurationData.IbaAnalyzerExe, "5.3.4");
+                        if (String.IsNullOrEmpty(ibaAnalyzerExe))
+                        {
+                            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                            object o = key.GetValue("");
+                            ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+                        }
+                    }
+                    catch
+                    {
+                        ibaAnalyzerExe = null;
+                    }
+
+                    try
+                    {
+                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = ibaAnalyzerExe != null && VersionCheck.CheckVersion(ibaAnalyzerExe, "5.3.4");
                     }
                     catch //version could not be determined
                     {

@@ -98,13 +98,6 @@ namespace iba.Data
             set { m_username = value; }
         }
 
-        private string m_ibaAnalyserExe;
-        public string IbaAnalyzerExe
-        {
-            get { return m_ibaAnalyserExe; }
-            set { if (value.Length != 0) m_ibaAnalyserExe = value; }
-        }
-
         private bool m_doSubDirs;
         public bool SubDirs
         {
@@ -232,6 +225,8 @@ namespace iba.Data
             set { m_notify = value; }
         }
 
+        private string ibaAnalyzerExe;
+
         public ConfigurationData(string name)
         {
             m_reproccessTime = new TimeSpan(0, 10, 0);
@@ -251,11 +246,11 @@ namespace iba.Data
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
                 object o = key.GetValue("");
-                m_ibaAnalyserExe = Path.GetFullPath(o.ToString());
+                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
             }
             catch
             {
-                m_ibaAnalyserExe = iba.Properties.Resources.noIbaAnalyser;
+                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
             }
             m_tasks = new List<TaskData>();
             m_notify = new NotificationData();
@@ -282,7 +277,6 @@ namespace iba.Data
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
             cd.relinkChildData();
-            cd.m_ibaAnalyserExe = m_ibaAnalyserExe;
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
             cd.m_datDirectory = m_datDirectory;
@@ -339,6 +333,23 @@ namespace iba.Data
             }
             return changed;
         }
+
+        #region IJobData Members
+
+        [XmlIgnore]
+        public string IbaAnalyzerExe
+        {
+            get
+            {
+                return ibaAnalyzerExe;
+            }
+            set
+            {
+                ibaAnalyzerExe = value;
+            }
+        }
+
+        #endregion
     }
 
     [Serializable]

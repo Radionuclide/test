@@ -121,7 +121,6 @@ namespace iba.Processing
             }
         }
 
-
         private bool UpdateConfiguration()
         {
             if (m_toUpdate != null)
@@ -186,20 +185,19 @@ namespace iba.Processing
                             }
                         }
                     }
-                    else
+                    else 
                     {
-                        if (!Directory.Exists(m_cd.DatDirectoryUNC))
+                        if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
                         {
                             Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
-                            SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
-                            Stop = true;
+                            networkErrorOccured = true;
                         }
                         else if (m_cd.DetectNewFiles)
                         {
                             RenewFswt();
+                            networkErrorOccured = false;
                         }
                         tickCount = 0;
-                        networkErrorOccured = false;
                     }
 
                     if (!m_cd.DetectNewFiles)
@@ -413,9 +411,6 @@ namespace iba.Processing
         }
 
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
-
-        private string m_previousRunExecutable;
-
         private System.Threading.Timer m_notifyTimer;
         private System.Threading.Timer reprocessErrorsTimer;
         private System.Threading.Timer rescanTimer;
@@ -432,12 +427,10 @@ namespace iba.Processing
         private void Run()
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
-            if (!Directory.Exists(m_cd.DatDirectoryUNC))
+            if (m_stop)
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                 m_sd.Started = false;
-                SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
-                Stop = true;
+                SharesHandler.Handler.ReleaseFromConfiguration(m_cd); 
                 return;
             }
 
@@ -547,12 +540,7 @@ namespace iba.Processing
                                 m_toProcessFiles.Remove(file);
                             }
                             UpdateConfiguration();
-                            if (m_needIbaAnalyzer && m_previousRunExecutable != m_cd.IbaAnalyzerExe && m_ibaAnalyzer != null)
-                            {
-                                StopIbaAnalyzer();
-                                StartIbaAnalyzer();
-                            }
-                            else if (m_needIbaAnalyzer && m_ibaAnalyzer == null)
+                            if (m_needIbaAnalyzer && m_ibaAnalyzer == null)
                             {
                                 StartIbaAnalyzer();
                             }
@@ -665,66 +653,17 @@ namespace iba.Processing
         private void StartIbaAnalyzer()
         {
             m_nrIbaAnalyzerCalls = 0;
-            //register this
-            if (m_previousRunExecutable != m_cd.IbaAnalyzerExe)
-            {
-                try
-                {
-                    if (!File.Exists(m_cd.IbaAnalyzerExe))
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerExecutableDoesNotExist + m_cd.IbaAnalyzerExe);
-                        m_sd.Started = false;
-                        Stop = true;
-                        return;
-                    }
-                    if (!VersionCheck.CheckVersion(m_cd.IbaAnalyzerExe,"5.0"))
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logFileVersionToLow);
-                        m_sd.Started = false;
-                        Stop = true;
-                        return;
-                    };
-                    Process ibaProc = new Process();
-                    ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_cd.IbaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = "/regserver";
-                    ibaProc.Start();
-                    ibaProc.WaitForExit(10000);
-                    m_previousRunExecutable = m_cd.IbaAnalyzerExe;
-                }
-                catch (Exception ex)
-                {
-                    Log(Logging.Level.Exception, ex.Message);
-                    m_sd.Started = false;
-                    Stop = true;
-                    return;
-                }
-            }
             //start the com object
             try
             {
-                Log(iba.Logging.Level.Info, string.Format("New ibaAnalyzer started with process ID: {0}", m_ibaAnalyzer.GetProcessID()));
                 m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                try //try again by first registering
-                {
-                    Process ibaProc = new Process();
-                    ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_cd.IbaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = "/regserver";
-                    ibaProc.Start();
-                    ibaProc.WaitForExit(10000);
-                    m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                }
-                catch (Exception ex2)
-                {
-                    Log(Logging.Level.Exception, ex2.Message);
-                    m_sd.Started = false;
-                    Stop = true;
-                    return;
-                }
+                Log(Logging.Level.Exception, ex.Message);
+                m_sd.Started = false;
+                Stop = true;
+                return;
             }
             
             try
@@ -878,14 +817,37 @@ namespace iba.Processing
             if (tickCount >= 20) //retry restoring dataaccess every minute
             {
                 tickCount = 0;
-                if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))
+                if (m_cd.DatDirectoryUNC.StartsWith(@"\\"))
+                {
+                    bool directoryExists = Directory.Exists(m_cd.DatDirectoryUNC);
+                    try
+                    {
+                        if (SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password))
+                        {
+                            if (Directory.Exists(m_cd.DatDirectoryUNC))
+                            {
+                                if (m_cd.DetectNewFiles)
+                                    RenewFswt();
+                                else
+                                    DisposeFswt();
+                                networkErrorOccured = false;
+                                Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(iba.Logging.Level.Exception, m_cd.DatDirectoryUNC + "\r\n" + directoryExists + "\r\n" + ex.ToString());
+                    }
+                }
+                else if (Directory.Exists(m_cd.DatDirectoryUNC))
                 {
                     if (m_cd.DetectNewFiles)
                         RenewFswt();
                     else
                         DisposeFswt();
                     networkErrorOccured = false;
-                    Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.ConnectionRestoredTo, m_cd.DatDirectoryUNC));
+                       Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.DirectoryFound, m_cd.DatDirectoryUNC));
                 }
             }
             if (!m_bTimersstopped && !m_stop)
@@ -966,6 +928,7 @@ namespace iba.Processing
             string datDir = m_cd.DatDirectoryUNC;
             if (!Directory.Exists(datDir))
             {
+                networkErrorOccured = true;
                 Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
                 return;
             }

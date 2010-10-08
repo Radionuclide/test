@@ -12,6 +12,7 @@ using iba;
 using iba.Data;
 using iba.Utility;
 using iba.Processing;
+using Microsoft.Win32;
 
 namespace iba.Controls
 {
@@ -73,9 +74,20 @@ namespace iba.Controls
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_nudDirs.Value = m_data.SubfoldersNumber;
             m_nudQuota.Value = m_data.Quota;
-            
+
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                object o = key.GetValue("");
+                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+            }
+            catch
+            {
+                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
+            }
+
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+                File.Exists(ibaAnalyzerExe);
             m_panelFile.Enabled = m_rbFile.Checked;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -87,7 +99,7 @@ namespace iba.Controls
 
             try
             {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(m_data.ParentConfigurationData.IbaAnalyzerExe, "5.8.1");
+                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
             }
             catch
             {
@@ -99,6 +111,8 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
         }
+
+        private String ibaAnalyzerExe;
 
         public void SaveData()
         {
@@ -154,7 +168,7 @@ namespace iba.Controls
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
+                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
                     ibaProc.StartInfo.Arguments = "\"" + m_pdoFileTextBox.Text + "\"";
                     ibaProc.Start();
                 }
@@ -177,7 +191,7 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+                File.Exists(ibaAnalyzerExe);
         }
 
       

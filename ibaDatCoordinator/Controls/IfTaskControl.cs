@@ -11,6 +11,7 @@ using System.Diagnostics;
 using iba.Utility;
 using iba.Data;
 using iba.Processing;
+using Microsoft.Win32;
 
 namespace iba.Controls
 {
@@ -35,6 +36,7 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         private IfTaskData m_data;
+        private string ibaAnalyzerExe;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -43,10 +45,23 @@ namespace iba.Controls
             m_expressionTextBox.Text = m_data.Expression;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
+
+
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                object o = key.GetValue("");
+                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+            }
+            catch
+            {
+                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
+            }
+
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text);
+                File.Exists(ibaAnalyzerExe);
+
+            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -56,7 +71,7 @@ namespace iba.Controls
 
             try
             {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(m_data.ParentConfigurationData.IbaAnalyzerExe, "5.8.1");
+                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
             }
             catch
             {
@@ -103,7 +118,7 @@ namespace iba.Controls
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
+                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
                     ibaProc.StartInfo.Arguments = "\"" + m_pdoFileTextBox.Text + "\"";
                     ibaProc.Start();
                 }
@@ -123,55 +138,21 @@ namespace iba.Controls
                 m_datFileTextBox.Text = m_openFileDialog.FileName;
         }
 
-        private string m_previousRunExecutable;
         private void m_testButton_Click(object sender, EventArgs e)
         {
             IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             //register this
             using (new Utility.WaitCursor())
             {
-                if (m_previousRunExecutable != m_data.ParentConfigurationData.IbaAnalyzerExe)
-                {
-                    try
-                    {
-                        //version check not necessary, as we're not going to enable this button if the file version is to low
-                        Process ibaProc = new Process();
-                        ibaProc.EnableRaisingEvents = false;
-                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
-                        ibaProc.StartInfo.Arguments = "/regserver";
-                        ibaProc.Start();
-                        ibaProc.WaitForExit(10000);
-                        m_previousRunExecutable = m_data.ParentConfigurationData.IbaAnalyzerExe;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
                 //start the com object
                 try
                 {
                     ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
                 }
-                catch (Exception)
+                catch (Exception ex2)
                 {
-                    try //try again by first registering
-                    {
-                        Process ibaProc = new Process();
-                        ibaProc.EnableRaisingEvents = false;
-                        ibaProc.StartInfo.FileName = m_data.ParentConfigurationData.IbaAnalyzerExe;
-                        ibaProc.StartInfo.Arguments = "/regserver";
-                        ibaProc.Start();
-                        ibaProc.WaitForExit(10000);
-
-                        ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                    }
-                    catch (Exception ex2)
-                    {
-                        MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
 
@@ -211,7 +192,7 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-            File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+            File.Exists(ibaAnalyzerExe);
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)

@@ -63,14 +63,13 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.m_lblIbaAnalyzerPath = new System.Windows.Forms.Label();
             this.m_cbCloseIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
-            this.m_browseExecutableButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.m_analyserTextBox = new System.Windows.Forms.TextBox();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.m_newTaskToolstrip = new System.Windows.Forms.ToolStrip();
@@ -102,7 +101,6 @@ namespace iba.Controls
             this.m_nudNotifyTime = new System.Windows.Forms.NumericUpDown();
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
-            this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -389,16 +387,20 @@ namespace iba.Controls
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.m_lblIbaAnalyzerPath);
             this.groupBox5.Controls.Add(this.m_cbCloseIbaAnalyzer);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.m_cbRestartIbaAnalyzer);
             this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
-            this.groupBox5.Controls.Add(this.m_browseExecutableButton);
             this.groupBox5.Controls.Add(this.m_executeIBAAButton);
             this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Controls.Add(this.m_analyserTextBox);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // m_lblIbaAnalyzerPath
+            // 
+            resources.ApplyResources(this.m_lblIbaAnalyzerPath, "m_lblIbaAnalyzerPath");
+            this.m_lblIbaAnalyzerPath.Name = "m_lblIbaAnalyzerPath";
             // 
             // m_cbCloseIbaAnalyzer
             // 
@@ -438,14 +440,6 @@ namespace iba.Controls
             0,
             0});
             // 
-            // m_browseExecutableButton
-            // 
-            resources.ApplyResources(this.m_browseExecutableButton, "m_browseExecutableButton");
-            this.m_browseExecutableButton.Image = global::iba.Properties.Resources.open;
-            this.m_browseExecutableButton.Name = "m_browseExecutableButton";
-            this.m_browseExecutableButton.UseVisualStyleBackColor = true;
-            this.m_browseExecutableButton.Click += new System.EventHandler(this.m_browseExecutableButton_Click);
-            // 
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
@@ -458,12 +452,6 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            // 
-            // m_analyserTextBox
-            // 
-            resources.ApplyResources(this.m_analyserTextBox, "m_analyserTextBox");
-            this.m_analyserTextBox.Name = "m_analyserTextBox";
-            this.m_analyserTextBox.TextChanged += new System.EventHandler(this.m_analyserTextBox_TextChanged);
             // 
             // groupBox4
             // 
@@ -753,11 +741,8 @@ namespace iba.Controls
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox m_analyserTextBox;
         private System.Windows.Forms.CheckBox m_enableCheckBox;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.Button m_browseExecutableButton;
-        private System.Windows.Forms.OpenFileDialog m_openFileDialog1;
         private System.Windows.Forms.Button m_stopButton;
         private System.Windows.Forms.Button m_startButton;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -811,5 +796,6 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
         private System.Windows.Forms.ToolStripButton m_newUpdateDataTaskButton;
         private System.Windows.Forms.ToolStripButton m_newPauseTaskButton;
+        private System.Windows.Forms.Label m_lblIbaAnalyzerPath;
     }
 }
