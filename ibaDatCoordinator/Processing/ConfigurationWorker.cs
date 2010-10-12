@@ -996,11 +996,6 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                lock (m_candidateNewFiles)
-                {
-                    if (m_toProcessFiles.Contains(filename))
-                        continue;
-                }
                 if (!IsInvalidOrProcessed(filename))
                 {
                     lock (m_candidateNewFiles)

@@ -30,7 +30,7 @@ Execute ibaDatCoordinatorInstall_v1.15.0.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
-<P class="header1">Version 1.15.0 - 7/10/2010</P>
+<P class="header1">Version 1.15.0 - 12/10/2010</P>
 </UL>
 <P class="header2">Enhancements</P>
 <UL>
@@ -50,6 +50,8 @@ Execute ibaDatCoordinatorInstall_v1.15.0.exe and follow instructions.</p>
     <LI>  Certain types of invalid paths caused ibaDatCoordinator to throw an uncatched exception when pressing the "Test Path" button.
     </LI>
     <LI>  Deleting and refreshing .dat files was done on the client side instead of the server side. This caused problems if the system user and client user didn't have the same privileges.
+    </LI>
+    <LI>  Occasionally when processing a large amount of files arriving very fast, the ibaDatCoordinator service crashed.
     </LI>
 </UL>
 
