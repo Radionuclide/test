@@ -45,7 +45,7 @@ namespace iba.Utility
             if (dir==null) return result;
             try
             {
-                result.AddRange(dir.GetFiles(search));
+                result.AddRange(DirInfoGetFilesMultipleExtensions(dir, search));
             }
             catch
             {
@@ -66,6 +66,39 @@ namespace iba.Utility
             }
             catch
             {
+            }
+            return result;
+        }
+
+        public static List<FileInfo> DirInfoGetFilesMultipleExtensions(DirectoryInfo dir, string search)
+        {
+            List<FileInfo> result = new List<FileInfo>();
+            string[] mult = search.Split(',');
+            foreach (string pattern in mult)
+            {
+                result.AddRange(dir.GetFiles(pattern));
+            }
+            return result;
+        }
+
+        public static List<string> GetFilesMultipleExtensions(string dir, string search)
+        {
+            List<string> result = new List<string>();
+            string[] mult = search.Split(',');
+            foreach (string pattern in mult)
+            {
+                result.AddRange(Directory.GetFiles(dir,pattern));
+            }
+            return result;
+        }
+
+        public static List<string> GetFilesMultipleExtensions(string dir, string search, SearchOption searchoption)
+        {
+            List<string> result = new List<string>();
+            string[] mult = search.Split(',');
+            foreach (string pattern in mult)
+            {
+                result.AddRange(Directory.GetFiles(dir,pattern,searchoption));
             }
             return result;
         }

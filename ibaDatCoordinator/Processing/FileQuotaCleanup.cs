@@ -23,14 +23,13 @@ namespace iba.Processing
             Reset();
         }
 
-        public void AddFile(string filename, bool bAddFileName)
+        public void AddFile(string filename)
         {
             try
             {
                 FileInfo inf = new FileInfo(filename);
                 m_size += (ulong)inf.Length;
-                if (bAddFileName)
-                    m_files.AddLast(filename);
+                m_files.AddLast(filename);
             }
             catch
             {
@@ -43,6 +42,7 @@ namespace iba.Processing
             {
                 FileInfo inf = new FileInfo(filename);
                 m_size -= (ulong)inf.Length;
+                m_files.Remove(filename);
             }
             catch
             {
@@ -104,7 +104,7 @@ namespace iba.Processing
                         Log(iba.Logging.Level.Exception, ex.Message + " (getting directories(2))", "");
                     }
                 }
-                foreach (string file in Directory.GetFiles(m_task.DestinationMapUNC,"*" + m_extension,SearchOption.TopDirectoryOnly))
+                foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC,"*" + m_extension,SearchOption.TopDirectoryOnly))
                 {
                     try
                     {

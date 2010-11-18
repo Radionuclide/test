@@ -1978,17 +1978,12 @@ namespace iba.Processing
                     {
                         string outFile = GetExtractFileName(filename, task);
                         if (outFile == null) return;
-                        bool bAddFile = true;
                         if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(outFile))
-                        {
-                            bAddFile = false;
                             m_quotaCleanups[task.Guid].RemoveFile(outFile);
-                        }
-
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
                         m_outPutFile = outFile;
                         if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
+                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
                     }
                     else
                     {
@@ -2227,6 +2222,8 @@ namespace iba.Processing
         private void Report(string filename, ReportData task)
         {
             string arg = "";
+            string htmloutputdir = "";
+            string htmlext = "";
             lock (m_sd.DatFileStates)
             {
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
@@ -2237,10 +2234,19 @@ namespace iba.Processing
                 try
                 {
                     if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                        CleanupWithQuota(filename, task, ext);
+                    {
+                        if (task.Extension == "html" || task.Extension == "htm")
+                        {
+                            htmlext = ext + ",*.jpg";
+                            CleanupWithQuota(filename, task, htmlext ); //also remove generated jpgs
+                        }
+                        else
+                            CleanupWithQuota(filename, task, ext);
+                    }
                 }
                 catch
                 {
+
                 }               
 
                 string actualFileName = Path.GetFileNameWithoutExtension(filename);
@@ -2285,6 +2291,13 @@ namespace iba.Processing
                 {
                     dir = Path.Combine(dir, SubFolder(task.Subfolder, task.UseDatModTimeForDirs ? filename : null));
                 }
+
+                if (task.Extension == "html" || task.Extension == "htm")
+                {
+                    dir = Path.Combine(dir, actualFileName);
+                    htmloutputdir = dir;
+                }
+
                 if (!Directory.Exists(dir))
                 {
                     try
@@ -2328,7 +2341,10 @@ namespace iba.Processing
                 {
                     try
                     {
-                        CleanupDirs(filename, task, ext);
+                        if (task.Extension == "html" || task.Extension == "htm")
+                            CleanupDirsHtml(filename, task, htmlext);
+                        else
+                            CleanupDirs(filename, task, ext);
                     }
                     catch
                     {
@@ -2348,16 +2364,42 @@ namespace iba.Processing
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
                     if (task.Output != ReportData.OutputChoice.PRINT)
                     {
-                        bool bAddFile = true;
                         if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(arg))
                         {
-                            bAddFile = false;
-                            m_quotaCleanups[task.Guid].RemoveFile(arg);
+                            if (task.Extension == "html" || task.Extension == "htm")
+                            {
+                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmloutputdir,"*" + htmlext);
+                                foreach(string file in files)
+                                {
+                                    try
+                                    {
+                                        m_quotaCleanups[task.Guid].RemoveFile(file);
+                                        File.Delete(file);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
+                            else
+                                m_quotaCleanups[task.Guid].RemoveFile(arg);
                         }
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
                         m_outPutFile = arg;
                         if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
+                        {
+                            if (task.Extension == "html" || task.Extension == "htm")
+                            {
+                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmloutputdir, "*" + htmlext);
+                                foreach(string file in files)
+                                {
+                                    m_quotaCleanups[task.Guid].AddFile(file);
+                                }
+                            }
+                            else
+                                m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                        }
                     }
                     else
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(""); });
@@ -2417,13 +2459,71 @@ namespace iba.Processing
             }
         }
 
+        private void CleanupDirsHtml(string filename, ReportData task, string extension)
+        {
+            //html creates an additional subdirectory, only directories directly above it should count
+            try
+            {
+                string rootmap = task.DestinationMapUNC;
+                List<string> subdirs = GetDeepestDirectories(rootmap);
+                
+                //group by parentdir
+                Set<string> parentdirs = new Set<string>();
+                foreach (string subdir in subdirs)
+                {
+                    parentdirs.Add((new DirectoryInfo(subdir)).Parent.FullName);
+                }
+
+                if (parentdirs.Count <= task.SubfoldersNumber) return; //everything ok
+                if (parentdirs.Count == task.SubfoldersNumber + 1) //optimization, don't sort the list, only remove oldest directory
+                {
+                    string oldestdir = null;
+                    DateTime dtoldest = new DateTime();
+                    foreach (string dirC in parentdirs)
+                    {
+                        DateTime dt = (new DirectoryInfo(dirC)).LastWriteTime;
+                        if (oldestdir == null || dt < dtoldest)
+                        {
+                            oldestdir = dirC;
+                            dtoldest = dt;
+                        }
+                    }
+                    if (oldestdir != null)
+                    {
+                        string[] subdirs2 = Directory.GetDirectories(oldestdir);
+                        foreach (string subdir in subdirs2)
+                            RemoveDirectory(filename, task, extension, subdir);
+                    }
+                    return;
+                }
+
+                //from here on we use parentdirs as a set rather than a list;
+                parentdirs.Sort(delegate(string dir1, string dir2)
+                {
+                    return (new DirectoryInfo(dir2)).LastWriteTime.CompareTo((new DirectoryInfo(dir1)).LastWriteTime);
+                }); //oldest dirs last
+                for (int i = parentdirs.Count - 1; i >= task.SubfoldersNumber; i--)
+                {
+                    string parentdir = parentdirs[i];
+                    string[] subdirs2 = Directory.GetDirectories(parentdir);
+                    foreach (string subdir in subdirs2)
+                        RemoveDirectory(filename, task, extension, subdir);
+                }
+            }
+            catch(Exception ex)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.CleanupDirectoriesFailed + ": " + ex.Message, filename,task);
+            }
+        }
+
+
         private void CleanupDirs(string filename, TaskDataUNC task, string extension)
         {
             try
             {
                 string rootmap = task.DestinationMapUNC;
                 List<string> subdirs = GetDeepestDirectories(rootmap);
-                if (subdirs.Count < task.SubfoldersNumber) return; //everything ok
+                if (subdirs.Count <= task.SubfoldersNumber) return; //everything ok
                 if (subdirs.Count == task.SubfoldersNumber + 1) //optimization, don't sort the list, only remove oldest directory
                 {
                     string dir=null;
@@ -2463,7 +2563,7 @@ namespace iba.Processing
             try
             {
                 string rootmap = task.DestinationMapUNC;
-                foreach (string file in Directory.GetFiles(dir, "*" + extension))
+                foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(dir, "*" + extension))
                 {
                     File.Delete(file);
                 }
@@ -2638,7 +2738,6 @@ namespace iba.Processing
             }
             try
             {
-                bool bAddFile = true;
                 if (task.ActionDelete)
                 {
                     File.Delete(fileToCopy);
@@ -2649,7 +2748,6 @@ namespace iba.Processing
                 {
                     if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
                     {
-                        bAddFile = false;
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
@@ -2663,7 +2761,6 @@ namespace iba.Processing
                 {
                     if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
                     {
-                        bAddFile = false;
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
@@ -2676,7 +2773,7 @@ namespace iba.Processing
 
 
                 if (!task.ActionDelete && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile, bAddFile);
+                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
 
                 lock (m_sd.DatFileStates)
                 {
@@ -3066,9 +3163,9 @@ namespace iba.Processing
                     if (worker.FileOverWritten)
                     {
                         m_quotaCleanups[task.Guid].RemoveFile(outfile);
-                        m_quotaCleanups[task.Guid].AddFile(outfile, false);
+                        m_quotaCleanups[task.Guid].AddFile(outfile);
                     }
-                    m_quotaCleanups[task.Guid].AddFile(outfile, true);
+                    m_quotaCleanups[task.Guid].AddFile(outfile);
                 }
             }
             catch
