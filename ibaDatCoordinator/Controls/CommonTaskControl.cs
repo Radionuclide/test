@@ -135,9 +135,7 @@ namespace iba.Controls
             else if (m_rb1stFailure.Checked)
                 m_data.WhenToExecute = TaskData.WhenToDo.AFTER_1st_FAILURE;
             else
-            {
-                    m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
-            }
+                m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
 
             if (m_rbNotAlways.Checked)
                 m_data.WhenToNotify = TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;

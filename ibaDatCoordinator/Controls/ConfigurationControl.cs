@@ -19,9 +19,53 @@ namespace iba.Controls
 {
     public partial class ConfigurationControl : UserControl, IPropertyPane
     {
-        public ConfigurationControl()
+        public ConfigurationControl(bool oneTimeJob)
         {
+            m_oneTimeJob = oneTimeJob;
             InitializeComponent();
+            if (oneTimeJob) //make this a onetime job dialog
+            {
+                this.SuspendLayout();
+                m_startButton.Location = new Point(16, 18);
+                m_stopButton.Location = new Point(62, 18);
+                m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                foreach (Control c in groupBox3.Controls)
+                {
+                    if (c != m_startButton && c != m_stopButton)
+                    {
+                        c.Enabled = false;
+                        c.Visible = false;
+                    }
+                }
+                int groupbox3OldHeight = groupBox3.Size.Height;
+                int groupbox3NewHeight = m_stopButton.Size.Height + 16+8;
+                int diff = groupbox3OldHeight - groupbox3NewHeight;
+                groupBox3.Size = new Size(groupBox3.Size.Width, groupbox3NewHeight);
+                
+                m_datDirTextBox.Multiline = true;
+                foreach (Control c in groupBox1.Controls)
+                {
+                    if (c == label2)
+                        c.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                    else if (c == m_datDirTextBox)
+                        c.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+                    else if (c == m_browseFolderButton)
+                        c.Anchor = AnchorStyles.Right | AnchorStyles.Top; //actually this is unchanged
+                    else 
+                        c.Anchor = (c.Anchor & ~AnchorStyles.Top) | AnchorStyles.Bottom;
+                }
+
+                groupBox1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
+                groupBox1.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y - diff);
+                groupBox1.Size = new Size(groupBox1.Size.Width, groupBox1.Size.Height + diff);
+
+                groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                groupBox5.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                this.ResumeLayout();
+            }
+
+
             m_newBatchfileButton.Image = Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle);
             m_newReportButton.Image = Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle);
             m_newExtractButton.Image = Bitmap.FromHicon(iba.Properties.Resources.extract_running.Handle);
@@ -64,11 +108,14 @@ namespace iba.Controls
             }
         }
 
+        private bool m_oneTimeJob;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            if (!m_oneTimeJob)
+                WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
         }
 
         #region IPropertyPane Members
@@ -244,10 +291,30 @@ namespace iba.Controls
         private void OnClickFolderBrowserButton(object sender, EventArgs e)
         {
             m_folderBrowserDialog1.ShowNewFolderButton = false;
-            m_folderBrowserDialog1.SelectedPath = m_datDirTextBox.Text;
-            DialogResult result = m_folderBrowserDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-                m_datDirTextBox.Text = m_folderBrowserDialog1.SelectedPath;
+            if (!m_oneTimeJob)
+            {
+                m_folderBrowserDialog1.SelectedPath = m_datDirTextBox.Text;
+                DialogResult result = m_folderBrowserDialog1.ShowDialog();
+                if (result == DialogResult.OK)
+                    m_datDirTextBox.Text = m_folderBrowserDialog1.SelectedPath;
+            }
+            else
+            {
+                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                //         ShowEditBox = true,
+                //         //NewStyle = false,
+                if (System.IO.File.Exists(lines[lines.Length-1])||System.IO.Directory.Exists(lines[lines.Length-1]))
+                    m_folderBrowserDialog1.SelectedPath = lines[lines.Length - 1];
+                DialogResult result = m_folderBrowserDialog1.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string line in lines)
+                        sb.AppendLine(line);
+                    sb.AppendLine(m_folderBrowserDialog1.SelectedPath);
+                    m_datDirTextBox.Text = sb.ToString();
+                }
+            }
         }
 
         private void OnClickExecuteButton(object sender, EventArgs e)
@@ -384,7 +451,6 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
-
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)
@@ -507,13 +573,28 @@ namespace iba.Controls
         {
             SaveData();
             string errormessage = null;
-            bool ok;
+            bool ok = true;
             using (WaitCursor wait = new WaitCursor())
             {
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                    ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                if (!m_data.OnetimeJob)
+                {
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                        ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                    else
+                        ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                }
                 else
-                    ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                {
+                    string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string line in lines)
+                    {
+                        if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                            ok = TaskManager.Manager.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                        else
+                            ok = SharesHandler.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                        if (!ok) break;
+                    }
+                }
             }
             if (ok)
             {
@@ -571,6 +652,36 @@ namespace iba.Controls
         private void m_cbDetectNewFiles_CheckedChanged(object sender, EventArgs e)
         {
             if (!m_cbDetectNewFiles.Checked) m_cbRescanEnabled.Checked = true;
+        }
+
+        private void m_datDirTextBox_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void m_datDirTextBox_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files != null && files.Length > 0 && !m_oneTimeJob && Directory.Exists(files[0]))
+            {
+                m_datDirTextBox.Text = files[0];
+            }
+            else if (files != null)
+            {
+                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                    sb.AppendLine(line);
+                foreach (string file in files)
+                {
+                    if (Directory.Exists(file) || (File.Exists(file) && (new FileInfo(file)).Extension == ".dat"))
+                        sb.AppendLine(file);
+                }
+                m_datDirTextBox.Text = sb.ToString();
+            }
         }
     }
 }

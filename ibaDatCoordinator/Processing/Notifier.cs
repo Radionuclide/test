@@ -106,11 +106,16 @@ namespace iba.Processing
             }
             if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
             {
-                MailAddress to = null;
+                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
+                MailMessage message = new MailMessage();
+                message.From = from;
                 string logFailed = null;
                 try
                 {
-                    to = new MailAddress(m_cd.NotificationData.Email);
+                    foreach (string adress in m_cd.NotificationData.Email.Split(';'))
+                    {
+                        message.To.Add(new MailAddress(adress));
+                    }
                 }
                 catch (ArgumentNullException)
                 {
@@ -134,8 +139,6 @@ namespace iba.Processing
                     return;
                 }
 
-                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
-                MailMessage message = new MailMessage(from, to);
                 message.Subject = iba.Properties.Resources.NotificationEmailSubject;
                 message.IsBodyHtml = false;
                 message.Body = composeMessage(true);
@@ -239,11 +242,16 @@ namespace iba.Processing
         {
             if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
             {
-                MailAddress to = null;
+                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
+                MailMessage message = new MailMessage();
+                message.From = from;
                 string logFailed = null;
                 try
                 {
-                    to = new MailAddress(m_cd.NotificationData.Email);
+                    foreach (string adress in m_cd.NotificationData.Email.Split(';'))
+                    {
+                        message.To.Add(new MailAddress(adress));
+                    }
                 }
                 catch (ArgumentNullException)
                 {
@@ -262,8 +270,6 @@ namespace iba.Processing
                     throw new Exception(logFailed);
                 }
 
-                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
-                MailMessage message = new MailMessage(from, to);
                 message.Subject = iba.Properties.Resources.NotificationEmailSubject;
                 message.IsBodyHtml = false;
                 message.Body = iba.Properties.Resources.notifyTestMessage;

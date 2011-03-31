@@ -58,7 +58,18 @@ namespace iba.Data
 
         public void UpdateUNC(bool updateChildren)
         {
-            m_datdirectoryUNC = Shares.PathToUnc(m_datDirectory, false);
+            if (!OnetimeJob)
+                m_datdirectoryUNC = Shares.PathToUnc(m_datDirectory, false);
+            else
+            {
+                string[] lines = m_datDirectory.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                {
+                    string uncline = Shares.PathToUnc(line, false);
+                    sb.AppendLine(uncline);
+                }
+            }
             if (updateChildren)
             {
                 foreach (TaskData task in m_tasks)
@@ -76,7 +87,6 @@ namespace iba.Data
         }
 
         private string m_pass;
-        
         
         [XmlIgnore]
         public string Password
@@ -176,8 +186,7 @@ namespace iba.Data
             get { return m_nrTimes; }
             set { m_nrTimes = value; }
         }
-
-
+        
         private TimeSpan m_rescanTime;
         [XmlIgnore]
         public TimeSpan RescanTimeInterval
@@ -213,7 +222,7 @@ namespace iba.Data
             set { m_guid = value; }
         }
 
-        public ConfigurationData() : this("") 
+        public ConfigurationData() : this("",false) 
         {
 
         }
@@ -227,8 +236,18 @@ namespace iba.Data
 
         private string ibaAnalyzerExe;
 
-        public ConfigurationData(string name)
+
+        private bool m_onetimeJob;
+        public bool OnetimeJob
         {
+            get { return m_onetimeJob; }
+            set { m_onetimeJob = value; }
+        }
+
+
+        public ConfigurationData(string name, bool onetimejob)
+        {
+            m_onetimeJob = onetimejob;
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
@@ -273,7 +292,7 @@ namespace iba.Data
 
         public object Clone()
         {
-            ConfigurationData cd = new ConfigurationData(m_name);
+            ConfigurationData cd = new ConfigurationData(m_name,m_onetimeJob);
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
             cd.relinkChildData();

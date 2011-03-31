@@ -135,9 +135,13 @@ namespace iba.Controls
             // 
             // m_datDirTextBox
             // 
+            this.m_datDirTextBox.AllowDrop = true;
             resources.ApplyResources(this.m_datDirTextBox, "m_datDirTextBox");
+            this.m_datDirTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.m_datDirTextBox.Name = "m_datDirTextBox";
             this.m_datDirTextBox.TextChanged += new System.EventHandler(this.m_datDirInfoChanged);
+            this.m_datDirTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragDrop);
+            this.m_datDirTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragOver);
             // 
             // m_scanTimeUpDown
             // 

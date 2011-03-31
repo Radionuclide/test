@@ -2294,8 +2294,16 @@ namespace iba.Processing
 
                 if (task.Extension == "html" || task.Extension == "htm")
                 {
-                    dir = Path.Combine(dir, actualFileName);
-                    htmloutputdir = dir;
+                    htmloutputdir = Path.Combine(dir, actualFileName);
+                    if (!task.OverwriteFiles)
+                    {
+                        for (int index = 0; Directory.Exists(htmloutputdir); index++)
+                        {
+                            string indexstr = index.ToString("d2");
+                            htmloutputdir = Path.Combine(dir, actualFileName + '_' + indexstr);
+                        }
+                    }
+                    dir = htmloutputdir;
                 }
 
                 if (!Directory.Exists(dir))
@@ -2580,7 +2588,6 @@ namespace iba.Processing
                     else break;
                     dir = parentdir;
                 }
-
             }
             catch
             {

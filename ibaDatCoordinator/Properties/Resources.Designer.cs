@@ -69,6 +69,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Add One Time Job.
+        /// </summary>
+        internal static string addOneTimeConfigurationText {
+            get {
+                return ResourceManager.GetString("addOneTimeConfigurationText", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Aktualisieren {
             get {
                 object obj = ResourceManager.GetObject("Aktualisieren", resourceCulture);
@@ -1683,6 +1692,20 @@ namespace iba.Properties {
         internal static string notifyTestMessage {
             get {
                 return ResourceManager.GetString("notifyTestMessage", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Icon onetime_configuration_new {
+            get {
+                object obj = ResourceManager.GetObject("onetime_configuration_new", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon onetimeconfiguration {
+            get {
+                object obj = ResourceManager.GetObject("onetimeconfiguration", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

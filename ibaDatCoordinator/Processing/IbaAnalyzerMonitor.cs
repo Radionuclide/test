@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iba.Data;
 using System.Diagnostics;
+using iba.Logging;
 
 namespace iba.Processing
 {
@@ -95,14 +96,16 @@ namespace iba.Processing
 
         private void OnTimeTimerTick(object ignoreMe)
         {
+            //throw new IbaAnalyzerExceedingTimeLimitException();
             try
             {
                 if (m_process.HasExited) return;
                 m_process.Kill();
                 m_status = MonitorStatus.OUT_OF_TIME;
             }
-            catch //could not kill process, do nothing
+            catch  (Exception ex) //could not kill process, do nothing
             {
+                LogData.Data.Logger.Log(Level.Exception, "Time limit exceeded, could not kill ibaAnalyzer :" + ex.Message);
             }
         }
 
@@ -122,8 +125,9 @@ namespace iba.Processing
                 else //look again in 5 seconds
                     m_memoryTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
             }
-            catch //could not kill process, do nothing
+            catch (Exception ex) //could not kill process, do nothing
             {
+                LogData.Data.Logger.Log(Level.Exception, "Memory limit exceeded, could not kill ibaAnalyzer :" + ex.Message);
             }
         }
 

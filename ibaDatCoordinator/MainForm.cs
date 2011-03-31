@@ -27,17 +27,19 @@ namespace iba
     public partial class MainForm : Form, IPropertyPaneManager, IExternalCommand
     {
         public static readonly int CONFIGURATION_INDEX = 0;
-        public static readonly int REPORTTASK_INDEX = 1;
-        public static readonly int EXTRACTTASK_INDEX = 2;
-        public static readonly int BATCHFILETASK_INDEX = 3;
-        public static readonly int COPYTASK_INDEX = 4;
-        public static readonly int IFTASK_INDEX = 5;
-        public static readonly int UPDATEDATATASK_INDEX = 6;
-        public static readonly int PAUSETASK_INDEX = 7;
+        public static readonly int ONETIME_CONFIGURATION_INDEX = 1;
+        public static readonly int REPORTTASK_INDEX = 2;
+        public static readonly int EXTRACTTASK_INDEX = 3;
+        public static readonly int BATCHFILETASK_INDEX = 4;
+        public static readonly int COPYTASK_INDEX = 5;
+        public static readonly int IFTASK_INDEX = 6;
+        public static readonly int UPDATEDATATASK_INDEX = 7;
+        public static readonly int PAUSETASK_INDEX = 8;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int NEWCONF_INDEX = 8;
-        public static readonly int CUSTOMTASK_INDEX = 9;
-        public static readonly int NR_TASKS = 8; 
+        public static readonly int NEWCONF_INDEX = 9;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 10;
+        public static readonly int CUSTOMTASK_INDEX = 11;
+        public static readonly int NR_TASKS = 7; 
 
         public MainForm()
         {
@@ -47,7 +49,6 @@ namespace iba
             PluginManager.Manager.LoadPlugins();
 
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
-            //register nodename change with the configurationcontrol
             LogControl theLogControl; 
             propertyPanes["logControl"] = theLogControl = new LogControl();
             LogData.ApplicationState state = LogData.ApplicationState.CLIENTSTANDALONE;
@@ -82,6 +83,7 @@ namespace iba
 
             ImageList confsImageList = new ImageList();
             confsImageList.Images.Add(iba.Properties.Resources.configuration);
+            confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             confsImageList.Images.Add(iba.Properties.Resources.report_running);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.extract_running.ToBitmap()));
             confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
@@ -91,6 +93,7 @@ namespace iba
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.pausetask));
 
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
+            confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
                 confsImageList.Images.Add(info.Icon);
@@ -440,7 +443,11 @@ namespace iba
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
         {
-            TreeNode confNode = new TreeNode(confIt.Name, CONFIGURATION_INDEX, CONFIGURATION_INDEX);
+            TreeNode confNode = null;
+            if (confIt.OnetimeJob)
+                confNode = new TreeNode(confIt.Name, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX);
+            else
+                confNode = new TreeNode(confIt.Name, CONFIGURATION_INDEX, CONFIGURATION_INDEX);
             MainForm.strikeOutNodeText(confNode, ! confIt.Enabled);
             
             confNode.Tag = new ConfigurationTreeItemData(this, confIt);
@@ -526,7 +533,7 @@ namespace iba
 			m_configTreeView.Nodes.Clear();
             if (TaskManager.Manager.Count == 0)
             {
-                ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName);
+                ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName,false);
                 TaskManager.Manager.AddConfiguration(newData);
             }
             List<ConfigurationData> confs = TaskManager.Manager.Configurations;
@@ -538,7 +545,14 @@ namespace iba
             TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText, NEWCONF_INDEX, NEWCONF_INDEX);
             newConfNode.ForeColor = Color.Blue;
             newConfNode.Tag = new NewConfigurationTreeItemData(this);
-            m_configTreeView.Nodes.Add(newConfNode); 
+            m_configTreeView.Nodes.Add(newConfNode);
+
+            //add the one time Configuration node
+            TreeNode new1ConfNode = new TreeNode(iba.Properties.Resources.addOneTimeConfigurationText, NEW_ONETIME_CONF_INDEX, NEW_ONETIME_CONF_INDEX);
+            new1ConfNode.ForeColor = Color.Blue;
+            new1ConfNode.Tag = new NewOneTimeConfigurationTreeItemData(this);
+            m_configTreeView.Nodes.Add(new1ConfNode);
+ 
             m_configTreeView.EndUpdate();
             m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
             UpdateTreePositions();
@@ -673,18 +687,20 @@ namespace iba
             TreeNode node = e.Node;
             using (WaitCursor wait = new WaitCursor())
             {
-                if (node.Tag is NewConfigurationTreeItemData)
+                bool c1 = node.Tag is NewConfigurationTreeItemData;
+                bool c2 = node.Tag is NewOneTimeConfigurationTreeItemData;
+                if (c1 || c2)
                 {
                     SaveRightPaneControl();
                     //code to create new configuration
-                    ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName);
+                    ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, c2);
                     new SetNextName(newData);
                     TaskManager.Manager.AddConfiguration(newData);
                     m_configTreeView.BeginUpdate();
-                    m_configTreeView.Nodes.Insert(m_configTreeView.Nodes.Count - 1, CreateConfigurationNode(newData));
+                    m_configTreeView.Nodes.Insert(m_configTreeView.Nodes.Count - 2, CreateConfigurationNode(newData));
                     //loadConfigurations();
                     m_configTreeView.EndUpdate();
-                    node = m_configTreeView.Nodes[m_configTreeView.Nodes.Count - 2];
+                    node = m_configTreeView.Nodes[m_configTreeView.Nodes.Count - 3];
                     m_configTreeView.SelectedNode = node;
                     loadStatuses();
                     UpdateButtons();
@@ -806,7 +822,7 @@ namespace iba
                     m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
                 UpdateTreePositions();
             }
-            else if (node.Tag is NewConfigurationTreeItemData)
+            else if (node.Tag is NewConfigurationTreeItemDataBase)
             {
                 //should never happen you are here
             }
@@ -972,7 +988,7 @@ namespace iba
                     TaskManager.Manager.ReplaceConfiguration(origData);
                 m_task_copy = m_task_copy.Clone() as TaskData;
             }
-            else if (!(node.Tag is NewConfigurationTreeItemData) && m_task_copy != null)
+            else if (!(node.Tag is NewConfigurationTreeItemDataBase) && m_task_copy != null)
             {
                 SaveRightPaneControl();
                 ConfigurationData origData = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
@@ -1101,7 +1117,7 @@ namespace iba
             for (int i = 0; i < customcount; i++)
             {
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
-                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, NR_TASKS+2+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, NR_TASKS+3+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
             }
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
@@ -1188,7 +1204,7 @@ namespace iba
                         m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = false;
                     }
                 }
-                else if (data is NewConfigurationTreeItemData)
+                else if (data is NewConfigurationTreeItemDataBase)
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = false;
                 else
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = (m_task_copy != null) && !started;
@@ -2009,7 +2025,7 @@ namespace iba
             {
                 e.Effect = DragDropEffects.None;
             }
-            else if (targetNode.Tag is NewConfigurationTreeItemData)
+            else if (targetNode.Tag is NewConfigurationTreeItemDataBase)
             {
                 e.Effect = DragDropEffects.None;
             }
@@ -2057,7 +2073,7 @@ namespace iba
             {
                 TreeNode draggedNode = (TreeNode) e.Item;
                 m_configTreeView.SelectedNode = draggedNode;
-                if (!(draggedNode.Tag is NewConfigurationTreeItemData))
+                if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase))
                     DoDragDrop(e.Item, DragDropEffects.Copy | DragDropEffects.Move);
             }
         }

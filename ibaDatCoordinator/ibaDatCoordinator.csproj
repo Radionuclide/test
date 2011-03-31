@@ -110,6 +110,9 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FolderBrowserDialogEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PauseTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -623,6 +626,9 @@
     <None Include="Resources\updatedatatask.png" />
     <None Include="Resources\time.png" />
     <None Include="Resources\application--pencil.png" />
+    <None Include="Resources\configuration1.ico" />
+    <None Include="Resources\onetime_configuration_new.ico" />
+    <None Include="Resources\onetimeconfiguration.ico" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />
