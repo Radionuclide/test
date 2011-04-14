@@ -34,7 +34,11 @@ namespace iba.Processing
 
         public bool Stop
         {
-            get { return m_stop; }
+            get 
+            { 
+                return m_stop; 
+            }
+
             set 
             {
                 m_stop = value;
@@ -154,29 +158,75 @@ namespace iba.Processing
                             rescanTimer = null;
                         }
                     }
-                    if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval)
+                    if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval && m_toUpdate.OnetimeJob)
                     {
                         if (reprocessErrorsTimer == null) reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
                         reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                     }
+                    else if (m_toUpdate.OnetimeJob) //disable reprocess errors
+                    {
+                        if (reprocessErrorsTimer != null)
+                        {
+                            reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                            reprocessErrorsTimer.Dispose();
+                            reprocessErrorsTimer = null;
+                        }
+                    }
+
                     if (m_sd.Started)
                     {
                         DisposeFswt();
-                        SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+                        if (m_cd.OnetimeJob) SharesHandler.Handler.ReleaseFromConfiguration(m_cd); //in case of onetimejob only tasks were added
                     }
+
                     ConfigurationData oldConfigurationData = m_cd;
                     m_cd = m_toUpdate.Clone_AlsoCopyGuids();
-                    object errorObject;
-                    SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
-                    if (errorObject != null)
+
+                    if (!m_cd.OnetimeJob)
                     {
-                        if (errorObject is ConfigurationData)
+                        object errorObject;
+                        SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
+                        if (errorObject != null)
                         {
-                            networkErrorOccured = true;
-                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, m_cd.DatDirectoryUNC));
-                            tickCount = 0;
+                            if (errorObject is ConfigurationData)
+                            {
+                                networkErrorOccured = true;
+                                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, m_cd.DatDirectoryUNC));
+                                tickCount = 0;
+                            }
+                            else
+                            {
+                                TaskDataUNC t = errorObject as TaskDataUNC;
+                                if (t != null)
+                                {
+                                    Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
+                                }
+                            }
                         }
                         else
+                        {
+                            if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
+                            {
+                                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                                networkErrorOccured = true;
+                            }
+                            else if (m_cd.DetectNewFiles)
+                            {
+                                RenewFswt();
+                                networkErrorOccured = false;
+                            }
+                            tickCount = 0;
+                        }
+
+                        if (!m_cd.DetectNewFiles)
+                            DisposeFswt();
+
+                    }
+                    else
+                    {
+                        object errorObject;
+                        SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
+                        if (errorObject != null)
                         {
                             TaskDataUNC t = errorObject as TaskDataUNC;
                             if (t != null)
@@ -185,24 +235,6 @@ namespace iba.Processing
                             }
                         }
                     }
-                    else 
-                    {
-                        if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
-                        {
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
-                            networkErrorOccured = true;
-                        }
-                        else if (m_cd.DetectNewFiles)
-                        {
-                            RenewFswt();
-                            networkErrorOccured = false;
-                        }
-                        tickCount = 0;
-                    }
-
-                    if (!m_cd.DetectNewFiles)
-                        DisposeFswt();
-
 
                     //also update statusdata
                     m_sd.CorrConfigurationData = m_cd;
@@ -288,7 +320,6 @@ namespace iba.Processing
                                 }
                             }
                         }
-
                     }
                     //no need to add new tasks to the list, they will get added when first executed
                     foreach (Guid guid in toDelete)
@@ -609,6 +640,207 @@ namespace iba.Processing
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStopped);
         }
 
+
+        private void RunOneTimeJob()
+        {
+            Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
+            if (m_stop)
+            {
+                m_sd.Started = false;
+                SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+                return;
+            }
+
+            if (!TestLicensePlugins())
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseNoStart);
+                m_sd.Started = false;
+                Stop = true;
+                return;
+            }
+
+            m_bTimersstopped = false;
+            m_notifyTimer = null;
+            try
+            {
+                if (!m_cd.NotificationData.NotifyImmediately)
+                {
+                    m_notifyTimer = new System.Threading.Timer(new TimerCallback(OnNotifyTimerTick));
+                    m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, m_cd.NotificationData.TimeInterval);
+                }
+
+                //do initializations of custom tasks
+                foreach (TaskData t in m_cd.Tasks)
+                {
+                    CustomTaskData c = t as CustomTaskData;
+                    if (c != null)
+                    {
+                        IPluginTaskWorker w = c.Plugin.GetWorker();
+                        if (!w.OnStart())
+                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                    }
+                }
+
+                if (m_needIbaAnalyzer) StartIbaAnalyzer();
+                string[] unclines = m_cd.DatDirectoryUNC.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string line in unclines)
+                {
+                    if (m_stop) break;
+                    lock (m_toProcessFiles)
+                    {
+                        m_toProcessFiles.Clear();
+                    }
+                    lock (m_processedFiles)
+                    {
+                        m_processedFiles.Clear();
+                    }
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates.Clear();
+                    }
+                    m_sd.UpdatingFileList = true;
+
+                    m_sd.UpdatingFileList = false;
+
+                    string error;
+                    SharesHandler.Handler.AddReferenceDirect(line, m_cd.Username, m_cd.Password, out error);
+                    if (!String.IsNullOrEmpty(error))
+                    {
+                        Log(iba.Logging.Level.Exception, error);
+                        continue;
+                    }
+                    List<FileInfo> fileInfosList = new List<FileInfo>();
+                    if (Directory.Exists(line))
+                    {
+                        Log(iba.Logging.Level.Info, iba.Properties.Resources.OnTimeJobDirScanStarted, line);
+                        DirectoryInfo dirInfo = new DirectoryInfo(line);
+                        try
+                        {
+                            if (m_cd.SubDirs)
+                            {
+                                fileInfosList = Utility.PathUtil.GetFilesInSubsSafe("*.dat", dirInfo);
+                            }
+                            else
+                            {
+                                FileInfo[] fileInfos = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
+                                fileInfosList.AddRange(fileInfos);
+                            }
+                            fileInfosList.Sort( delegate(FileInfo f1, FileInfo f2)
+                            {
+                                int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
+                                return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
+                            }); //oldest files first
+                        }
+                        catch
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                            m_sd.UpdatingFileList = false;
+                            continue;
+                        }
+                        string message = string.Format(iba.Properties.Resources.OnTimeJobDirScanFinished, line, fileInfosList.Count);
+                        Log(iba.Logging.Level.Info, message);
+                    }
+                    else if (File.Exists(line))
+                    {
+                        fileInfosList.Add(new FileInfo(line));
+                    }
+                    if (m_stop) break;
+
+                    UpdateDatFileListOneTimeJob(fileInfosList);
+
+                    while (!m_stop)
+                    {
+                        string file = m_toProcessFiles.OldestExistingFile();
+                        if (file == null) //no existing file
+                        {
+                            lock (m_toProcessFiles)
+                            {
+                                m_toProcessFiles.Clear();
+                            }
+                            break;
+                        }
+                        try
+                        {
+                            ProcessDatfile(file);
+                        }
+                        catch (Exception ex)
+                        {
+                            Stop = true;
+                            Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), line);
+                        }
+
+                        if (m_stop) break;
+                        lock (m_toProcessFiles)
+                        {
+                            m_toProcessFiles.Remove(file);
+                        }
+                        if (fileInfosList.Count > 0)
+                            UpdateDatFileListOneTimeJob(fileInfosList);
+                    }
+                    
+                }
+                //stop the com object
+                StopIbaAnalyzer();
+
+                //clean up any updatetaskworkers //closes database connections and ibaFiles instances
+                foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
+                {
+                    udt.Dispose();
+                }
+                m_udtWorkers.Clear();
+            }
+            finally
+            {
+                m_bTimersstopped = true;
+                if (m_notifyTimer != null)
+                {
+                    m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    m_notifyTimer.Dispose();
+                    m_notifier.Send(); //send one last time
+                }
+                if (testLicenseTimer != null)
+                {
+                    testLicenseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    testLicenseTimer.Dispose();
+                    testLicenseTimer = null;
+                }
+                Debug.Assert(m_ibaAnalyzer == null, "ibaAnalyzer should have been closed");
+            }
+            m_sd.Started = false;
+            SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+            
+            string[] unclines2 = m_cd.DatDirectoryUNC.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string line in unclines2)
+                SharesHandler.Handler.ReleaseReferenceDirect(line);
+            Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStopped);
+        }
+
+        void UpdateDatFileListOneTimeJob(List<FileInfo> infos)
+        {
+            const int enoughToProcess = 50;
+            const int maxToProcess = 100;
+            const int maxProcessed = 50;
+            lock (m_toProcessFiles)
+            {
+                if (m_toProcessFiles.Count < enoughToProcess)
+                {
+                    m_sd.UpdatingFileList = true;
+                    while (infos.Count > 0 && m_toProcessFiles.Count < maxToProcess)
+                    {
+                        FileInfo candidate = infos[0];
+                        infos.RemoveAt(0);
+                        //TODO: test if the file should be processed
+                        m_toProcessFiles.Add(candidate.FullName);
+                    }
+                }
+            }
+            lock (m_processedFiles)
+            {
+
+            }
+            m_sd.UpdatingFileList = false;
+            m_sd.MergeProcessedAndToProcessLists();
+        }
 
         private bool networkErrorOccured = false;
         private int tickCount = 0;
@@ -1337,7 +1569,7 @@ namespace iba.Processing
                     {
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     }
-                    return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
+                    return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
                 catch (ArgumentException)
                 {
@@ -1347,7 +1579,7 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
-                    return DatFileStatus.State.NO_ACCESS; //no acces, try again next time
+                    return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
 
                 Stopwatch st = new Stopwatch();
@@ -1543,6 +1775,66 @@ namespace iba.Processing
             }
         }
 
+
+        private DatFileStatus.State ProcessDatfileReadynessOneTimeJob(string filename)
+        {
+            try
+            {
+                if (!File.Exists(filename))
+                {
+                    return DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                try
+                {
+                    FileAttributes at = File.GetAttributes(filename);
+                    if ((at & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
+                        return DatFileStatus.State.NO_ACCESS;
+                    }
+                    else if ((at & FileAttributes.Offline) == FileAttributes.Offline)
+                    {
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
+                        return DatFileStatus.State.NO_ACCESS;
+                    }
+                }
+                catch
+                {
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                    return DatFileStatus.State.NO_ACCESS;
+                }
+                
+                string frames = null;
+                IbaFile ibaDatFile = new IbaFileClass();
+                
+                try
+                {
+                    frames = ibaDatFile.QueryInfoByName("frames");
+                }
+                catch
+                {
+                }
+                if (String.IsNullOrEmpty(frames) || frames == "1000000000")
+                {
+                    try
+                    {
+                        ibaDatFile.Close();
+                    }
+                    catch
+                    {
+                    }
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
+                    return DatFileStatus.State.NO_ACCESS;
+                }
+            }
+            catch //general exception that may have happened
+            {
+                Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                return DatFileStatus.State.COMPLETED_FAILURE;
+            }
+            return DatFileStatus.State.NOT_STARTED;
+        }
+
         private AutoResetEvent m_waitEvent;
 
         private void ClearInfo(string dest)
@@ -1601,6 +1893,7 @@ namespace iba.Processing
                     m_processedFiles.Add(DatFile);
                 }
                 bool completeSucces = true;
+              
                 try
                 {
                     FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
@@ -1627,6 +1920,8 @@ namespace iba.Processing
                     }
                     return;
                 }
+
+
                 foreach (TaskData task in m_cd.Tasks)
                 {
                     if (!shouldTaskBeDone(task, DatFile))
@@ -1838,74 +2133,77 @@ namespace iba.Processing
                     }
                 }
 
-                Nullable<DateTime> time = null;
 
-                try
+                if (!m_cd.OnetimeJob) //onetime job state does not need to be written in the .dat file
                 {
-                    IbaFile ibaDatFile = new IbaFileClass();
+                    Nullable<DateTime> time = null;
                     try
                     {
-                        ibaDatFile.OpenForUpdate(DatFile);
-                        time = File.GetLastWriteTime(DatFile);
-                    }
-                    catch //happens when timed out and proc has not released its resources yet
-                    {
-                        m_sd.Changed = true;
-                        return;
-                    }
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[DatFile].TimesTried++;
-                    }
-
-                    if (completeSucces)
-                    {
-                        ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
-                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
-                    }
-                    else
-                    {
-                        ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
-                        //write GUIDs of those that were succesfull
+                        IbaFile ibaDatFile = new IbaFileClass();
+                        try
+                        {
+                            ibaDatFile.OpenForUpdate(DatFile);
+                            time = File.GetLastWriteTime(DatFile);
+                        }
+                        catch //happens when timed out and proc has not released its resources yet
+                        {
+                            m_sd.Changed = true;
+                            return;
+                        }
                         lock (m_sd.DatFileStates)
                         {
-                            string guids = "";
-                            string outputfiles = "";
-                            foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
-                                if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
-                                {
-                                    guids += stat.Key.Guid.ToString() + ";";
-                                    if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
-                                        outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
-                                }
-                            ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
-                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                            m_sd.DatFileStates[DatFile].TimesTried++;
+                        }
+
+                        if (completeSucces)
+                        {
+                            ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
+                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
+                        }
+                        else
+                        {
+                            ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
+                            //write GUIDs of those that were succesfull
+                            lock (m_sd.DatFileStates)
+                            {
+                                string guids = "";
+                                string outputfiles = "";
+                                foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
+                                    if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                                    {
+                                        guids += stat.Key.Guid.ToString() + ";";
+                                        if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
+                                            outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
+                                    }
+                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                            }
+                        }
+
+                        lock (m_sd.DatFileStates)
+                        {
+                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
+                        }
+                        ibaDatFile.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, DatFile);
+                        lock (m_sd.DatFileStates)
+                        {
+                            foreach (TaskData t in m_cd.Tasks)
+                                m_sd.DatFileStates[DatFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
                     }
-
-                    lock (m_sd.DatFileStates)
+                    if (time != null)
                     {
-                        ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
-                    }
-                    ibaDatFile.Close();
-                }
-                catch (Exception ex)
-                {
-                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, DatFile);
-                    lock (m_sd.DatFileStates)
-                    {
-                        foreach( TaskData t in m_cd.Tasks)
-                            m_sd.DatFileStates[DatFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
-                    }
-                }
-                if (time != null)
-                {
-                    try
-                    {
-                        File.SetLastWriteTime(DatFile, time.Value);
-                    }
-                    catch (Exception)
-                    {
+                        try
+                        {
+                            File.SetLastWriteTime(DatFile, time.Value);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
                 m_sd.Changed = true;

@@ -199,7 +199,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_datDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -223,7 +223,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_datDirTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_scanTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>239, 63</value>
@@ -286,7 +286,7 @@
     <value>125, 17</value>
   </data>
   <data name="m_subMapsCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="m_subMapsCheckBox.Text" xml:space="preserve">
     <value>Check subdirectories</value>
@@ -301,10 +301,40 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_subMapsCheckBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_browseDatFilesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_browseDatFilesButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_browseDatFilesButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>527, 15</value>
+  </data>
+  <data name="m_browseDatFilesButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_browseDatFilesButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_browseDatFilesButton.ToolTip" xml:space="preserve">
+    <value>Browse for .dat files</value>
+  </data>
+  <data name="&gt;&gt;m_browseDatFilesButton.Name" xml:space="preserve">
+    <value>m_browseDatFilesButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseDatFilesButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseDatFilesButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_browseDatFilesButton.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_tbPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -316,7 +346,7 @@
     <value>159, 20</value>
   </data>
   <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_tbPass.Name" xml:space="preserve">
     <value>m_tbPass</value>
@@ -328,7 +358,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -343,7 +373,7 @@
     <value>56, 13</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>Password:</value>
@@ -358,7 +388,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_tbUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -370,7 +400,7 @@
     <value>159, 20</value>
   </data>
   <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_tbUserName.Name" xml:space="preserve">
     <value>m_tbUserName</value>
@@ -382,7 +412,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -394,7 +424,7 @@
     <value>58, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Username:</value>
@@ -409,7 +439,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -424,7 +454,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_checkPathButton.Name" xml:space="preserve">
     <value>m_checkPathButton</value>
@@ -436,8 +466,11 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>190, 17</value>
+  </metadata>
   <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -450,6 +483,9 @@
   <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="m_browseFolderButton.ToolTip" xml:space="preserve">
+    <value>Browse for .dat file directory</value>
+  </data>
   <data name="&gt;&gt;m_browseFolderButton.Name" xml:space="preserve">
     <value>m_browseFolderButton</value>
   </data>
@@ -460,7 +496,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 226</value>
@@ -2512,6 +2548,9 @@
   <data name="&gt;&gt;m_rbImmediate.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <metadata name="m_selectDatFilesDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>291, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>71</value>
   </metadata>
@@ -2583,6 +2622,12 @@
   </data>
   <data name="&gt;&gt;m_newPauseTaskButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_selectDatFilesDialog.Name" xml:space="preserve">
+    <value>m_selectDatFilesDialog</value>
+  </data>
+  <data name="&gt;&gt;m_selectDatFilesDialog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConfigurationControl</value>

@@ -110,9 +110,6 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FolderBrowserDialogEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\PauseTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

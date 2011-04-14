@@ -23,6 +23,8 @@ namespace iba.Processing
             SharesHandler.Handler.ReleaseReferenceDirect(m_path);
         }
 
+        #endregion
+
         private string m_path;
         private string m_error;
 
@@ -31,7 +33,6 @@ namespace iba.Processing
             get { return m_error; }
         }
 
-        #endregion
 
         public void RemoveFiles(List<string> files, FileProcessingProgressBar myBar)
         {

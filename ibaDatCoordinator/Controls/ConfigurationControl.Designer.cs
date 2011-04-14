@@ -38,6 +38,7 @@ namespace iba.Controls
             this.label4 = new System.Windows.Forms.Label();
             this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.m_browseDatFilesButton = new System.Windows.Forms.Button();
             this.m_tbPass = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.m_tbUserName = new System.Windows.Forms.TextBox();
@@ -101,6 +102,7 @@ namespace iba.Controls
             this.m_nudNotifyTime = new System.Windows.Forms.NumericUpDown();
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
+            this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -178,6 +180,7 @@ namespace iba.Controls
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.m_browseDatFilesButton);
             this.groupBox1.Controls.Add(this.m_tbPass);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.m_tbUserName);
@@ -189,6 +192,15 @@ namespace iba.Controls
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // m_browseDatFilesButton
+            // 
+            resources.ApplyResources(this.m_browseDatFilesButton, "m_browseDatFilesButton");
+            this.m_browseDatFilesButton.Image = global::iba.Properties.Resources.open;
+            this.m_browseDatFilesButton.Name = "m_browseDatFilesButton";
+            this.m_toolTip.SetToolTip(this.m_browseDatFilesButton, resources.GetString("m_browseDatFilesButton.ToolTip"));
+            this.m_browseDatFilesButton.UseVisualStyleBackColor = true;
+            this.m_browseDatFilesButton.Click += new System.EventHandler(this.m_browseDatFilesButton_Click);
             // 
             // m_tbPass
             // 
@@ -226,6 +238,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
             this.m_browseFolderButton.Image = global::iba.Properties.Resources.open;
             this.m_browseFolderButton.Name = "m_browseFolderButton";
+            this.m_toolTip.SetToolTip(this.m_browseFolderButton, resources.GetString("m_browseFolderButton.ToolTip"));
             this.m_browseFolderButton.UseVisualStyleBackColor = true;
             this.m_browseFolderButton.Click += new System.EventHandler(this.OnClickFolderBrowserButton);
             // 
@@ -690,6 +703,13 @@ namespace iba.Controls
             this.m_rbImmediate.UseVisualStyleBackColor = true;
             this.m_rbImmediate.CheckedChanged += new System.EventHandler(this.m_rbImmediate_CheckedChanged);
             // 
+            // m_selectDatFilesDialog
+            // 
+            this.m_selectDatFilesDialog.AutoUpgradeEnabled = false;
+            this.m_selectDatFilesDialog.DefaultExt = "dat";
+            this.m_selectDatFilesDialog.FileName = "openFileDialog1";
+            this.m_selectDatFilesDialog.Multiselect = true;
+            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -801,5 +821,7 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newUpdateDataTaskButton;
         private System.Windows.Forms.ToolStripButton m_newPauseTaskButton;
         private System.Windows.Forms.Label m_lblIbaAnalyzerPath;
+        private System.Windows.Forms.Button m_browseDatFilesButton;
+        private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
     }
 }

@@ -973,4 +973,13 @@
   <data name="onetime_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\onetime_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DatDirDragAndDrop" xml:space="preserve">
+    <value>Drag and drop .dat files or directories from Windows Explorer to here</value>
+  </data>
+  <data name="OnTimeJobDirScanFinished" xml:space="preserve">
+    <value>Finished scanning directory {0} for .dat files, {1} files found</value>
+  </data>
+  <data name="OnTimeJobDirScanStarted" xml:space="preserve">
+    <value>Scanning directory {0} for .dat files</value>
+  </data>
 </root>

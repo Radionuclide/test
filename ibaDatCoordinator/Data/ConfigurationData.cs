@@ -257,9 +257,11 @@ namespace iba.Data
             m_restartIbaAnalyzer = 1;
             m_ibaAnalyzerSleepsWhenNoDatFiles = true;
             m_bRestartIbaAnalyzer = true;
-            m_bInitialScanEnabled = true;
-            m_bDetectNewFiles = true;
-            m_bRescanEnabled = true;
+
+            m_bInitialScanEnabled = !onetimejob;
+            m_bDetectNewFiles = !onetimejob;
+            m_bRescanEnabled = !onetimejob;
+            
             m_datDirectory = System.Environment.CurrentDirectory;
             try
             {

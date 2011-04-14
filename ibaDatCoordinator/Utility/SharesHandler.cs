@@ -41,14 +41,20 @@ namespace iba.Utility
 	        try
 	        {
 		        DirectoryInfo dirInfo = new DirectoryInfo(path);
-		        if(!dirInfo.Exists)
-                    if (createallowed)
-                        dirInfo.Create();
-                    else
+                if (!dirInfo.Exists)
+                {
+                    FileInfo fileInfo = new FileInfo(path);
+                    if (!fileInfo.Exists) //it's not a file
                     {
-                        errorMsg = iba.Properties.Resources.FolderDoesNotExist;
-                        return false;
+                        if (createallowed)
+                            dirInfo.Create();
+                        else
+                        {
+                            errorMsg = iba.Properties.Resources.FolderDoesNotExist;
+                            return false;
+                        }
                     }
+                }
 		        return true;
 	        }
 	        catch(Exception ex)
@@ -85,6 +91,7 @@ namespace iba.Utility
             }
         }
 
+        private int m_error;
         private int AddReference(string computer, string user, string pass)
         {
             lock (m_connectedComputers)
@@ -93,8 +100,8 @@ namespace iba.Utility
                     return ++m_connectedComputers[computer];
                 else
                 {
-                    int error = Shares.ConnectToComputer(computer, user, pass);
-                    if (error == 0)
+                    m_error = Shares.ConnectToComputer(computer, user, pass);
+                    if (m_error == 0)
                     {
                         m_connectedComputers.Add(computer, 1);
                         return 1;
@@ -124,7 +131,7 @@ namespace iba.Utility
         public void AddReferencesFromConfiguration(ConfigurationData conf, out object error)
         {
             error = null;
-            if (IsUNC(conf.DatDirectoryUNC))
+            if (!conf.OnetimeJob && IsUNC(conf.DatDirectoryUNC)) //onetimejobs may have multiple folders and are handled differently
             {
                 if (AddReference(ComputerName(conf.DatDirectoryUNC), conf.Username, conf.Password) == 0)
                 {
@@ -242,8 +249,7 @@ namespace iba.Utility
                 else return m_handler = new SharesHandler();
             }
         }
-
-
+        
         public void ReleaseReferenceDirect(string path)
         {
              if (IsUNC(path))
@@ -253,14 +259,8 @@ namespace iba.Utility
         public void AddReferenceDirect(string path, string username, string pass, out string error)
         {
             error = String.Empty;
-            if (IsUNC(path))
-            {
-                if (AddReference(ComputerName(path), username, pass) == 0)
-                {
-                    error = (new System.ComponentModel.Win32Exception(error)).Message;
-                    return;
-                }
-            }
+            if (IsUNC(path) && AddReference(ComputerName(path), username, pass)==0)
+                error = (new System.ComponentModel.Win32Exception(m_error)).Message;
         }
     }
 }

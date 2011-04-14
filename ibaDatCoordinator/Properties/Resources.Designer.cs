@@ -327,6 +327,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drag and drop .dat files or directories from Windows Explorer to here.
+        /// </summary>
+        internal static string DatDirDragAndDrop {
+            get {
+                return ResourceManager.GetString("DatDirDragAndDrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to update .dat file status in the file :.
         /// </summary>
         internal static string DatFileCloseFailed {
@@ -1706,6 +1715,24 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("onetimeconfiguration", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished scanning directory {0} for .dat files, {1} files found.
+        /// </summary>
+        internal static string OnTimeJobDirScanFinished {
+            get {
+                return ResourceManager.GetString("OnTimeJobDirScanFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanning directory {0} for .dat files.
+        /// </summary>
+        internal static string OnTimeJobDirScanStarted {
+            get {
+                return ResourceManager.GetString("OnTimeJobDirScanStarted", resourceCulture);
             }
         }
         

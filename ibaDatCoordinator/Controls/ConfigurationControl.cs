@@ -29,6 +29,7 @@ namespace iba.Controls
                 m_startButton.Location = new Point(16, 18);
                 m_stopButton.Location = new Point(62, 18);
                 m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.standalone.Handle);
                 foreach (Control c in groupBox3.Controls)
                 {
                     if (c != m_startButton && c != m_stopButton)
@@ -38,10 +39,10 @@ namespace iba.Controls
                     }
                 }
                 int groupbox3OldHeight = groupBox3.Size.Height;
-                int groupbox3NewHeight = m_stopButton.Size.Height + 16+8;
+                int groupbox3NewHeight = m_stopButton.Size.Height + 16 + 8;
                 int diff = groupbox3OldHeight - groupbox3NewHeight;
                 groupBox3.Size = new Size(groupBox3.Size.Width, groupbox3NewHeight);
-                
+
                 m_datDirTextBox.Multiline = true;
                 foreach (Control c in groupBox1.Controls)
                 {
@@ -49,9 +50,9 @@ namespace iba.Controls
                         c.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                     else if (c == m_datDirTextBox)
                         c.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-                    else if (c == m_browseFolderButton)
+                    else if (c == m_browseFolderButton || c == m_browseDatFilesButton)
                         c.Anchor = AnchorStyles.Right | AnchorStyles.Top; //actually this is unchanged
-                    else 
+                    else
                         c.Anchor = (c.Anchor & ~AnchorStyles.Top) | AnchorStyles.Bottom;
                 }
 
@@ -62,9 +63,15 @@ namespace iba.Controls
                 groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 groupBox5.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+
+                m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
+
                 this.ResumeLayout();
             }
-
+            else
+            {
+                m_browseDatFilesButton.Visible = false;
+            }
 
             m_newBatchfileButton.Image = Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle);
             m_newReportButton.Image = Bitmap.FromHicon(iba.Properties.Resources.report_running.Handle);
@@ -680,6 +687,23 @@ namespace iba.Controls
                     if (Directory.Exists(file) || (File.Exists(file) && (new FileInfo(file)).Extension == ".dat"))
                         sb.AppendLine(file);
                 }
+                m_datDirTextBox.Text = sb.ToString();
+            }
+        }
+
+        private void m_browseDatFilesButton_Click(object sender, EventArgs e)
+        {
+            m_selectDatFilesDialog.CheckFileExists = true;
+            m_selectDatFilesDialog.FileName = "";
+            m_selectDatFilesDialog.Filter = ".dat files (*.dat)|*.dat";
+            if (m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
+            {
+                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                    sb.AppendLine(line);
+                foreach (string line in m_selectDatFilesDialog.FileNames)
+                    sb.AppendLine(line);
                 m_datDirTextBox.Text = sb.ToString();
             }
         }
