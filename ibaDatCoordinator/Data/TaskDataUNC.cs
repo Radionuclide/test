@@ -9,7 +9,7 @@ namespace iba.Data
     [Serializable]
     public abstract class TaskDataUNC : TaskData
     {
-        public enum OutputLimitChoiceEnum {LimitDirectories,LimitDiskspace}
+        public enum OutputLimitChoiceEnum {None,LimitDirectories,LimitDiskspace,SaveFreeSpace}
         private OutputLimitChoiceEnum m_outputLimitChoice;
         public OutputLimitChoiceEnum OutputLimitChoice
         {

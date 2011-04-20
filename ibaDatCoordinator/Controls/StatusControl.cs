@@ -218,7 +218,8 @@ namespace iba.Controls
             if (sender != null) //refresh
                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
             if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
-            else this.Cursor = Cursors.Default; if (!m_data.Changed && sender != null)
+            else this.Cursor = Cursors.Default; 
+            if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;
                 return;

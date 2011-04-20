@@ -80,7 +80,10 @@ namespace iba.Processing
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
-            m_thread = new Thread(new ThreadStart(Run));
+            if (m_cd.OnetimeJob)
+                m_thread = new Thread(new ThreadStart(RunOneTimeJob));
+            else
+                m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_cd.Name;
@@ -110,6 +113,7 @@ namespace iba.Processing
                 }
             }
         }
+
         void RenewFswt()
         {
             lock (m_fswtLock)
@@ -819,7 +823,9 @@ namespace iba.Processing
         {
             const int enoughToProcess = 50;
             const int maxToProcess = 100;
-            const int maxProcessed = 50;
+            const int maxProcessedWithoutErrors = 5;
+            const int maxProcessedWithErrors = 50;
+            bool changed = false;
             lock (m_toProcessFiles)
             {
                 if (m_toProcessFiles.Count < enoughToProcess)
@@ -830,16 +836,78 @@ namespace iba.Processing
                         FileInfo candidate = infos[0];
                         infos.RemoveAt(0);
                         //TODO: test if the file should be processed
-                        m_toProcessFiles.Add(candidate.FullName);
+                        string DatFile = candidate.FullName;
+                        DatFileStatus.State state = ProcessDatfileReadynessOneTimeJob(DatFile);
+                        if (state != DatFileStatus.State.NOT_STARTED)
+                        {
+                            lock (m_processedFiles)
+                            {
+                                if (!m_processedFiles.Contains(DatFile))
+                                    m_processedFiles.Add(DatFile);
+                            }
+                            lock (m_sd.DatFileStates)
+                            {
+                                foreach (TaskData t in m_cd.Tasks)
+                                    m_sd.DatFileStates[DatFile].States[t] = state;
+                            }
+                        }
+                        else
+                            m_toProcessFiles.Add(DatFile);
+                        changed = true;
                     }
                 }
             }
             lock (m_processedFiles)
             {
-
+                int count = m_processedFiles.Count;
+                List<string> toCleanupWithoutErrors = new List<string>();
+                List<string> toCleanupWithErrors = new List<string>();
+                for (int i = 0; i < count; i++)
+                {
+                    string filename = m_processedFiles[i];
+                    lock (m_sd.DatFileStates)
+                    {
+                        bool allclear = true;
+                        if (m_sd.DatFileStates.ContainsKey(filename))
+                            foreach (TaskData dat in m_cd.Tasks)
+                            {
+                                if (dat.Enabled)
+                                    allclear = allclear && m_sd.DatFileStates[filename].States.ContainsKey(dat)
+                                        && !shouldTaskBeDone(dat, filename);
+                                if (!allclear) break;
+                            }
+                        if (allclear)
+                            toCleanupWithoutErrors.Add(filename);
+                        else
+                            toCleanupWithErrors.Add(filename);
+                    }
+                }
+                List<string>[] cleanupLists = new List<string>[2] { toCleanupWithoutErrors, toCleanupWithErrors };
+                foreach (List<string> cleanupList in cleanupLists)
+                {
+                    int maxCount = (cleanupList == toCleanupWithoutErrors ? maxProcessedWithoutErrors : maxProcessedWithErrors);
+                    while (cleanupList.Count > maxCount)
+                    {
+                        changed = true;
+                        m_sd.UpdatingFileList = true;
+                        string filename = cleanupList[0];
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_processedFiles.Remove(filename);
+                            if (m_sd.DatFileStates.ContainsKey(filename))
+                                m_sd.DatFileStates.Remove(filename);
+                        }
+                        cleanupList.RemoveAt(0);
+                    }
+                }
             }
+
             m_sd.UpdatingFileList = false;
-            m_sd.MergeProcessedAndToProcessLists();
+            if (changed)
+            {
+                m_sd.MergeProcessedAndToProcessLists();
+                m_sd.Changed = true;
+            }
         }
 
         private bool networkErrorOccured = false;
