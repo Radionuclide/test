@@ -23,8 +23,14 @@ namespace iba.Data
         private string m_datDirectory;
         public string DatDirectory
         {
-            get {return m_datDirectory;}
-            set { if (value.Length != 0) m_datDirectory = value;}
+            get 
+            {
+                return m_datDirectory;
+            }
+            set 
+            { 
+                if (!String.IsNullOrEmpty(value)) m_datDirectory = XMLMultilineTextFixer.Fix(value);
+            }
         }
 
         private List<TaskData> m_tasks;
@@ -40,7 +46,9 @@ namespace iba.Data
         public string DatDirectoryUNC
         {
             get { return m_datdirectoryUNC; }
-            set { m_datdirectoryUNC = value; }
+            set {
+                m_datdirectoryUNC = XMLMultilineTextFixer.Fix(value);
+            }
         }
 
         public void UpdateUNC()
@@ -69,6 +77,7 @@ namespace iba.Data
                     string uncline = Shares.PathToUnc(line, false);
                     sb.AppendLine(uncline);
                 }
+                m_datdirectoryUNC = sb.ToString();
             }
             if (updateChildren)
             {

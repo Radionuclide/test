@@ -274,61 +274,67 @@ namespace iba.Processing
                     m_notifier = new Notifier(m_cd);
 
                     //update unc tasks
-                    List<Guid> toDelete = new List<Guid>();
-                    //remove old
-                    foreach (KeyValuePair<Guid, FileQuotaCleanup> pair in m_quotaCleanups)
+                    if (m_cd.OnetimeJob) //one time job, reset all quotacleanups
                     {
-                        TaskDataUNC task = m_cd.Tasks.Find(delegate(TaskData t) { return t.Guid == pair.Key; }) as TaskDataUNC;
-                        if (task == null || task.OutputLimitChoice != TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                            toDelete.Add(pair.Key);
-                        else
+                        m_quotaCleanups.Clear();
+                    }
+                    else
+                    {
+                        List<Guid> toDelete = new List<Guid>();
+                        //remove old
+                        foreach (KeyValuePair<Guid, FileQuotaCleanup> pair in m_quotaCleanups)
                         {
-                            ExtractData ed = task as ExtractData;
-                            if (ed != null)
-                            {
-                                if (ed.ExtractToFile)
-                                    pair.Value.ResetTask(task, ed.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
-                                else
-                                    toDelete.Add(pair.Key);
-                            }
+                            TaskDataUNC task = m_cd.Tasks.Find(delegate(TaskData t) { return t.Guid == pair.Key; }) as TaskDataUNC;
+                            if (task == null || !task.UsesQuota)
+                                toDelete.Add(pair.Key);
                             else
                             {
-                                CopyMoveTaskData cmtd = task as CopyMoveTaskData;
-                                if (cmtd != null)
+                                ExtractData ed = task as ExtractData;
+                                if (ed != null)
                                 {
-                                    if (cmtd.ActionDelete)
-                                        toDelete.Add(pair.Key);
+                                    if (ed.ExtractToFile)
+                                        pair.Value.ResetTask(task, ed.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
                                     else
-                                        pair.Value.ResetTask(task, ".dat");
+                                        toDelete.Add(pair.Key);
                                 }
                                 else
                                 {
-                                    ReportData rd = task as ReportData;
-                                    if (rd != null)
+                                    CopyMoveTaskData cmtd = task as CopyMoveTaskData;
+                                    if (cmtd != null)
                                     {
-                                        if (rd.Output == ReportData.OutputChoice.FILE)
-                                            pair.Value.ResetTask(task, "." + rd.Extension);
-                                        else
+                                        if (cmtd.ActionDelete)
                                             toDelete.Add(pair.Key);
+                                        else
+                                            pair.Value.ResetTask(task, ".dat");
                                     }
                                     else
                                     {
-                                        UpdateDataTaskData ud = task as UpdateDataTaskData;
-                                        if (ud != null)
+                                        ReportData rd = task as ReportData;
+                                        if (rd != null)
                                         {
-                                            pair.Value.ResetTask(task, ".dat");
+                                            if (rd.Output == ReportData.OutputChoice.FILE)
+                                                pair.Value.ResetTask(task, "." + rd.Extension);
+                                            else
+                                                toDelete.Add(pair.Key);
                                         }
                                         else
-                                            toDelete.Add(pair.Key);
+                                        {
+                                            UpdateDataTaskData ud = task as UpdateDataTaskData;
+                                            if (ud != null)
+                                            {
+                                                pair.Value.ResetTask(task, ".dat");
+                                            }
+                                            else
+                                                toDelete.Add(pair.Key);
+                                        }
                                     }
                                 }
                             }
                         }
+                        //no need to add new tasks to the list, they will get added when first executed
+                        foreach (Guid guid in toDelete)
+                            m_quotaCleanups.Remove(guid);
                     }
-                    //no need to add new tasks to the list, they will get added when first executed
-                    foreach (Guid guid in toDelete)
-                        m_quotaCleanups.Remove(guid);
-
                     m_needIbaAnalyzer = false;
                     //lastly, execute plugin actions that need to happen in the case of an update
                     foreach (TaskData t in m_cd.Tasks)
@@ -716,7 +722,8 @@ namespace iba.Processing
                     List<FileInfo> fileInfosList = new List<FileInfo>();
                     if (Directory.Exists(line))
                     {
-                        Log(iba.Logging.Level.Info, iba.Properties.Resources.OnTimeJobDirScanStarted, line);
+                        string scanmessage = String.Format(iba.Properties.Resources.OnTimeJobDirScanStarted, line);
+                        Log(iba.Logging.Level.Info, scanmessage, line);
                         DirectoryInfo dirInfo = new DirectoryInfo(line);
                         try
                         {
@@ -742,7 +749,7 @@ namespace iba.Processing
                             continue;
                         }
                         string message = string.Format(iba.Properties.Resources.OnTimeJobDirScanFinished, line, fileInfosList.Count);
-                        Log(iba.Logging.Level.Info, message);
+                        Log(iba.Logging.Level.Info, message, line);
                     }
                     else if (File.Exists(line))
                     {
@@ -852,7 +859,13 @@ namespace iba.Processing
                             }
                         }
                         else
+                        {
                             m_toProcessFiles.Add(DatFile);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[DatFile] = new DatFileStatus();
+                            }
+                        }
                         changed = true;
                     }
                 }
@@ -1874,7 +1887,7 @@ namespace iba.Processing
                 
                 string frames = null;
                 IbaFile ibaDatFile = new IbaFileClass();
-                
+                ibaDatFile.Open(filename);
                 try
                 {
                     frames = ibaDatFile.QueryInfoByName("frames");
@@ -1964,9 +1977,12 @@ namespace iba.Processing
               
                 try
                 {
-                    FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
-                    fs.Close();
-                    fs.Dispose();
+                    if (!m_cd.OnetimeJob) //no exclusive access required when doing one time job
+                    {
+                        FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
+                        fs.Close();
+                        fs.Dispose();
+                    }
                     if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0,DatFile);
                 }
                 catch (Exception ex)
@@ -1994,6 +2010,13 @@ namespace iba.Processing
                 {
                     if (!shouldTaskBeDone(task, DatFile))
                     {
+                        if (task.WhenToExecute != TaskData.WhenToDo.DISABLED && task is TaskDataUNC)
+                        {
+                            TaskDataUNC tunc = task as TaskDataUNC;
+                            if (tunc.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace)
+                                DoCleanupAnyway(DatFile, tunc);
+                        }
+
                         //set the outputfile of previous run if any for the next batchtask
                         lock (m_sd.DatFileStates)
                         {
@@ -2344,11 +2367,11 @@ namespace iba.Processing
                     {
                         string outFile = GetExtractFileName(filename, task);
                         if (outFile == null) return;
-                        if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(outFile))
+                        if (task.OverwriteFiles && task.UsesQuota && File.Exists(outFile))
                             m_quotaCleanups[task.Guid].RemoveFile(outFile);
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
                         m_outPutFile = outFile;
-                        if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        if (task.UsesQuota)
                             m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
                     }
                     else
@@ -2463,7 +2486,7 @@ namespace iba.Processing
             string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
             try
             {
-                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                if (task.UsesQuota)
                     CleanupWithQuota(filename, task, ext);
             }
             catch
@@ -2599,7 +2622,7 @@ namespace iba.Processing
                 string ext = "." + task.Extension;
                 try
                 {
-                    if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    if (task.UsesQuota)
                     {
                         if (task.Extension == "html" || task.Extension == "htm")
                         {
@@ -2738,7 +2761,7 @@ namespace iba.Processing
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportStarted, filename, task);
                     if (task.Output != ReportData.OutputChoice.PRINT)
                     {
-                        if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(arg))
+                        if (task.OverwriteFiles && task.UsesQuota && File.Exists(arg))
                         {
                             if (task.Extension == "html" || task.Extension == "htm")
                             {
@@ -2761,7 +2784,7 @@ namespace iba.Processing
                         }
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
                         m_outPutFile = arg;
-                        if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                        if (task.UsesQuota)
                         {
                             if (task.Extension == "html" || task.Extension == "htm")
                             {
@@ -3022,7 +3045,7 @@ namespace iba.Processing
 
                 try
                 {
-                    if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    if (task.UsesQuota)
                         CleanupWithQuota(filename, task, extension);
                 }
                 catch
@@ -3119,7 +3142,7 @@ namespace iba.Processing
                 }
                 else if (task.RemoveSource)
                 {
-                    if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
+                    if (task.OverwriteFiles && task.UsesQuota && File.Exists(dest))
                     {
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
@@ -3132,7 +3155,7 @@ namespace iba.Processing
                 }
                 else
                 {
-                    if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace && File.Exists(dest))
+                    if (task.OverwriteFiles && task.UsesQuota && File.Exists(dest))
                     {
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
@@ -3145,7 +3168,7 @@ namespace iba.Processing
 
 
 
-                if (!task.ActionDelete && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                if (!task.ActionDelete && task.UsesQuota)
                     m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
 
                 lock (m_sd.DatFileStates)
@@ -3407,7 +3430,7 @@ namespace iba.Processing
             string ext = ".dat";
             try
             {
-                if (task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                if (task.UsesQuota)
                     CleanupWithQuota(filename, task, ext);
             }
             catch
@@ -3531,7 +3554,7 @@ namespace iba.Processing
 
             try
             {
-                if (task.OverwriteFiles && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                if (task.OverwriteFiles && task.UsesQuota)
                 {
                     if (worker.FileOverWritten)
                     {
@@ -3550,6 +3573,49 @@ namespace iba.Processing
                 m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
+        }
+
+        private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, the cleanup needs to be performed even is the task isn't
+        {
+            try
+            {
+                string ext = null;
+                if (task.WhenToExecute == TaskData.WhenToDo.DISABLED) return;
+                if (task is ReportData)
+                {
+                    ReportData rd = task as ReportData;
+                    ext = "." + rd.Extension;
+                    if (rd.Extension == "html" || rd.Extension == "htm")
+                        ext += ",*.jpg";
+                }
+                else if (task is ExtractData)
+                {
+                    ext = ((task as ExtractData).FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+                }
+                else if (task is CopyMoveTaskData)
+                {
+                    CopyMoveTaskData cpm = task as CopyMoveTaskData;
+                    if (!cpm.ActionDelete)
+                    {
+                        if (cpm.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT && m_outPutFile != null)
+                            ext = new FileInfo(m_outPutFile).Extension;
+                        else if (cpm.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
+                            ext = new FileInfo(DatFile).Extension;
+                    }
+                }
+                else if (task is UpdateDataTaskData)
+                {
+                    ext = ".dat";
+                }
+                else throw new NotImplementedException();
+
+                if (!String.IsNullOrEmpty(ext))
+                    CleanupWithQuota(DatFile, task, ext);
+            }
+            catch
+            {
+
+            }
         }
     }
 }

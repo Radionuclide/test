@@ -599,7 +599,11 @@ namespace iba.Controls
                             ok = TaskManager.Manager.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
                         else
                             ok = SharesHandler.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
-                        if (!ok) break;
+                        if (!ok)
+                        {
+                            errormessage = "\"" + line + "\": " + errormessage;
+                            break;
+                        }
                     }
                 }
             }

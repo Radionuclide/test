@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.16.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.17.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,10 +26,21 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
 <A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.16.0.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.17.0.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
+<P class="header1">Version 1.17.0 - 22/04/2011</P>
+<P class="header2">New features</P>
+<UL>
+    <LI> Addition of the 'one time job', a simplified version of the regular job to process .dat files one time only.
+    </LI>
+    <LI> New cleanup strategy option added to all output generating tasks. Select 'Minimal free disk space' to keep a minimum amount of space free on the disk by removing older files.
+	If the task is conditional to the execution of the previous task, the cleanup will be performed whether or not the task itself is executed.
+    </LI>
+    <LI> Possibility to specify multiple recipients in the E-mail notifications, you can specify the multiple recipients in the same recipient field by separating them by a semi-column (';').
+    </LI>
+</UL>
 
 <P class="header1">Version 1.16.0 - 19/11/2010</P>
 <P class="header2">Enhancements</P>

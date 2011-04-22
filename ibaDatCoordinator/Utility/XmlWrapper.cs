@@ -50,4 +50,13 @@ namespace iba.Utility
         }
         #endregion
     }
+
+    public class XMLMultilineTextFixer
+    {
+        public static string Fix(string inputstr)
+        {
+            if (inputstr == null) return null;
+            return inputstr.Replace("\r\n", "\n").Replace("\n", "\r\n");
+        }
+    }
 }

@@ -563,7 +563,7 @@
     <value>could not test validity of the directory</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>Specified directory does not exist</value>
+    <value>Specified path does not exist</value>
   </data>
   <data name="invalidPath" xml:space="preserve">
     <value>invalid path</value>

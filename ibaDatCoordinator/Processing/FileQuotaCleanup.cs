@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-using iba.Data;
 using System.Runtime.InteropServices;
+using iba.Data;
 
 namespace iba.Processing
 {
@@ -57,7 +56,7 @@ namespace iba.Processing
                 m_task = newTask;
                 Reset();
             }
-            m_task.Quota = newTask.Quota;
+            m_task = newTask;
         }
         
         struct DateAndName
@@ -151,10 +150,37 @@ namespace iba.Processing
             }
         }
 
-        public void Clean(string datfile)
+        private ulong GetQuota()
+        {
+            try
+            {
+                if (m_task.OutputLimitChoice== TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    return (((ulong) (m_task.Quota)) * 1024 * 1024);
+                else if (m_task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace)
+                {
+                    ulong FreeBytesAvailable;
+                    ulong TotalNumberOfBytes;
+                    ulong TotalNumberOfFreeBytes;
+                    bool success = GetDiskFreeSpaceEx(m_task.DestinationMapUNC, out FreeBytesAvailable, out TotalNumberOfBytes,
+                    out TotalNumberOfFreeBytes);
+                    if (!success) return ulong.MaxValue;
+                    long delta = ((long)TotalNumberOfFreeBytes)- ((long) (m_task.QuotaFree)) * 1024 * 1024;
+                    if (delta < 0 && (((long)(m_size)) < -delta)) return 0;
+                    return (ulong)(((long)(m_size)) + delta);
+                }
+                else
+                    return ulong.MaxValue;
+            }
+            catch
+            {
+                return ulong.MaxValue;
+            }
+        }
+
+        public void Clean(string datfile) //the datfile parameter here is used for logging, nothing else
         {
             //bool bFirst = true;
-            while (m_size > (((ulong) (m_task.Quota)) * 1024 * 1024) && m_files.Count > 0)
+            while (m_size > GetQuota() && m_files.Count > 0)
             {
                 //if (bFirst)
                 //{
@@ -302,7 +328,12 @@ namespace iba.Processing
                 return false;
             }
         }
-
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+        out ulong lpFreeBytesAvailable,
+        out ulong lpTotalNumberOfBytes,
+        out ulong lpTotalNumberOfFreeBytes);
 
     }
 }

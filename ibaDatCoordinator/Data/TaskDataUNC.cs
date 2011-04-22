@@ -17,6 +17,11 @@ namespace iba.Data
             set { m_outputLimitChoice = value; }
         }
 
+        public bool UsesQuota
+        {
+            get { return m_outputLimitChoice == OutputLimitChoiceEnum.SaveFreeSpace || m_outputLimitChoice == OutputLimitChoiceEnum.LimitDiskspace; }
+        }
+
         private bool m_overwriteFiles;
         public bool OverwriteFiles
         {
@@ -30,6 +35,7 @@ namespace iba.Data
             m_destinationMapUNC = "";
             m_numbFolders = 10;
             m_quota = 1024;
+            m_quotaFree = 1024;
             m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
@@ -44,7 +50,6 @@ namespace iba.Data
             set { m_numbFolders = value; }
         }
 
-        //letter B appended because of name collision in XML serialisation
         public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH };
         protected SubfolderChoice m_subfolderChoice;
         public SubfolderChoice Subfolder
@@ -58,6 +63,13 @@ namespace iba.Data
         {
             get { return m_quota; }
             set { m_quota = value; }
+        }
+
+        protected uint m_quotaFree;
+        public uint QuotaFree
+        {
+            get { return m_quotaFree; }
+            set { m_quotaFree = value; }
         }
 
         public TaskDataUNC() : this(null) { }
@@ -97,6 +109,7 @@ namespace iba.Data
             uncdat.m_pass = m_pass;
             uncdat.m_destinationMapUNC = m_destinationMapUNC;
             uncdat.m_quota = m_quota;
+            uncdat.m_quotaFree = m_quotaFree;
             uncdat.m_outputLimitChoice = m_outputLimitChoice;
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
