@@ -19,6 +19,12 @@ namespace Alunorf_roh_plugin
         {
             m_datcoHost = host;
             InitializeComponent();
+            DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
+            foreach (DataGridView grid in grids)
+            {
+                grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            }
+
             ((Bitmap)m_selectButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_selectButton, Alunorf_roh_plugin.Properties.Resources.tooltipSelect);
             m_toolTip.SetToolTip(m_browseDatFileButton, Alunorf_roh_plugin.Properties.Resources.tooltipBrowse);
@@ -414,6 +420,11 @@ namespace Alunorf_roh_plugin
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
+            foreach (DataGridView grid in grids)
+            {
+                grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            }
             WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
         }

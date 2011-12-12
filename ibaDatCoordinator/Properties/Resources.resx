@@ -982,4 +982,7 @@
   <data name="OnTimeJobDirScanStarted" xml:space="preserve">
     <value>Scanning directory {0} for .dat files</value>
   </data>
+  <data name="AnalysisFileNotFound" xml:space="preserve">
+    <value>Analysis file not found: </value>
+  </data>
 </root>

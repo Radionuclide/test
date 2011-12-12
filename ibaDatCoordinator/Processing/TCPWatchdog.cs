@@ -177,13 +177,13 @@ namespace iba.Processing
             {
                 string message = string.Format("{0},DatCo:", DateTime.Now.ToString("dd/MM/yy HH:mm:ss.fff"));
                 string result = null;
-                //todo: get function from taskmanager
                 if (m_com != null)
                     result = m_com.Manager.GetStatusForWatchdog();
                 else
                     result = TaskManager.Manager.GetStatusForWatchdog();
                 if (result == null) return null;
                 message += result;
+                message += "\0";
 
                 Byte[] data = new Byte[message.Length];
                 m_coder.GetBytes(message.ToCharArray(), 0, message.Length, data, 0, true);

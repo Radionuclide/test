@@ -49,6 +49,8 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_rbComtrade = new System.Windows.Forms.RadioButton();
+            this.m_rbTDMS = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -145,8 +147,10 @@ namespace iba.Controls
             // tableLayoutPanel4
             // 
             resources.ApplyResources(this.tableLayoutPanel4, "tableLayoutPanel4");
-            this.tableLayoutPanel4.Controls.Add(this.m_rbTextFile, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.m_rbBinaryFile, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.m_rbTDMS, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.m_rbTextFile, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.m_rbComtrade, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.m_rbBinaryFile, 0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             // 
             // m_monitorGroup
@@ -223,6 +227,20 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // m_rbComtrade
+            // 
+            resources.ApplyResources(this.m_rbComtrade, "m_rbComtrade");
+            this.m_rbComtrade.Name = "m_rbComtrade";
+            this.m_rbComtrade.TabStop = true;
+            this.m_rbComtrade.UseVisualStyleBackColor = true;
+            // 
+            // m_rbTDMS
+            // 
+            resources.ApplyResources(this.m_rbTDMS, "m_rbTDMS");
+            this.m_rbTDMS.Name = "m_rbTDMS";
+            this.m_rbTDMS.TabStop = true;
+            this.m_rbTDMS.UseVisualStyleBackColor = true;
+            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
@@ -230,7 +248,7 @@ namespace iba.Controls
             this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(100, 470);
+            this.MinimumSize = new System.Drawing.Size(100, 556);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -270,6 +288,8 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudTime;
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.RadioButton m_rbComtrade;
+        private System.Windows.Forms.RadioButton m_rbTDMS;
 
     }
 }

@@ -263,7 +263,7 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
-            m_restartIbaAnalyzer = 1;
+            m_restartIbaAnalyzer = 20;
             m_ibaAnalyzerSleepsWhenNoDatFiles = true;
             m_bRestartIbaAnalyzer = true;
 

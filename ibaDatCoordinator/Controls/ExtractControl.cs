@@ -33,6 +33,9 @@ namespace iba.Controls
                     c.Location = new Point(c.Location.X, c.Location.Y + offset);
                 c.TabIndex++;
             }
+            int newHeight = m_monitorGroup.Bottom + 5;
+            this.MinimumSize = new System.Drawing.Size(this.MinimumSize.Width, newHeight);
+            this.Height = newHeight;
             m_uncControl.Controls.Add(m_groupBoxFileType);
             m_groupBoxFileType.Location = new Point(m_uncControl.m_subfolderGroupBox.Location.X,fromHere);
             m_groupBoxFileType.Width = m_uncControl.m_subfolderGroupBox.Width;
@@ -81,6 +84,8 @@ namespace iba.Controls
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
+            m_rbTDMS.Checked = m_data.FileType == ExtractData.ExtractFileType.TDMS;
+            m_rbComtrade.Checked = m_data.FileType == ExtractData.ExtractFileType.COMTRADE;
 
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -104,7 +109,15 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.ExtractToFile = m_rbFile.Checked;
-            m_data.FileType = m_rbBinaryFile.Checked?ExtractData.ExtractFileType.BINARY:ExtractData.ExtractFileType.TEXT;
+
+            if (m_rbBinaryFile.Checked)
+                m_data.FileType = ExtractData.ExtractFileType.BINARY;
+            else if (m_rbTextFile.Checked)
+                m_data.FileType = ExtractData.ExtractFileType.TEXT;
+            else if (m_rbComtrade.Checked)
+                m_data.FileType = ExtractData.ExtractFileType.COMTRADE;
+            else
+                m_data.FileType = ExtractData.ExtractFileType.TDMS;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;

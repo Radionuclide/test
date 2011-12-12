@@ -94,6 +94,15 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Analysis file not found: .
+        /// </summary>
+        internal static string AnalysisFileNotFound {
+            get {
+                return ResourceManager.GetString("AnalysisFileNotFound", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Analyzer_001 {
             get {
                 object obj = ResourceManager.GetObject("Analyzer_001", resourceCulture);

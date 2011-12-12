@@ -705,7 +705,6 @@ namespace iba.Controls
             // 
             // m_selectDatFilesDialog
             // 
-            this.m_selectDatFilesDialog.AutoUpgradeEnabled = false;
             this.m_selectDatFilesDialog.DefaultExt = "dat";
             this.m_selectDatFilesDialog.FileName = "openFileDialog1";
             this.m_selectDatFilesDialog.Multiselect = true;

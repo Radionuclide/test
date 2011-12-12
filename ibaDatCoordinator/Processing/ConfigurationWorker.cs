@@ -293,7 +293,7 @@ namespace iba.Processing
                                 if (ed != null)
                                 {
                                     if (ed.ExtractToFile)
-                                        pair.Value.ResetTask(task, ed.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+                                        pair.Value.ResetTask(task, GetBothExtractExtensions(ed));
                                     else
                                         toDelete.Add(pair.Key);
                                 }
@@ -371,6 +371,7 @@ namespace iba.Processing
                         //see if a report or extract or if task is present
                         if (t is ExtractData || t is ReportData || t is IfTaskData)
                             m_needIbaAnalyzer = true;
+
 
                         TaskDataUNC uncTask = t as TaskDataUNC;
                         if (uncTask != null && uncTask.Subfolder != TaskDataUNC.SubfolderChoice.NONE 
@@ -455,7 +456,7 @@ namespace iba.Processing
         private System.Threading.Timer m_notifyTimer;
         private System.Threading.Timer reprocessErrorsTimer;
         private System.Threading.Timer rescanTimer;
-        private System.Threading.Timer retryAccessTimer;
+        private SafeTimer retryAccessTimer;
         private System.Threading.Timer testLicenseTimer;
 
         private bool m_bTimersstopped;
@@ -526,8 +527,8 @@ namespace iba.Processing
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                    
-                    retryAccessTimer = new System.Threading.Timer(new TimerCallback(OnAddNewDatFileTimerTick));
-                    retryAccessTimer.Change(1000, Timeout.Infinite); //hard coded, each second see if no new files are available
+                    retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
+                    retryAccessTimer.Period = TimeSpan.FromSeconds(1);
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
@@ -627,7 +628,6 @@ namespace iba.Processing
                     }
                     if (retryAccessTimer != null)
                     {
-                        retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         retryAccessTimer.Dispose();
                         retryAccessTimer = null;
                     }
@@ -708,9 +708,6 @@ namespace iba.Processing
                     {
                         m_sd.DatFileStates.Clear();
                     }
-                    m_sd.UpdatingFileList = true;
-
-                    m_sd.UpdatingFileList = false;
 
                     string error;
                     SharesHandler.Handler.AddReferenceDirect(line, m_cd.Username, m_cd.Password, out error);
@@ -785,6 +782,7 @@ namespace iba.Processing
                         {
                             m_toProcessFiles.Remove(file);
                         }
+
                         if (fileInfosList.Count > 0)
                             UpdateDatFileListOneTimeJob(fileInfosList);
                     }
@@ -1059,10 +1057,12 @@ namespace iba.Processing
         private object m_listUpdatingLock; //makes the timer routines mutually exclusive
         private bool m_skipAddNewDatFileTimerTick;
 
-        private void OnAddNewDatFileTimerTick(object ignoreMe)
+        //int timerBusy;
+
+        private bool OnAddNewDatFileTimerTick()
         {
-            if (m_bTimersstopped || m_stop || retryAccessTimer == null) return;
-            retryAccessTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            if (m_bTimersstopped || m_stop || retryAccessTimer == null) return false;
             bool changed = false;
             List<string> toRemove = new List<string>();
             lock (m_listUpdatingLock)
@@ -1073,8 +1073,7 @@ namespace iba.Processing
                     if (m_skipAddNewDatFileTimerTick)
                     {
                         m_skipAddNewDatFileTimerTick = false;
-                        retryAccessTimer.Change(1000, Timeout.Infinite);
-                        return;
+                        return true;
                     }
 
                     foreach (string filename in m_candidateNewFiles)
@@ -1163,8 +1162,7 @@ namespace iba.Processing
                        Log(iba.Logging.Level.Info, String.Format(iba.Properties.Resources.DirectoryFound, m_cd.DatDirectoryUNC));
                 }
             }
-            if (!m_bTimersstopped && !m_stop)
-                retryAccessTimer.Change(1000, Timeout.Infinite);
+            return (!m_bTimersstopped && !m_stop);
         }
 
         private void OnRescanTimerTick(object ignoreMe)
@@ -1635,7 +1633,7 @@ namespace iba.Processing
                     try
                     {
                         FileAttributes at = File.GetAttributes(filename);
-                        if (at != FileAttributes.ReadOnly)
+                        if ((at & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
                         {
                             lock (m_candidateNewFiles)
                             {
@@ -1868,12 +1866,7 @@ namespace iba.Processing
                 try
                 {
                     FileAttributes at = File.GetAttributes(filename);
-                    if ((at & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
-                        return DatFileStatus.State.NO_ACCESS;
-                    }
-                    else if ((at & FileAttributes.Offline) == FileAttributes.Offline)
+                    if ((at & FileAttributes.Offline) == FileAttributes.Offline)
                     {
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
                         return DatFileStatus.State.NO_ACCESS;
@@ -1891,10 +1884,12 @@ namespace iba.Processing
                 try
                 {
                     frames = ibaDatFile.QueryInfoByName("frames");
+                    ibaDatFile.Close();
                 }
-                catch
+                catch 
                 {
                 }
+
                 if (String.IsNullOrEmpty(frames) || frames == "1000000000")
                 {
                     try
@@ -2187,9 +2182,12 @@ namespace iba.Processing
                         StartIbaAnalyzer();
                         try
                         {
-                            FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
-                            fs.Close();
-                            fs.Dispose();
+                            if (!m_cd.OnetimeJob)
+                            {
+                                FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
+                                fs.Close();
+                                fs.Dispose();
+                            }
                             m_ibaAnalyzer.OpenDataFile(0, DatFile);
                         }
                         catch (Exception ex)
@@ -2353,6 +2351,16 @@ namespace iba.Processing
         private string m_outPutFile;
         private void Extract(string filename, ExtractData task)
         {
+            if (!File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
             try
             {
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
@@ -2369,10 +2377,20 @@ namespace iba.Processing
                         if (outFile == null) return;
                         if (task.OverwriteFiles && task.UsesQuota && File.Exists(outFile))
                             m_quotaCleanups[task.Guid].RemoveFile(outFile);
+                        string ext2 = GetSecondaryExtractExtension(task);
+                        string outFile2 = "";
+                        if (!string.IsNullOrEmpty(ext2))
+                            outFile2 = outFile.Replace(GetPrimeExtractExtension(task), ext2);
+                        if (task.OverwriteFiles && task.UsesQuota && !string.IsNullOrEmpty(outFile2) && File.Exists(outFile2))
+                            m_quotaCleanups[task.Guid].RemoveFile(outFile2);
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
                         m_outPutFile = outFile;
                         if (task.UsesQuota)
+                        {
                             m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                            if (!string.IsNullOrEmpty(outFile2))
+                                m_quotaCleanups[task.Guid].AddFile(outFile2);
+                        }
                     }
                     else
                     {
@@ -2480,14 +2498,42 @@ namespace iba.Processing
         }
 
 
+        private string GetBothExtractExtensions(ExtractData task)
+        {
+            string secondary = GetSecondaryExtractExtension(task);
+            if (string.IsNullOrEmpty(secondary)) return GetPrimeExtractExtension(task);
+            return GetPrimeExtractExtension(task) + ";*"+ secondary;
+        }
+
+        private string GetPrimeExtractExtension(ExtractData task)
+        {
+            switch (task.FileType)
+            {
+                case ExtractData.ExtractFileType.TEXT: return ".txt";
+                case ExtractData.ExtractFileType.TDMS: return ".tdms";
+                default: return ".dat";
+            }
+        }
+
+        private string GetSecondaryExtractExtension(ExtractData task)
+        {
+            switch (task.FileType)
+            {
+                case ExtractData.ExtractFileType.COMTRADE: return ".cfg";
+                case ExtractData.ExtractFileType.TDMS: return ".tdms_index";
+                default: return "";
+            }
+        }
+
 
         private string GetExtractFileName(string filename, ExtractData task)
         {
-            string ext = (task.FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+            string ext = GetPrimeExtractExtension(task);
+            string bext = GetBothExtractExtensions(task);
             try
             {
                 if (task.UsesQuota)
-                    CleanupWithQuota(filename, task, ext);
+                    CleanupWithQuota(filename, task, bext);
             }
             catch
             {
@@ -2496,7 +2542,9 @@ namespace iba.Processing
             string actualFileName = Path.GetFileNameWithoutExtension(filename);
 
             string dir = GetDirectoryName(filename, task);
-            if (dir == null) return null;
+            if (dir == null) 
+                return null;
+
             if (!Directory.Exists(dir))
             {
                 try
@@ -2539,7 +2587,7 @@ namespace iba.Processing
             {
                 try
                 {
-                    CleanupDirs(filename, task, ext);
+                    CleanupDirs(filename, task, bext);
                 }
                 catch
                 {
@@ -2751,6 +2799,17 @@ namespace iba.Processing
                 arg = Path.Combine(dir, actualFileName + ext);
                 if (!task.OverwriteFiles)
                     arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+            }
+
+            if (!File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
             }
 
             try
@@ -3299,7 +3358,17 @@ namespace iba.Processing
 
         private void IfTask(string filename, IfTaskData task)
         {
-            bool bUseAnalysis = File.Exists(task.AnalysisFile);
+            bool bUseAnalysis = !String.IsNullOrEmpty(task.AnalysisFile);
+            if (bUseAnalysis && !File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
             try
             {
                 lock (m_sd.DatFileStates)
@@ -3590,7 +3659,7 @@ namespace iba.Processing
                 }
                 else if (task is ExtractData)
                 {
-                    ext = ((task as ExtractData).FileType == ExtractData.ExtractFileType.BINARY ? ".dat" : ".txt");
+                    ext = GetBothExtractExtensions(task as ExtractData);
                 }
                 else if (task is CopyMoveTaskData)
                 {

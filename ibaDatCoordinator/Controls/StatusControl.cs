@@ -21,6 +21,7 @@ namespace iba.Controls
         public StatusControl()
         {
             InitializeComponent();
+            this.m_gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             InitializeIcons();
         }
        
@@ -200,6 +201,12 @@ namespace iba.Controls
 
             OnChangedData(null, null);
             m_refreshTimer.Start();
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.m_gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         }
 
         public void LeaveCleanup() 

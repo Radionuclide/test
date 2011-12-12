@@ -25,6 +25,7 @@ namespace Alunorf_sinec_h1_plugin
         {
             m_datcoHost = host;
             InitializeComponent();
+            this.m_datagvMessages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             ImageList telegramImageList = new ImageList();
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.telegram);
@@ -32,6 +33,12 @@ namespace Alunorf_sinec_h1_plugin
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.signal);
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.telegram_new);
             m_tvMessages.ImageList = telegramImageList;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.m_datagvMessages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         }
 
         private void m_pcmac1_Validating(object sender, CancelEventArgs e)

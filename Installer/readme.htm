@@ -17,18 +17,45 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.17.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.17.3.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
 <P class="section">Installation</P>
 <p>Have ibaAnalyzer installed and registered as a COM-component, the version of ibaAnalyzer should be at least 5.0 
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
-Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A> and<BR>
-<A HREF="http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe">http://www.iba-ag.com/pub/ftp/ibaGent/2.0framework/dotnetfx.exe</A><BR>
-Execute ibaDatCoordinatorInstall_v1.17.0.exe and follow instructions.</p>
+Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
+Execute ibaDatCoordinatorInstall_v1.17.3.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.17.3 - 07/10/2011</P>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> Timing issues fixed.
+    </LI>
+    <LI> Scrolling issues fixed, some tasks did not show their scroll bar soon enough, making the lower part of the control not accessable.
+    </LI>
+</UL>
+
+<P class="header1">Version 1.17.2 - 18/05/2011</P>
+<P class="header2">Enhancement</P>
+<UL>
+    <LI> The ASCII watchdog message is now sent with a separator character (ASCII 0) at the end.
+    </LI>
+</UL>
+
+<P class="header1">Version 1.17.1 - 11/05/2011</P>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> The 'one time job' had difficulty with readonly files and folders.
+    </LI>
+    <LI> The 'one time job' did not properly close the .dat files after checking with ibaFiles if they were ready to be processed.
+    </LI>
+	<LI> IbaDatCoordinator did not work anymore with .NET 2.0 without service packs.
+    </LI>
+</UL>
+
 
 <P class="header1">Version 1.17.0 - 22/04/2011</P>
 <P class="header2">New features</P>

@@ -292,6 +292,7 @@
     <Compile Include="Utility\Path.cs" />
     <Compile Include="Utility\PluginManager.cs" />
     <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\SafeTimer.cs" />
     <Compile Include="Utility\SerializableObjectsCompare.cs" />
     <Compile Include="Utility\Shares.cs" />
     <Compile Include="Utility\SharesHandler.cs" />
@@ -302,44 +303,16 @@
     <Compile Include="Utility\XmlWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutBox.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AboutBox.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\BatchFileControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>BatchFileControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\BatchFileControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConfigurationControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigurationControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConfigurationControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigurationControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PauseTaskControl.resx">
       <DependentUpon>PauseTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.de.resx">
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.fr.resx">
-      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RemoveMarkingsDialog.resx">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
@@ -349,61 +322,21 @@
       <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CopyControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CopyControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CopyControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CopyControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CopyControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CopyControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CommonTaskControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CommonTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CommonTaskControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CommonTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\CommonTaskControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CommonTaskControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ExtractControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ExtractControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ExtractControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ExtractControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ExtractControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExtractControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\IfTaskControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>IfTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\IfTaskControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>IfTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\IfTaskControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>IfTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LogControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>LogControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LogControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>LogControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LogControl.resx">
       <SubType>Designer</SubType>
@@ -413,14 +346,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ReportControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ReportControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ReportControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ReportControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ReportControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ReportControl.cs</DependentUpon>
@@ -428,22 +353,6 @@
     <EmbeddedResource Include="Controls\ServiceSettingsControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ServiceSettingsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StatusControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StatusControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StatusControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StatusControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StopWaitDialog.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StopWaitDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StopWaitDialog.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StopWaitDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StopWaitDialog.resx">
       <SubType>Designer</SubType>
@@ -455,51 +364,13 @@
     <EmbeddedResource Include="Controls\UpdateDataTaskControl.resx">
       <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WatchdogControl.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>WatchdogControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WatchdogControl.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>WatchdogControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\WatchdogControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WatchdogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.de.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StartServiceDialog.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StartServiceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StartServiceDialog.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StartServiceDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="StartServiceDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StartServiceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StopServiceDialog.de.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StopServiceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StopServiceDialog.fr.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StopServiceDialog.resx">
       <SubType>Designer</SubType>
@@ -668,6 +539,11 @@
     <None Include="Resources\extractnoaccess.ico" />
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -681,6 +557,11 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>

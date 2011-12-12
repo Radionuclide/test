@@ -34,11 +34,21 @@ namespace iba.Controls
             //this.tableLayoutPanel6.ColumnStyles[1].Width = 33;
             //this.tableLayoutPanel6.ColumnStyles[2].SizeType = SizeType.Percent;
             //this.tableLayoutPanel6.ColumnStyles[2].Width = 33;
-
+            //this.SuspendLayout();
+            //m_pluginPanel.Anchor = AnchorStyles.None;
+            pluginControl.Width = m_pluginPanel.Width;
+            m_pluginPanel.Height = pluginControl.Height;
+            m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
             pluginControl.Dock = DockStyle.Fill;
             this.m_pluginPanel.Controls.Add(pluginControl);
-            pluginControl.Parent = this.m_pluginPanel;
-
+            int newHeight = m_pluginPanel.Bottom + 5;
+            this.Height = newHeight;
+            m_pluginPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            //autoscroll seems problematic, add it here with AutoScrollMinSize
+            AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
+            AutoScroll = true;
+            //this.ResumeLayout();
+            //pluginControl.Parent = this.m_pluginPanel;
         }
 
         private void m_nameTextBox_TextChanged(object sender, EventArgs e)
@@ -178,6 +188,11 @@ namespace iba.Controls
         public int TaskIndex()
         {
             return m_data.Index;
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
         }
 
         #endregion

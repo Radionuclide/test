@@ -5,6 +5,7 @@ using System.IO;
 
 using iba.Data;
 using iba.Plugins;
+using iba.Logging;
 
 namespace iba.Utility
 {
@@ -29,12 +30,13 @@ namespace iba.Utility
                             return false;
                         } //in case computer exists, the connect was not necessary
                         else
+                        {
                             doNotDisconnect = true;
+                        }
 			        }
 		        }
-		        catch(Exception ex)
+		        catch
 		        {
-			        errorMsg = ex.Message;
 			        return false;
 		        }
 	        }

@@ -310,7 +310,7 @@ namespace iba.Controls
                 string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 //         ShowEditBox = true,
                 //         //NewStyle = false,
-                if (System.IO.File.Exists(lines[lines.Length-1])||System.IO.Directory.Exists(lines[lines.Length-1]))
+                if ((lines.Length>0) && (System.IO.File.Exists(lines[lines.Length-1])||System.IO.Directory.Exists(lines[lines.Length-1])))
                     m_folderBrowserDialog1.SelectedPath = lines[lines.Length - 1];
                 DialogResult result = m_folderBrowserDialog1.ShowDialog();
                 if (result == DialogResult.OK)

@@ -4,6 +4,7 @@ using System.Text;
 using iba.Data;
 using System.Diagnostics;
 using iba.Logging;
+using iba.Utility;
 
 namespace iba.Processing
 {
@@ -45,27 +46,27 @@ namespace iba.Processing
 
             if (data.MonitorTime)
             {
-                m_timeTimer = new System.Threading.Timer(OnTimeTimerTick);
-                m_timeTimer.Change(m_data.TimeLimit, TimeSpan.Zero);
+                m_timeTimer = new SafeTimer(OnTimeTimerTick);
+                m_timeTimer.Period = m_data.TimeLimit;
             }
             if (data.MonitorMemoryUsage)
             {
-                m_memoryTimer = new System.Threading.Timer(OnMemoryTimerTick);
-                m_memoryTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+                m_memoryTimer = new SafeTimer(OnMemoryTimerTick);
+                m_memoryTimer.Period = TimeSpan.FromSeconds(5.0);
             }
         }
 
         private Process m_process;
         private MonitorData m_data;
         private IbaAnalyzer.IbaAnalyzer m_analyzer;
-        private System.Threading.Timer m_timeTimer;
-        private System.Threading.Timer m_memoryTimer;
+        private SafeTimer m_timeTimer;
+        private SafeTimer m_memoryTimer;
 
         public delegate void IbaAnalyzerCall();
 
         public void Execute(IbaAnalyzerCall ibaAnalyzerCall)
         {
-            //previous execute might allready have exceeded limits, check and throw instead of executing
+            //previous execute might already have exceeded limits, check and throw instead of executing
             if (m_status == MonitorStatus.OUT_OF_MEMORY)
                 throw new IbaAnalyzerExceedingMemoryLimitException();
             if (m_status == MonitorStatus.OUT_OF_TIME)
@@ -94,12 +95,12 @@ namespace iba.Processing
             get { return m_status; }
         }
 
-        private void OnTimeTimerTick(object ignoreMe)
+        private bool OnTimeTimerTick()
         {
             //throw new IbaAnalyzerExceedingTimeLimitException();
             try
             {
-                if (m_process.HasExited) return;
+                if (m_process.HasExited) return false;
                 m_process.Kill();
                 m_status = MonitorStatus.OUT_OF_TIME;
             }
@@ -107,27 +108,29 @@ namespace iba.Processing
             {
                 LogData.Data.Logger.Log(Level.Exception, "Time limit exceeded, could not kill ibaAnalyzer :" + ex.Message);
             }
+            return false; //it never needs to be restarted
         }
 
-        private void OnMemoryTimerTick(object ignoreMe)
+        private bool OnMemoryTimerTick()
         {
             try
             {
-                m_memoryTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                if (m_process.HasExited) return;
+                if (m_process == null || m_process.HasExited) return false;
                 m_process.Refresh();
                 long mem = m_process.PrivateMemorySize64;
                 if (mem > ((long)(1 << 20) * (long) m_data.MemoryLimit))
                 {
                     m_process.Kill();
                     m_status = MonitorStatus.OUT_OF_MEMORY;
+                    return false;
                 }
                 else //look again in 5 seconds
-                    m_memoryTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+                    return true;
             }
             catch (Exception ex) //could not kill process, do nothing
             {
                 LogData.Data.Logger.Log(Level.Exception, "Memory limit exceeded, could not kill ibaAnalyzer :" + ex.Message);
+                return false;
             }
         }
 
@@ -146,13 +149,11 @@ namespace iba.Processing
             {
                 if (m_timeTimer != null)
                 {
-                    m_timeTimer.Change(System.Threading.Timeout.Infinite,System.Threading.Timeout.Infinite);
                     m_timeTimer.Dispose();
                     m_timeTimer = null;
                 }
                 if (m_memoryTimer != null)
                 {
-                    m_memoryTimer.Change(System.Threading.Timeout.Infinite,System.Threading.Timeout.Infinite);
                     m_memoryTimer.Dispose();
                     m_memoryTimer = null;
                 }

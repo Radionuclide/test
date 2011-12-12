@@ -184,6 +184,7 @@ namespace iba.Controls
             // 
             // m_pluginPanel
             // 
+            this.m_pluginPanel.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.m_pluginPanel, "m_pluginPanel");
             this.m_pluginPanel.Name = "m_pluginPanel";
             // 
@@ -191,6 +192,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.m_pluginPanel);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.m_ExecutegroupBox);

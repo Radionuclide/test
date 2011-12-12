@@ -130,10 +130,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_rbTextFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>90, 3</value>
   </data>
   <data name="m_rbTextFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 20</value>
+    <value>75, 20</value>
   </data>
   <data name="m_rbTextFile.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -151,7 +151,7 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbTextFile.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_rbBinaryFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -163,10 +163,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbBinaryFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>262, 3</value>
+    <value>3, 3</value>
   </data>
   <data name="m_rbBinaryFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 20</value>
+    <value>81, 20</value>
   </data>
   <data name="m_rbBinaryFile.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -184,10 +184,70 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbBinaryFile.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_browseFileButton.Name" xml:space="preserve">
+    <value>m_browseFileButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseFileButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseFileButton.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_browseFileButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_pdoFileTextBox.Name" xml:space="preserve">
+    <value>m_pdoFileTextBox</value>
+  </data>
+  <data name="&gt;&gt;m_pdoFileTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pdoFileTextBox.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>566, 67</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Extract analysis file</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -261,30 +321,6 @@
   <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 67</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Extract analysis file</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -355,6 +391,72 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tableLayoutPanel4.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_rbTDMS.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbTDMS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbTDMS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbTDMS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>311, 3</value>
+  </data>
+  <data name="m_rbTDMS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 20</value>
+  </data>
+  <data name="m_rbTDMS.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_rbTDMS.Text" xml:space="preserve">
+    <value>TDMS (.tdms;.tdms_index)</value>
+  </data>
+  <data name="&gt;&gt;m_rbTDMS.Name" xml:space="preserve">
+    <value>m_rbTDMS</value>
+  </data>
+  <data name="&gt;&gt;m_rbTDMS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbTDMS.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;m_rbTDMS.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbComtrade.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbComtrade.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbComtrade.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbComtrade.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 3</value>
+  </data>
+  <data name="m_rbComtrade.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 20</value>
+  </data>
+  <data name="m_rbComtrade.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_rbComtrade.Text" xml:space="preserve">
+    <value>COMTRADE (.dat;.cfg)</value>
+  </data>
+  <data name="&gt;&gt;m_rbComtrade.Name" xml:space="preserve">
+    <value>m_rbComtrade</value>
+  </data>
+  <data name="&gt;&gt;m_rbComtrade.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbComtrade.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;m_rbComtrade.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -385,7 +487,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbTextFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbBinaryFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,26" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbTDMS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTextFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbComtrade" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbBinaryFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_groupBoxFileType.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 93</value>
@@ -458,6 +560,102 @@
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
+    <value>m_nudMemory</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Name" xml:space="preserve">
+    <value>m_cbTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Name" xml:space="preserve">
+    <value>m_cbMemory</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 470</value>
+  </data>
+  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 73</value>
+  </data>
+  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_monitorGroup.Text" xml:space="preserve">
+    <value>Monitor ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -620,30 +818,6 @@
   </data>
   <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 470</value>
-  </data>
-  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 73</value>
-  </data>
-  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_monitorGroup.Text" xml:space="preserve">
-    <value>Monitor ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
-    <value>m_monitorGroup</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

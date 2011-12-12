@@ -21,6 +21,7 @@ namespace iba.Controls
         public PermanentFileErrorsControl()
         {
             InitializeComponent();
+            this.m_gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             InitializeIcons();
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_deleteDats.Image).MakeTransparent(Color.Magenta);
@@ -29,6 +30,7 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshPermanentErrorFilesButton);
 
         }
+
        
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -389,6 +391,7 @@ namespace iba.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.m_gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DatFiles.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             m_attempts.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
         }
