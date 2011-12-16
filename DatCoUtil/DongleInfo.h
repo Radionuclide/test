@@ -19,8 +19,12 @@ namespace iba {
 	private:
 		Byte readByte;
 		bool dongleFound;
+		String^ customer;
+		String^ serialnumber;
 	public:
 		property bool DongleFound {bool	get() {return dongleFound;}}
+		property String^ Customer {String^	get() {return customer;}}
+		property String^ SerialNr {String^	get() {return serialnumber;}}
 		void Clear()
 		{
 			readByte = 0;

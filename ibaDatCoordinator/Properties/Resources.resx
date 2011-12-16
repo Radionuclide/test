@@ -985,4 +985,7 @@
   <data name="AnalysisFileNotFound" xml:space="preserve">
     <value>Analysis file not found: </value>
   </data>
+  <data name="ZipFileFilter" xml:space="preserve">
+    <value>Zip files (*.zip)|*.zip</value>
+  </data>
 </root>

@@ -22,18 +22,21 @@ namespace iba {
 		//Boost thread priority
 		ThreadPriority savedPriority = Thread::CurrentThread->Priority;
 		Thread::CurrentThread->Priority = ThreadPriority::Highest;
-		BYTE multi[NR_MULTI_OPTIONS];
-		memset(multi,0,sizeof(multi));
+		//BYTE multi[NR_MULTI_OPTIONS];
+		DongleContents contents;
+		memset(&contents,0,sizeof(contents));
 		try
 		{
 			BOOL bLicenseOk = FALSE;
 			PdaDongle dongle;
 			for (int iRetry = 0 ; iRetry < 50 && !bLicenseOk; iRetry++)
-				bLicenseOk = dongle.ReadMultiLicenses(multi);
+				bLicenseOk = dongle.ReadDongleContents(&contents);
 			if (bLicenseOk)
 			{
 				info->dongleFound = true;
-				info->readByte = multi[61];
+				info->readByte = contents.multiOptions[0][61];
+				info->customer = gcnew String(contents.customer);
+				info->serialnumber = gcnew String(contents.serialNr,0,7);
 			}
 		}
 		catch(char*)

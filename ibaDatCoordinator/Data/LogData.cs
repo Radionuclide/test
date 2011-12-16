@@ -498,6 +498,7 @@ namespace iba.Data
                 fileLogger.MakeDailyArchive = true;
                 fileLogger.MaximumArchiveFiles = 10;
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
+                fileLogger.DailyString = "ibaDatCoordinator version " + typeof(LogData).Assembly.GetName().Version.ToString(3) + "\r\n";
 
                 m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger);
             }

@@ -8,6 +8,7 @@ using System.IO;
 using iba.Data;
 using iba.Processing;
 using System.Diagnostics;
+using iba.Utility;
 
 /**
  * Description: class used to communicate with the service
@@ -209,6 +210,39 @@ namespace iba
             catch (Exception ex)
             {
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
+        }
+
+        public string GetIbaAnalyzerRegKey()
+        {
+            try
+            {
+                string regFileName = "";
+                Microsoft.Win32.RegistryKey analyzerKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaAnalyzer");
+                if (analyzerKey != null)
+                {
+                    string destDir = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+                    regFileName = Path.Combine(destDir, "ibaanalyzer.reg");
+                    if (RegistryExporter.ExportRegistry(analyzerKey, regFileName, true))
+                    {
+                        return regFileName;
+                    }
+                    else
+                        return "";
+                }
+                return regFileName;
+            }
+            catch { return ""; }
+        }
+
+        public void DeleteFile(string outFile)
+        {
+            try
+            {
+                File.Delete(outFile);
+            }
+            catch
+            {
             }
         }
     }
@@ -461,6 +495,31 @@ namespace iba
             try
             {
                 m_com.RemoveMarkings(path,  username,  pass, files, myBar);
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+            }
+        }
+
+        public string GetIbaAnalyzerRegKey()
+        {
+            try
+            {
+                return m_com.GetIbaAnalyzerRegKey();
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+                return "";
+            }
+        }
+
+        public void DeleteFile(string outFile)
+        {
+            try
+            {
+                m_com.DeleteFile(outFile);
             }
             catch (SocketException)
             {

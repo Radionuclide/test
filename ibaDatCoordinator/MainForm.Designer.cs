@@ -33,13 +33,13 @@ namespace iba
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.m_statusStrip = new System.Windows.Forms.StatusStrip();
             this.m_statusBarStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.m_rightPane = new TD.Eyefinder.HeaderControl();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_navBar = new TD.Eyefinder.NavigationBar();
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
-            this.label1 = new System.Windows.Forms.Label();
             this.m_EntriesNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.m_statusPane = new TD.Eyefinder.NavigationPane();
             this.m_statusTreeView = new System.Windows.Forms.TreeView();
             this.m_configPane = new TD.Eyefinder.NavigationPane();
@@ -47,6 +47,7 @@ namespace iba
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_stopButton = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
+            this.m_rightPane = new TD.Eyefinder.HeaderControl();
             this.m_menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,12 +76,17 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.m_statusStrip.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.m_navBar.SuspendLayout();
             this.m_loggingPane.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_EntriesNumericUpDown1)).BeginInit();
@@ -88,9 +94,6 @@ namespace iba
             this.m_configPane.SuspendLayout();
             this.panel1.SuspendLayout();
             this.m_menuStrip.SuspendLayout();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -126,13 +129,18 @@ namespace iba
             resources.ApplyResources(this.m_statusBarStripLabel, "m_statusBarStripLabel");
             this.m_statusBarStripLabel.Spring = true;
             // 
-            // m_rightPane
+            // splitContainer2
             // 
-            resources.ApplyResources(this.m_rightPane, "m_rightPane");
-            this.m_rightPane.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.m_rightPane.Name = "m_rightPane";
-            this.m_rightPane.Leave += new System.EventHandler(this.m_rightPane_Leave);
-            this.m_rightPane.Enter += new System.EventHandler(this.m_rightPane_Enter);
+            resources.ApplyResources(this.splitContainer2, "splitContainer2");
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.m_navBar);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.m_rightPane);
             // 
             // m_navBar
             // 
@@ -167,11 +175,6 @@ namespace iba
             resources.ApplyResources(this.m_loggingPane, "m_loggingPane");
             this.m_loggingPane.Name = "m_loggingPane";
             // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
             // m_EntriesNumericUpDown1
             // 
             resources.ApplyResources(this.m_EntriesNumericUpDown1, "m_EntriesNumericUpDown1");
@@ -192,6 +195,11 @@ namespace iba
             0,
             0});
             this.m_EntriesNumericUpDown1.ValueChanged += new System.EventHandler(this.m_EntriesNumericUpDown1_ValueChanged);
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // m_statusPane
             // 
@@ -248,6 +256,14 @@ namespace iba
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
             this.m_startButton.Click += new System.EventHandler(this.m_startButton_Click);
+            // 
+            // m_rightPane
+            // 
+            resources.ApplyResources(this.m_rightPane, "m_rightPane");
+            this.m_rightPane.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.m_rightPane.Name = "m_rightPane";
+            this.m_rightPane.Leave += new System.EventHandler(this.m_rightPane_Leave);
+            this.m_rightPane.Enter += new System.EventHandler(this.m_rightPane_Enter);
             // 
             // m_menuStrip
             // 
@@ -413,6 +429,9 @@ namespace iba
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveInformationToolStripMenuItem,
+            this.VersionHistoryToolStripMenuItem,
+            this.toolStripSeparator1,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
@@ -427,18 +446,22 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
-            // splitContainer2
+            // toolStripSeparator1
             // 
-            resources.ApplyResources(this.splitContainer2, "splitContainer2");
-            this.splitContainer2.Name = "splitContainer2";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
-            // splitContainer2.Panel1
+            // saveInformationToolStripMenuItem
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.m_navBar);
+            this.saveInformationToolStripMenuItem.Name = "saveInformationToolStripMenuItem";
+            resources.ApplyResources(this.saveInformationToolStripMenuItem, "saveInformationToolStripMenuItem");
+            this.saveInformationToolStripMenuItem.Click += new System.EventHandler(this.saveInformationToolStripMenuItem_Click);
             // 
-            // splitContainer2.Panel2
+            // VersionHistoryToolStripMenuItem
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.m_rightPane);
+            this.VersionHistoryToolStripMenuItem.Name = "VersionHistoryToolStripMenuItem";
+            resources.ApplyResources(this.VersionHistoryToolStripMenuItem, "VersionHistoryToolStripMenuItem");
+            this.VersionHistoryToolStripMenuItem.Click += new System.EventHandler(this.VersionHistoryToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -457,6 +480,9 @@ namespace iba
             this.toolStripContainer1.PerformLayout();
             this.m_statusStrip.ResumeLayout(false);
             this.m_statusStrip.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
             this.m_navBar.ResumeLayout(false);
             this.m_loggingPane.ResumeLayout(false);
             this.m_loggingPane.PerformLayout();
@@ -466,9 +492,6 @@ namespace iba
             this.panel1.ResumeLayout(false);
             this.m_menuStrip.ResumeLayout(false);
             this.m_menuStrip.PerformLayout();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -520,6 +543,9 @@ namespace iba
         private TD.Eyefinder.NavigationPane m_settingsPane;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ToolStripMenuItem saveInformationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem VersionHistoryToolStripMenuItem;
     }
 }
 

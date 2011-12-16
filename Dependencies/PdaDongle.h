@@ -15,6 +15,23 @@
 #if !defined(pdadongle_h)              // Sentry, use file only if it's not already included.
 #define pdadongle_h
 
+struct DongleContents {
+	unsigned char	HWid[8];	
+	char			serialNr[7];
+	char			customer[40];
+	char			passwd[16];
+	unsigned short	day;
+	unsigned short	month;
+	unsigned short	year;
+	short			limit;
+	unsigned long	maskPda;
+	unsigned long	maskNonPda;
+	unsigned char	multiOptions[2][64];
+	unsigned char	cameraActivation[128];
+};
+
+#ifndef CONTENTS_ONLY
+
 #define _WINSOCKAPI_
 #include <windows.h>
 
@@ -38,7 +55,6 @@ enum TestDongleResult
 
 #define NR_MULTI_OPTIONS 64
 
-
 //Abstract base class for all dongle types
 class Dongle
 {
@@ -46,9 +62,12 @@ public:
 	Dongle(){};
 	virtual ~Dongle(){};
 
-	virtual int TestDongle() = 0;
 	virtual TestDongleResult TestDongle(unsigned char* romData) = 0;
-	
+
+	static char * GetLibVersion();
+
+	virtual int TestDongle() = 0;
+
 	virtual bool ReadDongle (
 		DWORD &optionMask,
 		DWORD &optionMaskNonPda,
@@ -63,9 +82,9 @@ public:
 	virtual bool WriteNewPassword (char* newPassword) = 0;
 	
 	virtual char * GetType() = 0;
-	
-	static char * GetLibVersion();
 
+	virtual bool ReadDongleContents(DongleContents* pContent) = 0;
+	
 #ifndef DONGLE_LITE	
 	virtual int InitDongle() = 0;
 	virtual bool WriteDongle (
@@ -86,6 +105,8 @@ public:
 		short timeLimit) = 0;
 	
 	virtual bool WriteMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS) = 0;
+
+	virtual bool WriteDongleContents(DongleContents* pContent) = 0;
 
 	virtual int WriteScratch(unsigned char * buffer, int size = 64) = 0;
 	virtual int ReadScratch(unsigned char * buffer, int size = 64) = 0;	
@@ -122,6 +143,8 @@ public:
 
 	//Multi license
 	bool ReadMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS);
+
+	bool ReadDongleContents(DongleContents* pContent);
 	
 #ifndef DONGLE_LITE
 	int InitDongle();
@@ -147,6 +170,8 @@ public:
 	int ReadScratch(unsigned char * buffer, int size = 64);
 
 	bool WriteMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS);
+
+	bool WriteDongleContents(DongleContents* pContent);
 #endif	
 
 	static BOOL bShowMessageBoxes;
@@ -162,6 +187,6 @@ private:
 	HANDLE hDongleAccess;
 };
 
-
+#endif //CONTENTS_ONLY
 
 #endif

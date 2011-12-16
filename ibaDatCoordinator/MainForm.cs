@@ -20,6 +20,7 @@ using iba.Utility;
 using iba.Processing;
 using iba.Plugins;
 using Microsoft.Win32;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace iba
 {
@@ -397,7 +398,6 @@ namespace iba
                 settingsToolStripMenuItem.Enabled = false;
             }
         }
-
 
         private void ReloadRightPane()
         { //only handles the cases of settings or watchdog panes, the rest is handled differently
@@ -1471,15 +1471,6 @@ namespace iba
             m_navBar.SelectedPane = m_settingsPane;
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (AboutBox ab = new AboutBox())
-            {
-                ab.StartPosition = FormStartPosition.CenterParent;
-                ab.ShowDialog(this);
-            }
-        }
-
         private void loggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_loggingPane;
@@ -1735,6 +1726,128 @@ namespace iba
             deleteToolStripMenuItem.Enabled = false;
         }
 
+        #region Help menu
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AboutBox ab = new AboutBox())
+            {
+                ab.StartPosition = FormStartPosition.CenterParent;
+                ab.ShowDialog(this);
+            }
+        }
+
+        private void saveInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fd = new SaveFileDialog();
+            List<string> filesToDelete = new List<string>();
+            ZipFile zip = null;
+            try 
+            {
+                fd.DefaultExt = "zip";
+                fd.AddExtension = true;
+                fd.Filter = Properties.Resources.ZipFileFilter;
+                fd.OverwritePrompt = true;
+                fd.FileName = "support.zip";
+                if (fd.ShowDialog(this) != DialogResult.OK)
+                    return;
+                string destFile = fd.FileName;
+                string destDir = Path.GetDirectoryName(destFile);
+
+                using (WaitCursor wait = new WaitCursor())
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    try
+                    {
+                        sb.Append("ibaDatCoordinator Version: ");
+                        sb.AppendLine(GetType().Assembly.GetName().Version.ToString(3));
+                    }
+                    catch 
+                    {}
+
+                    try
+                    {
+                        sb.Append("ibaAnalyzer Version: ");
+                        sb.AppendLine((new IbaAnalyzer.IbaAnalysisClass()).GetVersion().Remove(0, 12));
+                    }
+                    catch 
+                    {}
+
+                    try
+                    {
+                       GetDongleInfo(sb);
+                    }
+                    catch
+                    {}
+
+                    try
+                    {
+                        string clientInfoFile = Path.Combine(destDir, "info.txt");
+                        SystemInfoCollector.SaveSystemInfo(sb.ToString(), clientInfoFile);
+                        filesToDelete.Add(clientInfoFile);
+                        zip.BeginUpdate();
+                        zip.Add(clientInfoFile, "info.txt");
+                        zip.CommitUpdate();
+                    }
+                    catch 
+                    {}
+
+                    try
+                    {
+                        string outFile = Program.CommunicationObject.GetIbaAnalyzerRegKey();
+                        zip.BeginUpdate();
+                        string outFileLocal = Path.Combine(destDir, "ibaAnalyzer.reg");
+                        File.Copy(outFile,outFileLocal);
+                        Program.CommunicationObject.DeleteFile(outFile);
+                        zip.Add(destFile, "ibaAnalyzer.reg");
+                        filesToDelete.Add(outFileLocal);
+                        zip.CommitUpdate();
+                    }
+                    catch 
+                    {}
+
+                    zip.Close();
+                    zip = null;
+                }
+
+                
+
+                //registry key ibaAnalyzer
+                //Add client log files
+                //string logDir = ClientPath.GetAbsolutePath(IsActiveX ? "" : "log");
+                //string baseDir = ClientPath.GetAbsolutePath("");
+                //ZipHelper.CompressDirectory(zip, baseDir, "client\\", logDir);
+
+                //Add iba registry key
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if (zip != null)
+                    zip.Close();
+            }
+        }
+
+        private void GetDongleInfo(StringBuilder sb)
+        {
+            CDongleInfo licInfo = CDongleInfo.ReadDongle();
+            sb.AppendLine("Dongle serial number: " + licInfo.SerialNr);
+            sb.AppendLine("Customer: " + licInfo.Customer);
+        }
+
+        private void VersionHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
         #endregion
 
         #region IPropertyPaneManager Members
@@ -1925,7 +2038,7 @@ namespace iba
             get { return m_stopButton; }
         }
 
-        #endregion
+        
 
         static public void strikeOutNodeText(TreeNode node, bool cross)
         {
@@ -2417,6 +2530,7 @@ namespace iba
         private MenuItem m_miStopService;
         private MenuItem m_miExit;
         #endregion
+    #endregion
     }
 
     #region ImageList
