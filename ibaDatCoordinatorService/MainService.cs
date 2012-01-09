@@ -32,7 +32,7 @@ namespace iba.Services
             try
             {
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-                LogData.InitializeLogger(null, null, LogData.ApplicationState.SERVICE); //dummy gridlogger
+                LogData.InitializeLogger(null, null, iba.Utility.ApplicationState.SERVICE); //dummy gridlogger
                 PluginManager.Manager.LoadPlugins();
                 m_communicationObject = new CommunicationObject();
                 TaskManager.Manager = m_communicationObject.Manager;

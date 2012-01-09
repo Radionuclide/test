@@ -218,18 +218,10 @@ namespace iba
             try
             {
                 string regFileName = "";
-                Microsoft.Win32.RegistryKey analyzerKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaAnalyzer");
-                if (analyzerKey != null)
-                {
-                    string destDir = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
-                    regFileName = Path.Combine(destDir, "ibaanalyzer.reg");
-                    if (RegistryExporter.ExportRegistry(analyzerKey, regFileName, true))
-                    {
-                        return regFileName;
-                    }
-                    else
-                        return "";
-                }
+                string destDir = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+                regFileName = Path.Combine(Utility.DataPath.Folder(),"ibaanalyzer.reg");
+                if (!RegistryExporter.ExportIbaAnalyzerKey(regFileName))
+                    return "";
                 return regFileName;
             }
             catch { return ""; }
@@ -425,7 +417,7 @@ namespace iba
                 gv = LogData.Data.Logger as GridViewLogger;
 
             if (gv != null)
-                LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTDISCONNECTED);
+                LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTDISCONNECTED);
         }
 
         public int TestScript(string scriptfile, string arguments)

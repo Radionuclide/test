@@ -152,5 +152,15 @@ namespace iba.Utility
 
             return sb.ToString();
         }
+
+        public static bool ExportIbaAnalyzerKey(string regFileName)
+        {
+            Microsoft.Win32.RegistryKey analyzerKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaAnalyzer");
+            if (analyzerKey != null)
+            {
+                return (RegistryExporter.ExportRegistry(analyzerKey, regFileName, true));
+            }
+            return false;
+        }
     }
 }

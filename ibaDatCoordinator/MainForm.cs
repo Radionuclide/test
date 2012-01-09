@@ -52,11 +52,11 @@ namespace iba
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
             LogControl theLogControl; 
             propertyPanes["logControl"] = theLogControl = new LogControl();
-            LogData.ApplicationState state = LogData.ApplicationState.CLIENTSTANDALONE;
+            iba.Utility.ApplicationState state = iba.Utility.ApplicationState.CLIENTSTANDALONE;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                state = LogData.ApplicationState.CLIENTCONNECTED;
+                state = iba.Utility.ApplicationState.CLIENTCONNECTED;
             else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-                state = LogData.ApplicationState.CLIENTDISCONNECTED;
+                state = iba.Utility.ApplicationState.CLIENTDISCONNECTED;
             LogData.InitializeLogger(theLogControl.LogView, theLogControl, state);
             theLogControl.CreateControl();
 
@@ -1740,7 +1740,6 @@ namespace iba
         private void saveInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog fd = new SaveFileDialog();
-            List<string> filesToDelete = new List<string>();
             ZipFile zip = null;
             try 
             {
@@ -1753,9 +1752,9 @@ namespace iba
                     return;
                 string destFile = fd.FileName;
                 string destDir = Path.GetDirectoryName(destFile);
-
                 using (WaitCursor wait = new WaitCursor())
                 {
+                    zip = ZipFile.Create(destFile);
                     StringBuilder sb = new StringBuilder();
 
                     try
@@ -1785,24 +1784,33 @@ namespace iba
                     {
                         string clientInfoFile = Path.Combine(destDir, "info.txt");
                         SystemInfoCollector.SaveSystemInfo(sb.ToString(), clientInfoFile);
-                        filesToDelete.Add(clientInfoFile);
                         zip.BeginUpdate();
-                        zip.Add(clientInfoFile, "info.txt");
+                        zip.Add(clientInfoFile, @"info.txt");
                         zip.CommitUpdate();
+                        File.Delete(clientInfoFile);
                     }
                     catch 
                     {}
 
                     try
                     {
-                        string outFile = Program.CommunicationObject.GetIbaAnalyzerRegKey();
+                        string outFile;
+                        if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
+                        {
+                           outFile = Program.CommunicationObject.GetIbaAnalyzerRegKey();
+                        }
+                        else
+                        {
+                            outFile = Path.Combine(destDir,"ibaAnalyzer.reg");
+                            Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
+                        }
                         zip.BeginUpdate();
-                        string outFileLocal = Path.Combine(destDir, "ibaAnalyzer.reg");
-                        File.Copy(outFile,outFileLocal);
-                        Program.CommunicationObject.DeleteFile(outFile);
-                        zip.Add(destFile, "ibaAnalyzer.reg");
-                        filesToDelete.Add(outFileLocal);
+                        zip.Add(outFile, "ibaAnalyzer.reg");
                         zip.CommitUpdate();
+                        if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                            Program.CommunicationObject.DeleteFile(outFile);
+                        else
+                            File.Delete(outFile);
                     }
                     catch 
                     {}
@@ -1810,18 +1818,6 @@ namespace iba
                     zip.Close();
                     zip = null;
                 }
-
-                
-
-                //registry key ibaAnalyzer
-                //Add client log files
-                //string logDir = ClientPath.GetAbsolutePath(IsActiveX ? "" : "log");
-                //string baseDir = ClientPath.GetAbsolutePath("");
-                //ZipHelper.CompressDirectory(zip, baseDir, "client\\", logDir);
-
-                //Add iba registry key
-
-
             }
             catch (Exception ex)
             {
@@ -1830,7 +1826,13 @@ namespace iba
             finally
             {
                 if (zip != null)
-                    zip.Close();
+                {
+                    try
+                    {
+                        zip.Close();
+                    }
+                    catch { }
+                }
             }
         }
 
@@ -2332,7 +2334,7 @@ namespace iba
                         gv = LogData.Data.Logger.Children[0] as GridViewLogger;
                     else
                         gv = LogData.Data.Logger as GridViewLogger;
-                    LogData.InitializeLogger(gv.Grid, gv.LogControl, LogData.ApplicationState.CLIENTCONNECTED);
+                    LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTCONNECTED);
                     Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
                     m_firstConnectToService = false;
                     SetRenderer();

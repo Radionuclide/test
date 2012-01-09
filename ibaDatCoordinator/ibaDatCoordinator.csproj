@@ -258,6 +258,7 @@
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\crypt.cs" />
+    <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />

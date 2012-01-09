@@ -37,7 +37,7 @@ namespace iba
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            LogData.InitializeLogger(null, null,LogData.ApplicationState.SERVICE); //dummy gridlogger
+            LogData.InitializeLogger(null, null, iba.Utility.ApplicationState.SERVICE); //dummy gridlogger
             m_communicationObject = new CommunicationObject();
             //publish this manager
             BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();

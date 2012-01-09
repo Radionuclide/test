@@ -452,8 +452,6 @@ namespace iba.Data
                 m_data.Logger.Close();
         }
 
-        public enum ApplicationState {CLIENTDISCONNECTED,CLIENTCONNECTED,CLIENTSTANDALONE, SERVICE};
-
         static public void InitializeLogger(DataGridView grid, Control control, ApplicationState appState)
         {
             if (m_data == null)
@@ -465,12 +463,12 @@ namespace iba.Data
 
             if (appState != ApplicationState.CLIENTCONNECTED)
             {
-                string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+                string rootPath = Utility.DataPath.Folder(appState);
                 string filename = "";
                 if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
                     filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
                 else
-                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt");;
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt");
                 if (File.Exists(filename))
                 {
                     try
