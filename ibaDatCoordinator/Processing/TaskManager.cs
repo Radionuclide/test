@@ -550,6 +550,15 @@ namespace iba.Processing
                 }
             }
         }
+
+        virtual public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            {
+                if (pair.Key != null)
+                    pair.Key.AdditionalFileNames(myList);
+            }
+        }
     }
 
 
@@ -1041,6 +1050,20 @@ namespace iba.Processing
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.ProcessPriority = value;
                 }
+            }
+        }
+
+       public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+       {
+            try
+            {
+                Program.CommunicationObject.Manager.AdditionalFileNames(myList);
+            }
+            catch (SocketException)
+            {
+                myList.Clear();
+                Program.CommunicationObject.HandleBrokenConnection();
+                Manager.AdditionalFileNames(myList);
             }
         }
     }

@@ -85,5 +85,15 @@ namespace iba.Data
                 return null;
             }
         }
+
+        public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList, string safeConfName)
+        {
+            StringBuilder sb = new StringBuilder(safeConfName);
+            sb.Append('\\');
+            sb.Append(iba.Utility.PathUtil.FilterInvalidFileNameChars(m_name));
+            sb.Append('\\');
+            sb.Append(Path.GetFileName(BatchFile));
+            myList.Add(new KeyValuePair<string, string>(BatchFile, sb.ToString()));
+        }
     }
 }

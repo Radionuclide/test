@@ -73,5 +73,28 @@ namespace iba.Data
             rd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return rd;
         }
+
+        public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList, string safeConfName)
+        {
+            //the analysis
+            base.AdditionalFileNames(myList, safeConfName);
+            //perhaps the lst is in the same location ?
+            try
+            {
+                string[] lstFiles = System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(AnalysisFile),@"*.lst");
+                if (lstFiles != null && lstFiles.Length == 1)
+                {
+                    StringBuilder sb = new StringBuilder(safeConfName);
+                    sb.Append('\\');
+                    sb.Append(Utility.PathUtil.FilterInvalidFileNameChars(lstFiles[0]));
+                    sb.Append('\\');
+                    sb.Append(System.IO.Path.GetFileName(lstFiles[0]));
+                    myList.Add(new KeyValuePair<string, string>(lstFiles[0], sb.ToString()));
+                }
+            }
+            catch 
+            {
+            }
+        }
     }
 }

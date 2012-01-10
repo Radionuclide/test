@@ -8,11 +8,14 @@ namespace iba.Utility
     class PathUtil
     {
         private static string rootPath;
+        //private static char[] invalidChars;
 
         static PathUtil()
 		{
 			rootPath = Path.GetDirectoryName(typeof(PathUtil).Assembly.Location);
 			rootPath += @"\\";
+
+            //List<char> chars = new List<char>(Path.InvalidPathChars);
 		}
 
         public static string GetRelativePath(string absPath)
@@ -102,5 +105,13 @@ namespace iba.Utility
             }
             return result;
         }
-    }
+
+        public static string FilterInvalidFileNameChars(string toFilter)
+        {
+            if (String.IsNullOrEmpty(toFilter)) return toFilter;
+            foreach( char oldChar in Path.GetInvalidFileNameChars())
+                toFilter = toFilter.Replace(oldChar, '_');
+            return toFilter;
+        }
+    }    
 }

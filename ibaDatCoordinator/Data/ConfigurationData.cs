@@ -364,6 +364,16 @@ namespace iba.Data
             return changed;
         }
 
+        public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+        {
+            string safeConfName = Utility.PathUtil.FilterInvalidFileNameChars(m_name);
+            foreach (TaskData task in m_tasks)
+            {
+                if (task != null)
+                    task.AdditionalFileNames(myList, safeConfName);
+            }
+        }
+
         #region IJobData Members
 
         [XmlIgnore]

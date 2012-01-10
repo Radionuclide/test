@@ -1815,6 +1815,112 @@ namespace iba
                     catch 
                     {}
 
+                    try
+                    {
+                        //logfiles, local
+                        string logdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                        logdir = Path.Combine(logdir, @"iba\ibaDatCoordinator");
+                        if (Directory.Exists(logdir))
+                        {
+                            string[] logFiles = Directory.GetFiles(logdir,"ibaDatCoordinatorLog*.txt");
+                            foreach (string file in logFiles)
+                            {
+                                try
+                                {
+                                    zip.BeginUpdate();
+                                    zip.Add(file, @"logging\local\" + Path.GetFileName(file));
+                                    zip.CommitUpdate();
+                                }
+                                catch
+                                {}
+                            }
+                        }
+                    }
+                    catch 
+                    {
+                    }
+                    try
+                    {
+                        //logfiles, server
+                        string logdir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                        logdir = Path.Combine(logdir, @"iba\ibaDatCoordinator");
+                        if (Directory.Exists(logdir))
+                        {
+                            string[] logFiles = Directory.GetFiles(logdir, "ibaDatCoordinatorLog*.txt");
+                            foreach (string file in logFiles)
+                            {
+                                try
+                                {
+                                    zip.BeginUpdate();
+                                    zip.Add(file, @"logging\server\" + Path.GetFileName(file));
+                                    zip.CommitUpdate();
+                                }
+                                catch
+                                {}
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    
+                    
+                    try
+                    { //exception.txt
+                        string file = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "exception.txt");
+                        if (File.Exists(file))
+                        {
+                            zip.BeginUpdate();
+                            zip.Add(file, "exception.txt");
+                            zip.CommitUpdate();
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
+
+                    try
+                    {
+                        //localconf //if exists
+                        if (!String.IsNullOrEmpty(m_filename) && File.Exists(m_filename))
+                        {
+                            zip.BeginUpdate();
+                            zip.Add(m_filename, @"localconf\" + Path.GetFileName(m_filename));
+                            zip.CommitUpdate();
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                        Program.CommunicationObject.SaveConfigurations();
+                    
+                    try
+                    { //serverconf if exists
+                        string file = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "lastsaved.xml");
+                        if (!String.IsNullOrEmpty(file) && File.Exists(file))
+                        {
+                            zip.BeginUpdate();
+                            zip.Add(file, @"severconf\" + Path.GetFileName(file));
+                            zip.CommitUpdate();
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    try
+                    {
+                        List<KeyValuePair<string, string>> myList = new List<KeyValuePair<string, string>>();
+                        TaskManager.Manager.AdditionalFileNames(myList);
+                    }
+                    catch
+                    {
+                    }
+
                     zip.Close();
                     zip = null;
                 }
@@ -2040,7 +2146,6 @@ namespace iba
             get { return m_stopButton; }
         }
 
-        
 
         static public void strikeOutNodeText(TreeNode node, bool cross)
         {
@@ -2532,8 +2637,9 @@ namespace iba
         private MenuItem m_miStopService;
         private MenuItem m_miExit;
         #endregion
+    }    
     #endregion
-    }
+
 
     #region ImageList
     internal class MyImageList

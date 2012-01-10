@@ -103,5 +103,18 @@ namespace iba.Data
         }
 
         abstract public object Clone();
+
+        public virtual void AdditionalFileNames(List<KeyValuePair<string, string>> myList, string safeConfName)
+        { //default, analysisfile
+            if (!String.IsNullOrEmpty(m_pdoFile))
+            {
+                StringBuilder sb = new StringBuilder(safeConfName);
+                sb.Append('\\');
+                sb.Append(Utility.PathUtil.FilterInvalidFileNameChars(m_name));
+                sb.Append('\\');
+                sb.Append(System.IO.Path.GetFileName(m_pdoFile));
+                myList.Add(new KeyValuePair<string, string>(m_pdoFile, sb.ToString()));
+            }
+        }
     }
 }

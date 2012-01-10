@@ -37,7 +37,6 @@ namespace iba.Utility
             return Folder(MyState());
         }
 
-
         public static ApplicationState MyState()
         {
             if (Program.IsServer)
