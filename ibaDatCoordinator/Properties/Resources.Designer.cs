@@ -2528,6 +2528,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to adapt modification time of output file: .
+        /// </summary>
+        internal static string WriteTimeModificationFailed {
+            get {
+                return ResourceManager.GetString("WriteTimeModificationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to frequency.
         /// </summary>
         internal static string XFrequency {

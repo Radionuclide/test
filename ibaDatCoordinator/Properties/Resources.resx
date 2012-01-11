@@ -988,4 +988,7 @@
   <data name="ZipFileFilter" xml:space="preserve">
     <value>Zip files (*.zip)|*.zip</value>
   </data>
+  <data name="WriteTimeModificationFailed" xml:space="preserve">
+    <value>Failed to adapt modification time of output file: </value>
+  </data>
 </root>

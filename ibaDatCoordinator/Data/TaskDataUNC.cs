@@ -41,6 +41,7 @@ namespace iba.Data
             m_subfolderChoice = SubfolderChoice.DAY;
             m_doDirCleanup = false;
             m_useDatModTimeForDirs = false;
+            m_copyDatModTime = false;
         }
 
         protected uint m_numbFolders;
@@ -95,6 +96,12 @@ namespace iba.Data
             set { m_useDatModTimeForDirs = value; }
         }
 
+        protected bool m_copyDatModTime;
+        public bool CopyModTime
+        {
+            get { return m_copyDatModTime; }
+            set { m_copyDatModTime = value; }
+        }
 
         public void UpdateUNC()
         {
@@ -114,6 +121,7 @@ namespace iba.Data
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
             uncdat.m_useDatModTimeForDirs = m_useDatModTimeForDirs;
+            uncdat.m_copyDatModTime = m_copyDatModTime;
         }
 
         protected string m_username;

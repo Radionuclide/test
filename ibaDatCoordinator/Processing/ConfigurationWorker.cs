@@ -1579,16 +1579,6 @@ namespace iba.Processing
                                 m_sd.PermanentErrorFiles.Add(filename);
                                 bPermanentErrorFilesChanged = true;
                             }
-                            //DatFileStatus status2 = new DatFileStatus();
-                            //lock (m_sd.DatFileStates)
-                            //{
-                            //    status2.TimesTried = m_sd.DatFileStates[filename].TimesTried;
-                            //    foreach (TaskData dat in m_cd.Tasks)
-                            //    {
-                            //        if (dat.Enabled) status2.States[dat] = DatFileStatus.State.TRIED_TOO_MANY_TIMES;
-                            //    }
-                            //    m_sd.DatFileStates[filename] = status2;
-                            //}
                             break;
                     }
                     Thread.Sleep(0); //allow other threads like filesystemwatcher
@@ -2119,6 +2109,25 @@ namespace iba.Processing
                     {
                         DoCustomTask(DatFile, task as CustomTaskData);
                     }
+
+                    //touch the file
+                    if (!String.IsNullOrEmpty(m_outPutFile))
+                    {
+                        TaskDataUNC tunc = task as TaskDataUNC;
+                        if (tunc != null && tunc.CopyModTime)
+                        {
+                            try
+                            {
+                                DateTime utcTime = File.GetLastWriteTimeUtc(DatFile);
+                                File.SetLastWriteTimeUtc(m_outPutFile, utcTime);
+                            }
+                            catch (System.Exception ex)
+                            {
+                               Log(iba.Logging.Level.Warning, iba.Properties.Resources.WriteTimeModificationFailed + ex.Message, DatFile, task);
+                            }
+                        }
+                    }
+
                     lock (m_sd.DatFileStates)
                     {
                         if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
