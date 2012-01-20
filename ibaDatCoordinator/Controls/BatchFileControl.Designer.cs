@@ -193,7 +193,6 @@ namespace iba.Controls
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.m_editorGroupBox);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(400, 450);
             this.Name = "BatchFileControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

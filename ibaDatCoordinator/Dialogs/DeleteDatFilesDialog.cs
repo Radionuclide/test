@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.IO;
 using iba.Data;
 
-namespace iba.Controls
+namespace iba.Dialogs
 {
     public partial class DeleteDatFilesDialog : Form
     {

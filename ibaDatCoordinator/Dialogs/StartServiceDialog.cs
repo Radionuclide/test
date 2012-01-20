@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace iba
+namespace iba.Dialogs
 {
-    public partial class StopServiceDialog : Form
+    public partial class StartServiceDialog : Form
     {
-        public StopServiceDialog()
+        public StartServiceDialog()
         {
             InitializeComponent();
             m_result = false;
@@ -19,7 +19,7 @@ namespace iba
         private bool m_result;
         public bool Result
         {
-            get { return m_result; }
+            get {return m_result;}
         }
 
         protected override void OnLoad(EventArgs e)
@@ -34,11 +34,11 @@ namespace iba
             {
                 System.ServiceProcess.ServiceController myController =
                 new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                myController.Stop();
-                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
-                if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Stopped)
+                myController.Start();
+                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
+                if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
                 {
-                    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, iba.Properties.Resources.ServiceConnectProblem4, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, iba.Properties.Resources.ServiceConnectProblem2, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);                            
                     m_result = false;
                     return;
                 }
@@ -50,10 +50,12 @@ namespace iba
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 m_result = false;
                 return;
             }
+            CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
+            Program.CommunicationObject = new CommunicationObjectWrapper(com);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

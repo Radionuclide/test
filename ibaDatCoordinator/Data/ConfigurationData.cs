@@ -20,6 +20,7 @@ namespace iba.Data
             get { return m_name ; }
             set { if (value.Length != 0) m_name = value; }
         }
+
         private string m_datDirectory;
         public string DatDirectory
         {
@@ -55,7 +56,6 @@ namespace iba.Data
         {
             UpdateUNC(false);
         }
-
 
         private int m_treePosition;
         public int TreePosition

@@ -9,7 +9,7 @@ using System.IO;
 using iba.Data;
 using ibaFilesLiteLib;
 
-namespace iba.Controls
+namespace iba.Dialogs
 {
     public partial class RemoveMarkingsDialog : Form
     {

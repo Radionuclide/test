@@ -88,7 +88,33 @@ namespace iba.Controls
             }
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+
+            string passString = "";
+            try
+            {
+                passString = TaskManager.Manager.Password;
+            }
+            catch { }
+            UpdatePassControls();
         }
+
+        private void UpdatePassControls()
+        {
+            if (string.IsNullOrEmpty(m_pass))
+            {
+                m_SetChangePassBtn.Text = iba.Properties.Resources.SetStr;
+                m_ClearPassBtn.Enabled = false;
+                m_passwordStatusLabel.Text = iba.Properties.Resources.PassNotSet;
+            }
+            else
+            {
+                m_SetChangePassBtn.Text = iba.Properties.Resources.ChangeStr;
+                m_ClearPassBtn.Enabled = true;
+                m_passwordStatusLabel.Text = iba.Properties.Resources.PassSet;
+            }
+        }
+
+        private string m_pass;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -140,7 +166,8 @@ namespace iba.Controls
                 case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
             }
             TaskManager.Manager.ProcessPriority = iPc;
-            //set actual priority;
+
+            TaskManager.Manager.Password = m_pass;
         }
 
         #endregion
@@ -201,6 +228,25 @@ namespace iba.Controls
         {
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+        }
+
+        private void m_SetChangePassBtn_Click(object sender, EventArgs e)
+        {
+            iba.Dialogs.SpecifyPasswordDialog dlg = new iba.Dialogs.SpecifyPasswordDialog();
+            dlg.Pass = m_pass;
+            dlg.StartPosition = FormStartPosition.CenterParent;
+            dlg.ShowDialog(this);
+            if (!dlg.Cancelled)
+            {
+                m_pass = dlg.Pass;
+                UpdatePassControls();
+            }
+        }
+
+        private void m_ClearPassBtn_Click(object sender, EventArgs e)
+        {
+            m_pass = "";
+            UpdatePassControls();
         }
     }
 

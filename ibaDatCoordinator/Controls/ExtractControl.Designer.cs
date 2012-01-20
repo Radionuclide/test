@@ -42,6 +42,8 @@ namespace iba.Controls
             this.m_panelFile = new System.Windows.Forms.Panel();
             this.m_groupBoxFileType = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_rbTDMS = new System.Windows.Forms.RadioButton();
+            this.m_rbComtrade = new System.Windows.Forms.RadioButton();
             this.m_monitorGroup = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,8 +51,6 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.m_rbComtrade = new System.Windows.Forms.RadioButton();
-            this.m_rbTDMS = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -153,6 +153,20 @@ namespace iba.Controls
             this.tableLayoutPanel4.Controls.Add(this.m_rbBinaryFile, 0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             // 
+            // m_rbTDMS
+            // 
+            resources.ApplyResources(this.m_rbTDMS, "m_rbTDMS");
+            this.m_rbTDMS.Name = "m_rbTDMS";
+            this.m_rbTDMS.TabStop = true;
+            this.m_rbTDMS.UseVisualStyleBackColor = true;
+            // 
+            // m_rbComtrade
+            // 
+            resources.ApplyResources(this.m_rbComtrade, "m_rbComtrade");
+            this.m_rbComtrade.Name = "m_rbComtrade";
+            this.m_rbComtrade.TabStop = true;
+            this.m_rbComtrade.UseVisualStyleBackColor = true;
+            // 
             // m_monitorGroup
             // 
             resources.ApplyResources(this.m_monitorGroup, "m_monitorGroup");
@@ -226,20 +240,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
-            // 
-            // m_rbComtrade
-            // 
-            resources.ApplyResources(this.m_rbComtrade, "m_rbComtrade");
-            this.m_rbComtrade.Name = "m_rbComtrade";
-            this.m_rbComtrade.TabStop = true;
-            this.m_rbComtrade.UseVisualStyleBackColor = true;
-            // 
-            // m_rbTDMS
-            // 
-            resources.ApplyResources(this.m_rbTDMS, "m_rbTDMS");
-            this.m_rbTDMS.Name = "m_rbTDMS";
-            this.m_rbTDMS.TabStop = true;
-            this.m_rbTDMS.UseVisualStyleBackColor = true;
             // 
             // ExtractControl
             // 

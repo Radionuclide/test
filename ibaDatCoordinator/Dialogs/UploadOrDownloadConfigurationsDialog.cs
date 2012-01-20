@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace iba
+namespace iba.Dialogs
 {
     public partial class UploadOrDownloadConfigurationsDialog : Form
     {
@@ -25,8 +25,11 @@ namespace iba
 
         private void m_btUpload_Click(object sender, EventArgs e)
         {
-            Upload = true;
-            Close();
+            if (iba.Utility.Crypt.CheckPassword(this))
+            {
+                Upload = true;
+                Close();
+            }
         }
     }
 }

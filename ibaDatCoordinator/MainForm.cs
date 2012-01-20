@@ -21,6 +21,7 @@ using iba.Processing;
 using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
+using iba.Dialogs;
 
 namespace iba
 {
@@ -194,6 +195,11 @@ namespace iba
             }
             else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
+                if (!Utility.Crypt.CheckPassword(this))
+                {
+                    e.Cancel = true;
+                    return;
+                }
                 string s1 = TextFromLoad();
                 string s2 = TextToSave();
                 if (s1 != s2)
@@ -380,6 +386,11 @@ namespace iba
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 SaveRightPaneControl();
+                if (!Utility.Crypt.CheckPassword(this))
+                {
+                    m_navBar.SelectedPane = m_configPane;
+                    return;
+                }
                 Control ctrl = propertyPanes["settingsControl"] as Control;
                 if (ctrl == null)
                 {
@@ -1523,9 +1534,10 @@ namespace iba
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (sender != null && !Utility.Crypt.CheckPassword(this)) return;
             if (m_filename == null)
             {
-                saveAsToolStripMenuItem_Click(sender, e);
+                saveAsToolStripMenuItem_Click(null, e);
             }
             else using (WaitCursor wait = new WaitCursor())
             {
@@ -1601,6 +1613,7 @@ namespace iba
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (sender != null && !Utility.Crypt.CheckPassword(this)) return;
 	        m_saveFileDialog.CreatePrompt = false;
 		    m_saveFileDialog.OverwritePrompt = true;
 	    	m_saveFileDialog.FileName = "myConfigurations";
@@ -1610,13 +1623,13 @@ namespace iba
             {
                 m_filename = m_saveFileDialog.FileName;
                 this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
-                saveToolStripMenuItem_Click(sender, e);
+                saveToolStripMenuItem_Click(null, e);
             }
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (!Utility.Crypt.CheckPassword(this)) return;
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.Filter = "XML files (*.xml)|*.xml";
             m_openFileDialog.FileName = "";
@@ -1676,8 +1689,9 @@ namespace iba
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this)) return;
             SaveRightPaneControl();
-           string s1 = TextFromLoad();
+            string s1 = TextFromLoad();
             string s2 = TextToSave();
             if (s1 != s2)
             {
@@ -1739,6 +1753,7 @@ namespace iba
 
         private void saveInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this)) return;
             SaveFileDialog fd = new SaveFileDialog();
             ZipFile zip = null;
             try 
@@ -1951,7 +1966,15 @@ namespace iba
 
         private void VersionHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                string readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "readme.htm");
+               System.Diagnostics.Process.Start(readmeFile);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #endregion
@@ -2042,6 +2065,7 @@ namespace iba
 
         private void m_stopButton_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this)) return;
             SaveRightPaneControl();
             using (StopWaitDialog waiter = new StopWaitDialog())
             {
@@ -2056,6 +2080,8 @@ namespace iba
 
         private void m_startButton_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this))
+                return;
             SaveRightPaneControl();
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -2534,11 +2560,13 @@ namespace iba
 
         private void miStartService_Click(object sender, System.EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this)) return;
             OnStartService();
         }
 
         private void miStopService_Click(object sender, System.EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword(this)) return;
             OnStopService();
         }
 

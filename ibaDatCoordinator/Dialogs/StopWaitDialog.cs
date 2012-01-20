@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using iba.Data;
 using iba.Processing;
 
-namespace iba.Controls
+namespace iba.Dialogs
 {
     public partial class StopWaitDialog : Form
     {

@@ -1,4 +1,4 @@
-namespace iba.Controls
+namespace iba.Dialogs
 {
     partial class RemoveMarkingsDialog
     {

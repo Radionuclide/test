@@ -46,10 +46,15 @@ namespace iba.Controls
             this.label5 = new System.Windows.Forms.Label();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.m_ClearPassBtn = new System.Windows.Forms.Button();
+            this.m_SetChangePassBtn = new System.Windows.Forms.Button();
+            this.m_passwordStatusLabel = new System.Windows.Forms.Label();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.groupBox5.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbApp
@@ -172,10 +177,39 @@ namespace iba.Controls
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // groupBox2
+            // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.m_ClearPassBtn);
+            this.groupBox2.Controls.Add(this.m_SetChangePassBtn);
+            this.groupBox2.Controls.Add(this.m_passwordStatusLabel);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            // 
+            // m_ClearPassBtn
+            // 
+            resources.ApplyResources(this.m_ClearPassBtn, "m_ClearPassBtn");
+            this.m_ClearPassBtn.Name = "m_ClearPassBtn";
+            this.m_ClearPassBtn.UseVisualStyleBackColor = true;
+            this.m_ClearPassBtn.Click += new System.EventHandler(this.m_ClearPassBtn_Click);
+            // 
+            // m_SetChangePassBtn
+            // 
+            resources.ApplyResources(this.m_SetChangePassBtn, "m_SetChangePassBtn");
+            this.m_SetChangePassBtn.Name = "m_SetChangePassBtn";
+            this.m_SetChangePassBtn.UseVisualStyleBackColor = true;
+            this.m_SetChangePassBtn.Click += new System.EventHandler(this.m_SetChangePassBtn_Click);
+            // 
+            // m_passwordStatusLabel
+            // 
+            resources.ApplyResources(this.m_passwordStatusLabel, "m_passwordStatusLabel");
+            this.m_passwordStatusLabel.Name = "m_passwordStatusLabel";
+            // 
             // ServiceSettingsControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_gbApp);
@@ -188,6 +222,8 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -210,6 +246,10 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label m_passwordStatusLabel;
+        private System.Windows.Forms.Button m_ClearPassBtn;
+        private System.Windows.Forms.Button m_SetChangePassBtn;
 
     }
 }

@@ -21,21 +21,6 @@ namespace iba.Controls
             m_plugin = pluginControl as IPluginControl;
             m_regularControl = pluginControl as IPropertyPane;
             InitializeComponent();
-            //this.tableLayoutPanel1.ColumnStyles[0].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel1.ColumnStyles[0].Width = 33;
-            //this.tableLayoutPanel1.ColumnStyles[1].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel1.ColumnStyles[1].Width = 33;
-            //this.tableLayoutPanel1.ColumnStyles[2].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel1.ColumnStyles[2].Width = 33;
-
-            //this.tableLayoutPanel6.ColumnStyles[0].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel6.ColumnStyles[0].Width = 33;
-            //this.tableLayoutPanel6.ColumnStyles[1].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel6.ColumnStyles[1].Width = 33;
-            //this.tableLayoutPanel6.ColumnStyles[2].SizeType = SizeType.Percent;
-            //this.tableLayoutPanel6.ColumnStyles[2].Width = 33;
-            //this.SuspendLayout();
-            //m_pluginPanel.Anchor = AnchorStyles.None;
             pluginControl.Width = m_pluginPanel.Width;
             m_pluginPanel.Height = pluginControl.Height;
             m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
@@ -43,12 +28,9 @@ namespace iba.Controls
             this.m_pluginPanel.Controls.Add(pluginControl);
             int newHeight = m_pluginPanel.Bottom + 5;
             this.Height = newHeight;
-            m_pluginPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             //autoscroll seems problematic, add it here with AutoScrollMinSize
             AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
             AutoScroll = true;
-            //this.ResumeLayout();
-            //pluginControl.Parent = this.m_pluginPanel;
         }
 
         private void m_nameTextBox_TextChanged(object sender, EventArgs e)

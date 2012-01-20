@@ -338,6 +338,7 @@ namespace iba.Processing
             m_doPostPone = true;
             m_postponeMinutes = 5;
             m_processPriority = (int)System.Diagnostics.ProcessPriorityClass.Normal;
+            m_password = "";
         }
         
         public static TaskManager Manager
@@ -550,6 +551,15 @@ namespace iba.Processing
                 }
             }
         }
+
+        string m_password;
+
+        public string Password
+        {
+            get { return m_password; }
+            set { m_password = value; }
+        }
+
 
         virtual public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
         {

@@ -184,8 +184,8 @@ namespace iba.Controls
             // 
             // m_pluginPanel
             // 
-            this.m_pluginPanel.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.m_pluginPanel, "m_pluginPanel");
+            this.m_pluginPanel.BackColor = System.Drawing.SystemColors.Control;
             this.m_pluginPanel.Name = "m_pluginPanel";
             // 
             // CommonTaskControl

@@ -1,6 +1,6 @@
-namespace iba
+namespace iba.Dialogs
 {
-    partial class StartServiceDialog
+    partial class StopWaitDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,22 +29,27 @@ namespace iba
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartServiceDialog));
-            this.m_progressBar = new System.Windows.Forms.ProgressBar();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StopWaitDialog));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // m_progressBar
+            // backgroundWorker1
             // 
-            this.m_progressBar.AccessibleDescription = null;
-            this.m_progressBar.AccessibleName = null;
-            resources.ApplyResources(this.m_progressBar, "m_progressBar");
-            this.m_progressBar.BackgroundImage = null;
-            this.m_progressBar.Font = null;
-            this.m_progressBar.Name = "m_progressBar";
-            this.m_progressBar.Step = 5;
-            this.m_progressBar.UseWaitCursor = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.AccessibleDescription = null;
+            this.progressBar1.AccessibleName = null;
+            resources.ApplyResources(this.progressBar1, "progressBar1");
+            this.progressBar1.BackgroundImage = null;
+            this.progressBar1.Font = null;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Step = 5;
+            this.progressBar1.UseWaitCursor = true;
             // 
             // timer1
             // 
@@ -52,12 +57,7 @@ namespace iba
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // StartServiceDialog
+            // StopWaitDialog
             // 
             this.AccessibleDescription = null;
             this.AccessibleName = null;
@@ -65,14 +65,11 @@ namespace iba
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = null;
             this.ControlBox = false;
-            this.Controls.Add(this.m_progressBar);
+            this.Controls.Add(this.progressBar1);
             this.Font = null;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = null;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "StartServiceDialog";
-            this.ShowIcon = false;
+            this.Name = "StopWaitDialog";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.TopMost = true;
@@ -83,8 +80,8 @@ namespace iba
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar m_progressBar;
-        private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

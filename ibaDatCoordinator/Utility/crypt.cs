@@ -53,5 +53,24 @@ namespace iba.Utility
             }
             return msg;
         }
+
+
+        public static bool CheckPassword(System.Windows.Forms.Form parent)
+        {
+            string pass = null;
+            try 
+            {
+                pass = iba.Processing.TaskManager.Manager.Password;
+            }
+            catch{}
+            if (string.IsNullOrEmpty(pass)) return true;
+            iba.Dialogs.PasswordConfirm dlg = new iba.Dialogs.PasswordConfirm(pass);
+            dlg.StartPosition = (parent != null) ? System.Windows.Forms.FormStartPosition.CenterParent : System.Windows.Forms.FormStartPosition.CenterScreen;
+            if (parent != null)
+                dlg.ShowDialog(parent);
+            else
+                dlg.ShowDialog();
+            return !dlg.Cancelled;
+        }
     }
 }

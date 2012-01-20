@@ -106,7 +106,6 @@ namespace iba.Data
         {
             get { return m_dbTblName; }
             set { m_dbTblName = value; }
-        }
-       
+        }       
     }
 }

@@ -70,8 +70,8 @@ namespace iba.Controls
             // 
             // m_extensionComboBox
             // 
-            resources.ApplyResources(this.m_extensionComboBox, "m_extensionComboBox");
             this.m_extensionComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.m_extensionComboBox, "m_extensionComboBox");
             this.m_extensionComboBox.Name = "m_extensionComboBox";
             // 
             // m_rbPrint

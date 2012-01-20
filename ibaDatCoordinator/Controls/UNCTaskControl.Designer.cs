@@ -65,6 +65,7 @@
             this.m_targetFolderTextBox = new System.Windows.Forms.TextBox();
             this.m_checkPathButton = new System.Windows.Forms.Button();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.m_cbModifyDate = new System.Windows.Forms.CheckBox();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -366,10 +367,19 @@
             this.m_checkPathButton.UseVisualStyleBackColor = true;
             this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
             // 
+            // m_cbModifyDate
+            // 
+            resources.ApplyResources(this.m_cbModifyDate, "m_cbModifyDate");
+            this.m_cbModifyDate.Checked = true;
+            this.m_cbModifyDate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbModifyDate.Name = "m_cbModifyDate";
+            this.m_cbModifyDate.UseVisualStyleBackColor = true;
+            // 
             // UNCTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_cbModifyDate);
             this.Controls.Add(this.m_checkPathButton);
             this.Controls.Add(this.m_tbPass);
             this.Controls.Add(this.label12);
@@ -444,5 +454,6 @@
         private System.Windows.Forms.TextBox m_targetFolderTextBox;
         private System.Windows.Forms.Button m_checkPathButton;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
+        private System.Windows.Forms.CheckBox m_cbModifyDate;
     }
 }

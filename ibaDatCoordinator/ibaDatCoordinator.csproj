@@ -114,16 +114,22 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\PasswordConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\PasswordConfirm.Designer.cs">
+      <DependentUpon>PasswordConfirm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PauseTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PauseTaskControl.Designer.cs">
       <DependentUpon>PauseTaskControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RemoveMarkingsDialog.cs">
+    <Compile Include="Dialogs\RemoveMarkingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\RemoveMarkingsDialog.Designer.cs">
+    <Compile Include="Dialogs\RemoveMarkingsDialog.Designer.cs">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\PermanentFileErrorsControl.cs">
@@ -162,10 +168,10 @@
     <Compile Include="Controls\LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DeleteDatFilesDialog.cs">
+    <Compile Include="Dialogs\DeleteDatFilesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\DeleteDatFilesDialog.Designer.cs">
+    <Compile Include="Dialogs\DeleteDatFilesDialog.Designer.cs">
       <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ReportControl.cs">
@@ -186,10 +192,16 @@
     <Compile Include="Controls\StatusControl.Designer.cs">
       <DependentUpon>StatusControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\StopWaitDialog.cs">
+    <Compile Include="Dialogs\SpecifyPasswordDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\StopWaitDialog.Designer.cs">
+    <Compile Include="Dialogs\SpecifyPasswordDialog.Designer.cs">
+      <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\StopWaitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\StopWaitDialog.Designer.cs">
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UNCTaskControl.cs">
@@ -239,22 +251,22 @@
     <Compile Include="Processing\Notifier.cs" />
     <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
-    <Compile Include="StartServiceDialog.cs">
+    <Compile Include="Dialogs\StartServiceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StartServiceDialog.Designer.cs">
+    <Compile Include="Dialogs\StartServiceDialog.Designer.cs">
       <DependentUpon>StartServiceDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="StopServiceDialog.cs">
+    <Compile Include="Dialogs\StopServiceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StopServiceDialog.Designer.cs">
+    <Compile Include="Dialogs\StopServiceDialog.Designer.cs">
       <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UploadOrDownloadConfigurationsDialog.cs">
+    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UploadOrDownloadConfigurationsDialog.Designer.cs">
+    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\crypt.cs" />
@@ -318,10 +330,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\PasswordConfirm.resx">
+      <DependentUpon>PasswordConfirm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PauseTaskControl.resx">
       <DependentUpon>PauseTaskControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RemoveMarkingsDialog.resx">
+    <EmbeddedResource Include="Dialogs\RemoveMarkingsDialog.resx">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -349,7 +364,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>LogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DeleteDatFilesDialog.resx">
+    <EmbeddedResource Include="Dialogs\DeleteDatFilesDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -361,7 +376,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ServiceSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StopWaitDialog.resx">
+    <EmbeddedResource Include="Dialogs\SpecifyPasswordDialog.resx">
+      <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\StopWaitDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -375,15 +393,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>WatchdogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StartServiceDialog.resx">
+    <EmbeddedResource Include="Dialogs\StartServiceDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StartServiceDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StopServiceDialog.resx">
+    <EmbeddedResource Include="Dialogs\StopServiceDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UploadOrDownloadConfigurationsDialog.resx">
+    <EmbeddedResource Include="Dialogs\UploadOrDownloadConfigurationsDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </EmbeddedResource>

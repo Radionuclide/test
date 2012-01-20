@@ -55,6 +55,8 @@ namespace iba.Controls
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
+
+            m_cbTakeDatTime.Checked = m_data.CopyModTime;
         }
 
         public void SaveData()
@@ -82,6 +84,7 @@ namespace iba.Controls
             m_data.OverwriteFiles = m_cbOverwrite.Checked;
             m_data.UseDatModTimeForDirs = m_cbTakeDatTime.Checked;
 
+            m_data.CopyModTime = m_cbTakeDatTime.Checked;
             m_data.DestinationMap = m_targetFolderTextBox.Text;
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
@@ -96,8 +99,6 @@ namespace iba.Controls
             if (result == DialogResult.OK)
                 m_targetFolderTextBox.Text = m_folderBrowserDialog1.SelectedPath;
         }
-
-
 
         private void m_checkPathButton_Click(object sender, EventArgs e)
         {

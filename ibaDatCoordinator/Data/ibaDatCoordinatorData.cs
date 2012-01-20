@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iba.Processing;
+using System.Xml.Serialization;
 
 namespace iba.Data
 {
@@ -56,6 +57,21 @@ namespace iba.Data
         }
 
 
+        private string m_pass;
+
+        [XmlIgnore]
+        public string Password
+        {
+            get { return m_pass; }
+            set { m_pass = value; }
+        }
+
+        public string PasswordCrypted
+        {
+            get { return iba.Utility.Crypt.Encrypt(m_pass); }
+            set { m_pass = iba.Utility.Crypt.Decrypt(value); }
+        }
+
         public static ibaDatCoordinatorData Create(TaskManager manager)
         {
             ibaDatCoordinatorData answer = new ibaDatCoordinatorData();
@@ -65,6 +81,7 @@ namespace iba.Data
             answer.m_doPostPoning = manager.DoPostponeProcessing;
             answer.m_PostponingMinutes = manager.PostponeMinutes;
             answer.m_ProcessPriority = manager.ProcessPriority;
+            answer.m_pass = manager.Password;
             return answer;
         }
 
@@ -75,6 +92,7 @@ namespace iba.Data
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
+            manager.Password = Password;
             confs = Configurations;
             if (LogItemCount == 0) LogItemCount = 50;
             LogData.Data.MaxRows = LogItemCount;
@@ -83,13 +101,14 @@ namespace iba.Data
 
         public ibaDatCoordinatorData()
         {
-            m_version = 3;
+            m_version = 4;
             m_wd = null;
             m_confs = null;
             m_logItemCount = 50;
             m_doPostPoning = true;
             m_PostponingMinutes = 5;
             m_ProcessPriority = (int) System.Diagnostics.ProcessPriorityClass.Normal;
+            m_pass = "";
         }
     }
 }

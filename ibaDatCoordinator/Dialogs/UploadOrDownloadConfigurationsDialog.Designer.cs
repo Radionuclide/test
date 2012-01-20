@@ -1,4 +1,4 @@
-namespace iba
+namespace iba.Dialogs
 {
     partial class UploadOrDownloadConfigurationsDialog
     {

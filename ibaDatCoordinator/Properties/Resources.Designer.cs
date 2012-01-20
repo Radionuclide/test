@@ -186,6 +186,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        internal static string ChangeStr {
+            get {
+                return ResourceManager.GetString("ChangeStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to test path.
         /// </summary>
         internal static string checkPathButton {
@@ -232,6 +241,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("configuration_new", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The confirmation password differs from the specified password..
+        /// </summary>
+        internal static string ConfirmAndPassDiffer {
+            get {
+                return ResourceManager.GetString("ConfirmAndPassDiffer", resourceCulture);
             }
         }
         
@@ -710,6 +728,15 @@ namespace iba.Properties {
         internal static string IfTestPositiveEvaluation {
             get {
                 return ResourceManager.GetString("IfTestPositiveEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified password is incorrect !.
+        /// </summary>
+        internal static string incorrectPassword {
+            get {
+                return ResourceManager.GetString("incorrectPassword", resourceCulture);
             }
         }
         
@@ -1761,6 +1788,24 @@ namespace iba.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Password is disabled..
+        /// </summary>
+        internal static string PassNotSet {
+            get {
+                return ResourceManager.GetString("PassNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is enabled..
+        /// </summary>
+        internal static string PassSet {
+            get {
+                return ResourceManager.GetString("PassSet", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap paste {
             get {
                 object obj = ResourceManager.GetObject("paste", resourceCulture);
@@ -2055,6 +2100,15 @@ namespace iba.Properties {
         internal static string ServiceConnectProblemCaption {
             get {
                 return ResourceManager.GetString("ServiceConnectProblemCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        internal static string SetStr {
+            get {
+                return ResourceManager.GetString("SetStr", resourceCulture);
             }
         }
         

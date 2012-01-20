@@ -13,6 +13,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Processing;
 using iba.Plugins;
+using iba.Dialogs;
 
 namespace iba.Controls
 {

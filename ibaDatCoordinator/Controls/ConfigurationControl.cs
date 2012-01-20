@@ -14,6 +14,7 @@ using iba.Utility;
 using iba.Processing;
 using iba.Plugins;
 using Microsoft.Win32;
+using iba.Dialogs;
 
 namespace iba.Controls
 {
@@ -494,6 +495,8 @@ namespace iba.Controls
 
         private void m_startButton_Click(object sender, EventArgs e)
         {
+            MainForm t = m_manager as MainForm;
+            if (!Utility.Crypt.CheckPassword(t)) return;
             SaveData();
             TaskManager.Manager.StartConfiguration(m_data);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -503,7 +506,6 @@ namespace iba.Controls
             m_applyToRunningButton.Enabled = true;
             m_stopButton.Enabled = true;
             m_refreshDats.Enabled = false;
-            MainForm t = m_manager as MainForm;
             if (t != null)
             {
                 t.UpdateButtons();
@@ -514,6 +516,8 @@ namespace iba.Controls
 
         private void m_stopButton_Click(object sender, EventArgs e)
         {
+            MainForm t = m_manager as MainForm;
+            if (!Utility.Crypt.CheckPassword(t)) return;
             using (StopWaitDialog w = new StopWaitDialog(m_data))
             {
                 w.ShowDialog(ParentForm);
@@ -523,12 +527,13 @@ namespace iba.Controls
             m_newTaskToolstrip.Enabled = true;
             m_refreshDats.Enabled = true;
             m_stopButton.Enabled = false;
-            MainForm t = m_manager as MainForm;
             if (t != null) t.UpdateButtons();
         }
 
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
+            MainForm t = m_manager as MainForm;
+            if (!Utility.Crypt.CheckPassword(t)) return;
             DialogResult res = MessageBox.Show(this, iba.Properties.Resources.refreshDatWarning,
             iba.Properties.Resources.refreshDatButton, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
             if (res != DialogResult.Yes)
