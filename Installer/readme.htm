@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.17.3.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.17.4.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -25,9 +25,36 @@
 <p>Have ibaAnalyzer installed and registered as a COM-component, the version of ibaAnalyzer should be at least 5.0 
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.17.3.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.17.4.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.17.4 - 27/01/2012</P>
+<P class="header2">New features</P>
+<UL>
+    <LI> Password protection.
+    </LI>
+    <LI> Save files for iba support option.
+    </LI>
+    <LI> Support for TDMS extract, i.e. provide correct cleanup.
+    </LI>
+    <LI> Possibility to alter the modification date of output files (e.g. copy task, the copied file) to match the date of the source .dat files.
+    </LI>
+</UL>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI> Enabled starting and stopping the service when run under windows 7 with UAC enabled.
+    </LI>
+    <LI> When running standalone or as a service under a nonadministrator account, logfiles are placed.
+    </LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> Issue with reconnecting to the source directory.
+    </LI>
+    <LI> When running standalone or as a service under a non administrator account under windows 7, ibaDatCoordinator tried to place the logfiles were it did not have access to.
+    </LI>
+</UL>
 
 <P class="header1">Version 1.17.3 - 07/10/2011</P>
 <P class="header2">Bugfixes</P>

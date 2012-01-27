@@ -117,10 +117,20 @@ namespace iba.Utility
 
         public bool TryReconnect(string path, string user, string pass)
         {
+            return TryReconnectCommon(path, user, pass, false);
+        }
+
+        public bool TryReconnectForce(string path, string user, string pass)
+        {
+            return TryReconnectCommon(path, user, pass, true);
+        }
+
+        public bool TryReconnectCommon(string path, string user, string pass, bool force)
+        {
             string computer = ComputerName(path);
             lock (m_connectedComputers)
             {
-                if (Directory.Exists(path)) return true; //path restored by other means
+                if (!force && Directory.Exists(path)) return true; //path restored by other means
                 if (m_connectedComputers.ContainsKey(computer))
                 {
                     return Shares.ConnectToComputer(computer, user, pass) == 0

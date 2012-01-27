@@ -34,6 +34,31 @@ namespace iba
         [STAThread]
         static void Main(string [] args)
         {
+            if (args.Length > 0 && String.Compare(args[0], "/startservice", true) == 0)
+            {
+                try
+                {
+                    System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                    myController.Start();
+                }
+                catch
+                {
+                }
+                return;
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/stopservice", true) == 0)
+            {
+                try
+                {
+                    System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                    myController.Stop();
+                }
+                catch
+                {
+                }
+                return;
+            }
+
             IsServer = false;
             //System.Threading.Thread.CurrentThread.CurrentCulture =
             //    new System.Globalization.CultureInfo("fr-fr");

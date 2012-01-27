@@ -1139,7 +1139,18 @@ namespace iba.Processing
                             if (Directory.Exists(m_cd.DatDirectoryUNC))
                             {
                                 if (m_cd.DetectNewFiles)
-                                    RenewFswt();
+                                {
+                                    try
+                                    {
+                                        RenewFswt();
+                                    }
+                                    catch (System.IO.FileNotFoundException)
+                                    {
+                                        Log(iba.Logging.Level.Warning, String.Format("Directory {0} exists but setting FileSystemWatcher failed, forcing reconnect.",m_cd.DatDirectoryUNC));
+                                        SharesHandler.Handler.TryReconnectForce(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password);
+                                        RenewFswt();
+                                    }
+                                }
                                 else
                                     DisposeFswt();
                                 networkErrorOccured = false;

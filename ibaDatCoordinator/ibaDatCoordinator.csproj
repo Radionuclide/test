@@ -275,6 +275,7 @@
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />
+    <Compile Include="Utility\ibaToolStripRenderer.cs" />
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Processing\ConfigurationWorker.cs" />
     <Compile Include="Processing\TaskManager.cs" />
@@ -531,6 +532,7 @@
     <None Include="Resources\configuration1.ico" />
     <None Include="Resources\onetime_configuration_new.ico" />
     <None Include="Resources\onetimeconfiguration.ico" />
+    <None Include="Resources\shield.png" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />

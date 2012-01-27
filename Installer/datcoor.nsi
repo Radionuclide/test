@@ -292,6 +292,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcm90.dll"
   File "..\Dependencies\Microsoft.VC90.CRT.manifest"
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
+  File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.IbaAnalyzer.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
@@ -302,7 +303,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-
+  File "readme.htm"
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
@@ -325,6 +326,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic.DLL"
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
+  File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr90.dll"
   File "..\Dependencies\msvcp90.dll"
   File "..\Dependencies\msvcm90.dll"
@@ -336,6 +338,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\ibaDatCoordinator\Resources\running.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe"
+  File "readme.htm"
 
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"

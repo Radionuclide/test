@@ -15,10 +15,7 @@ namespace iba.Utility
             }
             else
             {
-                System.Security.Principal.WindowsIdentity identity = System.Security.Principal.WindowsIdentity.GetCurrent();
-                System.Security.Principal.WindowsPrincipal principal = new System.Security.Principal.WindowsPrincipal(identity);
-                string role = "BUILTIN\\Administrators";
-                bool IsAdmin = principal.IsInRole(role);
+
                 if (IsAdmin)
                 {
                     rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
@@ -28,8 +25,22 @@ namespace iba.Utility
                     rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
                 }
             }
-            rootPath = System.IO.Path.Combine(rootPath,@"iba\ibaDatCoordinator");
+            //rootPath = System.IO.Path.Combine(rootPath,@"iba\ibaDatCoordinator");
             return rootPath;
+        }
+
+
+        static bool m_IsAdmin;
+        static public bool IsAdmin
+        {
+            get { return m_IsAdmin; }
+        }
+
+        static DataPath()
+        {
+            System.Security.Principal.WindowsIdentity identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+            System.Security.Principal.WindowsPrincipal principal = new System.Security.Principal.WindowsPrincipal(identity);
+            m_IsAdmin = principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
         }
 
         public static string Folder()

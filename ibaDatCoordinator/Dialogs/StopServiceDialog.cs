@@ -34,7 +34,32 @@ namespace iba.Dialogs
             {
                 System.ServiceProcess.ServiceController myController =
                 new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                myController.Stop();
+                if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+                {
+                    System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                    procInfo.UseShellExecute = true;
+                    procInfo.ErrorDialog = true;
+
+                    procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                    procInfo.FileName = Application.ExecutablePath;
+
+                    procInfo.Arguments = "/stopservice";
+                    procInfo.Verb = "runas";
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start(procInfo);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+                else
+                {
+                    myController.Stop();
+                }
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
                 if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Stopped)
                 {

@@ -47,6 +47,11 @@ namespace iba
         {
             m_firstConnectToService = true;
             InitializeComponent();
+
+            //Setup default toolbar and menu looks
+            ToolStripManager.VisualStylesEnabled = true;
+            ToolStripManager.Renderer = new ibaToolstripRenderer();
+
             //load any optional plugins
             PluginManager.Manager.LoadPlugins();
 
@@ -118,15 +123,23 @@ namespace iba
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
                 WindowState = FormWindowState.Minimized;
-                m_miRestoreCoordinator = new MenuItem(iba.Properties.Resources.notifyIconMenuItemRestore,miRestore_Click);
-                m_miStartService = new MenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, miStartService_Click);
-                m_miStopService = new MenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, miStopService_Click);
-                m_miExit = new MenuItem(iba.Properties.Resources.notifyIconMenuItemExit, miExit_Click);
-                MenuItem seperator = new MenuItem("-");
-                MenuItem seperator2 = new MenuItem("-");
-                m_miRestoreCoordinator.DefaultItem = true;
-                m_iconMenu = 
-                    new ContextMenu(new MenuItem[] 
+                m_miRestoreCoordinator = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemRestore, null, miRestore_Click);
+                m_miStartService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, null, miStartService_Click);
+                m_miStopService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, null, miStopService_Click);
+                if (!Utility.DataPath.IsAdmin)
+                {
+                    m_miStartService.Image  = iba.Properties.Resources.shield;
+                    m_miStopService.Image  = iba.Properties.Resources.shield;
+                    startServiceToolStripMenuItem.Image = iba.Properties.Resources.shield;
+                    stopServiceToolStripMenuItem.Image = iba.Properties.Resources.shield;
+                }
+
+
+                m_miExit = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemExit, null, miExit_Click);
+                ToolStripItem seperator = new ToolStripSeparator();
+                ToolStripItem seperator2 = new ToolStripSeparator();
+                m_iconMenu = new ContextMenuStrip();
+                m_iconMenu.Items.AddRange(new ToolStripItem[] 
                     { 
                         m_miRestoreCoordinator, 
                         seperator, 
@@ -134,13 +147,12 @@ namespace iba
                         m_miStopService, 
                         seperator2, 
                         m_miExit 
-                    }
-                );
+                    });
                 m_iconMenu.RightToLeft = System.Windows.Forms.RightToLeft.No;
-                m_iconMenu.Popup += new System.EventHandler(iconMenu_PopUp);
+                m_iconMenu.Opening += new CancelEventHandler(m_iconMenu_Opening);
 
                 m_iconEx = new NotifyIcon();
-                m_iconEx.ContextMenu = m_iconMenu;
+                m_iconEx.ContextMenuStrip = m_iconMenu;
                 m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
                 m_iconEx.Visible = false;
             }
@@ -157,6 +169,30 @@ namespace iba
                 this.Icon = iba.Properties.Resources.standalone;
             }
             m_navBar.SelectedPane = m_configPane;
+        }
+
+        void m_iconMenu_Opening(object sender, CancelEventArgs e)
+        {
+            ServiceController service = new ServiceController("IbaDatCoordinatorService");
+            try
+            {
+                if (service.Status == ServiceControllerStatus.Stopped)
+                {
+                    m_miStartService.Enabled = true;
+                    m_miStopService.Enabled = false;
+                }
+                else
+                {
+                    m_miStartService.Enabled = false;
+                    m_miStopService.Enabled = true;
+                }
+            }
+            catch (Exception)
+            {
+                m_miStartService.Enabled = false;
+                m_miStopService.Enabled = false;
+            }
+            service.Close();
         }
 
         private bool m_actualClose = false;
@@ -1783,10 +1819,25 @@ namespace iba
                     try
                     {
                         sb.Append("ibaAnalyzer Version: ");
-                        sb.AppendLine((new IbaAnalyzer.IbaAnalysisClass()).GetVersion().Remove(0, 12));
+                        IbaAnalyzer.IbaAnalysisClass MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                        sb.AppendLine(MyIbaAnalyzer.GetVersion().Remove(0, 12));
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
                     }
                     catch 
                     {}
+
+                    try
+                    {
+                        sb.Append("ibaFiles Version: ");
+                        ibaFilesLiteLib.IbaFileClass myIbaFile = new ibaFilesLiteLib.IbaFileClass();
+                        sb.AppendLine( myIbaFile.GetType().Assembly.GetName().Version.ToString());
+                        sb.Append("ibaFiles Version (GetVersion): ");
+                        sb.AppendLine(myIbaFile.GetVersion());
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
+                    }
+                    catch
+                    {}
+
 
                     try
                     {
@@ -1966,14 +2017,15 @@ namespace iba
 
         private void VersionHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string readmeFile = "";
             try
             {
-                string readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "readme.htm");
+               readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "readme.htm");
                System.Diagnostics.Process.Start(readmeFile);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + " " + readmeFile);
             }
         }
 
@@ -2628,30 +2680,6 @@ namespace iba
             service.Close();
         }
 
-        private void iconMenu_PopUp(object sender, EventArgs e)
-        {
-            ServiceController service = new ServiceController("IbaDatCoordinatorService");
-            try
-            {
-                if (service.Status == ServiceControllerStatus.Stopped)
-                {
-                    m_miStartService.Enabled = true;
-                    m_miStopService.Enabled = false;
-                }
-                else
-                {
-                    m_miStartService.Enabled = false;
-                    m_miStopService.Enabled = true;
-                }
-            }
-            catch (Exception)
-            {
-                m_miStartService.Enabled = false;
-                m_miStopService.Enabled = false;
-            }
-            service.Close();
-        }
-
         private QuitForm m_quitForm;
         private NotifyIcon m_iconEx;
         public NotifyIcon NotifyIcon
@@ -2659,11 +2687,11 @@ namespace iba
             get { return m_iconEx; }
         }
 
-        private ContextMenu m_iconMenu;
-        private MenuItem m_miRestoreCoordinator;
-        private MenuItem m_miStartService; 
-        private MenuItem m_miStopService;
-        private MenuItem m_miExit;
+        private ContextMenuStrip m_iconMenu;
+        private ToolStripMenuItem m_miRestoreCoordinator;
+        private ToolStripMenuItem m_miStartService;
+        private ToolStripMenuItem m_miStopService;
+        private ToolStripMenuItem m_miExit;
         #endregion
     }    
     #endregion

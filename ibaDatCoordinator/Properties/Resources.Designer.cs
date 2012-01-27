@@ -2128,6 +2128,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap shield {
+            get {
+                object obj = ResourceManager.GetObject("shield", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Speichern {
             get {
                 object obj = ResourceManager.GetObject("Speichern", resourceCulture);
@@ -2393,6 +2400,24 @@ namespace iba.Properties {
         internal static string TriedToManyTimes {
             get {
                 return ResourceManager.GetString("TriedToManyTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Account Control.
+        /// </summary>
+        internal static string UACCaption {
+            get {
+                return ResourceManager.GetString("UACCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevated UAC privileges are required to alter the ibaDatCoordinator service status.
+        /// </summary>
+        internal static string UACText {
+            get {
+                return ResourceManager.GetString("UACText", resourceCulture);
             }
         }
         

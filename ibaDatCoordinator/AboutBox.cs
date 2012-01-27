@@ -23,7 +23,9 @@ namespace iba
             m_vLogger.Text = "v" + asName.Version.ToString();
             try
             {
-                m_vFILES.Text = "v" + (new IbaFileClass()).GetType().Assembly.GetName().Version.ToString();
+                IbaFileClass myIbaFile = new IbaFileClass();
+                m_vFILES.Text = "v" + myIbaFile.GetType().Assembly.GetName().Version.ToString();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
             }
             catch
             {
@@ -31,7 +33,9 @@ namespace iba
             }
             try
             {
-                m_vANAL.Text = "v" + (new IbaAnalyzer.IbaAnalysisClass()).GetVersion().Remove(0, 12);
+                IbaAnalyzer.IbaAnalysisClass MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                m_vANAL.Text = "v" + MyIbaAnalyzer.GetVersion().Remove(0, 12);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
             }
             catch
             {
