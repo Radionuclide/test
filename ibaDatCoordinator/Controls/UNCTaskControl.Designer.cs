@@ -416,6 +416,11 @@
 
         }
 
+        public void HideModifyDateOption()
+        {
+            m_cbModifyDate.Visible = false;
+        }
+
         #endregion
 
         public System.Windows.Forms.GroupBox m_subfolderGroupBox;

@@ -21,6 +21,7 @@ namespace iba.Controls
             m_uncControl = new UNCTaskControl();
             panelOut.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
+            m_uncControl.HideModifyDateOption();
         }
 
         private UNCTaskControl m_uncControl;

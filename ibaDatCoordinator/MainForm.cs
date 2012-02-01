@@ -124,6 +124,7 @@ namespace iba
             {
                 WindowState = FormWindowState.Minimized;
                 m_miRestoreCoordinator = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemRestore, null, miRestore_Click);
+                m_miRestoreCoordinator.Font = new Font(m_miRestoreCoordinator.Font,FontStyle.Bold);
                 m_miStartService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, null, miStartService_Click);
                 m_miStopService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, null, miStopService_Click);
                 if (!Utility.DataPath.IsAdmin)
@@ -150,7 +151,7 @@ namespace iba
                     });
                 m_iconMenu.RightToLeft = System.Windows.Forms.RightToLeft.No;
                 m_iconMenu.Opening += new CancelEventHandler(m_iconMenu_Opening);
-
+                
                 m_iconEx = new NotifyIcon();
                 m_iconEx.ContextMenuStrip = m_iconMenu;
                 m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
@@ -2624,17 +2625,7 @@ namespace iba
 
         private void iconEx_DoubleClick(object sender, System.EventArgs e)
         {
-            if (m_iconEx.ContextMenu != null)
-            {
-                foreach (MenuItem item in m_iconEx.ContextMenu.MenuItems)
-                {
-                    if (item.DefaultItem && item.Enabled)
-                    {
-                        item.PerformClick();
-                        return;
-                    }
-                }
-            }
+            miRestore_Click(null, null);
         }
 
         public void OnExternalClose()
