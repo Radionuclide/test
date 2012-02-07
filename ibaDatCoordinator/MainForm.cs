@@ -2196,11 +2196,12 @@ namespace iba
 
         public void SetRenderer()
         {
-            TD.Eyefinder.Office2003Renderer renderer = (TD.Eyefinder.Office2003Renderer)m_navBar.Renderer;
+            TD.Eyefinder.Rendering.Office2007Renderer renderer = (TD.Eyefinder.Rendering.Office2007Renderer)m_navBar.Renderer;
             if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
             {
                 renderer.HeaderBackgroundColor1 = Color.FromArgb(255, 89, 135, 214);
                 renderer.HeaderBackgroundColor2 = Color.FromArgb(255, 0, 45, 150);
+                renderer.HeaderTextColor = Color.White;
                 m_rightPane.SetActiveRenderer(renderer);
                 m_navBar.Invalidate();
                 m_rightPane.Invalidate();
@@ -2209,6 +2210,7 @@ namespace iba
             {
                 renderer.HeaderBackgroundColor1 = Color.MistyRose;
                 renderer.HeaderBackgroundColor2 = Color.Crimson;
+                renderer.HeaderTextColor = Color.White;
                 m_rightPane.SetActiveRenderer(renderer);
                 m_navBar.Invalidate();
                 m_rightPane.Invalidate();
