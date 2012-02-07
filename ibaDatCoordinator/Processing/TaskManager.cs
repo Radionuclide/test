@@ -554,12 +554,11 @@ namespace iba.Processing
 
         string m_password;
 
-        public string Password
+        virtual public string Password
         {
             get { return m_password; }
             set { m_password = value; }
         }
-
 
         virtual public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
         {
@@ -1076,5 +1075,32 @@ namespace iba.Processing
                 Manager.AdditionalFileNames(myList);
             }
         }
+
+       public override string Password
+       {
+           get
+           {
+               try
+               {
+                   return Program.CommunicationObject.Manager.Password;
+               }
+               catch (SocketException)
+               {
+                   Program.CommunicationObject.HandleBrokenConnection();
+                   return "";
+               }
+           }
+           set
+           {
+               try
+               {
+                  Program.CommunicationObject.Manager.Password = value;
+               }
+               catch (SocketException)
+               {
+                   Program.CommunicationObject.HandleBrokenConnection();
+               }
+           }
+       }
     }
 }

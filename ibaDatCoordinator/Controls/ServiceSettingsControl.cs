@@ -134,10 +134,64 @@ namespace iba.Controls
                 ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
                 try
                 {
-                    if (m_cbAutoStart.Checked) 
-                        service.ServiceStart = ServiceStart.Automatic;
-                    else
-                        service.ServiceStart = ServiceStart.Manual;
+                    if (m_cbAutoStart.Checked && service.ServiceStart != ServiceStart.Automatic)
+                    {
+                        if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+                        {
+                            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                            procInfo.UseShellExecute = true;
+                            procInfo.ErrorDialog = true;
+
+                            procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                            procInfo.FileName = Application.ExecutablePath;
+
+                            procInfo.Arguments = "/setautomaticservicestart";
+                            procInfo.Verb = "runas";
+
+                            try
+                            {
+                                System.Diagnostics.Process.Start(procInfo);
+                            }
+                            catch
+                            {
+                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                        }
+                        else
+                        {
+                            service.ServiceStart = ServiceStart.Automatic;
+                        }
+                    }
+                    else if (!m_cbAutoStart.Checked && service.ServiceStart == ServiceStart.Automatic)
+                    {
+                        if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+                        {
+                            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                            procInfo.UseShellExecute = true;
+                            procInfo.ErrorDialog = true;
+
+                            procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                            procInfo.FileName = Application.ExecutablePath;
+
+                            procInfo.Arguments = "/setmanualservicestart";
+                            procInfo.Verb = "runas";
+
+                            try
+                            {
+                                System.Diagnostics.Process.Start(procInfo);
+                            }
+                            catch
+                            {
+                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                        }
+                        else
+                        {
+                            service.ServiceStart = ServiceStart.Manual;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

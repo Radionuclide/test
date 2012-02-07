@@ -40,6 +40,7 @@ namespace iba
                 {
                     System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
                     myController.Start();
+                    myController.Close();
                 }
                 catch
                 {
@@ -52,6 +53,33 @@ namespace iba
                 {
                     System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
                     myController.Stop();
+                    myController.Close();
+                }
+                catch
+                {
+                }
+                return;
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/setautomaticservicestart", true) == 0)
+            {
+                try
+                {
+                    iba.Controls.ServiceControllerEx myController = new iba.Controls.ServiceControllerEx("IbaDatCoordinatorService");
+                    myController.ServiceStart = iba.Controls.ServiceStart.Automatic;
+                    myController.Close();
+                }
+                catch 
+                {
+                }
+                return;
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/setmanualservicestart", true) == 0)
+            {
+                try
+                {
+                    iba.Controls.ServiceControllerEx myController = new iba.Controls.ServiceControllerEx("IbaDatCoordinatorService");
+                    myController.ServiceStart = iba.Controls.ServiceStart.Manual;
+                    myController.Close();
                 }
                 catch
                 {

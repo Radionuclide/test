@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.17.4.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.17.6.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -25,10 +25,30 @@
 <p>Have ibaAnalyzer installed and registered as a COM-component, the version of ibaAnalyzer should be at least 5.0 
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.17.4.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.17.6.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
+<P class="header1">Version 1.17.6 - 07/02/2012</P>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> Password wasn't communicated to the service correctly, hence it was lost when the client was closed.
+    </LI>
+    <LI> Setting wether or not the service should autostart on boot wasn't possible when run under windows 7 with UAC enabled.
+    </LI>
+</UL>
+
+<P class="header1">Version 1.17.5 - 02/02/2012</P>
+<P class="header2">Enhancements</P>
+<UL>
+    <LI> Included version 5.0.0 of ibaFilesLite.
+    </LI>
+</UL>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> Possibility to alter the modification date of output files didn't work.
+    </LI>
+</UL>
 <P class="header1">Version 1.17.4 - 27/01/2012</P>
 <P class="header2">New features</P>
 <UL>
