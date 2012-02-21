@@ -89,10 +89,10 @@ namespace iba.Controls
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
 
-            string passString = "";
+            m_pass = "";
             try
             {
-                passString = TaskManager.Manager.Password;
+                m_pass = TaskManager.Manager.Password;
             }
             catch { }
             UpdatePassControls();
@@ -236,7 +236,6 @@ namespace iba.Controls
             }
             catch
             {
-
             }
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
