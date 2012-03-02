@@ -129,7 +129,7 @@
     <value>11, 12</value>
   </data>
   <data name="panelOut.Size" type="System.Drawing.Size, System.Drawing">
-    <value>544, 332</value>
+    <value>644, 332</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="panelOut.TabIndex" type="System.Int32, mscorlib">
@@ -151,7 +151,7 @@
     <value>0, 232</value>
   </data>
   <data name="m_gbTarget.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 350</value>
+    <value>666, 350</value>
   </data>
   <data name="m_gbTarget.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -211,7 +211,7 @@
     <value>191, 78</value>
   </data>
   <data name="m_tbDbPass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 20</value>
+    <value>231, 20</value>
   </data>
   <data name="m_tbDbPass.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -319,7 +319,7 @@
     <value>191, 52</value>
   </data>
   <data name="m_tbDbUsername.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 20</value>
+    <value>231, 20</value>
   </data>
   <data name="m_tbDbUsername.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -370,7 +370,7 @@
     <value>3, 90</value>
   </data>
   <data name="m_panelAuth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 101</value>
+    <value>437, 101</value>
   </data>
   <data name="m_panelAuth.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -391,7 +391,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btTestConnection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>364, 117</value>
+    <value>464, 117</value>
   </data>
   <data name="m_btTestConnection.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 32</value>
@@ -421,7 +421,7 @@
     <value>103, 197</value>
   </data>
   <data name="m_tbTableName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 20</value>
+    <value>302, 20</value>
   </data>
   <data name="m_tbTableName.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -475,7 +475,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btBrowseServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 40</value>
+    <value>357, 40</value>
   </data>
   <data name="m_btBrowseServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -502,7 +502,7 @@
     <value>93, 51</value>
   </data>
   <data name="m_tbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 20</value>
+    <value>258, 20</value>
   </data>
   <data name="m_tbServer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -604,7 +604,7 @@
     <value>253, 16</value>
   </data>
   <data name="m_computer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>307, 90</value>
+    <value>407, 90</value>
   </data>
   <data name="m_computer.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -733,7 +733,7 @@
     <value>0, 0</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 226</value>
+    <value>666, 226</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -760,7 +760,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 595</value>
+    <value>666, 595</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>UpdateDataTaskControl</value>

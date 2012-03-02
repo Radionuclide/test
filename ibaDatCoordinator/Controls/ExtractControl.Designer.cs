@@ -248,7 +248,7 @@ namespace iba.Controls
             this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(100, 556);
+            this.MinimumSize = new System.Drawing.Size(100, 646);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -116,5 +116,7 @@ namespace iba.Data
                 myList.Add(new KeyValuePair<string, string>(m_pdoFile, sb.ToString()));
             }
         }
+
+        abstract public bool IsSame(TaskData taskData);
     }
 }

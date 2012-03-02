@@ -34,12 +34,12 @@ namespace iba.Controls
             this.m_confNameLinkLabel = new System.Windows.Forms.LinkLabel();
             this.m_refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.m_gridView = new System.Windows.Forms.DataGridView();
-            this.m_refreshDats = new System.Windows.Forms.Button();
-            this.m_deleteDats = new System.Windows.Forms.Button();
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DatFiles = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_attempts = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_refreshDats = new System.Windows.Forms.Button();
+            this.m_deleteDats = new System.Windows.Forms.Button();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,22 +78,6 @@ namespace iba.Controls
             this.m_gridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.m_gridView_ColumnHeaderMouseClick);
             this.m_gridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.m_gridView_CurrentCellDirtyStateChanged);
             // 
-            // m_refreshDats
-            // 
-            resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
-            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
-            this.m_refreshDats.Name = "m_refreshDats";
-            this.m_refreshDats.UseVisualStyleBackColor = true;
-            this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
-            // 
-            // m_deleteDats
-            // 
-            resources.ApplyResources(this.m_deleteDats, "m_deleteDats");
-            this.m_deleteDats.Image = global::iba.Properties.Resources.deletedats;
-            this.m_deleteDats.Name = "m_deleteDats";
-            this.m_deleteDats.UseVisualStyleBackColor = true;
-            this.m_deleteDats.Click += new System.EventHandler(this.m_deleteDats_Click);
-            // 
             // m_check
             // 
             this.m_check.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -118,6 +102,22 @@ namespace iba.Controls
             this.m_attempts.ReadOnly = true;
             this.m_attempts.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // m_refreshDats
+            // 
+            resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
+            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
+            this.m_refreshDats.Name = "m_refreshDats";
+            this.m_refreshDats.UseVisualStyleBackColor = true;
+            this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
+            // 
+            // m_deleteDats
+            // 
+            resources.ApplyResources(this.m_deleteDats, "m_deleteDats");
+            this.m_deleteDats.Image = global::iba.Properties.Resources.deletedats;
+            this.m_deleteDats.Name = "m_deleteDats";
+            this.m_deleteDats.UseVisualStyleBackColor = true;
+            this.m_deleteDats.Click += new System.EventHandler(this.m_deleteDats_Click);
+            // 
             // PermanentFileErrorsControl
             // 
             resources.ApplyResources(this, "$this");
@@ -127,7 +127,7 @@ namespace iba.Controls
             this.Controls.Add(this.m_gridView);
             this.Controls.Add(this.m_confNameLinkLabel);
             this.Controls.Add(this.m_infoLabel);
-            this.MinimumSize = new System.Drawing.Size(620, 430);
+            this.MinimumSize = new System.Drawing.Size(720, 430);
             this.Name = "PermanentFileErrorsControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).EndInit();
             this.ResumeLayout(false);

@@ -72,6 +72,9 @@ namespace iba.Controls
             else
             {
                 m_browseDatFilesButton.Visible = false;
+                int diff = m_refreshDats.Location.X - m_undoChangesBtn.Location.X;
+                m_browseFolderButton.Location = new Point(m_browseFolderButton.Location.X + diff, m_browseFolderButton.Location.Y);
+                m_datDirTextBox.Size = new Size(m_datDirTextBox.Size.Width+diff, m_datDirTextBox.Size.Height);
             }
 
             m_newBatchfileButton.Image = Bitmap.FromHicon(iba.Properties.Resources.batchfile_running.Handle);
@@ -94,11 +97,13 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_autoStartCheckBox, iba.Properties.Resources.toolTipAutoStart);
-            m_toolTip.SetToolTip(m_applyToRunningButton, iba.Properties.Resources.applyStartedButton);
+            m_toolTip.SetToolTip(m_applyToRunningBtn, iba.Properties.Resources.applyStartedButton);
+            m_toolTip.SetToolTip(m_undoChangesBtn, iba.Properties.Resources.undoChangesButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
-            ((Bitmap)m_applyToRunningButton.Image).MakeTransparent(Color.Magenta);
+            ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_testNotification.Image).MakeTransparent(Color.Magenta);
+            ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_testNotification,iba.Properties.Resources.testNotifications);
 
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
@@ -174,14 +179,14 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
-                m_applyToRunningButton.Enabled = false;
+                m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = false;
                 m_refreshDats.Enabled = true;
             }
             else if (TaskManager.Manager.IsJobStarted(m_data.Guid))
             {
-                m_applyToRunningButton.Enabled = true;
+                m_applyToRunningBtn.Enabled = true;
                 m_startButton.Enabled = false;
                 m_newTaskToolstrip.Enabled = false;
                 m_stopButton.Enabled = true;
@@ -189,7 +194,7 @@ namespace iba.Controls
             }
             else
             {
-                m_applyToRunningButton.Enabled = false;
+                m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = m_data.Enabled;
                 m_newTaskToolstrip.Enabled = true;
                 m_stopButton.Enabled = false;
@@ -503,7 +508,7 @@ namespace iba.Controls
                 Program.CommunicationObject.SaveConfigurations();
             m_startButton.Enabled = false;
             m_newTaskToolstrip.Enabled = false;
-            m_applyToRunningButton.Enabled = true;
+            m_applyToRunningBtn.Enabled = true;
             m_stopButton.Enabled = true;
             m_refreshDats.Enabled = false;
             if (t != null)
@@ -523,7 +528,7 @@ namespace iba.Controls
                 w.ShowDialog(ParentForm);
             }
             m_startButton.Enabled = true;
-            m_applyToRunningButton.Enabled = false;
+            m_applyToRunningBtn.Enabled = false;
             m_newTaskToolstrip.Enabled = true;
             m_refreshDats.Enabled = true;
             m_stopButton.Enabled = false;
@@ -579,6 +584,25 @@ namespace iba.Controls
             TaskManager.Manager.UpdateConfiguration(m_data);
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
+        }
+
+        private void m_undoChangesBtn_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            ConfigurationData undonedata = TaskManager.Manager.GetConfigurationFromWorker(m_data.Guid);
+            ConfigurationData donedata = m_data;
+            if (undonedata == null) return;
+            if (donedata.IsSame(undonedata))
+            { //they're equal
+                MessageBox.Show(iba.Properties.Resources.SameConfMessage, iba.Properties.Resources.SameConfCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                undonedata = undonedata.Clone_AlsoCopyGuids(); //if we don't take copy, any changes will immediately reflect
+                LoadData(undonedata,m_manager);
+                (m_manager as MainForm).UpdateTreeNode(donedata, undonedata);
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            }
         }
 
         private void m_checkPathButton_Click(object sender, EventArgs e)

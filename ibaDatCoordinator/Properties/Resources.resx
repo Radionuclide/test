@@ -1018,4 +1018,19 @@
   <data name="shield" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shield.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="undoChangesButton" xml:space="preserve">
+    <value>Undo changes in jobconfiguration since last apply</value>
+  </data>
+  <data name="undoconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\undoconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WarningInfofieldFailed" xml:space="preserve">
+    <value>Failed to obtain infofield '{0}' from the .dat file. The .dat file filename will be used as output filename.</value>
+  </data>
+  <data name="SameConfCaption" xml:space="preserve">
+    <value>Undo configuration</value>
+  </data>
+  <data name="SameConfMessage" xml:space="preserve">
+    <value>No changes detected since the configuration was last applied.</value>
+  </data>
 </root>

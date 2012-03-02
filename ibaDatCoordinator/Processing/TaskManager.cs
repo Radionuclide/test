@@ -217,21 +217,14 @@ namespace iba.Processing
                 kvp.Value.Join(60000);
         }
 
-        //virtual public StatusData GetStatus(Guid guid)
-        //{
-        //    foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
-        //    {
-        //        if (pair.Key.Guid == guid) return pair.Value.Status;
-        //    }
-        //    throw new KeyNotFoundException(guid.ToString() + " not found");
-
-        //}
-
-        virtual public ConfigurationData GetConfiguration(Guid guid)
+        virtual public ConfigurationData GetConfigurationFromWorker(Guid guid)
         {
-            foreach (ConfigurationData cd in m_workers.Keys)
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
             {
-                if (cd.Guid == guid) return cd;
+                if (kvp.Key.Guid == guid)
+                {
+                    return (kvp.Value.ConfigurationToUpdate ?? kvp.Value.RunningConfiguration) ?? kvp.Key;
+                }
             }
             throw new KeyNotFoundException(guid.ToString() + " not found");
         }
@@ -553,7 +546,6 @@ namespace iba.Processing
         }
 
         string m_password;
-
         virtual public string Password
         {
             get { return m_password; }
@@ -713,16 +705,16 @@ namespace iba.Processing
             }
         }
 
-        public override ConfigurationData GetConfiguration(Guid guid)
+        public override ConfigurationData GetConfigurationFromWorker(Guid guid)
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetConfiguration(guid);
+                return Program.CommunicationObject.Manager.GetConfigurationFromWorker(guid);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetConfiguration(guid);
+                return Manager.GetConfigurationFromWorker(guid);
             }
         }
 
@@ -738,7 +730,6 @@ namespace iba.Processing
                 return Manager.GetMinimalStatus(guid,permanentError);
             }
         }
-
 
         public override PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {

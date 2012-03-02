@@ -95,5 +95,20 @@ namespace iba.Data
             sb.Append(Path.GetFileName(BatchFile));
             myList.Add(new KeyValuePair<string, string>(BatchFile, sb.ToString()));
         }
+
+        override public bool IsSame(TaskData taskData)
+        {
+            BatchFileData other = taskData as BatchFileData;
+            if (other == null) return false;
+            if (other == this) return true;
+            return other.m_name == m_name &&
+            other.m_wtodo == m_wtodo &&
+            other.m_pdoFile == m_pdoFile &&
+            other.m_batchFile == m_batchFile &&
+            other.m_testDatFile == m_testDatFile &&
+            other.m_arguments == m_arguments &&
+            other.m_notify == m_notify &&
+            other.m_whatFile == m_whatFile;
+        }
     }
 }

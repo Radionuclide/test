@@ -213,7 +213,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.m_statusGroupBox);
-            this.MinimumSize = new System.Drawing.Size(620, 300);
+            this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "WatchdogControl";
             this.m_statusGroupBox.ResumeLayout(false);
             this.m_statusGroupBox.PerformLayout();

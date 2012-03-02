@@ -24,7 +24,7 @@ namespace iba
             try
             {
                 IbaFileClass myIbaFile = new IbaFileClass();
-                m_vFILES.Text = "v" + myIbaFile.GetType().Assembly.GetName().Version.ToString();
+                m_vFILES.Text = "v" + myIbaFile.GetVersion();
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
             }
             catch

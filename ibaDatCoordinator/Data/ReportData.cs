@@ -96,5 +96,21 @@ namespace iba.Data
             {
             }
         }
+
+        public override bool IsSame(TaskData taskData)
+        {
+            ReportData other = taskData as ReportData;
+            if (other == null) return false;
+            if (other == this) return true;
+            if (!UNCDataIsSame(other)) return false;
+            return 
+                other.m_wtodo == m_wtodo &&
+            other.m_name == m_name &&
+            other.m_pdoFile == m_pdoFile &&
+            other.m_outputChoice == m_outputChoice &&
+            other.m_notify == m_notify &&
+            other.m_extension == m_extension &&
+            other.m_monitorData.IsSame(m_monitorData);
+        }
     }
 }

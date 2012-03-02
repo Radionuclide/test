@@ -63,5 +63,20 @@ namespace iba.Data
             }
         }
 
+        public override bool IsSame(TaskData taskData)
+        {
+            CustomTaskData other = taskData as CustomTaskData;
+            if (other == null) return false;
+            if (other == this) return true;
+            if (other.m_plugin.GetType() != m_plugin.GetType()) return false;
+            if (other.m_wtodo != m_wtodo ||
+                other.m_name != m_name ||
+                other.m_notify != m_notify) return false;
+            if (m_plugin is IPluginTaskDataIsSame)
+            {
+                return (m_plugin as IPluginTaskDataIsSame).IsSame(other.m_plugin as IPluginTaskDataIsSame);
+            }
+            else return Utility.SerializableObjectsCompare.Compare(m_plugin, other.m_plugin);
+        }
     }
 }

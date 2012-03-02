@@ -106,6 +106,27 @@ namespace iba.Data
         {
             get { return m_dbTblName; }
             set { m_dbTblName = value; }
-        }       
+        }
+
+        public override bool IsSame(TaskData taskData)
+        {
+            UpdateDataTaskData other = taskData as UpdateDataTaskData;
+            if (other == null) return false;
+            if (other == this) return true;
+            if (!UNCDataIsSame(other)) return false;
+            return
+            other.m_name == m_name &&
+            other.m_notify == m_notify &&
+            other.m_wtodo == m_wtodo &&
+
+            other.m_dbProvider == m_dbProvider &&
+            other.m_dbAuthenticateNT == m_dbAuthenticateNT &&
+            other.m_dbName == m_dbName &&
+            other.m_dbNamedServer == m_dbNamedServer &&
+            other.m_dbServer == m_dbServer &&
+            other.m_dbUserName == m_dbUserName &&
+            other.m_dbPass == m_dbPass &&
+            other.m_dbTblName == m_dbTblName;
+        }
     }
 }

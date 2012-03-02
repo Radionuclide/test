@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UNCTaskControl));
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -66,6 +67,15 @@
             this.m_checkPathButton = new System.Windows.Forms.Button();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.m_cbModifyDate = new System.Windows.Forms.CheckBox();
+            this.m_cbUseInfofieldForName = new System.Windows.Forms.CheckBox();
+            this.m_tbInfoField = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.m_lblInfoLength = new System.Windows.Forms.Label();
+            this.m_lblInfoStart = new System.Windows.Forms.Label();
+            this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
+            this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -79,6 +89,10 @@
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudFree)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).BeginInit();
             this.SuspendLayout();
             // 
             // m_subfolderGroupBox
@@ -375,11 +389,74 @@
             this.m_cbModifyDate.Name = "m_cbModifyDate";
             this.m_cbModifyDate.UseVisualStyleBackColor = true;
             // 
+            // m_cbUseInfofieldForName
+            // 
+            resources.ApplyResources(this.m_cbUseInfofieldForName, "m_cbUseInfofieldForName");
+            this.m_cbUseInfofieldForName.Name = "m_cbUseInfofieldForName";
+            this.m_cbUseInfofieldForName.UseVisualStyleBackColor = true;
+            // 
+            // m_tbInfoField
+            // 
+            resources.ApplyResources(this.m_tbInfoField, "m_tbInfoField");
+            this.m_tbInfoField.Name = "m_tbInfoField";
+            this.m_tbInfoField.TextChanged += new System.EventHandler(this.m_tbInfoField_TextChanged);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.m_cbOverwrite);
+            this.flowLayoutPanel1.Controls.Add(this.m_cbModifyDate);
+            this.flowLayoutPanel1.Controls.Add(this.panel1);
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.m_lblInfoLength);
+            this.panel1.Controls.Add(this.m_lblInfoStart);
+            this.panel1.Controls.Add(this.m_nudInfoLength);
+            this.panel1.Controls.Add(this.m_nudInfoStart);
+            this.panel1.Controls.Add(this.m_cbUseInfofieldForName);
+            this.panel1.Controls.Add(this.m_tbInfoField);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
+            // m_lblInfoLength
+            // 
+            resources.ApplyResources(this.m_lblInfoLength, "m_lblInfoLength");
+            this.m_lblInfoLength.Name = "m_lblInfoLength";
+            // 
+            // m_lblInfoStart
+            // 
+            resources.ApplyResources(this.m_lblInfoStart, "m_lblInfoStart");
+            this.m_lblInfoStart.Name = "m_lblInfoStart";
+            // 
+            // m_nudInfoLength
+            // 
+            resources.ApplyResources(this.m_nudInfoLength, "m_nudInfoLength");
+            this.m_nudInfoLength.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoLength.Name = "m_nudInfoLength";
+            this.m_toolTip.SetToolTip(this.m_nudInfoLength, resources.GetString("m_nudInfoLength.ToolTip"));
+            // 
+            // m_nudInfoStart
+            // 
+            resources.ApplyResources(this.m_nudInfoStart, "m_nudInfoStart");
+            this.m_nudInfoStart.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoStart.Name = "m_nudInfoStart";
+            this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
+            // 
             // UNCTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_cbModifyDate);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.m_checkPathButton);
             this.Controls.Add(this.m_tbPass);
             this.Controls.Add(this.label12);
@@ -388,7 +465,6 @@
             this.Controls.Add(this.m_browseFolderButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.m_targetFolderTextBox);
-            this.Controls.Add(this.m_cbOverwrite);
             this.Controls.Add(this.m_cleanupGroupBox);
             this.Controls.Add(this.m_subfolderGroupBox);
             this.Name = "UNCTaskControl";
@@ -411,6 +487,12 @@
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudFree)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,5 +542,14 @@
         private System.Windows.Forms.Button m_checkPathButton;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
         private System.Windows.Forms.CheckBox m_cbModifyDate;
+        private System.Windows.Forms.CheckBox m_cbUseInfofieldForName;
+        private System.Windows.Forms.TextBox m_tbInfoField;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.NumericUpDown m_nudInfoLength;
+        private System.Windows.Forms.NumericUpDown m_nudInfoStart;
+        private System.Windows.Forms.Label m_lblInfoStart;
+        private System.Windows.Forms.Label m_lblInfoLength;
+        private System.Windows.Forms.ToolTip m_toolTip;
     }
 }

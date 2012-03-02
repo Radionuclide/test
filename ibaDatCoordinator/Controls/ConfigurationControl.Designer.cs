@@ -48,6 +48,7 @@ namespace iba.Controls
             this.m_refreshDats = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.m_undoChangesBtn = new System.Windows.Forms.Button();
             this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_cbRetry = new System.Windows.Forms.CheckBox();
@@ -55,7 +56,7 @@ namespace iba.Controls
             this.label14 = new System.Windows.Forms.Label();
             this.m_cbRescanEnabled = new System.Windows.Forms.CheckBox();
             this.m_stopButton = new System.Windows.Forms.Button();
-            this.m_applyToRunningButton = new System.Windows.Forms.Button();
+            this.m_applyToRunningBtn = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
@@ -261,6 +262,7 @@ namespace iba.Controls
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.m_undoChangesBtn);
             this.groupBox3.Controls.Add(this.m_cbDetectNewFiles);
             this.groupBox3.Controls.Add(this.m_cbInitialScanEnabled);
             this.groupBox3.Controls.Add(this.m_cbRetry);
@@ -269,7 +271,7 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.m_cbRescanEnabled);
             this.groupBox3.Controls.Add(this.m_refreshDats);
             this.groupBox3.Controls.Add(this.m_stopButton);
-            this.groupBox3.Controls.Add(this.m_applyToRunningButton);
+            this.groupBox3.Controls.Add(this.m_applyToRunningBtn);
             this.groupBox3.Controls.Add(this.m_startButton);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
@@ -280,6 +282,14 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // m_undoChangesBtn
+            // 
+            resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
+            this.m_undoChangesBtn.Image = global::iba.Properties.Resources.undoconfs;
+            this.m_undoChangesBtn.Name = "m_undoChangesBtn";
+            this.m_undoChangesBtn.UseVisualStyleBackColor = true;
+            this.m_undoChangesBtn.Click += new System.EventHandler(this.m_undoChangesBtn_Click);
             // 
             // m_cbDetectNewFiles
             // 
@@ -341,13 +351,13 @@ namespace iba.Controls
             this.m_stopButton.UseVisualStyleBackColor = true;
             this.m_stopButton.Click += new System.EventHandler(this.m_stopButton_Click);
             // 
-            // m_applyToRunningButton
+            // m_applyToRunningBtn
             // 
-            resources.ApplyResources(this.m_applyToRunningButton, "m_applyToRunningButton");
-            this.m_applyToRunningButton.Image = global::iba.Properties.Resources.refreshconfs;
-            this.m_applyToRunningButton.Name = "m_applyToRunningButton";
-            this.m_applyToRunningButton.UseVisualStyleBackColor = true;
-            this.m_applyToRunningButton.Click += new System.EventHandler(this.m_applyToRunningButton_Click);
+            resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
+            this.m_applyToRunningBtn.Image = global::iba.Properties.Resources.refreshconfs;
+            this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
+            this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
+            this.m_applyToRunningBtn.Click += new System.EventHandler(this.m_applyToRunningButton_Click);
             // 
             // m_startButton
             // 
@@ -719,7 +729,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
-            this.MinimumSize = new System.Drawing.Size(620, 250);
+            this.MinimumSize = new System.Drawing.Size(720, 250);
             this.Name = "ConfigurationControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -790,7 +800,7 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox m_cbRescanEnabled;
-        private System.Windows.Forms.Button m_applyToRunningButton;
+        private System.Windows.Forms.Button m_applyToRunningBtn;
         private System.Windows.Forms.TextBox m_tbPass;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox m_tbUserName;
@@ -822,5 +832,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label m_lblIbaAnalyzerPath;
         private System.Windows.Forms.Button m_browseDatFilesButton;
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
+        private System.Windows.Forms.Button m_undoChangesBtn;
     }
 }

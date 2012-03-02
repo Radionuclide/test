@@ -213,7 +213,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_gbApp);
-            this.MinimumSize = new System.Drawing.Size(620, 250);
+            this.MinimumSize = new System.Drawing.Size(720, 250);
             this.Name = "ServiceSettingsControl";
             this.m_gbApp.ResumeLayout(false);
             this.m_gbApp.PerformLayout();

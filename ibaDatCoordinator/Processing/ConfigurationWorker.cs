@@ -1682,6 +1682,7 @@ namespace iba.Processing
                     if (status == "processed")
                     {
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                         try{if (time != null) File.SetLastWriteTime(filename, time.Value);}catch{}
                         return DatFileStatus.State.COMPLETED_SUCCESFULY;
                     }
@@ -1782,6 +1783,7 @@ namespace iba.Processing
                             }
                         }
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                         if (m_cd.LimitTimesTried && timesProcessed >= m_cd.NrTryTimes)
                         {
                             try { if (time != null) File.SetLastWriteTime(filename, time.Value); }
@@ -1801,6 +1803,7 @@ namespace iba.Processing
                     else if (status == "restart" || status == "readyToProcess")
                     {
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                         return DatFileStatus.State.NOT_STARTED;
                     }
                     else if (status == "")
@@ -1810,6 +1813,7 @@ namespace iba.Processing
                     else
                     {
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
@@ -1829,7 +1833,8 @@ namespace iba.Processing
                     if (String.IsNullOrEmpty(frames) || frames == "1000000000")
                     {
                         try { 
-                            ibaDatFile.Close(); 
+                            ibaDatFile.Close();
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                         }
                         catch { }
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
@@ -1838,6 +1843,7 @@ namespace iba.Processing
                     }
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
                     ibaDatFile.Close();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                     try 
                     { 
                         if (time != null) File.SetLastWriteTime(filename, time.Value); 
@@ -1886,6 +1892,7 @@ namespace iba.Processing
                 {
                     frames = ibaDatFile.QueryInfoByName("frames");
                     ibaDatFile.Close();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                 }
                 catch 
                 {
@@ -1896,6 +1903,7 @@ namespace iba.Processing
                     try
                     {
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                     }
                     catch
                     {
@@ -1923,6 +1931,7 @@ namespace iba.Processing
             a.WriteInfoField("$DATCOOR_times_tried", "0");
             a.WriteInfoField("$DATCOOR_OutputFiles", "");
             a.Close();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(a);
         }
 
         private bool shouldTaskBeDone(TaskData task, string filename)
@@ -2294,6 +2303,7 @@ namespace iba.Processing
                             ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
                         }
                         ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                     }
                     catch (Exception ex)
                     {
@@ -2545,6 +2555,49 @@ namespace iba.Processing
             }
         }
 
+        private string GetOutputFileName(TaskDataUNC task, string filename)
+        {
+            if (task.UseInfoFieldForOutputFile)
+            {
+                IbaFile ibaDatFile = new IbaFileClass();
+                string outputfile;
+                try
+                {
+                    ibaDatFile.Open(filename);
+                    outputfile = ibaDatFile.QueryInfoByName(task.InfoFieldForOutputFile);
+                    if (task.InfoFieldForOutputFileLength == 0)
+                    {
+                        if (task.InfoFieldForOutputFileStart != 0)
+                        {
+                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+                        }
+                    }
+                    else
+                        outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                }
+                catch
+                {
+                    outputfile = "";
+                }
+                finally
+                {
+                    try
+                    {
+                        ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (!string.IsNullOrEmpty(outputfile)) return outputfile;
+                //warn that we failed getting the infofield
+                string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed, task.InfoFieldForOutputFile);
+                Log(iba.Logging.Level.Warning, message, filename, task);
+            }
+            return Path.GetFileNameWithoutExtension(filename);
+        }
 
         private string GetExtractFileName(string filename, ExtractData task)
         {
@@ -2559,7 +2612,7 @@ namespace iba.Processing
             {
             }
 
-            string actualFileName = Path.GetFileNameWithoutExtension(filename);
+            string actualFileName = GetOutputFileName(task,filename);
 
             string dir = GetDirectoryName(filename, task);
             if (dir == null) 
@@ -2704,9 +2757,9 @@ namespace iba.Processing
                 catch
                 {
 
-                }               
+                }
 
-                string actualFileName = Path.GetFileNameWithoutExtension(filename);
+                string actualFileName = GetOutputFileName(task,filename);
                 string dir = task.DestinationMapUNC;
                 if (String.IsNullOrEmpty(dir))
                 {
@@ -3207,7 +3260,7 @@ namespace iba.Processing
                     }
                     task.DoDirCleanupNow = false;
                 }
-                dest = Path.Combine(dir, Path.GetFileName(fileToCopy));
+                dest = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + ".dat");
                 if (!task.OverwriteFiles)
                     dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(dest);
             }
@@ -3280,7 +3333,7 @@ namespace iba.Processing
         private SortedDictionary<Guid, FileQuotaCleanup> m_quotaCleanups;
 
         private void CleanupWithQuota(string filename, TaskDataUNC task, string extension)
-        {
+        { //the parameter filename is used for logging, nothing else
             if (!m_quotaCleanups.ContainsKey(task.Guid))
                 m_quotaCleanups.Add(task.Guid,new FileQuotaCleanup(task,extension));
             m_quotaCleanups[task.Guid].Clean(filename);

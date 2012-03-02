@@ -42,6 +42,10 @@ namespace iba.Data
             m_doDirCleanup = false;
             m_useDatModTimeForDirs = false;
             m_copyDatModTime = false;
+            m_useInfoFieldForOutputFile = false;
+            m_infoFieldForOutputFile = "";
+            m_infoFieldForOutputFileStart = 0;
+            m_infoFieldForOutputFileLength = 0;
         }
 
         protected uint m_numbFolders;
@@ -103,6 +107,34 @@ namespace iba.Data
             set { m_copyDatModTime = value; }
         }
 
+        protected bool m_useInfoFieldForOutputFile;
+        public bool UseInfoFieldForOutputFile
+        {
+            get { return m_useInfoFieldForOutputFile; }
+            set { m_useInfoFieldForOutputFile = value; }
+        }
+
+        protected string m_infoFieldForOutputFile;
+        public string InfoFieldForOutputFile
+        {
+            get { return m_infoFieldForOutputFile; }
+            set { m_infoFieldForOutputFile = value; }
+        }
+
+        protected int m_infoFieldForOutputFileStart;
+        public int InfoFieldForOutputFileStart
+        {
+            get { return m_infoFieldForOutputFileStart; }
+            set { m_infoFieldForOutputFileStart = value; }
+        }
+
+        protected int m_infoFieldForOutputFileLength;
+        public int InfoFieldForOutputFileLength
+        {
+            get { return m_infoFieldForOutputFileLength; }
+            set { m_infoFieldForOutputFileLength = value; }
+        }
+
         public void UpdateUNC()
         {
             m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
@@ -122,6 +154,31 @@ namespace iba.Data
             uncdat.m_subfolderChoice = m_subfolderChoice;
             uncdat.m_useDatModTimeForDirs = m_useDatModTimeForDirs;
             uncdat.m_copyDatModTime = m_copyDatModTime;
+            uncdat.m_useInfoFieldForOutputFile = m_useInfoFieldForOutputFile;
+            uncdat.m_infoFieldForOutputFile = m_infoFieldForOutputFile;
+            uncdat.m_infoFieldForOutputFileStart = m_infoFieldForOutputFileStart;
+            uncdat.m_infoFieldForOutputFileLength = m_infoFieldForOutputFileLength;
+        }
+
+        public bool UNCDataIsSame(TaskDataUNC other)
+        {
+            return
+            other.m_destinationMap == m_destinationMap &&
+            other.m_numbFolders == m_numbFolders &&
+            other.m_username == m_username &&
+            other.m_pass == m_pass &&
+                //other.m_destinationMapUNC == m_destinationMapUNC &&
+            other.m_quota == m_quota &&
+            other.m_quotaFree == m_quotaFree &&
+            other.m_outputLimitChoice == m_outputLimitChoice &&
+            other.m_overwriteFiles == m_overwriteFiles &&
+            other.m_subfolderChoice == m_subfolderChoice &&
+            other.m_useDatModTimeForDirs == m_useDatModTimeForDirs &&
+            other.m_copyDatModTime == m_copyDatModTime &&
+            other.m_useInfoFieldForOutputFile == m_useInfoFieldForOutputFile &&
+            other.m_infoFieldForOutputFile == m_infoFieldForOutputFile &&
+            other.m_infoFieldForOutputFileStart == m_infoFieldForOutputFileStart &&
+            other.m_infoFieldForOutputFileLength == m_infoFieldForOutputFileLength;
         }
 
         protected string m_username;

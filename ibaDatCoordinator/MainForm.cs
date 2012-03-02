@@ -739,6 +739,7 @@ namespace iba
                 bool c2 = node.Tag is NewOneTimeConfigurationTreeItemData;
                 if (c1 || c2)
                 {
+                    if (!Utility.Crypt.CheckPassword(this)) return;
                     SaveRightPaneControl();
                     //code to create new configuration
                     ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, c2);
@@ -825,6 +826,7 @@ namespace iba
                 string msg = null;
                 if (node.Tag is ConfigurationTreeItemData)
                 {
+                    if (!Utility.Crypt.CheckPassword(this)) return;
                     if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid)) return;
                     msg = String.Format(iba.Properties.Resources.deleteConfigurationQuestion, node.Text);
                 }
@@ -1297,6 +1299,7 @@ namespace iba
             OnCopyMenuItem(sender, e);
             MenuCommand mc = (MenuCommand)sender;
             TreeNode node = mc.Tag as TreeNode;
+            if (node != null && node.Tag is ConfigurationTreeItemData && !Utility.Crypt.CheckPassword(this)) return;
             Delete(node, false);
         }
 
@@ -1534,6 +1537,7 @@ namespace iba
             if (m_configTreeView.Focused)
             {
                 TreeNode node = m_configTreeView.SelectedNode;
+                if (node != null && node.Tag is ConfigurationTreeItemData && !Utility.Crypt.CheckPassword(this)) return;
                 copyNode(node);
                 Delete(node, false);
             }
@@ -1543,6 +1547,7 @@ namespace iba
         {
             if (m_configTreeView.Focused)
             {
+                if (!Utility.Crypt.CheckPassword(this)) return;
                 TreeNode node = m_configTreeView.SelectedNode;
                 copyNode(node);
             }
@@ -1552,6 +1557,7 @@ namespace iba
         {
             if (m_configTreeView.Focused)
             {
+                if (!Utility.Crypt.CheckPassword(this)) return;
                 TreeNode node = m_configTreeView.SelectedNode;
                 pasteNode(node);
             }
@@ -2252,6 +2258,23 @@ namespace iba
                 node.ForeColor = Color.Black;
             }
         }
+
+        public void UpdateTreeNode(ConfigurationData olddata, ConfigurationData newdata)
+        { //called when undo changes is clicked
+            TreeNode node = m_configTreeView.SelectedNode;
+            if (node == null) return;
+            ConfigurationTreeItemData dat = node.Tag as ConfigurationTreeItemData;
+            m_configTreeView.SelectedNode = null;
+            if (dat == null || dat.ConfigurationData.Guid != olddata.Guid) return;
+            TreeNode replacingNode = CreateConfigurationNode(newdata);
+            int index = node.Index;
+            m_configTreeView.Nodes.Remove(node);
+            m_configTreeView.Nodes.Insert(index, replacingNode);
+            m_configTreeView.SelectedNode = replacingNode;
+            AdjustRightPaneControlTitle();
+            m_configTreeView.Update();
+        }
+
         
         public ToolStripStatusLabel StatusBarLabel
         {
@@ -2265,6 +2288,7 @@ namespace iba
         {
             if (e.Effect == DragDropEffects.None) return;
             // Retrieve the client coordinates of the drop location.
+
             Point targetPoint = m_configTreeView.PointToClient(new Point(e.X, e.Y));
 
             // Retrieve the node at the drop location.
@@ -2272,6 +2296,7 @@ namespace iba
 
             // Retrieve the node that was dragged.
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+            if (!Utility.Crypt.CheckPassword(this)) return;
 
             if (draggedNode.Tag is ConfigurationTreeItemData && e.Effect == DragDropEffects.Move)
             {

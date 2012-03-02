@@ -160,7 +160,7 @@
     <value>103, 92</value>
   </data>
   <data name="m_XTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 21</value>
+    <value>275, 21</value>
   </data>
   <data name="m_XTypeComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -244,7 +244,7 @@
     <value>103, 66</value>
   </data>
   <data name="m_expressionTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 20</value>
+    <value>544, 20</value>
   </data>
   <data name="m_expressionTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -268,7 +268,7 @@
     <value>103, 31</value>
   </data>
   <data name="m_pdoFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 20</value>
+    <value>452, 20</value>
   </data>
   <data name="m_pdoFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -292,7 +292,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_browsePDOFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 20</value>
+    <value>561, 20</value>
   </data>
   <data name="m_browsePDOFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -319,7 +319,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 20</value>
+    <value>607, 20</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -343,7 +343,7 @@
     <value>0, 0</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 130</value>
+    <value>665, 130</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -373,7 +373,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_testButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 20</value>
+    <value>607, 20</value>
   </data>
   <data name="m_testButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -433,7 +433,7 @@
     <value>103, 31</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 20</value>
+    <value>452, 20</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -457,7 +457,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 20</value>
+    <value>561, 20</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -481,7 +481,7 @@
     <value>0, 136</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 72</value>
+    <value>665, 72</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -679,7 +679,7 @@
     <value>0, 214</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 73</value>
+    <value>666, 73</value>
   </data>
   <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -706,7 +706,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 296</value>
+    <value>666, 296</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
     <value>m_openFileDialog</value>

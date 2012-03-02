@@ -329,6 +329,39 @@ namespace iba.Data
             return cd;
         }
 
+        public bool IsSame(ConfigurationData other)
+        {
+            //compares but don't care about transient fields like m_uncPath and treepostion
+            if (other == null) return false;
+            if (other == this) return true;
+            if (m_tasks.Count != other.m_tasks.Count) return false;
+            for (int i = 0; i < m_tasks.Count; i++)
+            {
+                if (!other.m_tasks[i].IsSame(m_tasks[i])) return false;
+            }
+
+            return
+            other.m_enabled == m_enabled &&
+            other.m_autoStart == m_autoStart &&
+            other.m_datDirectory == m_datDirectory &&
+            other.m_doSubDirs == m_doSubDirs &&
+            other.m_restartIbaAnalyzer == m_restartIbaAnalyzer &&
+            other.m_bRestartIbaAnalyzer == m_bRestartIbaAnalyzer &&
+            other.m_bDetectNewFiles == m_bDetectNewFiles &&
+            other.m_ibaAnalyzerSleepsWhenNoDatFiles == m_ibaAnalyzerSleepsWhenNoDatFiles &&
+            other.m_reproccessTime == m_reproccessTime &&
+            other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
+            other.m_rescanTime == m_rescanTime &&
+            other.m_notify.IsSame(m_notify) &&
+            other.m_bRescanEnabled == m_bRescanEnabled &&
+                //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
+            other.m_username == m_username &&
+            other.m_pass == m_pass &&
+            other.m_bLimitTimesTried == m_bLimitTimesTried &&
+                //other.m_treePosition == m_treePosition; //don't care about this one
+            other.m_nrTimes == m_nrTimes;
+        }
+
         public ConfigurationData Clone_AlsoCopyGuids()
         {
             ConfigurationData cd = this.Clone() as ConfigurationData;
@@ -390,6 +423,7 @@ namespace iba.Data
         }
 
         #endregion
+
     }
 
     [Serializable]
@@ -497,6 +531,19 @@ namespace iba.Data
             nd.m_pass = m_pass;
             nd.m_username = m_username;
             return nd;
+        }
+
+        public bool IsSame(NotificationData other)
+        {
+            return other.m_time == m_time &&
+            other.m_email == m_email &&
+            other.m_host == m_host &&
+            other.m_notifyImmediately == m_notifyImmediately &&
+            other.m_outputChoice == m_outputChoice &&
+            other.m_smtpServer == m_smtpServer &&
+            other.m_authenticationRequired == m_authenticationRequired &&
+            other.m_pass == m_pass &&
+            other.m_username == m_username;
         }
     }
 }

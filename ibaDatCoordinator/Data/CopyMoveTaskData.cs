@@ -61,5 +61,20 @@ namespace iba.Data
             cd.m_whatFile = m_whatFile;
             return cd;
         }
+
+        public override bool IsSame(TaskData taskData)
+        {
+            CopyMoveTaskData other = taskData as CopyMoveTaskData;
+            if (other == null) return false;
+            if (other == this) return true;
+            if (!UNCDataIsSame(other)) return false;
+            return
+                other.m_removeSource == m_removeSource &&
+                other.m_delete == m_delete &&
+                other.m_wtodo == m_wtodo &&
+                other.m_name == m_name &&
+                other.m_notify == m_notify &&
+                other.m_whatFile == m_whatFile;
+        }
     }
 }

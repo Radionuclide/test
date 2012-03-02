@@ -112,6 +112,7 @@ namespace iba.Controls
                 m_ClearPassBtn.Enabled = true;
                 m_passwordStatusLabel.Text = iba.Properties.Resources.PassSet;
             }
+            TaskManager.Manager.Password = m_pass;
         }
 
         private string m_pass;
@@ -220,8 +221,6 @@ namespace iba.Controls
                 case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
             }
             TaskManager.Manager.ProcessPriority = iPc;
-
-            TaskManager.Manager.Password = m_pass;
         }
 
         #endregion
@@ -285,6 +284,7 @@ namespace iba.Controls
 
         private void m_SetChangePassBtn_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword()) return;
             iba.Dialogs.SpecifyPasswordDialog dlg = new iba.Dialogs.SpecifyPasswordDialog();
             dlg.Pass = m_pass;
             dlg.StartPosition = FormStartPosition.CenterParent;
@@ -298,6 +298,7 @@ namespace iba.Controls
 
         private void m_ClearPassBtn_Click(object sender, EventArgs e)
         {
+            if (!Utility.Crypt.CheckPassword()) return;
             m_pass = "";
             UpdatePassControls();
         }

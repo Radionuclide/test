@@ -194,8 +194,6 @@ namespace iba.Processing
                 throw new Exception(iba.Properties.Resources.logUDTTempFileCopyProblem + ": " + ex.Message, ex);
             }
 
-
-
             string key = Path.GetFileNameWithoutExtension(sourceFile);
             string newFileName;
             SortedDictionary<string,string> newInfoFields = new SortedDictionary<string,string>();

@@ -194,7 +194,7 @@ namespace iba.Controls
             m_manager = manager;
             bFirstLoad = true;
             m_data = datasource as MinimalStatusData;
-            m_cd = TaskManager.Manager.GetConfiguration(m_data.CorrConfigurationGuid);
+            m_cd = TaskManager.Manager.GetConfigurationFromWorker(m_data.CorrConfigurationGuid);
 
             m_confNameLinkLabel.Text = m_cd.Name;
             int count = m_cd.Tasks.Count;

@@ -226,7 +226,7 @@
     <value>15, 20</value>
   </data>
   <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 48</value>
+    <value>702, 48</value>
   </data>
   <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -334,7 +334,7 @@
     <value>15, 74</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 48</value>
+    <value>702, 48</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -364,7 +364,7 @@
     <value>78, 27</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 20</value>
+    <value>463, 20</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -388,7 +388,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseIbaAnalyzerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 17</value>
+    <value>547, 17</value>
   </data>
   <data name="m_browseIbaAnalyzerButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -415,7 +415,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_registerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>539, 17</value>
+    <value>639, 17</value>
   </data>
   <data name="m_registerButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -442,7 +442,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>493, 17</value>
+    <value>593, 17</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -499,7 +499,7 @@
     <value>15, 128</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 72</value>
+    <value>702, 72</value>
   </data>
   <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -610,7 +610,7 @@
     <value>15, 206</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 84</value>
+    <value>702, 84</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -643,7 +643,7 @@
     <value>0, 740</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>620, 740</value>
+    <value>720, 740</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
     <value>m_openFileDialog</value>

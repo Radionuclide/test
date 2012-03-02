@@ -57,5 +57,21 @@ namespace iba.Data
             ed.m_monitorData = (MonitorData) m_monitorData.Clone();
             return ed;
         }
+
+        public override bool IsSame(TaskData taskData)
+        {
+            ExtractData other = taskData as ExtractData;
+            if (other == null) return false;
+            if (other == this) return true;
+            if (!UNCDataIsSame(other)) return false;
+            return
+                other.m_wtodo == m_wtodo &&
+            other.m_name == m_name &&
+            other.m_pdoFile == m_pdoFile &&
+            other.m_toFile == m_toFile &&
+            other.m_notify == m_notify &&
+            other.m_fileType == m_fileType &&
+            other.m_monitorData.IsSame(m_monitorData);
+        }
     }
 }

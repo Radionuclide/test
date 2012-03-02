@@ -54,6 +54,10 @@ namespace iba.Utility
             return msg;
         }
 
+        public static bool CheckPassword()
+        {
+            return CheckPassword(null);
+        }
 
         public static bool CheckPassword(System.Windows.Forms.Form parent)
         {

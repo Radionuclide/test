@@ -58,5 +58,13 @@ namespace iba.Data
             md.m_timeLimit = m_timeLimit;
             return md;
         }
+
+        public bool IsSame(MonitorData other)
+        {
+            return other.m_bMonitorMemoryUsage == m_bMonitorMemoryUsage &&
+            other.m_bMonitorTime == m_bMonitorTime &&
+            other.m_memoryLimit == m_memoryLimit &&
+            other.m_timeLimit == m_timeLimit;
+        }
     }
 }

@@ -57,6 +57,11 @@ namespace iba.Controls
             m_tbUserName.Text = m_data.Username;
 
             m_cbModifyDate.Checked = m_data.CopyModTime;
+
+            m_cbUseInfofieldForName.Checked = m_data.UseInfoFieldForOutputFile;
+            m_tbInfoField.Text = m_data.InfoFieldForOutputFile;
+            m_nudInfoStart.Value = m_data.InfoFieldForOutputFileStart;
+            m_nudInfoLength.Value = m_data.InfoFieldForOutputFileLength;
         }
 
         public void SaveData()
@@ -88,6 +93,11 @@ namespace iba.Controls
             m_data.DestinationMap = m_targetFolderTextBox.Text;
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
+
+            m_data.UseInfoFieldForOutputFile = m_cbUseInfofieldForName.Checked;
+            m_data.InfoFieldForOutputFile = m_tbInfoField.Text;
+            m_data.InfoFieldForOutputFileStart = (int) m_nudInfoStart.Value;
+            m_data.InfoFieldForOutputFileLength = (int)m_nudInfoLength.Value;
             m_data.UpdateUNC();
         }
 
@@ -174,6 +184,21 @@ namespace iba.Controls
                     m_nudDirs.Enabled = false;
                 }
             }
+        }
+
+        private void m_tbInfoField_TextChanged(object sender, EventArgs e)
+        {
+            m_cbUseInfofieldForName.Checked = true;
+        }
+
+        public void HideInfofieldFileNameOptions()
+        {
+            m_cbUseInfofieldForName.Visible = false;
+            m_tbInfoField.Visible = false;
+            m_nudInfoLength.Visible = false;
+            m_nudInfoStart.Visible = false;
+            m_lblInfoLength.Visible = false;
+            m_lblInfoStart.Visible = false;
         }
     }
 }

@@ -90,6 +90,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -529,18 +530,15 @@
     <None Include="Resources\updatedatatask.png" />
     <None Include="Resources\time.png" />
     <None Include="Resources\application--pencil.png" />
-    <None Include="Resources\configuration1.ico" />
     <None Include="Resources\onetime_configuration_new.ico" />
     <None Include="Resources\onetimeconfiguration.ico" />
     <None Include="Resources\shield.png" />
+    <None Include="Resources\undoconfs.bmp" />
     <Content Include="Resources\watchdog.ico" />
     <None Include="Resources\ibalogo_transparent.jpg" />
     <None Include="Resources\copydat_noaccess.ico" />
     <None Include="Resources\copydat_timeout.ico" />
     <None Include="Resources\copydat_succes.ico" />
-    <None Include="..\..\..\klad\bitmaps\copydat_failure.ico">
-      <Link>Resources\copydat_failure.ico</Link>
-    </None>
     <None Include="Resources\paste.png" />
     <None Include="Resources\open.png" />
     <None Include="Resources\cut.png" />

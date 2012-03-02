@@ -76,4 +76,16 @@ namespace iba.Plugins
         /// <returns>UNC paths</returns>
         string[][] UNCPaths();
     }
+
+    /// <summary>
+    /// Implement this interface to provide a way to compare besides binary compare
+    /// </summary>
+    public interface IPluginTaskDataIsSame
+    {
+        /// <summary>
+        /// Test contents of two instances for equality
+        /// <param name="data">other instance to compare with</param>
+        /// <returns>true if same</returns>
+        bool IsSame(IPluginTaskDataIsSame data);
+    }
 }

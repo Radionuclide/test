@@ -56,5 +56,18 @@ namespace iba.Data
             get { return m_measureFromFileTime; }
             set { m_measureFromFileTime = value; }
         }
+
+        public override bool IsSame(TaskData taskData)
+        {
+            PauseTaskData other = taskData as PauseTaskData;
+            if (other == null) return false;
+            if (other == this) return true;
+            return
+            other.m_name == m_name &&
+            other.m_notify == m_notify &&
+            other.m_wtodo == m_wtodo &&
+            other.m_interval == m_interval &&
+            other.m_measureFromFileTime == m_measureFromFileTime;
+        }
     }
 }

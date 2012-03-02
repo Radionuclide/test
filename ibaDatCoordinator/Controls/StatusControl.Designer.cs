@@ -103,7 +103,7 @@ namespace iba.Controls
             this.Controls.Add(this.m_statusRunningText);
             this.Controls.Add(this.m_confNameLinkLabel);
             this.Controls.Add(this.m_infoLabel);
-            this.MinimumSize = new System.Drawing.Size(620, 430);
+            this.MinimumSize = new System.Drawing.Size(720, 430);
             this.Name = "StatusControl";
             ((System.ComponentModel.ISupportInitialize)(this.m_gridView)).EndInit();
             this.ResumeLayout(false);

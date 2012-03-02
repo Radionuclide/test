@@ -22,6 +22,7 @@ namespace iba.Controls
             m_uncControl = new UNCTaskControl();
             panelOut.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
+            m_uncControl.HideInfofieldFileNameOptions();
         }
 
         private UNCTaskControl m_uncControl;
@@ -71,7 +72,6 @@ namespace iba.Controls
             m_data.DbNamedServer = m_rbServer.Checked;
             m_data.DbProvider =  (UpdateDataTaskData.DbProviderEnum) m_cbProvider.SelectedIndex;
             m_data.DbAuthenticateNT = m_rbNT.Checked;
-
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
