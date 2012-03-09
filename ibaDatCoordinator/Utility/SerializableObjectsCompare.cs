@@ -11,9 +11,9 @@ namespace iba.Utility
     {
         public static bool Compare(Object obj1, Object obj2)
         {
-            //try
-            //{
-            SoapFormatter bf = new SoapFormatter();
+            try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
                 MemoryStream str1 = new MemoryStream();
                 bf.Serialize(str1, obj1);
 
@@ -29,11 +29,11 @@ namespace iba.Utility
                 for (long i = 0; i < str1.Length;i++)
                     if (ar1[i] != ar2[i]) return false;
                 return true;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

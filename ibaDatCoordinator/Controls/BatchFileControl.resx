@@ -301,10 +301,118 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_executeBatchFile.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_editorGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_lblTestSide.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblTestSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblTestSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 178</value>
+  </data>
+  <data name="m_lblTestSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
+  <data name="m_lblTestSide.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_lblTestSide.Text" xml:space="preserve">
+    <value>Test script on</value>
+  </data>
+  <data name="&gt;&gt;m_lblTestSide.Name" xml:space="preserve">
+    <value>m_lblTestSide</value>
+  </data>
+  <data name="&gt;&gt;m_lblTestSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTestSide.Parent" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_lblTestSide.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbServerSide.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbServerSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbServerSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>116, 6</value>
+  </data>
+  <data name="m_rbServerSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="m_rbServerSide.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbServerSide.Text" xml:space="preserve">
+    <value>server side</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Name" xml:space="preserve">
+    <value>m_rbServerSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Parent" xml:space="preserve">
+    <value>m_panelSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbClientSide.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbClientSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 6</value>
+  </data>
+  <data name="m_rbClientSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_rbClientSide.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbClientSide.Text" xml:space="preserve">
+    <value>client side</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Name" xml:space="preserve">
+    <value>m_rbClientSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Parent" xml:space="preserve">
+    <value>m_panelSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_panelSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 170</value>
+  </data>
+  <data name="m_panelSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>421, 30</value>
+  </data>
+  <data name="m_panelSide.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_panelSide.Name" xml:space="preserve">
+    <value>m_panelSide</value>
+  </data>
+  <data name="&gt;&gt;m_panelSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelSide.Parent" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_panelSide.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_rbPrevOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -334,7 +442,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_rbDatFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -364,7 +472,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -397,7 +505,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_browseDatFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -424,7 +532,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -456,7 +564,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -488,7 +596,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -518,7 +626,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_argumentsTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -542,7 +650,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -554,13 +662,13 @@ filename without extension</value>
     <value>13, 147</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>47, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>test file:</value>
+    <value>Test file:</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -572,7 +680,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_datFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -596,13 +704,13 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_editorGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 349</value>
   </data>
   <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 180</value>
+    <value>666, 204</value>
   </data>
   <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -638,7 +746,7 @@ filename without extension</value>
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 535</value>
+    <value>666, 567</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>

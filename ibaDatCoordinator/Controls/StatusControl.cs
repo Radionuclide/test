@@ -47,11 +47,9 @@ namespace iba.Controls
             m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
             
-
             m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)
                 m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Bitmap>();
-
 
             Bitmap blankBitmap = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
 

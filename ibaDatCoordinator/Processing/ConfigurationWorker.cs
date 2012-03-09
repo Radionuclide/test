@@ -3391,13 +3391,36 @@ namespace iba.Processing
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logBatchfileStarted, filename,task);
-                    if (!ibaProc.WaitForExit(15 * 3600 * 1000))
+                    int MAXMINUTES = 15; //wait maximum 15 minutes  
+                    int INCRECEMENTSECONDS = 10;
+                    int MAXLOOPS = MAXMINUTES * 60 / INCRECEMENTSECONDS;
+                    bool succeeded = false;
+                    for (int i = 0; !succeeded && !m_stop && i < MAXLOOPS; i++)
                     {
+                        succeeded = ibaProc.WaitForExit(INCRECEMENTSECONDS*1000);
+                    }
+                    if (!succeeded)
+                    {
+                        try
+                        {
+                            ibaProc.Kill();
+                        }
+                        catch 
+                        {
+                        }
                         lock (m_sd.DatFileStates)
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            string msg = iba.Properties.Resources.logBatchfileTimeout;
-                            Log(Logging.Level.Exception, msg, filename, task);
+                            if (!m_stop)
+                            {
+                                string msg = iba.Properties.Resources.logBatchfileTimeout;
+                                Log(Logging.Level.Exception, msg, filename, task);
+                            }
+                            else
+                            {
+                                string msg = iba.Properties.Resources.logJobTerminated;
+                                Log(Logging.Level.Warning, msg, filename, task);
+                            }
                         }
                     }
                     else

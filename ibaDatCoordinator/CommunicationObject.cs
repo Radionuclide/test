@@ -9,6 +9,7 @@ using iba.Data;
 using iba.Processing;
 using System.Diagnostics;
 using iba.Utility;
+using System.Runtime.Remoting.Lifetime;
 
 /**
  * Description: class used to communicate with the service
@@ -25,6 +26,22 @@ namespace iba
         {
             get { return "";}
             set { }
+        }
+    }
+
+    public abstract class ScriptTester : MarshalByRefObject
+    {
+        abstract public void NotifyScriptEnd(int errorCode);
+        public override object InitializeLifetimeService()
+        {
+            ILease lease =  (ILease)base.InitializeLifetimeService();
+            if (lease.CurrentState == LeaseState.Initial)
+            {
+                lease.InitialLeaseTime = TimeSpan.FromMinutes(16);
+                //lease.SponsorshipTimeout = TimeSpan.FromMinutes(2);
+                lease.RenewOnCallTime = TimeSpan.FromSeconds(2);
+            }
+            return lease;
         }
     }
 
@@ -124,20 +141,44 @@ namespace iba
         {
         }
 
-        public int TestScript(string scriptfile, string arguments)
+        private Process m_scriptProc;
+        private ScriptTester m_testObject;
+
+        public void TestScript(string scriptfile, string arguments, ScriptTester testObject)
         {
-            using (Process ibaProc = new Process())
+            if (m_scriptProc != null) KillScript(); //just in case;
+            m_scriptProc = new Process();
+            m_scriptProc.EnableRaisingEvents = true;
+            m_scriptProc.StartInfo.FileName = scriptfile;
+            m_scriptProc.StartInfo.Arguments = arguments;
+            m_scriptProc.Exited += new EventHandler(ScriptFinished);
+            m_scriptProc.Start();
+        }
+
+        public void KillScript()
+        {
+            if (m_scriptProc != null)
             {
-                ibaProc.EnableRaisingEvents = false;
-                ibaProc.StartInfo.FileName = scriptfile;
-                ibaProc.StartInfo.Arguments = arguments;
-                ibaProc.Start();
-                if (!ibaProc.WaitForExit(15 * 3600 * 1000))
-                {   //wait max 15 minutes
-                    ibaProc.Kill();
-                    return -666;
+                try
+                {
+                    m_scriptProc.Exited -= new EventHandler(ScriptFinished);
+                    m_scriptProc.Kill();
+                    m_scriptProc.Dispose();
                 }
-                return ibaProc.ExitCode;
+                catch
+                {
+                }
+                m_scriptProc = null;
+                m_testObject = null;
+            }
+        }
+
+        public void ScriptFinished(object sender, System.EventArgs e)
+        {
+            if (m_scriptProc != null)
+            {
+                m_scriptProc.Exited -= new EventHandler(ScriptFinished);
+                if (m_testObject != null) m_testObject.NotifyScriptEnd(m_scriptProc.ExitCode);
             }
         }
 
@@ -420,16 +461,27 @@ namespace iba
                 LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTDISCONNECTED);
         }
 
-        public int TestScript(string scriptfile, string arguments)
+        public void TestScript(string scriptfile, string arguments, ScriptTester scripObject)
         {
             try
             {
-                return m_com.TestScript(scriptfile,arguments);
+                m_com.TestScript(scriptfile,arguments, scripObject);
             }
             catch (SocketException)
             {
                 HandleBrokenConnection();
-                return -1;
+            }
+        }
+
+        public void KillScript()
+        {
+            try
+            {
+                m_com.KillScript();
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
             }
         }
 

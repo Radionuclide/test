@@ -51,8 +51,13 @@ namespace iba.Controls
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_panelSide = new System.Windows.Forms.Panel();
+            this.m_lblTestSide = new System.Windows.Forms.Label();
+            this.m_rbClientSide = new System.Windows.Forms.RadioButton();
+            this.m_rbServerSide = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.m_editorGroupBox.SuspendLayout();
+            this.m_panelSide.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -116,6 +121,8 @@ namespace iba.Controls
             // m_editorGroupBox
             // 
             resources.ApplyResources(this.m_editorGroupBox, "m_editorGroupBox");
+            this.m_editorGroupBox.Controls.Add(this.m_lblTestSide);
+            this.m_editorGroupBox.Controls.Add(this.m_panelSide);
             this.m_editorGroupBox.Controls.Add(this.m_rbPrevOutput);
             this.m_editorGroupBox.Controls.Add(this.m_rbDatFile);
             this.m_editorGroupBox.Controls.Add(this.label5);
@@ -187,6 +194,32 @@ namespace iba.Controls
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             // 
+            // m_panelSide
+            // 
+            this.m_panelSide.Controls.Add(this.m_rbServerSide);
+            this.m_panelSide.Controls.Add(this.m_rbClientSide);
+            resources.ApplyResources(this.m_panelSide, "m_panelSide");
+            this.m_panelSide.Name = "m_panelSide";
+            // 
+            // m_lblTestSide
+            // 
+            resources.ApplyResources(this.m_lblTestSide, "m_lblTestSide");
+            this.m_lblTestSide.Name = "m_lblTestSide";
+            // 
+            // m_rbClientSide
+            // 
+            resources.ApplyResources(this.m_rbClientSide, "m_rbClientSide");
+            this.m_rbClientSide.Name = "m_rbClientSide";
+            this.m_rbClientSide.TabStop = true;
+            this.m_rbClientSide.UseVisualStyleBackColor = true;
+            // 
+            // m_rbServerSide
+            // 
+            resources.ApplyResources(this.m_rbServerSide, "m_rbServerSide");
+            this.m_rbServerSide.Name = "m_rbServerSide";
+            this.m_rbServerSide.TabStop = true;
+            this.m_rbServerSide.UseVisualStyleBackColor = true;
+            // 
             // BatchFileControl
             // 
             resources.ApplyResources(this, "$this");
@@ -198,6 +231,8 @@ namespace iba.Controls
             this.groupBox1.PerformLayout();
             this.m_editorGroupBox.ResumeLayout(false);
             this.m_editorGroupBox.PerformLayout();
+            this.m_panelSide.ResumeLayout(false);
+            this.m_panelSide.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -225,6 +260,10 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbPrevOutput;
         private System.Windows.Forms.RadioButton m_rbDatFile;
         private System.Windows.Forms.ToolTip m_tooltip;
+        private System.Windows.Forms.Label m_lblTestSide;
+        private System.Windows.Forms.Panel m_panelSide;
+        private System.Windows.Forms.RadioButton m_rbServerSide;
+        private System.Windows.Forms.RadioButton m_rbClientSide;
 
     }
 }

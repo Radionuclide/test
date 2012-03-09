@@ -28,6 +28,8 @@ namespace iba.Controls
             m_tooltip.SetToolTip(m_saveButton, iba.Properties.Resources.tooltipSaveScript);
             m_tooltip.SetToolTip(m_executeBatchFile, iba.Properties.Resources.tooltipExecuteScript);
             m_tooltip.SetToolTip(m_browseDatFileButton, iba.Properties.Resources.tooltipBrowseTestFile);
+            m_lblTestSide.Visible = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
+            m_panelSide.Visible = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
         }
 
         void Document_DocumentChanged(object sender, ICSharpCode.TextEditor.Document.DocumentEventArgs e)
@@ -97,14 +99,17 @@ namespace iba.Controls
             }
             else
             {
-                m_executeBatchFile.Enabled = false;
                 m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
                 m_textEditor.Text = "";
+                m_executeBatchFile.Enabled = false; 
                 m_textEditor.SetHighlighting("VBNET");
                 m_textEditor.Invalidate();
             }
             m_bChanged = false;
             m_saveButton.Enabled = false;
+
+            m_rbClientSide.Checked = m_data.TestOnClientSide;
+            m_rbServerSide.Checked = !m_data.TestOnClientSide;
         }
 
         public void SaveData()
@@ -120,6 +125,7 @@ namespace iba.Controls
             m_data.Arguments = m_argumentsTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.WhatFile = m_rbDatFile.Checked ? BatchFileData.WhatFileEnum.DATFILE : BatchFileData.WhatFileEnum.PREVOUTPUT;
+            m_data.TestOnClientSide = m_rbClientSide.Checked;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
@@ -131,50 +137,66 @@ namespace iba.Controls
         private void m_executeBatchFile_Click(object sender, EventArgs e)
         {
             SaveData();
+            if (!File.Exists(m_data.BatchFile)) return;
             string arguments = m_data.ParsedArguments(m_datFileTextBox.Text);
             if (arguments==null)
             {
                 MessageBox.Show(iba.Properties.Resources.ScriptArgumentsCouldNotBeParsed, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            try
+            //try
+            //{
+            //    int exitCode = 0;
+            //    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !m_rbClientSide.Checked)
+            //    {
+            //        exitCode = Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
+            //        if (exitCode == -666)
+            //        {
+            //            MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //            exitCode = 0;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        using (Process ibaProc = new Process())
+            //        {
+            //            ibaProc.EnableRaisingEvents = false;
+            //            ibaProc.StartInfo.FileName = m_batchFileTextBox.Text;
+            //            ibaProc.StartInfo.Arguments = arguments;
+            //            ibaProc.Start();
+            //            if(!ibaProc.WaitForExit(15 * 3600 * 1000))
+            //            {   //wait max 15 minutes
+            //                ibaProc.Kill();
+            //                MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //                exitCode = 0;
+            //            }
+            //            else
+            //                exitCode = ibaProc.ExitCode;
+            //        }
+            //    }
+            //    if (exitCode != 0)
+            //    {
+            //        MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed,exitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            iba.Dialogs.TestScriptDlg testdlg = new iba.Dialogs.TestScriptDlg(m_data);
+            testdlg.StartPosition = FormStartPosition.CenterParent;
+            testdlg.ShowDialog(this);
+            switch (testdlg.Result)
             {
-                int exitCode = 0;
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                {
-                    exitCode = Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
-                    if (exitCode == -666)
-                    {
-                        MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        exitCode = 0;
-                    }
-                }
-                else
-                {
-                    using (Process ibaProc = new Process())
-                    {
-                        ibaProc.EnableRaisingEvents = false;
-                        ibaProc.StartInfo.FileName = m_batchFileTextBox.Text;
-                        ibaProc.StartInfo.Arguments = arguments;
-                        ibaProc.Start();
-                        if(!ibaProc.WaitForExit(15 * 3600 * 1000))
-                        {   //wait max 15 minutes
-                            ibaProc.Kill();
-                            MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            exitCode = 0;
-                        }
-                        else
-                            exitCode = ibaProc.ExitCode;
-                    }
-                }
-                if (exitCode != 0)
-                {
-                    MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed,exitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case iba.Dialogs.TestScriptDlg.ScriptResult.TIMEOUT:
+                    MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case iba.Dialogs.TestScriptDlg.ScriptResult.SUCCESS:
+                    MessageBox.Show(iba.Properties.Resources.logBatchfileSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case iba.Dialogs.TestScriptDlg.ScriptResult.ERROR:
+                    MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed, testdlg.ExitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
 
@@ -183,7 +205,7 @@ namespace iba.Controls
             m_openFileDialog1.CheckFileExists = true;
             m_openFileDialog1.FileName = "";
             m_openFileDialog1.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
-            DialogResult result = m_openFileDialog1.ShowDialog();
+            DialogResult result = m_openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
             {
                 m_batchFileTextBox.Text = m_openFileDialog1.FileName;
@@ -233,7 +255,7 @@ namespace iba.Controls
             m_saveFileDialog1.CheckFileExists = false;
             m_saveFileDialog1.FileName = "myscript.bat";
             m_saveFileDialog1.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
-            if (m_saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (m_saveFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
                 filename = m_saveFileDialog1.FileName;
                 try
@@ -338,8 +360,10 @@ namespace iba.Controls
             m_openFileDialog1.CheckFileExists = true;
             m_openFileDialog1.FileName = "";
             m_openFileDialog1.Filter = "All files (*.*)|*.*";
-            if (m_openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (m_openFileDialog1.ShowDialog(this) == DialogResult.OK)
                 m_datFileTextBox.Text = m_openFileDialog1.FileName;
         }
     }
+
+
 }

@@ -239,6 +239,12 @@
     <Compile Include="Data\TaskDataUNC.cs" />
     <Compile Include="Data\UpdateDataTaskData.cs" />
     <Compile Include="Data\WatchDogData.cs" />
+    <Compile Include="Dialogs\TestScriptDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
+      <DependentUpon>TestScriptDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -402,6 +408,9 @@
     <EmbeddedResource Include="Dialogs\StopServiceDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StopServiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TestScriptDlg.resx">
+      <DependentUpon>TestScriptDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\UploadOrDownloadConfigurationsDialog.resx">
       <SubType>Designer</SubType>

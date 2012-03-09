@@ -1054,6 +1054,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Script terminated because job was stopped.
+        /// </summary>
+        internal static string logJobTerminated {
+            get {
+                return ResourceManager.GetString("logJobTerminated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more custom tasks.
         /// </summary>
         internal static string logLicenseNoStart {

@@ -1033,4 +1033,7 @@
   <data name="SameConfMessage" xml:space="preserve">
     <value>No changes detected since the configuration was last applied.</value>
   </data>
+  <data name="logJobTerminated" xml:space="preserve">
+    <value>Script terminated because job was stopped</value>
+  </data>
 </root>

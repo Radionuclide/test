@@ -23,6 +23,14 @@ namespace iba.Data
             set { m_testDatFile = value; }
         }
 
+        private bool m_testOnClientSide;
+        public bool TestOnClientSide
+        {
+            get { return m_testOnClientSide; }
+            set { m_testOnClientSide = value; }
+        }
+        
+
         private string m_arguments;
         public string Arguments
         {
@@ -44,6 +52,7 @@ namespace iba.Data
             m_name = iba.Properties.Resources.batchfileTitle;
             m_testDatFile = m_arguments = m_batchFile = String.Empty;
             m_whatFile = WhatFileEnum.DATFILE;
+            m_testOnClientSide = false;
         }
 
         public BatchFileData() : this(null)
@@ -62,6 +71,7 @@ namespace iba.Data
             bfd.m_arguments = m_arguments;
             bfd.m_notify = m_notify;
             bfd.m_whatFile = m_whatFile;
+            bfd.m_testOnClientSide = m_testOnClientSide;
             return bfd;
         }
 
@@ -108,7 +118,8 @@ namespace iba.Data
             other.m_testDatFile == m_testDatFile &&
             other.m_arguments == m_arguments &&
             other.m_notify == m_notify &&
-            other.m_whatFile == m_whatFile;
+            other.m_whatFile == m_whatFile &&
+            other.m_testOnClientSide == m_testOnClientSide;
         }
     }
 }
