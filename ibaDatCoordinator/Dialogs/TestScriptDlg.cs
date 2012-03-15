@@ -37,7 +37,7 @@ namespace iba.Dialogs
                         {
                             sb.Append('%');
                             sb.Append(i);
-                            sb.Append(":\t");
+                            sb.Append(": ");
                             sb.AppendLine(argsarray[i]);
                         }
                         m_lblArguments.Text = sb.ToString();

@@ -147,6 +147,7 @@ namespace iba
         public void TestScript(string scriptfile, string arguments, ScriptTester testObject)
         {
             if (m_scriptProc != null) KillScript(); //just in case;
+            m_testObject = testObject;
             m_scriptProc = new Process();
             m_scriptProc.EnableRaisingEvents = true;
             m_scriptProc.StartInfo.FileName = scriptfile;
@@ -179,6 +180,8 @@ namespace iba
             {
                 m_scriptProc.Exited -= new EventHandler(ScriptFinished);
                 if (m_testObject != null) m_testObject.NotifyScriptEnd(m_scriptProc.ExitCode);
+                m_scriptProc.Dispose();
+                m_scriptProc = null;
             }
         }
 
