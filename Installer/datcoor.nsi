@@ -339,6 +339,10 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe"
   File "readme.htm"
+  File "Copy_Printer_Settings_To_System_Account.bat"
+  File "createundoregfile.bat"
+
+
 
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
@@ -355,6 +359,14 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   ;Add serverstatus to autorun
   WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinator.exe /service"
+
+  ;printer stuff
+  SetOutPath "$INSTDIR"
+  nsExec::Exec '"$INSTDIR\createundoregfile.bat"'
+  nsExec::Exec '"$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"'
+  Delete "$INSTDIR\createundoregfile.bat"
+
+
 
   ;shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
