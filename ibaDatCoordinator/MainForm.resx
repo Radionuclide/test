@@ -225,6 +225,144 @@
   <data name="&gt;&gt;m_watchdogPane.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_btnClearLogging.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 62</value>
+  </data>
+  <data name="m_btnClearLogging.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 23</value>
+  </data>
+  <data name="m_btnClearLogging.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_btnClearLogging.Text" xml:space="preserve">
+    <value>Clear all events</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearLogging.Name" xml:space="preserve">
+    <value>m_btnClearLogging</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearLogging.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearLogging.Parent" xml:space="preserve">
+    <value>m_loggingPane</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearLogging.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 104</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 13</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Events filter:</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>m_loggingPane</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbOnlyErrors.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbOnlyErrors.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbOnlyErrors.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 120</value>
+  </data>
+  <data name="m_rbOnlyErrors.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 17</value>
+  </data>
+  <data name="m_rbOnlyErrors.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbOnlyErrors.Text" xml:space="preserve">
+    <value>errors only</value>
+  </data>
+  <data name="&gt;&gt;m_rbOnlyErrors.Name" xml:space="preserve">
+    <value>m_rbOnlyErrors</value>
+  </data>
+  <data name="&gt;&gt;m_rbOnlyErrors.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbOnlyErrors.Parent" xml:space="preserve">
+    <value>m_loggingPane</value>
+  </data>
+  <data name="&gt;&gt;m_rbOnlyErrors.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbErrorsWarnings.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbErrorsWarnings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbErrorsWarnings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 143</value>
+  </data>
+  <data name="m_rbErrorsWarnings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 17</value>
+  </data>
+  <data name="m_rbErrorsWarnings.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbErrorsWarnings.Text" xml:space="preserve">
+    <value>errors and warnings</value>
+  </data>
+  <data name="&gt;&gt;m_rbErrorsWarnings.Name" xml:space="preserve">
+    <value>m_rbErrorsWarnings</value>
+  </data>
+  <data name="&gt;&gt;m_rbErrorsWarnings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbErrorsWarnings.Parent" xml:space="preserve">
+    <value>m_loggingPane</value>
+  </data>
+  <data name="&gt;&gt;m_rbErrorsWarnings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbAllLog.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbAllLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 166</value>
+  </data>
+  <data name="m_rbAllLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 17</value>
+  </data>
+  <data name="m_rbAllLog.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbAllLog.Text" xml:space="preserve">
+    <value>all</value>
+  </data>
+  <data name="&gt;&gt;m_rbAllLog.Name" xml:space="preserve">
+    <value>m_rbAllLog</value>
+  </data>
+  <data name="&gt;&gt;m_rbAllLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbAllLog.Parent" xml:space="preserve">
+    <value>m_loggingPane</value>
+  </data>
+  <data name="&gt;&gt;m_rbAllLog.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="m_EntriesNumericUpDown1.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 27</value>
   </data>
@@ -244,7 +382,7 @@
     <value>m_loggingPane</value>
   </data>
   <data name="&gt;&gt;m_EntriesNumericUpDown1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -253,13 +391,13 @@
     <value>11, 11</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 13</value>
+    <value>94, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>number of events</value>
+    <value>Number of events:</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -271,7 +409,7 @@
     <value>m_loggingPane</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="m_loggingPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
@@ -648,7 +786,7 @@
     <value>Ctrl+N</value>
   </data>
   <data name="newToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>146, 22</value>
   </data>
   <data name="newToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;New</value>
@@ -676,13 +814,13 @@
     <value>Ctrl+O</value>
   </data>
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>146, 22</value>
   </data>
   <data name="openToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Open</value>
   </data>
   <data name="toolStripSeparator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 6</value>
+    <value>143, 6</value>
   </data>
   <data name="saveToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -707,22 +845,22 @@
     <value>Ctrl+S</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>146, 22</value>
   </data>
   <data name="saveToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Save</value>
   </data>
   <data name="saveAsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>146, 22</value>
   </data>
   <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
     <value>Save &amp;As</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 6</value>
+    <value>143, 6</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>146, 22</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>E&amp;xit</value>
@@ -957,13 +1095,13 @@
     <value>0</value>
   </data>
   <metadata name="m_saveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>632, 17</value>
+    <value>501, 0</value>
   </metadata>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>777, 17</value>
+    <value>17, 39</value>
   </metadata>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>282, 56</value>
+    <value>166, 39</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

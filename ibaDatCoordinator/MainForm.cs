@@ -398,6 +398,10 @@ namespace iba
                 configurationToolStripMenuItem.Enabled = true;
                 watchdogToolStripMenuItem.Enabled = true;
                 m_EntriesNumericUpDown1.Value = Math.Max(1,LogData.Data.MaxRows);
+                int loglevel = LogData.Data.LogLevel;
+                m_rbAllLog.Checked = loglevel == 0;
+                m_rbErrorsWarnings.Checked = loglevel == 1;
+                m_rbOnlyErrors.Checked = loglevel == 2;
                 settingsToolStripMenuItem.Enabled = true;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
@@ -2122,6 +2126,25 @@ namespace iba
                 Program.CommunicationObject.LoggerMaxRows = LogData.Data.MaxRows;
         }
 
+        private void m_rbLogLevelRbCheckedChanged(object sender, EventArgs e)
+        {
+            //loglevel 0 = all, 1 = warnings,errors, 2 = only errors
+            int loglevel = 0;
+            if (m_rbErrorsWarnings.Checked) loglevel = 1;
+            else if (m_rbOnlyErrors.Checked) loglevel = 2;
+            LogData.Data.LogLevel = loglevel;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.LoggerLogLevel = loglevel;
+        }
+
+        private void m_btnClearLogging_Click(object sender, EventArgs e)
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                Program.CommunicationObject.LoggerClearGrid();
+            else
+                LogData.Data.ClearGrid();
+        }
+
         private void m_stopButton_Click(object sender, EventArgs e)
         {
             if (!Utility.Crypt.CheckPassword(this)) return;
@@ -2711,6 +2734,9 @@ namespace iba
         private ToolStripMenuItem m_miStopService;
         private ToolStripMenuItem m_miExit;
         #endregion
+
+
+
     }    
     #endregion
 

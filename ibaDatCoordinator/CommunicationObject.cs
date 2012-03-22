@@ -98,6 +98,26 @@ namespace iba
             }
         }
 
+        public int LoggerLogLevel
+        {
+            get
+            {
+                return LogData.Data.LogLevel;
+            }
+            set
+            {
+                LogData.Data.LogLevel = value;
+            }
+        }
+
+
+        public void LoggerClearGrid()
+        {
+            if (LogData.Data.Logger == null) return;
+            if (LogData.Data.Logger.ChildCount > 0)
+               (LogData.Data.Logger.Children[0] as GridViewLogger).clear();
+        }
+
         public override object InitializeLifetimeService()
         {
             return null;
@@ -281,6 +301,7 @@ namespace iba
             {
             }
         }
+
     }
 
     public class CommunicationObjectWrapper
@@ -341,6 +362,46 @@ namespace iba
                 {
                     HandleBrokenConnection();
                 }
+            }
+        }
+
+        public int LoggerLogLevel
+        {
+            get
+            {
+                try
+                {
+                    return m_com.LoggerLogLevel;
+                }
+                catch (SocketException)
+                {
+                    HandleBrokenConnection();
+                    return LogData.Data.LogLevel;
+                }
+            }
+            set
+            {
+                try
+                {
+                    m_com.LoggerLogLevel = value;
+                }
+                catch (SocketException)
+                {
+                    HandleBrokenConnection();
+                }
+            }
+        }
+
+        public void LoggerClearGrid()
+        {
+            try
+            {
+                m_com.LoggerClearGrid();
+            }
+            catch (SocketException)
+            {
+                HandleBrokenConnection();
+                LogData.Data.ClearGrid();
             }
         }
 

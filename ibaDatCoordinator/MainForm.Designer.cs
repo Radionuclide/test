@@ -38,6 +38,10 @@ namespace iba
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_rbOnlyErrors = new System.Windows.Forms.RadioButton();
+            this.m_rbErrorsWarnings = new System.Windows.Forms.RadioButton();
+            this.m_rbAllLog = new System.Windows.Forms.RadioButton();
             this.m_EntriesNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.m_statusPane = new TD.Eyefinder.NavigationPane();
@@ -79,6 +83,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_btnClearLogging = new System.Windows.Forms.Button();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -170,10 +175,44 @@ namespace iba
             // 
             // m_loggingPane
             // 
+            this.m_loggingPane.Controls.Add(this.m_btnClearLogging);
+            this.m_loggingPane.Controls.Add(this.label2);
+            this.m_loggingPane.Controls.Add(this.m_rbOnlyErrors);
+            this.m_loggingPane.Controls.Add(this.m_rbErrorsWarnings);
+            this.m_loggingPane.Controls.Add(this.m_rbAllLog);
             this.m_loggingPane.Controls.Add(this.m_EntriesNumericUpDown1);
             this.m_loggingPane.Controls.Add(this.label1);
             resources.ApplyResources(this.m_loggingPane, "m_loggingPane");
             this.m_loggingPane.Name = "m_loggingPane";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // m_rbOnlyErrors
+            // 
+            resources.ApplyResources(this.m_rbOnlyErrors, "m_rbOnlyErrors");
+            this.m_rbOnlyErrors.Name = "m_rbOnlyErrors";
+            this.m_rbOnlyErrors.TabStop = true;
+            this.m_rbOnlyErrors.UseVisualStyleBackColor = true;
+            this.m_rbOnlyErrors.CheckedChanged += new System.EventHandler(this.m_rbLogLevelRbCheckedChanged);
+            // 
+            // m_rbErrorsWarnings
+            // 
+            resources.ApplyResources(this.m_rbErrorsWarnings, "m_rbErrorsWarnings");
+            this.m_rbErrorsWarnings.Name = "m_rbErrorsWarnings";
+            this.m_rbErrorsWarnings.TabStop = true;
+            this.m_rbErrorsWarnings.UseVisualStyleBackColor = true;
+            this.m_rbErrorsWarnings.CheckedChanged += new System.EventHandler(this.m_rbLogLevelRbCheckedChanged);
+            // 
+            // m_rbAllLog
+            // 
+            resources.ApplyResources(this.m_rbAllLog, "m_rbAllLog");
+            this.m_rbAllLog.Name = "m_rbAllLog";
+            this.m_rbAllLog.TabStop = true;
+            this.m_rbAllLog.UseVisualStyleBackColor = true;
+            this.m_rbAllLog.CheckedChanged += new System.EventHandler(this.m_rbLogLevelRbCheckedChanged);
             // 
             // m_EntriesNumericUpDown1
             // 
@@ -463,6 +502,13 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
+            // m_btnClearLogging
+            // 
+            resources.ApplyResources(this.m_btnClearLogging, "m_btnClearLogging");
+            this.m_btnClearLogging.Name = "m_btnClearLogging";
+            this.m_btnClearLogging.UseVisualStyleBackColor = true;
+            this.m_btnClearLogging.Click += new System.EventHandler(this.m_btnClearLogging_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -546,6 +592,11 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem saveInformationToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem VersionHistoryToolStripMenuItem;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton m_rbOnlyErrors;
+        private System.Windows.Forms.RadioButton m_rbErrorsWarnings;
+        private System.Windows.Forms.RadioButton m_rbAllLog;
+        private System.Windows.Forms.Button m_btnClearLogging;
     }
 }
 

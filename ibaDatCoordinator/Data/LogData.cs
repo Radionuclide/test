@@ -98,10 +98,10 @@ namespace iba.Data
             (LogData.Data.Logger as GridViewLogger).clear(); 
         }
 
-        public bool ForwardReadFromFileCommand(string filename)
-        {
-            return (LogData.Data.Logger as GridViewLogger).readFromFile(filename); 
-        }
+        //public bool ForwardReadFromFileCommand(string filename)
+        //{
+        //    return (LogData.Data.Logger as GridViewLogger).readFromFile(filename);
+        //}
     }
 
     public class GridViewLogger : Logger
@@ -141,9 +141,10 @@ namespace iba.Data
         private delegate void ClearDelegate();
 
         private UpdateDelegate m_updateDelegate;
-        private ReadDelegate m_readDelegate;
+        //private ReadDelegate m_readDelegate;
         private ClearDelegate m_clearAllRowsDelegate;
         private ClearDelegate m_clearSomeRowsDelegate;
+        private ClearDelegate m_updateFilterDelegate;
 
         private int m_maxRows;
         public int MaxRows
@@ -158,59 +159,83 @@ namespace iba.Data
             }
         }
 
+        //loglevel 0 = all. 1 = warnings,errors. 2 = only errors
+        private int m_logLevel;
+        public int LogLevel
+        {
+            get { return m_logLevel; }
+            set 
+            { 
+                int prevLevel = m_logLevel;
+                m_logLevel = value;
+                Profiler.ProfileInt(false, "LastState", "LastLogLevel", ref m_logLevel, 0);
+                if (m_control != null) //gui present
+                    if (prevLevel != m_logLevel) m_control.BeginInvoke(m_updateFilterDelegate);
+            }
+        }
+
+
         private void update(Event _event)
         {
-            LogControl lc = (m_control as LogControl);
-            
-            bool freeze = lc!= null && lc.Freeze;
+            if ((_event.Level == Logging.Level.Info && m_logLevel > 0) || (_event.Level == Logging.Level.Warning && m_logLevel > 1))
+                return;
+            lock (m_grid.Rows)
+            {
+                CacheEvent(_event);
+                updateNonLocked(_event);
+            }
+        }
 
-            int rowpos = freeze ? m_grid.FirstDisplayedScrollingRowIndex:-1;
+        private void updateNonLocked(Event _event)
+        {
+            LogControl lc = (m_control as LogControl);
+            bool freeze = lc != null && lc.Freeze;
+
+            int rowpos = freeze ? m_grid.FirstDisplayedScrollingRowIndex : -1;
 
             while (m_grid.Rows.Count >= m_maxRows && m_grid.Rows.Count > 0)
             {
-                m_grid.Rows.RemoveAt(m_grid.Rows.Count-1);
+                m_grid.Rows.RemoveAt(m_grid.Rows.Count - 1);
             }
             
             LogExtraData data = _event.Data as LogExtraData;
-            lock (m_grid.Rows)
-            {
-                if (data == null)
-                    m_grid.Rows.Insert(0,new Object[] { 
+            if (data == null)
+                m_grid.Rows.Insert(0, new Object[] { 
                     _event.Timestamp, 
                     String.Empty,
                     String.Empty, 
                     String.Empty, 
                     _event.Message });
-                else
-                    m_grid.Rows.Insert(0,new Object[] { 
+            else
+                m_grid.Rows.Insert(0, new Object[] { 
                      _event.Timestamp, 
                     data.ConfigurationData==null?String.Empty:data.ConfigurationData.Name, 
                     data.TaskData == null?String.Empty:data.TaskData.Name, 
                     data.DatFile, 
                     _event.Message });
-                rowpos++;
-                DataGridViewCellStyle style = m_grid.Rows[0].Cells[4].Style;
-                if (_event.Level == Logging.Level.Warning) style.ForeColor = Color.Orange;
-                else if (_event.Level == Logging.Level.Info)
-                {
-                    style.ForeColor = Color.Green;
-                    Program.MainForm.StatusBarLabel.Text = "";//any positive message clears the status bar
-                }
-                else if (_event.Level == Logging.Level.Exception)
-                {
-                    style.ForeColor = Color.Red;
-                    string text = _event.Message;
-                    int tindex = text.IndexOf(Environment.NewLine);
-                    if (tindex >= 0)
-                        text = text.Remove(tindex);
-                    Program.MainForm.StatusBarLabel.Text = String.Format(iba.Properties.Resources.StatusBarError, text);
-                }
-                if (!freeze)
-                {
-                    m_grid.Rows[0].Selected = true;
-                    if (lc != null) lc.Freeze = false;
-                }
+            rowpos++;
+            DataGridViewCellStyle style = m_grid.Rows[0].Cells[4].Style;
+            if (_event.Level == Logging.Level.Warning) style.ForeColor = Color.Orange;
+            else if (_event.Level == Logging.Level.Info)
+            {
+                style.ForeColor = Color.Green;
+                Program.MainForm.StatusBarLabel.Text = "";//any positive message clears the status bar
             }
+            else if (_event.Level == Logging.Level.Exception)
+            {
+                style.ForeColor = Color.Red;
+                string text = _event.Message;
+                int tindex = text.IndexOf(Environment.NewLine);
+                if (tindex >= 0)
+                    text = text.Remove(tindex);
+                Program.MainForm.StatusBarLabel.Text = String.Format(iba.Properties.Resources.StatusBarError, text);
+            }
+            if (!freeze)
+            {
+                m_grid.Rows[0].Selected = true;
+                if (lc != null) lc.Freeze = false;
+            }
+
             try
             {
                 if (freeze && rowpos > 0 && rowpos < m_grid.Rows.Count)
@@ -221,11 +246,56 @@ namespace iba.Data
             }
         }
 
+
+        private List<Event> m_cacheErrors;
+        private List<Event> m_cacheWarnings;
+        private List<Event> m_cacheInfos;
+
+        //cache of events to restore in case filter is changed
+        private void CacheEvent(Event _event)
+        {
+            List<Event> cache = m_cacheInfos;
+            if (_event.Level > Level.Info)
+                cache = m_cacheWarnings;
+            if (_event.Level > Level.Warning)
+                cache = m_cacheErrors;
+            cache.Add(_event);
+            int maxsize = Math.Max(1, m_maxRows);
+            while (cache.Count > maxsize)
+                cache.RemoveAt(0);
+        }
+
+        private void filterRowsToBeInvoked()
+        {
+            lock (m_grid.Rows)
+            {
+                m_grid.Rows.Clear();
+                List<Event> merged = new List<Event>(3 * m_maxRows);
+                merged.AddRange(m_cacheErrors);
+                if (m_logLevel <=1)
+                    merged.AddRange(m_cacheWarnings);
+                if (m_logLevel == 0)
+                    merged.AddRange(m_cacheInfos);
+                merged.Sort(delegate(Event e1,Event e2){return e1.Timestamp.CompareTo(e2.Timestamp);});
+                //oldest are first, remove oldest
+                while (merged.Count > m_maxRows)
+                    merged.RemoveAt(0);
+                foreach (Event _event in merged)
+                {
+                    updateNonLocked(_event);
+                }
+            }
+        }
+
+
         private void clearAllRowsToBeInvoked()
         {
             lock (m_grid.Rows)
             {
                 m_grid.Rows.Clear();
+                m_cacheErrors.Clear();
+                m_cacheInfos.Clear();
+                m_cacheWarnings.Clear();
             }
         }
 
@@ -238,71 +308,71 @@ namespace iba.Data
             }
         }
 
-        private bool readFromFileToBeInvoked(string filename)
-        {
-            List<List<string>> readEvents = new List<List<string>>();
-            try
-            {
-                FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                using (StreamReader logfile = new StreamReader(stream))
-                {
-                    char[] sep = { '\t' };
-                    char[] totrim = {'[',']'};
-                    string str;
-                    while ((str = logfile.ReadLine()) != null)
-                    {
-                        if (String.IsNullOrEmpty(str)) continue;
-                        string[] pieces = str.Split(sep);
-                        pieces[3] = pieces[3].Trim(totrim);
-                        pieces[4] = pieces[4].Trim(totrim);
-                        pieces[5] = pieces[5].Trim(totrim);
-                        readEvents.Add(new List<string>(pieces));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            lock (m_grid.Rows)
-            {
-                m_grid.Rows.Clear();
-                int index = 0;
-                foreach (List<string> readEvent in readEvents)
-                {
-                    while (m_grid.Rows.Count >= m_maxRows)
-                        m_grid.Rows.RemoveAt(0);
-                    index = m_grid.Rows.Add(new Object[] { readEvent[0], readEvent[3], readEvent[4], readEvent[5], readEvent[2]});
-                    DataGridViewCellStyle style = m_grid.Rows[index].Cells[4].Style;
-                    if (readEvent[1] == Logging.Level.Warning.ToString()) style.ForeColor = Color.Orange;
-                    else if (readEvent[1] == Logging.Level.Info.ToString()) style.ForeColor = Color.Green;
-                    else if (readEvent[1] == Logging.Level.Exception.ToString()) style.ForeColor = Color.Red;
-                }
-                if (m_grid.Rows.Count > index)
-                    m_grid.Rows[index].Selected=true;
-            }
-            return true;
-        }
+        //private bool readFromFileToBeInvoked(string filename)
+        //{
+        //    List<List<string>> readEvents = new List<List<string>>();
+        //    try
+        //    {
+        //        FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        //        using (StreamReader logfile = new StreamReader(stream))
+        //        {
+        //            char[] sep = { '\t' };
+        //            char[] totrim = {'[',']'};
+        //            string str;
+        //            while ((str = logfile.ReadLine()) != null)
+        //            {
+        //                if (String.IsNullOrEmpty(str)) continue;
+        //                string[] pieces = str.Split(sep);
+        //                pieces[3] = pieces[3].Trim(totrim);
+        //                pieces[4] = pieces[4].Trim(totrim);
+        //                pieces[5] = pieces[5].Trim(totrim);
+        //                readEvents.Add(new List<string>(pieces));
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        return false;
+        //    }
+        //    lock (m_grid.Rows)
+        //    {
+        //        m_grid.Rows.Clear();
+        //        int index = 0;
+        //        foreach (List<string> readEvent in readEvents)
+        //        {
+        //            while (m_grid.Rows.Count >= m_maxRows)
+        //                m_grid.Rows.RemoveAt(0);
+        //            index = m_grid.Rows.Add(new Object[] { readEvent[0], readEvent[3], readEvent[4], readEvent[5], readEvent[2]});
+        //            DataGridViewCellStyle style = m_grid.Rows[index].Cells[4].Style;
+        //            if (readEvent[1] == Logging.Level.Warning.ToString()) style.ForeColor = Color.Orange;
+        //            else if (readEvent[1] == Logging.Level.Info.ToString()) style.ForeColor = Color.Green;
+        //            else if (readEvent[1] == Logging.Level.Exception.ToString()) style.ForeColor = Color.Red;
+        //        }
+        //        if (m_grid.Rows.Count > index)
+        //            m_grid.Rows[index].Selected=true;
+        //    }
+        //    return true;
+        //}
 
-        public bool readFromFile(string filename)
-        {
-            if (m_control == null && (m_ef == null || !m_isForwarding)) //we are at te server side, but there is no client to forward to
-            {
-                return true;
-            }
-            bool result = false;
-            if (m_ef != null && m_isForwarding)
-            {
-                result = m_ef.ForwardReadFromFileCommand(filename);
-            }
-            m_isForwarding2 = m_isForwarding; //ok to close GUI
-            if (m_ef != null) return result;
-            if (m_control.InvokeRequired)
-                return (bool)m_control.Invoke(m_readDelegate, new object[] { filename });
-            else
-                return readFromFileToBeInvoked(filename);
-        }
+        //public bool readFromFile(string filename)
+        //{
+        //    if (m_control == null && (m_ef == null || !m_isForwarding)) //we are at te server side, but there is no client to forward to
+        //    {
+        //        return true;
+        //    }
+        //    bool result = false;
+        //    if (m_ef != null && m_isForwarding)
+        //    {
+        //        result = m_ef.ForwardReadFromFileCommand(filename);
+        //    }
+        //    m_isForwarding2 = m_isForwarding; //ok to close GUI
+        //    if (m_ef != null) return result;
+        //    if (m_control.InvokeRequired)
+        //        return (bool)m_control.Invoke(m_readDelegate, new object[] { filename });
+        //    else
+        //        return readFromFileToBeInvoked(filename);
+        //}
 
         public void clear()
         {
@@ -321,12 +391,18 @@ namespace iba.Data
             m_grid = grid;
             m_control = control;
             m_updateDelegate = new UpdateDelegate(update);
-            m_readDelegate = new ReadDelegate(readFromFileToBeInvoked);
+            //m_readDelegate = new ReadDelegate(readFromFileToBeInvoked);
             m_clearAllRowsDelegate = new ClearDelegate(clearAllRowsToBeInvoked);
             m_clearSomeRowsDelegate = new ClearDelegate(clearSomeRowsToBeInvoked);
+            m_updateFilterDelegate = new ClearDelegate(filterRowsToBeInvoked);
             m_maxRows = 50;
+            m_logLevel = 0;
             Profiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
+            Profiler.ProfileInt(true, "LastState", "LastLogLevel", ref m_logLevel, 0);
             m_isForwarding = m_isForwarding2 = false;
+            m_cacheErrors = new List<Event>();
+            m_cacheWarnings = new List<Event>();
+            m_cacheInfos = new List<Event>();
         }
 
         protected override void Write(Event _event)
@@ -398,6 +474,17 @@ namespace iba.Data
             }
         }
 
+        public void ClearGrid()
+        {
+            if (m_data != null && m_data.Logger != null)
+            {
+                if (m_data.Logger.ChildCount > 0)
+                    (m_data.Logger.Children[0] as GridViewLogger).clear();
+                else
+                    (m_data.Logger as GridViewLogger).clear();
+            }
+        }
+
         public int MaxRows
         {
             get 
@@ -416,6 +503,29 @@ namespace iba.Data
                         (m_data.Logger.Children[0] as GridViewLogger).MaxRows = value;
                     else
                         (m_data.Logger as GridViewLogger).MaxRows = value;
+                }
+            }
+        }
+
+        //loglevel 0 = all, 1 = warnings,errors, 2 = only errors
+        public int LogLevel
+        {
+            get
+            {
+                if (m_data == null || m_data.Logger == null) return 0;
+                if (m_data.Logger.ChildCount > 0)
+                    return (m_data.Logger.Children[0] as GridViewLogger).LogLevel;
+                else
+                    return (m_data.Logger as GridViewLogger).LogLevel;
+            }
+            set 
+            {
+                if (m_data != null && m_data.Logger != null)
+                {
+                    if (m_data.Logger.ChildCount > 0)
+                        (m_data.Logger.Children[0] as GridViewLogger).LogLevel = value;
+                    else
+                        (m_data.Logger as GridViewLogger).LogLevel = value;
                 }
             }
         }
