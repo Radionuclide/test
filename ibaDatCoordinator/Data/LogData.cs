@@ -576,9 +576,9 @@ namespace iba.Data
                 string rootPath = Utility.DataPath.Folder(appState);
                 string filename = "";
                 if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
-                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_disconnected.txt");
                 else
-                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt");
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog.txt");
                 if (File.Exists(filename))
                 {
                     try
@@ -591,9 +591,9 @@ namespace iba.Data
                         rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
                         filename = "";
                         if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
-                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog_disconnected.txt");
+                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_disconnected.txt");
                         else
-                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinaterLog.txt"); ;
+                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog.txt"); ;
                     }
                 }
 

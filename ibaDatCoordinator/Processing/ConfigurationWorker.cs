@@ -23,7 +23,7 @@ namespace iba.Processing
         }
 
         private Thread m_thread;
-        private StatusData m_sd;
+        internal StatusData m_sd;
         private Notifier m_notifier;
         public StatusData Status
         {
@@ -258,6 +258,23 @@ namespace iba.Processing
                                 }
                                 if (stat != null)
                                     updatedStatus.States[task] = stat.Value;
+
+                                //check if fileType matches
+                                ExtractData ed = task as ExtractData;
+                                if (ed != null && ed.ExtractToFile)
+                                {
+                                    ExtractData.ExtractFileType[] indexToType = 
+                                    {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
+                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
+
+                                    int index = ExtractTaskWorker.FileTypeAsInt(ed);
+                                    if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
+                                    {
+                                        string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
+                                        Log(Logging.Level.Warning, errorMessage, string.Empty,task);
+                                        ed.FileType = indexToType[index];
+                                    }
+                                }
                             }
                             p.Value.States.Clear();
                             foreach (KeyValuePair<TaskData, DatFileStatus.State> p2 in updatedStatus.States)
@@ -292,8 +309,9 @@ namespace iba.Processing
                                 ExtractData ed = task as ExtractData;
                                 if (ed != null)
                                 {
+                                    ed.m_bExternalVideoResultIsCached = false;
                                     if (ed.ExtractToFile)
-                                        pair.Value.ResetTask(task, GetBothExtractExtensions(ed));
+                                        pair.Value.ResetTask(task, ExtractTaskWorker.GetBothExtractExtensions(ed));
                                     else
                                         toDelete.Add(pair.Key);
                                 }
@@ -313,7 +331,12 @@ namespace iba.Processing
                                         if (rd != null)
                                         {
                                             if (rd.Output == ReportData.OutputChoice.FILE)
-                                                pair.Value.ResetTask(task, "." + rd.Extension);
+                                            {
+                                                if (rd.Extension == "html" || rd.Extension == "htm")
+                                                    pair.Value.ResetTask(task, "." + rd.Extension+ ",*.jpg");
+                                                else
+                                                    pair.Value.ResetTask(task, "." + rd.Extension);
+                                            }
                                             else
                                                 toDelete.Add(pair.Key);
                                         }
@@ -413,20 +436,13 @@ namespace iba.Processing
         List<string> m_directoryFiles;
         SortedDictionary<Guid, UpdateDataTaskWorker> m_udtWorkers;
 
-        private void Log(Logging.Level level, string message)
+        internal void Log(Logging.Level level, string message)
         {
             LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
             LogData.Data.Log(level, message, (object)data);
-            if (level == Logging.Level.Exception)
-            {
-                if (message.Contains("The operation"))
-                {
-                    string debug = message;
-                }
-            }
         }
 
-        private void Log(Logging.Level level, string message, string datfile)
+        internal void Log(Logging.Level level, string message, string datfile)
         {
             LogExtraData data = new LogExtraData(datfile, null, m_cd);
             LogData.Data.Log(level, message, (object)data);
@@ -439,7 +455,7 @@ namespace iba.Processing
             }
         }
 
-        private void Log(Logging.Level level, string message, string datfile, TaskData task)
+        internal void Log(Logging.Level level, string message, string datfile, TaskData task)
         {
             LogExtraData data = new LogExtraData(datfile, task, m_cd);
             LogData.Data.Log(level, message, (object)data);
@@ -452,7 +468,7 @@ namespace iba.Processing
             }
         }
 
-        private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
+        internal IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer = null;
         private System.Threading.Timer m_notifyTimer;
         private System.Threading.Timer reprocessErrorsTimer;
         private System.Threading.Timer rescanTimer;
@@ -961,7 +977,7 @@ namespace iba.Processing
             return ok;
         }
 
-        private void StartIbaAnalyzer()
+        internal void StartIbaAnalyzer()
         {
             m_nrIbaAnalyzerCalls = 0;
             //start the com object
@@ -987,12 +1003,12 @@ namespace iba.Processing
             }
         }
 
-        private void StopIbaAnalyzer()
+        internal void StopIbaAnalyzer()
         {
             StopIbaAnalyzer(true);
         }
 
-        private void StopIbaAnalyzer(bool stop)
+        internal void StopIbaAnalyzer(bool stop)
         {
             m_nrIbaAnalyzerCalls = 0;
             try
@@ -1014,7 +1030,7 @@ namespace iba.Processing
             }
         }
 
-        private string IbaAnalyzerErrorMessage()
+        internal string IbaAnalyzerErrorMessage()
         {
             try
             {
@@ -2378,110 +2394,14 @@ namespace iba.Processing
             }
         }
 
-        private string m_outPutFile;
-        private void Extract(string filename, ExtractData task)
+        internal string m_outPutFile;
+
+        void Extract(string filename, ExtractData task)
         {
-            if (!File.Exists(task.AnalysisFile))
-            {
-                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
-                Log(Logging.Level.Exception, message, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                return;
-            }
-            try
-            {
-                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
-                {
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
-                    }
-                    mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
-                    Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, task);
-                    if (task.ExtractToFile)
-                    {
-                        string outFile = GetExtractFileName(filename, task);
-                        if (outFile == null) return;
-                        if (task.OverwriteFiles && task.UsesQuota && File.Exists(outFile))
-                            m_quotaCleanups[task.Guid].RemoveFile(outFile);
-                        string ext2 = GetSecondaryExtractExtension(task);
-                        string outFile2 = "";
-                        if (!string.IsNullOrEmpty(ext2))
-                            outFile2 = outFile.Replace(GetPrimeExtractExtension(task), ext2);
-                        if (task.OverwriteFiles && task.UsesQuota && !string.IsNullOrEmpty(outFile2) && File.Exists(outFile2))
-                            m_quotaCleanups[task.Guid].RemoveFile(outFile2);
-                        mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
-                        m_outPutFile = outFile;
-                        if (task.UsesQuota)
-                        {
-                            m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
-                            if (!string.IsNullOrEmpty(outFile2))
-                                m_quotaCleanups[task.Guid].AddFile(outFile2);
-                        }
-                    }
-                    else
-                    {
-                        mon.Execute(delegate() { m_ibaAnalyzer.Extract(0, String.Empty); });
-                    }
-                    //code on succes
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
-                    }
-                    Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, task);
-                }
-            }
-            catch (IbaAnalyzerExceedingTimeLimitException te)
-            {
-                Log(Logging.Level.Exception, te.Message, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
-                }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
-            }
-            catch (IbaAnalyzerExceedingMemoryLimitException me)
-            {
-                Log(Logging.Level.Exception, me.Message, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
-                }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
-            }
-            catch (Exception ex)
-            {
-                Log(Logging.Level.Exception, ex.Message + "   " + IbaAnalyzerErrorMessage(), filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-            }
-            finally
-            {
-                if (m_ibaAnalyzer != null)
-                {
-                    try
-                    {
-                        m_ibaAnalyzer.CloseAnalysis();
-                    }
-                    catch
-                    {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
-                        StopIbaAnalyzer(false);
-                        StartIbaAnalyzer();
-                    }
-                }
-            }
+            (new ExtractTaskWorker(this, task)).DoWork(filename);
         }
 
-        private string GetDirectoryName(string filename, TaskDataUNC task)
+        internal string GetDirectoryName(string filename, TaskDataUNC task)
         {
             string dir = task.DestinationMap;
             if (String.IsNullOrEmpty(dir))
@@ -2528,34 +2448,7 @@ namespace iba.Processing
         }
 
 
-        private string GetBothExtractExtensions(ExtractData task)
-        {
-            string secondary = GetSecondaryExtractExtension(task);
-            if (string.IsNullOrEmpty(secondary)) return GetPrimeExtractExtension(task);
-            return GetPrimeExtractExtension(task) + ";*"+ secondary;
-        }
-
-        private string GetPrimeExtractExtension(ExtractData task)
-        {
-            switch (task.FileType)
-            {
-                case ExtractData.ExtractFileType.TEXT: return ".txt";
-                case ExtractData.ExtractFileType.TDMS: return ".tdms";
-                default: return ".dat";
-            }
-        }
-
-        private string GetSecondaryExtractExtension(ExtractData task)
-        {
-            switch (task.FileType)
-            {
-                case ExtractData.ExtractFileType.COMTRADE: return ".cfg";
-                case ExtractData.ExtractFileType.TDMS: return ".tdms_index";
-                default: return "";
-            }
-        }
-
-        private string GetOutputFileName(TaskDataUNC task, string filename)
+        internal string GetOutputFileName(TaskDataUNC task, string filename)
         {
             if (task.UseInfoFieldForOutputFile)
             {
@@ -2597,81 +2490,6 @@ namespace iba.Processing
                 Log(iba.Logging.Level.Warning, message, filename, task);
             }
             return Path.GetFileNameWithoutExtension(filename);
-        }
-
-        private string GetExtractFileName(string filename, ExtractData task)
-        {
-            string ext = GetPrimeExtractExtension(task);
-            string bext = GetBothExtractExtensions(task);
-            try
-            {
-                if (task.UsesQuota)
-                    CleanupWithQuota(filename, task, bext);
-            }
-            catch
-            {
-            }
-
-            string actualFileName = GetOutputFileName(task,filename);
-
-            string dir = GetDirectoryName(filename, task);
-            if (dir == null) 
-                return null;
-
-            if (!Directory.Exists(dir))
-            {
-                try
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                catch
-                {
-                    bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
-                    {
-                        failed = false;
-                        if (!Directory.Exists(dir))
-                        {
-                            try
-                            {
-                                Directory.CreateDirectory(dir);
-                            }
-                            catch
-                            {
-                                failed = true;
-                            }
-                        }
-                    }
-                    if (failed)
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                        lock (m_sd.DatFileStates)
-                        {
-                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                        }
-                        return null;
-                    }
-                }
-                //new directory created, do directory cleanup if that is the setting
-                if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                    task.DoDirCleanupNow = true;                    
-            }
-            if (task.DoDirCleanupNow)
-            {
-                try
-                {
-                    CleanupDirs(filename, task, bext);
-                }
-                catch
-                {
-                }
-                task.DoDirCleanupNow = false;
-            }
-            string arg = Path.Combine(dir, actualFileName + ext);
-            if (task.OverwriteFiles)
-                return arg;
-            else
-                return DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
         }
 
         private string SubFolder(TaskDataUNC.SubfolderChoice choice, String filename)
@@ -2756,7 +2574,6 @@ namespace iba.Processing
                 }
                 catch
                 {
-
                 }
 
                 string actualFileName = GetOutputFileName(task,filename);
@@ -2851,7 +2668,6 @@ namespace iba.Processing
                             return;
                         }
                     }
-
                     if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                         task.DoDirCleanupNow = true;                    
                 }
@@ -2860,7 +2676,7 @@ namespace iba.Processing
                     try
                     {
                         if (task.Extension == "html" || task.Extension == "htm")
-                            CleanupDirsHtml(filename, task, htmlext);
+                            CleanupDirsMultipleOutputFiles(filename, task, htmlext);
                         else
                             CleanupDirs(filename, task, ext);
                     }
@@ -2988,9 +2804,9 @@ namespace iba.Processing
             }
         }
 
-        private void CleanupDirsHtml(string filename, ReportData task, string extension)
+        internal void CleanupDirsMultipleOutputFiles(string filename, TaskDataUNC task, string extension)
         {
-            //html creates an additional subdirectory, only directories directly above it should count
+            //html and .dat file with external video creates an additional subdirectory, only directories directly above it should count
             try
             {
                 string rootmap = task.DestinationMapUNC;
@@ -3046,7 +2862,7 @@ namespace iba.Processing
         }
 
 
-        private void CleanupDirs(string filename, TaskDataUNC task, string extension)
+        internal void CleanupDirs(string filename, TaskDataUNC task, string extension)
         {
             try
             {
@@ -3055,6 +2871,7 @@ namespace iba.Processing
                 if (subdirs.Count <= task.SubfoldersNumber) return; //everything ok
                 if (subdirs.Count == task.SubfoldersNumber + 1) //optimization, don't sort the list, only remove oldest directory
                 {
+                    Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which is one too many ",subdirs.Count), filename,task);
                     string dir=null;
                     DateTime dtoldest = new DateTime();
                     foreach (string dirC in subdirs)
@@ -3066,10 +2883,16 @@ namespace iba.Processing
                             dtoldest = dt;
                         }
                     }
+
                     if (dir != null)
+                    {
                         RemoveDirectory(filename,task,extension,dir);
+                        Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (one directory removal): " + dir, filename, task);
+                    }
                     return;
                 }
+
+                Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which are several too many ",subdirs.Count), filename,task);
 
                 subdirs.Sort(delegate(string dir1, string dir2)
                 {
@@ -3078,6 +2901,7 @@ namespace iba.Processing
                 for (int i = subdirs.Count - 1; i >= task.SubfoldersNumber;i--)
                 {
                     string dir = subdirs[i];
+                    Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (multiple directory removal): " + dir, filename, task);
                     RemoveDirectory(filename,task,extension,dir);
                 }
             }
@@ -3260,7 +3084,7 @@ namespace iba.Processing
                     }
                     task.DoDirCleanupNow = false;
                 }
-                dest = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + ".dat");
+                dest = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + extension);
                 if (!task.OverwriteFiles)
                     dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(dest);
             }
@@ -3330,9 +3154,9 @@ namespace iba.Processing
             }
         }
 
-        private SortedDictionary<Guid, FileQuotaCleanup> m_quotaCleanups;
+        internal SortedDictionary<Guid, FileQuotaCleanup> m_quotaCleanups;
 
-        private void CleanupWithQuota(string filename, TaskDataUNC task, string extension)
+        internal void CleanupWithQuota(string filename, TaskDataUNC task, string extension)
         { //the parameter filename is used for logging, nothing else
             if (!m_quotaCleanups.ContainsKey(task.Guid))
                 m_quotaCleanups.Add(task.Guid,new FileQuotaCleanup(task,extension));
@@ -3740,7 +3564,8 @@ namespace iba.Processing
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
         }
 
-        private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, the cleanup needs to be performed even is the task isn't
+        private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 
+            // the cleanup needs to be performed even is the task isn't
         {
             try
             {
@@ -3755,7 +3580,7 @@ namespace iba.Processing
                 }
                 else if (task is ExtractData)
                 {
-                    ext = GetBothExtractExtensions(task as ExtractData);
+                    ext = ExtractTaskWorker.GetBothExtractExtensions(task as ExtractData);
                 }
                 else if (task is CopyMoveTaskData)
                 {

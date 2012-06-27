@@ -245,6 +245,7 @@
     <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Processing\ExtractTaskWorker.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

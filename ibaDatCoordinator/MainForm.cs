@@ -311,18 +311,23 @@ namespace iba
                 {
                     if (!(confNode.Tag is ConfigurationTreeItemData))
                         confNode = confNode.Parent;
-                    ConfigurationData dat = (confNode.Tag as ConfigurationTreeItemData).ConfigurationData;
-                    TreeNode statNode = null;
-                    foreach (TreeNode statCandidate in m_statusTreeView.Nodes)
+                    if (confNode.Tag is ConfigurationTreeItemData)
                     {
-                        if ((statCandidate.Tag as StatusTreeItemData).CorrConfigurationData.Guid == dat.Guid)
+
+                        ConfigurationData dat = (confNode.Tag as ConfigurationTreeItemData).ConfigurationData;
+                        TreeNode statNode = null;
+                        foreach (TreeNode statCandidate in m_statusTreeView.Nodes)
                         {
-                            statNode = statCandidate;
-                            break;
+                            if (!(statCandidate.Tag is StatusTreeItemData)) continue;
+                            if ((statCandidate.Tag as StatusTreeItemData).CorrConfigurationData.Guid == dat.Guid)
+                            {
+                                statNode = statCandidate;
+                                break;
+                            }
                         }
+                        if (statNode != null)
+                            m_statusTreeView.SelectedNode = statNode;
                     }
-                    if (statNode != null)
-                        m_statusTreeView.SelectedNode = statNode;
                 }
                 if(m_statusTreeView.SelectedNode == null)
 				{
@@ -1866,8 +1871,9 @@ namespace iba
                         zip.CommitUpdate();
                         File.Delete(clientInfoFile);
                     }
-                    catch 
-                    {}
+                    catch
+                    {
+                    }
 
                     try
                     {
@@ -1889,8 +1895,9 @@ namespace iba
                         else
                             File.Delete(outFile);
                     }
-                    catch 
-                    {}
+                    catch
+                    {
+                    }
 
                     try
                     {
@@ -1909,7 +1916,8 @@ namespace iba
                                     zip.CommitUpdate();
                                 }
                                 catch
-                                {}
+                                {
+                                }
                             }
                         }
                     }
@@ -1981,7 +1989,7 @@ namespace iba
                         if (!String.IsNullOrEmpty(file) && File.Exists(file))
                         {
                             zip.BeginUpdate();
-                            zip.Add(file, @"severconf\" + Path.GetFileName(file));
+                            zip.Add(file, @"serverconf\" + Path.GetFileName(file));
                             zip.CommitUpdate();
                         }
                     }

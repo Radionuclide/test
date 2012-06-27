@@ -252,7 +252,7 @@
             // 
             resources.ApplyResources(this.m_nudQuota, "m_nudQuota");
             this.m_nudQuota.Maximum = new decimal(new int[] {
-            1000000,
+            1000000000,
             0,
             0,
             0});
@@ -307,7 +307,7 @@
             // 
             resources.ApplyResources(this.m_nudFree, "m_nudFree");
             this.m_nudFree.Maximum = new decimal(new int[] {
-            1000000,
+            1000000000,
             0,
             0,
             0});

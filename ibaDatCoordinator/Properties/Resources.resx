@@ -1036,4 +1036,7 @@
   <data name="logJobTerminated" xml:space="preserve">
     <value>Script terminated because job was stopped</value>
   </data>
+  <data name="WarningFileTypeMismatch" xml:space="preserve">
+    <value>The specified export file type ({0}) does not match the type specified in the analysis ({1}), the file type in the analysis will be used.</value>
+  </data>
 </root>

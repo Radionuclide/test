@@ -44,6 +44,9 @@ namespace iba.Data
             set { m_monitorData = value; }
         }
 
+        public bool m_bExternalVideoResultIsCached;
+        public bool m_bExternalVideoCacheResult;
+
         public override object Clone()
         {
             ExtractData ed = new ExtractData(null);
