@@ -266,7 +266,7 @@ namespace iba.Processing
         {
             string secondary = GetSecondaryExtractExtension(task);
             if (string.IsNullOrEmpty(secondary)) return GetPrimeExtractExtension(task);
-            return GetPrimeExtractExtension(task) + ";*" + secondary;
+            return GetPrimeExtractExtension(task) + ",*" + secondary;
         }
 
         private string GetBothExtractExtensions()

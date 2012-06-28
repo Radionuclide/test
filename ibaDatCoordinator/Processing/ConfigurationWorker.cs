@@ -266,7 +266,7 @@ namespace iba.Processing
                                     ExtractData.ExtractFileType[] indexToType = 
                                     {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
                                         ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
-
+                                    ed.m_bExternalVideoResultIsCached = false;
                                     int index = ExtractTaskWorker.FileTypeAsInt(ed);
                                     if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
                                     {
@@ -309,7 +309,6 @@ namespace iba.Processing
                                 ExtractData ed = task as ExtractData;
                                 if (ed != null)
                                 {
-                                    ed.m_bExternalVideoResultIsCached = false;
                                     if (ed.ExtractToFile)
                                         pair.Value.ResetTask(task, ExtractTaskWorker.GetBothExtractExtensions(ed));
                                     else
