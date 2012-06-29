@@ -448,6 +448,13 @@ namespace iba.Data
             set { m_smtpServer = value; }
         }
 
+        private string m_sender;
+        public string Sender
+        {
+            get { return m_sender; }
+            set { m_sender = value; }
+        }
+
         private bool m_authenticationRequired;
         public bool AuthenticationRequired
         {
@@ -507,6 +514,7 @@ namespace iba.Data
 
         public NotificationData()
         {
+            m_sender = "ibaDatCoordinator <noreply@iba-ag.com>";
             m_email = "";
             m_host = "";
             m_smtpServer = "";
@@ -530,6 +538,7 @@ namespace iba.Data
             nd.m_authenticationRequired = m_authenticationRequired;
             nd.m_pass = m_pass;
             nd.m_username = m_username;
+            nd.m_sender = m_sender;
             return nd;
         }
 
@@ -543,7 +552,8 @@ namespace iba.Data
             other.m_smtpServer == m_smtpServer &&
             other.m_authenticationRequired == m_authenticationRequired &&
             other.m_pass == m_pass &&
-            other.m_username == m_username;
+            other.m_username == m_username &&
+            other.m_sender == m_sender;
         }
     }
 }

@@ -106,10 +106,26 @@ namespace iba.Processing
             }
             if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
             {
-                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
-                MailMessage message = new MailMessage();
-                message.From = from;
                 string logFailed = null;
+                MailMessage message = new MailMessage();
+                try
+                {
+                    message.From = new MailAddress(m_cd.NotificationData.Sender);
+                }
+                catch (System.Exception ex)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + ex.Message;
+                }
+                if (logFailed != null)
+                {
+                    if (LogData.Data.Logger.IsOpen)
+                    {
+                        LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
+                        LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
+                    }
+                    return;
+                }
+
                 try
                 {
                     foreach (string adress in m_cd.NotificationData.Email.Split(';'))
@@ -242,10 +258,25 @@ namespace iba.Processing
         {
             if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
             {
-                MailAddress from = new MailAddress("ibaDatCoordinator@iba-ag.com");
                 MailMessage message = new MailMessage();
-                message.From = from;
                 string logFailed = null;
+                try
+                {
+                    message.From = new MailAddress(m_cd.NotificationData.Sender);
+                }
+                catch (System.Exception ex)
+                {
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + ex.Message;
+                }
+                if (logFailed != null)
+                {
+
+                    if (LogData.Data.Logger.IsOpen)
+                    {
+                        throw new Exception(logFailed);
+                    }
+                    else return;
+                }
                 try
                 {
                     foreach (string adress in m_cd.NotificationData.Email.Split(';'))

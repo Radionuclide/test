@@ -104,6 +104,8 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
+            this.labelsender = new System.Windows.Forms.Label();
+            this.m_tbSender = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -555,6 +557,8 @@ namespace iba.Controls
             // m_subfolderGroupBox
             // 
             resources.ApplyResources(this.m_subfolderGroupBox, "m_subfolderGroupBox");
+            this.m_subfolderGroupBox.Controls.Add(this.labelsender);
+            this.m_subfolderGroupBox.Controls.Add(this.m_tbSender);
             this.m_subfolderGroupBox.Controls.Add(this.labelmailpass);
             this.m_subfolderGroupBox.Controls.Add(this.m_tbMailPass);
             this.m_subfolderGroupBox.Controls.Add(this.labelmailuser);
@@ -719,6 +723,16 @@ namespace iba.Controls
             this.m_selectDatFilesDialog.FileName = "openFileDialog1";
             this.m_selectDatFilesDialog.Multiselect = true;
             // 
+            // labelsender
+            // 
+            resources.ApplyResources(this.labelsender, "labelsender");
+            this.labelsender.Name = "labelsender";
+            // 
+            // m_tbSender
+            // 
+            resources.ApplyResources(this.m_tbSender, "m_tbSender");
+            this.m_tbSender.Name = "m_tbSender";
+            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -833,5 +847,7 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_browseDatFilesButton;
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
         private System.Windows.Forms.Button m_undoChangesBtn;
+        private System.Windows.Forms.Label labelsender;
+        private System.Windows.Forms.TextBox m_tbSender;
     }
 }

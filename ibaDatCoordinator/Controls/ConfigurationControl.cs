@@ -27,13 +27,13 @@ namespace iba.Controls
             if (oneTimeJob) //make this a onetime job dialog
             {
                 this.SuspendLayout();
-                m_startButton.Location = new Point(16, 18);
-                m_stopButton.Location = new Point(62, 18);
-                m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                m_startButton.Location = new Point(m_undoChangesBtn.Location.X, 18);
+                m_stopButton.Location = new Point(m_refreshDats.Location.X, 18);
+                //m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.standalone.Handle);
                 foreach (Control c in groupBox3.Controls)
                 {
-                    if (c != m_startButton && c != m_stopButton)
+                    if (c != m_startButton && c != m_stopButton && c != m_enableCheckBox)
                     {
                         c.Enabled = false;
                         c.Visible = false;
@@ -207,6 +207,7 @@ namespace iba.Controls
             m_tbMailPass.Text = m_data.NotificationData.Password;
             m_tbMailUsername.Text = m_data.NotificationData.Username;
             m_cbAuthentication.Checked = m_data.NotificationData.AuthenticationRequired;
+            m_tbSender.Text = m_data.NotificationData.Sender;
 
             if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
             {
@@ -275,6 +276,7 @@ namespace iba.Controls
             m_data.NotificationData.AuthenticationRequired = m_cbAuthentication.Checked;
             m_data.NotificationData.Username = m_tbMailUsername.Text;
             m_data.NotificationData.Password = m_tbMailPass.Text;
+            m_data.NotificationData.Sender = m_tbSender.Text;
 
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
