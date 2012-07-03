@@ -72,6 +72,20 @@ namespace iba.Data
             set { m_pass = iba.Utility.Crypt.Decrypt(value); }
         }
 
+        private bool m_doRememberPass;
+        public bool RememberPass
+        {
+            get { return m_doRememberPass; }
+            set { m_doRememberPass = value; }
+        }
+
+        private int m_rememberTimeMinutes;
+        public int RememberTimeMinutes
+        {
+            get { return m_rememberTimeMinutes; }
+            set { m_rememberTimeMinutes = value; }
+        }
+
         public static ibaDatCoordinatorData Create(TaskManager manager)
         {
             ibaDatCoordinatorData answer = new ibaDatCoordinatorData();
@@ -82,6 +96,8 @@ namespace iba.Data
             answer.m_PostponingMinutes = manager.PostponeMinutes;
             answer.m_ProcessPriority = manager.ProcessPriority;
             answer.m_pass = manager.Password;
+            answer.m_doRememberPass = manager.RememberPassEnabled;
+            answer.m_rememberTimeMinutes = (int) manager.RememberPassTime.TotalMinutes;
             return answer;
         }
 
@@ -92,6 +108,8 @@ namespace iba.Data
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
+            manager.RememberPassTime = TimeSpan.FromMinutes(RememberTimeMinutes);
+            manager.RememberPassEnabled = RememberPass;
             manager.Password = Password;
             confs = Configurations;
             if (LogItemCount == 0) LogItemCount = 50;
@@ -109,6 +127,8 @@ namespace iba.Data
             m_PostponingMinutes = 5;
             m_ProcessPriority = (int) System.Diagnostics.ProcessPriorityClass.Normal;
             m_pass = "";
+            m_doRememberPass = false;
+            m_rememberTimeMinutes = 5;
         }
     }
 }

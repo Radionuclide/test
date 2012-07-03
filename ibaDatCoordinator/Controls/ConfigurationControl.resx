@@ -1524,7 +1524,7 @@
     <value>42, 13</value>
   </data>
   <data name="labelsender.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>10</value>
   </data>
   <data name="labelsender.Text" xml:space="preserve">
     <value>sender:</value>
@@ -1551,7 +1551,7 @@
     <value>471, 20</value>
   </data>
   <data name="m_tbSender.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_tbSender.Name" xml:space="preserve">
     <value>m_tbSender</value>
@@ -1713,7 +1713,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_testNotification.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;m_testNotification.Name" xml:space="preserve">
     <value>m_testNotification</value>
@@ -1740,7 +1740,7 @@
     <value>30, 13</value>
   </data>
   <data name="labelnetsendhost.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="labelnetsendhost.Text" xml:space="preserve">
     <value>host:</value>
@@ -1830,7 +1830,7 @@
     <value>66, 17</value>
   </data>
   <data name="m_rbNetSend.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_rbNetSend.Text" xml:space="preserve">
     <value>net send</value>
@@ -1935,7 +1935,7 @@
     <value>471, 20</value>
   </data>
   <data name="m_tbNetSend.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;m_tbNetSend.Name" xml:space="preserve">
     <value>m_tbNetSend</value>

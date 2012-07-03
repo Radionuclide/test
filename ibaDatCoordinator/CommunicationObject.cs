@@ -18,7 +18,6 @@ using System.Runtime.Remoting.Lifetime;
  */
 namespace iba
 {
-
     public class FileProcessingProgressBar : MarshalByRefObject
     {
         public virtual bool UpdateProgress(string file, int count) {return true;}
@@ -109,7 +108,6 @@ namespace iba
                 LogData.Data.LogLevel = value;
             }
         }
-
 
         public void LoggerClearGrid()
         {

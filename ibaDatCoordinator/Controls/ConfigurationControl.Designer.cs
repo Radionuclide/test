@@ -83,6 +83,8 @@ namespace iba.Controls
             this.m_newUpdateDataTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
+            this.labelsender = new System.Windows.Forms.Label();
+            this.m_tbSender = new System.Windows.Forms.TextBox();
             this.labelmailpass = new System.Windows.Forms.Label();
             this.m_tbMailPass = new System.Windows.Forms.TextBox();
             this.labelmailuser = new System.Windows.Forms.Label();
@@ -104,8 +106,6 @@ namespace iba.Controls
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
             this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.labelsender = new System.Windows.Forms.Label();
-            this.m_tbSender = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -576,6 +576,16 @@ namespace iba.Controls
             this.m_subfolderGroupBox.Name = "m_subfolderGroupBox";
             this.m_subfolderGroupBox.TabStop = false;
             // 
+            // labelsender
+            // 
+            resources.ApplyResources(this.labelsender, "labelsender");
+            this.labelsender.Name = "labelsender";
+            // 
+            // m_tbSender
+            // 
+            resources.ApplyResources(this.m_tbSender, "m_tbSender");
+            this.m_tbSender.Name = "m_tbSender";
+            // 
             // labelmailpass
             // 
             resources.ApplyResources(this.labelmailpass, "labelmailpass");
@@ -722,16 +732,6 @@ namespace iba.Controls
             this.m_selectDatFilesDialog.DefaultExt = "dat";
             this.m_selectDatFilesDialog.FileName = "openFileDialog1";
             this.m_selectDatFilesDialog.Multiselect = true;
-            // 
-            // labelsender
-            // 
-            resources.ApplyResources(this.labelsender, "labelsender");
-            this.labelsender.Name = "labelsender";
-            // 
-            // m_tbSender
-            // 
-            resources.ApplyResources(this.m_tbSender, "m_tbSender");
-            this.m_tbSender.Name = "m_tbSender";
             // 
             // ConfigurationControl
             // 

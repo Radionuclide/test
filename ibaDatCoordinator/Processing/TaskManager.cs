@@ -13,7 +13,7 @@ namespace iba.Processing
     public class TaskManager : MarshalByRefObject
     {
         SortedDictionary<ConfigurationData, ConfigurationWorker> m_workers;
-        
+
         virtual public void AddConfiguration(ConfigurationData data)
         {
             ConfigurationWorker cw = new ConfigurationWorker(data);
@@ -46,7 +46,7 @@ namespace iba.Processing
             lock (m_workers)
             {
                 ConfigurationWorker cw;
-                if (m_workers.TryGetValue(data,out cw))
+                if (m_workers.TryGetValue(data, out cw))
                 {
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
@@ -246,12 +246,12 @@ namespace iba.Processing
             }
             return false;
         }
-        
+
         virtual public PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started) 
+                if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started)
                     return (pair.Value.RunningConfiguration.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
             }
             return null;
@@ -287,7 +287,7 @@ namespace iba.Processing
         private TCPWatchdog m_watchdog;
         public TCPWatchdog WatchDog
         {
-            get { return m_watchdog; }        
+            get { return m_watchdog; }
         }
 
         virtual public WatchDogData WatchDogData
@@ -298,8 +298,8 @@ namespace iba.Processing
         virtual public string GetWatchdogStatus()
         {
             return m_watchdog.StatusString;
-        }   
-            
+        }
+
         virtual public void ReplaceWatchdogData(WatchDogData data)
         {
             m_watchdog.Settings = data;
@@ -311,7 +311,7 @@ namespace iba.Processing
         }
 
         //singleton construction
-        private static TaskManager theTaskManager=null; 
+        private static TaskManager theTaskManager = null;
         //theTaskmanager has a triple purpose
         //1:) If standalone it is simply THE manager
         //2:) When installed as service and connected it is
@@ -320,7 +320,7 @@ namespace iba.Processing
         //3:) When installed as service and disconnected
         //      On the client instance of TaskManager: A temporary manager, allowing you to set settings that can be uploaded when reconnected
         //      On the server instance of Taskmanager (on condition that server is alive): another manager, that might be downloaded when reconnected
-        private static TaskManagerWrapper RemoteTaskManager = null; 
+        private static TaskManagerWrapper RemoteTaskManager = null;
         //wrapper, i.e. this should be returned when running on the client and being connected, 
         // it delegates calls to theTaskManager on the serverside through the communication object
 
@@ -332,8 +332,10 @@ namespace iba.Processing
             m_postponeMinutes = 5;
             m_processPriority = (int)System.Diagnostics.ProcessPriorityClass.Normal;
             m_password = "";
+            m_rememberPassTime = TimeSpan.FromMinutes(5);
+            m_rememberPassEnabled = false;
         }
-        
+
         public static TaskManager Manager
         {
             get
@@ -530,9 +532,10 @@ namespace iba.Processing
         virtual public int ProcessPriority
         {
             get { return m_processPriority; }
-            set { 
+            set
+            {
                 m_processPriority = value;
-                System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) value;
+                System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass)value;
                 if (Program.IsServer || Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 {
                     try
@@ -551,6 +554,21 @@ namespace iba.Processing
             get { return m_password; }
             set { m_password = value; }
         }
+
+        TimeSpan m_rememberPassTime;
+        virtual public TimeSpan RememberPassTime
+        {
+            get { return m_rememberPassTime; }
+            set { m_rememberPassTime = value; }
+        }
+
+        bool m_rememberPassEnabled;
+        virtual public bool RememberPassEnabled
+        {
+            get { return m_rememberPassEnabled; }
+            set { m_rememberPassEnabled = value; }
+        }
+
 
         virtual public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
         {
@@ -722,12 +740,12 @@ namespace iba.Processing
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetMinimalStatus(guid, permanentError); 
+                return Program.CommunicationObject.Manager.GetMinimalStatus(guid, permanentError);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetMinimalStatus(guid,permanentError);
+                return Manager.GetMinimalStatus(guid, permanentError);
             }
         }
 
@@ -735,12 +753,12 @@ namespace iba.Processing
         {
             try
             {
-                return Program.CommunicationObject.Manager.GetStatusPlugin(guid,taskindex);
+                return Program.CommunicationObject.Manager.GetStatusPlugin(guid, taskindex);
             }
             catch (SocketException)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
-                return Manager.GetStatusPlugin(guid,taskindex);
+                return Manager.GetStatusPlugin(guid, taskindex);
             }
         }
 
@@ -761,7 +779,7 @@ namespace iba.Processing
         {
             try
             {
-                Program.CommunicationObject.Manager.AlterPermanentFileErrorList(todo, guid,files);
+                Program.CommunicationObject.Manager.AlterPermanentFileErrorList(todo, guid, files);
             }
             catch (SocketException)
             {
@@ -869,7 +887,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
-        }                        
+        }
 
         public override void StopAllConfigurations()
         {
@@ -1025,7 +1043,7 @@ namespace iba.Processing
             }
         }
 
-       public override int ProcessPriority
+        public override int ProcessPriority
         {
             get
             {
@@ -1053,8 +1071,8 @@ namespace iba.Processing
             }
         }
 
-       public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
-       {
+        public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+        {
             try
             {
                 Program.CommunicationObject.Manager.AdditionalFileNames(myList);
@@ -1067,31 +1085,85 @@ namespace iba.Processing
             }
         }
 
-       public override string Password
-       {
-           get
-           {
-               try
-               {
-                   return Program.CommunicationObject.Manager.Password;
-               }
-               catch (SocketException)
-               {
-                   Program.CommunicationObject.HandleBrokenConnection();
-                   return "";
-               }
-           }
-           set
-           {
-               try
-               {
-                  Program.CommunicationObject.Manager.Password = value;
-               }
-               catch (SocketException)
-               {
-                   Program.CommunicationObject.HandleBrokenConnection();
-               }
-           }
-       }
+        public override string Password
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.Password;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return "";
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.Password = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                }
+            }
+        }
+
+        public override TimeSpan RememberPassTime
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.RememberPassTime;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return TimeSpan.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.RememberPassTime = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                }
+            }
+        }
+
+        public override bool RememberPassEnabled
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.RememberPassEnabled;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return false;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.RememberPassEnabled = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                }
+            }
+        }
     }
 }

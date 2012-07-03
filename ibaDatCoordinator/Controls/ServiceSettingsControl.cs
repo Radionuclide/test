@@ -93,6 +93,8 @@ namespace iba.Controls
             try
             {
                 m_pass = TaskManager.Manager.Password;
+                m_cbRememberPassword.Checked = TaskManager.Manager.RememberPassEnabled;
+                m_nudRememberTime.Value = (decimal)TaskManager.Manager.RememberPassTime.TotalMinutes;
             }
             catch { }
             UpdatePassControls();
@@ -113,6 +115,7 @@ namespace iba.Controls
                 m_passwordStatusLabel.Text = iba.Properties.Resources.PassSet;
             }
             TaskManager.Manager.Password = m_pass;
+
         }
 
         private string m_pass;
@@ -209,7 +212,9 @@ namespace iba.Controls
             TaskManager.Manager.DoPostponeProcessing = bPostpone;
             int minutes = (int) m_nudPostponeTime.Value;
             TaskManager.Manager.PostponeMinutes = minutes;
-            
+
+            TaskManager.Manager.RememberPassEnabled = m_cbRememberPassword.Checked;
+            TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
             int iPc = 2;
             switch (m_comboPriority.SelectedIndex)
             {

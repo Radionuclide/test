@@ -59,22 +59,40 @@ namespace iba.Utility
             return CheckPassword(null);
         }
 
+
+        private static string LastSpecifiedPass = null;
+        private static DateTime LastTime = DateTime.MinValue;
+
         public static bool CheckPassword(System.Windows.Forms.Form parent)
         {
             string pass = null;
+            TimeSpan rememberTime = TimeSpan.MinValue;
+            bool doRemember = false;
             try 
             {
                 pass = iba.Processing.TaskManager.Manager.Password;
+                rememberTime = iba.Processing.TaskManager.Manager.RememberPassTime;
+                doRemember = iba.Processing.TaskManager.Manager.RememberPassEnabled;
             }
             catch{}
-            if (string.IsNullOrEmpty(pass)) return true;
+            if (string.IsNullOrEmpty(pass) || 
+                (LastSpecifiedPass != null && doRemember && pass == LastSpecifiedPass && (DateTime.Now - LastTime) < rememberTime)) return true;
             iba.Dialogs.PasswordConfirm dlg = new iba.Dialogs.PasswordConfirm(pass);
             dlg.StartPosition = (parent != null) ? System.Windows.Forms.FormStartPosition.CenterParent : System.Windows.Forms.FormStartPosition.CenterScreen;
             if (parent != null)
                 dlg.ShowDialog(parent);
             else
                 dlg.ShowDialog();
-            return !dlg.Cancelled;
+            if (!dlg.Cancelled)
+            {
+                if (doRemember)
+                {
+                    LastSpecifiedPass = pass;
+                    LastTime = DateTime.Now;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }

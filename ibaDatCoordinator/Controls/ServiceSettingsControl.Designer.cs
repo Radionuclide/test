@@ -47,14 +47,18 @@ namespace iba.Controls
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.m_ClearPassBtn = new System.Windows.Forms.Button();
+            this.m_nudRememberTime = new System.Windows.Forms.NumericUpDown();
             this.m_SetChangePassBtn = new System.Windows.Forms.Button();
+            this.m_cbRememberPassword = new System.Windows.Forms.CheckBox();
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
             this.SuspendLayout();
             // 
             // m_gbApp
@@ -180,11 +184,19 @@ namespace iba.Controls
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.m_ClearPassBtn);
+            this.groupBox2.Controls.Add(this.m_nudRememberTime);
             this.groupBox2.Controls.Add(this.m_SetChangePassBtn);
+            this.groupBox2.Controls.Add(this.m_cbRememberPassword);
             this.groupBox2.Controls.Add(this.m_passwordStatusLabel);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // m_ClearPassBtn
             // 
@@ -193,12 +205,38 @@ namespace iba.Controls
             this.m_ClearPassBtn.UseVisualStyleBackColor = true;
             this.m_ClearPassBtn.Click += new System.EventHandler(this.m_ClearPassBtn_Click);
             // 
+            // m_nudRememberTime
+            // 
+            resources.ApplyResources(this.m_nudRememberTime, "m_nudRememberTime");
+            this.m_nudRememberTime.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.m_nudRememberTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudRememberTime.Name = "m_nudRememberTime";
+            this.m_nudRememberTime.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // m_SetChangePassBtn
             // 
             resources.ApplyResources(this.m_SetChangePassBtn, "m_SetChangePassBtn");
             this.m_SetChangePassBtn.Name = "m_SetChangePassBtn";
             this.m_SetChangePassBtn.UseVisualStyleBackColor = true;
             this.m_SetChangePassBtn.Click += new System.EventHandler(this.m_SetChangePassBtn_Click);
+            // 
+            // m_cbRememberPassword
+            // 
+            resources.ApplyResources(this.m_cbRememberPassword, "m_cbRememberPassword");
+            this.m_cbRememberPassword.Name = "m_cbRememberPassword";
+            this.m_cbRememberPassword.UseVisualStyleBackColor = true;
             // 
             // m_passwordStatusLabel
             // 
@@ -224,6 +262,7 @@ namespace iba.Controls
             this.groupBox5.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -250,6 +289,9 @@ namespace iba.Controls
         private System.Windows.Forms.Label m_passwordStatusLabel;
         private System.Windows.Forms.Button m_ClearPassBtn;
         private System.Windows.Forms.Button m_SetChangePassBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown m_nudRememberTime;
+        private System.Windows.Forms.CheckBox m_cbRememberPassword;
 
     }
 }
