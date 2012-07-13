@@ -129,7 +129,7 @@
     <value>11, 43</value>
   </data>
   <data name="m_panelFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 400</value>
+    <value>644, 455</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_panelFile.TabIndex" type="System.Int32, mscorlib">
@@ -223,10 +223,10 @@
     <value>3</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 73</value>
+    <value>0, 77</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 445</value>
+    <value>666, 505</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -520,7 +520,7 @@
     <value>5</value>
   </data>
   <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 524</value>
+    <value>0, 588</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 73</value>
@@ -553,7 +553,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 604</value>
+    <value>666, 666</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>

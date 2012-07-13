@@ -125,234 +125,192 @@
   <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tableLayoutPanel3.ColumnCount" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_rbInfofieldForDir.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="m_rbOriginal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_rbOriginal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbInfofieldForDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 26</value>
+  <data name="m_rbInfofieldForDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 1</value>
   </data>
-  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 17</value>
+  <data name="m_rbInfofieldForDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 17</value>
   </data>
-  <data name="m_rbOriginal.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbInfofieldForDir.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbInfofieldForDir.Text" xml:space="preserve">
+    <value>Use infofield for subdirectory:</value>
+  </data>
+  <data name="&gt;&gt;m_rbInfofieldForDir.Name" xml:space="preserve">
+    <value>m_rbInfofieldForDir</value>
+  </data>
+  <data name="&gt;&gt;m_rbInfofieldForDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbInfofieldForDir.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;m_rbInfofieldForDir.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblInfoLengthDir.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblInfoLengthDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblInfoLengthDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>190, 28</value>
+  </data>
+  <data name="m_lblInfoLengthDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="m_lblInfoLengthDir.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_rbOriginal.Text" xml:space="preserve">
-    <value>Keep original structure</value>
+  <data name="m_lblInfoLengthDir.Text" xml:space="preserve">
+    <value>Length:</value>
   </data>
-  <data name="&gt;&gt;m_rbOriginal.Name" xml:space="preserve">
-    <value>m_rbOriginal</value>
+  <data name="&gt;&gt;m_lblInfoLengthDir.Name" xml:space="preserve">
+    <value>m_lblInfoLengthDir</value>
   </data>
-  <data name="&gt;&gt;m_rbOriginal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_lblInfoLengthDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbOriginal.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="&gt;&gt;m_lblInfoLengthDir.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;m_rbOriginal.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;m_lblInfoLengthDir.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="m_rbNONE.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblInfoStartDir.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbNONE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_rbNONE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblInfoStartDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 26</value>
+  <data name="m_lblInfoStartDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 28</value>
   </data>
-  <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 17</value>
+  <data name="m_lblInfoStartDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 13</value>
   </data>
-  <data name="m_rbNONE.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblInfoStartDir.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblInfoStartDir.Text" xml:space="preserve">
+    <value>Start:</value>
+  </data>
+  <data name="&gt;&gt;m_lblInfoStartDir.Name" xml:space="preserve">
+    <value>m_lblInfoStartDir</value>
+  </data>
+  <data name="&gt;&gt;m_lblInfoStartDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblInfoStartDir.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblInfoStartDir.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_nudInfoLengthDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>258, 26</value>
+  </data>
+  <data name="m_nudInfoLengthDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 20</value>
+  </data>
+  <data name="m_nudInfoLengthDir.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_rbNONE.Text" xml:space="preserve">
-    <value>None</value>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>202, 17</value>
+  </metadata>
+  <data name="m_nudInfoLengthDir.ToolTip" xml:space="preserve">
+    <value>length of the infofield part, specify 0 for all characters</value>
   </data>
-  <data name="&gt;&gt;m_rbNONE.Name" xml:space="preserve">
-    <value>m_rbNONE</value>
+  <data name="&gt;&gt;m_nudInfoLengthDir.Name" xml:space="preserve">
+    <value>m_nudInfoLengthDir</value>
   </data>
-  <data name="&gt;&gt;m_rbNONE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_nudInfoLengthDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbNONE.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="&gt;&gt;m_nudInfoLengthDir.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;m_rbNONE.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_rbHour.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbHour.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_rbHour.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbHour.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 17</value>
-  </data>
-  <data name="m_rbHour.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rbHour.Text" xml:space="preserve">
-    <value>Each hour</value>
-  </data>
-  <data name="&gt;&gt;m_rbHour.Name" xml:space="preserve">
-    <value>m_rbHour</value>
-  </data>
-  <data name="&gt;&gt;m_rbHour.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbHour.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
-  </data>
-  <data name="&gt;&gt;m_rbHour.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_rbDay.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbDay.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_rbDay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 3</value>
-  </data>
-  <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 17</value>
-  </data>
-  <data name="m_rbDay.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbDay.Text" xml:space="preserve">
-    <value>Each day</value>
-  </data>
-  <data name="&gt;&gt;m_rbDay.Name" xml:space="preserve">
-    <value>m_rbDay</value>
-  </data>
-  <data name="&gt;&gt;m_rbDay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbDay.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
-  </data>
-  <data name="&gt;&gt;m_rbDay.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudInfoLengthDir.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_rbWeek.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_nudInfoStartDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>60, 26</value>
   </data>
-  <data name="m_rbWeek.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_nudInfoStartDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 20</value>
   </data>
-  <data name="m_rbWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_nudInfoStartDir.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_rbWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 3</value>
+  <data name="m_nudInfoStartDir.ToolTip" xml:space="preserve">
+    <value>start index of the infofield part (0 = 1st character)</value>
   </data>
-  <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 17</value>
+  <data name="&gt;&gt;m_nudInfoStartDir.Name" xml:space="preserve">
+    <value>m_nudInfoStartDir</value>
   </data>
-  <data name="m_rbWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;m_nudInfoStartDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_rbWeek.Text" xml:space="preserve">
-    <value>Each week</value>
+  <data name="&gt;&gt;m_nudInfoStartDir.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;m_rbWeek.Name" xml:space="preserve">
-    <value>m_rbWeek</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeek.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeek.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudInfoStartDir.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_rbMonth.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_tbInfoFieldDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>186, 0</value>
   </data>
-  <data name="m_rbMonth.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_tbInfoFieldDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 20</value>
   </data>
-  <data name="m_rbMonth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_tbInfoFieldDir.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_rbMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
+  <data name="&gt;&gt;m_tbInfoFieldDir.Name" xml:space="preserve">
+    <value>m_tbInfoFieldDir</value>
   </data>
-  <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 17</value>
+  <data name="&gt;&gt;m_tbInfoFieldDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_rbMonth.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;m_tbInfoFieldDir.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="m_rbMonth.Text" xml:space="preserve">
-    <value>Each month</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonth.Name" xml:space="preserve">
-    <value>m_rbMonth</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonth.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonth.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbInfoFieldDir.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tableLayoutPanel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 66</value>
   </data>
-  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>623, 48</value>
   </data>
-  <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 46</value>
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel3.Name" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbOriginal" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNONE" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbHour" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDay" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbWeek" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbMonth" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_cbTakeDatTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,10 +346,10 @@
     <value>Fill</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 55</value>
+    <value>3, 120</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 21</value>
+    <value>623, 24</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -408,6 +366,234 @@
   <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="tableLayoutPanel3.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbOriginal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbOriginal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbOriginal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 31</value>
+  </data>
+  <data name="m_rbOriginal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 23</value>
+  </data>
+  <data name="m_rbOriginal.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_rbOriginal.Text" xml:space="preserve">
+    <value>Keep original structure</value>
+  </data>
+  <data name="&gt;&gt;m_rbOriginal.Name" xml:space="preserve">
+    <value>m_rbOriginal</value>
+  </data>
+  <data name="&gt;&gt;m_rbOriginal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbOriginal.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbOriginal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbNONE.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbNONE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbNONE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbNONE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 31</value>
+  </data>
+  <data name="m_rbNONE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 23</value>
+  </data>
+  <data name="m_rbNONE.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbNONE.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="&gt;&gt;m_rbNONE.Name" xml:space="preserve">
+    <value>m_rbNONE</value>
+  </data>
+  <data name="&gt;&gt;m_rbNONE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNONE.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbNONE.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbHour.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbHour.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbHour.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbHour.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_rbHour.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 22</value>
+  </data>
+  <data name="m_rbHour.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbHour.Text" xml:space="preserve">
+    <value>Each hour</value>
+  </data>
+  <data name="&gt;&gt;m_rbHour.Name" xml:space="preserve">
+    <value>m_rbHour</value>
+  </data>
+  <data name="&gt;&gt;m_rbHour.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbHour.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbHour.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbDay.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbDay.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbDay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbDay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 3</value>
+  </data>
+  <data name="m_rbDay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 22</value>
+  </data>
+  <data name="m_rbDay.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbDay.Text" xml:space="preserve">
+    <value>Each day</value>
+  </data>
+  <data name="&gt;&gt;m_rbDay.Name" xml:space="preserve">
+    <value>m_rbDay</value>
+  </data>
+  <data name="&gt;&gt;m_rbDay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDay.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbDay.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbWeek.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbWeek.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 3</value>
+  </data>
+  <data name="m_rbWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 22</value>
+  </data>
+  <data name="m_rbWeek.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbWeek.Text" xml:space="preserve">
+    <value>Each week</value>
+  </data>
+  <data name="&gt;&gt;m_rbWeek.Name" xml:space="preserve">
+    <value>m_rbWeek</value>
+  </data>
+  <data name="&gt;&gt;m_rbWeek.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbWeek.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbWeek.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_rbMonth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbMonth.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbMonth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbMonth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 31</value>
+  </data>
+  <data name="m_rbMonth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 23</value>
+  </data>
+  <data name="m_rbMonth.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbMonth.Text" xml:space="preserve">
+    <value>Each month</value>
+  </data>
+  <data name="&gt;&gt;m_rbMonth.Name" xml:space="preserve">
+    <value>m_rbMonth</value>
+  </data>
+  <data name="&gt;&gt;m_rbMonth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbMonth.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;m_rbMonth.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutPanel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>623, 57</value>
+  </data>
+  <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Name" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbOriginal" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNONE" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbHour" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDay" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbWeek" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbMonth" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -418,7 +604,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>629, 79</value>
+    <value>629, 147</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -436,13 +622,13 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,43,Percent,37,Percent,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 98</value>
   </data>
   <data name="m_subfolderGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 98</value>
+    <value>635, 166</value>
   </data>
   <data name="m_subfolderGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -847,7 +1033,7 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel4" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel5" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel6" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel7" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_cleanupGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 202</value>
+    <value>0, 270</value>
   </data>
   <data name="m_cleanupGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>635, 82</value>
@@ -1266,9 +1452,6 @@
   <data name="m_nudInfoLength.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>202, 17</value>
-  </metadata>
   <data name="m_nudInfoLength.ToolTip" xml:space="preserve">
     <value>length of the infofield part, specify 0 for all characters</value>
   </data>
@@ -1333,7 +1516,7 @@
     <value>TopDown</value>
   </data>
   <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 287</value>
+    <value>9, 358</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>523, 112</value>
@@ -1363,7 +1546,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 402</value>
+    <value>635, 470</value>
   </data>
   <data name="&gt;&gt;m_folderBrowserDialog1.Name" xml:space="preserve">
     <value>m_folderBrowserDialog1</value>

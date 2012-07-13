@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
 namespace iba.Controls
 {
     using iba.Data;
@@ -37,6 +36,7 @@ namespace iba.Controls
             m_rbMonth.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.MONTH;
             m_rbDay.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.DAY;
             m_rbWeek.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.WEEK;
+            m_rbInfofieldForDir.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD;
 
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
@@ -62,6 +62,10 @@ namespace iba.Controls
             m_tbInfoField.Text = m_data.InfoFieldForOutputFile;
             m_nudInfoStart.Value = m_data.InfoFieldForOutputFileStart;
             m_nudInfoLength.Value = m_data.InfoFieldForOutputFileLength;
+
+            m_tbInfoFieldDir.Text = m_data.InfoFieldForSubdir;
+            m_nudInfoStartDir.Value = m_data.InfoFieldForSubdirStart;
+            m_nudInfoLengthDir.Value = m_data.InfoFieldForSubdirLength;
         }
 
         public void SaveData()
@@ -72,6 +76,7 @@ namespace iba.Controls
             if (m_rbWeek.Checked) m_data.Subfolder = ReportData.SubfolderChoice.WEEK;
             if (m_rbMonth.Checked) m_data.Subfolder = ReportData.SubfolderChoice.MONTH;
             if (m_rbOriginal.Checked) m_data.Subfolder = ReportData.SubfolderChoice.SAME;
+            if (m_rbInfofieldForDir.Checked) m_data.Subfolder = ReportData.SubfolderChoice.INFOFIELD;
 
             m_data.SubfoldersNumber = (uint)m_nudDirs.Value;
             m_data.Quota = (uint) m_nudQuota.Value;
@@ -98,6 +103,9 @@ namespace iba.Controls
             m_data.InfoFieldForOutputFile = m_tbInfoField.Text;
             m_data.InfoFieldForOutputFileStart = (int) m_nudInfoStart.Value;
             m_data.InfoFieldForOutputFileLength = (int)m_nudInfoLength.Value;
+            m_data.InfoFieldForSubdir = m_tbInfoFieldDir.Text;
+            m_data.InfoFieldForSubdirStart = (int)m_nudInfoStartDir.Value;
+            m_data.InfoFieldForSubdirLength = (int)m_nudInfoLengthDir.Value;
             m_data.UpdateUNC();
         }
 
@@ -199,6 +207,28 @@ namespace iba.Controls
             m_nudInfoStart.Visible = false;
             m_lblInfoLength.Visible = false;
             m_lblInfoStart.Visible = false;
+        }
+
+        private void TimeDirRbCheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as RadioButton).Checked && m_rbInfofieldForDir.Checked)
+                m_rbInfofieldForDir.Checked = false;
+        }
+
+        private void m_rbInfofieldForDir_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_rbInfofieldForDir.Checked)
+            {
+                RadioButton[] buttons = { m_rbNONE, m_rbHour, m_rbDay, m_rbWeek, m_rbMonth, m_rbOriginal };
+                foreach(RadioButton rb in buttons)
+                {
+                    if (rb.Checked)
+                    {
+                        rb.Checked = false;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

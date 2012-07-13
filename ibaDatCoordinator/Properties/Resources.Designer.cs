@@ -2544,6 +2544,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain infofield &apos;{0}&apos; from the .dat file. The file will be placed in the &apos;unresolved&apos; subdirectory..
+        /// </summary>
+        internal static string WarningInfofieldDirFailed {
+            get {
+                return ResourceManager.GetString("WarningInfofieldDirFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to obtain infofield &apos;{0}&apos; from the .dat file. The .dat file filename will be used as output filename..
         /// </summary>
         internal static string WarningInfofieldFailed {

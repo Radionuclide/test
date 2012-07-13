@@ -259,22 +259,6 @@ namespace iba.Processing
                                 if (stat != null)
                                     updatedStatus.States[task] = stat.Value;
 
-                                //check if fileType matches
-                                ExtractData ed = task as ExtractData;
-                                if (ed != null && ed.ExtractToFile)
-                                {
-                                    ExtractData.ExtractFileType[] indexToType = 
-                                    {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
-                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
-                                    ed.m_bExternalVideoResultIsCached = false;
-                                    int index = ExtractTaskWorker.FileTypeAsInt(ed);
-                                    if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
-                                    {
-                                        string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
-                                        Log(Logging.Level.Warning, errorMessage, string.Empty,task);
-                                        ed.FileType = indexToType[index];
-                                    }
-                                }
                             }
                             p.Value.States.Clear();
                             foreach (KeyValuePair<TaskData, DatFileStatus.State> p2 in updatedStatus.States)
@@ -289,6 +273,30 @@ namespace iba.Processing
                         m_notifier.Send();
                     }
                     m_notifier = new Notifier(m_cd);
+
+
+                    //test if output type specified in datco file matches output type specified in pdo
+
+                    foreach (TaskData task in m_cd.Tasks)
+                    {
+
+                        //check if fileType matches
+                        ExtractData ed = task as ExtractData;
+                        if (ed != null && ed.ExtractToFile)
+                        {
+                            ExtractData.ExtractFileType[] indexToType = 
+                                    {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
+                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
+                            ed.m_bExternalVideoResultIsCached = false;
+                            int index = ExtractTaskWorker.FileTypeAsInt(ed);
+                            if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
+                            {
+                                string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
+                                Log(Logging.Level.Warning, errorMessage, string.Empty, task);
+                                ed.FileType = indexToType[index];
+                            }
+                        }
+                    }
 
                     //update unc tasks
                     if (m_cd.OnetimeJob) //one time job, reset all quotacleanups
@@ -2441,7 +2449,7 @@ namespace iba.Processing
             if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
                 && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
             {
-                dir = Path.Combine(dir, SubFolder(task.Subfolder,task.UseDatModTimeForDirs?filename:null));
+                dir = Path.Combine(dir, SubFolder(task,filename));
             }
             return dir;
         }
@@ -2491,10 +2499,11 @@ namespace iba.Processing
             return Path.GetFileNameWithoutExtension(filename);
         }
 
-        private string SubFolder(TaskDataUNC.SubfolderChoice choice, String filename)
+        private string SubFolder(TaskDataUNC task, String filename)
         {
+            TaskDataUNC.SubfolderChoice choice = task.Subfolder;
 	        DateTime dt = DateTime.Now;
-            if (filename != null)
+            if (task.UseDatModTimeForDirs && task.Subfolder != TaskDataUNC.SubfolderChoice.INFOFIELD)
             {
                 try
                 {
@@ -2517,6 +2526,47 @@ namespace iba.Processing
                 {
                     int weekNr = GetWeekNumber(dt);
                     return (dt.Year - 2000).ToString("d2") + weekNr.ToString("d2");
+                }
+                case TaskDataUNC.SubfolderChoice.INFOFIELD:
+                {
+                    IbaFile ibaDatFile = new IbaFileClass();
+                    string Subdir = "";
+                    try
+                    {
+                        ibaDatFile.Open(filename);
+                        Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
+                        if (task.InfoFieldForSubdirLength == 0)
+                        {
+                            if (task.InfoFieldForSubdirStart != 0)
+                            {
+                                Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                            }
+                        }
+                        else
+                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                    }
+                    catch
+                    {
+                        Subdir = "";
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            ibaDatFile.Close();
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(Subdir)) return Subdir;
+                    Subdir = "unresolved";
+                    //warn that we failed getting the infofield
+                    string message = string.Format(iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
+                    Log(iba.Logging.Level.Warning, message, filename, task);
+                    return Subdir;
                 }
                 default:
                     return null;
@@ -2615,7 +2665,7 @@ namespace iba.Processing
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE 
                     && task.Subfolder != ReportData.SubfolderChoice.SAME)
                 {
-                    dir = Path.Combine(dir, SubFolder(task.Subfolder, task.UseDatModTimeForDirs ? filename : null));
+                    dir = Path.Combine(dir, SubFolder(task, filename ));
                 }
 
                 if (task.Extension == "html" || task.Extension == "htm")
@@ -3033,7 +3083,7 @@ namespace iba.Processing
                 }
                 if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
                 {
-                    dir = Path.Combine(dir, SubFolder(task.Subfolder, task.UseDatModTimeForDirs ? filename : null));
+                    dir = Path.Combine(dir, SubFolder(task,  filename ));
                 }
                 if (!Directory.Exists(dir))
                 {

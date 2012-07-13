@@ -46,6 +46,9 @@ namespace iba.Data
             m_infoFieldForOutputFile = "";
             m_infoFieldForOutputFileStart = 0;
             m_infoFieldForOutputFileLength = 0;
+            m_infoFieldForSubdir = "";
+            m_infoFieldForSubdirStart = 0;
+            m_infoFieldForSubdirLength = 0;
         }
 
         protected uint m_numbFolders;
@@ -55,7 +58,7 @@ namespace iba.Data
             set { m_numbFolders = value; }
         }
 
-        public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH };
+        public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH, INFOFIELD };
         protected SubfolderChoice m_subfolderChoice;
         public SubfolderChoice Subfolder
         {
@@ -135,6 +138,27 @@ namespace iba.Data
             set { m_infoFieldForOutputFileLength = value; }
         }
 
+        protected string m_infoFieldForSubdir;
+        public string InfoFieldForSubdir
+        {
+            get { return m_infoFieldForSubdir; }
+            set { m_infoFieldForSubdir = value; }
+        }
+
+        protected int m_infoFieldForSubdirStart;
+        public int InfoFieldForSubdirStart
+        {
+            get { return m_infoFieldForSubdirStart; }
+            set { m_infoFieldForSubdirStart = value; }
+        }
+
+        protected int m_infoFieldForSubdirLength;
+        public int InfoFieldForSubdirLength
+        {
+            get { return m_infoFieldForSubdirLength; }
+            set { m_infoFieldForSubdirLength = value; }
+        }
+
         public void UpdateUNC()
         {
             m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
@@ -158,6 +182,9 @@ namespace iba.Data
             uncdat.m_infoFieldForOutputFile = m_infoFieldForOutputFile;
             uncdat.m_infoFieldForOutputFileStart = m_infoFieldForOutputFileStart;
             uncdat.m_infoFieldForOutputFileLength = m_infoFieldForOutputFileLength;
+            uncdat.m_infoFieldForSubdir = m_infoFieldForSubdir;
+            uncdat.m_infoFieldForSubdirStart = m_infoFieldForSubdirStart;
+            uncdat.m_infoFieldForSubdirLength = m_infoFieldForSubdirLength;
         }
 
         public bool UNCDataIsSame(TaskDataUNC other)
@@ -178,7 +205,10 @@ namespace iba.Data
             other.m_useInfoFieldForOutputFile == m_useInfoFieldForOutputFile &&
             other.m_infoFieldForOutputFile == m_infoFieldForOutputFile &&
             other.m_infoFieldForOutputFileStart == m_infoFieldForOutputFileStart &&
-            other.m_infoFieldForOutputFileLength == m_infoFieldForOutputFileLength;
+            other.m_infoFieldForOutputFileLength == m_infoFieldForOutputFileLength &&
+            other.m_infoFieldForSubdir == m_infoFieldForSubdir &&
+            other.m_infoFieldForSubdirStart == m_infoFieldForSubdirStart &&
+            other.m_infoFieldForSubdirLength == m_infoFieldForSubdirLength;
         }
 
         protected string m_username;

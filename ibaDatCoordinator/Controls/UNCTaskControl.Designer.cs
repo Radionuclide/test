@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UNCTaskControl));
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbOriginal = new System.Windows.Forms.RadioButton();
             this.m_rbNONE = new System.Windows.Forms.RadioButton();
@@ -39,8 +41,6 @@
             this.m_rbDay = new System.Windows.Forms.RadioButton();
             this.m_rbWeek = new System.Windows.Forms.RadioButton();
             this.m_rbMonth = new System.Windows.Forms.RadioButton();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.m_cleanupGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -76,10 +76,17 @@
             this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
             this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.m_lblInfoLengthDir = new System.Windows.Forms.Label();
+            this.m_lblInfoStartDir = new System.Windows.Forms.Label();
+            this.m_nudInfoLengthDir = new System.Windows.Forms.NumericUpDown();
+            this.m_nudInfoStartDir = new System.Windows.Forms.NumericUpDown();
+            this.m_tbInfoFieldDir = new System.Windows.Forms.TextBox();
+            this.m_rbInfofieldForDir = new System.Windows.Forms.RadioButton();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.m_cleanupGroupBox.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -93,6 +100,9 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).BeginInit();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).BeginInit();
             this.SuspendLayout();
             // 
             // m_subfolderGroupBox
@@ -105,9 +115,24 @@
             // tableLayoutPanel2
             // 
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.panel3, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.m_cbTakeDatTime);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // m_cbTakeDatTime
+            // 
+            resources.ApplyResources(this.m_cbTakeDatTime, "m_cbTakeDatTime");
+            this.m_cbTakeDatTime.Checked = true;
+            this.m_cbTakeDatTime.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbTakeDatTime.Name = "m_cbTakeDatTime";
+            this.m_cbTakeDatTime.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel3
             // 
@@ -126,6 +151,7 @@
             this.m_rbOriginal.Name = "m_rbOriginal";
             this.m_rbOriginal.TabStop = true;
             this.m_rbOriginal.UseVisualStyleBackColor = true;
+            this.m_rbOriginal.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_rbNONE
             // 
@@ -133,6 +159,7 @@
             this.m_rbNONE.Name = "m_rbNONE";
             this.m_rbNONE.TabStop = true;
             this.m_rbNONE.UseVisualStyleBackColor = true;
+            this.m_rbNONE.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_rbHour
             // 
@@ -140,6 +167,7 @@
             this.m_rbHour.Name = "m_rbHour";
             this.m_rbHour.TabStop = true;
             this.m_rbHour.UseVisualStyleBackColor = true;
+            this.m_rbHour.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_rbDay
             // 
@@ -147,6 +175,7 @@
             this.m_rbDay.Name = "m_rbDay";
             this.m_rbDay.TabStop = true;
             this.m_rbDay.UseVisualStyleBackColor = true;
+            this.m_rbDay.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_rbWeek
             // 
@@ -154,6 +183,7 @@
             this.m_rbWeek.Name = "m_rbWeek";
             this.m_rbWeek.TabStop = true;
             this.m_rbWeek.UseVisualStyleBackColor = true;
+            this.m_rbWeek.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_rbMonth
             // 
@@ -161,20 +191,7 @@
             this.m_rbMonth.Name = "m_rbMonth";
             this.m_rbMonth.TabStop = true;
             this.m_rbMonth.UseVisualStyleBackColor = true;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.m_cbTakeDatTime);
-            resources.ApplyResources(this.panel3, "panel3");
-            this.panel3.Name = "panel3";
-            // 
-            // m_cbTakeDatTime
-            // 
-            resources.ApplyResources(this.m_cbTakeDatTime, "m_cbTakeDatTime");
-            this.m_cbTakeDatTime.Checked = true;
-            this.m_cbTakeDatTime.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.m_cbTakeDatTime.Name = "m_cbTakeDatTime";
-            this.m_cbTakeDatTime.UseVisualStyleBackColor = true;
+            this.m_rbMonth.CheckedChanged += new System.EventHandler(this.TimeDirRbCheckedChanged);
             // 
             // m_cleanupGroupBox
             // 
@@ -452,6 +469,62 @@
             this.m_nudInfoStart.Name = "m_nudInfoStart";
             this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.m_rbInfofieldForDir);
+            this.panel2.Controls.Add(this.m_lblInfoLengthDir);
+            this.panel2.Controls.Add(this.m_lblInfoStartDir);
+            this.panel2.Controls.Add(this.m_nudInfoLengthDir);
+            this.panel2.Controls.Add(this.m_nudInfoStartDir);
+            this.panel2.Controls.Add(this.m_tbInfoFieldDir);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // m_lblInfoLengthDir
+            // 
+            resources.ApplyResources(this.m_lblInfoLengthDir, "m_lblInfoLengthDir");
+            this.m_lblInfoLengthDir.Name = "m_lblInfoLengthDir";
+            // 
+            // m_lblInfoStartDir
+            // 
+            resources.ApplyResources(this.m_lblInfoStartDir, "m_lblInfoStartDir");
+            this.m_lblInfoStartDir.Name = "m_lblInfoStartDir";
+            // 
+            // m_nudInfoLengthDir
+            // 
+            resources.ApplyResources(this.m_nudInfoLengthDir, "m_nudInfoLengthDir");
+            this.m_nudInfoLengthDir.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoLengthDir.Name = "m_nudInfoLengthDir";
+            this.m_toolTip.SetToolTip(this.m_nudInfoLengthDir, resources.GetString("m_nudInfoLengthDir.ToolTip"));
+            // 
+            // m_nudInfoStartDir
+            // 
+            resources.ApplyResources(this.m_nudInfoStartDir, "m_nudInfoStartDir");
+            this.m_nudInfoStartDir.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoStartDir.Name = "m_nudInfoStartDir";
+            this.m_toolTip.SetToolTip(this.m_nudInfoStartDir, resources.GetString("m_nudInfoStartDir.ToolTip"));
+            // 
+            // m_tbInfoFieldDir
+            // 
+            resources.ApplyResources(this.m_tbInfoFieldDir, "m_tbInfoFieldDir");
+            this.m_tbInfoFieldDir.Name = "m_tbInfoFieldDir";
+            // 
+            // m_rbInfofieldForDir
+            // 
+            resources.ApplyResources(this.m_rbInfofieldForDir, "m_rbInfofieldForDir");
+            this.m_rbInfofieldForDir.Name = "m_rbInfofieldForDir";
+            this.m_rbInfofieldForDir.TabStop = true;
+            this.m_rbInfofieldForDir.UseVisualStyleBackColor = true;
+            this.m_rbInfofieldForDir.CheckedChanged += new System.EventHandler(this.m_rbInfofieldForDir_CheckedChanged);
+            // 
             // UNCTaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -470,10 +543,10 @@
             this.Name = "UNCTaskControl";
             this.m_subfolderGroupBox.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.m_cleanupGroupBox.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -493,6 +566,10 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -515,7 +592,6 @@
         private System.Windows.Forms.RadioButton m_rbWeek;
         private System.Windows.Forms.RadioButton m_rbMonth;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.CheckBox m_cbTakeDatTime;
         private System.Windows.Forms.GroupBox m_cleanupGroupBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Panel panel4;
@@ -551,5 +627,13 @@
         private System.Windows.Forms.Label m_lblInfoStart;
         private System.Windows.Forms.Label m_lblInfoLength;
         private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.CheckBox m_cbTakeDatTime;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label m_lblInfoLengthDir;
+        private System.Windows.Forms.Label m_lblInfoStartDir;
+        private System.Windows.Forms.NumericUpDown m_nudInfoLengthDir;
+        private System.Windows.Forms.NumericUpDown m_nudInfoStartDir;
+        private System.Windows.Forms.TextBox m_tbInfoFieldDir;
+        private System.Windows.Forms.RadioButton m_rbInfofieldForDir;
     }
 }
