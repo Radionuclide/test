@@ -2011,7 +2011,6 @@ namespace iba.Processing
                     if( ! m_processedFiles.Contains(DatFile))
                     m_processedFiles.Add(DatFile);
                 }
-                bool completeSucces = true;
               
                 try
                 {
@@ -2043,7 +2042,7 @@ namespace iba.Processing
                     return;
                 }
 
-
+                bool completeSucces = true;
                 foreach (TaskData task in m_cd.Tasks)
                 {
                     if (!shouldTaskBeDone(task, DatFile))
@@ -2125,6 +2124,7 @@ namespace iba.Processing
                             {
                                 Log(Logging.Level.Warning, iba.Properties.Resources.logNextTasksIgnored, DatFile, task);
                                 m_sd.Changed = true;
+                                DoNotification(DatFile, task, failedOnce);
                                 return;
                             }
                             else if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
@@ -2149,11 +2149,15 @@ namespace iba.Processing
                                             StartIbaAnalyzer();
                                         }
                                     }
+                                    DoNotification(DatFile, task, failedOnce);
                                     return;
                                 }
                             }
                             else
+                            {
+                                DoNotification(DatFile, task, failedOnce);
                                 return;
+                            }
                         }
                         else
                             CopyDatFile(DatFile, dat);
@@ -2181,58 +2185,8 @@ namespace iba.Processing
                         }
                     }
 
-                    lock (m_sd.DatFileStates)
-                    {
-                        if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
-                            && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_TRUE
-                            && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
-                            completeSucces = false;
-                        if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
-                            m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE)
-                            && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
-                        {
-                            lock (m_notifier)
-                            {
-                                m_notifier.AddSuccess(task, DatFile);
-                                if (m_cd.NotificationData.NotifyImmediately)
-                                    m_notifier.Send();
-                                else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
-                                {
-                                    //restart timer;
-                                    if (m_notifyTimer == null)
-                                        m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
-                                    m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                                    m_notifier.Send();
-                                    if (!m_bTimersstopped && !m_stop)
-                                        m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
-                                }
-                            }
-                        }
-                        else if ((((DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
-                                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS
-                                        && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.TRIED_TOO_MANY_TIMES))
-                                    || m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
-                                && (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
-                                    || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
-                        {
-                            lock (m_notifier)
-                            {
-                                m_notifier.AddFailure(task, DatFile);
-                                if (m_cd.NotificationData.NotifyImmediately)
-                                    m_notifier.Send();
-                                else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
-                                {
-                                    //restart timer;
-                                    if (m_notifyTimer == null)
-                                        m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
-                                    m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                                    m_notifier.Send();
-                                    if (!m_bTimersstopped && !m_stop)
-                                        m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
-                                }
-                            }
-                        }
-                    }
+                    completeSucces = completeSucces && DoNotification(DatFile, task, failedOnce);
+
                     if (m_stop)
                     {
                         if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
@@ -2362,6 +2316,64 @@ namespace iba.Processing
             }
         }
 
+        private bool DoNotification(string DatFile, TaskData task, bool failedOnce)
+        {
+            bool completeSucces = true;
+            lock (m_sd.DatFileStates)
+            {
+                if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY
+                    && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_TRUE
+                    && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_FALSE)
+                    completeSucces = false;
+
+                if ((m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
+                    m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_TRUE)
+                    && (task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE))
+                {
+                    lock (m_notifier)
+                    {
+                        m_notifier.AddSuccess(task, DatFile);
+                        if (m_cd.NotificationData.NotifyImmediately)
+                            m_notifier.Send();
+                        else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
+                        {
+                            //restart timer;
+                            if (m_notifyTimer == null)
+                                m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
+                            m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                            m_notifier.Send();
+                            if (!m_bTimersstopped && !m_stop)
+                                m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+                        }
+                    }
+                }
+                else if ((((DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
+                                && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS
+                                && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.TRIED_TOO_MANY_TIMES))
+                            || m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
+                        && (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
+                            || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
+                {
+                    lock (m_notifier)
+                    {
+                        m_notifier.AddFailure(task, DatFile);
+                        if (m_cd.NotificationData.NotifyImmediately)
+                            m_notifier.Send();
+                        else if (DateTime.Now - m_notifier.LastSendTime > m_cd.NotificationData.TimeInterval)
+                        {
+                            //restart timer;
+                            if (m_notifyTimer == null)
+                                m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
+                            m_notifyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                            m_notifier.Send();
+                            if (!m_bTimersstopped && !m_stop)
+                                m_notifyTimer.Change(m_cd.NotificationData.TimeInterval, TimeSpan.Zero);
+                        }
+                    }
+                }
+            } 
+            return completeSucces;
+        }
         public void MovePermanentFileErrorListToProcessedList(List<string> files)
         {
             lock (m_listUpdatingLock)
