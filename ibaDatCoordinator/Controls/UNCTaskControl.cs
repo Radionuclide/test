@@ -230,5 +230,10 @@ namespace iba.Controls
                 }
             }
         }
+
+        private void m_tbInfoFieldDir_TextChanged(object sender, EventArgs e)
+        {
+            m_rbInfofieldForDir.Checked = true;
+        }
     }
 }

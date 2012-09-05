@@ -11,8 +11,19 @@ namespace iba
 	{
 		static System.Threading.Mutex m_Mutex;
 
-		public static bool CheckIfRunning()
+		public static bool CheckIfRunning(bool standalone)
 		{
+            if (standalone)
+            {
+                IntPtr handle = FindWindow(null, "ibaDatCoordinatorStatusCloseForm");
+                if (handle.ToInt32() != 0)
+                {
+                    iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
+                    return true;
+                }
+                return false;
+            }
+
 			if(IsFirstInstance())
 			{
 				Application.ApplicationExit += new EventHandler(OnExit);
@@ -51,8 +62,11 @@ namespace iba
 
 		static void OnExit(object sender,EventArgs args)
 		{
-			m_Mutex.ReleaseMutex();
-			m_Mutex.Close();
+            if (m_Mutex != null)
+            {
+                m_Mutex.ReleaseMutex();
+                m_Mutex.Close();
+            }
 		}
 
 		[DllImport("user32")] static extern IntPtr FindWindow(string lpClassName, string lpWindowName);

@@ -76,6 +76,7 @@ namespace iba.Processing
         {
             if (m_sd.Started) return;
             m_stop = false;
+
             UpdateConfiguration();
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
@@ -84,6 +85,8 @@ namespace iba.Processing
                 m_thread = new Thread(new ThreadStart(RunOneTimeJob));
             else
                 m_thread = new Thread(new ThreadStart(Run));
+
+
             //m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_cd.Name;
@@ -190,8 +193,10 @@ namespace iba.Processing
                     {
                         object errorObject;
                         SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
+                        bool doSourceDirectory = true;
                         if (errorObject != null)
                         {
+                            doSourceDirectory = false;
                             if (errorObject is ConfigurationData)
                             {
                                 networkErrorOccured = true;
@@ -205,9 +210,12 @@ namespace iba.Processing
                                 {
                                     Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
                                 }
+                                //task was the problem, not the source -> doSource
+                                doSourceDirectory = true;
                             }
                         }
-                        else
+                        
+                        if (doSourceDirectory)
                         {
                             if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
                             {
@@ -525,6 +533,7 @@ namespace iba.Processing
                     Thread.Sleep(TimeSpan.FromSeconds(5.0));
                 }
                 //Log(Logging.Level.Info, "postponing stopped, current time: " + DateTime.Now.ToString());
+                UpdateConfiguration();
             }
 
             try
@@ -1149,7 +1158,7 @@ namespace iba.Processing
             if (!changed && networkErrorOccured)
                 tickCount++;
 
-            if (tickCount >= 20) //retry restoring dataaccess every minute
+            if (tickCount >= 20) //retry restoring dataaccess every 20 seconds
             {
                 tickCount = 0;
                 if (m_cd.DatDirectoryUNC.StartsWith(@"\\"))
@@ -1853,7 +1862,8 @@ namespace iba.Processing
                     catch
                     {
                     }
-                    if (String.IsNullOrEmpty(frames) || frames == "1000000000")
+                    //modification: do not consider an emtpy frames field as 'still busy', in QDR 1 files it could mean they are simply missing.
+                    if (/*String.IsNullOrEmpty(frames)*/ frames == null || frames == "1000000000")
                     {
                         try { 
                             ibaDatFile.Close();
@@ -2910,7 +2920,6 @@ namespace iba.Processing
             }
         }
 
-
         internal void CleanupDirs(string filename, TaskDataUNC task, string extension)
         {
             try
@@ -3170,8 +3179,6 @@ namespace iba.Processing
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFile = dest;
                 }
-
-
 
                 if (!task.ActionDelete && task.UsesQuota)
                     m_quotaCleanups[task.Guid].AddFile(m_outPutFile);

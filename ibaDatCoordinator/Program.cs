@@ -94,14 +94,16 @@ namespace iba
             //    new System.Globalization.CultureInfo("fr-fr");
 
             //Check if not already running
-            if (SingletonApp.CheckIfRunning())
-                return;                
+          
             if (args.Length > 0 && String.Compare(args[0], "/service", true) == 0)
             {
                 RunsWithService = ServiceEnum.DISCONNECTED;
             }
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
+
+            if (SingletonApp.CheckIfRunning(RunsWithService == ServiceEnum.NOSERVICE))
+                return;      
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

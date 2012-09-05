@@ -130,13 +130,17 @@ namespace iba.Utility
             string computer = ComputerName(path);
             lock (m_connectedComputers)
             {
-                if (!force && Directory.Exists(path)) return true; //path restored by other means
                 if (m_connectedComputers.ContainsKey(computer))
                 {
+                    if (!force && Directory.Exists(path)) return true; //path restored by other means
                     return Shares.ConnectToComputer(computer, user, pass) == 0
                         && Directory.Exists(computer);
                 }
-                else return false;
+                else
+                {
+                    //return false;
+                    return AddReference(computer, user, pass) == 1 && Directory.Exists(computer);
+                }
             }
         }
 

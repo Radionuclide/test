@@ -32,6 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UNCTaskControl));
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.m_rbInfofieldForDir = new System.Windows.Forms.RadioButton();
+            this.m_lblInfoLengthDir = new System.Windows.Forms.Label();
+            this.m_lblInfoStartDir = new System.Windows.Forms.Label();
+            this.m_nudInfoLengthDir = new System.Windows.Forms.NumericUpDown();
+            this.m_nudInfoStartDir = new System.Windows.Forms.NumericUpDown();
+            this.m_tbInfoFieldDir = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -76,15 +83,11 @@
             this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
             this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.m_lblInfoLengthDir = new System.Windows.Forms.Label();
-            this.m_lblInfoStartDir = new System.Windows.Forms.Label();
-            this.m_nudInfoLengthDir = new System.Windows.Forms.NumericUpDown();
-            this.m_nudInfoStartDir = new System.Windows.Forms.NumericUpDown();
-            this.m_tbInfoFieldDir = new System.Windows.Forms.TextBox();
-            this.m_rbInfofieldForDir = new System.Windows.Forms.RadioButton();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).BeginInit();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.m_cleanupGroupBox.SuspendLayout();
@@ -100,9 +103,6 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).BeginInit();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).BeginInit();
             this.SuspendLayout();
             // 
             // m_subfolderGroupBox
@@ -119,6 +119,63 @@
             this.tableLayoutPanel2.Controls.Add(this.panel3, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.m_rbInfofieldForDir);
+            this.panel2.Controls.Add(this.m_lblInfoLengthDir);
+            this.panel2.Controls.Add(this.m_lblInfoStartDir);
+            this.panel2.Controls.Add(this.m_nudInfoLengthDir);
+            this.panel2.Controls.Add(this.m_nudInfoStartDir);
+            this.panel2.Controls.Add(this.m_tbInfoFieldDir);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // m_rbInfofieldForDir
+            // 
+            resources.ApplyResources(this.m_rbInfofieldForDir, "m_rbInfofieldForDir");
+            this.m_rbInfofieldForDir.Name = "m_rbInfofieldForDir";
+            this.m_rbInfofieldForDir.TabStop = true;
+            this.m_rbInfofieldForDir.UseVisualStyleBackColor = true;
+            this.m_rbInfofieldForDir.CheckedChanged += new System.EventHandler(this.m_rbInfofieldForDir_CheckedChanged);
+            // 
+            // m_lblInfoLengthDir
+            // 
+            resources.ApplyResources(this.m_lblInfoLengthDir, "m_lblInfoLengthDir");
+            this.m_lblInfoLengthDir.Name = "m_lblInfoLengthDir";
+            // 
+            // m_lblInfoStartDir
+            // 
+            resources.ApplyResources(this.m_lblInfoStartDir, "m_lblInfoStartDir");
+            this.m_lblInfoStartDir.Name = "m_lblInfoStartDir";
+            // 
+            // m_nudInfoLengthDir
+            // 
+            resources.ApplyResources(this.m_nudInfoLengthDir, "m_nudInfoLengthDir");
+            this.m_nudInfoLengthDir.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoLengthDir.Name = "m_nudInfoLengthDir";
+            this.m_toolTip.SetToolTip(this.m_nudInfoLengthDir, resources.GetString("m_nudInfoLengthDir.ToolTip"));
+            // 
+            // m_nudInfoStartDir
+            // 
+            resources.ApplyResources(this.m_nudInfoStartDir, "m_nudInfoStartDir");
+            this.m_nudInfoStartDir.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.m_nudInfoStartDir.Name = "m_nudInfoStartDir";
+            this.m_toolTip.SetToolTip(this.m_nudInfoStartDir, resources.GetString("m_nudInfoStartDir.ToolTip"));
+            // 
+            // m_tbInfoFieldDir
+            // 
+            resources.ApplyResources(this.m_tbInfoFieldDir, "m_tbInfoFieldDir");
+            this.m_tbInfoFieldDir.Name = "m_tbInfoFieldDir";
+            this.m_tbInfoFieldDir.TextChanged += new System.EventHandler(this.m_tbInfoFieldDir_TextChanged);
             // 
             // panel3
             // 
@@ -469,62 +526,6 @@
             this.m_nudInfoStart.Name = "m_nudInfoStart";
             this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.m_rbInfofieldForDir);
-            this.panel2.Controls.Add(this.m_lblInfoLengthDir);
-            this.panel2.Controls.Add(this.m_lblInfoStartDir);
-            this.panel2.Controls.Add(this.m_nudInfoLengthDir);
-            this.panel2.Controls.Add(this.m_nudInfoStartDir);
-            this.panel2.Controls.Add(this.m_tbInfoFieldDir);
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
-            // 
-            // m_lblInfoLengthDir
-            // 
-            resources.ApplyResources(this.m_lblInfoLengthDir, "m_lblInfoLengthDir");
-            this.m_lblInfoLengthDir.Name = "m_lblInfoLengthDir";
-            // 
-            // m_lblInfoStartDir
-            // 
-            resources.ApplyResources(this.m_lblInfoStartDir, "m_lblInfoStartDir");
-            this.m_lblInfoStartDir.Name = "m_lblInfoStartDir";
-            // 
-            // m_nudInfoLengthDir
-            // 
-            resources.ApplyResources(this.m_nudInfoLengthDir, "m_nudInfoLengthDir");
-            this.m_nudInfoLengthDir.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.m_nudInfoLengthDir.Name = "m_nudInfoLengthDir";
-            this.m_toolTip.SetToolTip(this.m_nudInfoLengthDir, resources.GetString("m_nudInfoLengthDir.ToolTip"));
-            // 
-            // m_nudInfoStartDir
-            // 
-            resources.ApplyResources(this.m_nudInfoStartDir, "m_nudInfoStartDir");
-            this.m_nudInfoStartDir.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.m_nudInfoStartDir.Name = "m_nudInfoStartDir";
-            this.m_toolTip.SetToolTip(this.m_nudInfoStartDir, resources.GetString("m_nudInfoStartDir.ToolTip"));
-            // 
-            // m_tbInfoFieldDir
-            // 
-            resources.ApplyResources(this.m_tbInfoFieldDir, "m_tbInfoFieldDir");
-            this.m_tbInfoFieldDir.Name = "m_tbInfoFieldDir";
-            // 
-            // m_rbInfofieldForDir
-            // 
-            resources.ApplyResources(this.m_rbInfofieldForDir, "m_rbInfofieldForDir");
-            this.m_rbInfofieldForDir.Name = "m_rbInfofieldForDir";
-            this.m_rbInfofieldForDir.TabStop = true;
-            this.m_rbInfofieldForDir.UseVisualStyleBackColor = true;
-            this.m_rbInfofieldForDir.CheckedChanged += new System.EventHandler(this.m_rbInfofieldForDir_CheckedChanged);
-            // 
             // UNCTaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -543,6 +544,10 @@
             this.Name = "UNCTaskControl";
             this.m_subfolderGroupBox.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -566,10 +571,6 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStart)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoLengthDir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudInfoStartDir)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
