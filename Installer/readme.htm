@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.19.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.19.1.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,16 +26,29 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. 
 To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.19.0.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.19.1.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.19.1 - 31/08/2012</P>
+<P class="header2">Bugfixes</P>
+<UL>
+    <LI> ibaDatCoordinator could not process QDR I files.
+    </LI>
+    <LI> The standalone version of the ibaDatCoordinator refused to run when multiple users where logged in to the system.
+    </LI>
+    <LI> If the target directory of an output producing task was not available at job start, ibaDatCoordinator did not recover when the target directory eventually became available.
+    </LI>
+    <LI> Typo in the German translation	for the "Use infofield for subdirectory" feature.
+    </LI>
+</UL>
 
 <P class="header1">Version 1.19.0 - 13/07/2012</P>
 <P class="header2">New features</P>
 <UL>
     <LI> Subdirectories are created when using an extract task to iba .dat file with external videos (ibaAnalyzer 5.22.7 feature)
     </LI>
-    <LI> A time interval can now be specified for which the user will not asked to reconfirm his password if the password hasn't changed.
+    <LI> A time interval can now be specified for which the user will not be asked to reconfirm his password if the password hasn't changed.
     </LI>
     <LI> A sender e-mail adress can now be specified for notification e-mails.
     </LI>
