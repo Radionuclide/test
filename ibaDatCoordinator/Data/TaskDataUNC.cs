@@ -29,6 +29,34 @@ namespace iba.Data
             set { m_overwriteFiles = value; }
         }
 
+        private bool m_infoFieldForOutputFileRemoveBlanksEnd;
+        public bool InfoFieldForOutputFileRemoveBlanksEnd
+        {
+            get { return m_infoFieldForOutputFileRemoveBlanksEnd; }
+            set { m_infoFieldForOutputFileRemoveBlanksEnd = value; }
+        }
+
+        private bool m_infoFieldForOutputFileRemoveBlanksAll;
+        public bool InfoFieldForOutputFileRemoveBlanksAll
+        {
+            get { return m_infoFieldForOutputFileRemoveBlanksAll; }
+            set { m_infoFieldForOutputFileRemoveBlanksAll = value; }
+        }
+
+        private bool m_infoFieldForSubdirRemoveBlanksEnd;
+        public bool InfoFieldForSubdirRemoveBlanksEnd
+        {
+            get { return m_infoFieldForSubdirRemoveBlanksEnd; }
+            set { m_infoFieldForSubdirRemoveBlanksEnd = value; }
+        }
+
+        private bool m_infoFieldForSubdirRemoveBlanksAll;
+        public bool InfoFieldForSubdirRemoveBlanksAll
+        {
+            get { return m_infoFieldForSubdirRemoveBlanksAll; }
+            set { m_infoFieldForSubdirRemoveBlanksAll = value; }
+        }
+
         public TaskDataUNC(ConfigurationData parent) : base(parent) {
             m_pass = "";
             m_username = "";
@@ -46,9 +74,13 @@ namespace iba.Data
             m_infoFieldForOutputFile = "";
             m_infoFieldForOutputFileStart = 0;
             m_infoFieldForOutputFileLength = 0;
+            m_infoFieldForOutputFileRemoveBlanksEnd = false;
+            m_infoFieldForOutputFileRemoveBlanksAll = false;
             m_infoFieldForSubdir = "";
             m_infoFieldForSubdirStart = 0;
             m_infoFieldForSubdirLength = 0;
+            m_infoFieldForSubdirRemoveBlanksEnd = false;
+            m_infoFieldForSubdirRemoveBlanksAll = false;
         }
 
         protected uint m_numbFolders;
@@ -182,9 +214,13 @@ namespace iba.Data
             uncdat.m_infoFieldForOutputFile = m_infoFieldForOutputFile;
             uncdat.m_infoFieldForOutputFileStart = m_infoFieldForOutputFileStart;
             uncdat.m_infoFieldForOutputFileLength = m_infoFieldForOutputFileLength;
+            uncdat.m_infoFieldForOutputFileRemoveBlanksAll = m_infoFieldForOutputFileRemoveBlanksAll;
+            uncdat.m_infoFieldForOutputFileRemoveBlanksEnd = m_infoFieldForOutputFileRemoveBlanksEnd;
             uncdat.m_infoFieldForSubdir = m_infoFieldForSubdir;
             uncdat.m_infoFieldForSubdirStart = m_infoFieldForSubdirStart;
             uncdat.m_infoFieldForSubdirLength = m_infoFieldForSubdirLength;
+            uncdat.m_infoFieldForSubdirRemoveBlanksAll = m_infoFieldForSubdirRemoveBlanksAll;
+            uncdat.m_infoFieldForSubdirRemoveBlanksEnd = m_infoFieldForSubdirRemoveBlanksEnd;
         }
 
         public bool UNCDataIsSame(TaskDataUNC other)
@@ -206,9 +242,13 @@ namespace iba.Data
             other.m_infoFieldForOutputFile == m_infoFieldForOutputFile &&
             other.m_infoFieldForOutputFileStart == m_infoFieldForOutputFileStart &&
             other.m_infoFieldForOutputFileLength == m_infoFieldForOutputFileLength &&
+            other.m_infoFieldForOutputFileRemoveBlanksAll == m_infoFieldForOutputFileRemoveBlanksAll &&
+            other.m_infoFieldForOutputFileRemoveBlanksEnd == m_infoFieldForOutputFileRemoveBlanksEnd &&
             other.m_infoFieldForSubdir == m_infoFieldForSubdir &&
             other.m_infoFieldForSubdirStart == m_infoFieldForSubdirStart &&
-            other.m_infoFieldForSubdirLength == m_infoFieldForSubdirLength;
+            other.m_infoFieldForSubdirLength == m_infoFieldForSubdirLength &&
+            other.m_infoFieldForSubdirRemoveBlanksAll == m_infoFieldForSubdirRemoveBlanksAll &&
+            other.m_infoFieldForSubdirRemoveBlanksEnd == m_infoFieldForSubdirRemoveBlanksEnd;
         }
 
         protected string m_username;

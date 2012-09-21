@@ -30,7 +30,12 @@ Execute ibaDatCoordinatorInstall_v1.19.1.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
-<P class="header1">Version 1.19.1 - 31/08/2012</P>
+<P class="header1">Version 1.19.1 - 21/09/2012</P>
+<P class="header2">New features</P>
+<UL>
+    <LI>Ability to filter blanks from infofield values used for subdirectory or output file name.
+    </LI>
+</UL>
 <P class="header2">Bugfixes</P>
 <UL>
     <LI> ibaDatCoordinator could not process QDR I files.
@@ -40,6 +45,14 @@ Execute ibaDatCoordinatorInstall_v1.19.1.exe and follow instructions.</p>
     <LI> If the target directory of an output producing task was not available at job start, ibaDatCoordinator did not recover when the target directory eventually became available.
     </LI>
     <LI> Typo in the German translation	for the "Use infofield for subdirectory" feature.
+    </LI>
+    <LI> Notifications did not work on succesful move or delete task.
+    </LI>
+    <LI> Link to the logging folder in the startup menu was incorrect under XP for standalone install.
+    </LI>
+    <LI> Cleanup strategies based on quota's failed when the target network folders were unavailable while tallying the files, ibaDatCoordinator did not recover when the target directory eventually became available.
+    </LI>
+    <LI> When a task that requires ibaAnalyzer was halted because it exceeded a specified time or memory limit, subsequent tasks failed as well because ibaAnalyzer was not correctly reset.
     </LI>
 </UL>
 

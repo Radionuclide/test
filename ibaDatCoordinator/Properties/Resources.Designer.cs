@@ -885,6 +885,33 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to While tallying the files for cleanup, iterating over the folders caused the following error:.
+        /// </summary>
+        internal static string logCleanupTallyingErrorDir {
+            get {
+                return ResourceManager.GetString("logCleanupTallyingErrorDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to While tallying the files for cleanup, iterating over the files in folder {0} caused the following error:.
+        /// </summary>
+        internal static string logCleanupTallyingErrorFile {
+            get {
+                return ResourceManager.GetString("logCleanupTallyingErrorFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General error while tallying the files for cleanup:.
+        /// </summary>
+        internal static string logCleanupTallyingErrorGeneral {
+            get {
+                return ResourceManager.GetString("logCleanupTallyingErrorGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to started processing configuration.
         /// </summary>
         internal static string logConfigurationStarted {

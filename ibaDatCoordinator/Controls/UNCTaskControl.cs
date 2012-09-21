@@ -62,10 +62,14 @@ namespace iba.Controls
             m_tbInfoField.Text = m_data.InfoFieldForOutputFile;
             m_nudInfoStart.Value = m_data.InfoFieldForOutputFileStart;
             m_nudInfoLength.Value = m_data.InfoFieldForOutputFileLength;
+            m_cbInfoEndBlanks.Checked = m_data.InfoFieldForOutputFileRemoveBlanksEnd;
+            m_cbInfoAllBlanks.Checked = m_data.InfoFieldForOutputFileRemoveBlanksAll;
 
             m_tbInfoFieldDir.Text = m_data.InfoFieldForSubdir;
             m_nudInfoStartDir.Value = m_data.InfoFieldForSubdirStart;
             m_nudInfoLengthDir.Value = m_data.InfoFieldForSubdirLength;
+            m_cbInfoEndBlanksDir.Checked = m_data.InfoFieldForSubdirRemoveBlanksEnd;
+            m_cbInfoAllBlanksDir.Checked = m_data.InfoFieldForSubdirRemoveBlanksAll;
         }
 
         public void SaveData()
@@ -103,9 +107,14 @@ namespace iba.Controls
             m_data.InfoFieldForOutputFile = m_tbInfoField.Text;
             m_data.InfoFieldForOutputFileStart = (int) m_nudInfoStart.Value;
             m_data.InfoFieldForOutputFileLength = (int)m_nudInfoLength.Value;
+            m_data.InfoFieldForOutputFileRemoveBlanksEnd = m_cbInfoEndBlanks.Checked;
+            m_data.InfoFieldForOutputFileRemoveBlanksAll = m_cbInfoAllBlanks.Checked;
+
             m_data.InfoFieldForSubdir = m_tbInfoFieldDir.Text;
             m_data.InfoFieldForSubdirStart = (int)m_nudInfoStartDir.Value;
             m_data.InfoFieldForSubdirLength = (int)m_nudInfoLengthDir.Value;
+            m_data.InfoFieldForSubdirRemoveBlanksEnd = m_cbInfoEndBlanksDir.Checked;
+            m_data.InfoFieldForSubdirRemoveBlanksAll = m_cbInfoAllBlanksDir.Checked;
             m_data.UpdateUNC();
         }
 
@@ -207,6 +216,8 @@ namespace iba.Controls
             m_nudInfoStart.Visible = false;
             m_lblInfoLength.Visible = false;
             m_lblInfoStart.Visible = false;
+            m_cbInfoAllBlanks.Visible = false;
+            m_cbInfoEndBlanks.Visible = false;
         }
 
         private void TimeDirRbCheckedChanged(object sender, EventArgs e)
@@ -234,6 +245,11 @@ namespace iba.Controls
         private void m_tbInfoFieldDir_TextChanged(object sender, EventArgs e)
         {
             m_rbInfofieldForDir.Checked = true;
+        }
+
+        private void m_nudQuota_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

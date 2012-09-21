@@ -65,8 +65,11 @@ namespace iba.Processing
             public string filename;
         };
 
+        private bool FailureWhilePreviouslyScanning;
+
         private void Reset()
         {
+            FailureWhilePreviouslyScanning = false;
             m_size = 0;
             m_files.Clear();
             Log(iba.Logging.Level.Info, iba.Properties.Resources.determiningQuota, "");
@@ -94,13 +97,15 @@ namespace iba.Processing
                             }
                             catch (Exception ex)
                             {
-                                Log(iba.Logging.Level.Exception, ex.Message + " (getting directories(1))", "");
+                                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
+                                FailureWhilePreviouslyScanning = true;
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Log(iba.Logging.Level.Exception, ex.Message + " (getting directories(2))", "");
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorDir + " " + ex.Message, "");
+                        FailureWhilePreviouslyScanning = true;
                     }
                 }
                 foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC,"*" + m_extension,SearchOption.TopDirectoryOnly))
@@ -116,7 +121,8 @@ namespace iba.Processing
                     }
                     catch (Exception ex)
                     {
-                        Log(iba.Logging.Level.Exception, ex.Message + " (getting files in directories)", "");
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + " " + ex.Message, "");
+                        FailureWhilePreviouslyScanning = true;
                     }
                 }
                 //Log(iba.Logging.Level.Exception, String.Format("size after counting {0}",m_size) , "");
@@ -126,17 +132,14 @@ namespace iba.Processing
                     return f1.time.CompareTo(f2.time);
                 }); //oldest files last
 
-
                 foreach (DateAndName entry in DateAndNames)
                     m_files.AddLast(entry.filename);
-
-
-
                 //Log(iba.Logging.Level.Exception, "finished sorting", "");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //Log(iba.Logging.Level.Exception, "General exception while tallying the files for cleanup: " + ex.Message, "");
+                Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + ex.Message, "");
+                FailureWhilePreviouslyScanning = true;
                 m_files.Clear();
             }
         }
@@ -179,6 +182,11 @@ namespace iba.Processing
 
         public void Clean(string datfile) //the datfile parameter here is used for logging, nothing else
         {
+            if (FailureWhilePreviouslyScanning)
+            {
+                Reset();
+                if (FailureWhilePreviouslyScanning) return; //fix next time.
+            }
             //bool bFirst = true;
             while (m_size > GetQuota() && m_files.Count > 0)
             {

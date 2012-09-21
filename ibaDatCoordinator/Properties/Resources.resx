@@ -1042,4 +1042,13 @@
   <data name="WarningInfofieldDirFailed" xml:space="preserve">
     <value>Failed to obtain infofield '{0}' from the .dat file. The file will be placed in the 'unresolved' subdirectory.</value>
   </data>
+  <data name="logCleanupTallyingErrorDir" xml:space="preserve">
+    <value>While tallying the files for cleanup, iterating over the folders caused the following error:</value>
+  </data>
+  <data name="logCleanupTallyingErrorFile" xml:space="preserve">
+    <value>While tallying the files for cleanup, iterating over the files in folder {0} caused the following error:</value>
+  </data>
+  <data name="logCleanupTallyingErrorGeneral" xml:space="preserve">
+    <value>General error while tallying the files for cleanup:</value>
+  </data>
 </root>

@@ -1178,7 +1178,7 @@ namespace iba.Processing
                                     }
                                     catch (System.IO.FileNotFoundException)
                                     {
-                                        Log(iba.Logging.Level.Warning, String.Format("Directory {0} exists but setting FileSystemWatcher failed, forcing reconnect.",m_cd.DatDirectoryUNC));
+                                        //Log(iba.Logging.Level.Warning, String.Format("Directory {0} exists but setting FileSystemWatcher failed, forcing reconnect.",m_cd.DatDirectoryUNC));
                                         SharesHandler.Handler.TryReconnectForce(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password);
                                         RenewFswt();
                                     }
@@ -1190,9 +1190,9 @@ namespace iba.Processing
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception /*ex*/)
                     {
-                        Log(iba.Logging.Level.Exception, m_cd.DatDirectoryUNC + "\r\n" + directoryExists + "\r\n" + ex.ToString());
+                        //Log(iba.Logging.Level.Exception, m_cd.DatDirectoryUNC + "\r\n" + directoryExists + "\r\n" + ex.ToString());
                     }
                 }
                 else if (Directory.Exists(m_cd.DatDirectoryUNC))
@@ -1931,7 +1931,8 @@ namespace iba.Processing
                 {
                 }
 
-                if (String.IsNullOrEmpty(frames) || frames == "1000000000")
+                //modification: do not consider an emtpy frames field as 'still busy', in QDR 1 files it could mean they are simply missing.
+                if (/*String.IsNullOrEmpty(frames)*/ frames == null || frames == "1000000000")
                 {
                     try
                     {
@@ -2194,33 +2195,7 @@ namespace iba.Processing
                     }
                     if (m_needIbaAnalyzer && m_cd.BRestartIbaAnalyzer && m_nrIbaAnalyzerCalls >= m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
                     {
-                        StopIbaAnalyzer(false);
-                        StartIbaAnalyzer();
-                        try
-                        {
-                            if (!m_cd.OnetimeJob)
-                            {
-                                FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
-                                fs.Close();
-                                fs.Dispose();
-                            }
-                            m_ibaAnalyzer.OpenDataFile(0, DatFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(Logging.Level.Exception, ex.Message);
-                            try
-                            {
-                                m_ibaAnalyzer.CloseDataFiles();
-                            }
-                            catch
-                            {
-                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
-                                StopIbaAnalyzer(false);
-                                StartIbaAnalyzer();
-                            }
-                            return;
-                        }
+                        if (!RestartIbaAnalyzerAndOpenDatFile(DatFile)) return;
                     }
                 }
 
@@ -2314,6 +2289,38 @@ namespace iba.Processing
                 }
                 m_sd.Changed = true;
             }
+        }
+
+        internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)
+        {
+            StopIbaAnalyzer(false);
+            StartIbaAnalyzer();
+            try
+            {
+                if (!m_cd.OnetimeJob)
+                {
+                    FileStream fs = new FileStream(datfile, FileMode.Open, FileAccess.Write, FileShare.None);
+                    fs.Close();
+                    fs.Dispose();
+                }
+                m_ibaAnalyzer.OpenDataFile(0, datfile);
+            }
+            catch (Exception ex)
+            {
+                Log(Logging.Level.Exception, ex.Message);
+                try
+                {
+                    m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, datfile);
+                    StopIbaAnalyzer(false);
+                    StartIbaAnalyzer();
+                }
+                return false;
+            }
+            return true;
         }
 
         private bool DoNotification(string DatFile, TaskData task, bool failedOnce)
@@ -2496,6 +2503,10 @@ namespace iba.Processing
                     }
                     else
                         outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                    if (task.InfoFieldForOutputFileRemoveBlanksAll)
+                        outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                    else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
+                        outputfile = outputfile.TrimEnd(null);
                 }
                 catch
                 {
@@ -2566,6 +2577,10 @@ namespace iba.Processing
                         }
                         else
                             Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                        if (task.InfoFieldForSubdirRemoveBlanksAll)
+                            Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                        else if (task.InfoFieldForSubdirRemoveBlanksEnd)
+                            Subdir = Subdir.TrimEnd(null);
                     }
                     catch
                     {
@@ -2836,8 +2851,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
                 }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
+                RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
@@ -2846,8 +2860,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
                 }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
+                RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch
             {
@@ -3398,8 +3411,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
                 }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
+                RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
@@ -3408,8 +3420,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
                 }
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
+                RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch
             {

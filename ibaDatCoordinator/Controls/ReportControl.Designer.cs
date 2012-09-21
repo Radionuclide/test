@@ -166,7 +166,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_nudMemory, "m_nudMemory");
             this.m_nudMemory.Maximum = new decimal(new int[] {
-            4096,
+            2000,
             0,
             0,
             0});

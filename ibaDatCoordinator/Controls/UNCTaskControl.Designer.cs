@@ -83,6 +83,10 @@
             this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
             this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_cbInfoEndBlanks = new System.Windows.Forms.CheckBox();
+            this.m_cbInfoAllBlanks = new System.Windows.Forms.CheckBox();
+            this.m_cbInfoAllBlanksDir = new System.Windows.Forms.CheckBox();
+            this.m_cbInfoEndBlanksDir = new System.Windows.Forms.CheckBox();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -122,7 +126,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.m_cbInfoAllBlanksDir);
             this.panel2.Controls.Add(this.m_rbInfofieldForDir);
+            this.panel2.Controls.Add(this.m_cbInfoEndBlanksDir);
             this.panel2.Controls.Add(this.m_lblInfoLengthDir);
             this.panel2.Controls.Add(this.m_lblInfoStartDir);
             this.panel2.Controls.Add(this.m_nudInfoLengthDir);
@@ -341,6 +347,7 @@
             0,
             0,
             0});
+            this.m_nudQuota.ValueChanged += new System.EventHandler(this.m_nudQuota_ValueChanged);
             // 
             // panel6
             // 
@@ -485,6 +492,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.m_cbInfoAllBlanks);
+            this.panel1.Controls.Add(this.m_cbInfoEndBlanks);
             this.panel1.Controls.Add(this.m_lblInfoLength);
             this.panel1.Controls.Add(this.m_lblInfoStart);
             this.panel1.Controls.Add(this.m_nudInfoLength);
@@ -525,6 +534,30 @@
             0});
             this.m_nudInfoStart.Name = "m_nudInfoStart";
             this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
+            // 
+            // m_cbInfoEndBlanks
+            // 
+            resources.ApplyResources(this.m_cbInfoEndBlanks, "m_cbInfoEndBlanks");
+            this.m_cbInfoEndBlanks.Name = "m_cbInfoEndBlanks";
+            this.m_cbInfoEndBlanks.UseVisualStyleBackColor = true;
+            // 
+            // m_cbInfoAllBlanks
+            // 
+            resources.ApplyResources(this.m_cbInfoAllBlanks, "m_cbInfoAllBlanks");
+            this.m_cbInfoAllBlanks.Name = "m_cbInfoAllBlanks";
+            this.m_cbInfoAllBlanks.UseVisualStyleBackColor = true;
+            // 
+            // m_cbInfoAllBlanksDir
+            // 
+            resources.ApplyResources(this.m_cbInfoAllBlanksDir, "m_cbInfoAllBlanksDir");
+            this.m_cbInfoAllBlanksDir.Name = "m_cbInfoAllBlanksDir";
+            this.m_cbInfoAllBlanksDir.UseVisualStyleBackColor = true;
+            // 
+            // m_cbInfoEndBlanksDir
+            // 
+            resources.ApplyResources(this.m_cbInfoEndBlanksDir, "m_cbInfoEndBlanksDir");
+            this.m_cbInfoEndBlanksDir.Name = "m_cbInfoEndBlanksDir";
+            this.m_cbInfoEndBlanksDir.UseVisualStyleBackColor = true;
             // 
             // UNCTaskControl
             // 
@@ -636,5 +669,9 @@
         private System.Windows.Forms.NumericUpDown m_nudInfoStartDir;
         private System.Windows.Forms.TextBox m_tbInfoFieldDir;
         private System.Windows.Forms.RadioButton m_rbInfofieldForDir;
+        private System.Windows.Forms.CheckBox m_cbInfoEndBlanks;
+        private System.Windows.Forms.CheckBox m_cbInfoAllBlanks;
+        private System.Windows.Forms.CheckBox m_cbInfoAllBlanksDir;
+        private System.Windows.Forms.CheckBox m_cbInfoEndBlanksDir;
     }
 }

@@ -128,8 +128,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.TIMED_OUT;
                 }
-                m_confWorker.StopIbaAnalyzer();
-                m_confWorker.StartIbaAnalyzer();
+                m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
@@ -138,8 +137,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.MEMORY_EXCEEDED;
                 }
-                m_confWorker.StopIbaAnalyzer();
-                m_confWorker.StartIbaAnalyzer();
+                m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (Exception ex)
             {

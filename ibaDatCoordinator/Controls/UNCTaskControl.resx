@@ -125,13 +125,43 @@
   <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_cbInfoAllBlanksDir.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbInfoAllBlanksDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbInfoAllBlanksDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>390, 26</value>
+  </data>
+  <data name="m_cbInfoAllBlanksDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 17</value>
+  </data>
+  <data name="m_cbInfoAllBlanksDir.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_cbInfoAllBlanksDir.Text" xml:space="preserve">
+    <value>Remove all blanks</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanksDir.Name" xml:space="preserve">
+    <value>m_cbInfoAllBlanksDir</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanksDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanksDir.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanksDir.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_rbInfofieldForDir.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbInfofieldForDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_rbInfofieldForDir.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 1</value>
   </data>
@@ -154,7 +184,37 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_rbInfofieldForDir.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>390, 3</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 17</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_cbInfoEndBlanksDir.Text" xml:space="preserve">
+    <value>Remove blanks at the end</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanksDir.Name" xml:space="preserve">
+    <value>m_cbInfoEndBlanksDir</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanksDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanksDir.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanksDir.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_lblInfoLengthDir.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -184,7 +244,7 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_lblInfoLengthDir.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_lblInfoStartDir.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -214,7 +274,7 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_lblInfoStartDir.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_nudInfoLengthDir.Location" type="System.Drawing.Point, System.Drawing">
     <value>258, 26</value>
@@ -241,7 +301,7 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_nudInfoLengthDir.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_nudInfoStartDir.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 26</value>
@@ -265,7 +325,7 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_nudInfoStartDir.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_tbInfoFieldDir.Location" type="System.Drawing.Point, System.Drawing">
     <value>186, 0</value>
@@ -286,7 +346,7 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;m_tbInfoFieldDir.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1069,7 +1129,7 @@
     <value>214, 17</value>
   </data>
   <data name="m_cbOverwrite.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>0</value>
   </data>
   <data name="m_cbOverwrite.Text" xml:space="preserve">
     <value>Overwrite existing files in target directory</value>
@@ -1318,7 +1378,7 @@
     <value>279, 17</value>
   </data>
   <data name="m_cbModifyDate.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>1</value>
   </data>
   <data name="m_cbModifyDate.Text" xml:space="preserve">
     <value>Set 'Date Modified' time of output file to match .dat file</value>
@@ -1348,7 +1408,7 @@
     <value>180, 17</value>
   </data>
   <data name="m_cbUseInfofieldForName.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>0</value>
   </data>
   <data name="m_cbUseInfofieldForName.Text" xml:space="preserve">
     <value>Use infofield for output file name:</value>
@@ -1363,7 +1423,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_cbUseInfofieldForName.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_tbInfoField.Location" type="System.Drawing.Point, System.Drawing">
     <value>186, 0</value>
@@ -1372,7 +1432,7 @@
     <value>192, 20</value>
   </data>
   <data name="m_tbInfoField.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_tbInfoField.Name" xml:space="preserve">
     <value>m_tbInfoField</value>
@@ -1384,7 +1444,67 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_tbInfoField.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>384, 27</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 17</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_cbInfoAllBlanks.Text" xml:space="preserve">
+    <value>Remove all blanks</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanks.Name" xml:space="preserve">
+    <value>m_cbInfoAllBlanks</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanks.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoAllBlanks.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>384, 4</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 17</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_cbInfoEndBlanks.Text" xml:space="preserve">
+    <value>Remove blanks at the end</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanks.Name" xml:space="preserve">
+    <value>m_cbInfoEndBlanks</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanks.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_cbInfoEndBlanks.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_lblInfoLength.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1399,7 +1519,7 @@
     <value>43, 13</value>
   </data>
   <data name="m_lblInfoLength.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>4</value>
   </data>
   <data name="m_lblInfoLength.Text" xml:space="preserve">
     <value>Length:</value>
@@ -1414,7 +1534,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lblInfoLength.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_lblInfoStart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1426,7 +1546,7 @@
     <value>32, 13</value>
   </data>
   <data name="m_lblInfoStart.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>2</value>
   </data>
   <data name="m_lblInfoStart.Text" xml:space="preserve">
     <value>Start:</value>
@@ -1441,7 +1561,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lblInfoStart.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_nudInfoLength.Location" type="System.Drawing.Point, System.Drawing">
     <value>258, 26</value>
@@ -1450,7 +1570,7 @@
     <value>120, 20</value>
   </data>
   <data name="m_nudInfoLength.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>5</value>
   </data>
   <data name="m_nudInfoLength.ToolTip" xml:space="preserve">
     <value>length of the infofield part, specify 0 for all characters</value>
@@ -1465,7 +1585,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_nudInfoLength.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_nudInfoStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 26</value>
@@ -1474,7 +1594,7 @@
     <value>120, 20</value>
   </data>
   <data name="m_nudInfoStart.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>3</value>
   </data>
   <data name="m_nudInfoStart.ToolTip" xml:space="preserve">
     <value>start index of the infofield part (0 = 1st character)</value>
@@ -1489,13 +1609,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_nudInfoStart.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 49</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 52</value>
+    <value>614, 52</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1519,7 +1639,7 @@
     <value>9, 358</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>523, 112</value>
+    <value>617, 112</value>
   </data>
   <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
