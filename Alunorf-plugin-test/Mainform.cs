@@ -117,6 +117,7 @@ namespace Alunorf_plugin_test
             m_logger.BufferSize = 1000;
             m_logger.Level = Level.All;
             m_logger.MakeDailyArchive = true;
+            m_logger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + "\r\n";
             m_logger.MaximumArchiveFiles = 10;
             //m_logger.EventFormatter.DataFormatter = new LogExtraDataFormatter(m_idToFilename);
             m_logger.Open();

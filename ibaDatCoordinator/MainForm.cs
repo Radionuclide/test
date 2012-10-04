@@ -116,6 +116,7 @@ namespace iba
             ImageList statImageList = new ImageList();
             statImageList.Images.Add(iba.Properties.Resources.configuration);
             statImageList.Images.Add(iba.Properties.Resources.brokenfile);
+            statImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             m_statusTreeView.ImageList = statImageList;
 
             m_quitForm = new QuitForm(this);
@@ -625,7 +626,12 @@ namespace iba
             confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
             foreach (ConfigurationData confIt in confs)
             {
-                TreeNode statNode = new TreeNode(confIt.Name,0, 0);
+                TreeNode statNode;              
+                if (confIt.OnetimeJob)
+                    statNode = new TreeNode(confIt.Name, 2, 2);
+                else
+                    statNode = new TreeNode(confIt.Name, 0, 0);
+
                 statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
                 MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
                 m_statusTreeView.Nodes.Add(statNode);

@@ -33,7 +33,9 @@
             this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.m_cbInfoAllBlanksDir = new System.Windows.Forms.CheckBox();
             this.m_rbInfofieldForDir = new System.Windows.Forms.RadioButton();
+            this.m_cbInfoEndBlanksDir = new System.Windows.Forms.CheckBox();
             this.m_lblInfoLengthDir = new System.Windows.Forms.Label();
             this.m_lblInfoStartDir = new System.Windows.Forms.Label();
             this.m_nudInfoLengthDir = new System.Windows.Forms.NumericUpDown();
@@ -78,15 +80,13 @@
             this.m_tbInfoField = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.m_cbInfoAllBlanks = new System.Windows.Forms.CheckBox();
+            this.m_cbInfoEndBlanks = new System.Windows.Forms.CheckBox();
             this.m_lblInfoLength = new System.Windows.Forms.Label();
             this.m_lblInfoStart = new System.Windows.Forms.Label();
             this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
             this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_cbInfoEndBlanks = new System.Windows.Forms.CheckBox();
-            this.m_cbInfoAllBlanks = new System.Windows.Forms.CheckBox();
-            this.m_cbInfoAllBlanksDir = new System.Windows.Forms.CheckBox();
-            this.m_cbInfoEndBlanksDir = new System.Windows.Forms.CheckBox();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -136,6 +136,13 @@
             this.panel2.Controls.Add(this.m_tbInfoFieldDir);
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
+            this.panel2.Resize += new System.EventHandler(this.panel2_Resize);
+            // 
+            // m_cbInfoAllBlanksDir
+            // 
+            resources.ApplyResources(this.m_cbInfoAllBlanksDir, "m_cbInfoAllBlanksDir");
+            this.m_cbInfoAllBlanksDir.Name = "m_cbInfoAllBlanksDir";
+            this.m_cbInfoAllBlanksDir.UseVisualStyleBackColor = true;
             // 
             // m_rbInfofieldForDir
             // 
@@ -144,6 +151,12 @@
             this.m_rbInfofieldForDir.TabStop = true;
             this.m_rbInfofieldForDir.UseVisualStyleBackColor = true;
             this.m_rbInfofieldForDir.CheckedChanged += new System.EventHandler(this.m_rbInfofieldForDir_CheckedChanged);
+            // 
+            // m_cbInfoEndBlanksDir
+            // 
+            resources.ApplyResources(this.m_cbInfoEndBlanksDir, "m_cbInfoEndBlanksDir");
+            this.m_cbInfoEndBlanksDir.Name = "m_cbInfoEndBlanksDir";
+            this.m_cbInfoEndBlanksDir.UseVisualStyleBackColor = true;
             // 
             // m_lblInfoLengthDir
             // 
@@ -347,7 +360,6 @@
             0,
             0,
             0});
-            this.m_nudQuota.ValueChanged += new System.EventHandler(this.m_nudQuota_ValueChanged);
             // 
             // panel6
             // 
@@ -484,14 +496,16 @@
             // 
             // flowLayoutPanel1
             // 
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.m_cbOverwrite);
             this.flowLayoutPanel1.Controls.Add(this.m_cbModifyDate);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Resize += new System.EventHandler(this.flowLayoutPanel1_Resize);
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.Controls.Add(this.m_cbInfoAllBlanks);
             this.panel1.Controls.Add(this.m_cbInfoEndBlanks);
             this.panel1.Controls.Add(this.m_lblInfoLength);
@@ -502,6 +516,18 @@
             this.panel1.Controls.Add(this.m_tbInfoField);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // m_cbInfoAllBlanks
+            // 
+            resources.ApplyResources(this.m_cbInfoAllBlanks, "m_cbInfoAllBlanks");
+            this.m_cbInfoAllBlanks.Name = "m_cbInfoAllBlanks";
+            this.m_cbInfoAllBlanks.UseVisualStyleBackColor = true;
+            // 
+            // m_cbInfoEndBlanks
+            // 
+            resources.ApplyResources(this.m_cbInfoEndBlanks, "m_cbInfoEndBlanks");
+            this.m_cbInfoEndBlanks.Name = "m_cbInfoEndBlanks";
+            this.m_cbInfoEndBlanks.UseVisualStyleBackColor = true;
             // 
             // m_lblInfoLength
             // 
@@ -534,30 +560,6 @@
             0});
             this.m_nudInfoStart.Name = "m_nudInfoStart";
             this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
-            // 
-            // m_cbInfoEndBlanks
-            // 
-            resources.ApplyResources(this.m_cbInfoEndBlanks, "m_cbInfoEndBlanks");
-            this.m_cbInfoEndBlanks.Name = "m_cbInfoEndBlanks";
-            this.m_cbInfoEndBlanks.UseVisualStyleBackColor = true;
-            // 
-            // m_cbInfoAllBlanks
-            // 
-            resources.ApplyResources(this.m_cbInfoAllBlanks, "m_cbInfoAllBlanks");
-            this.m_cbInfoAllBlanks.Name = "m_cbInfoAllBlanks";
-            this.m_cbInfoAllBlanks.UseVisualStyleBackColor = true;
-            // 
-            // m_cbInfoAllBlanksDir
-            // 
-            resources.ApplyResources(this.m_cbInfoAllBlanksDir, "m_cbInfoAllBlanksDir");
-            this.m_cbInfoAllBlanksDir.Name = "m_cbInfoAllBlanksDir";
-            this.m_cbInfoAllBlanksDir.UseVisualStyleBackColor = true;
-            // 
-            // m_cbInfoEndBlanksDir
-            // 
-            resources.ApplyResources(this.m_cbInfoEndBlanksDir, "m_cbInfoEndBlanksDir");
-            this.m_cbInfoEndBlanksDir.Name = "m_cbInfoEndBlanksDir";
-            this.m_cbInfoEndBlanksDir.UseVisualStyleBackColor = true;
             // 
             // UNCTaskControl
             // 

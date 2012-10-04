@@ -31,3 +31,16 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("1.19.1.0")]
 [assembly: AssemblyFileVersion("1.19.1.0")]
+
+namespace iba
+{
+    internal class DatCoVersion
+    {
+        public static string GetClientVersion()
+        {
+            string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
+            //ver = ver + " BETA13";
+            return ver;
+        }
+    }
+}

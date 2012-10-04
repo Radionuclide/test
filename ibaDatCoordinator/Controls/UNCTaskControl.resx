@@ -133,7 +133,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbInfoAllBlanksDir.Location" type="System.Drawing.Point, System.Drawing">
-    <value>390, 26</value>
+    <value>449, 26</value>
   </data>
   <data name="m_cbInfoAllBlanksDir.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 17</value>
@@ -193,7 +193,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbInfoEndBlanksDir.Location" type="System.Drawing.Point, System.Drawing">
-    <value>390, 3</value>
+    <value>449, 3</value>
   </data>
   <data name="m_cbInfoEndBlanksDir.Size" type="System.Drawing.Size, System.Drawing">
     <value>151, 17</value>
@@ -328,10 +328,10 @@
     <value>6</value>
   </data>
   <data name="m_tbInfoFieldDir.Location" type="System.Drawing.Point, System.Drawing">
-    <value>186, 0</value>
+    <value>197, 0</value>
   </data>
   <data name="m_tbInfoFieldDir.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 20</value>
+    <value>230, 20</value>
   </data>
   <data name="m_tbInfoFieldDir.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1402,7 +1402,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbUseInfofieldForName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 1</value>
   </data>
   <data name="m_cbUseInfofieldForName.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 17</value>
@@ -1426,10 +1426,10 @@
     <value>6</value>
   </data>
   <data name="m_tbInfoField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>186, 0</value>
+    <value>197, 1</value>
   </data>
   <data name="m_tbInfoField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 20</value>
+    <value>230, 20</value>
   </data>
   <data name="m_tbInfoField.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1446,6 +1446,9 @@
   <data name="&gt;&gt;m_tbInfoField.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_cbInfoAllBlanks.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1453,7 +1456,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbInfoAllBlanks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>384, 27</value>
+    <value>449, 27</value>
   </data>
   <data name="m_cbInfoAllBlanks.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 17</value>
@@ -1483,7 +1486,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbInfoEndBlanks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>384, 4</value>
+    <value>449, 4</value>
   </data>
   <data name="m_cbInfoEndBlanks.Size" type="System.Drawing.Size, System.Drawing">
     <value>151, 17</value>
@@ -1618,7 +1621,7 @@
     <value>614, 52</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
@@ -1639,7 +1642,7 @@
     <value>9, 358</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>617, 112</value>
+    <value>623, 112</value>
   </data>
   <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>

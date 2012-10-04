@@ -88,13 +88,11 @@ namespace iba
             }
 
             IsServer = false;
-            //System.Threading.Thread.CurrentThread.CurrentCulture =
-            //    new System.Globalization.CultureInfo("fr-fr");
-            //System.Threading.Thread.CurrentThread.CurrentUICulture =
-            //    new System.Globalization.CultureInfo("fr-fr");
+
+
+            SetupLanguage(args);
 
             //Check if not already running
-          
             if (args.Length > 0 && String.Compare(args[0], "/service", true) == 0)
             {
                 RunsWithService = ServiceEnum.DISCONNECTED;
@@ -135,5 +133,37 @@ namespace iba
             }
             Application.Run(MainForm);
         }
+
+        static void SetupLanguage(string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                string arg1 = args[i].ToUpper();
+                if (arg1.StartsWith("/LANG:"))
+                {
+                    string language = args[i].Substring(6, arg1.Length - 6);
+                    if (language.IndexOf('-') < 0)
+                    {
+                        if (language == "en")
+                            language = "en-us";
+                        else
+                            language = language + "-" + language;
+                    }
+
+                    try
+                    {
+                        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo(language);
+                        System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                        //System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    break;
+                }
+            }
+        }
+
     }
 }

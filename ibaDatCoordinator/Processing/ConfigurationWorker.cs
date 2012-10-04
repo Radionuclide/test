@@ -436,7 +436,7 @@ namespace iba.Processing
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
             m_waitEvent = new AutoResetEvent(false);
             m_notifier = new Notifier(cd);
-            m_candidateNewFiles = new List<string>();
+            m_candidateNewFiles = new List<Pair<string, DateTime> >();
             m_listUpdatingLock = new Object();
             m_quotaCleanups = new SortedDictionary<Guid, FileQuotaCleanup>();
             m_fswtLock = new Object();
@@ -446,7 +446,7 @@ namespace iba.Processing
                 
         FileSetWithTimeStamps m_processedFiles;
         FileSetWithTimeStamps m_toProcessFiles;
-        List<string> m_candidateNewFiles;
+        List<Pair<string,DateTime> > m_candidateNewFiles;
         List<string> m_newFiles;
         List<string> m_directoryFiles;
         SortedDictionary<Guid, UpdateDataTaskWorker> m_udtWorkers;
@@ -1075,10 +1075,10 @@ namespace iba.Processing
             string filename = args.FullPath;
             lock (m_candidateNewFiles)
             {
-                if (!m_candidateNewFiles.Contains(filename))
+                if (m_candidateNewFiles.Find(delegate(Pair<string,DateTime> arg) { return arg.First==filename; })==null)
                 {
-                    m_candidateNewFiles.Add(filename);
                     DateTime now = DateTime.Now;
+                    m_candidateNewFiles.Add(new Pair<string,DateTime>(filename,now));
                     if (now > m_onNewDatFileOrRenameFileLastCalled + TimeSpan.FromSeconds(2)) //if .dat files arrive to fast don't wait a second for processing them
                         m_skipAddNewDatFileTimerTick = true; //wait one tick before checking access, to let PDA do stuff
                     m_onNewDatFileOrRenameFileLastCalled = now;
@@ -1108,14 +1108,21 @@ namespace iba.Processing
                         return true;
                     }
 
-                    foreach (string filename in m_candidateNewFiles)
+                    foreach (Pair<string,DateTime> p in m_candidateNewFiles)
                     {
+                        string filename = p.First;
                         FileStream fs = null;
                         try
                         {
                             //if marked by PDA as offline, don't process this file yet
                             if ((File.GetAttributes(filename) & FileAttributes.Offline) == FileAttributes.Offline)
-                                continue;
+                            {
+                                if (Math.Abs((DateTime.Now - p.Second).TotalHours) > 1)
+                                {
+                                    Log(iba.Logging.Level.Warning, iba.Properties.Resources.Noaccess4, filename);
+                                    p.Second = DateTime.Now;
+                                }
+                            }
 
                             fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
                             fs.Close();
@@ -1139,6 +1146,14 @@ namespace iba.Processing
                             {
                                 if (!File.Exists(filename))
                                     toRemove.Add(filename);
+                                else
+                                {
+                                    if (Math.Abs((DateTime.Now - p.Second).TotalHours) > 1)
+                                    {
+                                        Log(iba.Logging.Level.Warning, iba.Properties.Resources.Noaccess5, filename);
+                                        p.Second = DateTime.Now;
+                                    }
+                                }
                             }
                             catch
                             {
@@ -1146,7 +1161,7 @@ namespace iba.Processing
                         }
                     }
                     foreach (string filename in toRemove)
-                        m_candidateNewFiles.Remove(filename);
+                        m_candidateNewFiles.RemoveAll(delegate(Pair<string,DateTime> arg) { return arg.First==filename; });
                 }
                 if (changed)
                 {
@@ -1354,7 +1369,7 @@ namespace iba.Processing
                 {
                     lock (m_candidateNewFiles)
                     {
-                        if (!m_candidateNewFiles.Contains(filename))
+                        if (m_candidateNewFiles.Find(delegate(Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
                         {
                             m_directoryFiles.Add(filename);
                             count++;
@@ -1594,7 +1609,7 @@ namespace iba.Processing
                         case DatFileStatus.State.NO_ACCESS:
                             lock (m_candidateNewFiles)
                             {
-                                if (m_candidateNewFiles.Contains(filename))
+                                if (m_candidateNewFiles.Find(delegate(Pair<string, DateTime> arg) { return arg.First == filename; }) != null)
                                     break; //file being written and allready monitored
                             }
                             lock (m_processedFiles)
@@ -1670,7 +1685,7 @@ namespace iba.Processing
                         {
                             lock (m_candidateNewFiles)
                             {
-                                if (!m_candidateNewFiles.Contains(filename))
+                                if (m_candidateNewFiles.Find(delegate(Pair<string,DateTime> arg) { return arg.First==filename; })==null)
                                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                             }
                         }
@@ -2285,6 +2300,13 @@ namespace iba.Processing
                         catch (Exception)
                         {
                         }
+                    }
+                }
+                else
+                {
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[DatFile].TimesTried++;
                     }
                 }
                 m_sd.Changed = true;

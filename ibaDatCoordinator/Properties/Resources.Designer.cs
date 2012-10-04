@@ -1678,6 +1678,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Candidate .dat file still not finished by PDA after more than one hour.
+        /// </summary>
+        internal static string Noaccess4 {
+            get {
+                return ResourceManager.GetString("Noaccess4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Candidate .dat file still not accessible after more than one hour.
+        /// </summary>
+        internal static string Noaccess5 {
+            get {
+                return ResourceManager.GetString("Noaccess5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to no ibaAnalyzer registered.
         /// </summary>
         internal static string noIbaAnalyser {

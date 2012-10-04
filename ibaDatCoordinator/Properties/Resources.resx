@@ -1051,4 +1051,10 @@
   <data name="logCleanupTallyingErrorGeneral" xml:space="preserve">
     <value>General error while tallying the files for cleanup:</value>
   </data>
+  <data name="Noaccess4" xml:space="preserve">
+    <value>Candidate .dat file still not finished by PDA after more than one hour</value>
+  </data>
+  <data name="Noaccess5" xml:space="preserve">
+    <value>Candidate .dat file still not accessible after more than one hour</value>
+  </data>
 </root>

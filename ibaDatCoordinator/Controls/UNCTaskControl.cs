@@ -247,9 +247,22 @@ namespace iba.Controls
             m_rbInfofieldForDir.Checked = true;
         }
 
-        private void m_nudQuota_ValueChanged(object sender, EventArgs e)
+        private void flowLayoutPanel1_Resize(object sender, EventArgs e)
         {
+            Control control = (Control)sender;
+            panel1.Size = new Size(control.Width-2, panel1.Height);
+            int MaxChecks = Math.Max(m_cbInfoAllBlanks.Width, m_cbInfoEndBlanks.Width);
+            int widthAvailable = panel1.Right - m_tbInfoField.Right - MaxChecks - 10;
+            m_tbInfoField.Size = new Size(m_tbInfoField.Width + widthAvailable, m_tbInfoField.Height);
+            m_cbInfoEndBlanks.Left = m_cbInfoAllBlanks.Left = m_tbInfoField.Right + 5;
+        }
 
+        private void panel2_Resize(object sender, EventArgs e)
+        {
+            int MaxChecks = Math.Max(m_cbInfoAllBlanksDir.Width, m_cbInfoEndBlanksDir.Width);
+            int widthAvailable = panel2.Right - m_tbInfoFieldDir.Right - MaxChecks - 10;
+            m_tbInfoFieldDir.Size = new Size(m_tbInfoFieldDir.Width + widthAvailable, m_tbInfoFieldDir.Height);
+            m_cbInfoEndBlanksDir.Left = m_cbInfoAllBlanksDir.Left = m_tbInfoFieldDir.Right + 5;
         }
     }
 }
