@@ -72,6 +72,9 @@ namespace Alunorf_roh_plugin
                         case 8:
                             m_error = string.Format(Properties.Resources.ErrorRohUnexpected, rw.errorMessage);
                             break;
+                        case 9:
+                            m_error = string.Format(Properties.Resources.KanalDataCouldNotBeLoaded, rw.errorChannelLineInput.ibaName, PluginRohTask.FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
+                            break;
                         case 10:
                             m_error = string.Format(Properties.Resources.ErrorRohFileCreate, rw.errorMessage);
                             break;

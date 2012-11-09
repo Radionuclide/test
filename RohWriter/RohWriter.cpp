@@ -349,11 +349,23 @@ namespace iba {
 						array<array<float>^>^ twoDArray = gcnew array<array<float>^>(TheVector->size());
 						try
 						{
-							TheVector[0]->QueryTimebasedData(timebase,offset,obj);				
+							if (TheVector[0]->IsDefaultTimebased())
+								TheVector[0]->QueryTimebasedData(timebase,offset,obj);
+							else
+								TheVector[0]->QueryLengthbasedData(timebase,offset,obj);
 						}
-						catch (Exception^)
+						catch (Exception^) //not succesfull in obtaining data
 						{
-							TheVector[0]->QueryLengthbasedData(timebase,offset,obj);
+							try
+							{
+								CloseHandle (hFile);
+								hFile = INVALID_HANDLE_VALUE;
+							}
+							catch (...)
+							{
+							}
+							errorChannelLineInput = channel;
+							return 9;
 						}
 						floatArray = dynamic_cast<array<float>^>(obj);
 						size = floatArray->Length;
@@ -365,11 +377,23 @@ namespace iba {
 						{
 							try
 							{
-								it->second->QueryTimebasedData(timebase,offset,obj);
+								if (it->second->IsDefaultTimebased())
+									it->second->QueryTimebasedData(timebase,offset,obj);
+								else
+									it->second->QueryLengthbasedData(timebase,offset,obj);
 							}
 							catch (Exception^)
 							{
-								it->second->QueryLengthbasedData(timebase,offset,obj);
+								try
+								{
+									CloseHandle (hFile);
+									hFile = INVALID_HANDLE_VALUE;
+								}
+								catch (...)
+								{
+								}
+								errorChannelLineInput = channel;
+								return 9;
 							}
 							floatArray = dynamic_cast<array<float>^>(obj);
 							twoDArray[dim] = floatArray;
@@ -380,11 +404,23 @@ namespace iba {
 					{
 						try
 						{
-							channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
+							if (channelsCopy[channel->ibaName]->IsDefaultTimebased())
+								channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
+							else
+								channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
 						}
 						catch (Exception^)
 						{
-							channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							try
+							{
+								CloseHandle (hFile);
+								hFile = INVALID_HANDLE_VALUE;
+							}
+							catch (...)
+							{
+							}
+							errorChannelLineInput = channel;
+							return 9;
 						}
 						floatArray = dynamic_cast<array<float>^>(obj);
 						if (L400)
@@ -433,7 +469,7 @@ namespace iba {
 				catch (...)
 				{
 				}
-				return 9;
+				return 11; //entirely unexpected error
 			}	
 		}
 		__finally

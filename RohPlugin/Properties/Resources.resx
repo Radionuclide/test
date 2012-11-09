@@ -205,4 +205,7 @@
   <data name="InfoAllreadyPresent" xml:space="preserve">
     <value>Warning, info field with duplicate name found in .dat file: '{0}'</value>
   </data>
+  <data name="KanalDataCouldNotBeLoaded" xml:space="preserve">
+    <value>Fehler: Kanalbeschreibung Tabellenzeile {1}: Daten aus Kanal '{0}' konnten nicht geladen werden.</value>
+  </data>
 </root>

@@ -27,6 +27,7 @@ namespace iba.Processing
         {
             Dispose();
             TimesCalled = 0;
+            
             //first, check license
             CDongleInfo info;
             try
@@ -41,6 +42,7 @@ namespace iba.Processing
             {
                 throw new Exception(iba.Properties.Resources.logNoLicenseUpdateDataTask);
             }
+            
             //second, initialize ibaFiles
             try
             {

@@ -28,9 +28,11 @@ namespace iba {
 		try
 		{
 			BOOL bLicenseOk = FALSE;
-			PdaDongle dongle;
-			for (int iRetry = 0 ; iRetry < 50 && !bLicenseOk; iRetry++)
+			for (int iRetry = 0 ; iRetry < 5 && !bLicenseOk; iRetry++)
+			{
+				PdaDongle dongle;
 				bLicenseOk = dongle.ReadDongleContents(&contents);
+			}
 			if (bLicenseOk)
 			{
 				info->dongleFound = true;

@@ -232,7 +232,6 @@ namespace iba.Processing
 
                         if (!m_cd.DetectNewFiles)
                             DisposeFswt();
-
                     }
                     else
                     {

@@ -1733,7 +1733,7 @@ namespace iba
                     if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
                         foreach (ConfigurationData dat in confs)
                         {
-                            if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                            if (dat.AutoStart && dat.Enabled) TaskManager.Manager.StartConfiguration(dat);
                         }
                 }
             }
@@ -2458,8 +2458,6 @@ namespace iba
                 }
             }
         }
-
-
         #region Service related methods
         public void OnStartService()
         {
@@ -2748,9 +2746,6 @@ namespace iba
         private ToolStripMenuItem m_miStopService;
         private ToolStripMenuItem m_miExit;
         #endregion
-
-
-
     }    
     #endregion
 
@@ -2771,7 +2766,6 @@ namespace iba
             Bitmap pics = new Bitmap(stream);
             list.Images.AddStrip(pics);
             //ImageList_SetOverlayImage(list.Handle, 0, OverlayNew); //we'll do this another time
-
         }
 
         public ImageList List { get { return list; } }

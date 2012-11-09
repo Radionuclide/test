@@ -15,19 +15,48 @@
 #if !defined(pdadongle_h)              // Sentry, use file only if it's not already included.
 #define pdadongle_h
 
+#define PASSWORD_INDEX_PDA 0
+#define PASSWORD_INDEX_CAM 1
+
+#pragma pack (push,1)
+struct DemoLicense
+{
+	unsigned short Index;
+	unsigned char Value;
+};
+#pragma pack (pop)
+
+#pragma pack (push,1)
+struct ChangeLogEntry
+{
+	char User[16];
+	unsigned long Timestamp;
+};
+#pragma pack (pop)
+
 struct DongleContents {
-	unsigned char	HWid[8];	
+	unsigned char	hwId[8];	
 	char			serialNr[7];
 	char			customer[40];
-	char			passwd[16];
+	char			passwd[4][16];
 	unsigned short	day;
 	unsigned short	month;
 	unsigned short	year;
 	short			limit;
-	unsigned long	maskPda;
-	unsigned long	maskNonPda;
+	short			demolimit;
 	unsigned char	multiOptions[2][64];
 	unsigned char	cameraActivation[128];
+	__int64			lastAccessTime;
+	DemoLicense		demos[8];
+	ChangeLogEntry	log[8];
+	short type;
+};
+
+enum  {
+	E_NODONGLE = 0,
+	E_USBMPI   = 1,
+	E_SERIAL   = 2,
+	E_USBSx    = 4
 };
 
 #ifndef CONTENTS_ONLY
@@ -53,6 +82,20 @@ enum TestDongleResult
 	DongleChanged = 2
 };
 
+enum DongleReadMode
+{
+	Default        = 0,       // Customer info, time data, all licenses, demo licenses
+	Full           = 1,       // This will read everything (customer info, time data, all licenses, demo licenses, camera activation, change log)
+	Only64Licenses = 2,       // time data, first 64 licenses, demo licenses
+};
+
+enum DongleTimeLimitMode
+{
+	AllLimits  = 0,    // Apply global and demo time limits to dongle licenses
+	DemoLimits = 1,    // Apply only demo time limits to dongle licenses
+	NoLimits   = 2     // Don't apply any limits just return the raw values of all dongle licenses
+};
+
 #define NR_MULTI_OPTIONS 64
 
 //Abstract base class for all dongle types
@@ -64,112 +107,46 @@ public:
 
 	virtual TestDongleResult TestDongle(unsigned char* romData) = 0;
 
-	static char * GetLibVersion();
-
 	virtual int TestDongle() = 0;
 
-	virtual bool ReadDongle (
-		DWORD &optionMask,
-		DWORD &optionMaskNonPda,
-		char password[16], char serialNr[7], char customer[40],
-		unsigned short &dongleMonth,
-		unsigned short &dongleDayOfMonth,
-		unsigned short &dongleYear,
-		short &timeLimit,
-		unsigned char* romData) = 0;
-	virtual bool ReadMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS) = 0;
+	virtual bool WritePasswordForIndex (char* newPassword, int index) = 0;
 
-	virtual bool WriteNewPassword (char* newPassword) = 0;
-	
 	virtual char * GetType() = 0;
 
-	virtual bool ReadDongleContents(DongleContents* pContent) = 0;
-	
+	virtual bool ReadDongleContents(DongleContents* pContent, DongleReadMode readMode) = 0;
+
 #ifndef DONGLE_LITE	
 	virtual int InitDongle() = 0;
-	virtual bool WriteDongle (
-		DWORD optionMask,
-		DWORD optionMaskNonPda,
-		char password[16], char serialNr[7], char customer[40],
-		unsigned short dongleMonth,
-		unsigned short dongleDayOfMonth,
-		unsigned short dongleYear,
-		short timeLimit) = 0;
-	
-	virtual bool WriteOptionsAndTimeLimit (
-		DWORD optionMask,
-		DWORD optionMaskNonPda,
-		unsigned short dongleMonth,
-		unsigned short dongleDayOfMonth,
-		unsigned short dongleYear,
-		short timeLimit) = 0;
-	
-	virtual bool WriteMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS) = 0;
 
 	virtual bool WriteDongleContents(DongleContents* pContent) = 0;
 
-	virtual int WriteScratch(unsigned char * buffer, int size = 64) = 0;
-	virtual int ReadScratch(unsigned char * buffer, int size = 64) = 0;	
 #endif
+
+protected:
+	//Checks and also sets back the time limits (decrements) and the lastaccesstime for writing back
+	bool CheckTimeLimits(short* globalTimeLimit, short* demoTimeLimit, __int64* lastAccessTime);
 };
 
 
 //Wrapper for the serial and USB dongles
-class PdaDongle : public Dongle
+class PdaDongle
 {
 public:
-#ifndef __BORLANDC__
-	PdaDongle::PdaDongle(HMODULE resMod = NULL, bool rescanUSB = false, bool noUsbInstall = false);
-#else
-	PdaDongle::PdaDongle();
-#endif
+	PdaDongle(HMODULE resMod = NULL, bool rescanUSB = false, bool noUsbInstall = false);
 	virtual ~PdaDongle();
 
-	bool ReadDongle (
-		DWORD &optionMask,
-		DWORD &optionMaskNonPda,
-		char password[16], char serialNr[7], char customer[40],
-		unsigned short &dongleMonth,
-		unsigned short &dongleDayOfMonth,
-		unsigned short &dongleYear,
-		short &timeLimit,
-		unsigned char* romData);
-
-	bool WriteNewPassword (char* newPassword);
-	
+	static char * GetLibVersion();
 	char * GetType();
+
 	int TestDongle();
 	TestDongleResult TestDongle(unsigned char* romData);
 
-	//Multi license
-	bool ReadMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS);
+	bool ReadDongleContents(DongleContents* pContent, DongleReadMode readMode = Default, DongleTimeLimitMode limitMode = AllLimits);
 
-	bool ReadDongleContents(DongleContents* pContent);
-	
+	bool WritePasswordForIndex (char* newPassword, int index);
+
 #ifndef DONGLE_LITE
 	int InitDongle();
-	
-	bool WriteDongle (
-		DWORD optionMask,
-		DWORD optionMaskNonPda,
-		char password[16], char serialNr[7], char customer[40],
-		unsigned short dongleMonth,
-		unsigned short dongleDayOfMonth,
-		unsigned short dongleYear,
-		short timeLimit);
-	
-	bool WriteOptionsAndTimeLimit (
-		DWORD optionMask,
-		DWORD optionMaskNonPda,
-		unsigned short dongleMonth,
-		unsigned short dongleDayOfMonth,
-		unsigned short dongleYear,
-		short timeLimit);
-	
-	int WriteScratch(unsigned char * buffer, int size = 64);
-	int ReadScratch(unsigned char * buffer, int size = 64);
-
-	bool WriteMultiLicenses(BYTE* licenses, int nrLicenses = NR_MULTI_OPTIONS);
 
 	bool WriteDongleContents(DongleContents* pContent);
 #endif	
@@ -181,10 +158,13 @@ private:
 	static BOOL bUseGlobal;
 
 	void CreateDongle();
+	void CreateDongle(int dongleType);
 	int AutoDetect();
 
 	Dongle * dongle;
 	HANDLE hDongleAccess;
+
+	void ApplyTimeLimitsCorrections(DongleContents* pContent, bool bDemoOnly);
 };
 
 #endif //CONTENTS_ONLY

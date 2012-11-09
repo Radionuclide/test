@@ -670,6 +670,13 @@ namespace iba.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap icons {
+            get {
+                object obj = ResourceManager.GetObject("icons", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to http://www.icsharpcode.net/OpenSource/SD.
         /// </summary>
