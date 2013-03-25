@@ -20,7 +20,8 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>
     </StartupObject>
-    <ApplicationIcon>Processing\Resources\running.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -311,7 +312,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Processing\Resources\Start.bmp" />
     <Compile Include="SingletonApplication.cs" />
     <Compile Include="Utility\algorithms.cs" />
     <Compile Include="Utility\containers.cs" />
@@ -417,31 +417,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Processing\Resources\icons.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Stop.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Analyse_Öffnen.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Analyzer_001.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\odbc.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\DOS.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Speichern.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Aktualisieren.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Button_Statistik.bmp" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IbaAnalyzer">
@@ -462,117 +437,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Processing\Resources\Label_Report.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\Status_Datenbank_0.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\batchfile.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\extract.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\little_check.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\little_cross.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\small_clock.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\db.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\dbsucces.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\extractfailure.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\extracttimeout.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\reportsucces.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\report.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\reportfailure.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\report_timeout.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\batchfile_failure.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\batchfile_timeout.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\batchfile_succes.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Processing\Resources\batchfile_noaccess.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
-    <None Include="Processing\Resources\refreshdats.bmp" />
-    <None Include="Processing\Resources\refreshconfs.bmp" />
-    <None Include="Processing\Resources\thumup.png" />
-    <None Include="Processing\Resources\thumbdown.PNG" />
-    <None Include="Processing\Resources\timeout.ico" />
-    <None Include="Processing\Resources\error.ico" />
-    <None Include="Processing\Resources\noaccess.ico" />
-    <None Include="Processing\Resources\success.ico" />
-    <None Include="Processing\Resources\iftask_running.ico" />
-    <None Include="Processing\Resources\iftask.ico" />
-    <None Include="Processing\Resources\running1.ico" />
-    <None Include="Processing\Resources\settings.ico" />
-    <None Include="Processing\Resources\tomanytimestried.ico" />
-    <None Include="Processing\Resources\memoryexceeded.ico" />
-    <None Include="Processing\Resources\deletedats.bmp" />
-    <None Include="Processing\Resources\brokenfile.ico" />
-    <None Include="Processing\Resources\NewDocument.bmp" />
-    <None Include="Processing\Resources\Fax.bmp" />
-    <None Include="Processing\Resources\updatedatatask.png" />
-    <None Include="Processing\Resources\time.png" />
-    <None Include="Processing\Resources\application--pencil.png" />
-    <None Include="Processing\Resources\onetime_configuration_new.ico" />
-    <None Include="Processing\Resources\onetimeconfiguration.ico" />
-    <None Include="Processing\Resources\shield.png" />
-    <None Include="Processing\Resources\undoconfs.bmp" />
-    <Content Include="Processing\Resources\watchdog.ico" />
     <EmbeddedResource Include="Resources\icons.bmp" />
-    <None Include="Processing\Resources\ibalogo_transparent.jpg" />
-    <None Include="Processing\Resources\copydat_noaccess.ico" />
-    <None Include="Processing\Resources\copydat_timeout.ico" />
-    <None Include="Processing\Resources\copydat_succes.ico" />
-    <None Include="Processing\Resources\paste.png" />
-    <None Include="Processing\Resources\open.png" />
-    <None Include="Processing\Resources\cut.png" />
-    <None Include="Processing\Resources\copy.png" />
-    <None Include="Processing\Resources\blank.ico" />
-    <None Include="Processing\Resources\redarrow1.ico" />
-    <None Include="Processing\Resources\redarrow.ico" />
-    <None Include="Processing\Resources\greenarrow.ico" />
-    <None Include="Processing\Resources\default.ico" />
-    <None Include="Processing\Resources\disconnected.ico" />
-    <None Include="Processing\Resources\running.ico" />
-    <None Include="Processing\Resources\Start.PNG" />
-    <None Include="Processing\Resources\Stop.png" />
-    <None Include="Processing\Resources\logging.ico" />
-    <None Include="Processing\Resources\ibaLogo.ico" />
-    <None Include="Processing\Resources\ibaLogo_noshadow.ico" />
-    <None Include="Processing\Resources\status.ico" />
-    <None Include="Processing\Resources\configuration.ico" />
-    <None Include="Processing\Resources\configuration_new.ico" />
-    <None Include="Processing\Resources\status.png" />
-    <None Include="Processing\Resources\configuration.png" />
-    <None Include="Processing\Resources\report_noaccess.ico" />
-    <None Include="Processing\Resources\extractnoaccess.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

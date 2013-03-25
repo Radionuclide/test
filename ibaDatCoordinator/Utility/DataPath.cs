@@ -15,7 +15,6 @@ namespace iba.Utility
             }
             else
             {
-
                 if (IsAdmin)
                 {
                     rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);

@@ -1121,6 +1121,7 @@ namespace iba.Processing
                                     Log(iba.Logging.Level.Warning, iba.Properties.Resources.Noaccess4, filename);
                                     p.Second = DateTime.Now;
                                 }
+                                continue; //don't remove, we look at it next time
                             }
 
                             fs = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None);
@@ -1652,6 +1653,30 @@ namespace iba.Processing
         {
             try
             {
+                if (!File.Exists(filename))
+                {
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                    return DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                try
+                {
+                    FileAttributes at = File.GetAttributes(filename);
+                    if ((at & FileAttributes.Offline) == FileAttributes.Offline)
+                    {
+                        lock (m_candidateNewFiles)
+                        {
+                            if (m_candidateNewFiles.Find(delegate(Pair<string,DateTime> arg) { return arg.First==filename; })==null)
+                                Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
+                            //else silent error because the file is already being monitored.
+                        }
+                        return DatFileStatus.State.NO_ACCESS;
+                    }
+                }
+                catch
+                {
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                    return DatFileStatus.State.NO_ACCESS;
+                }
                 IbaFile ibaDatFile = new IbaFileClass();
                 Nullable<DateTime> time = null;
                 try
