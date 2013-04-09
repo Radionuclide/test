@@ -110,7 +110,7 @@ namespace iba.Controls
             m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
 
             if (m_plugin != null)
-                m_plugin.LoadData((m_data as CustomTaskData).Plugin, this);
+                m_plugin.LoadData((m_data as ICustomTaskData).Plugin, this);
             else if (m_regularControl != null)
                 m_regularControl.LoadData(datasource, manager);
 

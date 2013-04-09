@@ -54,5 +54,25 @@ namespace iba.Plugins
             set { m_icon = value; }
         }
     }
+
+    /// <summary>
+    /// Class containing information about a taskdata plugin is the case it is an UNC plugin
+    /// </summary>
+    public class PluginTaskInfoUNC : PluginTaskInfo
+    {
+        //currently no new methods
+        
+        /// <summary>
+        /// Constructs an information object for the plugin
+        /// </summary>
+        /// <param name="name">The name of the plugin</param>
+        /// <param name="description">A short description of the plugin</param>
+        /// <param name="icon">An appropriate icon for the plugin</param>
+        public PluginTaskInfoUNC(string name, string description, Icon icon)
+        : base(name,description,icon)
+        {
+
+        }
+    }
 }
 

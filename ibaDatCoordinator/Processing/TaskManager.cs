@@ -251,8 +251,8 @@ namespace iba.Processing
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is CustomTaskData && pair.Value.Status.Started)
-                    return (pair.Value.RunningConfiguration.Tasks[taskindex] as CustomTaskData).Plugin.GetWorker().GetWorkerStatus();
+                if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is ICustomTaskData && pair.Value.Status.Started)
+                    return (pair.Value.RunningConfiguration.Tasks[taskindex] as ICustomTaskData).Plugin.GetWorker().GetWorkerStatus();
             }
             return null;
         }

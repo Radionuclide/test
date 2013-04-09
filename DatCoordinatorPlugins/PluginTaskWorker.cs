@@ -55,4 +55,15 @@ namespace iba.Plugins
         PluginTaskWorkerStatus GetWorkerStatus();
             
     }
+
+    public interface IPluginTaskWorkerUNC : IPluginTaskWorker
+    {
+        /// <summary>
+        /// Function to be called when the task should be executed
+        /// </summary>
+        /// <param name="datFile">datfile on which the task should be performed</param>
+        /// <param name="output">filename of the resulting file </param>
+        /// <returns>true if successfull, false otherwise</returns>
+        bool ExecuteTask(string datFile, string output);
+    }
 }

@@ -47,7 +47,7 @@ namespace iba.Processing
                 //do finalization of custom tasks
                 foreach (TaskData t in m_cd.Tasks)
                 {
-                    CustomTaskData c = t as CustomTaskData;
+                    ICustomTaskData c = t as ICustomTaskData;
                     if (c != null)
                     {
                         IPluginTaskWorker w = c.Plugin.GetWorker();
@@ -377,11 +377,11 @@ namespace iba.Processing
                     foreach (TaskData t in m_cd.Tasks)
                     {
                         TaskData oldtask = null;
-                        CustomTaskData c_old = null;
+                        ICustomTaskData c_old = null;
                         try
                         {
                             oldtask = oldConfigurationData.Tasks[t.Index];
-                            c_old = oldtask as CustomTaskData;
+                            c_old = oldtask as ICustomTaskData;
                         }
                         catch
                         {
@@ -389,7 +389,7 @@ namespace iba.Processing
                             c_old = null;
                         }
 
-                        CustomTaskData c_new = t as CustomTaskData;
+                        ICustomTaskData c_new = t as ICustomTaskData;
                         if (c_old != null && c_new != null && c_old.Guid == c_new.Guid)
                         {
                             IPluginTaskWorker w = c_old.Plugin.GetWorker();
@@ -570,7 +570,7 @@ namespace iba.Processing
                     //do initializations of custom tasks
                     foreach(TaskData t in m_cd.Tasks)
                     {
-                        CustomTaskData c = t as CustomTaskData;
+                        ICustomTaskData c = t as ICustomTaskData;
                         if (c != null)
                         {
                             IPluginTaskWorker w = c.Plugin.GetWorker();
@@ -713,7 +713,7 @@ namespace iba.Processing
                 //do initializations of custom tasks
                 foreach (TaskData t in m_cd.Tasks)
                 {
-                    CustomTaskData c = t as CustomTaskData;
+                    ICustomTaskData c = t as ICustomTaskData;
                     if (c != null)
                     {
                         IPluginTaskWorker w = c.Plugin.GetWorker();
@@ -972,7 +972,7 @@ namespace iba.Processing
             bool ok = true;
             foreach (TaskData task in m_cd.Tasks)
             {
-                CustomTaskData cust = task as CustomTaskData;
+                ICustomTaskData cust = task as ICustomTaskData;
                 if (cust != null)
                 {
                     if (info == null) info = CDongleInfo.ReadDongle();
@@ -2205,6 +2205,10 @@ namespace iba.Processing
                     else if (task is CustomTaskData)
                     {
                         DoCustomTask(DatFile, task as CustomTaskData);
+                    }
+                    else if (task is CustomTaskDataUNC)
+                    {
+                        DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
                     }
 
                     //touch the file
@@ -3533,6 +3537,158 @@ namespace iba.Processing
             }
         }
 
+        private void DoCustomTaskUNC(string filename, CustomTaskDataUNC task)
+        {
+            IPluginTaskDataUNC plugin = task.Plugin as IPluginTaskDataUNC;
+            if (plugin==null) 
+                throw new Exception("incorrectly implemented unc plugin");
+            string ext = plugin.Extension;
+            try
+            {
+                if (task.UsesQuota)
+                    CleanupWithQuota(filename, task, ext);
+            }
+            catch
+            {
+            }
+            string actualFileName = GetOutputFileName(task, filename);
+            string dir = task.DestinationMapUNC;
+            string arg = "";
+            if (String.IsNullOrEmpty(dir))
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+            if (!Path.IsPathRooted(dir))
+            {  //get Absolute path relative to dir
+                dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
+            }
+            else
+                dir = task.DestinationMapUNC;
+            string maindir = dir;
+
+            if (dir == m_cd.DatDirectoryUNC)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME)
+            {   //concatenate subfolder corresponding to dat subfolder
+                string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
+                string s1 = Path.GetFullPath(filename);
+                string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
+                dir = Path.GetDirectoryName(Path.Combine(dir, s0));
+            }
+            if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
+                && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
+            {
+                dir = Path.Combine(dir, SubFolder(task, filename));
+            }
+
+            if (!Directory.Exists(dir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                catch
+                {
+                    bool failed = true;
+                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                    {
+                        failed = false;
+                        if (!Directory.Exists(dir))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+                            catch
+                            {
+                                failed = true;
+                            }
+                        }
+                    }
+
+                    if (failed)
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        }
+                        return;
+                    }
+                }
+                if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                    task.DoDirCleanupNow = true;
+            }
+            if (task.DoDirCleanupNow)
+            {
+                try
+                {
+                    CleanupDirs(filename, task, ext);
+                }
+                catch
+                {
+                }
+                task.DoDirCleanupNow = false;
+            }
+            arg = Path.Combine(dir, actualFileName + ext);
+            try
+            {
+                if (!task.OverwriteFiles)
+                    arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+                else if (task.UsesQuota && File.Exists(arg))
+                {
+                    m_quotaCleanups[task.Guid].RemoveFile(arg);
+                }
+                //do execution:
+
+                if (!(plugin.GetWorker() as IPluginTaskWorkerUNC).ExecuteTask(filename,arg))
+                { //failure
+                    Log(Logging.Level.Exception, plugin.GetWorker().GetLastError(), filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
+                //success
+                m_outPutFile = arg;
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                }
+                string message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
+                Log(Logging.Level.Info, message, filename, task);
+                if (task.UsesQuota)
+                {
+                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                }
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+
+        }
+
+
         private void UpdateDataTask(string filename, UpdateDataTaskData task)
         {
             lock (m_sd.DatFileStates)
@@ -3722,7 +3878,10 @@ namespace iba.Processing
                 {
                     ext = ".dat";
                 }
-                else throw new NotImplementedException();
+                else if (task is CustomTaskDataUNC)
+                {
+                    ext = ((task as CustomTaskDataUNC).Plugin as IPluginTaskDataUNC).Extension;
+                }
 
                 if (!String.IsNullOrEmpty(ext))
                     CleanupWithQuota(DatFile, task, ext);

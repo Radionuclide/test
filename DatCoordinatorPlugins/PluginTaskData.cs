@@ -36,6 +36,9 @@ namespace iba.Plugins
             set;
         }
 
+        /// <summary>
+        /// What dongle bit needs to be checked
+        /// </summary>
         int DongleBitPos
         {
             get;
@@ -75,6 +78,14 @@ namespace iba.Plugins
         /// </summary>
         /// <returns>UNC paths</returns>
         string[][] UNCPaths();
+
+        /// <summary>
+        /// Extention of the generated output file, e.g.: ".xml"
+        /// </summary>
+        string Extension
+        {
+            get;
+        }
     }
 
     /// <summary>

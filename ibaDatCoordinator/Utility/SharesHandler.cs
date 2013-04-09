@@ -26,7 +26,7 @@ namespace iba.Utility
 			        {
                         if (!Directory.Exists(computer))
                         {
-                            errorMsg = (new System.ComponentModel.Win32Exception(error)).Message;
+                            errorMsg = GetErrorMessage(error);
                             return false;
                         } //in case computer exists, the connect was not necessary
                         else
@@ -276,7 +276,35 @@ namespace iba.Utility
         {
             error = String.Empty;
             if (IsUNC(path) && AddReference(ComputerName(path), username, pass)==0)
-                error = (new System.ComponentModel.Win32Exception(m_error)).Message;
+                error = GetErrorMessage(m_error);
+        }
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+        static extern int FormatMessage(int dwFlags, IntPtr lpSource, int dwMessageId, int dwLanguageId, System.Text.StringBuilder lpBuffer, int nSize, IntPtr arguments);
+        
+        public static string GetErrorMessage(int error)
+        {
+            System.Text.StringBuilder lpBuffer = new System.Text.StringBuilder(256);
+            while (FormatMessage(0x3200, IntPtr.Zero, error, 0, lpBuffer, lpBuffer.Capacity + 1, IntPtr.Zero) == 0)
+            {
+                if (lpBuffer.Capacity < 64 * 1024)
+                    lpBuffer.Capacity *= 2;
+                else
+                    return ("Unknown error (0x" + Convert.ToString(error, 0x10) + ")");
+            }
+
+            //Remove the new line characters from the end
+            int length = lpBuffer.Length;
+            while (length > 0)
+            {
+                char ch = lpBuffer[length - 1];
+                if (ch > ' ')
+                {
+                    break;
+                }
+                length--;
+            }
+            return lpBuffer.ToString(0, length);
         }
     }
 }
