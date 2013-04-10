@@ -85,12 +85,6 @@ namespace iba.Data
                 {
                     TaskDataUNC t = task as TaskDataUNC;
                     if (t != null) t.UpdateUNC();
-                    CustomTaskData c = task as CustomTaskData;
-                    if (c != null)
-                    {
-                        IPluginTaskDataUNC plugin = c.Plugin as IPluginTaskDataUNC;
-                        if (plugin != null) plugin.UpdateUNC();
-                    }
                 }
             }
         }

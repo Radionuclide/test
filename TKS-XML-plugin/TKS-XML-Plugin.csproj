@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4777ACA3-B0C2-484E-BEE1-C2BEDF57E824}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iba.TKS_XML_Plugin</RootNamespace>
+    <AssemblyName>TKS-XML-plugin</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Plugin\PluginCollection.cs" />
+    <Compile Include="Plugin\PluginXMLControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Plugin\PluginXMLControl.Designer.cs">
+      <DependentUpon>PluginXMLControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugin\PluginXMLTask.cs" />
+    <Compile Include="Plugin\PluginXMLWorker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="XMLExtract\ChannelData.cs" />
+    <Compile Include="XMLExtract\DatExtractor.cs" />
+    <Compile Include="XMLExtract\Erzeugung\Messreihe.cs" />
+    <Compile Include="XMLExtract\ibaFilesLibExtensions.cs" />
+    <Compile Include="XMLExtract\Info.cs" />
+    <Compile Include="XMLExtract\ResolveEinheit.cs" />
+    <Compile Include="XMLExtract\ResolveInfo.cs" />
+    <Compile Include="XMLExtract\ResolveMessgroesse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ibaFilesLiteLib">
+      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
+      <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
+      <Name>DatCoordinatorPlugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="XMLExtract\Misc\8515202_dg_de_02.dat" />
+    <None Include="XMLExtract\Misc\create-class.cmd" />
+    <None Include="XMLExtract\Misc\Messreihe.xsd" />
+    <None Include="XMLExtract\Misc\MessreiheReduziert.xsd" />
+    <None Include="XMLExtract\Misc\xsd2code\Xsd2Code.exe.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TKS-XMLTask.ico" />
+    <Content Include="XMLExtract\Misc\8515202_de.txt" />
+    <Content Include="XMLExtract\Misc\8515202_de_00.txt" />
+    <Content Include="XMLExtract\Misc\8515202_de_00.xml" />
+    <Content Include="XMLExtract\Misc\xsd2code\Xsd2Code.exe" />
+    <Content Include="XMLExtract\Misc\xsd2code\Xsd2Code.Library.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Plugin\PluginXMLControl.resx">
+      <DependentUpon>PluginXMLControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

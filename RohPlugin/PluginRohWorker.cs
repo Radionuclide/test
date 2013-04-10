@@ -11,13 +11,16 @@ namespace Alunorf_roh_plugin
     {
         #region IPluginTaskWorker Members
 
+        private bool m_started;
         public bool OnStart()
         {
+            m_started = true;
             return true;
         }
 
         public bool OnStop()
         {
+            m_started = false;
             return true;
         }
 
@@ -176,7 +179,10 @@ namespace Alunorf_roh_plugin
 
         public PluginTaskWorkerStatus GetWorkerStatus()
         {
-            return null; //no status
+            PluginTaskWorkerStatus res = new PluginTaskWorkerStatus();
+            res.started = m_started;
+            res.extraData = null; 
+            return res;
         }
 
         #endregion

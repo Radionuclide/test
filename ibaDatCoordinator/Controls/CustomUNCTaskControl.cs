@@ -41,9 +41,6 @@ namespace iba.Controls
 
             int newHeight = m_gbTarget.Bottom + 5;
             this.Height = newHeight;
-            //autoscroll seems problematic, add it here with AutoScrollMinSize
-            AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
-            AutoScroll = true;
         }
 
         //gui elements
