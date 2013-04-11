@@ -471,18 +471,34 @@ namespace iba.Controls
         void newCustomTaskButton_Click(object sender, EventArgs e)
         {
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton) sender).Tag);
-            CustomTaskData cust = new CustomTaskData(m_data, info);
-            new SetNextName(cust);
-            m_data.Tasks.Add(cust);
+            ICustomTaskData icust;
+            string name;
+            if (info is PluginTaskInfoUNC)
+            {
+                CustomTaskDataUNC cust = new CustomTaskDataUNC(m_data, info as PluginTaskInfo);
+                new SetNextName(cust);
+                m_data.Tasks.Add(cust);
+                name = cust.Name;
+                icust = cust;
+            }
+            else
+            {
+                CustomTaskData cust = new CustomTaskData(m_data, info as PluginTaskInfo);
+                new SetNextName(cust);
+                m_data.Tasks.Add(cust);
+                name = cust.Name;
+                icust = cust;
+            }
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Icon == info.Icon; });
-            TreeNode newNode = new TreeNode(cust.Name, MainForm.CUSTOMTASK_INDEX + index, MainForm.CUSTOMTASK_INDEX + index);
-            newNode.Tag = new CustomTaskTreeItemData(m_manager,cust);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode); 
+            TreeNode newNode = new TreeNode(name, MainForm.CUSTOMTASK_INDEX + index, MainForm.CUSTOMTASK_INDEX + index);
+            newNode.Tag = new CustomTaskTreeItemData(m_manager, icust);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
+
         }
 
 

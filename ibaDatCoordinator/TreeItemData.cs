@@ -415,7 +415,7 @@ namespace iba
     #region CustomTaskTreeItemData
     public class CustomTaskTreeItemData : TreeItemData
     {
-        public CustomTaskTreeItemData(IPropertyPaneManager propManager, CustomTaskData cust)
+        public CustomTaskTreeItemData(IPropertyPaneManager propManager, ICustomTaskData cust)
             : base(propManager)
         {
             m_cust = cust;
@@ -423,10 +423,10 @@ namespace iba
 
         public override string What
         {
-            get { return "CustomTask"; }
+            get { return (m_cust is CustomTaskDataUNC)?"CustomTaskUNC": "CustomTask"; }
         }
 
-        protected CustomTaskData m_cust;
+        protected ICustomTaskData m_cust;
 
         public override object DataSource
         {
@@ -436,7 +436,7 @@ namespace iba
             }
             set
             {
-                m_cust = value as CustomTaskData;
+                m_cust = value as ICustomTaskData;
             }
         }
 
@@ -446,7 +446,10 @@ namespace iba
             Control ctrl = manager.PropertyPanes[id] as Control;
             if (ctrl == null)
             {
-                ctrl = new CommonTaskControl(m_cust.Plugin.GetControl() as Control);
+                if (m_cust is CustomTaskDataUNC)
+                    ctrl = new CommonTaskControl(new CustomUNCTaskControl(m_cust.Plugin.GetControl() as iba.Plugins.IPluginControlUNC));
+                else
+                    ctrl = new CommonTaskControl(m_cust.Plugin.GetControl() as Control);
                 manager.PropertyPanes[id] = ctrl;
             }
             return ctrl;

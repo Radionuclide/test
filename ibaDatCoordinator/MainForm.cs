@@ -550,7 +550,7 @@ namespace iba
                 }
                 else
                 {
-                    CustomTaskData cust = (CustomTaskData)task;
+                    ICustomTaskData cust = task as ICustomTaskData;
                     string name = cust.Plugin.NameInfo;
                     int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
                     taskNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
@@ -724,6 +724,8 @@ namespace iba
                 case "UpdateDataTask":
                     goto case "task";
                 case "PauseTask":
+                    goto case "task";
+                case "CustomTaskUNC":
                     goto case "task";
                 case "CustomTask":
                     goto case "task";

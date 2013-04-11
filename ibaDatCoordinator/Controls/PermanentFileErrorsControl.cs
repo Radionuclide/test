@@ -303,9 +303,9 @@ namespace iba.Controls
                             bitmap = m_updateIcons[value];
                         else if (task is PauseTaskData)
                             bitmap = m_pauseIcons[value];
-                        else if (task is CustomTaskData)
+                        else if (task is ICustomTaskData)
                         {
-                            CustomTaskData cust = (CustomTaskData)task;
+                            ICustomTaskData cust = (ICustomTaskData)task;
                             string name = cust.Plugin.NameInfo;
                             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo ii) { return ii.Name == name; });
                             bitmap = m_customtaskIcons[index][value];

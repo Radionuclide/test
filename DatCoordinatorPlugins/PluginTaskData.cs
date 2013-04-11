@@ -36,6 +36,9 @@ namespace iba.Plugins
             set;
         }
 
+        /// <summary>
+        /// What dongle bit needs to be checked
+        /// </summary>
         int DongleBitPos
         {
             get;
@@ -62,19 +65,12 @@ namespace iba.Plugins
     public interface IPluginTaskDataUNC : IPluginTaskData
     {
         /// <summary>
-        /// Function to be called when any Paths need their corresponding UNC path updated
-        /// If the plugin has paths that need updating to UNC paths, implement this function,
-        /// otherwise, have an empty implementation.
+        /// Extention of the generated output file, e.g.: ".xml"
         /// </summary>
-        void UpdateUNC();
-
-        /// <summary>
-        /// If any paths need to be registered with the SharesHandler of the datcoordinator, return them here
-        /// {{path1,username1, pass1},{path2,username2, pass2},...}
-        /// otherwise return null
-        /// </summary>
-        /// <returns>UNC paths</returns>
-        string[][] UNCPaths();
+        string Extension
+        {
+            get;
+        }
     }
 
     /// <summary>

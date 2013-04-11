@@ -10,8 +10,8 @@ namespace iba.Plugins
     [Serializable]
     public class PluginTaskWorkerStatus
     {
-        public bool started;
-        public object extraData;
+        public bool started; //wheter or not the plugin is started
+        public object extraData; //any extra data you want the plugin control to know
     }
 
     /// <summary>
@@ -51,8 +51,21 @@ namespace iba.Plugins
         /// <returns>null if no error occured, description of the error otherwise</returns>
         string GetLastError();
 
-
+        /// <summary>
+        /// Returns status of the plugin worker,
+        /// </summary>
+        /// <returns>status
         PluginTaskWorkerStatus GetWorkerStatus();
-            
+    }
+
+    public interface IPluginTaskWorkerUNC : IPluginTaskWorker
+    {
+        /// <summary>
+        /// Function to be called when the task should be executed
+        /// </summary>
+        /// <param name="datFile">datfile on which the task should be performed</param>
+        /// <param name="output">filename of the resulting file </param>
+        /// <returns>true if successfull, false otherwise</returns>
+        bool ExecuteTask(string datFile, string output);
     }
 }

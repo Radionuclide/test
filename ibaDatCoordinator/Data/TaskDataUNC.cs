@@ -19,7 +19,10 @@ namespace iba.Data
 
         public bool UsesQuota
         {
-            get { return m_outputLimitChoice == OutputLimitChoiceEnum.SaveFreeSpace || m_outputLimitChoice == OutputLimitChoiceEnum.LimitDiskspace; }
+            get { 
+                return m_outputLimitChoice == OutputLimitChoiceEnum.SaveFreeSpace 
+                || m_outputLimitChoice == OutputLimitChoiceEnum.LimitDiskspace; 
+            }
         }
 
         private bool m_overwriteFiles;
@@ -57,7 +60,8 @@ namespace iba.Data
             set { m_infoFieldForSubdirRemoveBlanksAll = value; }
         }
 
-        public TaskDataUNC(ConfigurationData parent) : base(parent) {
+        public TaskDataUNC(ConfigurationData parent) : base(parent) 
+        {
             m_pass = "";
             m_username = "";
             m_destinationMapUNC = "";

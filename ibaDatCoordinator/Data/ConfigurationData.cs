@@ -36,7 +36,7 @@ namespace iba.Data
 
         private List<TaskData> m_tasks;
 
-        [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData)), XmlElement(Type = typeof(IfTaskData)), XmlElement(Type = typeof(UpdateDataTaskData)), XmlElement(Type = typeof(PauseTaskData)), XmlElement(Type = typeof(CustomTaskData))]
+        [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData)), XmlElement(Type = typeof(IfTaskData)), XmlElement(Type = typeof(UpdateDataTaskData)), XmlElement(Type = typeof(PauseTaskData)), XmlElement(Type = typeof(CustomTaskData)), XmlElement(Type = typeof(CustomTaskDataUNC))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }
@@ -85,12 +85,6 @@ namespace iba.Data
                 {
                     TaskDataUNC t = task as TaskDataUNC;
                     if (t != null) t.UpdateUNC();
-                    CustomTaskData c = task as CustomTaskData;
-                    if (c != null)
-                    {
-                        IPluginTaskDataUNC plugin = c.Plugin as IPluginTaskDataUNC;
-                        if (plugin != null) plugin.UpdateUNC();
-                    }
                 }
             }
         }

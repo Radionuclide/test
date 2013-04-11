@@ -116,6 +116,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomUNCTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
+      <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -439,6 +445,9 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
+      <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\icons.bmp" />
   </ItemGroup>
   <ItemGroup>

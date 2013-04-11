@@ -99,6 +99,5 @@ namespace iba.Utility
                 return m_instance;
             }
         }
-
     }
 }
