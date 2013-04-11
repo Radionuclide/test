@@ -3677,9 +3677,9 @@ namespace iba.Processing
                     m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                Log(Logging.Level.Exception, ex.Message, filename, task);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;

@@ -41,8 +41,8 @@
             this.m_gbTarget.Controls.Add(this.panelOut);
             this.m_gbTarget.Location = new System.Drawing.Point(0, 97);
             this.m_gbTarget.Name = "m_gbTarget";
-            this.m_gbTarget.Size = new System.Drawing.Size(666, 460);
-            this.m_gbTarget.TabIndex = 3;
+            this.m_gbTarget.Size = new System.Drawing.Size(666, 480);
+            this.m_gbTarget.TabIndex = 1;
             this.m_gbTarget.TabStop = false;
             this.m_gbTarget.Text = "Target";
             // 
@@ -50,9 +50,9 @@
             // 
             this.panelOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelOut.Location = new System.Drawing.Point(11, 12);
+            this.panelOut.Location = new System.Drawing.Point(11, 14);
             this.panelOut.Name = "panelOut";
-            this.panelOut.Size = new System.Drawing.Size(644, 444);
+            this.panelOut.Size = new System.Drawing.Size(644, 464);
             this.panelOut.TabIndex = 0;
             // 
             // m_pluginPanel
@@ -63,7 +63,7 @@
             this.m_pluginPanel.Location = new System.Drawing.Point(0, 0);
             this.m_pluginPanel.Name = "m_pluginPanel";
             this.m_pluginPanel.Size = new System.Drawing.Size(666, 91);
-            this.m_pluginPanel.TabIndex = 4;
+            this.m_pluginPanel.TabIndex = 0;
             // 
             // CustomUNCTaskControl
             // 
@@ -72,7 +72,7 @@
             this.Controls.Add(this.m_pluginPanel);
             this.Controls.Add(this.m_gbTarget);
             this.Name = "CustomUNCTaskControl";
-            this.Size = new System.Drawing.Size(666, 560);
+            this.Size = new System.Drawing.Size(666, 580);
             this.m_gbTarget.ResumeLayout(false);
             this.ResumeLayout(false);
 

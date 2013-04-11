@@ -56,7 +56,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as CustomTaskDataUNC;
             m_uncControl.SetData(m_data);
-            m_plugin.LoadData((m_data.Plugin as ICustomTaskData), this);
+            m_plugin.LoadData((m_data.Plugin as IPluginTaskDataUNC), this);
         }
 
         public void LeaveCleanup()

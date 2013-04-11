@@ -51,9 +51,15 @@ namespace XmlExtract
             info.Endprodukt = true;
 
             if (Convert.ToBoolean(reader.IsInfoPresent(DE_MESSZEITPUNKT)))
-                info.Messzeitpunkt = DateTime.Parse(reader.QueryInfoByName(DE_MESSZEITPUNKT));
+            {
+                string val = reader.QueryInfoByName(DE_MESSZEITPUNKT);
+                info.Messzeitpunkt = DateTime.ParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"));
+            }
             else if (Convert.ToBoolean(reader.IsInfoPresent(STARTTIME)))
-                info.Messzeitpunkt = DateTime.Parse(reader.QueryInfoByName(STARTTIME));
+            {
+                string val = reader.QueryInfoByName(STARTTIME);
+                info.Messzeitpunkt = DateTime.ParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"));
+            }
             else
                 validationresult.AppendFormat("Could not find measurement date neither at info column '{0}' nor at '{1}'", DE_MESSZEITPUNKT, STARTTIME).AppendLine();
 

@@ -476,6 +476,7 @@ namespace iba.Controls
             if (info is PluginTaskInfoUNC)
             {
                 CustomTaskDataUNC cust = new CustomTaskDataUNC(m_data, info as PluginTaskInfo);
+                new SetNextName(cust);
                 m_data.Tasks.Add(cust);
                 name = cust.Name;
                 icust = cust;
@@ -483,6 +484,7 @@ namespace iba.Controls
             else
             {
                 CustomTaskData cust = new CustomTaskData(m_data, info as PluginTaskInfo);
+                new SetNextName(cust);
                 m_data.Tasks.Add(cust);
                 name = cust.Name;
                 icust = cust;

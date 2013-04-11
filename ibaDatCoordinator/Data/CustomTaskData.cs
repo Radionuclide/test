@@ -20,6 +20,12 @@ namespace iba.Data
             get;
             set;
         }
+
+        string Name
+        {
+            get;
+            set;
+        }
     }
 
     [Serializable]

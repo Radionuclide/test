@@ -6,7 +6,7 @@ using iba.Plugins;
 namespace iba.TKS_XML_Plugin
 {
     [Serializable]
-    class PluginXMLTask : IPluginTaskDataUNC, IPluginTaskDataIsSame
+    public class PluginXMLTask : IPluginTaskDataUNC, IPluginTaskDataIsSame
     {
         public PluginXMLTask()
         {

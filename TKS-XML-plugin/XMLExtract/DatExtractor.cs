@@ -56,7 +56,9 @@ namespace XmlExtract
             var infoParser = new ResolveInfo();
 
             Info info = ResolveInfo.Resolve(reader);
-            _error.AppendLine(info.Error);
+
+            if (!String.IsNullOrEmpty(info.Error))
+                _error.AppendLine(info.Error);
 
             var met = new MaterialEreignisType();
             met.MaterialHeader.LokalerIdent = info.LocalIdent;

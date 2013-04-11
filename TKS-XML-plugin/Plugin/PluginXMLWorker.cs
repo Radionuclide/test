@@ -49,8 +49,11 @@ namespace iba.TKS_XML_Plugin
 
         public bool OnStop()
         {
-            m_extractor.Dispose();
-            m_extractor = null;
+            if (m_started)
+            {
+                m_extractor.Dispose();
+                m_extractor = null;
+            }
             m_started = false;
             return true;
         }
