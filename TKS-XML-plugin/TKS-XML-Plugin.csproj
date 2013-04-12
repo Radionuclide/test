@@ -81,7 +81,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="XMLExtract\Misc\8515202_dg_de_02.dat" />
     <None Include="XMLExtract\Misc\create-class.cmd" />
     <None Include="XMLExtract\Misc\Messreihe.xsd" />

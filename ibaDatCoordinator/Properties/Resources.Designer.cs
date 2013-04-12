@@ -975,6 +975,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to error while scanning folder {0}; {1} ; assuming network error.
+        /// </summary>
+        internal static string logDatDirError2 {
+            get {
+                return ResourceManager.GetString("logDatDirError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to failed to delete file.
         /// </summary>
         internal static string logDeleteTaskFailed {

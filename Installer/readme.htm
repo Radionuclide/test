@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.19.4.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.19.3.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -26,13 +26,19 @@
 To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. 
 To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.19.4.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.19.3.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
 
 <P class="header1">Version 1.19.3 - 25/03/2013</P>
+<P class="header2">New features</P>
+<UL>
+    <LI>Plugin interfaces extended.</LI>
+</UL>
 <P class="header2">Bugfixes</P>
 <UL>
+    <LI>Restoring network access to the source directory might under some circumstances not work if one only has the cyclic rescan and not the immediate file scan option on.</LI>
+    <LI>Error messages when creating a network share connection that are to long were replaced by 'unknown error'.</LI>
     <LI>The functionality that ibaDatCoordinator ignores files with the 'offline' attribute (set by PDA to indicate he is still busy writing) was broken.</LI>
     <LI>In the French localisation of ibaDatCoordinator the login textboxes overlapped the 'check subdirectories' checkbox.</LI>
 </UL>
