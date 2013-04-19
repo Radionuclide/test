@@ -78,6 +78,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright © 2013 iba AG"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_FILE_VERSION}"
 VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 Section "MainSection" SEC01
