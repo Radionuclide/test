@@ -23,19 +23,21 @@ namespace XmlExtract
             { "mbar", EinheitEnum.mbar },
             { "grad", EinheitEnum.grad },
             { "Keine/1", EinheitEnum.Keine1 },
+            { "", EinheitEnum.Keine1 },
             { "min", EinheitEnum.min },
             { "m", EinheitEnum.m },
+            { "As/m²", EinheitEnum.Asqm },
+            { "U/min", EinheitEnum.Umin },
             { "Test", EinheitEnum.Test },
         };
 
-        public static EinheitEnum Parse(string unit)
+        public static object Parse(string unit)
         {
             EinheitEnum einheit;
             if (_map.TryGetValue(unit, out einheit))
                 return einheit;
 
-            // throw new InvalidOperationException(String.Format("No mapping found for unit '{0}'", unit));
-            return EinheitEnum.Test;
+            return unit;
         }
 
         public void Process(string unit)
@@ -43,7 +45,7 @@ namespace XmlExtract
             Result(Parse(unit));
         }
 
-        public event Action<EinheitEnum> Result = delegate { };
+        public event Action<object> Result = delegate { };
 
     }
 }
