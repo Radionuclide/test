@@ -29,7 +29,6 @@ namespace XmlExtract
         {
             _error = new StringBuilder();
 
-
             _reader.Open(datfile);
 
             MaterialEreignisType met = FillMaterialEreignis(_reader, st);
@@ -55,7 +54,7 @@ namespace XmlExtract
 
             var infoParser = new ResolveInfo();
 
-            Info info = ResolveInfo.Resolve(reader);
+            Info info = ResolveInfo.Resolve(reader, st);
 
             if (!String.IsNullOrEmpty(info.Error))
                 _error.AppendLine(info.Error);
@@ -63,7 +62,8 @@ namespace XmlExtract
             var met = new MaterialEreignisType();
             met.MaterialHeader.LokalerIdent = info.LocalIdent;
             met.MaterialHeader.Standort = st;
-            met.MaterialHeader.MaterialArt = MaterialArtType.VZ;
+            if (st == StandortType.DU)
+                met.MaterialHeader.MaterialArt = info.MaterialArt;
 
             foreach (IbaChannelReader channel in reader.Channels())
             {
@@ -146,7 +146,7 @@ namespace XmlExtract
             {
                 if (disposing)
                 {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader); 
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader);
                 }
             }
             _disposed = true;
