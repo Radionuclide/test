@@ -1,4 +1,5 @@
 ﻿
+using iba.TKS_XML_Plugin.Properties;
 
 namespace XmlExtract
 {
@@ -11,16 +12,22 @@ namespace XmlExtract
 
     internal class ResolveInfo
     {
+        const string DE_BUNDNR = "$DE_BUNDNR";
+        const string DE_MATERIALART = "$DE_MATERIALART";
+        const string DE_MESSZEITPUNKT = "$DE_MESSZEITPUNKT";
+        const string STARTTIME = "starttime";
+        const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
+        const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
 
-        public static Info Resolve(IbaFileReader reader)
+        private static List<string> _missingFields;
+        private static List<string> _wrongValueFields;
+
+        public static Info Resolve(IbaFileReader reader, StandortType st)
         {
-            const string DE_BUNDNR = "$DE_BUNDNR";
-            const string DE_STANDORT = "$DE_STANDORT";
-            const string DE_MATERIALART = "$DE_MATERIALART";
-            const string DE_MESSZEITPUNKT = "$DE_MESSZEITPUNKT";
-            const string STARTTIME = "starttime";
 
-            var validationresult = new StringBuilder();
+
+            _missingFields = new List<string>();
+            _wrongValueFields = new List<string>();
             var info = new Info();
 
             //BundNr = reader.QueryInfoByName("$DE_BUNDNR").Trim();
@@ -34,42 +41,130 @@ namespace XmlExtract
             if (Convert.ToBoolean(reader.IsInfoPresent(DE_BUNDNR)))
                 info.LocalIdent = reader.QueryInfoByName(DE_BUNDNR).Trim();
             else
-                validationresult.AppendFormat("Could not find info column '{0}'", DE_BUNDNR).AppendLine();
-
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_STANDORT)))
-                info.Standort = (StandortType)Enum.Parse(typeof(StandortType), reader.QueryInfoByName(DE_STANDORT).Trim());
-            //else
-            //    validationresult.AppendFormat("Could not find infofield '{0}'", DE_STANDORT).AppendLine();
-
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_MATERIALART)))
-                info.MaterialArt = (MaterialArtType)Enum.Parse(typeof(MaterialArtType), reader.QueryInfoByName(DE_MATERIALART).Trim());
-            //else
-            //    validationresult.AppendFormat("Could not find infofield '{0}'", DE_MATERIALART).AppendLine();
+                _missingFields.Add(DE_BUNDNR);
 
 
-            info.Bandlaufrichtung = BandlaufrichtungEnum.InWalzRichtung;
-            info.Endprodukt = true;
-
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_MESSZEITPUNKT)))
+            if (st == StandortType.DU)
             {
-                string val = reader.QueryInfoByName(DE_MESSZEITPUNKT);
-                info.Messzeitpunkt = DateTime.ParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"));
+                if (Convert.ToBoolean(reader.IsInfoPresent(DE_MATERIALART)))
+                {
+                    var matValue = reader.QueryInfoByName(DE_MATERIALART).Trim();
+                    var mat = MaterialArtType.BB;
+                    if (Enum<MaterialArtType>.TryParse(matValue, true, out mat))
+                        info.MaterialArt = mat;
+                    else
+                        _wrongValueFields.Add(DE_MATERIALART);
+                }
+                else
+                    _missingFields.Add(DE_MATERIALART);
             }
-            else if (Convert.ToBoolean(reader.IsInfoPresent(STARTTIME)))
+
+
+            if (Convert.ToBoolean(reader.IsInfoPresent(DE_BANDLAUFRICHTUNG)))
             {
-                string val = reader.QueryInfoByName(STARTTIME);
-                info.Messzeitpunkt = DateTime.ParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"));
+                var blrValue = reader.QueryInfoByName(DE_BANDLAUFRICHTUNG).Trim();
+                var blr = BandlaufrichtungEnum.InWalzRichtung;
+                if (Enum<BandlaufrichtungEnum>.TryParse(blrValue, true, out blr))
+                    info.Bandlaufrichtung = blr;
+                else
+                    _wrongValueFields.Add(DE_BANDLAUFRICHTUNG);
             }
             else
-                validationresult.AppendFormat("Could not find measurement date neither at info column '{0}' nor at '{1}'", DE_MESSZEITPUNKT, STARTTIME).AppendLine();
+                _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
-            info.Error = validationresult.ToString();
+
+            //if (Convert.ToBoolean(reader.IsInfoPresent(DE_BUNDNR)))
+            //    info.LocalIdent = reader.QueryInfoByName(DE_BUNDNR).Trim();
+            //else
+            //    _missingFields.Add(DE_BUNDNR);
+
+
+            if (Convert.ToBoolean(reader.IsInfoPresent(DE_ENDPRODUKT)))
+            {
+                var epValue = reader.QueryInfoByName(DE_ENDPRODUKT).Trim();
+                var ep = true;
+                if (Boolean.TryParse(epValue, out ep))
+                    info.Endprodukt = ep;
+                else
+                    _wrongValueFields.Add(DE_ENDPRODUKT);
+            }
+            else
+                _missingFields.Add(DE_ENDPRODUKT);
+
+            info.Messzeitpunkt = GetMesszeit(reader);
+
+            info.Error = FormatError();
             return info;
         }
 
-        public void Process(IbaFileReader reader)
+        private static string FormatError()
         {
-            Result(Resolve(reader));
+            if (_wrongValueFields.Count + _missingFields.Count == 0)
+                return string.Empty;
+
+            _missingFields = _missingFields.ConvertAll(x => StripPrefix(x));
+            _wrongValueFields = _wrongValueFields.ConvertAll(x => StripPrefix(x));
+
+            string misingFieldError = String.Empty;
+            string wrongValuesError = String.Empty;
+
+            if (_missingFields.Count > 0)
+            {
+                misingFieldError = String.Format(Resources.MissingInfoFields, String.Join("', '", _missingFields.ToArray()));
+            }
+
+            if (_wrongValueFields.Count > 0)
+            {
+                wrongValuesError = String.Format(Resources.WrongValuesForInfoFields, String.Join("', '", _wrongValueFields.ToArray()));
+            }
+
+            return String.Format("{0} {1}", misingFieldError, wrongValuesError).Trim();
+
+        }
+
+        private static DateTime GetMesszeit(IbaFileReader reader)
+        {
+            DateTime messzeit = DateTime.Now;
+
+            string dtValue;
+            DateTime dt;
+            if (Convert.ToBoolean(reader.IsInfoPresent(DE_MESSZEITPUNKT)))
+            {
+                dtValue = reader.QueryInfoByName(DE_MESSZEITPUNKT);
+                if (GetDateTimeParseExact(dtValue, out dt))
+                    messzeit = dt;
+                else
+                    _wrongValueFields.Add(DE_MESSZEITPUNKT);
+            }
+            else if (Convert.ToBoolean(reader.IsInfoPresent(STARTTIME)))
+            {
+                dtValue = reader.QueryInfoByName(STARTTIME);
+                if (GetDateTimeParseExact(dtValue, out dt))
+                    messzeit = dt;
+                else
+                    _wrongValueFields.Add(STARTTIME);
+            }
+
+            return messzeit;
+        }
+        private static Boolean GetDateTimeParseExact(string val, out DateTime date)
+        {
+            return DateTime.TryParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"), DateTimeStyles.None, out date);
+        }
+
+        internal static string StripPrefix(string value)
+        {
+            const string prefix = "$DE_";
+            if (value.StartsWith(prefix))
+                return value.Substring(prefix.Length);
+
+            return value;
+        }
+
+
+        public void Process(IbaFileReader reader, StandortType st)
+        {
+            Result(Resolve(reader, st));
         }
 
         public event Action<Info> Result = delegate { };

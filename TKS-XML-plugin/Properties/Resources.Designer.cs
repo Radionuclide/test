@@ -60,10 +60,28 @@ namespace iba.TKS_XML_Plugin.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Fehlende Felder &apos;{0}&apos; in Info Zuweisung..
+        /// </summary>
+        internal static string MissingInfoFields {
+            get {
+                return ResourceManager.GetString("MissingInfoFields", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Icon TKSXMLTask {
             get {
                 object obj = ResourceManager.GetObject("TKSXMLTask", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Falsche Werte für &apos;{0}&apos; in Info Zuweisung..
+        /// </summary>
+        internal static string WrongValuesForInfoFields {
+            get {
+                return ResourceManager.GetString("WrongValuesForInfoFields", resourceCulture);
             }
         }
     }
