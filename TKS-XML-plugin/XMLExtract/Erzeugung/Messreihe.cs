@@ -25,7 +25,7 @@ namespace XmlExtract
     public partial class MaterialEreignisType
     {
         [System.Xml.Serialization.XmlAttributeAttribute("schemaLocation", Namespace = System.Xml.Schema.XmlSchema.InstanceNamespace)]
-        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/REL-2_1/Messreihe.xsd";
+        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/REL-2_4/Messreihe.xsd";
 
         public MaterialHeaderType MaterialHeader { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Messung")]
@@ -239,6 +239,20 @@ namespace XmlExtract
         [XmlIgnore]
         public List<double> WerteList { get; set; }
     }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+    public partial class StatistikType
+    {
+        
+        public double Min { get; set; }
+        public double Max { get; set; }
+        public double Avg { get; set; }
+        public double StdDev { get; set; }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
     [System.SerializableAttribute()]
@@ -250,7 +264,9 @@ namespace XmlExtract
                 
         private System.Nullable<WerteTypeEnum> typField;
         
-        public EinheitEnum Einheit { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
+        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
+        public object Einheit { get; set; }
         /// <summary>
         /// Name der Messreihe im statischen Modell
         /// </summary>
@@ -258,7 +274,7 @@ namespace XmlExtract
         /// <summary>
         /// Darf weggelassen werden; dann werden die Werte berechnet.
         /// </summary>
-        public SpurTypeStatistik Statistik { get; set; }
+        public StatistikType Statistik { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeStatistik()
         {
@@ -268,7 +284,7 @@ namespace XmlExtract
             return (Statistik.Avg + Statistik.Max + Statistik.Min + Statistik.StdDev) != 0;
         }
         /// <summary>
-        /// Richtung der x-Achse (Dimension Zeit: dx = v* SegmentgroesseX in Laufrichtung, Geschwindigkeit noch aufzunehmen)
+        /// Richtung der x-Achse (oder Dimension Zeit)
         /// </summary>
         public BezugDimensionEnum DimensionX { get; set; }
         public Raster1DType Raster1D { get; set; }
@@ -279,7 +295,7 @@ namespace XmlExtract
         public SpurType()
         {
             this.Raster1D = new Raster1DType();
-            this.Statistik = new SpurTypeStatistik();
+            this.Statistik = new StatistikType();
             this.DimensionX = BezugDimensionEnum.Laenge;
         }
         
@@ -371,6 +387,18 @@ namespace XmlExtract
         m,
         
         Test,
+        
+        /// <summary>
+        /// As/qm
+        /// </summary>
+        [System.Xml.Serialization.XmlEnumAttribute("As/qm")]
+        Asqm,
+        
+        /// <summary>
+        /// U/min
+        /// </summary>
+        [System.Xml.Serialization.XmlEnumAttribute("U/min")]
+        Umin,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -388,23 +416,8 @@ namespace XmlExtract
         Maximum,
         
         StdDev,
-    }
     
-    /// <summary>
-    /// Darf weggelassen werden; dann werden die Werte berechnet.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public partial class SpurTypeStatistik
-    {
-        
-        public double Min { get; set; }
-        public double Max { get; set; }
-        public double Avg { get; set; }
-        public double StdDev { get; set; }
+        Test,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -430,10 +443,11 @@ namespace XmlExtract
     public partial class MessungType
     {
                 
+        private System.Nullable<MessungTypeEnum> messgroesseField;
+        
         public string IDMessgeraet { get; set; }
         public BandlaufrichtungEnum Bandlaufrichtung { get; set; }
         public bool Endprodukt { get; set; }
-        public MessungTypeEnum Messgroesse { get; set; }
         public System.DateTime Messzeitpunkt { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Spur")]
         public List<SpurType> Spur { get; set; }
@@ -444,6 +458,41 @@ namespace XmlExtract
         public MessungType()
         {
             this.Spur = new List<SpurType>();
+        }
+        
+        public MessungTypeEnum Messgroesse
+        {
+            get
+            {
+                if (this.messgroesseField.HasValue)
+                {
+                    return this.messgroesseField.Value;
+                }
+                else
+                {
+                    return default(MessungTypeEnum);
+                }
+            }
+            set
+            {
+                this.messgroesseField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool MessgroesseSpecified
+        {
+            get
+            {
+                return this.messgroesseField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.messgroesseField = null;
+                }
+            }
         }
     }
     
