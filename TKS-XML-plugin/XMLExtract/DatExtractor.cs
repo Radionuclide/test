@@ -132,11 +132,7 @@ namespace XmlExtract
 
         #region IDisposable Members
 
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader);          
-        }
+        private bool _disposed;
 
         public void Dispose()
         {
@@ -144,11 +140,23 @@ namespace XmlExtract
             GC.SuppressFinalize(this);
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader); 
+                }
+            }
+            _disposed = true;
+        }
+
         ~DatExtractor()
         {
             Dispose(false);
         }
-
         #endregion
+
     }
 }
