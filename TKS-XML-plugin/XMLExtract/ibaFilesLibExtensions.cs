@@ -42,21 +42,31 @@
 
         public static string Unit(this IbaChannelReader channel)
         {
-            if (channel.IsInfoPresent("unit") == 1)
+            if (Convert.ToBoolean(channel.IsInfoPresent("unit")))
                 return channel.QueryInfoByName("unit").Trim();
             return string.Empty;
         }
 
-        public static string Comment1(this IbaChannelReader channel)
+        public static string PDA_Comment1(this IbaChannelReader channel)
         {
             foreach (var infoField in channel.InfoFields())
             {
-                if (infoField.Key.Contains("Comment1"))
+                if (infoField.Key.Contains("PDA_Comment1"))
                     return infoField.Value.Trim();
                 Console.WriteLine(infoField.Key);
             }
             return string.Empty;
+        }
 
+        public static string PDA_Comment2(this IbaChannelReader channel)
+        {
+            foreach (var infoField in channel.InfoFields())
+            {
+                if (infoField.Key.Contains("PDA_Comment2"))
+                    return infoField.Value.Trim();
+                Console.WriteLine(infoField.Key);
+            }
+            return string.Empty;
         }
 
         //create an Id like ibaAnalyzer would
@@ -79,6 +89,8 @@
         {
             return string.Format("MI_{0}", channel.Name());
         }
+
+
     }
 }
 
