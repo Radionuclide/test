@@ -866,7 +866,7 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deletePauseTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is CustomTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
-                        (((CustomTaskTreeItemData)(node.Tag)).DataSource as CustomTaskData).Plugin.NameInfo,
+                        (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,
                             node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
