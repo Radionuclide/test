@@ -712,23 +712,14 @@ namespace iba
                         break;
                     }
                 case "BatchFile":
-                    goto case "task";
                 case "Report":
-                    goto case "task";
                 case "Extract":
-                    goto case "task";
                 case "CopyTask":
-                    goto case "task";
                 case "IfTask":
-                    goto case "task";
                 case "UpdateDataTask":
-                    goto case "task";
                 case "PauseTask":
-                    goto case "task";
                 case "CustomTaskUNC":
-                    goto case "task";
                 case "CustomTask":
-                    goto case "task";
                 case "task":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
