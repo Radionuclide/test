@@ -101,7 +101,7 @@ namespace iba.TKS_XML_Plugin
         #endregion
 
         //some data
-        private XmlExtract.StandortType m_standOrt;
+        private XmlExtract.StandortType m_standOrt = XmlExtract.StandortType.DU;
         public XmlExtract.StandortType StandOrt
         {
             get { return m_standOrt; }
