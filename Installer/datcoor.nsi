@@ -299,15 +299,16 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
+  File "readme.htm"
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-  File "readme.htm"
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
 
+  SetOutPath "$INSTDIR"
   ;Create uninstall shortcut
   CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
@@ -341,8 +342,6 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "readme.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
-
-
 
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
@@ -433,12 +432,14 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Interop.ibaFilesLiteLib.dll"
   Delete "$INSTDIR\Interop.IbaAnalyzer.dll"
   Delete "$INSTDIR\ICSharpCode.TextEditor.dll"
+  Delete "$INSTDIR\ICSharpCode.SharpZipLib.dll"
   Delete "$INSTDIR\msvcr90.dll"
   Delete "$INSTDIR\msvcp90.dll"
   Delete "$INSTDIR\msvcm90.dll"
   Delete "$INSTDIR\Microsoft.VC90.CRT.manifest"
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
   Delete "$INSTDIR\default.ico"
+  Delete "$INSTDIR\readme.htm"
   Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
   RMDir "$INSTDIR\de"
   Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
