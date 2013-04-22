@@ -83,7 +83,7 @@ namespace XmlExtract
             {
                 var epValue = reader.QueryInfoByName(DE_ENDPRODUKT).Trim();
                 var ep = true;
-                if (Boolean.TryParse(epValue, out ep))
+                if (TryConvertToBoolean(epValue, out ep))
                     info.Endprodukt = ep;
                 else
                     _wrongValueFields.Add(DE_ENDPRODUKT);
@@ -147,7 +147,8 @@ namespace XmlExtract
 
             return messzeit;
         }
-        private static Boolean GetDateTimeParseExact(string val, out DateTime date)
+
+        internal static Boolean GetDateTimeParseExact(string val, out DateTime date)
         {
             return DateTime.TryParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"), DateTimeStyles.None, out date);
         }
@@ -161,6 +162,37 @@ namespace XmlExtract
             return value;
         }
 
+
+        internal static bool TryConvertToBoolean(string input, out bool result)
+        {
+            var TrueStrings = new List<string>(new string[] { "ja", "wahr", "true", "t", "yes", "y" });
+            var FalseStrings = new List<string>(new string[] { "nein", "falsch", "false", "f", "no", "n" });
+
+            // Remove whitespace from string and lowercase
+            string formattedInput = input.Trim().ToLower();
+
+            if (TrueStrings.Contains(formattedInput))
+            {
+                result = true;
+                return true;
+            }
+
+            if (FalseStrings.Contains(formattedInput))
+            {
+                result = false;
+                return true;
+            }
+
+            int intVal = 0;
+            if (int.TryParse(formattedInput, out intVal))
+            {
+                result = Convert.ToBoolean(intVal);
+                return true;
+            }
+
+            result = false;
+            return false;
+        }
 
         public void Process(IbaFileReader reader, StandortType st)
         {
