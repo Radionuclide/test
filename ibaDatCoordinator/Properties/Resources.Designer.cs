@@ -1342,6 +1342,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; task started.
+        /// </summary>
+        internal static string logTaskStarted {
+            get {
+                return ResourceManager.GetString("logTaskStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; task succesfully completed .
         /// </summary>
         internal static string logTaskSuccess {
