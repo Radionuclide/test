@@ -72,7 +72,7 @@ namespace XmlExtract
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
 
-                mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
+                //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
                 mes.IDMessgeraet = channel.CreateIDMessgeraet();
 
                 met.Messung.Add(mes);
