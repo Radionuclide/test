@@ -1477,15 +1477,23 @@ namespace iba
             Pair<TreeNode, int> p = mc.Tag as Pair<TreeNode, int>;
             TreeNode node = p.First;
             int index = p.Second;
+            
             PluginTaskInfo info = PluginManager.Manager.PluginInfos[index];
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            CustomTaskData cust = new CustomTaskData(confData, info);
+            TaskData cust;
+            if (info is PluginTaskInfoUNC)
+                cust = new CustomTaskDataUNC(confData, info);
+            else
+                cust = new CustomTaskData(confData, info);
+
             new SetNextName(cust);
             confData.Tasks.Add(cust);
+            ICustomTaskData icust = (ICustomTaskData)cust;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
-            newNode.Tag = new CustomTaskTreeItemData(this, cust);
+            TreeNode newNode = new TreeNode(icust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+            newNode.Tag = new CustomTaskTreeItemData(this, icust);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
