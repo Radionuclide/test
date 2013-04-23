@@ -10,6 +10,6 @@ namespace XmlExtract
     {
         public double Interval { get; set; }
         public double XOffset { get; set; }
-        public List<double> Data { get; set; }
+        public List<float> Data { get; set; }
     }
 }

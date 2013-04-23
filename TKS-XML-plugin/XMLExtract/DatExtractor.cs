@@ -126,9 +126,7 @@ namespace XmlExtract
             if (null == values)
                 return channelData;
 
-            var listOfValues = new List<float>(values);
-            channelData.Data = listOfValues.ConvertAll<double>(invalue => { return invalue; });
-
+            channelData.Data = new List<float>(values);
             return channelData;
         }
 

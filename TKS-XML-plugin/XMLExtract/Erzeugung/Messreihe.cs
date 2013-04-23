@@ -198,7 +198,7 @@ namespace XmlExtract
     {
         public Raster1DType()
         {
-            this.WerteList = new List<double>();
+            this.WerteList = new List<float>();
         }        
         /// <summary>
         /// Anz. der Werte, wird berechnet wenn fehlend.
@@ -231,13 +231,13 @@ namespace XmlExtract
                 WerteList.Clear();
                 foreach (var item in value.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                 {
-                    WerteList.Add(XmlConvert.ToDouble(item));
+                    WerteList.Add(XmlConvert.ToSingle(item));
                 }
             }
         }
 
         [XmlIgnore]
-        public List<double> WerteList { get; set; }
+        public List<float> WerteList { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
