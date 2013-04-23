@@ -1321,9 +1321,11 @@ namespace iba.Processing
                     return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
                 }); //oldest files first
             }
-            catch
+            catch (Exception ex)
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                networkErrorOccured = true;
+                string message = string.Format(iba.Properties.Resources.logDatDirError2, datDir, ex.Message);
+                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError2);
                 m_sd.UpdatingFileList = false;
                 return;
             }

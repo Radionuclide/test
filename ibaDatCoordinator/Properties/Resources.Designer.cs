@@ -975,6 +975,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to error while scanning folder {0}; {1} ; assuming network error.
+        /// </summary>
+        internal static string logDatDirError2 {
+            get {
+                return ResourceManager.GetString("logDatDirError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to failed to delete file.
         /// </summary>
         internal static string logDeleteTaskFailed {
@@ -1678,7 +1687,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PDA not yet finished with .dat file.
+        ///   Looks up a localized string similar to ibaPDA not yet finished with .dat file.
         /// </summary>
         internal static string Noaccess3 {
             get {
@@ -1687,7 +1696,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Candidate .dat file still not finished by PDA after more than one hour.
+        ///   Looks up a localized string similar to Candidate .dat file still not finished by ibaPDA after more than one hour.
         /// </summary>
         internal static string Noaccess4 {
             get {

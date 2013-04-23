@@ -440,6 +440,8 @@ Function un.UninstallTasks
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
   Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\readme.htm"
+  Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
+  Delete "$INSTDIR\createundoregfile.bat"
   Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
   RMDir "$INSTDIR\de"
   Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
