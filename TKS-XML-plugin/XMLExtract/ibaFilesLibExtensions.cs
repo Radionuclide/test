@@ -49,23 +49,15 @@
 
         public static string PDA_Comment1(this IbaChannelReader channel)
         {
-            foreach (var infoField in channel.InfoFields())
-            {
-                if (infoField.Key.Contains("PDA_Comment1"))
-                    return infoField.Value.Trim();
-                Console.WriteLine(infoField.Key);
-            }
+            if (Convert.ToBoolean(channel.IsInfoPresent("$PDA_Comment1")))
+                return channel.QueryInfoByName("$PDA_Comment1").Trim();
             return string.Empty;
         }
 
         public static string PDA_Comment2(this IbaChannelReader channel)
         {
-            foreach (var infoField in channel.InfoFields())
-            {
-                if (infoField.Key.Contains("PDA_Comment2"))
-                    return infoField.Value.Trim();
-                Console.WriteLine(infoField.Key);
-            }
+            if (Convert.ToBoolean(channel.IsInfoPresent("$PDA_Comment2")))
+                return channel.QueryInfoByName("$PDA_Comment2").Trim();
             return string.Empty;
         }
 
@@ -84,10 +76,23 @@
                 return string.Format("[{0}{1}{2}]", moduleNr, seperator, nrInModule);
         }
 
-        //create an Id like ibaAnalyzer would
-        internal static string CreateIDMessgeraet(this IbaChannelReader channel)
+        internal static string ResolveSignalId(this IbaChannelReader channel, IdFieldLocation idField)
         {
-            return string.Format("MI_{0}", channel.Name());
+            string value = string.Empty;
+            switch (idField)
+            {
+                case IdFieldLocation.PDA_Comment1:
+                    value = channel.PDA_Comment1();
+                    break;
+                case IdFieldLocation.PDA_Comment2:
+                    value = channel.PDA_Comment2();
+                    break;
+            }
+
+            if (!String.IsNullOrEmpty(value))
+                return value;
+
+            return channel.Name();
         }
 
 

@@ -32,7 +32,7 @@ namespace iba.TKS_XML_Plugin
                 m_data = m_dataToApply;
                 m_dataToApply = null;
             }
-            m_error = m_extractor.ExtractToXml(datFile,output,m_data.StandOrt);
+            m_error = m_extractor.ExtractToXml(datFile,output,m_data.StandOrt,m_data.IdField);
             return string.IsNullOrEmpty(m_error);
         }
 

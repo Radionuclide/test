@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using iba.Plugins;
+using XmlExtract;
 
 namespace iba.TKS_XML_Plugin
 {
@@ -31,31 +32,31 @@ namespace iba.TKS_XML_Plugin
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
             m_data = datasource as PluginXMLTask;
-            switch (m_data.StandOrt)
-            {
-                case XmlExtract.StandortType.BO:
-                    m_rbBO.Checked = true;
-                    m_rbDO.Checked = false;
-                    m_rbDU.Checked = false;
-                    break;
-                case XmlExtract.StandortType.DO:
-                    m_rbBO.Checked = false;
-                    m_rbDO.Checked = true;
-                    m_rbDU.Checked = false;
-                    break;
-                case XmlExtract.StandortType.DU:
-                    m_rbBO.Checked = false;
-                    m_rbDO.Checked = false;
-                    m_rbDU.Checked = true;
-                    break;
-            }
+            
+            m_rbDO.Checked = m_data.StandOrt == StandortType.DO;
+            m_rbDU.Checked = m_data.StandOrt == StandortType.DU;
+            m_rbBO.Checked = m_data.StandOrt == StandortType.BO;
+            
+            m_rbName.Checked = m_data.IdField == IdFieldLocation.Name;
+            m_rbComment1.Checked = m_data.IdField == IdFieldLocation.PDA_Comment1;
+            m_rbComment2.Checked = m_data.IdField == IdFieldLocation.PDA_Comment2;
         }
 
         public void SaveData()
         {
-            if (m_rbBO.Checked) m_data.StandOrt = XmlExtract.StandortType.BO;
-            else if (m_rbDO.Checked) m_data.StandOrt = XmlExtract.StandortType.DO;
-            else /*if (m_rbDU.Checked)*/ m_data.StandOrt = XmlExtract.StandortType.DU;
+            if (m_rbBO.Checked)
+                m_data.StandOrt = StandortType.BO;
+            else if (m_rbDO.Checked)
+                m_data.StandOrt = StandortType.DO;
+            else /* if (m_rbDU.Checked) */
+                m_data.StandOrt = StandortType.DU;
+
+            if (m_rbComment1.Checked)
+                m_data.IdField = IdFieldLocation.PDA_Comment1;
+            else if (m_rbComment2.Checked)
+                m_data.IdField = IdFieldLocation.PDA_Comment2;
+            else /* if (m_rbName.Checked) */
+                m_data.IdField = IdFieldLocation.Name;
         }
 
         public void LeaveCleanup()
@@ -64,5 +65,6 @@ namespace iba.TKS_XML_Plugin
         }
 
         #endregion
+
     }
 }

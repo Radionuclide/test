@@ -25,13 +25,13 @@ namespace XmlExtract
 
 
 
-        public string ExtractToXml(string datfile, string xmlfile, StandortType st)
+        public string ExtractToXml(string datfile, string xmlfile, StandortType st, IdFieldLocation idfield)
         {
             _error = new StringBuilder();
 
             _reader.Open(datfile);
 
-            MaterialEreignisType met = FillMaterialEreignis(_reader, st);
+            MaterialEreignisType met = FillMaterialEreignis(_reader, st, idfield);
 
             _reader.Close();
 
@@ -49,7 +49,7 @@ namespace XmlExtract
         }
 
 
-        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, StandortType st)
+        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, StandortType st, IdFieldLocation idfield)
         {
 
             var infoParser = new ResolveInfo();
@@ -67,18 +67,20 @@ namespace XmlExtract
 
             foreach (IbaChannelReader channel in reader.Channels())
             {
+                var signalId = channel.ResolveSignalId(idfield);
+
                 var mes = new MessungType();
                 mes.Bandlaufrichtung = info.Bandlaufrichtung;
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
 
                 //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
-                mes.IDMessgeraet = channel.CreateIDMessgeraet();
+                mes.IDMessgeraet = String.Format("MI_{0}", signalId);
 
                 met.Messung.Add(mes);
 
                 var spur = new SpurType();
-                spur.Bezeichner = channel.Name();
+                spur.Bezeichner = signalId;
                 spur.DimensionX = channel.IsDefaultLengthbased() == 1 ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
                 spur.Einheit = ResolveEinheit.Parse(channel.Unit());
 
