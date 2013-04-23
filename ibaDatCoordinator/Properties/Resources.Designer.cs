@@ -1351,6 +1351,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; task started.
+        /// </summary>
+        internal static string logTaskStarted {
+            get {
+                return ResourceManager.GetString("logTaskStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; task succesfully completed .
         /// </summary>
         internal static string logTaskSuccess {
@@ -1678,7 +1687,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PDA not yet finished with .dat file.
+        ///   Looks up a localized string similar to ibaPDA not yet finished with .dat file.
         /// </summary>
         internal static string Noaccess3 {
             get {
@@ -1687,7 +1696,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Candidate .dat file still not finished by PDA after more than one hour.
+        ///   Looks up a localized string similar to Candidate .dat file still not finished by ibaPDA after more than one hour.
         /// </summary>
         internal static string Noaccess4 {
             get {

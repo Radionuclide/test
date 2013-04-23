@@ -712,23 +712,14 @@ namespace iba
                         break;
                     }
                 case "BatchFile":
-                    goto case "task";
                 case "Report":
-                    goto case "task";
                 case "Extract":
-                    goto case "task";
                 case "CopyTask":
-                    goto case "task";
                 case "IfTask":
-                    goto case "task";
                 case "UpdateDataTask":
-                    goto case "task";
                 case "PauseTask":
-                    goto case "task";
                 case "CustomTaskUNC":
-                    goto case "task";
                 case "CustomTask":
-                    goto case "task";
                 case "task":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
@@ -866,7 +857,7 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deletePauseTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is CustomTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
-                        (((CustomTaskTreeItemData)(node.Tag)).DataSource as CustomTaskData).Plugin.NameInfo,
+                        (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,
                             node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
@@ -1486,15 +1477,23 @@ namespace iba
             Pair<TreeNode, int> p = mc.Tag as Pair<TreeNode, int>;
             TreeNode node = p.First;
             int index = p.Second;
+            
             PluginTaskInfo info = PluginManager.Manager.PluginInfos[index];
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            CustomTaskData cust = new CustomTaskData(confData, info);
+            TaskData cust;
+            if (info is PluginTaskInfoUNC)
+                cust = new CustomTaskDataUNC(confData, info);
+            else
+                cust = new CustomTaskData(confData, info);
+
             new SetNextName(cust);
             confData.Tasks.Add(cust);
+            ICustomTaskData icust = (ICustomTaskData)cust;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
-            newNode.Tag = new CustomTaskTreeItemData(this, cust);
+            TreeNode newNode = new TreeNode(icust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+            newNode.Tag = new CustomTaskTreeItemData(this, icust);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (confData.AdjustDependencies()) AdjustFrontIcons(confData);

@@ -121,4 +121,10 @@
   <data name="TKSXMLTask" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TKS-XMLTask.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="MissingInfoFields" xml:space="preserve">
+    <value>Fehlende Felder '{0}' in Info Zuweisung.</value>
+  </data>
+  <data name="WrongValuesForInfoFields" xml:space="preserve">
+    <value>Falsche Werte für '{0}' in Info Zuweisung.</value>
+  </data>
 </root>

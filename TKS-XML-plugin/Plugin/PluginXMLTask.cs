@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using iba.Plugins;
+using XmlExtract;
 
 namespace iba.TKS_XML_Plugin
 {
@@ -95,26 +96,39 @@ namespace iba.TKS_XML_Plugin
         {
             PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, null);
             xt.StandOrt = StandOrt;
+            xt.IdField = IdField;
             return xt;
         }
 
         #endregion
 
         //some data
-        private XmlExtract.StandortType m_standOrt;
+        private XmlExtract.StandortType m_standOrt = XmlExtract.StandortType.DU;
         public XmlExtract.StandortType StandOrt
         {
             get { return m_standOrt; }
             set { m_standOrt = value; }
         }
 
+
+        private IdFieldLocation _idField;
+        public IdFieldLocation IdField
+        {
+            get { return _idField; }
+            set { _idField = value; }
+        }
+        
+
         #region IPluginTaskDataIsSame Members
 
         public bool IsSame(IPluginTaskDataIsSame data)
         {
-            return (data as PluginXMLTask).StandOrt == StandOrt;
-        }
+            var other = data as PluginXMLTask;
+            if (other == null) return false;
 
+            return other.StandOrt == StandOrt
+                && other.IdField == IdField;
+        }
         #endregion
     }
 }

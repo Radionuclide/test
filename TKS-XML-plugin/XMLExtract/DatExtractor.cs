@@ -25,14 +25,13 @@ namespace XmlExtract
 
 
 
-        public string ExtractToXml(string datfile, string xmlfile, StandortType st)
+        public string ExtractToXml(string datfile, string xmlfile, StandortType st, IdFieldLocation idfield)
         {
             _error = new StringBuilder();
 
-
             _reader.Open(datfile);
 
-            MaterialEreignisType met = FillMaterialEreignis(_reader, st);
+            MaterialEreignisType met = FillMaterialEreignis(_reader, st, idfield);
 
             _reader.Close();
 
@@ -50,12 +49,12 @@ namespace XmlExtract
         }
 
 
-        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, StandortType st)
+        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, StandortType st, IdFieldLocation idfield)
         {
 
             var infoParser = new ResolveInfo();
 
-            Info info = ResolveInfo.Resolve(reader);
+            Info info = ResolveInfo.Resolve(reader, st);
 
             if (!String.IsNullOrEmpty(info.Error))
                 _error.AppendLine(info.Error);
@@ -63,22 +62,25 @@ namespace XmlExtract
             var met = new MaterialEreignisType();
             met.MaterialHeader.LokalerIdent = info.LocalIdent;
             met.MaterialHeader.Standort = st;
-            met.MaterialHeader.MaterialArt = MaterialArtType.VZ;
+            if (st == StandortType.DU)
+                met.MaterialHeader.MaterialArt = info.MaterialArt;
 
             foreach (IbaChannelReader channel in reader.Channels())
             {
+                var signalId = channel.ResolveSignalId(idfield);
+
                 var mes = new MessungType();
                 mes.Bandlaufrichtung = info.Bandlaufrichtung;
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
 
-                mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
-                mes.IDMessgeraet = channel.CreateIDMessgeraet();
+                //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
+                mes.IDMessgeraet = String.Format("MI_{0}", signalId);
 
                 met.Messung.Add(mes);
 
                 var spur = new SpurType();
-                spur.Bezeichner = channel.Name();
+                spur.Bezeichner = signalId;
                 spur.DimensionX = channel.IsDefaultLengthbased() == 1 ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
                 spur.Einheit = ResolveEinheit.Parse(channel.Unit());
 
@@ -124,19 +126,13 @@ namespace XmlExtract
             if (null == values)
                 return channelData;
 
-            var listOfValues = new List<float>(values);
-            channelData.Data = listOfValues.ConvertAll<double>(invalue => { return invalue; });
-
+            channelData.Data = new List<float>(values);
             return channelData;
         }
 
         #region IDisposable Members
 
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader);          
-        }
+        private bool _disposed;
 
         public void Dispose()
         {
@@ -144,11 +140,23 @@ namespace XmlExtract
             GC.SuppressFinalize(this);
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader);
+                }
+            }
+            _disposed = true;
+        }
+
         ~DatExtractor()
         {
             Dispose(false);
         }
-
         #endregion
+
     }
 }

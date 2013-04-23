@@ -2449,6 +2449,9 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.RUNNING;
                 }
+                string message = string.Format(iba.Properties.Resources.logTaskStarted, task.Plugin.NameInfo);
+                Log(Logging.Level.Info, message, DatFile, task);
+
                 bool succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
                 if (succes)
                 {
@@ -2457,7 +2460,7 @@ namespace iba.Processing
                     {
                         m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                     }
-                    string message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
+                    message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
                     Log(Logging.Level.Info, message, DatFile, task);
                 }
                 else
@@ -3654,9 +3657,11 @@ namespace iba.Processing
                 {
                     m_quotaCleanups[task.Guid].RemoveFile(arg);
                 }
+                
+                string message = string.Format(iba.Properties.Resources.logTaskStarted, task.Plugin.NameInfo);
+                Log(Logging.Level.Info, message, filename, task);
                 //do execution:
-
-                if (!(plugin.GetWorker() as IPluginTaskWorkerUNC).ExecuteTask(filename,arg))
+                if (!(plugin.GetWorker() as IPluginTaskWorkerUNC).ExecuteTask(filename ,arg))
                 { //failure
                     Log(Logging.Level.Exception, plugin.GetWorker().GetLastError(), filename, task);
                     lock (m_sd.DatFileStates)
@@ -3672,7 +3677,7 @@ namespace iba.Processing
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                     m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
                 }
-                string message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
+                message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
                 Log(Logging.Level.Info, message, filename, task);
                 if (task.UsesQuota)
                 {
