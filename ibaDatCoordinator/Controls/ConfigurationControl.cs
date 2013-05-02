@@ -476,10 +476,28 @@ namespace iba.Controls
                 cust = new CustomTaskDataUNC(m_data, info);
             else
                 cust = new CustomTaskData(m_data, info);
+            ICustomTaskData icust = (ICustomTaskData)cust;
+            bool IsLicensed = false;
+            try
+            {
+                CDongleInfo dinfo = CDongleInfo.ReadDongle();
+                if (dinfo.IsPluginLicensed(icust.Plugin.DongleBitPos))
+                    IsLicensed = true;
+            }
+            catch
+            {
+            }
+            if (!IsLicensed)
+            {
+                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                return;
+            }
+
 
             new SetNextName(cust);
             m_data.Tasks.Add(cust);
-            ICustomTaskData icust = (ICustomTaskData)cust;
+ 
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);

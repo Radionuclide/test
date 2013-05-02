@@ -1014,9 +1014,9 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if (m_task_copy is CustomTaskData)
+                else if (m_task_copy is ICustomTaskData)
                 {
-                    CustomTaskData cust = (CustomTaskData) m_task_copy;
+                    ICustomTaskData cust = (ICustomTaskData) m_task_copy;
                     string name = cust.Plugin.NameInfo;
                     int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name== name; });
                     taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
@@ -1088,9 +1088,9 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if (m_task_copy is CustomTaskData)
+                else if (m_task_copy is ICustomTaskData)
                 {
-                    CustomTaskData cust = (CustomTaskData)m_task_copy;
+                    ICustomTaskData cust = (ICustomTaskData)m_task_copy;
                     string name = cust.Plugin.NameInfo;
                     int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
                     taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
@@ -1486,9 +1486,25 @@ namespace iba
             else
                 cust = new CustomTaskData(confData, info);
 
+            ICustomTaskData icust = (ICustomTaskData)cust;
+            bool IsLicensed = false;
+            try
+            {
+                CDongleInfo dinfo = CDongleInfo.ReadDongle();
+                if (dinfo.IsPluginLicensed(icust.Plugin.DongleBitPos))
+                    IsLicensed = true;
+            }
+            catch
+            {
+            }
+            if (!IsLicensed)
+            {
+                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                return;
+            }
             new SetNextName(cust);
             confData.Tasks.Add(cust);
-            ICustomTaskData icust = (ICustomTaskData)cust;
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
