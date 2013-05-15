@@ -18,6 +18,7 @@ namespace XmlExtract
         const string STARTTIME = "starttime";
         const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
         const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
+        const string DE_AGGREGAT = "$DE_AGGREGAT";
 
         private static List<string> _missingFields;
         private static List<string> _wrongValueFields;
@@ -73,10 +74,10 @@ namespace XmlExtract
                 _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
 
-            //if (Convert.ToBoolean(reader.IsInfoPresent(DE_BUNDNR)))
-            //    info.LocalIdent = reader.QueryInfoByName(DE_BUNDNR).Trim();
-            //else
-            //    _missingFields.Add(DE_BUNDNR);
+            if (Convert.ToBoolean(reader.IsInfoPresent(DE_AGGREGAT)))
+                info.Aggregat = reader.QueryInfoByName(DE_AGGREGAT).Trim();
+            else
+                _missingFields.Add(DE_AGGREGAT);
 
 
             if (Convert.ToBoolean(reader.IsInfoPresent(DE_ENDPRODUKT)))

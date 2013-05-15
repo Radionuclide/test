@@ -22,7 +22,9 @@ namespace XmlExtract
             { "", EinheitEnum.Keine1 },
             { "As/m²", EinheitEnum.Asqm },
             { "As/qm", EinheitEnum.Asqm },
+            { "m/qs", EinheitEnum.mqs },
             { "U/min", EinheitEnum.Umin },
+            { "gradC/s", EinheitEnum.gradCs },
         };
 
         public static object Parse(string unit)
