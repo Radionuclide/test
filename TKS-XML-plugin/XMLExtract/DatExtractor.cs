@@ -73,6 +73,7 @@ namespace XmlExtract
                 mes.Bandlaufrichtung = info.Bandlaufrichtung;
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
+                mes.Aggregat = info.Aggregat;
 
                 //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
                 mes.IDMessgeraet = String.Format("MI_{0}", signalId);
