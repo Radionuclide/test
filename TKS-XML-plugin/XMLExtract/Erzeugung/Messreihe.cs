@@ -395,10 +395,28 @@ namespace XmlExtract
         Asqm,
         
         /// <summary>
+        /// m/qs
+        /// </summary>
+        [System.Xml.Serialization.XmlEnumAttribute("m/qs")]
+        mqs,
+        
+        /// <summary>
         /// U/min
         /// </summary>
         [System.Xml.Serialization.XmlEnumAttribute("U/min")]
         Umin,
+        
+        MPa,
+        
+        KNm,
+        
+        Hz,
+        
+        /// <summary>
+        /// gradC/s
+        /// </summary>
+        [System.Xml.Serialization.XmlEnumAttribute("gradC/s")]
+        gradCs,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -446,6 +464,10 @@ namespace XmlExtract
         private System.Nullable<MessungTypeEnum> messgroesseField;
         
         public string IDMessgeraet { get; set; }
+        /// <summary>
+        /// z.B. BEFB02
+        /// </summary>
+        public string Aggregat { get; set; }
         public BandlaufrichtungEnum Bandlaufrichtung { get; set; }
         public bool Endprodukt { get; set; }
         public System.DateTime Messzeitpunkt { get; set; }

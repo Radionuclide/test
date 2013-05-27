@@ -1,6 +1,6 @@
-diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe.cs
---- E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs	Thu Apr 04 21:20:54 2013
-+++ E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe.cs	Fri Apr 05 14:08:35 2013
+diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs
+--- E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs	Wed May 15 14:51:38 2013
++++ E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs	Wed May 15 14:57:08 2013
 @@ -24,7 +24,9 @@
      [System.Xml.Serialization.XmlRootAttribute("Erzeugung", Namespace="http://www.thyssen.com/xml/schema/qbic", IsNullable=false)]
      public partial class MaterialEreignisType
@@ -12,6 +12,14 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
          public MaterialHeaderType MaterialHeader { get; set; }
          [System.Xml.Serialization.XmlElementAttribute("Messung")]
          public List<MessungType> Messung { get; set; }
+@@ -44,6 +46,7 @@
+     [System.Diagnostics.DebuggerStepThroughAttribute()]
+     [System.ComponentModel.DesignerCategoryAttribute("code")]
+     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
++    [System.Xml.Serialization.XmlRootAttribute("MaterialHeader", Namespace = "http://www.thyssen.com/xml/schema/qbic", IsNullable = false)]
+     public partial class MaterialHeaderType
+     {
+         
 @@ -193,7 +196,10 @@
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
      public partial class Raster1DType
@@ -24,7 +32,7 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
          /// <summary>
          /// Anz. der Werte, wird berechnet wenn fehlend.
          /// </summary>
-@@ -208,7 +214,30 @@
+@@ -208,9 +214,32 @@
          /// Darf weggelassen werden, dann wird 0 angenommen.
          /// </summary>
          public double SegmentOffsetX { get; set; }
@@ -54,23 +62,32 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
 +        [XmlIgnore]
 +        public List<float> WerteList { get; set; }
      }
-     
+-    
++
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -218,9 +247,7 @@
+     [System.SerializableAttribute()]
+     [System.Diagnostics.DebuggerStepThroughAttribute()]
+@@ -232,14 +261,12 @@
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
      public partial class SpurType
      {
 -        
--        private EinheitEnum einheitField;
+-        private object itemField;
 -        
 +                
          private System.Nullable<WerteTypeEnum> typField;
          
-         public EinheitEnum Einheit { get; set; }
-@@ -232,6 +259,14 @@
+         [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
+         [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
+-        public object Item { get; set; }
++        public object Einheit { get; set; }
+         /// <summary>
+         /// Name der Messreihe im statischen Modell
+         /// </summary>
+@@ -248,6 +275,14 @@
          /// Darf weggelassen werden; dann werden die Werte berechnet.
          /// </summary>
-         public SpurTypeStatistik Statistik { get; set; }
+         public StatistikType Statistik { get; set; }
 +        [EditorBrowsable(EditorBrowsableState.Never)]
 +        public bool ShouldSerializeStatistik()
 +        {
@@ -80,9 +97,9 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
 +            return (Statistik.Avg + Statistik.Max + Statistik.Min + Statistik.StdDev) != 0;
 +        }
          /// <summary>
-         /// Richtung der x-Achse (Dimension Zeit: dx = v* SegmentgroesseX in Laufrichtung, Geschwindigkeit noch aufzunehmen)
+         /// Richtung der x-Achse (oder Dimension Zeit)
          /// </summary>
-@@ -299,6 +334,9 @@
+@@ -315,6 +350,9 @@
          
          gradC,
          
@@ -92,7 +109,7 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
          [System.Xml.Serialization.XmlEnumAttribute("m/min")]
          mmin,
          
-@@ -307,7 +345,10 @@
+@@ -323,7 +361,10 @@
          A,
          
          V,
@@ -104,7 +121,7 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
          [System.Xml.Serialization.XmlEnumAttribute("g/qm")]
          gqm,
          
-@@ -318,7 +359,10 @@
+@@ -334,7 +375,10 @@
          mbar,
          
          grad,
@@ -116,16 +133,55 @@ diff U3 E:/Projects/ibaXmlExtract/ibaXmlExtract/Erzeugung/Messreihe-generated.cs
          [System.Xml.Serialization.XmlEnumAttribute("Keine/1")]
          Keine1,
          
-@@ -385,11 +429,7 @@
+@@ -344,12 +388,21 @@
+         
+         Test,
+         
++        /// <summary>
++        /// As/qm
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("As/qm")]
+         Asqm,
+         
++        /// <summary>
++        /// m/qs
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("m/qs")]
+         mqs,
+         
++        /// <summary>
++        /// U/min
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("U/min")]
+         Umin,
+         
+@@ -359,6 +412,9 @@
+         
+         Hz,
+         
++        /// <summary>
++        /// gradC/s
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("gradC/s")]
+         gradCs,
+     }
+@@ -378,7 +434,7 @@
+         Maximum,
+         
+         StdDev,
+-        
++    
+         Test,
+     }
+     
+@@ -404,9 +460,7 @@
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
      public partial class MessungType
      {
 -        
 -        private BandlaufrichtungEnum bandlaufrichtungField;
 -        
--        private MessungTypeEnum messgroesseField;
--        
 +                
+         private System.Nullable<MessungTypeEnum> messgroesseField;
+         
          public string IDMessgeraet { get; set; }
-         public BandlaufrichtungEnum Bandlaufrichtung { get; set; }
-         public bool Endprodukt { get; set; }

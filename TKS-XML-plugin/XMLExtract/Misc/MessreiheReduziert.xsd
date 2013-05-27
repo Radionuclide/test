@@ -73,6 +73,11 @@
 	<xsd:complexType name="MessungType">
 		<xsd:sequence>
 			<xsd:element name="IDMessgeraet" type="StringMax100"/>
+			<xsd:element name="Aggregat" type="StringMax10">
+				<xsd:annotation>
+					<xsd:documentation>z.B. BEFB02</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 			<xsd:element name="Bandlaufrichtung" type="BandlaufrichtungEnum"/>
 			<xsd:element name="Endprodukt" type="xsd:boolean"/>
 			<xsd:element name="Messgroesse" type="MessungTypeEnum" minOccurs="0"/>
@@ -84,7 +89,11 @@
 		<xsd:sequence>
 			<xsd:choice>
 			<xsd:element name="Einheit" type="EinheitEnum"/>
-				<xsd:element name="EinheitLokal" type="StringMax100"/>
+				<xsd:element name="EinheitLokal" type="StringMax100">
+					<xsd:annotation>
+						<xsd:documentation>Nicht verwenden! Temporaere Loesung</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
 			</xsd:choice>
 			<xsd:element name="Bezeichner" type="StringMax100">
 				<xsd:annotation>
@@ -156,7 +165,12 @@
 			<xsd:enumeration value="m"/>
 			<xsd:enumeration value="Test"/>
 			<xsd:enumeration value="As/qm"/>
+			<xsd:enumeration value="m/qs"/>
 			<xsd:enumeration value="U/min"/>
+			<xsd:enumeration value="MPa"/>
+			<xsd:enumeration value="KNm"/>
+			<xsd:enumeration value="Hz"/>
+			<xsd:enumeration value="gradC/s"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BezugDimensionEnum">

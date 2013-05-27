@@ -11,15 +11,20 @@ namespace XmlExtract
     {
         readonly static Dictionary<string, EinheitEnum> _map = new Dictionary<string, EinheitEnum>() { 
             { "µm", EinheitEnum.mikrom },
+            { "°C", EinheitEnum.gradC },
             { "gradC", EinheitEnum.gradC },
             { "m/min", EinheitEnum.mmin },
             { "g/qm", EinheitEnum.gqm },
+            { "g/m²", EinheitEnum.gqm },
             { "%", EinheitEnum.Prozent },
             { "Keine/1", EinheitEnum.Keine1 },
             { "int", EinheitEnum.Keine1 },
             { "", EinheitEnum.Keine1 },
             { "As/m²", EinheitEnum.Asqm },
+            { "As/qm", EinheitEnum.Asqm },
+            { "m/qs", EinheitEnum.mqs },
             { "U/min", EinheitEnum.Umin },
+            { "gradC/s", EinheitEnum.gradCs },
         };
 
         public static object Parse(string unit)
