@@ -643,9 +643,9 @@ namespace iba.Controls
                 if (!m_data.OnetimeJob)
                 {
                     if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                        ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                        ok = TaskManager.Manager.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false, false);
                     else
-                        ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                        ok = SharesHandler.TestPath(Shares.PathToUnc(m_datDirTextBox.Text, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false, false);
                 }
                 else
                 {
@@ -653,9 +653,9 @@ namespace iba.Controls
                     foreach (string line in lines)
                     {
                         if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                            ok = TaskManager.Manager.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                            ok = TaskManager.Manager.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false,false);
                         else
-                            ok = SharesHandler.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false);
+                            ok = SharesHandler.TestPath(Shares.PathToUnc(line, false), m_tbUserName.Text, m_tbPass.Text, out errormessage, false, false);
                         if (!ok)
                         {
                             errormessage = "\"" + line + "\": " + errormessage;

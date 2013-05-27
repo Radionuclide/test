@@ -305,9 +305,9 @@ namespace iba.Processing
             m_watchdog.Settings = data;
         }
 
-        virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew)
+        virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
-            return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew);
+            return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
         }
 
         //singleton construction
@@ -973,11 +973,11 @@ namespace iba.Processing
             }
         }
 
-        public override bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew)
+        public override bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
             try
             {
-                return Program.CommunicationObject.Manager.TestPath(dir, user, pass, out errormessage, createnew);
+                return Program.CommunicationObject.Manager.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
             }
             catch (SocketException)
             {

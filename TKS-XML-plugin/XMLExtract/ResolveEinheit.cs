@@ -25,7 +25,7 @@ namespace XmlExtract
         public static object Parse(string unit)
         {
             EinheitEnum einheit;
-            if (Enum<EinheitEnum>.TryParse(unit, false, out einheit))
+            if (Enum<EinheitEnum>.TryParse(unit, true, out einheit))
                 return einheit;
 
             if (_map.TryGetValue(unit, out einheit))

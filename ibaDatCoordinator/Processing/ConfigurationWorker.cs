@@ -1663,6 +1663,7 @@ namespace iba.Processing
                 try
                 {
                     FileAttributes at = File.GetAttributes(filename);
+                    //Log(Logging.Level.Warning, "attributes: " + at.ToString(), filename);
                     if ((at & FileAttributes.Offline) == FileAttributes.Offline)
                     {
                         lock (m_candidateNewFiles)
@@ -1729,9 +1730,11 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
+                    //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
+                    //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
 
@@ -1947,14 +1950,16 @@ namespace iba.Processing
                 try
                 {
                     FileAttributes at = File.GetAttributes(filename);
+                    //Log(Logging.Level.Warning, "attributes: " + at.ToString(), filename);
                     if ((at & FileAttributes.Offline) == FileAttributes.Offline)
                     {
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
                         return DatFileStatus.State.NO_ACCESS;
                     }
                 }
-                catch
+                catch (Exception)
                 {
+                    //Log(Logging.Level.Warning, "Exception at location 1: " + ex.ToString(), filename);
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
@@ -1987,8 +1992,9 @@ namespace iba.Processing
                     return DatFileStatus.State.NO_ACCESS;
                 }
             }
-            catch //general exception that may have happened
+            catch (Exception) //general exception that may have happened
             {
+                //Log(Logging.Level.Warning, "Exception at location 2: " + ex2.ToString(), filename);
                 Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                 return DatFileStatus.State.COMPLETED_FAILURE;
             }

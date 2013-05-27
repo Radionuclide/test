@@ -11,7 +11,7 @@ namespace iba.Utility
 {
     public class SharesHandler 
     {
-        public static bool TestPath(string path, string userName, string passWord, out string errorMsg, bool createallowed)
+        public static bool TestPath(string path, string userName, string passWord, out string errorMsg, bool createallowed, bool bTestWriteAccess)
         {
 	        errorMsg = String.Empty;
             bool doNotDisconnect = false; //set to true to avoid disconnecting the unc path
@@ -31,6 +31,7 @@ namespace iba.Utility
                         } //in case computer exists, the connect was not necessary
                         else
                         {
+                            //LogData.Data.Log(Logging.Level.Warning, "connection to: " + path + " already existed");
                             doNotDisconnect = true;
                         }
 			        }
@@ -57,6 +58,20 @@ namespace iba.Utility
                         }
                     }
                 }
+
+                if( bTestWriteAccess )
+		        {
+			        String fileName = Path.Combine(path, Guid.NewGuid().ToString("N"));
+			        FileStream stream = File.Open(fileName, FileMode.Create, FileAccess.Write);
+			        stream.Close();
+			        try
+			        {
+				        File.Delete(fileName);
+			        }
+			        catch(Exception)
+			        {
+			        }
+		        }
 		        return true;
 	        }
 	        catch(Exception ex)
@@ -109,7 +124,10 @@ namespace iba.Utility
                         return 1;
                     }
                     else if (Directory.Exists(computer)) //already available, do not add
+                    {
+                        //LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " already existed");
                         return 1;
+                    }
                     else return 0;
                 }
             }

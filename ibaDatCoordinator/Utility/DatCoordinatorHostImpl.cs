@@ -27,10 +27,15 @@ namespace iba.Utility
 
         public bool TestPath(string path, string user, string pass, out string errormessage, bool create)
         {
+            return TestPath(path, user, pass, out errormessage, create, false);
+        }
+
+        public bool TestPath(string path, string user, string pass, out string errormessage, bool create, bool testWrite)
+        {
             if (  Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                return TaskManager.Manager.TestPath(path, user, pass, out errormessage, create);
+                return TaskManager.Manager.TestPath(path, user, pass, out errormessage, create, testWrite);
             else
-                return SharesHandler.TestPath(path, user, pass, out errormessage, create);
+                return SharesHandler.TestPath(path, user, pass, out errormessage, create, testWrite);
         }
 
 
