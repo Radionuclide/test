@@ -17,22 +17,21 @@
 
 #define PASSWORD_INDEX_PDA 0
 #define PASSWORD_INDEX_CAM 1
+#define PASSWORD_INDEX_LOGIC 2
 
 #pragma pack (push,1)
-struct DemoLicense
+
+typedef struct
 {
 	unsigned short Index;
 	unsigned char Value;
-};
-#pragma pack (pop)
+} DemoLicense;
 
-#pragma pack (push,1)
-struct ChangeLogEntry
+typedef struct
 {
 	char User[16];
 	unsigned long Timestamp;
-};
-#pragma pack (pop)
+} ChangeLogEntry;
 
 struct DongleContents {
 	unsigned char	hwId[8];	
@@ -51,6 +50,8 @@ struct DongleContents {
 	ChangeLogEntry	log[8];
 	short type;
 };
+
+#pragma pack (pop)
 
 enum  {
 	E_NODONGLE = 0,
@@ -96,7 +97,7 @@ enum DongleTimeLimitMode
 	NoLimits   = 2     // Don't apply any limits just return the raw values of all dongle licenses
 };
 
-#define NR_MULTI_OPTIONS 64
+#define NR_MULTI_OPTIONS 128
 
 //Abstract base class for all dongle types
 class Dongle
@@ -166,6 +167,46 @@ private:
 
 	void ApplyTimeLimitsCorrections(DongleContents* pContent, bool bDemoOnly);
 };
+
+#ifdef _SERVICE
+class CLicenseClientSocket;
+
+//Use this class to request licenses.
+//This class uses the license service if it is running.
+//If not then it uses the local dongle.
+
+class CibaLicense
+{
+public:
+	CibaLicense();
+	~CibaLicense();
+
+	BOOL HasLicense(DWORD option);
+
+private:
+	BYTE options[NR_MULTI_OPTIONS];
+	CLicenseClientSocket* clientSocket;
+	BOOL IsServiceRunning();
+	void ReadDongle();
+};
+#endif
+
+//#define IBA_TRACE_ENABLED
+
+#ifdef IBA_TRACE_ENABLED
+
+void Trace(const char *fmt, ...);
+void DumpMemory(char* msg, unsigned char* pMem, int offset, int length);
+
+#define IBA_TRACE(fmt, ...) Trace(fmt, __VA_ARGS__)
+#define IBA_DUMPMEM(msg, pMem, offset, length) DumpMemory(msg, pMem, offset, length)
+
+#else
+
+#define IBA_TRACE(fmt, ...) 
+#define IBA_DUMPMEM(msg, pMem, offset, length) 
+
+#endif
 
 #endif //CONTENTS_ONLY
 
