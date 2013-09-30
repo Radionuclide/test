@@ -44,25 +44,18 @@ namespace iba.Data
             : this(null)
         {
         }
-        
-        public override object Clone()
+
+        public override TaskData CloneInternal()
         {
             CopyMoveTaskData cd = new CopyMoveTaskData(null);
             cd.m_removeSource = m_removeSource;
             cd.m_delete = m_delete;
-            cd.m_wtodo = m_wtodo;
-
             CopyUNCData(cd);
-            
-            cd.m_name = m_name;
-            cd.m_notify = m_notify;
-          
-            
             cd.m_whatFile = m_whatFile;
             return cd;
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             CopyMoveTaskData other = taskData as CopyMoveTaskData;
             if (other == null) return false;
@@ -71,9 +64,6 @@ namespace iba.Data
             return
                 other.m_removeSource == m_removeSource &&
                 other.m_delete == m_delete &&
-                other.m_wtodo == m_wtodo &&
-                other.m_name == m_name &&
-                other.m_notify == m_notify &&
                 other.m_whatFile == m_whatFile;
         }
     }

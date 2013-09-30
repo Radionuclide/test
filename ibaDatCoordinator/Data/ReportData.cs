@@ -58,17 +58,12 @@ namespace iba.Data
             set { m_monitorData = value; }
         }
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             ReportData rd = new ReportData(null);
-            rd.m_wtodo = m_wtodo;
-            rd.m_name = m_name;
             rd.m_pdoFile = m_pdoFile;
             rd.m_outputChoice = m_outputChoice;
-            rd.m_notify = m_notify;
-
             CopyUNCData(rd);
-
             rd.m_extension = m_extension;
             rd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return rd;
@@ -97,18 +92,15 @@ namespace iba.Data
             }
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             ReportData other = taskData as ReportData;
             if (other == null) return false;
             if (other == this) return true;
             if (!UNCDataIsSame(other)) return false;
             return 
-                other.m_wtodo == m_wtodo &&
-            other.m_name == m_name &&
             other.m_pdoFile == m_pdoFile &&
             other.m_outputChoice == m_outputChoice &&
-            other.m_notify == m_notify &&
             other.m_extension == m_extension &&
             other.m_monitorData.IsSame(m_monitorData);
         }

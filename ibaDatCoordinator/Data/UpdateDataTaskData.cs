@@ -26,14 +26,10 @@ namespace iba.Data
         {
         }
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             UpdateDataTaskData ud = new UpdateDataTaskData(null);
             CopyUNCData(ud);
-            ud.m_name = m_name;
-            ud.m_notify = m_notify;
-            ud.m_wtodo = m_wtodo;
-
             ud.m_dbProvider = m_dbProvider;
             ud.m_dbAuthenticateNT = m_dbAuthenticateNT;
             ud.m_dbName = m_dbName;
@@ -108,17 +104,13 @@ namespace iba.Data
             set { m_dbTblName = value; }
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             UpdateDataTaskData other = taskData as UpdateDataTaskData;
             if (other == null) return false;
             if (other == this) return true;
             if (!UNCDataIsSame(other)) return false;
             return
-            other.m_name == m_name &&
-            other.m_notify == m_notify &&
-            other.m_wtodo == m_wtodo &&
-
             other.m_dbProvider == m_dbProvider &&
             other.m_dbAuthenticateNT == m_dbAuthenticateNT &&
             other.m_dbName == m_dbName &&

@@ -259,6 +259,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Processing\FifoSemaphore.cs" />
     <Compile Include="Processing\FileProcessing.cs" />
     <Compile Include="Processing\FileQuotaCleanup.cs" />
     <Compile Include="Processing\IbaAnalyzerMonitor.cs" />

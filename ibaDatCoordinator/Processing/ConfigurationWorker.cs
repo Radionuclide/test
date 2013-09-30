@@ -87,7 +87,7 @@ namespace iba.Processing
                 m_thread = new Thread(new ThreadStart(Run));
 
 
-            //m_thread.SetApartmentState(ApartmentState.STA);
+            m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_cd.Name;
             m_thread.Start();
@@ -992,25 +992,52 @@ namespace iba.Processing
             return ok;
         }
 
+        //static Object m_ibaAnalyzerLock = new Object();
+
+        private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };
+        private IbaAnalyzerServerStatus ibaAnalyzerServerStatus;
+
         internal void StartIbaAnalyzer()
         {
             m_nrIbaAnalyzerCalls = 0;
             //start the com object
             try
             {
-                m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                //Log(iba.Logging.Level.Info, "Starting new ibaAnalyzer");
+                //m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                switch (ibaAnalyzerServerStatus)
+                {
+                    case IbaAnalyzerServerStatus.NONINTERACTIVE:
+                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
+                        break;
+                    case IbaAnalyzerServerStatus.CLASSIC:
+                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                        break;
+                    case IbaAnalyzerServerStatus.UNDETERMINED:
+                        try {
+                            m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
+                            ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.NONINTERACTIVE;
+                        }
+                        catch (Exception)
+                        {
+                            m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                            ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.CLASSIC;
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
+                ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
                 Log(Logging.Level.Exception, ex.Message);
                 m_sd.Started = false;
                 Stop = true;
                 return;
             }
-            
+
             try
             {
-                Log(iba.Logging.Level.Info, string.Format("New ibaAnalyzer started with process ID: {0}", m_ibaAnalyzer.GetProcessID()));
+                Log(iba.Logging.Level.Debug, string.Format("New ibaAnalyzer started with process ID: {0} Mode: {1}", m_ibaAnalyzer.GetProcessID(),ibaAnalyzerServerStatus));
             }
             catch
             {
@@ -1025,24 +1052,27 @@ namespace iba.Processing
 
         internal void StopIbaAnalyzer(bool stop)
         {
-            m_nrIbaAnalyzerCalls = 0;
-            try
-            {
-                if (m_ibaAnalyzer == null)
-                    return;
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
-                m_ibaAnalyzer = null;
-            }
-            catch (Exception ex)
-            {
-                Log(Logging.Level.Exception, ex.Message);
-                if (stop)
+           // lock (m_ibaAnalyzerLock)
+            //{
+                m_nrIbaAnalyzerCalls = 0;
+                try
                 {
-                    m_sd.Started = false;
-                    Stop = stop;
+                    if (m_ibaAnalyzer == null)
+                        return;
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                    m_ibaAnalyzer = null;
                 }
-                return;
-            }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Exception, ex.Message);
+                    if (stop)
+                    {
+                        m_sd.Started = false;
+                        Stop = stop;
+                    }
+                    return;
+                }
+            //}
         }
 
         internal string IbaAnalyzerErrorMessage()
@@ -2115,109 +2145,24 @@ namespace iba.Processing
                         m_outPutFile = null;
                     }
                     bool failedOnce = false;
-                    lock (m_sd.DatFileStates)
+                    bool continueProcessing = true;
+                    if (task.ResourceIntensive)
                     {
-                        failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
-                            && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
-                            && DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
-                            && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS; //all errors except no access
-                    }
-                    if (task is ReportData)
-                    {
-                        Report(DatFile,task as ReportData);
-                        m_nrIbaAnalyzerCalls++;
-                    }
-                    else if (task is ExtractData)
-                    {
-                        Extract(DatFile,task as ExtractData);
-                        m_nrIbaAnalyzerCalls++;
-                    }
-                    else if (task is BatchFileData)
-                    {
-                        Batchfile(DatFile,task as BatchFileData);
-                    }
-                    else if (task is IfTaskData)
-                    {
-                        IfTask(DatFile, task as IfTaskData);
-                        m_nrIbaAnalyzerCalls++;
-                    }
-                    else if (task is UpdateDataTaskData)
-                    {
-                        UpdateDataTask(DatFile, task as UpdateDataTaskData);
-                    }
-                    else if (task is PauseTaskData)
-                    {
-                        PauseTask(DatFile, task as PauseTaskData);
-                    }
-                    else if (task is CopyMoveTaskData)
-                    {
-                        CopyMoveTaskData dat = task as CopyMoveTaskData;
-                        if (dat.RemoveSource && dat.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
+                        Log(iba.Logging.Level.Exception, "entering semaphore", DatFile);
+                        using (TaskManager.Manager.CriticalTaskSemaphore.CreateClient())
                         {
-                            try
+                            Log(iba.Logging.Level.Exception, "exiting semaphore", DatFile);
+                            if (m_stop)
                             {
-                                if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                                completeSucces = false;
+                                break;
                             }
-                            catch
-                            {
-                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
-                                if (m_needIbaAnalyzer)
-                                {
-                                    StopIbaAnalyzer(false);
-                                    StartIbaAnalyzer();
-                                }
-                            }
-                            CopyDatFile(DatFile, dat);
-                            if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
-                            {
-                                Log(Logging.Level.Warning, iba.Properties.Resources.logNextTasksIgnored, DatFile, task);
-                                m_sd.Changed = true;
-                                DoNotification(DatFile, task, failedOnce);
-                                return;
-                            }
-                            else if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
-                            {
-                                try
-                                {
-                                    if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0, DatFile);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log(Logging.Level.Exception, ex.Message);
-                                    try
-                                    {
-                                        m_ibaAnalyzer.CloseDataFiles();
-                                    }
-                                    catch
-                                    {
-                                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
-                                        if (m_needIbaAnalyzer)
-                                        {
-                                            StopIbaAnalyzer(false);
-                                            StartIbaAnalyzer();
-                                        }
-                                    }
-                                    DoNotification(DatFile, task, failedOnce);
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                DoNotification(DatFile, task, failedOnce);
-                                return;
-                            }
+                            continueProcessing = ProcessTask(DatFile, task, ref failedOnce);
                         }
-                        else
-                            CopyDatFile(DatFile, dat);
                     }
-                    else if (task is CustomTaskData)
-                    {
-                        DoCustomTask(DatFile, task as CustomTaskData);
-                    }
-                    else if (task is CustomTaskDataUNC)
-                    {
-                        DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
-                    }
+                    else
+                        continueProcessing = ProcessTask(DatFile, task, ref failedOnce);
+                    if (!continueProcessing) return;
 
                     //touch the file
                     if (!String.IsNullOrEmpty(m_outPutFile))
@@ -2347,6 +2292,115 @@ namespace iba.Processing
                 }
                 m_sd.Changed = true;
             }
+        }
+
+        private bool ProcessTask(string DatFile, TaskData task, ref bool failedOnce)
+        {
+            lock (m_sd.DatFileStates)
+            {
+                failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
+                    && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
+                    && DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
+                    && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS; //all errors except no access
+            }
+            bool continueProcessing = true;
+            if (task is ReportData)
+            {
+                Report(DatFile, task as ReportData);
+                m_nrIbaAnalyzerCalls++;
+            }
+            else if (task is ExtractData)
+            {
+                Extract(DatFile, task as ExtractData);
+                m_nrIbaAnalyzerCalls++;
+            }
+            else if (task is BatchFileData)
+            {
+                Batchfile(DatFile, task as BatchFileData);
+            }
+            else if (task is IfTaskData)
+            {
+                IfTask(DatFile, task as IfTaskData);
+                m_nrIbaAnalyzerCalls++;
+            }
+            else if (task is UpdateDataTaskData)
+            {
+                UpdateDataTask(DatFile, task as UpdateDataTaskData);
+            }
+            else if (task is PauseTaskData)
+            {
+                PauseTask(DatFile, task as PauseTaskData);
+            }
+            else if (task is CopyMoveTaskData)
+            {
+                CopyMoveTaskData dat = task as CopyMoveTaskData;
+                if (dat.RemoveSource && dat.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
+                {
+                    try
+                    {
+                        if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
+                        if (m_needIbaAnalyzer)
+                        {
+                            StopIbaAnalyzer(false);
+                            StartIbaAnalyzer();
+                        }
+                    }
+                    CopyDatFile(DatFile, dat);
+                    if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
+                    {
+                        Log(Logging.Level.Warning, iba.Properties.Resources.logNextTasksIgnored, DatFile, task);
+                        m_sd.Changed = true;
+                        DoNotification(DatFile, task, failedOnce);
+                        continueProcessing = false;
+                    }
+                    else if (m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.COMPLETED_SUCCESFULY)
+                    {
+                        try
+                        {
+                            if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(Logging.Level.Exception, ex.Message);
+                            try
+                            {
+                                m_ibaAnalyzer.CloseDataFiles();
+                            }
+                            catch
+                            {
+                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
+                                if (m_needIbaAnalyzer)
+                                {
+                                    StopIbaAnalyzer(false);
+                                    StartIbaAnalyzer();
+                                }
+                            }
+                            DoNotification(DatFile, task, failedOnce);
+                            continueProcessing = false;
+                        }
+                    }
+                    else
+                    {
+                        DoNotification(DatFile, task, failedOnce);
+                        continueProcessing = false;
+                    }
+                }
+                else
+                    CopyDatFile(DatFile, dat);
+            }
+            else if (task is CustomTaskData)
+            {
+                DoCustomTask(DatFile, task as CustomTaskData);
+            }
+            else if (task is CustomTaskDataUNC)
+            {
+                DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
+            }
+            return continueProcessing;
         }
 
         internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)

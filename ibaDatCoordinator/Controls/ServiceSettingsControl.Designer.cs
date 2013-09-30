@@ -35,6 +35,8 @@ namespace iba.Controls
             this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.m_nudResourceCritical = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
@@ -55,6 +57,7 @@ namespace iba.Controls
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -98,11 +101,38 @@ namespace iba.Controls
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.m_nudResourceCritical);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.m_nudPostponeTime);
             this.groupBox1.Controls.Add(this.m_cbPostpone);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // m_nudResourceCritical
+            // 
+            resources.ApplyResources(this.m_nudResourceCritical, "m_nudResourceCritical");
+            this.m_nudResourceCritical.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.m_nudResourceCritical.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudResourceCritical.Name = "m_nudResourceCritical";
+            this.m_nudResourceCritical.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -208,11 +238,6 @@ namespace iba.Controls
             // m_nudRememberTime
             // 
             resources.ApplyResources(this.m_nudRememberTime, "m_nudRememberTime");
-            this.m_nudRememberTime.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
             this.m_nudRememberTime.Minimum = new decimal(new int[] {
             1,
             0,
@@ -257,6 +282,7 @@ namespace iba.Controls
             this.m_gbApp.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -292,6 +318,8 @@ namespace iba.Controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown m_nudRememberTime;
         private System.Windows.Forms.CheckBox m_cbRememberPassword;
+        private System.Windows.Forms.NumericUpDown m_nudResourceCritical;
+        private System.Windows.Forms.Label label3;
 
     }
 }

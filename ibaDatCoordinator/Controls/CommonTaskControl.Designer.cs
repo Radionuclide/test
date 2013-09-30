@@ -39,7 +39,7 @@ namespace iba.Controls
             this.m_rbFailure = new System.Windows.Forms.RadioButton();
             this.m_rbDisabled = new System.Windows.Forms.RadioButton();
             this.m_rbSucces = new System.Windows.Forms.RadioButton();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBoxNotify = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbNot1stFailure = new System.Windows.Forms.RadioButton();
             this.m_rbNotAlways = new System.Windows.Forms.RadioButton();
@@ -47,16 +47,18 @@ namespace iba.Controls
             this.m_rbNotDisabled = new System.Windows.Forms.RadioButton();
             this.m_rbNotSuccess = new System.Windows.Forms.RadioButton();
             this.m_pluginPanel = new System.Windows.Forms.Panel();
+            this.m_cbResourceCritical = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.m_ExecutegroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox8.SuspendLayout();
+            this.groupBoxNotify.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.m_cbResourceCritical);
             this.groupBox5.Controls.Add(this.label2);
             this.groupBox5.Controls.Add(this.m_nameTextBox);
             this.groupBox5.Name = "groupBox5";
@@ -130,12 +132,12 @@ namespace iba.Controls
             this.m_rbSucces.UseVisualStyleBackColor = true;
             this.m_rbSucces.CheckedChanged += new System.EventHandler(this.m_whenRadioButton_CheckedChanged);
             // 
-            // groupBox8
+            // groupBoxNotify
             // 
-            resources.ApplyResources(this.groupBox8, "groupBox8");
-            this.groupBox8.Controls.Add(this.tableLayoutPanel6);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.TabStop = false;
+            resources.ApplyResources(this.groupBoxNotify, "groupBoxNotify");
+            this.groupBoxNotify.Controls.Add(this.tableLayoutPanel6);
+            this.groupBoxNotify.Name = "groupBoxNotify";
+            this.groupBoxNotify.TabStop = false;
             // 
             // tableLayoutPanel6
             // 
@@ -188,13 +190,19 @@ namespace iba.Controls
             this.m_pluginPanel.BackColor = System.Drawing.SystemColors.Control;
             this.m_pluginPanel.Name = "m_pluginPanel";
             // 
+            // m_cbResourceCritical
+            // 
+            resources.ApplyResources(this.m_cbResourceCritical, "m_cbResourceCritical");
+            this.m_cbResourceCritical.Name = "m_cbResourceCritical";
+            this.m_cbResourceCritical.UseVisualStyleBackColor = true;
+            // 
             // CommonTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.m_pluginPanel);
-            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.groupBoxNotify);
             this.Controls.Add(this.m_ExecutegroupBox);
             this.Controls.Add(this.groupBox5);
             this.MinimumSize = new System.Drawing.Size(720, 250);
@@ -204,7 +212,7 @@ namespace iba.Controls
             this.m_ExecutegroupBox.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
+            this.groupBoxNotify.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
@@ -217,7 +225,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox m_nameTextBox;
         private System.Windows.Forms.GroupBox m_ExecutegroupBox;
-        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.GroupBox groupBoxNotify;
         private System.Windows.Forms.Panel m_pluginPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.RadioButton m_rb1stFailure;
@@ -231,5 +239,6 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbNotFailure;
         private System.Windows.Forms.RadioButton m_rbNotDisabled;
         private System.Windows.Forms.RadioButton m_rbNotSuccess;
+        private System.Windows.Forms.CheckBox m_cbResourceCritical;
     }
 }

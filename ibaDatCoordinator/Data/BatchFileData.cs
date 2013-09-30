@@ -28,8 +28,7 @@ namespace iba.Data
         {
             get { return m_testOnClientSide; }
             set { m_testOnClientSide = value; }
-        }
-        
+        }     
 
         private string m_arguments;
         public string Arguments
@@ -60,16 +59,13 @@ namespace iba.Data
 
         }
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             BatchFileData bfd = new BatchFileData(null);
-            bfd.m_name = m_name;
-            bfd.m_wtodo = m_wtodo;
             bfd.m_pdoFile = m_pdoFile;
             bfd.m_batchFile = m_batchFile;
             bfd.m_testDatFile = m_testDatFile;
             bfd.m_arguments = m_arguments;
-            bfd.m_notify = m_notify;
             bfd.m_whatFile = m_whatFile;
             bfd.m_testOnClientSide = m_testOnClientSide;
             return bfd;
@@ -106,18 +102,15 @@ namespace iba.Data
             myList.Add(new KeyValuePair<string, string>(BatchFile, sb.ToString()));
         }
 
-        override public bool IsSame(TaskData taskData)
+        override public bool IsSameInternal(TaskData taskData)
         {
             BatchFileData other = taskData as BatchFileData;
             if (other == null) return false;
             if (other == this) return true;
-            return other.m_name == m_name &&
-            other.m_wtodo == m_wtodo &&
-            other.m_pdoFile == m_pdoFile &&
+            return other.m_pdoFile == m_pdoFile &&
             other.m_batchFile == m_batchFile &&
             other.m_testDatFile == m_testDatFile &&
             other.m_arguments == m_arguments &&
-            other.m_notify == m_notify &&
             other.m_whatFile == m_whatFile &&
             other.m_testOnClientSide == m_testOnClientSide;
         }

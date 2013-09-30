@@ -72,6 +72,15 @@ namespace iba.Data
             set { m_guid = value; }
         }
 
+        private bool m_resourceIntensive;
+
+        public bool ResourceIntensive
+        {
+            get { return m_resourceIntensive; }
+            set { m_resourceIntensive = value; }
+        }
+
+
         public TaskData(ConfigurationData parent)
         {
             m_parentCD = parent;
@@ -79,6 +88,7 @@ namespace iba.Data
             m_wtodo = WhenToDo.AFTER_SUCCES_OR_FAILURE;
             m_notify = WhenToDo.DISABLED;
             m_guid = Guid.NewGuid();
+            m_resourceIntensive = false;
             if (this is ReportData)
                 m_name = iba.Properties.Resources.reportTitle;
             else if (this is ExtractData)
@@ -102,7 +112,22 @@ namespace iba.Data
             return Index.CompareTo(other.Index);
         }
 
-        abstract public object Clone();
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public TaskData Clone()
+        {
+            TaskData clone = CloneInternal();
+            clone.m_wtodo = m_wtodo;
+            clone.m_name = m_name;
+            clone.m_notify = m_notify;
+            clone.m_resourceIntensive = m_resourceIntensive;
+            return clone;
+        }
+
+        abstract public TaskData CloneInternal();
 
         public virtual void AdditionalFileNames(List<KeyValuePair<string, string>> myList, string safeConfName)
         { //default, analysisfile
@@ -117,6 +142,15 @@ namespace iba.Data
             }
         }
 
-        abstract public bool IsSame(TaskData taskData);
+        public bool IsSame(TaskData other)
+        {
+            return IsSameInternal(other) &&
+                other.m_name == m_name &&
+                other.m_notify == m_notify &&
+                other.m_wtodo == m_wtodo &&
+                other.m_resourceIntensive == m_resourceIntensive;
+        }
+
+        abstract public bool IsSameInternal(TaskData taskData);
     }
 }

@@ -61,32 +61,26 @@ namespace iba.Data
             set { m_monitorData = value; }
         }
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             IfTaskData ifd = new IfTaskData(null);
-            ifd.m_name = m_name;
             ifd.m_xtype = m_xtype;
-            ifd.m_wtodo = m_wtodo;
             ifd.m_pdoFile = m_pdoFile;
             ifd.m_testDatFile = m_testDatFile;
-            ifd.m_notify = m_notify;
             ifd.m_expression = m_expression;
             ifd.m_monitorData = m_monitorData;
             return ifd;
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             IfTaskData other = taskData as IfTaskData;
             if (other == null) return false;
             if (other == this) return true;
             return
-            other.m_name == m_name &&
             other.m_xtype == m_xtype &&
-            other.m_wtodo == m_wtodo &&
             other.m_pdoFile == m_pdoFile &&
             other.m_testDatFile == m_testDatFile &&
-            other.m_notify == m_notify &&
             other.m_expression == m_expression &&
             other.m_monitorData.IsSame(m_monitorData);
         }

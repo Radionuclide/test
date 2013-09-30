@@ -42,6 +42,14 @@ namespace iba.Data
             set { m_doPostPoning = value; }
         }
 
+        private int m_maxResourceIntensiveTasks;
+        public int MaxResourceIntensiveTasks
+        {
+            get { return m_maxResourceIntensiveTasks; }
+            set { m_maxResourceIntensiveTasks = value; }
+        }
+    
+
         private int m_PostponingMinutes;
         public int PostponingMinutes
         {
@@ -55,7 +63,6 @@ namespace iba.Data
             get { return m_ProcessPriority; }
             set { m_ProcessPriority = value; }
         }
-
 
         private string m_pass;
 
@@ -93,6 +100,7 @@ namespace iba.Data
             answer.m_logItemCount = LogData.Data.MaxRows;
             answer.m_wd = manager.WatchDogData;
             answer.m_doPostPoning = manager.DoPostponeProcessing;
+            answer.m_maxResourceIntensiveTasks = manager.MaxResourceIntensiveTasks;
             answer.m_PostponingMinutes = manager.PostponeMinutes;
             answer.m_ProcessPriority = manager.ProcessPriority;
             answer.m_pass = manager.Password;
@@ -108,6 +116,7 @@ namespace iba.Data
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
+            manager.MaxResourceIntensiveTasks = MaxResourceIntensiveTasks;
             manager.RememberPassTime = TimeSpan.FromMinutes(RememberTimeMinutes);
             manager.RememberPassEnabled = RememberPass;
             manager.Password = Password;
@@ -117,9 +126,10 @@ namespace iba.Data
             return confs;
         }
 
-        public ibaDatCoordinatorData()
+        private ibaDatCoordinatorData()
         {
-            m_version = 4;
+            //defaults
+            m_version = 5;
             m_wd = null;
             m_confs = null;
             m_logItemCount = 50;
@@ -129,6 +139,7 @@ namespace iba.Data
             m_pass = "";
             m_doRememberPass = false;
             m_rememberTimeMinutes = 5;
+            m_maxResourceIntensiveTasks = 6;
         }
     }
 }

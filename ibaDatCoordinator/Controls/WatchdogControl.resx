@@ -136,7 +136,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 367</value>
+    <value>679, 367</value>
   </data>
   <data name="m_tbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -154,10 +154,10 @@
     <value>0</value>
   </data>
   <data name="m_statusGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 330</value>
+    <value>15, 315</value>
   </data>
   <data name="m_statusGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 386</value>
+    <value>685, 386</value>
   </data>
   <data name="m_statusGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -184,7 +184,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_ApplyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>581, 32</value>
+    <value>564, 32</value>
   </data>
   <data name="m_ApplyButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 25</value>
@@ -319,10 +319,10 @@
     <value>4</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 20</value>
+    <value>15, 5</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 73</value>
+    <value>685, 73</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -412,7 +412,7 @@
     <value>127, 48</value>
   </data>
   <data name="m_tbPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 20</value>
+    <value>199, 20</value>
   </data>
   <data name="m_tbPort.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -436,7 +436,7 @@
     <value>127, 22</value>
   </data>
   <data name="m_tbHost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>555, 20</value>
+    <value>538, 20</value>
   </data>
   <data name="m_tbHost.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -454,10 +454,10 @@
     <value>3</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 99</value>
+    <value>15, 84</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 77</value>
+    <value>685, 77</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -535,10 +535,10 @@
     <value>1</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 182</value>
+    <value>15, 167</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 68</value>
+    <value>685, 68</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -625,10 +625,10 @@
     <value>1</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 256</value>
+    <value>15, 241</value>
   </data>
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 68</value>
+    <value>685, 68</value>
   </data>
   <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -661,7 +661,7 @@
     <value>0, 740</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 740</value>
+    <value>703, 707</value>
   </data>
   <data name="&gt;&gt;m_timerStatus.Name" xml:space="preserve">
     <value>m_timerStatus</value>

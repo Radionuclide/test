@@ -63,13 +63,10 @@ namespace iba.Data
 
         public CustomTaskData() : base(null) {}
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             CustomTaskData pd = new CustomTaskData();
             pd.m_plugin = m_plugin.Clone() as IPluginTaskData;
-            pd.m_wtodo = m_wtodo;
-            pd.m_name = m_name;
-            pd.m_notify = m_notify;
             return pd;
         }
 
@@ -84,15 +81,12 @@ namespace iba.Data
             }
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             CustomTaskData other = taskData as CustomTaskData;
             if (other == null) return false;
             if (other == this) return true;
             if (other.m_plugin.GetType() != m_plugin.GetType()) return false;
-            if (other.m_wtodo != m_wtodo ||
-                other.m_name != m_name ||
-                other.m_notify != m_notify) return false;
             if (m_plugin is IPluginTaskDataIsSame)
             {
                 return (m_plugin as IPluginTaskDataIsSame).IsSame(other.m_plugin as IPluginTaskDataIsSame);
@@ -136,14 +130,11 @@ namespace iba.Data
 
         public CustomTaskDataUNC() : base(null) { }
 
-        public override object Clone()
+        public override TaskData CloneInternal()
         {
             CustomTaskDataUNC pd = new CustomTaskDataUNC();
             CopyUNCData(pd);
             pd.m_plugin = m_plugin.Clone() as IPluginTaskDataUNC;
-            pd.m_wtodo = m_wtodo;
-            pd.m_name = m_name;
-            pd.m_notify = m_notify;
             return pd;
         }
 
@@ -158,15 +149,12 @@ namespace iba.Data
             }
         }
 
-        public override bool IsSame(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             CustomTaskDataUNC other = taskData as CustomTaskDataUNC;
             if (other == null) return false;
             if (other == this) return true;
             if (other.m_plugin.GetType() != m_plugin.GetType()) return false;
-            if (other.m_wtodo != m_wtodo ||
-                other.m_name != m_name ||
-                other.m_notify != m_notify) return false;
             if (!UNCDataIsSame(other)) return false;
             if (m_plugin is IPluginTaskDataIsSame)
             {

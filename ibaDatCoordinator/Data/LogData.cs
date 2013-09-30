@@ -569,7 +569,7 @@ namespace iba.Data
 
             GridViewLogger gvLogger = new GridViewLogger(grid,control);
             gvLogger.EventFormatter = new Logging.EventFormatters.SimpleEventFormatter();
-            gvLogger.Level = Level.All;
+            gvLogger.Level = Level.Info;
 
             if (appState != ApplicationState.CLIENTCONNECTED)
             {

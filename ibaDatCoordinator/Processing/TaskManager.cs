@@ -334,6 +334,7 @@ namespace iba.Processing
             m_password = "";
             m_rememberPassTime = TimeSpan.FromMinutes(5);
             m_rememberPassEnabled = false;
+            m_criticalTaskSemaphore = new FifoSemaphore(6);
         }
 
         public static TaskManager Manager
@@ -521,6 +522,12 @@ namespace iba.Processing
             set { m_doPostPone = value; }
         }
 
+        virtual public int MaxResourceIntensiveTasks
+        {
+            get { return m_criticalTaskSemaphore.MaxNumberOfRunningTasks; }
+            set { m_criticalTaskSemaphore.MaxNumberOfRunningTasks = value; }
+        }
+
         int m_postponeMinutes;
         virtual public int PostponeMinutes
         {
@@ -528,7 +535,7 @@ namespace iba.Processing
             set { m_postponeMinutes = value; }
         }
 
-        int m_processPriority;
+        private int m_processPriority;
         virtual public int ProcessPriority
         {
             get { return m_processPriority; }
@@ -547,6 +554,15 @@ namespace iba.Processing
                 }
             }
         }
+
+        private FifoSemaphore m_criticalTaskSemaphore;
+
+        public FifoSemaphore CriticalTaskSemaphore
+        {
+            get { return m_criticalTaskSemaphore; }
+            set { m_criticalTaskSemaphore = value; }
+        }
+        
 
         string m_password;
         virtual public string Password
@@ -1014,7 +1030,7 @@ namespace iba.Processing
                 }
             }
         }
-
+        
         public override int PostponeMinutes
         {
             get
@@ -1039,6 +1055,34 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.PostponeMinutes = value;
+                }
+            }
+        }
+
+        public override int MaxResourceIntensiveTasks
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.MaxResourceIntensiveTasks;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.MaxResourceIntensiveTasks;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.MaxResourceIntensiveTasks = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.MaxResourceIntensiveTasks = value;
                 }
             }
         }

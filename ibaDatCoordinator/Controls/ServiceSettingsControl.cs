@@ -54,6 +54,7 @@ namespace iba.Controls
             int minutes = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Value = (decimal)minutes;
             int iPc = TaskManager.Manager.ProcessPriority;
+            m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
             System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
             switch (pc)
             {
@@ -215,6 +216,8 @@ namespace iba.Controls
 
             TaskManager.Manager.RememberPassEnabled = m_cbRememberPassword.Checked;
             TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
+
+            TaskManager.Manager.MaxResourceIntensiveTasks = (int) m_nudResourceCritical.Value;
             int iPc = 2;
             switch (m_comboPriority.SelectedIndex)
             {

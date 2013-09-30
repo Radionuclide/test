@@ -109,6 +109,8 @@ namespace iba.Controls
             m_rbNot1stFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE;
             m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
 
+            m_cbResourceCritical.Checked = m_data.ResourceIntensive;
+
             if (m_plugin != null)
                 m_plugin.LoadData((m_data as ICustomTaskData).Plugin, this);
             else if (m_regularControl != null)
@@ -141,6 +143,8 @@ namespace iba.Controls
                 m_data.WhenToNotify = TaskData.WhenToDo.DISABLED;
 
             m_data.Name = m_nameTextBox.Text;
+
+            m_data.ResourceIntensive = m_cbResourceCritical.Checked;
 
             if (m_plugin != null)
                 m_plugin.SaveData();
