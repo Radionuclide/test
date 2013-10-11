@@ -276,12 +276,17 @@ namespace iba.Controls
                     ibaProc.StartInfo.FileName = m_tbAnalyzerExe.Text;
                     ibaProc.StartInfo.Arguments = "/regserver";
                     ibaProc.Start();
+                    ibaProc.WaitForExit();
+                    ibaProc.StartInfo.Arguments = "-noninteractive /regserver";
+                    ibaProc.Start();
+                    ibaProc.WaitForExit();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)

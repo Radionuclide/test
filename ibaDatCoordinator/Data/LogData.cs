@@ -48,7 +48,7 @@ namespace iba.Data
 
     public class LogExtraDataFormatter : DataFormatter
     {
-        private static string EmptyResult = "[]\t[]\t[]" + Environment.NewLine;
+        private static string EmptyResult = "[]\t[]\t[]";
         public override string Format(object o)
         {
             if (o == null) return EmptyResult;

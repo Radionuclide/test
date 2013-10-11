@@ -2148,10 +2148,8 @@ namespace iba.Processing
                     bool continueProcessing = true;
                     if (task.ResourceIntensive)
                     {
-                        Log(iba.Logging.Level.Exception, "entering semaphore", DatFile);
                         using (TaskManager.Manager.CriticalTaskSemaphore.CreateClient())
                         {
-                            Log(iba.Logging.Level.Exception, "exiting semaphore", DatFile);
                             if (m_stop)
                             {
                                 completeSucces = false;
