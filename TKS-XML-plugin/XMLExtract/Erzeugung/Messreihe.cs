@@ -25,7 +25,7 @@ namespace XmlExtract
     public partial class MaterialEreignisType
     {
         [System.Xml.Serialization.XmlAttributeAttribute("schemaLocation", Namespace = System.Xml.Schema.XmlSchema.InstanceNamespace)]
-        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/REL-2_4/Messreihe.xsd";
+        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/Messung/REL-2_5/Messreihe.xsd";
 
         public MaterialHeaderType MaterialHeader { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Messung")]
@@ -50,49 +50,14 @@ namespace XmlExtract
     public partial class MaterialHeaderType
     {
         
-        private System.Nullable<StandortType> standortField;
-        
         private System.Nullable<MaterialArtType> materialArtField;
         
         public string LokalerIdent { get; set; }
         
         /// <summary>
-        /// BO, DO, DU
+        /// BO, DO, DU, oder Anderer
         /// </summary>
-        public StandortType Standort
-        {
-            get
-            {
-                if (this.standortField.HasValue)
-                {
-                    return this.standortField.Value;
-                }
-                else
-                {
-                    return default(StandortType);
-                }
-            }
-            set
-            {
-                this.standortField = value;
-            }
-        }
-        
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool StandortSpecified
-        {
-            get
-            {
-                return this.standortField.HasValue;
-            }
-            set
-            {
-                if (value==false)
-                {
-                    this.standortField = null;
-                }
-            }
-        }
+        public string Standort { get; set; }
         
         /// <summary>
         /// Nur DU:  BR WB KB VZ BB PK
@@ -133,21 +98,6 @@ namespace XmlExtract
         }
     }
     
-    /// <summary>
-    /// Gueltige TKS-Standorte.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public enum StandortType
-    {
-        
-        BO,
-        
-        DO,
-        
-        DU,
-    }
     
     /// <summary>
     /// Zusaetzliche Kennzeichnung von Duisburger Material.
