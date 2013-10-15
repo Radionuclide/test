@@ -25,13 +25,15 @@ namespace XmlExtract
 
 
 
-        public string ExtractToXml(string datfile, string xmlfile, StandortType st, IdFieldLocation idfield)
+        public string ExtractToXml(string datfile, string xmlfile, IExtractorData data)
         {
             _error = new StringBuilder();
 
             _reader.Open(datfile);
 
-            MaterialEreignisType met = FillMaterialEreignis(_reader, st, idfield);
+            MaterialEreignisType met = FillMaterialEreignis(_reader, data);
+            if (!String.IsNullOrEmpty(data.XmlSchemaLocation))
+                met.xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic " + data.XmlSchemaLocation;
 
             _reader.Close();
 
@@ -49,25 +51,31 @@ namespace XmlExtract
         }
 
 
-        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, StandortType st, IdFieldLocation idfield)
+        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, IExtractorData data)
         {
 
             var infoParser = new ResolveInfo();
 
-            Info info = ResolveInfo.Resolve(reader, st);
+            Info info = ResolveInfo.Resolve(reader, data.StandOrt);
 
             if (!String.IsNullOrEmpty(info.Error))
                 _error.AppendLine(info.Error);
 
             var met = new MaterialEreignisType();
             met.MaterialHeader.LokalerIdent = info.LocalIdent;
-            met.MaterialHeader.Standort = st;
-            if (st == StandortType.DU)
-                met.MaterialHeader.MaterialArt = info.MaterialArt;
+
+            if (data.StandOrt == StandortType.Anderer)
+                met.MaterialHeader.Standort = data.AndererStandort;
+            else
+            {
+                met.MaterialHeader.Standort = data.StandOrt.ToString();
+                if (data.StandOrt == StandortType.DU)
+                    met.MaterialHeader.MaterialArt = info.MaterialArt;
+            }
 
             foreach (IbaChannelReader channel in reader.Channels())
             {
-                var signalId = channel.ResolveSignalId(idfield);
+                var signalId = channel.ResolveSignalId(data.IdField);
 
                 var mes = new MessungType();
                 mes.Bandlaufrichtung = info.Bandlaufrichtung;

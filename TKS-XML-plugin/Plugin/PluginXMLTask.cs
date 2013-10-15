@@ -7,7 +7,7 @@ using XmlExtract;
 namespace iba.TKS_XML_Plugin
 {
     [Serializable]
-    public class PluginXMLTask : IPluginTaskDataUNC, IPluginTaskDataIsSame
+    public class PluginXMLTask : IPluginTaskDataUNC, IPluginTaskDataIsSame, IExtractorData
     {
         public PluginXMLTask()
         {
@@ -102,22 +102,37 @@ namespace iba.TKS_XML_Plugin
 
         #endregion
 
-        //some data
-        private XmlExtract.StandortType m_standOrt = XmlExtract.StandortType.DU;
+        // IExtractorData Members
+        private XmlExtract.StandortType _standOrt = XmlExtract.StandortType.DU;
         public XmlExtract.StandortType StandOrt
         {
-            get { return m_standOrt; }
-            set { m_standOrt = value; }
+            get { return _standOrt; }
+            set { _standOrt = value; }
         }
 
 
-        private IdFieldLocation _idField;
+        private IdFieldLocation _idField = IdFieldLocation.Name;
         public IdFieldLocation IdField
         {
             get { return _idField; }
             set { _idField = value; }
         }
-        
+
+        private string _andererStandort = String.Empty;
+        public string AndererStandort
+        {
+            get { return _andererStandort; }
+            set { _andererStandort = value; }
+        }
+
+        private string _xsiSchemaLocation = "http://www-eai/schema/qbic/Messung/REL-2_5/Messreihe.xsd";
+        public string XmlSchemaLocation
+        {
+            get { return _xsiSchemaLocation; }
+            set { _xsiSchemaLocation = value; }
+        }
+
+
 
         #region IPluginTaskDataIsSame Members
 
@@ -126,9 +141,13 @@ namespace iba.TKS_XML_Plugin
             var other = data as PluginXMLTask;
             if (other == null) return false;
 
-            return other.StandOrt == StandOrt
-                && other.IdField == IdField;
+            return (other.StandOrt == StandOrt
+                && other.IdField == IdField
+                && other.AndererStandort == AndererStandort
+                && other.XmlSchemaLocation == XmlSchemaLocation);
         }
         #endregion
+
+
     }
 }
