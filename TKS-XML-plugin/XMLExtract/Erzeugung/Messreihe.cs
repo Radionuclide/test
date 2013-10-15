@@ -159,21 +159,17 @@ namespace XmlExtract
         /// <summary>
         /// Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)
         /// </summary>
-        public double SegmentgroesseX { get; set; }
+        public float SegmentgroesseX { get; set; }
         /// <summary>
         /// Darf weggelassen werden, dann wird 0 angenommen.
         /// </summary>
-        public double SegmentOffsetX { get; set; }
+        public float SegmentOffsetX { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string WerteX
         {
             get
             {
-                var stringItems = new List<string>(WerteList.Count);
-                foreach (double item in WerteList)
-                {
-                    stringItems.Add(XmlConvert.ToString(item));
-                }
+                var stringItems = WerteList.ConvertAll(w => XmlConvert.ToString(w));
                 return String.Join(" ", stringItems.ToArray());
             }
             set
