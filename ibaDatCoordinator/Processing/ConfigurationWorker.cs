@@ -992,56 +992,66 @@ namespace iba.Processing
             return ok;
         }
 
-        //static Object m_ibaAnalyzerLock = new Object();
+        static Object m_ibaAnalyzerLock = new Object();
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };
         private IbaAnalyzerServerStatus ibaAnalyzerServerStatus;
 
         internal void StartIbaAnalyzer()
         {
-            m_nrIbaAnalyzerCalls = 0;
-            //start the com object
-            try
+            lock (m_ibaAnalyzerLock)
             {
-                //Log(iba.Logging.Level.Info, "Starting new ibaAnalyzer");
-                //m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                switch (ibaAnalyzerServerStatus)
+                m_nrIbaAnalyzerCalls = 0;
+                //start the com object
+                try
                 {
-                    case IbaAnalyzerServerStatus.NONINTERACTIVE:
-                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
-                        break;
-                    case IbaAnalyzerServerStatus.CLASSIC:
-                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                        break;
-                    case IbaAnalyzerServerStatus.UNDETERMINED:
-                        try {
+                    //Log(iba.Logging.Level.Info, "Starting new ibaAnalyzer");
+                    //m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                    switch (ibaAnalyzerServerStatus)
+                    {
+                        case IbaAnalyzerServerStatus.NONINTERACTIVE:
                             m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
-                            ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.NONINTERACTIVE;
-                        }
-                        catch (Exception)
-                        {
+                            break;
+                        case IbaAnalyzerServerStatus.CLASSIC:
                             m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
-                            ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.CLASSIC;
-                        }
-                        break;
+                            break;
+                        case IbaAnalyzerServerStatus.UNDETERMINED:
+                            try
+                            {
+                                Log(iba.Logging.Level.Debug, "Trying to create an instance of noninteractive ibaAnalyzer");
+                                m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
+                                Log(iba.Logging.Level.Debug, "Create an instance of noninteractive ibaAnalyzer succesful");
+                                ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.NONINTERACTIVE;
+                            }
+                            catch (Exception ex1)
+                            {
+                                Log(iba.Logging.Level.Debug, "Create an instance of noninteractive ibaAnalyzer failed" + ex1.Message);
+                                Log(iba.Logging.Level.Debug, "Trying to create an instance of interactive ibaAnalyzer");
+                                m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                                Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer succesful");
+                                ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.CLASSIC;
+                            }
+                            break;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
-                Log(Logging.Level.Exception, ex.Message);
-                m_sd.Started = false;
-                Stop = true;
-                return;
-            }
+                catch (Exception ex)
+                {
+                    ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
+                    Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer failed");
+                    Log(Logging.Level.Exception, ex.Message);
+                    m_sd.Started = false;
+                    Stop = true;
+                    return;
+                }
 
-            try
-            {
-                Log(iba.Logging.Level.Debug, string.Format("New ibaAnalyzer started with process ID: {0} Mode: {1}", m_ibaAnalyzer.GetProcessID(),ibaAnalyzerServerStatus));
-            }
-            catch
-            {
-                Log(iba.Logging.Level.Warning, "New ibaAnalyzer started, could not get ProcessID");
+                try
+                {
+                    Log(iba.Logging.Level.Debug, string.Format("New ibaAnalyzer started with process ID: {0} Mode: {1}", m_ibaAnalyzer.GetProcessID(), ibaAnalyzerServerStatus));
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Warning, "New ibaAnalyzer started, could not get ProcessID");
+                }
             }
         }
 
@@ -1052,8 +1062,8 @@ namespace iba.Processing
 
         internal void StopIbaAnalyzer(bool stop)
         {
-           // lock (m_ibaAnalyzerLock)
-            //{
+            lock (m_ibaAnalyzerLock)
+            {
                 m_nrIbaAnalyzerCalls = 0;
                 try
                 {
@@ -1072,7 +1082,7 @@ namespace iba.Processing
                     }
                     return;
                 }
-            //}
+            }
         }
 
         internal string IbaAnalyzerErrorMessage()
