@@ -56,11 +56,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="XMLExtract\ChannelData.cs" />
+    <Compile Include="XMLExtract\Erzeugung\StandortType.cs" />
     <Compile Include="XMLExtract\IdFieldLocation.cs" />
     <Compile Include="XMLExtract\EnumGeneric.cs" />
     <Compile Include="XMLExtract\DatExtractor.cs" />
     <Compile Include="XMLExtract\Erzeugung\Messreihe.cs" />
     <Compile Include="XMLExtract\ibaFilesLibExtensions.cs" />
+    <Compile Include="XMLExtract\IExtractorData.cs" />
     <Compile Include="XMLExtract\Info.cs" />
     <Compile Include="XMLExtract\ResolveEinheit.cs" />
     <Compile Include="XMLExtract\ResolveInfo.cs" />

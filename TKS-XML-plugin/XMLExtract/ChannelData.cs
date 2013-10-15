@@ -8,8 +8,8 @@ namespace XmlExtract
 
     internal class ChannelData
     {
-        public double Interval { get; set; }
-        public double XOffset { get; set; }
+        public float Interval { get; set; }
+        public float XOffset { get; set; }
         public List<float> Data { get; set; }
     }
 }

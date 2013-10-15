@@ -50,7 +50,7 @@ namespace XmlExtract
                 if (Convert.ToBoolean(reader.IsInfoPresent(DE_MATERIALART)))
                 {
                     var matValue = reader.QueryInfoByName(DE_MATERIALART).Trim();
-                    var mat = MaterialArtType.BB;
+                    MaterialArtType mat;
                     if (Enum<MaterialArtType>.TryParse(matValue, true, out mat))
                         info.MaterialArt = mat;
                     else
