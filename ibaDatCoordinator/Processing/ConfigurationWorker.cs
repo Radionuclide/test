@@ -992,10 +992,10 @@ namespace iba.Processing
             return ok;
         }
 
-        static Object m_ibaAnalyzerLock = new Object();
+        static private Object m_ibaAnalyzerLock = new Object();
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };
-        private IbaAnalyzerServerStatus ibaAnalyzerServerStatus;
+        static private IbaAnalyzerServerStatus ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
 
         internal void StartIbaAnalyzer()
         {
@@ -1036,8 +1036,8 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
+                    Log(iba.Logging.Level.Debug, "Create an instance of ibaAnalyzer failed, ibaAnalyzer mode: " + ibaAnalyzerServerStatus.ToString());
                     ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
-                    Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer failed");
                     Log(Logging.Level.Exception, ex.Message);
                     m_sd.Started = false;
                     Stop = true;
@@ -1069,6 +1069,14 @@ namespace iba.Processing
                 {
                     if (m_ibaAnalyzer == null)
                         return;
+                    try
+                    {
+                        Log(iba.Logging.Level.Debug, string.Format("Stopping ibaAnalyzer with process ID: {0}", m_ibaAnalyzer.GetProcessID()));
+                    }
+                    catch
+                    {
+                       
+                    }
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
                     m_ibaAnalyzer = null;
                 }
