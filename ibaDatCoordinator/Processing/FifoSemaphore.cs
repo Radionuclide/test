@@ -18,7 +18,7 @@ namespace iba.Processing
 
         private Queue<AutoResetEvent> m_waitingTasks;
         private int m_maxNumberOfRunningTasks;
-        private int m_currentNumberOfRunningTasks;
+        protected int m_currentNumberOfRunningTasks;
 
         public void Enter()
         {
@@ -90,7 +90,6 @@ namespace iba.Processing
             get { return m_maxNumberOfRunningTasks; }
             set
             {
-
                 lock (m_lock)
                 {
                     m_maxNumberOfRunningTasks = value;
