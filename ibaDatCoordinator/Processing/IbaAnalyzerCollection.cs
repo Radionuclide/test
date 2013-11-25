@@ -18,12 +18,22 @@ namespace iba.Processing
             set { m_maxCallCount = value; }
         }
 
-        public IbaAnalyzerCollection(int maxNumberOfRunningTasks) : base(maxNumberOfRunningTasks)
+        private IbaAnalyzerCollection(int maxNumberOfRunningTasks) : base(maxNumberOfRunningTasks)
         {
             m_callCounts = new Dictionary<IbaAnalyzer.IbaAnalyzer, int>();
             m_lock2 = new Object();
             m_analyzers = new Stack<IbaAnalyzer.IbaAnalyzer>();
             m_maxCallCount = 20;
+        }
+
+        private static IbaAnalyzerCollection m_collection;
+
+        public static IbaAnalyzerCollection Collection
+        {
+            get {
+                if (m_collection == null) m_collection = new IbaAnalyzerCollection(5);
+                return m_collection;
+            }
         }
 
         public IbaAnalyzer.IbaAnalyzer ClaimIbaAnalyzer(ConfigurationData cd)
@@ -43,8 +53,14 @@ namespace iba.Processing
                         {
                             MaxNumberOfRunningTasks = m_currentNumberOfRunningTasks;
                             tryAgain = true;
+                            Log(iba.Logging.Level.Exception, string.Format(iba.Properties.Resources.errIbaAnalyzerDecrease, m_currentNumberOfRunningTasks), cd);
+                            
                         }
-                        //else catastrophic, not a single ibaAnalyzer can be created -> stop everything, handled by job because of the null ibaAnalyzer
+                        else
+                        {//else catastrophic, not a single ibaAnalyzer can be created -> stop everything, handled by job because of the null ibaAnalyzer
+                            Log(iba.Logging.Level.Exception,iba.Properties.Resources.errIbaAnalyzersIsZero, cd);
+                            return null;
+                        }
                     }
                     else
                     {
@@ -69,7 +85,7 @@ namespace iba.Processing
         /// <summary>
         /// Return an ibaAnalyzer, possibly kill it
         /// </summary>
-        /// <param name="doKill">Set to true if the ibaAnalyzer instance needs to disposed</param>
+        /// <param name="doKill">Set to true if the ibaAnalyzer instance needs to be disposed</param>
         /// <returns>false if kill was asked and the kill failed</returns>
         public bool RelinquishIbaAnalyzer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, bool doKill, ConfigurationData cd)
         {
@@ -100,7 +116,7 @@ namespace iba.Processing
                     }
                     catch (Exception ex)
                     {
-                        Log(Logging.Level.Exception, ex.Message, cd);
+                        Log(Logging.Level.Exception, iba.Properties.Resources.errIbaAnalyzerDestroy + ex.Message, cd);
                         Leave();
                         return false;
                     }
@@ -160,7 +176,7 @@ namespace iba.Processing
             {
                 Log(iba.Logging.Level.Debug, "Create an instance of ibaAnalyzer failed, ibaAnalyzer mode: " + ibaAnalyzerServerStatus.ToString(), cd);
                 ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.UNDETERMINED;
-                Log(Logging.Level.Exception, ex.Message, cd);
+                Log(Logging.Level.Exception, iba.Properties.Resources.errIbaAnalyzerCreate +  ex.Message, cd);
                 return null;
             }
 

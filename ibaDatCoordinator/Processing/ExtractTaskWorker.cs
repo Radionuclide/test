@@ -158,7 +158,7 @@ namespace iba.Processing
                     catch
                     {
                         m_confWorker.Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, m_task);
-                        m_confWorker.StopIbaAnalyzer(false);
+                        m_confWorker.StopIbaAnalyzer();
                         m_confWorker.StartIbaAnalyzer();
                     }
                 }

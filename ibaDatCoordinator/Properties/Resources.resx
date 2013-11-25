@@ -1063,4 +1063,16 @@
   <data name="logTaskStarted" xml:space="preserve">
     <value>'{0}' task started</value>
   </data>
+  <data name="errIbaAnalyzerCreate" xml:space="preserve">
+    <value>Failed to create an instance of ibaAnalyzer: </value>
+  </data>
+  <data name="errIbaAnalyzerDecrease" xml:space="preserve">
+    <value>Because of the failure to create an instance of ibaAnalyzer, the number of simultaneous ibaAnalyzer instances ibaDatCoordinator will maintain has decreased to {0}.</value>
+  </data>
+  <data name="errIbaAnalyzerDestroy" xml:space="preserve">
+    <value>Could not close an instance of ibaAnalyzer: </value>
+  </data>
+  <data name="errIbaAnalyzersIsZero" xml:space="preserve">
+    <value>Critical failure, ibaDatCoordinator is not succeeding in creating instances of ibaAnalyzer. The job will be stopped.</value>
+  </data>
 </root>
