@@ -49,10 +49,11 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
-            m_cbPostpone.Checked = bPostpone;
-            int minutes = TaskManager.Manager.PostponeMinutes;
-            m_nudPostponeTime.Value = (decimal)minutes;
+            m_cbPostpone.Checked = TaskManager.Manager.DoPostponeProcessing; ;
+            m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
+            m_nudRestartIbaAnalyzer.Value = TaskManager.Manager.MaxIbaAnalyzerCalls;
+            m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
+
             int iPc = TaskManager.Manager.ProcessPriority;
             m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
             System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass) iPc;
@@ -209,10 +210,10 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            bool bPostpone = m_cbPostpone.Checked;
-            TaskManager.Manager.DoPostponeProcessing = bPostpone;
-            int minutes = (int) m_nudPostponeTime.Value;
-            TaskManager.Manager.PostponeMinutes = minutes;
+            TaskManager.Manager.DoPostponeProcessing = m_cbPostpone.Checked;
+            TaskManager.Manager.PostponeMinutes = (int)m_nudPostponeTime.Value;
+            TaskManager.Manager.MaxIbaAnalyzerCalls = (int)m_nudRestartIbaAnalyzer.Value;
+            TaskManager.Manager.IsIbaAnalyzerCallsLimited = m_cbRestartIbaAnalyzer.Checked;
 
             TaskManager.Manager.RememberPassEnabled = m_cbRememberPassword.Checked;
             TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
@@ -314,6 +315,16 @@ namespace iba.Controls
             if (!Utility.Crypt.CheckPassword()) return;
             m_pass = "";
             UpdatePassControls();
+        }
+
+        private void m_nudPostponeTime_ValueChanged(object sender, EventArgs e)
+        {
+            m_cbPostpone.Checked = true;
+        }
+
+        private void m_nudRestartIbaAnalyzer_ValueChanged(object sender, EventArgs e)
+        {
+            m_cbRestartIbaAnalyzer.Checked = true;
         }
     }
 

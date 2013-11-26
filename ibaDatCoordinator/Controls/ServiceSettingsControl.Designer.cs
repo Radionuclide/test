@@ -41,6 +41,11 @@ namespace iba.Controls
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
             this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
             this.m_registerButton = new System.Windows.Forms.Button();
@@ -60,6 +65,8 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
             this.SuspendLayout();
@@ -158,6 +165,7 @@ namespace iba.Controls
             0,
             0,
             0});
+            this.m_nudPostponeTime.ValueChanged += new System.EventHandler(this.m_nudPostponeTime_ValueChanged);
             // 
             // m_cbPostpone
             // 
@@ -168,6 +176,11 @@ namespace iba.Controls
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.label6);
+            this.groupBox5.Controls.Add(this.label4);
+            this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
+            this.groupBox5.Controls.Add(this.numericUpDown1);
+            this.groupBox5.Controls.Add(this.m_cbRestartIbaAnalyzer);
             this.groupBox5.Controls.Add(this.m_tbAnalyzerExe);
             this.groupBox5.Controls.Add(this.m_browseIbaAnalyzerButton);
             this.groupBox5.Controls.Add(this.m_registerButton);
@@ -175,6 +188,63 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // m_nudRestartIbaAnalyzer
+            // 
+            resources.ApplyResources(this.m_nudRestartIbaAnalyzer, "m_nudRestartIbaAnalyzer");
+            this.m_nudRestartIbaAnalyzer.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.m_nudRestartIbaAnalyzer.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudRestartIbaAnalyzer.Name = "m_nudRestartIbaAnalyzer";
+            this.m_nudRestartIbaAnalyzer.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudRestartIbaAnalyzer.ValueChanged += new System.EventHandler(this.m_nudRestartIbaAnalyzer_ValueChanged);
+            // 
+            // numericUpDown1
+            // 
+            resources.ApplyResources(this.numericUpDown1, "numericUpDown1");
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // m_cbRestartIbaAnalyzer
+            // 
+            resources.ApplyResources(this.m_cbRestartIbaAnalyzer, "m_cbRestartIbaAnalyzer");
+            this.m_cbRestartIbaAnalyzer.Name = "m_cbRestartIbaAnalyzer";
+            this.m_cbRestartIbaAnalyzer.UseVisualStyleBackColor = true;
             // 
             // m_tbAnalyzerExe
             // 
@@ -286,6 +356,8 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).EndInit();
@@ -320,6 +392,11 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_cbRememberPassword;
         private System.Windows.Forms.NumericUpDown m_nudResourceCritical;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
+        private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
 
     }
 }

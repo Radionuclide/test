@@ -18,12 +18,21 @@ namespace iba.Processing
             set { m_maxCallCount = value; }
         }
 
+        bool m_bLimitCallCount;
+        public bool LimitCallCount
+        {
+            get { return m_bLimitCallCount; }
+            set { m_bLimitCallCount = value; }
+        }
+
         private IbaAnalyzerCollection(int maxNumberOfRunningTasks) : base(maxNumberOfRunningTasks)
         {
             m_callCounts = new Dictionary<IbaAnalyzer.IbaAnalyzer, int>();
             m_lock2 = new Object();
             m_analyzers = new Stack<IbaAnalyzer.IbaAnalyzer>();
             m_maxCallCount = 20;
+            m_bLimitCallCount = true;
+            m_name = "ibaAnalyzer semaphore";
         }
 
         private static IbaAnalyzerCollection m_collection;
@@ -39,9 +48,9 @@ namespace iba.Processing
         public IbaAnalyzer.IbaAnalyzer ClaimIbaAnalyzer(ConfigurationData cd)
         {
             bool tryAgain = false;
+            Enter();
             lock (m_lock2)
             {
-                Enter();
                 if (m_analyzers.Count > 0)
                     return m_analyzers.Pop();
                 else //create one
@@ -97,7 +106,7 @@ namespace iba.Processing
             lock (m_lock2)
             {
                 int count;
-                if (m_callCounts.TryGetValue(ibaAnalyzer, out count) && (count >= m_maxCallCount))
+                if (m_callCounts.TryGetValue(ibaAnalyzer, out count) && count >= m_maxCallCount && m_bLimitCallCount)
                     doKill = true;
                 if (doKill)
                 {
@@ -123,9 +132,25 @@ namespace iba.Processing
                 }
                 else
                     m_analyzers.Push(ibaAnalyzer);
-                Leave();
             }
+            Leave();
             return true;
+        }
+
+        public void TryClearIbaAnalyzer(ConfigurationData cd)
+        {
+            if (TryEnter())
+            {
+                if (m_analyzers.Count > 0)
+                    RelinquishIbaAnalyzer(m_analyzers.Pop(), true, cd);
+                else
+                    Leave();
+            }
+        }
+
+        public void RestartIbaAnalyzer(IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer, ConfigurationData m_cd)
+        {
+            throw new NotImplementedException();
         }
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };

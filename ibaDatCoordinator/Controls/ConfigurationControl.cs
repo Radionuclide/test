@@ -62,7 +62,6 @@ namespace iba.Controls
                 groupBox1.Size = new Size(groupBox1.Size.Width, groupBox1.Size.Height + diff);
 
                 groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                groupBox5.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
                 m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
@@ -134,7 +133,6 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         ConfigurationData m_data;
-        string ibaAnalyzerExe;
        
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -145,18 +143,6 @@ namespace iba.Controls
             m_subMapsCheckBox.Checked = m_data.SubDirs;
             m_autoStartCheckBox.Checked = m_data.AutoStart;
             m_enableCheckBox.Checked = m_data.Enabled;
-
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                 object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-                m_lblIbaAnalyzerPath.Text = ibaAnalyzerExe;
-            }
-            catch
-            {
-                m_lblIbaAnalyzerPath.Text = ibaAnalyzerExe =iba.Properties.Resources.noIbaAnalyser;
-            }
 
             if (m_failTimeUpDown.Minimum >  (decimal) m_data.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double) m_failTimeUpDown.Minimum);
@@ -174,8 +160,6 @@ namespace iba.Controls
             m_failTimeUpDown.Value = (decimal)m_data.ReprocessErrorsTimeInterval.TotalMinutes;
             m_retryUpDown.Value = (decimal) m_data.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
-
-            m_executeIBAAButton.Enabled = File.Exists(m_lblIbaAnalyzerPath.Text);
 
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
@@ -238,18 +222,6 @@ namespace iba.Controls
             m_checkPathButton.Text = "?";
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
-            try
-            {
-                m_newIfTaskButton.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe,"5.3.4");
-            }
-            catch
-            {
-                m_newIfTaskButton.Enabled = false;
-            }
-
-            m_nudRestartIbaAnalyzer.Value = (decimal)m_data.TimesAfterWhichtToRestartIbaAnalyzer;
-            m_cbRestartIbaAnalyzer.Checked = m_nudRestartIbaAnalyzer.Enabled = m_data.BRestartIbaAnalyzer;
-            m_cbCloseIbaAnalyzer.Checked = m_data.IbaAnalyzerSleepsWhenNoDatFiles;
             m_cbDetectNewFiles.Checked = m_data.DetectNewFiles;
         }
 
@@ -281,10 +253,6 @@ namespace iba.Controls
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
-            m_data.BRestartIbaAnalyzer = m_cbRestartIbaAnalyzer.Checked;
-            m_data.TimesAfterWhichtToRestartIbaAnalyzer = (int) m_nudRestartIbaAnalyzer.Value;
-            m_data.IbaAnalyzerSleepsWhenNoDatFiles = m_cbCloseIbaAnalyzer.Checked;
-
             m_data.DetectNewFiles = m_cbDetectNewFiles.Checked;
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -329,21 +297,6 @@ namespace iba.Controls
                     sb.AppendLine(m_folderBrowserDialog1.SelectedPath);
                     m_datDirTextBox.Text = sb.ToString();
                 }
-            }
-        }
-
-        private void OnClickExecuteButton(object sender, EventArgs e)
-        {
-            try
-            {
-                Process ibaProc = new Process();
-                ibaProc.EnableRaisingEvents = false;
-                ibaProc.StartInfo.FileName = m_lblIbaAnalyzerPath.Text;
-                ibaProc.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -710,11 +663,6 @@ namespace iba.Controls
             m_tbMailPass.Enabled = labelmailpass.Enabled
             = m_tbMailUsername.Enabled = labelmailuser.Enabled
             = m_cbAuthentication.Checked && m_rbEmail.Checked;
-        }
-
-        private void m_cbRestartIbaAnalyzer_CheckedChanged(object sender, EventArgs e)
-        {
-            m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
         }
 
         private void m_cbDetectNewFiles_CheckedChanged(object sender, EventArgs e)

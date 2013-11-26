@@ -48,7 +48,27 @@ namespace iba.Data
             get { return m_maxResourceIntensiveTasks; }
             set { m_maxResourceIntensiveTasks = value; }
         }
-    
+
+        private int m_maxSimultaneousIbaAnalyzers;
+        public int MaxSimultaneousIbaAnalyzers
+        {
+            get { return m_maxSimultaneousIbaAnalyzers; }
+            set { m_maxSimultaneousIbaAnalyzers = value; }
+        }
+
+        private int m_maxIbaAnalyzerCalls;
+        public int MaxIbaAnalyzerCalls
+        {
+            get { return m_maxIbaAnalyzerCalls; }
+            set { m_maxIbaAnalyzerCalls = value; }
+        }
+        
+        private bool m_isIbaAnalyzerCallsLimited;
+        public bool IsIbaAnalyzerCallsLimited
+        {
+            get { return m_isIbaAnalyzerCallsLimited; }
+            set { m_isIbaAnalyzerCallsLimited = value; }
+        }
 
         private int m_PostponingMinutes;
         public int PostponingMinutes
@@ -106,6 +126,9 @@ namespace iba.Data
             answer.m_pass = manager.Password;
             answer.m_doRememberPass = manager.RememberPassEnabled;
             answer.m_rememberTimeMinutes = (int) manager.RememberPassTime.TotalMinutes;
+            answer.m_maxSimultaneousIbaAnalyzers = manager.MaxSimultaneousIbaAnalyzers;
+            answer.m_maxIbaAnalyzerCalls = manager.MaxIbaAnalyzerCalls;
+            answer.m_isIbaAnalyzerCallsLimited = manager.IsIbaAnalyzerCallsLimited;
             return answer;
         }
 
@@ -117,6 +140,9 @@ namespace iba.Data
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
             manager.MaxResourceIntensiveTasks = MaxResourceIntensiveTasks;
+            manager.MaxSimultaneousIbaAnalyzers = MaxSimultaneousIbaAnalyzers;
+            manager.MaxIbaAnalyzerCalls = MaxIbaAnalyzerCalls;
+            manager.IsIbaAnalyzerCallsLimited = IsIbaAnalyzerCallsLimited;
             manager.RememberPassTime = TimeSpan.FromMinutes(RememberTimeMinutes);
             manager.RememberPassEnabled = RememberPass;
             manager.Password = Password;
@@ -140,6 +166,9 @@ namespace iba.Data
             m_doRememberPass = false;
             m_rememberTimeMinutes = 5;
             m_maxResourceIntensiveTasks = 6;
+            m_maxSimultaneousIbaAnalyzers = 5;
+            m_maxIbaAnalyzerCalls = 20;
+            m_isIbaAnalyzerCallsLimited = true;
         }
     }
 }

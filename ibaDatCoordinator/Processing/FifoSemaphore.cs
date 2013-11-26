@@ -8,11 +8,14 @@ namespace iba.Processing
 {
     public class FifoSemaphore
     {
+        protected string m_name;
+
         public FifoSemaphore(int maxNumberOfRunningTasks)
         {
             m_maxNumberOfRunningTasks = maxNumberOfRunningTasks;
             m_lock = new Object();
             m_waitingTasks = new Queue<AutoResetEvent>();
+            m_name = "Resource intensive tasks semaphore";
         }
         private Object m_lock;
 
@@ -37,10 +40,23 @@ namespace iba.Processing
             }
             if (ev != null)
             {
-                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, "Semaphore full, halting execution for thread: " + System.Threading.Thread.CurrentThread.Name);
+                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, m_name + ": Semaphore full, halting execution for thread: " + System.Threading.Thread.CurrentThread.Name);
                 ev.WaitOne();
-                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, "Resuming execution for thread: " + System.Threading.Thread.CurrentThread.Name);
+                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, m_name + "Resuming execution for thread: " + System.Threading.Thread.CurrentThread.Name);
                 ev.Close();
+            }
+        }
+
+        public bool TryEnter()
+        {
+            lock (m_lock)
+            {
+                if (m_currentNumberOfRunningTasks < m_maxNumberOfRunningTasks)
+                {
+                    m_currentNumberOfRunningTasks++;
+                    return true;
+                }
+                else return false;
             }
         }
 

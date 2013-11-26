@@ -528,6 +528,24 @@ namespace iba.Processing
             set { m_criticalTaskSemaphore.MaxNumberOfRunningTasks = value; }
         }
 
+        virtual public int MaxSimultaneousIbaAnalyzers
+        {
+            get { return IbaAnalyzerCollection.Collection.MaxNumberOfRunningTasks; }
+            set { IbaAnalyzerCollection.Collection.MaxNumberOfRunningTasks = value; }
+        }
+
+        virtual public int MaxIbaAnalyzerCalls
+        {
+            get { return IbaAnalyzerCollection.Collection.MaxCallCount; }
+            set { IbaAnalyzerCollection.Collection.MaxCallCount = value; }
+        }
+
+        virtual public bool IsIbaAnalyzerCallsLimited
+        {
+            get { return IbaAnalyzerCollection.Collection.LimitCallCount; }
+            set { IbaAnalyzerCollection.Collection.LimitCallCount = value; }
+        }
+
         int m_postponeMinutes;
         virtual public int PostponeMinutes
         {
@@ -1083,6 +1101,90 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxResourceIntensiveTasks = value;
+                }
+            }
+        }
+
+        public override int MaxSimultaneousIbaAnalyzers
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.MaxSimultaneousIbaAnalyzers;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.MaxSimultaneousIbaAnalyzers = value;
+                }
+            }
+        }
+
+        public override int MaxIbaAnalyzerCalls
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.MaxIbaAnalyzerCalls;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.MaxIbaAnalyzerCalls = value;
+                }
+            }
+        }
+
+        public override bool IsIbaAnalyzerCallsLimited
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.IsIbaAnalyzerCallsLimited;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.IsIbaAnalyzerCallsLimited = value;
                 }
             }
         }

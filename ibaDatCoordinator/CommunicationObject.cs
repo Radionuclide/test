@@ -299,7 +299,6 @@ namespace iba
             {
             }
         }
-
     }
 
     public class CommunicationObjectWrapper

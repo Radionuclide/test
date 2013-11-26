@@ -118,28 +118,6 @@ namespace iba.Data
             set { m_doSubDirs = value; }
         }
 
-        private int m_restartIbaAnalyzer;
-        public int TimesAfterWhichtToRestartIbaAnalyzer
-        {
-            get { return m_restartIbaAnalyzer; }
-            set { m_restartIbaAnalyzer = value; }
-        }
-
-        private bool m_ibaAnalyzerSleepsWhenNoDatFiles;
-        public bool IbaAnalyzerSleepsWhenNoDatFiles
-        {
-            get { return m_ibaAnalyzerSleepsWhenNoDatFiles; }
-            set { m_ibaAnalyzerSleepsWhenNoDatFiles = value; }
-        }
-
-        private bool m_bRestartIbaAnalyzer = true;
-        public bool BRestartIbaAnalyzer
-        {
-            get { return m_bRestartIbaAnalyzer; }
-            set { m_bRestartIbaAnalyzer = value; }
-        }
-
-
         private TimeSpan m_reproccessTime;
         [XmlIgnore]
         public TimeSpan ReprocessErrorsTimeInterval
@@ -257,10 +235,6 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
-            m_restartIbaAnalyzer = 20;
-            m_ibaAnalyzerSleepsWhenNoDatFiles = true;
-            m_bRestartIbaAnalyzer = true;
-
             m_bInitialScanEnabled = !onetimejob;
             m_bDetectNewFiles = !onetimejob;
             m_bRescanEnabled = !onetimejob;
@@ -305,10 +279,7 @@ namespace iba.Data
             cd.m_autoStart = m_autoStart;
             cd.m_datDirectory = m_datDirectory;
             cd.m_doSubDirs = m_doSubDirs;
-            cd.m_restartIbaAnalyzer = m_restartIbaAnalyzer;
-            cd.m_bRestartIbaAnalyzer = m_bRestartIbaAnalyzer;
             cd.m_bDetectNewFiles = m_bDetectNewFiles;
-            cd.m_ibaAnalyzerSleepsWhenNoDatFiles = m_ibaAnalyzerSleepsWhenNoDatFiles;
             cd.m_reproccessTime = m_reproccessTime;
             cd.m_bInitialScanEnabled = m_bInitialScanEnabled;
             cd.m_rescanTime = m_rescanTime;
@@ -339,10 +310,7 @@ namespace iba.Data
             other.m_autoStart == m_autoStart &&
             other.m_datDirectory == m_datDirectory &&
             other.m_doSubDirs == m_doSubDirs &&
-            other.m_restartIbaAnalyzer == m_restartIbaAnalyzer &&
-            other.m_bRestartIbaAnalyzer == m_bRestartIbaAnalyzer &&
             other.m_bDetectNewFiles == m_bDetectNewFiles &&
-            other.m_ibaAnalyzerSleepsWhenNoDatFiles == m_ibaAnalyzerSleepsWhenNoDatFiles &&
             other.m_reproccessTime == m_reproccessTime &&
             other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
             other.m_rescanTime == m_rescanTime &&

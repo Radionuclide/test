@@ -493,9 +493,6 @@ namespace iba.Processing
         private bool m_needIbaAnalyzer;
 
         private FileSystemWatcher fswt = null;
-        private int m_nrIbaAnalyzerCalls = 0;
-
-
         private void Run()
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
@@ -520,8 +517,6 @@ namespace iba.Processing
             //wait until computer is fully started (if selected so)
             if (bPostpone)
             {
-                //Log(Logging.Level.Info,"postponing started, current time: " + DateTime.Now.ToString());
-                //Log(Logging.Level.Info, "postponing started, current ticks: " + System.Environment.TickCount.ToString());
                 while (((UInt32) System.Environment.TickCount)/60000 < minutes)
                 {
                     if (m_stop)
@@ -531,7 +526,6 @@ namespace iba.Processing
                     }
                     Thread.Sleep(TimeSpan.FromSeconds(5.0));
                 }
-                //Log(Logging.Level.Info, "postponing stopped, current time: " + DateTime.Now.ToString());
                 UpdateConfiguration();
             }
 
@@ -579,7 +573,6 @@ namespace iba.Processing
                         }
                     }
 
-                    if (m_needIbaAnalyzer && !m_cd.IbaAnalyzerSleepsWhenNoDatFiles) StartIbaAnalyzer();
                     while (!m_stop)
                     {
                         while (true)
@@ -597,6 +590,13 @@ namespace iba.Processing
                                 }
                                 break;
                             }
+                            if (m_needIbaAnalyzer) StartIbaAnalyzer();
+                            //might have waited, see if we can stop
+                            if (m_stop)
+                            {
+                                if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
+                                break;
+                            }
                             try
                             {
                                 ProcessDatfile(file);
@@ -606,25 +606,19 @@ namespace iba.Processing
                                 Stop = true;
                                 Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), file);
                             }
-
+                            if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
                                 m_toProcessFiles.Remove(file);
                             }
+                            bool neededIbaAnalyzerBeforeUpdate = m_needIbaAnalyzer;
                             UpdateConfiguration();
-                            if (m_needIbaAnalyzer && m_ibaAnalyzer == null)
+                            if (neededIbaAnalyzerBeforeUpdate && !m_needIbaAnalyzer)
                             {
-                                StartIbaAnalyzer();
-                            }
-                            else if (!m_needIbaAnalyzer && m_ibaAnalyzer != null)
-                            {
-                                StopIbaAnalyzer();
+                                IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
                             }
                         }
-                        //stop the com object
-                        if (m_cd.IbaAnalyzerSleepsWhenNoDatFiles) StopIbaAnalyzer();
-
                         //clean up any updatetaskworkers //closes database connections and ibaFiles instances
                         foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
                         {
@@ -634,7 +628,8 @@ namespace iba.Processing
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
-                    StopIbaAnalyzer();
+                    if (m_needIbaAnalyzer)
+                        IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
                 }
                 finally
                 {
@@ -668,7 +663,6 @@ namespace iba.Processing
                         testLicenseTimer.Dispose();
                         testLicenseTimer = null;
                     }
-                    Debug.Assert(m_ibaAnalyzer == null, "ibaAnalyzer should have been closed");
                 }
             }
             finally
@@ -722,7 +716,6 @@ namespace iba.Processing
                     }
                 }
 
-                if (m_needIbaAnalyzer) StartIbaAnalyzer();
                 string[] unclines = m_cd.DatDirectoryUNC.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string line in unclines)
                 {
@@ -798,6 +791,13 @@ namespace iba.Processing
                             }
                             break;
                         }
+                        if (m_needIbaAnalyzer) StartIbaAnalyzer();
+                        //might have waited, see if we need to stop
+                        if (m_stop)
+                        {
+                            if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
+                            break;
+                        }
                         try
                         {
                             ProcessDatfile(file);
@@ -807,7 +807,7 @@ namespace iba.Processing
                             Stop = true;
                             Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), line);
                         }
-
+                        if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
                         if (m_stop) break;
                         lock (m_toProcessFiles)
                         {
@@ -820,7 +820,7 @@ namespace iba.Processing
                     
                 }
                 //stop the com object
-                StopIbaAnalyzer();
+                if (m_needIbaAnalyzer) IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
 
                 //clean up any updatetaskworkers //closes database connections and ibaFiles instances
                 foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
@@ -1014,6 +1014,11 @@ namespace iba.Processing
             m_ibaAnalyzer = null;
         }
 
+        internal void RestartIbaAnalyzer()
+        {
+            IbaAnalyzerCollection.Collection.RestartIbaAnalyzer(m_ibaAnalyzer, m_cd);
+        }
+
         internal string IbaAnalyzerErrorMessage()
         {
             try
@@ -1022,16 +1027,14 @@ namespace iba.Processing
                     return m_ibaAnalyzer.GetLastError();
                 else
                 {
-                    StopIbaAnalyzer();
-                    StartIbaAnalyzer();
+                    RestartIbaAnalyzer();
                     return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
                 }
             }
             catch (Exception ex)
             {
                 Log(Logging.Level.Exception, ex.Message);
-                StopIbaAnalyzer();
-                StartIbaAnalyzer();
+                RestartIbaAnalyzer();
                 return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
             }
         }
@@ -2018,7 +2021,7 @@ namespace iba.Processing
         {
             if (m_needIbaAnalyzer)
             {
-                if (m_ibaAnalyzer == null) StartIbaAnalyzer();
+                if (m_ibaAnalyzer == null) StartIbaAnalyzer(); //safety, ibaAnalyzer should be present
                 if (m_ibaAnalyzer == null) return;
             }
             lock (m_listUpdatingLock)
@@ -2046,15 +2049,11 @@ namespace iba.Processing
                     try
                     {
                         m_ibaAnalyzer.CloseDataFiles();
+                        StopIbaAnalyzer();
                     }
                     catch
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
-                        if (m_needIbaAnalyzer)
-                        {
-                            StopIbaAnalyzer();
-                            StartIbaAnalyzer();
-                        }
                     }
                     return;
                 }
@@ -2126,10 +2125,6 @@ namespace iba.Processing
                         if (task.Index != m_cd.Tasks.Count-1) completeSucces = false;
                         break;
                     }
-                    if (m_needIbaAnalyzer && m_cd.BRestartIbaAnalyzer && m_nrIbaAnalyzerCalls >= m_cd.TimesAfterWhichtToRestartIbaAnalyzer)
-                    {
-                        if (!RestartIbaAnalyzerAndOpenDatFile(DatFile)) return;
-                    }
                 }
 
                 if (m_needIbaAnalyzer)
@@ -2142,7 +2137,6 @@ namespace iba.Processing
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
                         StopIbaAnalyzer();
-                        StartIbaAnalyzer();
                     }
                 }
 
@@ -2244,12 +2238,12 @@ namespace iba.Processing
             if (task is ReportData)
             {
                 Report(DatFile, task as ReportData);
-                m_nrIbaAnalyzerCalls++;
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
             }
             else if (task is ExtractData)
             {
                 Extract(DatFile, task as ExtractData);
-                m_nrIbaAnalyzerCalls++;
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);               
             }
             else if (task is BatchFileData)
             {
@@ -2258,7 +2252,7 @@ namespace iba.Processing
             else if (task is IfTaskData)
             {
                 IfTask(DatFile, task as IfTaskData);
-                m_nrIbaAnalyzerCalls++;
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
             }
             else if (task is UpdateDataTaskData)
             {
@@ -2282,8 +2276,7 @@ namespace iba.Processing
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
                         if (m_needIbaAnalyzer)
                         {
-                            StopIbaAnalyzer();
-                            StartIbaAnalyzer();
+                            RestartIbaAnalyzer();
                         }
                     }
                     CopyDatFile(DatFile, dat);
@@ -2312,8 +2305,7 @@ namespace iba.Processing
                                 Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
                                 if (m_needIbaAnalyzer)
                                 {
-                                    StopIbaAnalyzer();
-                                    StartIbaAnalyzer();
+                                    RestartIbaAnalyzer();
                                 }
                             }
                             DoNotification(DatFile, task, failedOnce);
@@ -2342,8 +2334,7 @@ namespace iba.Processing
 
         internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)
         {
-            StopIbaAnalyzer();
-            StartIbaAnalyzer();
+            RestartIbaAnalyzer();
             try
             {
                 if (!m_cd.OnetimeJob)
@@ -2364,8 +2355,7 @@ namespace iba.Processing
                 catch
                 {
                     Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, datfile);
-                    StopIbaAnalyzer();
-                    StartIbaAnalyzer();
+                    RestartIbaAnalyzer();
                 }
                 return false;
             }
@@ -2933,8 +2923,7 @@ namespace iba.Processing
                     catch
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
-                        StopIbaAnalyzer();
-                        StartIbaAnalyzer();
+                        RestartIbaAnalyzer();
                     }
                 }
             }
@@ -3493,8 +3482,7 @@ namespace iba.Processing
                     catch
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
-                        StopIbaAnalyzer();
-                        StartIbaAnalyzer();
+                        RestartIbaAnalyzer();
                     }
                 }
             }

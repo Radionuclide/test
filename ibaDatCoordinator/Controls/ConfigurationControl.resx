@@ -520,7 +520,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_refreshDats.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -571,7 +571,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1023,224 +1023,11 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lblIbaAnalyzerPath.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblIbaAnalyzerPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 20</value>
-  </data>
-  <data name="m_lblIbaAnalyzerPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 13</value>
-  </data>
-  <data name="m_lblIbaAnalyzerPath.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_lblIbaAnalyzerPath.Text" xml:space="preserve">
-    <value>ibaAnalyzer Path placeholder</value>
-  </data>
-  <data name="&gt;&gt;m_lblIbaAnalyzerPath.Name" xml:space="preserve">
-    <value>m_lblIbaAnalyzerPath</value>
-  </data>
-  <data name="&gt;&gt;m_lblIbaAnalyzerPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblIbaAnalyzerPath.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_lblIbaAnalyzerPath.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 65</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 17</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_cbCloseIbaAnalyzer.Text" xml:space="preserve">
-    <value>Close ibaAnalyzer when there are no .dat files to process</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseIbaAnalyzer.Name" xml:space="preserve">
-    <value>m_cbCloseIbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseIbaAnalyzer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseIbaAnalyzer.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseIbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>296, 43</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
-  </data>
-  <data name="label7.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>invocations</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbRestartIbaAnalyzer.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbRestartIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 42</value>
-  </data>
-  <data name="m_cbRestartIbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 17</value>
-  </data>
-  <data name="m_cbRestartIbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_cbRestartIbaAnalyzer.Text" xml:space="preserve">
-    <value>Restart ibaAnalyzer every</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Name" xml:space="preserve">
-    <value>m_cbRestartIbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_nudRestartIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 41</value>
-  </data>
-  <data name="m_nudRestartIbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 20</value>
-  </data>
-  <data name="m_nudRestartIbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Name" xml:space="preserve">
-    <value>m_nudRestartIbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>654, 16</value>
-  </data>
-  <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 20</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Executable:</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 324</value>
-  </data>
-  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 93</value>
-  </data>
-  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1485,7 +1272,7 @@
     <value>0</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 421</value>
+    <value>15, 324</value>
   </data>
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 68</value>
@@ -2115,7 +1902,7 @@
     <value>0</value>
   </data>
   <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 495</value>
+    <value>15, 398</value>
   </data>
   <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 286</value>
@@ -2154,10 +1941,10 @@
     <value>True</value>
   </data>
   <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 760</value>
+    <value>0, 700</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 790</value>
+    <value>720, 700</value>
   </data>
   <data name="&gt;&gt;m_folderBrowserDialog1.Name" xml:space="preserve">
     <value>m_folderBrowserDialog1</value>
