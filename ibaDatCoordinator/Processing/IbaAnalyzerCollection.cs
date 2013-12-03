@@ -61,6 +61,7 @@ namespace iba.Processing
                         if (m_currentNumberOfRunningTasks > 0)
                         {
                             MaxNumberOfRunningTasks = m_currentNumberOfRunningTasks;
+                            Leave();
                             tryAgain = true;
                             Log(iba.Logging.Level.Exception, string.Format(iba.Properties.Resources.errIbaAnalyzerDecrease, m_currentNumberOfRunningTasks), cd);
                             
@@ -83,12 +84,16 @@ namespace iba.Processing
             return null;
         }
 
-        public void AddCall(IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
+        public void AddCall(IbaAnalyzer.IbaAnalyzer ibaAnalyzer) //no need to lock 
         {
-            if (m_callCounts.ContainsKey(ibaAnalyzer))
-                m_callCounts.Add(ibaAnalyzer, 1);
-            else
-                m_callCounts[ibaAnalyzer]++;
+            if (ibaAnalyzer == null) return;
+            lock (m_lock2)
+            {
+                if (!m_callCounts.ContainsKey(ibaAnalyzer))
+                    m_callCounts.Add(ibaAnalyzer, 1);
+                else
+                    m_callCounts[ibaAnalyzer]++;
+            }
         }
 
         /// <summary>
@@ -107,25 +112,14 @@ namespace iba.Processing
             {
                 int count;
                 if (m_callCounts.TryGetValue(ibaAnalyzer, out count) && count >= m_maxCallCount && m_bLimitCallCount)
+                {
+                    Log(iba.Logging.Level.Exception, String.Format("ibaAnalyzer maximum invocation count reached ({0}), stopping ibaAnalyzer", m_maxCallCount), cd);
                     doKill = true;
+                }
                 if (doKill)
                 {
-                    m_callCounts.Remove(ibaAnalyzer);
-                    try
+                    if (!StopIbaAnalyzer(ibaAnalyzer, cd))
                     {
-                        try
-                        {
-                            Log(iba.Logging.Level.Debug, string.Format("Stopping ibaAnalyzer with process ID: {0}", ibaAnalyzer.GetProcessID()), cd);
-                        }
-                        catch
-                        {
-                        }
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
-                        ibaAnalyzer = null;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.errIbaAnalyzerDestroy + ex.Message, cd);
                         Leave();
                         return false;
                     }
@@ -137,20 +131,49 @@ namespace iba.Processing
             return true;
         }
 
+        private bool StopIbaAnalyzer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, ConfigurationData cd)
+        {
+            if (ibaAnalyzer == null) return false;
+            m_callCounts.Remove(ibaAnalyzer);
+            try
+            {
+                try
+                {
+                    Log(iba.Logging.Level.Debug, string.Format("Stopping ibaAnalyzer with process ID: {0}", ibaAnalyzer.GetProcessID()), cd);
+                }
+                catch
+                {
+                }
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+            }
+            catch (Exception ex)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.errIbaAnalyzerDestroy + ex.Message, cd);
+                return false;
+            }
+            return true;
+        }
+
         public void TryClearIbaAnalyzer(ConfigurationData cd)
         {
-            if (TryEnter())
+            lock (m_lock2)
             {
                 if (m_analyzers.Count > 0)
-                    RelinquishIbaAnalyzer(m_analyzers.Pop(), true, cd);
-                else
-                    Leave();
+                {
+                    StopIbaAnalyzer(m_analyzers.Pop(),cd);
+                }
             }
         }
 
-        public void RestartIbaAnalyzer(IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer, ConfigurationData m_cd)
-        {
-            throw new NotImplementedException();
+        public void RestartIbaAnalyzer(ref IbaAnalyzer.IbaAnalyzer ibaAnalyzer, ConfigurationData cd)
+        { //does not yield unless their is failure
+            StopIbaAnalyzer(ibaAnalyzer,cd);
+            IbaAnalyzer.IbaAnalyzer newIbaAnalyzer = StartIbaAnalyzer(cd);
+            if (newIbaAnalyzer == null)
+            {
+                ibaAnalyzer = ClaimIbaAnalyzer(cd); //try claiming
+            }
+            else ibaAnalyzer = newIbaAnalyzer;
         }
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };

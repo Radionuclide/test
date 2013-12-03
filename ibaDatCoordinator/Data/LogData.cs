@@ -608,7 +608,14 @@ namespace iba.Data
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
                 fileLogger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + "\r\n";
 
-                m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger);
+                WindowsEventLogger eventLogger = Logger.CreateWindowsEventLogger("ibaDatCoordinator");
+                eventLogger.EventFormatter = new iba.Logging.EventFormatters.PatternEventFormatter("{msg}\t{data}");
+                eventLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
+                eventLogger.IsBufferingEnabled = false;
+                eventLogger.IsContextEnabled = true;
+                eventLogger.Level = Level.Info;
+
+                m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger, eventLogger);
             }
             else
             {

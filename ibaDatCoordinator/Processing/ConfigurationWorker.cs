@@ -1016,7 +1016,12 @@ namespace iba.Processing
 
         internal void RestartIbaAnalyzer()
         {
-            IbaAnalyzerCollection.Collection.RestartIbaAnalyzer(m_ibaAnalyzer, m_cd);
+            IbaAnalyzerCollection.Collection.RestartIbaAnalyzer(ref m_ibaAnalyzer, m_cd);
+            if (m_ibaAnalyzer == null)
+            {
+                m_sd.Started = false;
+                Stop = true;
+            }
         }
 
         internal string IbaAnalyzerErrorMessage()
@@ -2127,7 +2132,7 @@ namespace iba.Processing
                     }
                 }
 
-                if (m_needIbaAnalyzer)
+                if (m_needIbaAnalyzer && m_ibaAnalyzer != null)
                 {
                     try
                     {
@@ -2239,6 +2244,10 @@ namespace iba.Processing
             {
                 Report(DatFile, task as ReportData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                if (m_ibaAnalyzer == null)
+                {
+
+                }
             }
             else if (task is ExtractData)
             {
@@ -2329,12 +2338,14 @@ namespace iba.Processing
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
             }
+            if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;
         }
 
         internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)
         {
             RestartIbaAnalyzer();
+            if (m_ibaAnalyzer == null) return false;
             try
             {
                 if (!m_cd.OnetimeJob)

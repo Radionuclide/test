@@ -88,8 +88,6 @@ namespace iba
             }
 
             IsServer = false;
-
-
             SetupLanguage(args);
 
             //Check if not already running
@@ -159,11 +157,9 @@ namespace iba
                     catch (Exception)
                     {
                     }
-
                     break;
                 }
             }
         }
-
     }
 }

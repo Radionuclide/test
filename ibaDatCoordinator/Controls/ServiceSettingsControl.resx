@@ -121,6 +121,41 @@
   <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_btnOptimize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_btnOptimize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 44</value>
+  </data>
+  <data name="m_btnOptimize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 23</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btnOptimize.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnOptimize.Text" xml:space="preserve">
+    <value>Optimize system resources</value>
+  </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>291, 17</value>
+  </metadata>
+  <data name="m_btnOptimize.ToolTip" xml:space="preserve">
+    <value>Verify Windows registry settings and if necessary increase system resources for ibaDatCoordinator</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Name" xml:space="preserve">
+    <value>m_btnOptimize</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_comboPriority.Items" xml:space="preserve">
     <value>Low</value>
   </data>
@@ -139,14 +174,12 @@
   <data name="m_comboPriority.Items5" xml:space="preserve">
     <value>Realtime</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_comboPriority.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 17</value>
   </data>
   <data name="m_comboPriority.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 21</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_comboPriority.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -160,7 +193,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_comboPriority.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblPriority.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -187,7 +220,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cbAutoStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -220,13 +253,13 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 5</value>
   </data>
   <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 48</value>
+    <value>702, 78</value>
   </data>
   <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -379,7 +412,7 @@
     <value>4</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 59</value>
+    <value>15, 89</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 73</value>
@@ -486,25 +519,25 @@
   <data name="&gt;&gt;m_nudRestartIbaAnalyzer.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="numericUpDown1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_nudMaxIbaAnalyzers.Location" type="System.Drawing.Point, System.Drawing">
     <value>432, 57</value>
   </data>
-  <data name="numericUpDown1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_nudMaxIbaAnalyzers.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 20</value>
   </data>
-  <data name="numericUpDown1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nudMaxIbaAnalyzers.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.Name" xml:space="preserve">
-    <value>numericUpDown1</value>
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Name" xml:space="preserve">
+    <value>m_nudMaxIbaAnalyzers</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Parent" xml:space="preserve">
     <value>groupBox5</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -679,7 +712,7 @@
     <value>9</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 138</value>
+    <value>15, 168</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 114</value>
@@ -704,9 +737,6 @@
   </data>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>291, 17</value>
   </metadata>
   <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -874,7 +904,7 @@
     <value>5</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 258</value>
+    <value>15, 288</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 84</value>

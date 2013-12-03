@@ -31,6 +31,7 @@ namespace iba.Controls
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceSettingsControl));
             this.m_gbApp = new System.Windows.Forms.GroupBox();
+            this.m_btnOptimize = new System.Windows.Forms.Button();
             this.m_comboPriority = new System.Windows.Forms.ComboBox();
             this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
@@ -44,7 +45,7 @@ namespace iba.Controls
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.m_nudMaxIbaAnalyzers = new System.Windows.Forms.NumericUpDown();
             this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
             this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
@@ -66,7 +67,7 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxIbaAnalyzers)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
             this.SuspendLayout();
@@ -74,11 +75,20 @@ namespace iba.Controls
             // m_gbApp
             // 
             resources.ApplyResources(this.m_gbApp, "m_gbApp");
+            this.m_gbApp.Controls.Add(this.m_btnOptimize);
             this.m_gbApp.Controls.Add(this.m_comboPriority);
             this.m_gbApp.Controls.Add(this.m_lblPriority);
             this.m_gbApp.Controls.Add(this.m_cbAutoStart);
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
+            // 
+            // m_btnOptimize
+            // 
+            resources.ApplyResources(this.m_btnOptimize, "m_btnOptimize");
+            this.m_btnOptimize.Name = "m_btnOptimize";
+            this.m_toolTip.SetToolTip(this.m_btnOptimize, resources.GetString("m_btnOptimize.ToolTip"));
+            this.m_btnOptimize.UseVisualStyleBackColor = true;
+            this.m_btnOptimize.Click += new System.EventHandler(this.m_btnOptimize_Click);
             // 
             // m_comboPriority
             // 
@@ -165,13 +175,13 @@ namespace iba.Controls
             0,
             0,
             0});
-            this.m_nudPostponeTime.ValueChanged += new System.EventHandler(this.m_nudPostponeTime_ValueChanged);
             // 
             // m_cbPostpone
             // 
             resources.ApplyResources(this.m_cbPostpone, "m_cbPostpone");
             this.m_cbPostpone.Name = "m_cbPostpone";
             this.m_cbPostpone.UseVisualStyleBackColor = true;
+            this.m_cbPostpone.CheckedChanged += new System.EventHandler(this.m_cbPostpone_CheckedChanged);
             // 
             // groupBox5
             // 
@@ -179,7 +189,7 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
-            this.groupBox5.Controls.Add(this.numericUpDown1);
+            this.groupBox5.Controls.Add(this.m_nudMaxIbaAnalyzers);
             this.groupBox5.Controls.Add(this.m_cbRestartIbaAnalyzer);
             this.groupBox5.Controls.Add(this.m_tbAnalyzerExe);
             this.groupBox5.Controls.Add(this.m_browseIbaAnalyzerButton);
@@ -218,23 +228,22 @@ namespace iba.Controls
             0,
             0,
             0});
-            this.m_nudRestartIbaAnalyzer.ValueChanged += new System.EventHandler(this.m_nudRestartIbaAnalyzer_ValueChanged);
             // 
-            // numericUpDown1
+            // m_nudMaxIbaAnalyzers
             // 
-            resources.ApplyResources(this.numericUpDown1, "numericUpDown1");
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            resources.ApplyResources(this.m_nudMaxIbaAnalyzers, "m_nudMaxIbaAnalyzers");
+            this.m_nudMaxIbaAnalyzers.Maximum = new decimal(new int[] {
             60,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.m_nudMaxIbaAnalyzers.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.m_nudMaxIbaAnalyzers.Name = "m_nudMaxIbaAnalyzers";
+            this.m_nudMaxIbaAnalyzers.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -245,6 +254,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbRestartIbaAnalyzer, "m_cbRestartIbaAnalyzer");
             this.m_cbRestartIbaAnalyzer.Name = "m_cbRestartIbaAnalyzer";
             this.m_cbRestartIbaAnalyzer.UseVisualStyleBackColor = true;
+            this.m_cbRestartIbaAnalyzer.CheckedChanged += new System.EventHandler(this.m_cbRestartIbaAnalyzer_CheckedChanged);
             // 
             // m_tbAnalyzerExe
             // 
@@ -332,6 +342,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbRememberPassword, "m_cbRememberPassword");
             this.m_cbRememberPassword.Name = "m_cbRememberPassword";
             this.m_cbRememberPassword.UseVisualStyleBackColor = true;
+            this.m_cbRememberPassword.CheckedChanged += new System.EventHandler(this.m_cbRememberPassword_CheckedChanged);
             // 
             // m_passwordStatusLabel
             // 
@@ -357,7 +368,7 @@ namespace iba.Controls
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxIbaAnalyzers)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).EndInit();
@@ -393,10 +404,11 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudResourceCritical;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown m_nudMaxIbaAnalyzers;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
+        private System.Windows.Forms.Button m_btnOptimize;
 
     }
 }

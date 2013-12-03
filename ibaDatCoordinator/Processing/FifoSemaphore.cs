@@ -42,21 +42,8 @@ namespace iba.Processing
             {
                 iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, m_name + ": Semaphore full, halting execution for thread: " + System.Threading.Thread.CurrentThread.Name);
                 ev.WaitOne();
-                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, m_name + "Resuming execution for thread: " + System.Threading.Thread.CurrentThread.Name);
+                iba.Data.LogData.Data.Log(iba.Logging.Level.Debug, m_name + ": Resuming execution for thread: " + System.Threading.Thread.CurrentThread.Name);
                 ev.Close();
-            }
-        }
-
-        public bool TryEnter()
-        {
-            lock (m_lock)
-            {
-                if (m_currentNumberOfRunningTasks < m_maxNumberOfRunningTasks)
-                {
-                    m_currentNumberOfRunningTasks++;
-                    return true;
-                }
-                else return false;
             }
         }
 
@@ -71,6 +58,8 @@ namespace iba.Processing
                 else
                 {
                     m_currentNumberOfRunningTasks--;
+                    if (m_currentNumberOfRunningTasks < 0)
+                        m_currentNumberOfRunningTasks = 0; //should not happen, means a mismatch of Enters/Leaves happened.
                 }
             }
         }

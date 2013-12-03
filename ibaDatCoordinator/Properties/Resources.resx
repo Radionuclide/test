@@ -1075,4 +1075,28 @@
   <data name="errIbaAnalyzersIsZero" xml:space="preserve">
     <value>Critical failure, ibaDatCoordinator is not succeeding in creating instances of ibaAnalyzer. The job will be stopped.</value>
   </data>
+  <data name="regOptEveryThingOK" xml:space="preserve">
+    <value>The Windows registry settings are currently sufficient for the purposes of ibaDatCoordinator, no modifications will be made.</value>
+  </data>
+  <data name="regOptRestart" xml:space="preserve">
+    <value>The Windows registry modifications are succesfuly applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?</value>
+  </data>
+  <data name="UACTextRegistrySettings" xml:space="preserve">
+    <value>Elevated UAC privileges are required to alter the windows registry settings</value>
+  </data>
+  <data name="regOptAskProceed" xml:space="preserve">
+    <value>Do you wish to proceed ?</value>
+  </data>
+  <data name="regOptFormatProblem" xml:space="preserve">
+    <value>Windows Registry not formatted as expected, please contact iba support in order to have them assist you in doing the registry changes manually.</value>
+  </data>
+  <data name="regOptListKeys" xml:space="preserve">
+    <value>This action will modify the following Windows registry keys:</value>
+  </data>
+  <data name="regOptReadingProblem" xml:space="preserve">
+    <value>A problem occured while reading the Windows registry settings: '{0}'</value>
+  </data>
+  <data name="regOptWritingProblem" xml:space="preserve">
+    <value>A problem occured while modifying the Windows registry settings: '{0}'</value>
+  </data>
 </root>

@@ -1972,10 +1972,11 @@ namespace iba
                     {
                     }
                     
-                    
+                    string programdir = Path.GetDirectoryName(typeof(MainForm).Assembly.Location);
+
                     try
                     { //exception.txt
-                        string file = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "exception.txt");
+                        string file = Path.Combine(programdir, "exception.txt");
                         if (File.Exists(file))
                         {
                             zip.BeginUpdate();
@@ -1986,6 +1987,28 @@ namespace iba
                     catch
                     {
                     }
+                    
+                    try
+                    {
+                        RegistryOptimizer.RegExport(false);
+                        string[] regFiles = Directory.GetFiles(programdir, "*.reg");
+                        foreach (string file in regFiles)
+                        {
+                            try
+                            {
+                                zip.BeginUpdate();
+                                zip.Add(file, Path.GetFileName(file));
+                                zip.CommitUpdate();
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+
 
                     if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
 

@@ -2063,6 +2063,69 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you wish to proceed ?.
+        /// </summary>
+        internal static string regOptAskProceed {
+            get {
+                return ResourceManager.GetString("regOptAskProceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Windows registry settings are currently sufficient for the purposes of ibaDatCoordinator, no modifications will be made..
+        /// </summary>
+        internal static string regOptEveryThingOK {
+            get {
+                return ResourceManager.GetString("regOptEveryThingOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Registry not formatted as expected, please contact iba support in order to have them assist you in doing the registry changes manually..
+        /// </summary>
+        internal static string regOptFormatProblem {
+            get {
+                return ResourceManager.GetString("regOptFormatProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This action will modify the following Windows registry keys:.
+        /// </summary>
+        internal static string regOptListKeys {
+            get {
+                return ResourceManager.GetString("regOptListKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A problem occured while reading the Windows registry settings: &apos;{0}&apos;.
+        /// </summary>
+        internal static string regOptReadingProblem {
+            get {
+                return ResourceManager.GetString("regOptReadingProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Windows registry modifications are succesfuly applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?.
+        /// </summary>
+        internal static string regOptRestart {
+            get {
+                return ResourceManager.GetString("regOptRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A problem occured while modifying the Windows registry settings: &apos;{0}&apos;.
+        /// </summary>
+        internal static string regOptWritingProblem {
+            get {
+                return ResourceManager.GetString("regOptWritingProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem removing markings from .dat Files: .
         /// </summary>
         internal static string RemoveMarkingsProblem {
@@ -2544,6 +2607,15 @@ namespace iba.Properties {
         internal static string UACText {
             get {
                 return ResourceManager.GetString("UACText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevated UAC privileges are required to alter the windows registry settings.
+        /// </summary>
+        internal static string UACTextRegistrySettings {
+            get {
+                return ResourceManager.GetString("UACTextRegistrySettings", resourceCulture);
             }
         }
         

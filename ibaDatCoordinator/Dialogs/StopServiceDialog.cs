@@ -36,6 +36,13 @@ namespace iba.Dialogs
                 new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
                 if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
                 {
+                    if (System.Environment.OSVersion.Version.Major < 6)
+                    {
+                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        myController.Close();
+                        m_result = false;
+                        return;
+                    }
                     System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
                     procInfo.UseShellExecute = true;
                     procInfo.ErrorDialog = true;
@@ -53,8 +60,10 @@ namespace iba.Dialogs
                     catch
                     {
                         MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        myController.Close();
+                        m_result = false;
+                        return;
                     }
-
                 }
                 else
                 {

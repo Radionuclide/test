@@ -23,6 +23,7 @@ namespace iba.Controls
                 m_gbApp.Text = iba.Properties.Resources.Application;
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
                 m_cbAutoStart.Visible = false;
+                m_btnOptimize.Visible = false;
             }
             m_toolTip.SetToolTip(m_registerButton,iba.Properties.Resources.RegisterIbaAnalyzer);
         }
@@ -49,10 +50,14 @@ namespace iba.Controls
                 }
                 service.Close();
             }
-            m_cbPostpone.Checked = TaskManager.Manager.DoPostponeProcessing; ;
+    
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = TaskManager.Manager.MaxIbaAnalyzerCalls;
+            m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
+            m_nudMaxIbaAnalyzers.Value = TaskManager.Manager.MaxSimultaneousIbaAnalyzers;
+            m_cbPostpone.Checked = TaskManager.Manager.DoPostponeProcessing;
             m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
+            m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
 
             int iPc = TaskManager.Manager.ProcessPriority;
             m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
@@ -97,6 +102,7 @@ namespace iba.Controls
                 m_pass = TaskManager.Manager.Password;
                 m_cbRememberPassword.Checked = TaskManager.Manager.RememberPassEnabled;
                 m_nudRememberTime.Value = (decimal)TaskManager.Manager.RememberPassTime.TotalMinutes;
+                m_nudRememberTime.Enabled = m_cbRememberPassword.Checked;
             }
             catch { }
             UpdatePassControls();
@@ -117,7 +123,6 @@ namespace iba.Controls
                 m_passwordStatusLabel.Text = iba.Properties.Resources.PassSet;
             }
             TaskManager.Manager.Password = m_pass;
-
         }
 
         private string m_pass;
@@ -144,6 +149,12 @@ namespace iba.Controls
                     {
                         if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
                         {
+                            if (System.Environment.OSVersion.Version.Major < 6)
+                            {
+                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                service.Close();
+                                return;
+                            }
                             System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
                             procInfo.UseShellExecute = true;
                             procInfo.ErrorDialog = true;
@@ -162,7 +173,6 @@ namespace iba.Controls
                             {
                                 MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
-
                         }
                         else
                         {
@@ -173,6 +183,12 @@ namespace iba.Controls
                     {
                         if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
                         {
+                            if (System.Environment.OSVersion.Version.Major < 6)
+                            {
+                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                service.Close();
+                                return;
+                            }
                             System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
                             procInfo.UseShellExecute = true;
                             procInfo.ErrorDialog = true;
@@ -191,7 +207,6 @@ namespace iba.Controls
                             {
                                 MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
-
                         }
                         else
                         {
@@ -214,7 +229,7 @@ namespace iba.Controls
             TaskManager.Manager.PostponeMinutes = (int)m_nudPostponeTime.Value;
             TaskManager.Manager.MaxIbaAnalyzerCalls = (int)m_nudRestartIbaAnalyzer.Value;
             TaskManager.Manager.IsIbaAnalyzerCallsLimited = m_cbRestartIbaAnalyzer.Checked;
-
+            TaskManager.Manager.MaxSimultaneousIbaAnalyzers = (int)m_nudMaxIbaAnalyzers.Value;
             TaskManager.Manager.RememberPassEnabled = m_cbRememberPassword.Checked;
             TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
 
@@ -287,7 +302,6 @@ namespace iba.Controls
             {
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
@@ -317,14 +331,55 @@ namespace iba.Controls
             UpdatePassControls();
         }
 
-        private void m_nudPostponeTime_ValueChanged(object sender, EventArgs e)
+        private void m_cbPostpone_CheckedChanged(object sender, EventArgs e)
         {
-            m_cbPostpone.Checked = true;
+            m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
         }
 
-        private void m_nudRestartIbaAnalyzer_ValueChanged(object sender, EventArgs e)
+        private void m_cbRestartIbaAnalyzer_CheckedChanged(object sender, EventArgs e)
         {
-            m_cbRestartIbaAnalyzer.Checked = true;
+            m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
+        }
+
+        private void m_cbRememberPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            m_nudRememberTime.Enabled = m_cbRememberPassword.Checked;
+        }
+
+        private void m_btnOptimize_Click(object sender, EventArgs e)
+        {
+            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            {
+                if (System.Environment.OSVersion.Version.Major < 6)
+                {
+                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                procInfo.UseShellExecute = true;
+                procInfo.ErrorDialog = true;
+
+                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                procInfo.FileName = Application.ExecutablePath;
+
+                procInfo.Arguments = "/optimizeregistry";
+                procInfo.Verb = "runas";
+
+                try
+                {
+                    System.Diagnostics.Process.Start(procInfo);
+                }
+                catch
+                {
+                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                RegistryOptimizer.DoWork();
+            }
         }
     }
 
