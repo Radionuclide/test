@@ -2099,7 +2099,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A problem occured while reading the Windows registry settings: &apos;{0}&apos;.
+        ///   Looks up a localized string similar to A problem occurred while reading the Windows registry settings: &apos;{0}&apos;.
         /// </summary>
         internal static string regOptReadingProblem {
             get {
@@ -2108,7 +2108,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Windows registry modifications are succesfuly applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?.
+        ///   Looks up a localized string similar to The Windows registry modifications are successfully applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?.
         /// </summary>
         internal static string regOptRestart {
             get {
@@ -2117,7 +2117,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A problem occured while modifying the Windows registry settings: &apos;{0}&apos;.
+        ///   Looks up a localized string similar to A problem occurred while modifying the Windows registry settings: &apos;{0}&apos;.
         /// </summary>
         internal static string regOptWritingProblem {
             get {

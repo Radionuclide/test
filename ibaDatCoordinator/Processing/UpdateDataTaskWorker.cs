@@ -28,21 +28,7 @@ namespace iba.Processing
             Dispose();
             TimesCalled = 0;
             
-            //first, check license
-            CDongleInfo info;
-            try
-            {
-                info = CDongleInfo.ReadDongle();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(iba.Properties.Resources.logNoLicenseFound,ex);
-            }
-            if (!info.IsPluginLicensed(2))
-            {
-                throw new Exception(iba.Properties.Resources.logNoLicenseUpdateDataTask);
-            }
-            
+           
             //second, initialize ibaFiles
             try
             {

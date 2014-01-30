@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.20.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.21.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -27,9 +27,21 @@ To enable conditional tasks, the ibaAnalyzer version should be at least 5.4.
 To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Significantly less resources will be used if the ibaAnalyzer version is at least 6.3.1 or later.<BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.20.0.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.21.0.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.21.0 - 04/12/2013</P>
+<P class="header2">New features</P>
+<UL>
+	<LI>Ability to limit the number of instances of ibaAnalyzer that are started. The jobs wait for an ibaAnalyzer to become available.</LI>
+	<LI>Button to optimize the windows registry settings for use with ibaDatCoordinator.</LI>
+	<LI>Logging is now also written to the windows event log.</LI>
+</UL>
+<P class="header2">Enhancements</P>
+<UL>
+	<LI>The ibaAnalyzer instances are now shared between jobs. As a consequence any ibaAnalyzer settings are now moved from the 'job' pane to the 'settings' pane.</LI>
+</UL>
 
 <P class="header1">Version 1.20.0 - 03/10/2013</P>
 <P class="header2">New features</P>

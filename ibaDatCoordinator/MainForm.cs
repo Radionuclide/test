@@ -240,7 +240,7 @@ namespace iba
                 }
                 string s1 = TextFromLoad();
                 string s2 = TextToSave();
-                if (s1 != s2)
+                if (!string.IsNullOrEmpty(s2) && s1 != s2)
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
                             iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
@@ -1650,23 +1650,23 @@ namespace iba
 
         private string TextToSave()
         {
-            XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-            StringBuilder sb = new StringBuilder();
             try
             {
+                XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+                StringBuilder sb = new StringBuilder(); 
                 using (StringWriter myWriter = new StringWriter(sb))
                 {
                     ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                     mySerializer.Serialize(myWriter, dat);
                 }
+                string s = sb.ToString();
+                s = s.Remove(0, s.IndexOf(Environment.NewLine));
+                return s.Remove(0, s.IndexOf('<'));
             }
             catch
             {
                 return String.Empty;
             }
-            string s = sb.ToString();
-            s = s.Remove(0, s.IndexOf(Environment.NewLine));
-            return s.Remove(0, s.IndexOf('<'));
         }
 
         private string TextFromLoad()
@@ -1768,7 +1768,7 @@ namespace iba
             SaveRightPaneControl();
             string s1 = TextFromLoad();
             string s2 = TextToSave();
-            if (s1 != s2)
+            if (!string.IsNullOrEmpty(s2) && s1 != s2)
             {
                 DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
                         iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);

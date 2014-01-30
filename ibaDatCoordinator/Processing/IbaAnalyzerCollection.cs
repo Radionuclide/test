@@ -113,7 +113,7 @@ namespace iba.Processing
                 int count;
                 if (m_callCounts.TryGetValue(ibaAnalyzer, out count) && count >= m_maxCallCount && m_bLimitCallCount)
                 {
-                    Log(iba.Logging.Level.Exception, String.Format("ibaAnalyzer maximum invocation count reached ({0}), stopping ibaAnalyzer", m_maxCallCount), cd);
+                    Log(iba.Logging.Level.Debug, String.Format("ibaAnalyzer maximum invocation count reached ({0}), stopping ibaAnalyzer", m_maxCallCount), cd);
                     doKill = true;
                 }
                 if (doKill)

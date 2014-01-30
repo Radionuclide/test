@@ -1079,7 +1079,7 @@
     <value>The Windows registry settings are currently sufficient for the purposes of ibaDatCoordinator, no modifications will be made.</value>
   </data>
   <data name="regOptRestart" xml:space="preserve">
-    <value>The Windows registry modifications are succesfuly applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?</value>
+    <value>The Windows registry modifications are successfully applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?</value>
   </data>
   <data name="UACTextRegistrySettings" xml:space="preserve">
     <value>Elevated UAC privileges are required to alter the windows registry settings</value>
@@ -1094,9 +1094,9 @@
     <value>This action will modify the following Windows registry keys:</value>
   </data>
   <data name="regOptReadingProblem" xml:space="preserve">
-    <value>A problem occured while reading the Windows registry settings: '{0}'</value>
+    <value>A problem occurred while reading the Windows registry settings: '{0}'</value>
   </data>
   <data name="regOptWritingProblem" xml:space="preserve">
-    <value>A problem occured while modifying the Windows registry settings: '{0}'</value>
+    <value>A problem occurred while modifying the Windows registry settings: '{0}'</value>
   </data>
 </root>

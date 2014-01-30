@@ -144,7 +144,7 @@ namespace iba.Processing
                         if (m_notifyTimer == null) m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
                         m_notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                     }
-                    if (m_toUpdate.RescanEnabled)
+                    if (m_toUpdate.RescanEnabled && !m_toUpdate.OnetimeJob)
                     {
                         if (rescanTimer == null)
                         {
@@ -165,7 +165,7 @@ namespace iba.Processing
                             rescanTimer = null;
                         }
                     }
-                    if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval && m_toUpdate.OnetimeJob)
+                    if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval && !m_toUpdate.OnetimeJob)
                     {
                         if (reprocessErrorsTimer == null) reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
                         reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
@@ -441,6 +441,7 @@ namespace iba.Processing
             m_fswtLock = new Object();
             m_udtWorkers = new SortedDictionary<Guid,UpdateDataTaskWorker>();
             m_onNewDatFileOrRenameFileLastCalled = DateTime.MinValue;
+            m_licensedTasks = new Dictionary<TaskData, bool>();
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -449,6 +450,7 @@ namespace iba.Processing
         List<string> m_newFiles;
         List<string> m_directoryFiles;
         SortedDictionary<Guid, UpdateDataTaskWorker> m_udtWorkers;
+        Dictionary<TaskData, bool> m_licensedTasks;
 
         internal void Log(Logging.Level level, string message)
         {
@@ -503,13 +505,12 @@ namespace iba.Processing
                 return;
             }
 
-            if (!TestLicensePlugins())
+            lock (m_licensedTasks)
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseNoStart);
-                m_sd.Started = false;
-                Stop = true;
-                return;
+                m_licensedTasks.Clear();
             }
+
+
 
             bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
             int minutes = TaskManager.Manager.PostponeMinutes;
@@ -532,6 +533,13 @@ namespace iba.Processing
             try
             {
                 m_bTimersstopped = false;
+                if (!TestLicensePlugins(false))
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseNoStart);
+                    m_sd.Started = false;
+                    Stop = true;
+                    return;
+                }
                 //Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
                 if (m_cd.InitialScanEnabled)
                 {
@@ -686,7 +694,12 @@ namespace iba.Processing
                 return;
             }
 
-            if (!TestLicensePlugins())
+
+            lock (m_licensedTasks)
+            {
+                m_licensedTasks.Clear();
+            }
+            if (!TestLicensePlugins(false))
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseNoStart);
                 m_sd.Started = false;
@@ -966,28 +979,79 @@ namespace iba.Processing
                 Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.ConnectionLostFrom, m_cd.DatDirectoryUNC, e == null ? "" : e.GetException().Message));
         }
 
+
         private bool TestLicensePlugins()
+        {
+            return TestLicensePlugins(true);
+        }
+
+        private bool TestLicensePlugins(bool startTimerIfNotOk)
         {
             CDongleInfo info = null;
             bool ok = true;
+            bool dongleFound = false;
             foreach (TaskData task in m_cd.Tasks)
             {
                 ICustomTaskData cust = task as ICustomTaskData;
                 if (cust != null)
                 {
-                    if (info == null) info = CDongleInfo.ReadDongle();
+                    lock (m_licensedTasks)
+                    {
+                        if (m_licensedTasks.ContainsKey(task))
+                            m_licensedTasks[task] = true;
+                        else
+                            m_licensedTasks.Add(task, true);
+                    }
+                    if (info == null)
+                    {
+                        info = CDongleInfo.ReadDongle();
+                        if (info.DongleFound) dongleFound = true;
+                    }
                     if (!info.PluginsLicensed() || !info.IsPluginLicensed(cust.Plugin.DongleBitPos))
                     {
                         ok = false;
-                        Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed,task.Name));
+                        lock (m_licensedTasks)
+                        {
+                            m_licensedTasks[task] = false;
+                        }
+                        //Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
+                    }
+                }
+                else
+                {
+                    UpdateDataTaskData ut = task as UpdateDataTaskData;
+                    if (ut != null)
+                    {
+                        lock (m_licensedTasks)
+                        {
+                            if (m_licensedTasks.ContainsKey(task))
+                                m_licensedTasks[task] = true;
+                            else
+                                m_licensedTasks.Add(task, true);
+                        }
+                        if (info == null)
+                        {
+                            info = CDongleInfo.ReadDongle();
+                            if (info.DongleFound) dongleFound = true;
+                        }
+                        if (!info.IsPluginLicensed(2))
+                        {
+                            ok = false;
+                            lock (m_licensedTasks)
+                            {
+                                m_licensedTasks[task] = false;
+                            }
+                            //Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
+                        }
                     }
                 }
             }
-            if (info != null && ok) // start timer
+            if (info != null && (ok||startTimerIfNotOk)) // start timer in two minutes if dongle found, 10 seconds if no dongle found, don't restart it if no custom jobs were found
             {
-                if (testLicenseTimer == null) testLicenseTimer = new System.Threading.Timer(OnTestLicenseTimerTick);
+                if (testLicenseTimer == null) 
+                    testLicenseTimer = new System.Threading.Timer(OnTestLicenseTimerTick);
                 if (!m_bTimersstopped && !m_stop)
-                    testLicenseTimer.Change(TimeSpan.FromMinutes(2.0), TimeSpan.Zero);
+                    testLicenseTimer.Change(dongleFound ? TimeSpan.FromMinutes(20.0) : TimeSpan.FromSeconds(10.0), TimeSpan.Zero);
             }
             return ok;
         }
@@ -1252,11 +1316,13 @@ namespace iba.Processing
         {
             if (m_bTimersstopped || m_stop) return;
             testLicenseTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            if (!TestLicensePlugins())
+            TestLicensePlugins();
+            //below commented out, we no longer stop the job ...
+            /*if (!TestLicensePlugins())
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logLicenseStopped);
                 Stop = true;
-            }
+            }*/
         }
 
         private enum WhatToUpdate {NEW, ERRORS, DIRECTORY};
@@ -2244,10 +2310,6 @@ namespace iba.Processing
             {
                 Report(DatFile, task as ReportData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
-                if (m_ibaAnalyzer == null)
-                {
-
-                }
             }
             else if (task is ExtractData)
             {
@@ -2438,11 +2500,26 @@ namespace iba.Processing
                 m_sd.MovePermanentFileErrorListToProcessedList(files);
             }
         }
-        
+
         private void DoCustomTask(string DatFile, CustomTaskData task)
         {
             try
             {
+                lock (m_licensedTasks)
+                {
+                    bool licensed = false;
+                    m_licensedTasks.TryGetValue(task,out licensed);
+                    if (!licensed)
+                    {
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        }
+                        Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
+                        return;
+                    }
+                }
+
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.RUNNING;
@@ -3582,6 +3659,21 @@ namespace iba.Processing
                 return;
             }
 
+            lock (m_licensedTasks)
+            {
+                bool licensed = false;
+                m_licensedTasks.TryGetValue(task, out licensed);
+                if (!licensed)
+                {
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
+                    return;
+                }
+            }
+
             if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME)
             {   //concatenate subfolder corresponding to dat subfolder
                 string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
@@ -3694,6 +3786,21 @@ namespace iba.Processing
 
         private void UpdateDataTask(string filename, UpdateDataTaskData task)
         {
+            lock (m_licensedTasks)
+            {
+                bool licensed = false;
+                m_licensedTasks.TryGetValue(task, out licensed);
+                if (!licensed)
+                {
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logNoLicenseUpdateDataTask);
+                    return;
+                }
+            }
+
             lock (m_sd.DatFileStates)
             {
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;

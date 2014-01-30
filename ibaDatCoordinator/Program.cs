@@ -86,6 +86,11 @@ namespace iba
                 }
                 return;
             }
+            else if (args.Length > 0 && String.Compare(args[0], "/optimizeregistry", true) == 0)
+            {
+                RegistryOptimizer.DoWork();
+                return;
+            }
 
             IsServer = false;
             SetupLanguage(args);

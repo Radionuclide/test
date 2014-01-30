@@ -23,7 +23,6 @@ namespace iba.Controls
                 m_gbApp.Text = iba.Properties.Resources.Application;
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
                 m_cbAutoStart.Visible = false;
-                m_btnOptimize.Visible = false;
             }
             m_toolTip.SetToolTip(m_registerButton,iba.Properties.Resources.RegisterIbaAnalyzer);
         }
@@ -374,7 +373,6 @@ namespace iba.Controls
                 {
                     MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
             else
             {

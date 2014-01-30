@@ -323,7 +323,7 @@ namespace iba.Processing
                     int.TryParse(parameters.Substring(parameters.IndexOf("Type:") + 5, 1), out m_exportFileTypeAsInt);
                 }
             }
-            catch (System.Exception) //older ibaAnalyzer version
+            catch (System.Exception) //older ibaAnalyzer version or non existing .pdo file
             {
             }
             finally

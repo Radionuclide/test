@@ -510,7 +510,6 @@ namespace Alunorf_sinec_h1_plugin
             get { return m_started; }
         }
 
-
         public PluginH1TaskWorker(PluginH1Task data)
         {
             m_idCounterLock = new Object();
