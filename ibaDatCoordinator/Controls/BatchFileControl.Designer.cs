@@ -38,6 +38,10 @@ namespace iba.Controls
             this.m_saveButton = new System.Windows.Forms.Button();
             this.m_executeBatchFile = new System.Windows.Forms.Button();
             this.m_editorGroupBox = new System.Windows.Forms.GroupBox();
+            this.m_lblTestSide = new System.Windows.Forms.Label();
+            this.m_panelSide = new System.Windows.Forms.Panel();
+            this.m_rbServerSide = new System.Windows.Forms.RadioButton();
+            this.m_rbClientSide = new System.Windows.Forms.RadioButton();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
@@ -51,10 +55,6 @@ namespace iba.Controls
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_panelSide = new System.Windows.Forms.Panel();
-            this.m_lblTestSide = new System.Windows.Forms.Label();
-            this.m_rbClientSide = new System.Windows.Forms.RadioButton();
-            this.m_rbServerSide = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.m_editorGroupBox.SuspendLayout();
             this.m_panelSide.SuspendLayout();
@@ -137,6 +137,32 @@ namespace iba.Controls
             this.m_editorGroupBox.Name = "m_editorGroupBox";
             this.m_editorGroupBox.TabStop = false;
             // 
+            // m_lblTestSide
+            // 
+            resources.ApplyResources(this.m_lblTestSide, "m_lblTestSide");
+            this.m_lblTestSide.Name = "m_lblTestSide";
+            // 
+            // m_panelSide
+            // 
+            this.m_panelSide.Controls.Add(this.m_rbServerSide);
+            this.m_panelSide.Controls.Add(this.m_rbClientSide);
+            resources.ApplyResources(this.m_panelSide, "m_panelSide");
+            this.m_panelSide.Name = "m_panelSide";
+            // 
+            // m_rbServerSide
+            // 
+            resources.ApplyResources(this.m_rbServerSide, "m_rbServerSide");
+            this.m_rbServerSide.Name = "m_rbServerSide";
+            this.m_rbServerSide.TabStop = true;
+            this.m_rbServerSide.UseVisualStyleBackColor = true;
+            // 
+            // m_rbClientSide
+            // 
+            resources.ApplyResources(this.m_rbClientSide, "m_rbClientSide");
+            this.m_rbClientSide.Name = "m_rbClientSide";
+            this.m_rbClientSide.TabStop = true;
+            this.m_rbClientSide.UseVisualStyleBackColor = true;
+            // 
             // m_rbPrevOutput
             // 
             resources.ApplyResources(this.m_rbPrevOutput, "m_rbPrevOutput");
@@ -194,38 +220,13 @@ namespace iba.Controls
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             // 
-            // m_panelSide
-            // 
-            this.m_panelSide.Controls.Add(this.m_rbServerSide);
-            this.m_panelSide.Controls.Add(this.m_rbClientSide);
-            resources.ApplyResources(this.m_panelSide, "m_panelSide");
-            this.m_panelSide.Name = "m_panelSide";
-            // 
-            // m_lblTestSide
-            // 
-            resources.ApplyResources(this.m_lblTestSide, "m_lblTestSide");
-            this.m_lblTestSide.Name = "m_lblTestSide";
-            // 
-            // m_rbClientSide
-            // 
-            resources.ApplyResources(this.m_rbClientSide, "m_rbClientSide");
-            this.m_rbClientSide.Name = "m_rbClientSide";
-            this.m_rbClientSide.TabStop = true;
-            this.m_rbClientSide.UseVisualStyleBackColor = true;
-            // 
-            // m_rbServerSide
-            // 
-            resources.ApplyResources(this.m_rbServerSide, "m_rbServerSide");
-            this.m_rbServerSide.Name = "m_rbServerSide";
-            this.m_rbServerSide.TabStop = true;
-            this.m_rbServerSide.UseVisualStyleBackColor = true;
-            // 
             // BatchFileControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.m_editorGroupBox);
             this.Controls.Add(this.groupBox1);
+            this.MinimumSize = new System.Drawing.Size(0, 400);
             this.Name = "BatchFileControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

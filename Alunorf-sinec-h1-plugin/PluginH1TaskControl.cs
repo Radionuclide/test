@@ -110,6 +110,10 @@ namespace Alunorf_sinec_h1_plugin
 
             BuildTree();
 
+            m_rbSinecH1.Checked = !m_data.TCPIP;
+            m_rbTCPIP.Checked = !m_data.TCPIP;
+            m_tbPortNr.Text = m_data.PortNr.ToString();
+
             m_nudRetryConnectTimeInterval.Value = (decimal)m_data.RetryConnectTimeInterval;
             m_nudTryconnectTimeout.Value = (decimal)m_data.ConnectionTimeOut;
             m_nudSendTimeout.Value = (decimal)m_data.SendTimeOut;
@@ -207,6 +211,13 @@ namespace Alunorf_sinec_h1_plugin
             m_data.AckTimeOut = (int)m_nudAckTimeout.Value;
             m_data.LastSelectedTelegram = IndexFromNode(m_tvMessages.SelectedNode);
             SaveTelegram();
+
+            try
+            {
+                m_data.PortNr = int.Parse(m_tbPortNr.Text);
+            }
+            catch (Exception) { } //remains unchanged
+            m_data.TCPIP = m_rbTCPIP.Checked;
         }
         #endregion
 
@@ -691,6 +702,21 @@ namespace Alunorf_sinec_h1_plugin
             //draw the row number string on the current row header cell using
             //the brush defined above and the DataGridView's default font
             e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
+        }
+
+        private void m_rbSinecH1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender == m_rbTCPIP)
+                m_rbSinecH1.Checked =!m_rbTCPIP.Checked;
+            else if (sender == m_rbSinecH1)
+            {
+                m_rbTCPIP.Checked = !m_rbSinecH1.Checked;
+            }
+            Control[] listOfObjectsToChange = {label1,label2,label3,label4,label5,label6, m_tbTSAP_NQS1_NQS, m_tbTSAP_NQS1_PC, m_tbTSAP_NQS2_NQS, m_tbTSAP_NQS2_PC, m_ownMAC, m_nqs1MAC, m_nqs2MAC};
+            bool sinech1 = m_rbSinecH1.Checked;
+            foreach (Control ctrl in listOfObjectsToChange)
+                ctrl.Enabled = sinech1;
+            m_tbPortNr.Enabled = !sinech1;
         }
     }
 }

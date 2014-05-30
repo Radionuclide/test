@@ -6,7 +6,7 @@ using System.IO;
 
 using iba;
 using iba.Plugins;
-using IBAFILESLib;
+using ibaFilesLiteLib;
 using iba.Logging;
 using iba.Logging.Loggers;
 using iba.Utility;
@@ -101,16 +101,23 @@ namespace Alunorf_sinec_h1_plugin
             m_readStarted1 = m_readStarted2 = false;
             m_logger.Open();
 
-            bool ok = m_h1manager.SetStationAddress(m_data.OwnAddress);
+            bool ok;
+            if (m_data.TCPIP)
+                ok = (m_tcpManager as TcpIPManager).SetPort(m_data.PortNr);
+            else
+            {
+                ok = (m_tcpManager as CH1Manager).SetStationAddress(m_data.OwnAddress);
+            }
             if (ok)
-                ok = m_h1manager.SetSendTimeout(m_data.SendTimeOut);
+                ok = m_tcpManager.SetSendTimeout(m_data.SendTimeOut);
             if (!ok)
             {
                 m_started = false;
-                m_error = m_h1manager.LastError;
+                m_error = m_tcpManager.LastError;
                 return false;
             }
             
+
             m_retryConnect = true;
             m_thread = new Thread(new ThreadStart(Run));
             //m_thread.SetApartmentState(ApartmentState.STA);
@@ -188,53 +195,58 @@ namespace Alunorf_sinec_h1_plugin
 
             if (m_data.SendTimeOut != data.SendTimeOut)
             {
-                ok = m_h1manager.SetSendTimeout(data.SendTimeOut);
+                ok = m_tcpManager.SetSendTimeout(data.SendTimeOut);
                 if (!ok)
                 {
                     m_stop = true;
-                    m_error = m_h1manager.LastError;
+                    m_error = m_tcpManager.LastError;
                     return false;
                 }
             }
-            if (data.NQS_TSAPforNQS1 != data.NQS_TSAPforNQS1
-                || m_data.NQS_TSAPforNQS2 != data.NQS_TSAPforNQS2
-                || m_data.OwnTSAPforNQS1 != data.OwnTSAPforNQS1
-                || m_data.OwnTSAPforNQS2 != data.OwnTSAPforNQS2
-                || m_data.NQSAddress1[0] != data.NQSAddress1[0]
-                || m_data.NQSAddress1[1] != data.NQSAddress1[1]
-                || m_data.NQSAddress1[2] != data.NQSAddress1[2]
-                || m_data.NQSAddress1[3] != data.NQSAddress1[3]
-                || m_data.NQSAddress1[4] != data.NQSAddress1[4]
-                || m_data.NQSAddress1[5] != data.NQSAddress1[5]
-                || m_data.NQSAddress2[0] != data.NQSAddress2[0]
-                || m_data.NQSAddress2[1] != data.NQSAddress2[1]
-                || m_data.NQSAddress2[2] != data.NQSAddress2[2]
-                || m_data.NQSAddress2[3] != data.NQSAddress2[3]
-                || m_data.NQSAddress2[4] != data.NQSAddress2[4]
-                || m_data.NQSAddress2[5] != data.NQSAddress2[5]
-                || m_data.OwnAddress[0] != data.OwnAddress[0]
-                || m_data.OwnAddress[1] != data.OwnAddress[1]
-                || m_data.OwnAddress[2] != data.OwnAddress[2]
-                || m_data.OwnAddress[3] != data.OwnAddress[3]
-                || m_data.OwnAddress[4] != data.OwnAddress[4]
-                || m_data.OwnAddress[5] != data.OwnAddress[5])
-            {
-                m_h1manager.DisconnectAll();
-                m_nqs1Status = m_nqs2Status = NQSStatus.DISCONNECTED;
-                m_retryConnect = true;
 
-                if (m_data.OwnAddress[0] != data.OwnAddress[0]
-                || m_data.OwnAddress[1] != data.OwnAddress[1]
-                || m_data.OwnAddress[2] != data.OwnAddress[2]
-                || m_data.OwnAddress[3] != data.OwnAddress[3]
-                || m_data.OwnAddress[4] != data.OwnAddress[4]
-                || m_data.OwnAddress[5] != data.OwnAddress[5])
+            if (!m_data.TCPIP)
+            {
+                CH1Manager h1manager = m_tcpManager as CH1Manager;
+                if (data.NQS_TSAPforNQS1 != data.NQS_TSAPforNQS1
+                    || m_data.NQS_TSAPforNQS2 != data.NQS_TSAPforNQS2
+                    || m_data.OwnTSAPforNQS1 != data.OwnTSAPforNQS1
+                    || m_data.OwnTSAPforNQS2 != data.OwnTSAPforNQS2
+                    || m_data.NQSAddress1[0] != data.NQSAddress1[0]
+                    || m_data.NQSAddress1[1] != data.NQSAddress1[1]
+                    || m_data.NQSAddress1[2] != data.NQSAddress1[2]
+                    || m_data.NQSAddress1[3] != data.NQSAddress1[3]
+                    || m_data.NQSAddress1[4] != data.NQSAddress1[4]
+                    || m_data.NQSAddress1[5] != data.NQSAddress1[5]
+                    || m_data.NQSAddress2[0] != data.NQSAddress2[0]
+                    || m_data.NQSAddress2[1] != data.NQSAddress2[1]
+                    || m_data.NQSAddress2[2] != data.NQSAddress2[2]
+                    || m_data.NQSAddress2[3] != data.NQSAddress2[3]
+                    || m_data.NQSAddress2[4] != data.NQSAddress2[4]
+                    || m_data.NQSAddress2[5] != data.NQSAddress2[5]
+                    || m_data.OwnAddress[0] != data.OwnAddress[0]
+                    || m_data.OwnAddress[1] != data.OwnAddress[1]
+                    || m_data.OwnAddress[2] != data.OwnAddress[2]
+                    || m_data.OwnAddress[3] != data.OwnAddress[3]
+                    || m_data.OwnAddress[4] != data.OwnAddress[4]
+                    || m_data.OwnAddress[5] != data.OwnAddress[5])
                 {
-                    if (!m_h1manager.SetStationAddress(m_data.OwnAddress))
+                    m_tcpManager.DisconnectAll();
+                    m_nqs1Status = m_nqs2Status = NQSStatus.DISCONNECTED;
+                    m_retryConnect = true;
+
+                    if (m_data.OwnAddress[0] != data.OwnAddress[0]
+                    || m_data.OwnAddress[1] != data.OwnAddress[1]
+                    || m_data.OwnAddress[2] != data.OwnAddress[2]
+                    || m_data.OwnAddress[3] != data.OwnAddress[3]
+                    || m_data.OwnAddress[4] != data.OwnAddress[4]
+                    || m_data.OwnAddress[5] != data.OwnAddress[5])
                     {
-                        m_stop = true;
-                        m_error = m_h1manager.LastError;
-                        return false;
+                        if (h1manager.SetStationAddress(m_data.OwnAddress))
+                        {
+                            m_stop = true;
+                            m_error = h1manager.LastError;
+                            return false;
+                        }
                     }
                 }
             }
@@ -491,7 +503,7 @@ namespace Alunorf_sinec_h1_plugin
         private SortedDictionary<string,string> m_nak_errors;
         private PluginH1Task m_data;
         private Thread m_thread;
-        private CH1Manager m_h1manager;
+        private IProtocolManager m_tcpManager;
         private ushort m_vnr1;
         private ushort m_vnr2;
         private ushort m_lastgo;
@@ -526,7 +538,10 @@ namespace Alunorf_sinec_h1_plugin
             m_nqs2Status = NQSStatus.DISCONNECTED;
             m_error = null;
             m_retryConnect = true;
-            m_h1manager = new CH1Manager();
+            if (m_data.TCPIP)
+                m_tcpManager = new TcpIPManager();
+            else
+                m_tcpManager = new CH1Manager();
             m_idCounter = 1;
             m_idToFilename = new BiMap<int, string>();
             m_acknowledgements = new SortedDictionary<string, bool>();
@@ -640,7 +655,7 @@ namespace Alunorf_sinec_h1_plugin
                 }
                 Thread.Sleep(THREADSLEEPTIME);
             }
-            m_h1manager.DisconnectAll();
+            m_tcpManager.DisconnectAll();
             m_liveTimer.Change(Timeout.Infinite, Timeout.Infinite);
             m_liveTimer.Dispose();
             m_liveTimer = null;
@@ -655,21 +670,21 @@ namespace Alunorf_sinec_h1_plugin
         {
             if ((m_nqs1Status == NQSStatus.DISCONNECTED && vnr == m_vnr1) || (m_nqs2Status == NQSStatus.DISCONNECTED && vnr == m_vnr2))
                 return true;
-            CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+            H1Result result = H1Result.ALL_CLEAR;
             
             if ((vnr == m_vnr1 && !m_readStarted1) || (vnr == m_vnr2 && !m_readStarted2))
-                m_h1manager.StartRead(vnr, ref result);
+                m_tcpManager.StartRead(vnr, ref result);
             else
-                m_h1manager.GetReadStatus(vnr,ref result);
+                m_tcpManager.GetReadStatus(vnr,ref result);
             switch (result)
             {
-                case CH1Manager.H1Result.ALL_CLEAR:
+                case H1Result.ALL_CLEAR:
                     if (vnr == m_vnr1)
                         m_disconnectedCounter1=0;
                     else if (vnr == m_vnr2)
                         m_disconnectedCounter2=0;
                     WrapperTelegram wrap = new WrapperTelegram();
-                    if (m_h1manager.FinishRead(vnr, wrap))
+                    if (m_tcpManager.FinishRead(vnr, wrap))
                     {
                         NAKTelegram nak = wrap.InnerTelegram as NAKTelegram;
                         if (nak != null && m_idToFilename.Contains(FromNonUniqueToUnique(nak.AktId,vnr)))
@@ -867,8 +882,8 @@ namespace Alunorf_sinec_h1_plugin
                         }
                     }
                     else return false;
-                    goto case CH1Manager.H1Result.NO_REQUEST;
-                case CH1Manager.H1Result.NO_REQUEST:
+                    goto case H1Result.NO_REQUEST;
+                case H1Result.NO_REQUEST:
                     if (vnr == m_vnr1)
                     {
                         m_readStarted1 = false;
@@ -880,7 +895,7 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter2=0;
                     }
                     return true;
-                case CH1Manager.H1Result.WAIT_CONNECT:
+                case H1Result.WAIT_CONNECT:
                     if (vnr == m_vnr1)
                     {
                         m_readStarted1 = false;
@@ -892,8 +907,8 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter2++;
                     }
                     return true;
-                case CH1Manager.H1Result.ALREADY_RUNNING:
-                case CH1Manager.H1Result.WAIT_DATA:
+                case H1Result.ALREADY_RUNNING:
+                case H1Result.WAIT_DATA:
                     if (vnr == m_vnr1)
                     {
                         m_readStarted1 = true;
@@ -917,14 +932,14 @@ namespace Alunorf_sinec_h1_plugin
             m_retryConnect = false;
             if (m_nqs1Status == NQSStatus.DISCONNECTED)
             {
-                CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+                H1Result result = H1Result.ALL_CLEAR;
                 if (m_vnr1 == 0)
-                    result = CH1Manager.H1Result.BAD_LINE;
+                    result = H1Result.BAD_LINE;
                 else
-                    m_h1manager.GetConnectionStatus(m_vnr1, ref result);
+                    m_tcpManager.GetConnectionStatus(m_vnr1, ref result);
                 switch (result)
                 {
-                    case CH1Manager.H1Result.ALL_CLEAR:
+                    case H1Result.ALL_CLEAR:
                         {
                             m_nqs1Status = NQSStatus.CONNECTED;
                             if (m_logger != null && m_logger.IsOpen)
@@ -937,15 +952,21 @@ namespace Alunorf_sinec_h1_plugin
                             }
                             break;
                         }
-                    case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
+                    case H1Result.OPERATING_SYSTEM_ERROR:
                         m_retryConnect = true;
-                        m_error = m_h1manager.LastError;
+                        m_error = m_tcpManager.LastError;
                         break;
-                    case CH1Manager.H1Result.WAIT_CONNECT:
+                    case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
-                    case CH1Manager.H1Result.BAD_LINE:
-                        if (m_h1manager.Connect(ref m_vnr1, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut))
+                    case H1Result.BAD_LINE: //indicate that a connection needs to be set up
+                        bool connectStarted;
+                        if (m_data.TCPIP)
+                            connectStarted =(m_tcpManager as TcpIPManager).Connect(ref m_vnr1, ref result, m_data.ConnectionTimeOut);
+                        else
+                            connectStarted =(m_tcpManager as CH1Manager).Connect(ref m_vnr1, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut);
+                        
+                        if (connectStarted)
                         {
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "connection to nqs1 restored");
@@ -959,14 +980,14 @@ namespace Alunorf_sinec_h1_plugin
                         }
                         else
                         {
-                            m_error = m_h1manager.LastError;
+                            m_error = m_tcpManager.LastError;
                             m_retryConnect = true;
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "timeout trying to connect to nqs1");
                         }
                         break;
                     default:
-                        m_error = m_h1manager.LastError;
+                        m_error = m_tcpManager.LastError;
                         m_retryConnect = true;
                         break;
                 }
@@ -974,14 +995,14 @@ namespace Alunorf_sinec_h1_plugin
            
             if (m_nqs2Status == NQSStatus.DISCONNECTED)
             {
-                CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+                H1Result result = H1Result.ALL_CLEAR;
                 if (m_vnr2 == 0)
-                    result = CH1Manager.H1Result.BAD_LINE;
+                    result = H1Result.BAD_LINE;
                 else
-                    m_h1manager.GetConnectionStatus(m_vnr2, ref result);
+                    m_tcpManager.GetConnectionStatus(m_vnr2, ref result);
                 switch (result)
                 {
-                    case CH1Manager.H1Result.ALL_CLEAR:
+                    case H1Result.ALL_CLEAR:
                         {
                             m_nqs2Status = NQSStatus.CONNECTED;
                             //send INI telegram
@@ -994,15 +1015,21 @@ namespace Alunorf_sinec_h1_plugin
                             }
                             break;
                         }
-                    case CH1Manager.H1Result.OPERATING_SYSTEM_ERROR:
+                    case H1Result.OPERATING_SYSTEM_ERROR:
                         m_retryConnect = true;
-                        m_error = m_h1manager.LastError;
+                        m_error = m_tcpManager.LastError;
                         break;
-                    case CH1Manager.H1Result.WAIT_CONNECT:
+                    case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
-                    case CH1Manager.H1Result.BAD_LINE:
-                        if (m_h1manager.Connect(ref m_vnr2, 4, false, m_data.NQSAddress2, m_data.OwnTSAPforNQS2, m_data.NQS_TSAPforNQS2, ref result, m_data.ConnectionTimeOut))
+                    case H1Result.BAD_LINE:
+                        bool connectStarted;
+                        if (m_data.TCPIP)
+                            connectStarted = (m_tcpManager as TcpIPManager).Connect(ref m_vnr2, ref result, m_data.ConnectionTimeOut);
+                        else
+                            connectStarted = (m_tcpManager as CH1Manager).Connect(ref m_vnr2, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut);
+                        
+                        if (connectStarted)
                         {
                             m_nqs2Status = NQSStatus.CONNECTED;
                             if (m_logger != null && m_logger.IsOpen)
@@ -1018,12 +1045,12 @@ namespace Alunorf_sinec_h1_plugin
                         {
                             if (m_logger != null && m_logger.IsOpen)
                                 m_logger.Log(Level.Info, "timeout trying to connect to nqs2");
-                            m_error = m_h1manager.LastError;
+                            m_error = m_tcpManager.LastError;
                             m_retryConnect = true;
                         }
                         break;
                     default:
-                        m_error = m_h1manager.LastError;
+                        m_error = m_tcpManager.LastError;
                         m_retryConnect = true;
                         break;
                 }
@@ -1176,45 +1203,45 @@ namespace Alunorf_sinec_h1_plugin
                 m_lastgo = vnr;
                 AlunorfTelegram telegram = m_messageQueue[pos].telegram;
 
-                CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
-                m_h1manager.GetSendStatus(vnr, ref result);
+                H1Result result = H1Result.ALL_CLEAR;
+                m_tcpManager.GetSendStatus(vnr, ref result);
                 switch (result)
                 {
-                    case CH1Manager.H1Result.WAIT_CONNECT:
+                    case H1Result.WAIT_CONNECT:
                         if (vnr == m_vnr1)
                             m_disconnectedCounter1++;
                         else if (vnr == m_vnr2)
                             m_disconnectedCounter2++;
                         return true;
-                    case CH1Manager.H1Result.WAIT_SEND:
-                    case CH1Manager.H1Result.ALREADY_RUNNING:
+                    case H1Result.WAIT_SEND:
+                    case H1Result.ALREADY_RUNNING:
                         return true; //stay in queue, sending is busy with previous telegram
                 }
 
-                m_h1manager.StartSend(vnr, ref result, telegram);
+                m_tcpManager.StartSend(vnr, ref result, telegram);
                 if ((m_logger != null) && m_logger.IsOpen)
                     m_logger.Log(Level.Info, "started sending on vnr: " + vnr.ToString() 
                     + " " + m_idToFilename.itemToString(FromNonUniqueToUnique(telegram.AktId,vnr)));
                 QdtTelegram qdt = null;
                 switch (result)
                 {
-                    case CH1Manager.H1Result.TELEGRAM_ERROR:
+                    case H1Result.TELEGRAM_ERROR:
                         if ((m_logger != null) && m_logger.IsOpen)
                             m_logger.Log(Level.Info, "telegram contained an error" + m_idToFilename.itemToString(FromNonUniqueToUnique(telegram.AktId, vnr)));
-                        m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_send + m_h1manager.LastError ?? "";
+                        m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_send + m_tcpManager.LastError ?? "";
                         qdt = telegram as QdtTelegram;
                         if (qdt != null)
                             qdt.Dispose();
                         m_messageQueue.RemoveAt(pos);
                         return false;
-                    case CH1Manager.H1Result.WAIT_CONNECT:
+                    case H1Result.WAIT_CONNECT:
                         if (vnr == m_vnr1)
                             m_disconnectedCounter1++;
                         else if (vnr == m_vnr2)
                             m_disconnectedCounter2++;
                         return true;
-                    case CH1Manager.H1Result.WAIT_SEND:
-                    case CH1Manager.H1Result.ALL_CLEAR:
+                    case H1Result.WAIT_SEND:
+                    case H1Result.ALL_CLEAR:
                         string id = m_messageQueue[pos].id;
                         if (id != null)
                         {
@@ -1231,7 +1258,7 @@ namespace Alunorf_sinec_h1_plugin
                         else if (vnr == m_vnr2)
                             m_disconnectedCounter2=0;
                         return true;
-                    case CH1Manager.H1Result.ALREADY_RUNNING:
+                    case H1Result.ALREADY_RUNNING:
                         return true; //stay in queue, sending is busy with previous telegram
                 }
                 return false;

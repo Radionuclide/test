@@ -46,6 +46,11 @@ namespace Alunorf_sinec_h1_plugin
             this.m_btSave = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.m_splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_rbSinecH1 = new System.Windows.Forms.RadioButton();
+            this.m_tbPortNr = new System.Windows.Forms.TextBox();
+            this.m_rbTCPIP = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.m_nudAckTimeout = new System.Windows.Forms.NumericUpDown();
@@ -59,8 +64,14 @@ namespace Alunorf_sinec_h1_plugin
             this.label11 = new System.Windows.Forms.Label();
             this.m_nudTryconnectTimeout = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
+            this.macGroupbox = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_tabControl = new System.Windows.Forms.TabControl();
+            this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.m_splitContainer = new System.Windows.Forms.SplitContainer();
             this.NQS1 = new System.Windows.Forms.GroupBox();
+            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS1_NQS = new System.Windows.Forms.TextBox();
@@ -69,6 +80,7 @@ namespace Alunorf_sinec_h1_plugin
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NQS2 = new System.Windows.Forms.GroupBox();
+            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_statusNQS2 = new System.Windows.Forms.Label();
             this.m_tbTSAP_NQS2_NQS = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -76,13 +88,6 @@ namespace Alunorf_sinec_h1_plugin
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.macGroupbox = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.m_tabControl = new System.Windows.Forms.TabControl();
-            this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.m_nqs1MAC = new ISEAGE.May610.Diagrammer.matb();
-            this.m_nqs2MAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_ownMAC = new ISEAGE.May610.Diagrammer.matb();
             this.m_splitContainer2.Panel1.SuspendLayout();
             this.m_splitContainer2.Panel2.SuspendLayout();
@@ -91,18 +96,22 @@ namespace Alunorf_sinec_h1_plugin
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.m_splitContainer3.Panel1.SuspendLayout();
+            this.m_splitContainer3.Panel2.SuspendLayout();
+            this.m_splitContainer3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudAckTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSendTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRetryConnectTimeInterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTryconnectTimeout)).BeginInit();
+            this.macGroupbox.SuspendLayout();
+            this.m_tabControl.SuspendLayout();
             this.m_splitContainer.Panel1.SuspendLayout();
             this.m_splitContainer.Panel2.SuspendLayout();
             this.m_splitContainer.SuspendLayout();
             this.NQS1.SuspendLayout();
             this.NQS2.SuspendLayout();
-            this.macGroupbox.SuspendLayout();
-            this.m_tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_splitContainer2
@@ -277,12 +286,55 @@ namespace Alunorf_sinec_h1_plugin
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.m_splitContainer);
             this.tabPage1.Controls.Add(this.macGroupbox);
             resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.m_splitContainer3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            // 
+            // m_splitContainer3
+            // 
+            resources.ApplyResources(this.m_splitContainer3, "m_splitContainer3");
+            this.m_splitContainer3.Name = "m_splitContainer3";
+            // 
+            // m_splitContainer3.Panel1
+            // 
+            this.m_splitContainer3.Panel1.Controls.Add(this.m_rbSinecH1);
+            // 
+            // m_splitContainer3.Panel2
+            // 
+            this.m_splitContainer3.Panel2.Controls.Add(this.m_tbPortNr);
+            this.m_splitContainer3.Panel2.Controls.Add(this.m_rbTCPIP);
+            // 
+            // m_rbSinecH1
+            // 
+            resources.ApplyResources(this.m_rbSinecH1, "m_rbSinecH1");
+            this.m_rbSinecH1.Name = "m_rbSinecH1";
+            this.m_rbSinecH1.TabStop = true;
+            this.m_rbSinecH1.UseVisualStyleBackColor = true;
+            this.m_rbSinecH1.CheckedChanged += new System.EventHandler(this.m_rbSinecH1_CheckedChanged);
+            // 
+            // m_tbPortNr
+            // 
+            resources.ApplyResources(this.m_tbPortNr, "m_tbPortNr");
+            this.m_tbPortNr.Name = "m_tbPortNr";
+            // 
+            // m_rbTCPIP
+            // 
+            resources.ApplyResources(this.m_rbTCPIP, "m_rbTCPIP");
+            this.m_rbTCPIP.Name = "m_rbTCPIP";
+            this.m_rbTCPIP.TabStop = true;
+            this.m_rbTCPIP.UseVisualStyleBackColor = true;
+            this.m_rbTCPIP.CheckedChanged += new System.EventHandler(this.m_rbSinecH1_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -417,6 +469,27 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
             // 
+            // macGroupbox
+            // 
+            resources.ApplyResources(this.macGroupbox, "macGroupbox");
+            this.macGroupbox.Controls.Add(this.label9);
+            this.macGroupbox.Controls.Add(this.m_ownMAC);
+            this.macGroupbox.Name = "macGroupbox";
+            this.macGroupbox.TabStop = false;
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // m_tabControl
+            // 
+            this.m_tabControl.Controls.Add(this.tabPage1);
+            this.m_tabControl.Controls.Add(this.tabPage2);
+            resources.ApplyResources(this.m_tabControl, "m_tabControl");
+            this.m_tabControl.Name = "m_tabControl";
+            this.m_tabControl.SelectedIndex = 0;
+            // 
             // m_splitContainer
             // 
             resources.ApplyResources(this.m_splitContainer, "m_splitContainer");
@@ -443,6 +516,13 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.NQS1, "NQS1");
             this.NQS1.Name = "NQS1";
             this.NQS1.TabStop = false;
+            // 
+            // m_nqs1MAC
+            // 
+            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
+            this.m_nqs1MAC.Name = "m_nqs1MAC";
             // 
             // m_statusNQS1
             // 
@@ -494,6 +574,13 @@ namespace Alunorf_sinec_h1_plugin
             this.NQS2.Name = "NQS2";
             this.NQS2.TabStop = false;
             // 
+            // m_nqs2MAC
+            // 
+            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
+            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
+            this.m_nqs2MAC.Name = "m_nqs2MAC";
+            // 
             // m_statusNQS2
             // 
             resources.ApplyResources(this.m_statusNQS2, "m_statusNQS2");
@@ -530,41 +617,6 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
-            // macGroupbox
-            // 
-            resources.ApplyResources(this.macGroupbox, "macGroupbox");
-            this.macGroupbox.Controls.Add(this.label9);
-            this.macGroupbox.Controls.Add(this.m_ownMAC);
-            this.macGroupbox.Name = "macGroupbox";
-            this.macGroupbox.TabStop = false;
-            // 
-            // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
-            // m_tabControl
-            // 
-            this.m_tabControl.Controls.Add(this.tabPage1);
-            this.m_tabControl.Controls.Add(this.tabPage2);
-            resources.ApplyResources(this.m_tabControl, "m_tabControl");
-            this.m_tabControl.Name = "m_tabControl";
-            this.m_tabControl.SelectedIndex = 0;
-            // 
-            // m_nqs1MAC
-            // 
-            this.m_nqs1MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs1MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs1MAC, "m_nqs1MAC");
-            this.m_nqs1MAC.Name = "m_nqs1MAC";
-            // 
-            // m_nqs2MAC
-            // 
-            this.m_nqs2MAC.BackColor = System.Drawing.SystemColors.Window;
-            this.m_nqs2MAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_nqs2MAC, "m_nqs2MAC");
-            this.m_nqs2MAC.Name = "m_nqs2MAC";
-            // 
             // m_ownMAC
             // 
             this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
@@ -577,7 +629,7 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.m_tabControl);
-            this.MinimumSize = new System.Drawing.Size(565, 400);
+            this.MinimumSize = new System.Drawing.Size(565, 430);
             this.Name = "PluginH1TaskControl";
             this.m_splitContainer2.Panel1.ResumeLayout(false);
             this.m_splitContainer2.Panel2.ResumeLayout(false);
@@ -586,12 +638,21 @@ namespace Alunorf_sinec_h1_plugin
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.m_splitContainer3.Panel1.ResumeLayout(false);
+            this.m_splitContainer3.Panel1.PerformLayout();
+            this.m_splitContainer3.Panel2.ResumeLayout(false);
+            this.m_splitContainer3.Panel2.PerformLayout();
+            this.m_splitContainer3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudAckTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSendTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRetryConnectTimeInterval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTryconnectTimeout)).EndInit();
+            this.macGroupbox.ResumeLayout(false);
+            this.macGroupbox.PerformLayout();
+            this.m_tabControl.ResumeLayout(false);
             this.m_splitContainer.Panel1.ResumeLayout(false);
             this.m_splitContainer.Panel2.ResumeLayout(false);
             this.m_splitContainer.ResumeLayout(false);
@@ -599,9 +660,6 @@ namespace Alunorf_sinec_h1_plugin
             this.NQS1.PerformLayout();
             this.NQS2.ResumeLayout(false);
             this.NQS2.PerformLayout();
-            this.macGroupbox.ResumeLayout(false);
-            this.macGroupbox.PerformLayout();
-            this.m_tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -662,5 +720,10 @@ namespace Alunorf_sinec_h1_plugin
         private ISEAGE.May610.Diagrammer.matb m_ownMAC;
         private System.Windows.Forms.TabControl m_tabControl;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.SplitContainer m_splitContainer3;
+        private System.Windows.Forms.RadioButton m_rbSinecH1;
+        private System.Windows.Forms.RadioButton m_rbTCPIP;
+        private System.Windows.Forms.TextBox m_tbPortNr;
     }
 }

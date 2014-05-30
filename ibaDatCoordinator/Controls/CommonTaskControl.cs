@@ -22,14 +22,16 @@ namespace iba.Controls
             m_regularControl = pluginControl as IPropertyPane;
             InitializeComponent();
             pluginControl.Width = m_pluginPanel.Width;
-            m_pluginPanel.Height = pluginControl.Height;
-            m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
+            //m_pluginPanel.Height = pluginControl.Height;
+            //m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
             pluginControl.Dock = DockStyle.Fill;
+            //m_pluginPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             this.m_pluginPanel.Controls.Add(pluginControl);
-            int newHeight = m_pluginPanel.Bottom + 5;
-            this.Height = newHeight;
-            //autoscroll seems problematic, add it here with AutoScrollMinSize
-            AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
+            //int newHeight = m_pluginPanel.Bottom + 5;
+            //this.Height = newHeight;
+            AutoScrollMinSize = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
+            //AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
+            //AutoScrollMinSize = this.MinimumSize;
             AutoScroll = true;
         }
 

@@ -2637,6 +2637,7 @@ namespace iba.Processing
                         outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
                     else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
                         outputfile = outputfile.TrimEnd(null);
+                    
                 }
                 catch
                 {
@@ -2659,6 +2660,7 @@ namespace iba.Processing
                 string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed, task.InfoFieldForOutputFile);
                 Log(iba.Logging.Level.Warning, message, filename, task);
             }
+            filename = CPathCleaner.CleanFile(filename);
             return Path.GetFileNameWithoutExtension(filename);
         }
 
@@ -2728,7 +2730,11 @@ namespace iba.Processing
 
                         }
                     }
-                    if (!string.IsNullOrEmpty(Subdir)) return Subdir;
+                    if (!string.IsNullOrEmpty(Subdir))
+                    {
+                        Subdir = CPathCleaner.CleanDirectory(Subdir);
+                        return Subdir;
+                    }
                     Subdir = "unresolved";
                     //warn that we failed getting the infofield
                     string message = string.Format(iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);

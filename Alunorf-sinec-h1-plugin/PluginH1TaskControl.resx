@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_splitContainer2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 6</value>
+    <value>9, 15</value>
   </data>
   <metadata name="m_contextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>249, 17</value>
@@ -132,13 +132,13 @@
     <value>Del</value>
   </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
+    <value>131, 22</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="m_contextMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 26</value>
+    <value>132, 26</value>
   </data>
   <data name="&gt;&gt;m_contextMenu.Name" xml:space="preserve">
     <value>m_contextMenu</value>
@@ -153,7 +153,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tvMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 340</value>
+    <value>139, 372</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tvMessages.TabIndex" type="System.Int32, mscorlib">
@@ -202,7 +202,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_datagvMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 340</value>
+    <value>353, 372</value>
   </data>
   <data name="m_datagvMessages.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -232,7 +232,7 @@
     <value>1</value>
   </data>
   <data name="m_splitContainer2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>496, 340</value>
+    <value>496, 372</value>
   </data>
   <data name="m_splitContainer2.SplitterDistance" type="System.Int32, mscorlib">
     <value>139</value>
@@ -253,7 +253,7 @@
     <value>1</value>
   </data>
   <metadata name="m_refreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>17, 26</value>
   </metadata>
   <data name="m_saveXML.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -262,7 +262,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_saveXML.Location" type="System.Drawing.Point, System.Drawing">
-    <value>542, 60</value>
+    <value>542, 69</value>
   </data>
   <data name="m_saveXML.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -283,7 +283,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_openXML.Location" type="System.Drawing.Point, System.Drawing">
-    <value>542, 14</value>
+    <value>542, 23</value>
   </data>
   <data name="m_openXML.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -298,7 +298,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>148, 17</value>
+    <value>148, 26</value>
   </metadata>
   <data name="m_btOpen.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -307,7 +307,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btOpen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>511, 6</value>
+    <value>511, 15</value>
   </data>
   <data name="m_btOpen.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -337,7 +337,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>511, 52</value>
+    <value>511, 61</value>
   </data>
   <data name="m_btSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -367,7 +367,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 384</value>
+    <value>557, 404</value>
   </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -387,6 +387,171 @@
   <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_splitContainer3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_splitContainer3.IsSplitterFixed" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_splitContainer3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="m_rbSinecH1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbSinecH1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbSinecH1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 2</value>
+  </data>
+  <data name="m_rbSinecH1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 17</value>
+  </data>
+  <data name="m_rbSinecH1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbSinecH1.Text" xml:space="preserve">
+    <value>Sinec-H1</value>
+  </data>
+  <data name="&gt;&gt;m_rbSinecH1.Name" xml:space="preserve">
+    <value>m_rbSinecH1</value>
+  </data>
+  <data name="&gt;&gt;m_rbSinecH1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbSinecH1.Parent" xml:space="preserve">
+    <value>m_splitContainer3.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbSinecH1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel1.Name" xml:space="preserve">
+    <value>m_splitContainer3.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel1.Parent" xml:space="preserve">
+    <value>m_splitContainer3</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbPortNr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbPortNr.Location" type="System.Drawing.Point, System.Drawing">
+    <value>152, 1</value>
+  </data>
+  <data name="m_tbPortNr.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
+  </data>
+  <data name="m_tbPortNr.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tbPortNr.Name" xml:space="preserve">
+    <value>m_tbPortNr</value>
+  </data>
+  <data name="&gt;&gt;m_tbPortNr.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPortNr.Parent" xml:space="preserve">
+    <value>m_splitContainer3.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tbPortNr.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbTCPIP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbTCPIP.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbTCPIP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 2</value>
+  </data>
+  <data name="m_rbTCPIP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 17</value>
+  </data>
+  <data name="m_rbTCPIP.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbTCPIP.Text" xml:space="preserve">
+    <value>TCP/IP port number:</value>
+  </data>
+  <data name="&gt;&gt;m_rbTCPIP.Name" xml:space="preserve">
+    <value>m_rbTCPIP</value>
+  </data>
+  <data name="&gt;&gt;m_rbTCPIP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbTCPIP.Parent" xml:space="preserve">
+    <value>m_splitContainer3.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_rbTCPIP.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel2.Name" xml:space="preserve">
+    <value>m_splitContainer3.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel2.Parent" xml:space="preserve">
+    <value>m_splitContainer3</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_splitContainer3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>551, 27</value>
+  </data>
+  <data name="m_splitContainer3.SplitterDistance" type="System.Int32, mscorlib">
+    <value>276</value>
+  </data>
+  <data name="m_splitContainer3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Name" xml:space="preserve">
+    <value>m_splitContainer3</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;m_splitContainer3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 6</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 46</value>
+  </data>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Communication protocol</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -397,7 +562,7 @@
     <value>NoControl</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>295, 53</value>
+    <value>295, 51</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 13</value>
@@ -421,7 +586,7 @@
     <value>0</value>
   </data>
   <data name="m_nudAckTimeout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 51</value>
+    <value>416, 49</value>
   </data>
   <data name="m_nudAckTimeout.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
@@ -448,7 +613,7 @@
     <value>NoControl</value>
   </data>
   <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
-    <value>488, 53</value>
+    <value>488, 51</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -478,7 +643,7 @@
     <value>NoControl</value>
   </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>295, 27</value>
+    <value>295, 25</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
@@ -502,7 +667,7 @@
     <value>3</value>
   </data>
   <data name="m_nudSendTimeout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 25</value>
+    <value>416, 23</value>
   </data>
   <data name="m_nudSendTimeout.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
@@ -529,7 +694,7 @@
     <value>NoControl</value>
   </data>
   <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>488, 27</value>
+    <value>488, 25</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -559,7 +724,7 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 53</value>
+    <value>11, 51</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 13</value>
@@ -583,7 +748,7 @@
     <value>6</value>
   </data>
   <data name="m_nudRetryConnectTimeInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 51</value>
+    <value>153, 49</value>
   </data>
   <data name="m_nudRetryConnectTimeInterval.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
@@ -610,7 +775,7 @@
     <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 53</value>
+    <value>225, 51</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -640,7 +805,7 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 27</value>
+    <value>11, 25</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 13</value>
@@ -664,7 +829,7 @@
     <value>9</value>
   </data>
   <data name="m_nudTryconnectTimeout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 25</value>
+    <value>153, 23</value>
   </data>
   <data name="m_nudTryconnectTimeout.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 20</value>
@@ -691,7 +856,7 @@
     <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 27</value>
+    <value>225, 25</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -715,7 +880,7 @@
     <value>11</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 248</value>
+    <value>0, 306</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>557, 81</value>
@@ -736,16 +901,16 @@
     <value>tabPage1</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_splitContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_splitContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 62</value>
+    <value>1, 120</value>
   </data>
   <data name="m_nqs1MAC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 32</value>
+    <value>13, 41</value>
   </data>
   <data name="m_nqs1MAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
@@ -772,7 +937,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_statusNQS1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 148</value>
+    <value>68, 157</value>
   </data>
   <data name="m_statusNQS1.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 13</value>
@@ -802,7 +967,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 148</value>
+    <value>10, 157</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
@@ -829,7 +994,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbTSAP_NQS1_NQS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 120</value>
+    <value>13, 129</value>
   </data>
   <data name="m_tbTSAP_NQS1_NQS.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
@@ -859,7 +1024,7 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 104</value>
+    <value>10, 113</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
@@ -886,7 +1051,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbTSAP_NQS1_PC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 77</value>
+    <value>13, 86</value>
   </data>
   <data name="m_tbTSAP_NQS1_PC.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
@@ -916,7 +1081,7 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 61</value>
+    <value>10, 70</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -946,7 +1111,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 16</value>
+    <value>10, 25</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1009,7 +1174,7 @@
     <value>0</value>
   </data>
   <data name="m_nqs2MAC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 32</value>
+    <value>14, 41</value>
   </data>
   <data name="m_nqs2MAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
@@ -1036,7 +1201,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_statusNQS2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 148</value>
+    <value>69, 157</value>
   </data>
   <data name="m_statusNQS2.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 13</value>
@@ -1063,7 +1228,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbTSAP_NQS2_NQS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 120</value>
+    <value>14, 129</value>
   </data>
   <data name="m_tbTSAP_NQS2_NQS.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1093,7 +1258,7 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 148</value>
+    <value>11, 157</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
@@ -1120,7 +1285,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbTSAP_NQS2_PC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 77</value>
+    <value>14, 86</value>
   </data>
   <data name="m_tbTSAP_NQS2_PC.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1150,7 +1315,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 104</value>
+    <value>11, 113</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
@@ -1180,7 +1345,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 61</value>
+    <value>11, 70</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -1210,7 +1375,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 16</value>
+    <value>11, 25</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1291,7 +1456,7 @@
     <value>tabPage1</value>
   </data>
   <data name="&gt;&gt;m_splitContainer.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="macGroupbox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1303,7 +1468,7 @@
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 24</value>
+    <value>12, 24</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1327,7 +1492,7 @@
     <value>0</value>
   </data>
   <data name="m_ownMAC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 19</value>
+    <value>106, 19</value>
   </data>
   <data name="m_ownMAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 24</value>
@@ -1348,7 +1513,7 @@
     <value>1</value>
   </data>
   <data name="macGroupbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 58</value>
   </data>
   <data name="macGroupbox.Size" type="System.Drawing.Size, System.Drawing">
     <value>557, 56</value>
@@ -1369,7 +1534,7 @@
     <value>tabPage1</value>
   </data>
   <data name="&gt;&gt;macGroupbox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1378,7 +1543,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 384</value>
+    <value>557, 404</value>
   </data>
   <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1405,7 +1570,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 410</value>
+    <value>565, 430</value>
   </data>
   <data name="m_tabControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1423,10 +1588,10 @@
     <value>1</value>
   </data>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>380, 17</value>
+    <value>380, 26</value>
   </metadata>
   <metadata name="m_saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>526, 17</value>
+    <value>526, 26</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1435,7 +1600,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 410</value>
+    <value>565, 430</value>
   </data>
   <data name="&gt;&gt;deleteToolStripMenuItem.Name" xml:space="preserve">
     <value>deleteToolStripMenuItem</value>

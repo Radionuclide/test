@@ -30,6 +30,7 @@ namespace iba.Controls
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonTaskControl));
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.m_cbResourceCritical = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
             this.m_ExecutegroupBox = new System.Windows.Forms.GroupBox();
@@ -47,7 +48,6 @@ namespace iba.Controls
             this.m_rbNotDisabled = new System.Windows.Forms.RadioButton();
             this.m_rbNotSuccess = new System.Windows.Forms.RadioButton();
             this.m_pluginPanel = new System.Windows.Forms.Panel();
-            this.m_cbResourceCritical = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.m_ExecutegroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -63,6 +63,12 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.m_nameTextBox);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // m_cbResourceCritical
+            // 
+            resources.ApplyResources(this.m_cbResourceCritical, "m_cbResourceCritical");
+            this.m_cbResourceCritical.Name = "m_cbResourceCritical";
+            this.m_cbResourceCritical.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -189,12 +195,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_pluginPanel, "m_pluginPanel");
             this.m_pluginPanel.BackColor = System.Drawing.SystemColors.Control;
             this.m_pluginPanel.Name = "m_pluginPanel";
-            // 
-            // m_cbResourceCritical
-            // 
-            resources.ApplyResources(this.m_cbResourceCritical, "m_cbResourceCritical");
-            this.m_cbResourceCritical.Name = "m_cbResourceCritical";
-            this.m_cbResourceCritical.UseVisualStyleBackColor = true;
             // 
             // CommonTaskControl
             // 

@@ -117,7 +117,7 @@ namespace Alunorf_plugin_test
             m_logger.BufferSize = 1000;
             m_logger.Level = Level.All;
             m_logger.MakeDailyArchive = true;
-            m_logger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + "\r\n";
+            //m_logger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + "\r\n";
             m_logger.MaximumArchiveFiles = 10;
             //m_logger.EventFormatter.DataFormatter = new LogExtraDataFormatter(m_idToFilename);
             m_logger.Open();
@@ -488,7 +488,7 @@ namespace Alunorf_plugin_test
                                     //    w.Write(qdt.Interpret(m_telegrams));
                                     //    w.Close();
                                     //}
-                                    qdt.WriteToDatFile(m_telegrams, filename);
+                                    //qdt.WriteToDatFile(m_telegrams, filename);
                                     AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
                                     SetMessage("qdt telegram recieved: " + qdt.AktId.ToString() + ", written to " + filename);
                                     if (!SendTelegram(ackqdt))

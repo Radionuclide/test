@@ -17,7 +17,7 @@
 
 <P class="section">Files</P>
 <UL>
-  <LI>ibaDatCoordinatorInstall_v1.21.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
+  <LI>ibaDatCoordinatorInstall_v1.21.2.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
   <LI>readme.htm: this file</LI>
 </UL>
 
@@ -27,9 +27,24 @@ To enable conditional tasks, the ibaAnalyzer version should be at least 5.4.
 To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
 Significantly less resources will be used if the ibaAnalyzer version is at least 6.3.1 or later.<BR>
 Also install the .NET 2.0 framework, available from <A HREF="http://www.microsoft.com">www.microsoft.com</A>.
-Execute ibaDatCoordinatorInstall_v1.21.0.exe and follow instructions.</p>
+Execute ibaDatCoordinatorInstall_v1.21.2.exe and follow instructions.</p>
 
 <P class="section">Version history</P>
+
+<P class="header1">Version 1.21.2 - 21/05/2014</P>
+<P class="header2">Bug fixes</P>
+<UL>
+	<LI>No sanity checks were performed when using infofields for subdirectories or output file names, illegal characters are now replaced by underscores.</LI>
+	<LI>Watchdog did not work on Windows 7 or later</LI>
+	<LI>It is now allowed to have a .NET framework later than 3.5 installed</LI>
+</UL>
+
+<P class="header1">Version 1.21.1 - 18/02/2014</P>
+<P class="header2">New features</P>
+<UL>
+	<LI>Installer adapted to allow windows 8.1 or windows server 2012 as operating system</LI>
+	<LI>When licensed tasks are encountered for which temporarily there is no license, ibaDatCoordinator resumes when the license is available again rather than halting the job.</LI>
+</UL>
 
 <P class="header1">Version 1.21.0 - 04/12/2013</P>
 <P class="header2">New features</P>

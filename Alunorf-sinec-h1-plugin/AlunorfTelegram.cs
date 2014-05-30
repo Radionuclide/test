@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iba;
-using IBAFILESLib;
+using ibaFilesLiteLib;
 using System.Globalization;
 
 namespace Alunorf_sinec_h1_plugin 
@@ -559,9 +559,9 @@ namespace Alunorf_sinec_h1_plugin
             return b.ToString();
         }
 
-        public void WriteToDatFile(List<PluginH1Task.Telegram> telegrams, string filename)
+        /*public void WriteToDatFile(List<PluginH1Task.Telegram> telegrams, string filename)
         { //to test the QDT telegram, reading has to implemented at well, by writing the values to a string
-            IbaFileWriter2 filewriter = new IbaFileCreatorClass();
+            IbaFileWriter filewriter = new IbaFileCreatorClass();
             filewriter.Create(filename,1);
             SByte v_sbyte = 0;
             Byte v_byte = 0;
@@ -659,8 +659,7 @@ namespace Alunorf_sinec_h1_plugin
                         if (i == 0) offset = v_float;
                         if (i == 1) lengthbase = v_float - offset;
                     }
-                    IbaChannelWriter channelwriter;
-                    filewriter.CreateAnalogChannel(0, count, rec.Name, lengthbase, out channelwriter);
+                    IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, count, rec.Name, lengthbase) as IbaChannelWriter;
                     channelwriter.LengthBased = 1;
                     channelwriter.xOffset = offset;
                     for (int i = 0; i < 400; i++) channelwriter.WriteData(vals[i]);
@@ -674,8 +673,7 @@ namespace Alunorf_sinec_h1_plugin
             }
             if (count == 0) //when no signals, write a dummy one, others ibaFiles won't write the file
             {
-                IbaChannelWriter channelwriter;
-                filewriter.CreateAnalogChannel(0, 0, "dummysignal", 1, out channelwriter);
+                IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, 0, "dummysignal", 1) as IbaChannelWriter;
                 channelwriter.LengthBased = 1;
                 channelwriter.xOffset = 0;
                 channelwriter.WriteData(1.0f);
@@ -690,7 +688,7 @@ namespace Alunorf_sinec_h1_plugin
             {
 
             }
-        }
+        }*/
 
         public override bool WriteBody(H1ByteStream stream)
         {
@@ -780,8 +778,7 @@ namespace Alunorf_sinec_h1_plugin
                 count++;
                 try
                 {
-                    IbaChannelReader reader; 
-                    file.QueryChannelByName(rec.Name, out reader);
+                    IbaChannelReader reader = file.QueryChannelByName(rec.Name) as IbaChannelReader;
                     float lengthBase, offset;
                     object data;
                     try

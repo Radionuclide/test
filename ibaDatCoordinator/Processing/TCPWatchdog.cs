@@ -84,7 +84,6 @@ namespace iba.Processing
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                     return;
             }
-
             m_bStopThread = false;
             m_thread = new Thread(new ThreadStart(Run));
             m_thread.Name = "TCP/IP watchdog thread";
@@ -210,13 +209,15 @@ namespace iba.Processing
                         if (m_settings.ActiveNode)
                         {
                             //IPHostEntry entry = Dns.Resolve(m_settings.Address);
-                            IPHostEntry entry = Dns.GetHostEntry(m_settings.Address);
-                            IPAddress address = entry.AddressList[0];
-                            m_serverSocket.Connect(new IPEndPoint(address, m_settings.PortNr));
+                            //IPHostEntry entry = Dns.GetHostEntry(m_settings.Address);
+                            //IPAddress address = entry.AddressList[0];
+                            //m_serverSocket.Connect(new IPEndPoint(address, m_settings.PortNr));
+                            m_serverSocket.Connect(m_settings.Address, m_settings.PortNr);
                             m_serverSocket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                             bConnected = true;
                             m_dataSockets.Add(m_serverSocket);
-                            m_statusString = string.Format(iba.Properties.Resources.wdTcpIpConnected, address);
+                            //m_statusString = string.Format(iba.Properties.Resources.wdTcpIpConnected, address);
+                            m_statusString = string.Format(iba.Properties.Resources.wdTcpIpConnected, m_settings.Address + ":" + m_settings.PortNr.ToString());
                         }
                         else
                         {

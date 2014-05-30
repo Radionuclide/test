@@ -134,7 +134,10 @@ namespace iba.Processing
         private bool StopIbaAnalyzer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, ConfigurationData cd)
         {
             if (ibaAnalyzer == null) return false;
-            m_callCounts.Remove(ibaAnalyzer);
+            lock (m_lock2)
+            {
+                m_callCounts.Remove(ibaAnalyzer);
+            }
             try
             {
                 try

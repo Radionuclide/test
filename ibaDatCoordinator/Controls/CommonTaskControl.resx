@@ -234,8 +234,137 @@
   <data name="m_ExecutegroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>m_ExecutegroupBox</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rb1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbSucces" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_ExecutegroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 81</value>
+  </data>
+  <data name="m_ExecutegroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 75</value>
+  </data>
+  <data name="m_ExecutegroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_ExecutegroupBox.Text" xml:space="preserve">
+    <value>Execute</value>
+  </data>
+  <data name="&gt;&gt;m_ExecutegroupBox.Name" xml:space="preserve">
+    <value>m_ExecutegroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_ExecutegroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_ExecutegroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ExecutegroupBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_rb1stFailure.Name" xml:space="preserve">
+    <value>m_rb1stFailure</value>
+  </data>
+  <data name="&gt;&gt;m_rb1stFailure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rb1stFailure.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_rb1stFailure.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_rbAlways.Name" xml:space="preserve">
+    <value>m_rbAlways</value>
+  </data>
+  <data name="&gt;&gt;m_rbAlways.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbAlways.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbAlways.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_rbFailure.Name" xml:space="preserve">
+    <value>m_rbFailure</value>
+  </data>
+  <data name="&gt;&gt;m_rbFailure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbFailure.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbFailure.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisabled.Name" xml:space="preserve">
+    <value>m_rbDisabled</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisabled.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisabled.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_rbSucces.Name" xml:space="preserve">
+    <value>m_rbSucces</value>
+  </data>
+  <data name="&gt;&gt;m_rbSucces.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbSucces.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbSucces.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>696, 56</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>m_ExecutegroupBox</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rb1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbSucces" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_rb1stFailure.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -402,65 +531,140 @@
   <data name="&gt;&gt;m_rbSucces.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 56</value>
-  </data>
-  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
-    <value>m_ExecutegroupBox</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rb1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbSucces" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_ExecutegroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 81</value>
-  </data>
-  <data name="m_ExecutegroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 75</value>
-  </data>
-  <data name="m_ExecutegroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_ExecutegroupBox.Text" xml:space="preserve">
-    <value>Execute</value>
-  </data>
-  <data name="&gt;&gt;m_ExecutegroupBox.Name" xml:space="preserve">
-    <value>m_ExecutegroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_ExecutegroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_ExecutegroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ExecutegroupBox.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="groupBoxNotify.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
+    <value>groupBoxNotify</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel6.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNot1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotSuccess" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="groupBoxNotify.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 160</value>
+  </data>
+  <data name="groupBoxNotify.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 75</value>
+  </data>
+  <data name="groupBoxNotify.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="groupBoxNotify.Text" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="&gt;&gt;groupBoxNotify.Name" xml:space="preserve">
+    <value>groupBoxNotify</value>
+  </data>
+  <data name="&gt;&gt;groupBoxNotify.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxNotify.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBoxNotify.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="tableLayoutPanel6.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_rbNot1stFailure.Name" xml:space="preserve">
+    <value>m_rbNot1stFailure</value>
+  </data>
+  <data name="&gt;&gt;m_rbNot1stFailure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNot1stFailure.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;m_rbNot1stFailure.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotAlways.Name" xml:space="preserve">
+    <value>m_rbNotAlways</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotAlways.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotAlways.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotAlways.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotFailure.Name" xml:space="preserve">
+    <value>m_rbNotFailure</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotFailure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotFailure.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotFailure.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotDisabled.Name" xml:space="preserve">
+    <value>m_rbNotDisabled</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotDisabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotDisabled.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotDisabled.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotSuccess.Name" xml:space="preserve">
+    <value>m_rbNotSuccess</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotSuccess.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotSuccess.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;m_rbNotSuccess.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="tableLayoutPanel6.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>696, 56</value>
+  </data>
+  <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
+    <value>groupBoxNotify</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel6.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNot1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotSuccess" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_rbNot1stFailure.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -627,68 +831,17 @@
   <data name="&gt;&gt;m_rbNotSuccess.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="tableLayoutPanel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tableLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="tableLayoutPanel6.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 56</value>
-  </data>
-  <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
-    <value>tableLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
-    <value>groupBoxNotify</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel6.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNot1stFailure" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotAlways" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotFailure" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotDisabled" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbNotSuccess" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,Percent,33,Percent,34" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="groupBoxNotify.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 160</value>
-  </data>
-  <data name="groupBoxNotify.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 75</value>
-  </data>
-  <data name="groupBoxNotify.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="groupBoxNotify.Text" xml:space="preserve">
-    <value>Notify</value>
-  </data>
-  <data name="&gt;&gt;groupBoxNotify.Name" xml:space="preserve">
-    <value>groupBoxNotify</value>
-  </data>
-  <data name="&gt;&gt;groupBoxNotify.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBoxNotify.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBoxNotify.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_pluginPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_pluginPanel.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="m_pluginPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 241</value>
   </data>
   <data name="m_pluginPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 686</value>
+    <value>702, 300</value>
   </data>
   <data name="m_pluginPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -715,10 +868,10 @@
     <value>True</value>
   </data>
   <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 740</value>
+    <value>0, 250</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 935</value>
+    <value>720, 555</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>CommonTaskControl</value>
