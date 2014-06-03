@@ -220,4 +220,7 @@
   <data name="tooltipDesc" xml:space="preserve">
     <value>Type here optionally a description of the telegram. This text is not part of the telegram to be sent to the NQS servers.</value>
   </data>
+  <data name="err_tcpip_sameport" xml:space="preserve">
+    <value>TCP/IP currently not implemented for equal port numbers.</value>
+  </data>
 </root>

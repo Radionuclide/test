@@ -91,11 +91,18 @@ namespace Alunorf_sinec_h1_plugin
             set { m_TCPIP = value; }
         }
 
-        private int m_portNr;
-        public int PortNr
+        private int m_portNr1;
+        public int PortNr1
         {
-            get { return m_portNr; }
-            set { m_portNr = value; }
+            get { return m_portNr1; }
+            set { m_portNr1 = value; }
+        }
+
+        private int m_portNr2;
+        public int PortNr2
+        {
+            get { return m_portNr2; }
+            set { m_portNr2 = value; }
         }
 
         private byte[] m_ownAddress;
@@ -247,7 +254,8 @@ namespace Alunorf_sinec_h1_plugin
         private void InitData(string name, IDatCoHost host, IJobData parentJob)
         {
             m_TCPIP = false;
-            m_portNr = 8000;
+            m_portNr1 = 8000;
+            m_portNr2 = 8010;
             m_ownAddress = new Byte[] { 0x00, 0x15, 0xBA, 0x00, 0x03, 0x7A };
             m_NQSAddress1 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x01 };
             m_NQSAddress2 = new Byte[] { 0x0A, 0x00, 0x8E, 0x00, 0x00, 0x02 };
@@ -282,7 +290,8 @@ namespace Alunorf_sinec_h1_plugin
         {
             PluginH1Task ht = new PluginH1Task(m_nameInfo, m_datcoHost, null);
             ht.m_TCPIP = m_TCPIP;
-            ht.m_portNr = m_portNr;
+            ht.m_portNr1 = m_portNr1;
+            ht.m_portNr2 = m_portNr2;
             ht.m_NQSAddress1 = m_NQSAddress1;
             ht.m_NQSAddress2 = m_NQSAddress2;
             ht.m_NQS_TSAPforNQS1 = m_NQS_TSAPforNQS1;

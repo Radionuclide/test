@@ -326,12 +326,12 @@ namespace iba {
 	//	}
 	//}
 
-	bool CH1Manager::GetConnectionStatus(unsigned short vnr, H1Result% result)
+	void CH1Manager::GetConnectionStatus(unsigned short vnr, H1Result% result)
 	{
 		if (!m_connections) 
 		{
 			result = H1Result::BAD_LINE;
-			return false;
+			return;// false;
 		}
 		H1_RECPARAMS rp;
 		memset(&rp,0,sizeof(rp));
@@ -341,9 +341,9 @@ namespace iba {
 		if (error) {
 			result = H1Result::OPERATING_SYSTEM_ERROR;
 			m_lastError = "Operating system error (unplugged cable?)";
-			return false; 
+			//return false; 
 		}
-		return true;
+		//return true;
 	}
 
 	bool CH1Manager::StartRead(unsigned short vnr, H1Result% result)
@@ -394,13 +394,13 @@ namespace iba {
 		return true;
 	}
 
-	bool CH1Manager::GetReadStatus(unsigned short vnr, H1Result% result)
+	void CH1Manager::GetReadStatus(unsigned short vnr, H1Result% result)
 	{
 		H1_RECPARAMS *rp;
 		if (m_rp->find(vnr) == m_rp->end())
 		{
 			result = H1Result::NO_REQUEST;		
-			return false;
+			return;// false;
 		}
 		else
 			rp = (*m_rp)[vnr];
@@ -409,8 +409,8 @@ namespace iba {
 		if (result == H1Result::WAIT_CONNECT)
 			m_lastError = "connection lost";
 
-		if (error) return false; 
-		return true;
+//		if (error) return false; 
+//		return true;
 	}
 
 	bool CH1Manager::StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram)
@@ -434,7 +434,7 @@ namespace iba {
 		return !error;
 	}
 
-	bool CH1Manager::GetSendStatus(unsigned short vnr, H1Result% result)
+	void CH1Manager::GetSendStatus(unsigned short vnr, H1Result% result)
 	{
 		H1_SENDPARAMS *sp;
 		if (m_sp->find(vnr) != m_sp->end())
@@ -442,13 +442,13 @@ namespace iba {
 		else
 		{
 			result = H1Result::NO_REQUEST;
-			return false;
+			return;// false;
 		}
 
 		int error = H1AbfrageSenden(sp);
 		result = (H1Result) sp->Fehler;
-		if (error) return false; 
-		return true;
+		//if (error) return false; 
+		//return true;
 	}
 
 	String^ CH1Manager::LastError::get() { return m_lastError; }

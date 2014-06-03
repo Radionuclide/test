@@ -73,6 +73,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SinecH1ConnectionParams.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SinecH1ConnectionParams.Designer.cs">
+      <DependentUpon>SinecH1ConnectionParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TCPIPConnectionParams.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TCPIPConnectionParams.Designer.cs">
+      <DependentUpon>TCPIPConnectionParams.cs</DependentUpon>
+    </Compile>
     <Compile Include="TcpIPManager.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
@@ -108,6 +120,12 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SinecH1ConnectionParams.resx">
+      <DependentUpon>SinecH1ConnectionParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TCPIPConnectionParams.resx">
+      <DependentUpon>TCPIPConnectionParams.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

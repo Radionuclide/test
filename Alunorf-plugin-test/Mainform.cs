@@ -305,7 +305,7 @@ namespace Alunorf_plugin_test
             m_retryConnect = false;
             if (m_pcConnected == ConnectionState.DISCONNECTED)
             {
-                CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+                H1Result result = H1Result.ALL_CLEAR;
                 m_h1manager.GetConnectionStatus(m_vnr, ref result);
                 switch (result)
                 {

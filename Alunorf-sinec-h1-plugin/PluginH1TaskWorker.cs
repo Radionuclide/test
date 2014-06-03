@@ -103,7 +103,20 @@ namespace Alunorf_sinec_h1_plugin
 
             bool ok;
             if (m_data.TCPIP)
-                ok = (m_tcpManager as TcpIPManager).SetPort(m_data.PortNr);
+            {
+                if (m_data.PortNr1 == m_data.PortNr2)
+                {
+                    m_started = false;
+                    m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_tcpip_sameport;
+                    return false;
+                }
+                else
+                {
+                    (m_tcpManager as TcpIPManager).PortNr1 = (m_data.PortNr1);
+                    (m_tcpManager as TcpIPManager).PortNr2 = (m_data.PortNr2);
+                    ok = true;
+                }
+            }
             else
             {
                 ok = (m_tcpManager as CH1Manager).SetStationAddress(m_data.OwnAddress);
@@ -190,6 +203,13 @@ namespace Alunorf_sinec_h1_plugin
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
             PluginH1Task data = newtask as PluginH1Task;
+
+            if (m_data.TCPIP != data.TCPIP) //this cannot be resolved with apply
+            {
+                if (!OnStop()) return false;
+                m_data = data;
+                return OnStart();
+            }
 
             bool ok = true;
 
@@ -895,7 +915,7 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter2=0;
                     }
                     return true;
-                case H1Result.WAIT_CONNECT:
+                case H1Result.WAIT_CONNECT: //sinecH1, detect by counting
                     if (vnr == m_vnr1)
                     {
                         m_readStarted1 = false;
@@ -907,6 +927,19 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter2++;
                     }
                     return true;
+                case H1Result.OPERATING_SYSTEM_ERROR: //tcpip, socket error
+                    if (vnr == m_vnr1)
+                    {
+                        m_disconnectedCounter1 = 0;
+                        m_nqs1Status = NQSStatus.DISCONNECTED;
+                    }
+                    else if (vnr == m_vnr2)
+                    {
+                        m_disconnectedCounter2 = 0;
+                        m_nqs2Status = NQSStatus.DISCONNECTED;
+                    }
+                    m_retryConnect = true;
+                    return true; 
                 case H1Result.ALREADY_RUNNING:
                 case H1Result.WAIT_DATA:
                     if (vnr == m_vnr1)
@@ -930,6 +963,7 @@ namespace Alunorf_sinec_h1_plugin
             if ((m_logger != null) && m_logger.IsOpen)
                 m_logger.Log(Level.Info, "starting build connection : " + m_vnr1.ToString() + ":" + m_nqs1Status.ToString() + " " + m_vnr2.ToString() + ":"  + m_nqs2Status.ToString());
             m_retryConnect = false;
+            TimeSpan retryConnectInterval = TimeSpan.FromMinutes((double)m_data.RetryConnectTimeInterval);
             if (m_nqs1Status == NQSStatus.DISCONNECTED)
             {
                 H1Result result = H1Result.ALL_CLEAR;
@@ -955,35 +989,44 @@ namespace Alunorf_sinec_h1_plugin
                     case H1Result.OPERATING_SYSTEM_ERROR:
                         m_retryConnect = true;
                         m_error = m_tcpManager.LastError;
+                        if (m_logger != null && m_logger.IsOpen && string.IsNullOrEmpty(m_error))
+                            m_logger.Log(Level.Exception, m_error);
                         break;
                     case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
                     case H1Result.BAD_LINE: //indicate that a connection needs to be set up
-                        bool connectStarted;
                         if (m_data.TCPIP)
-                            connectStarted =(m_tcpManager as TcpIPManager).Connect(ref m_vnr1, ref result, m_data.ConnectionTimeOut);
-                        else
-                            connectStarted =(m_tcpManager as CH1Manager).Connect(ref m_vnr1, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut);
-                        
-                        if (connectStarted)
                         {
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "connection to nqs1 restored");
-                            m_nqs1Status = NQSStatus.CONNECTED;
-                            //send INI telegram
-                            lock (m_idCounterLock)
+                            m_vnr1 = (ushort)m_data.PortNr1;
+                            result = (m_tcpManager as TcpIPManager).PassiveConnect(m_vnr1, 0);
+                            if (result == H1Result.WAIT_CONNECT)
                             {
-                                QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++), "init1");
-                                m_idCounter += 2;
+                                retryConnectInterval = TimeSpan.FromSeconds((double)m_data.ConnectionTimeOut);
                             }
+                            m_retryConnect = true;
                         }
                         else
                         {
-                            m_error = m_tcpManager.LastError;
-                            m_retryConnect = true;
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "timeout trying to connect to nqs1");
+                            if ((m_tcpManager as CH1Manager).Connect(ref m_vnr1, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut))
+                            {
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Info, "connection to nqs1 restored");
+                                m_nqs1Status = NQSStatus.CONNECTED;
+                                //send INI telegram
+                                lock (m_idCounterLock)
+                                {
+                                    QueueTelegram(m_vnr1, new IniTelegram(m_idCounter, m_nqs1Messages++), "init1");
+                                    m_idCounter += 2;
+                                }
+                            }
+                            else
+                            {
+                                m_error = m_tcpManager.LastError;
+                                m_retryConnect = true;
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Info, "timeout trying to connect to nqs1");
+                            }
                         }
                         break;
                     default:
@@ -1023,30 +1066,39 @@ namespace Alunorf_sinec_h1_plugin
                         m_retryConnect = true;
                         break;
                     case H1Result.BAD_LINE:
-                        bool connectStarted;
                         if (m_data.TCPIP)
-                            connectStarted = (m_tcpManager as TcpIPManager).Connect(ref m_vnr2, ref result, m_data.ConnectionTimeOut);
-                        else
-                            connectStarted = (m_tcpManager as CH1Manager).Connect(ref m_vnr2, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut);
-                        
-                        if (connectStarted)
                         {
-                            m_nqs2Status = NQSStatus.CONNECTED;
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "connection to nqs2 restored");
-                            //send INI telegram
-                            lock (m_idCounterLock)
+                            //connectStarted = (m_tcpManager as TcpIPManager).Connect(ref m_vnr2, ref result, m_data.ConnectionTimeOut);
+                            m_vnr2 = (ushort)m_data.PortNr1;
+                            result = (m_tcpManager as TcpIPManager).PassiveConnect(m_vnr2, 1);
+                            if (result == H1Result.WAIT_CONNECT)
                             {
-                                QueueTelegram(m_vnr2, new IniTelegram(m_idCounter, m_nqs2Messages++), "init2");
-                                m_idCounter += 2;
+                                retryConnectInterval = TimeSpan.FromSeconds((double)m_data.ConnectionTimeOut);
+                                m_error = ""; //blank
                             }
+                            m_retryConnect = true;
                         }
                         else
                         {
-                            if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "timeout trying to connect to nqs2");
-                            m_error = m_tcpManager.LastError;
-                            m_retryConnect = true;
+                            if ((m_tcpManager as CH1Manager).Connect(ref m_vnr2, 4, false, m_data.NQSAddress1, m_data.OwnTSAPforNQS1, m_data.NQS_TSAPforNQS1, ref result, m_data.ConnectionTimeOut))
+                            {
+                                m_nqs2Status = NQSStatus.CONNECTED;
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Info, "connection to nqs2 restored");
+                                //send INI telegram
+                                lock (m_idCounterLock)
+                                {
+                                    QueueTelegram(m_vnr2, new IniTelegram(m_idCounter, m_nqs2Messages++), "init2");
+                                    m_idCounter += 2;
+                                }
+                            }
+                            else
+                            {
+                                if (m_logger != null && m_logger.IsOpen)
+                                    m_logger.Log(Level.Info, "timeout trying to connect to nqs2");
+                                m_error = m_tcpManager.LastError;
+                                m_retryConnect = true;
+                            }
                         }
                         break;
                     default:
@@ -1060,7 +1112,7 @@ namespace Alunorf_sinec_h1_plugin
             {
                 m_retryConnect = false;
                 //start reconnect timer
-                m_reconnectTimer.Change(TimeSpan.FromMinutes((double)m_data.RetryConnectTimeInterval), TimeSpan.Zero);
+                m_reconnectTimer.Change(retryConnectInterval, TimeSpan.Zero);
             }
 
             if ((m_logger != null) && m_logger.IsOpen)
@@ -1199,7 +1251,7 @@ namespace Alunorf_sinec_h1_plugin
                     }
                 }
 
-                if (pos == -1) return true; //no messages to process
+                if (pos == -1) return true; //no messages to process or not connected
                 m_lastgo = vnr;
                 AlunorfTelegram telegram = m_messageQueue[pos].telegram;
 
@@ -1240,6 +1292,19 @@ namespace Alunorf_sinec_h1_plugin
                         else if (vnr == m_vnr2)
                             m_disconnectedCounter2++;
                         return true;
+                    case H1Result.OPERATING_SYSTEM_ERROR: //tcpip, socket error
+                        if (vnr == m_vnr1)
+                        {
+                            m_disconnectedCounter1 = 0;
+                            m_nqs1Status = NQSStatus.DISCONNECTED;
+                        }
+                        else if (vnr == m_vnr2)
+                        {
+                            m_disconnectedCounter2 = 0;
+                            m_nqs2Status = NQSStatus.DISCONNECTED;
+                        }
+                        m_retryConnect = true;
+                        return true; 
                     case H1Result.WAIT_SEND:
                     case H1Result.ALL_CLEAR:
                         string id = m_messageQueue[pos].id;

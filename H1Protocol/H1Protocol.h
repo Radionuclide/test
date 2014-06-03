@@ -50,13 +50,13 @@ namespace iba {
 	{
 		property String^ LastError{ String^ get(); }
 		bool DisconnectAll();
-		bool GetConnectionStatus(unsigned short vnr, H1Result% result);
+		void GetConnectionStatus(unsigned short vnr, H1Result% result);
 		bool StartRead(unsigned short vnr, H1Result% result);
 		bool StoreBlockedBytes(unsigned short vnr);
 		bool FinishRead(unsigned short vnr, ITelegram^ telegram);
-		bool GetReadStatus(unsigned short vnr, H1Result% result);
+		void GetReadStatus(unsigned short vnr, H1Result% result);
 		bool StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram);
-		bool GetSendStatus(unsigned short vnr, H1Result% result);
+		void GetSendStatus(unsigned short vnr, H1Result% result);
 		bool SendNoPoll(unsigned short vnr, H1Result% result, ITelegram^ telegram);
 		bool SetSendTimeout(int timeout);
 	};
@@ -79,13 +79,13 @@ namespace iba {
 		property String^ LastError{ virtual String^ get(); }
 		virtual bool DisconnectAll();
 		//bool Disconnect(unsigned short);
-		virtual bool GetConnectionStatus(unsigned short vnr, H1Result% result);
+		virtual void GetConnectionStatus(unsigned short vnr, H1Result% result);
 		virtual bool StartRead(unsigned short vnr, H1Result% result);
 		virtual bool StoreBlockedBytes(unsigned short vnr);
 		virtual bool FinishRead(unsigned short vnr, ITelegram^ telegram);
-		virtual bool GetReadStatus(unsigned short vnr, H1Result% result);
+		virtual void GetReadStatus(unsigned short vnr, H1Result% result);
 		virtual bool StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram);
-		virtual bool GetSendStatus(unsigned short vnr, H1Result% result);
+		virtual void GetSendStatus(unsigned short vnr, H1Result% result);
 		virtual bool SendNoPoll(unsigned short vnr, H1Result% result, ITelegram^ telegram);
 		virtual bool SetSendTimeout(int timeout);
 

@@ -21,6 +21,8 @@ namespace Alunorf_sinec_h1_plugin
         private static readonly int SIGNALS_INDEX = 2;
         private static readonly int TELEGRAM_NEW_INDEX = 3;
 
+        private SinecH1ConnectionParams m_sinecH1Params;
+        private TCPIPConnectionParams m_tcpipParams;
         public PluginH1TaskControl(IDatCoHost host)
         {
             m_datcoHost = host;
@@ -33,6 +35,17 @@ namespace Alunorf_sinec_h1_plugin
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.signal);
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.telegram_new);
             m_tvMessages.ImageList = telegramImageList;
+
+            m_tcpipParams = new TCPIPConnectionParams();
+            m_sinecH1Params = new SinecH1ConnectionParams();
+            m_sinecH1Params.Location = m_tcpipParams.Location = m_connectParametersPanel.Location;
+            m_sinecH1Params.Size = m_tcpipParams.Size = m_connectParametersPanel.Size;
+            m_sinecH1Params.Anchor = m_tcpipParams.Anchor = m_connectParametersPanel.Anchor;
+            m_sinecH1Params.Visible = true;
+            m_tcpipParams.Visible = false;
+            m_connectParametersPanel.Visible = false;
+            this.tabPage1.Controls.Add(m_sinecH1Params);
+            this.tabPage1.Controls.Add(m_tcpipParams);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -85,7 +98,7 @@ namespace Alunorf_sinec_h1_plugin
             temp.FourthByte = m_data.OwnAddress[3];
             temp.FifthByte = m_data.OwnAddress[4];
             temp.SixthByte = m_data.OwnAddress[5];
-            m_ownMAC.Text = temp.Address;
+            m_sinecH1Params.m_ownMAC.Text = temp.Address;
 
             temp.FirstByte = m_data.NQSAddress1[0];
             temp.SecondByte = m_data.NQSAddress1[1];
@@ -93,7 +106,7 @@ namespace Alunorf_sinec_h1_plugin
             temp.FourthByte = m_data.NQSAddress1[3];
             temp.FifthByte = m_data.NQSAddress1[4];
             temp.SixthByte = m_data.NQSAddress1[5];
-            m_nqs1MAC.Text = temp.Address;
+            m_sinecH1Params.m_nqs1MAC.Text = temp.Address;
 
             temp.FirstByte = m_data.NQSAddress2[0];
             temp.SecondByte = m_data.NQSAddress2[1];
@@ -101,18 +114,19 @@ namespace Alunorf_sinec_h1_plugin
             temp.FourthByte = m_data.NQSAddress2[3];
             temp.FifthByte = m_data.NQSAddress2[4];
             temp.SixthByte = m_data.NQSAddress2[5];
-            m_nqs2MAC.Text = temp.Address;
+            m_sinecH1Params.m_nqs2MAC.Text = temp.Address;
 
-            m_tbTSAP_NQS1_PC.Text = m_data.OwnTSAPforNQS1;
-            m_tbTSAP_NQS2_PC.Text = m_data.OwnTSAPforNQS2;
-            m_tbTSAP_NQS1_NQS.Text = m_data.NQS_TSAPforNQS1;
-            m_tbTSAP_NQS2_NQS.Text = m_data.NQS_TSAPforNQS2;
+            m_sinecH1Params.m_tbTSAP_NQS1_PC.Text = m_data.OwnTSAPforNQS1;
+            m_sinecH1Params.m_tbTSAP_NQS2_PC.Text = m_data.OwnTSAPforNQS2;
+            m_sinecH1Params.m_tbTSAP_NQS1_NQS.Text = m_data.NQS_TSAPforNQS1;
+            m_sinecH1Params.m_tbTSAP_NQS2_NQS.Text = m_data.NQS_TSAPforNQS2;
 
             BuildTree();
 
             m_rbSinecH1.Checked = !m_data.TCPIP;
             m_rbTCPIP.Checked = !m_data.TCPIP;
-            m_tbPortNr.Text = m_data.PortNr.ToString();
+            m_tcpipParams.m_tbPortNr1.Text = m_data.PortNr1.ToString();
+            m_tcpipParams.m_tbPortNr2.Text = m_data.PortNr2.ToString();
 
             m_nudRetryConnectTimeInterval.Value = (decimal)m_data.RetryConnectTimeInterval;
             m_nudTryconnectTimeout.Value = (decimal)m_data.ConnectionTimeOut;
@@ -176,7 +190,7 @@ namespace Alunorf_sinec_h1_plugin
         public void  SaveData()
         {
             MacAddr temp = new MacAddr();
-            temp.Address = m_ownMAC.Text;
+            temp.Address = m_sinecH1Params.m_ownMAC.Text;
             m_data.OwnAddress[0] = temp.FirstByte;
             m_data.OwnAddress[1] = temp.SecondByte;
             m_data.OwnAddress[2] = temp.ThirdByte;
@@ -184,7 +198,7 @@ namespace Alunorf_sinec_h1_plugin
             m_data.OwnAddress[4] = temp.FifthByte;
             m_data.OwnAddress[5] = temp.SixthByte;
 
-            temp.Address = m_nqs1MAC.Text;
+            temp.Address = m_sinecH1Params.m_nqs1MAC.Text;
             m_data.NQSAddress1[0] = temp.FirstByte;
             m_data.NQSAddress1[1] = temp.SecondByte;
             m_data.NQSAddress1[2] = temp.ThirdByte;
@@ -192,7 +206,7 @@ namespace Alunorf_sinec_h1_plugin
             m_data.NQSAddress1[4] = temp.FifthByte;
             m_data.NQSAddress1[5] = temp.SixthByte;
 
-            temp.Address = m_nqs2MAC.Text;
+            temp.Address = m_sinecH1Params.m_nqs2MAC.Text;
             m_data.NQSAddress2[0] = temp.FirstByte;
             m_data.NQSAddress2[1] = temp.SecondByte;
             m_data.NQSAddress2[2] = temp.ThirdByte;
@@ -200,10 +214,10 @@ namespace Alunorf_sinec_h1_plugin
             m_data.NQSAddress2[4] = temp.FifthByte;
             m_data.NQSAddress2[5] = temp.SixthByte;
 
-            m_data.OwnTSAPforNQS1 = m_tbTSAP_NQS1_PC.Text;
-            m_data.OwnTSAPforNQS2 = m_tbTSAP_NQS2_PC.Text;
-            m_data.NQS_TSAPforNQS1 = m_tbTSAP_NQS1_NQS.Text;
-            m_data.NQS_TSAPforNQS2 = m_tbTSAP_NQS2_NQS.Text;
+            m_data.OwnTSAPforNQS1 = m_sinecH1Params.m_tbTSAP_NQS1_PC.Text;
+            m_data.OwnTSAPforNQS2 = m_sinecH1Params.m_tbTSAP_NQS2_PC.Text;
+            m_data.NQS_TSAPforNQS1 = m_sinecH1Params.m_tbTSAP_NQS1_NQS.Text;
+            m_data.NQS_TSAPforNQS2 = m_sinecH1Params.m_tbTSAP_NQS2_NQS.Text;
 
             m_data.RetryConnectTimeInterval = (int)m_nudRetryConnectTimeInterval.Value;
             m_data.ConnectionTimeOut = (int)m_nudTryconnectTimeout.Value;
@@ -214,7 +228,12 @@ namespace Alunorf_sinec_h1_plugin
 
             try
             {
-                m_data.PortNr = int.Parse(m_tbPortNr.Text);
+                m_data.PortNr1 = int.Parse(m_tcpipParams.m_tbPortNr1.Text);
+            }
+            catch (Exception) { } //remains unchanged
+            try
+            {
+                m_data.PortNr2 = int.Parse(m_tcpipParams.m_tbPortNr2.Text);
             }
             catch (Exception) { } //remains unchanged
             m_data.TCPIP = m_rbTCPIP.Checked;
@@ -226,50 +245,52 @@ namespace Alunorf_sinec_h1_plugin
             m_refreshTimer.Enabled = false;
 
             PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationGuid(), m_control.TaskIndex());
+            Label label1 = m_sinecH1Params.m_statusNQS1;
+            Label label2 = m_sinecH1Params.m_statusNQS2;
             if (stat == null) 
             {
-                m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
-                m_statusNQS1.ForeColor = Color.Red;
-                m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
-                m_statusNQS2.ForeColor = Color.Red;
+                label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                label1.ForeColor = Color.Red;
+                label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                label2.ForeColor = Color.Red;
                 return;
             }
             switch ((stat.extraData as NqsServerStatusses).nqs1)
             { 
                 case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
-                    m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
-                    m_statusNQS1.ForeColor = Color.Red;
+                    label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                    label1.ForeColor = Color.Red;
                     break;
                 case PluginH1TaskWorker.NQSStatus.CONNECTED:
-                    m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.connected;
-                    m_statusNQS1.ForeColor = Color.Orange;
+                    label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.connected;
+                    label1.ForeColor = Color.Orange;
                     break;
                 case PluginH1TaskWorker.NQSStatus.INITIALISED:
-                    m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.initialised;
-                    m_statusNQS1.ForeColor = Color.Green;
+                    label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.initialised;
+                    label1.ForeColor = Color.Green;
                     break;
                 case PluginH1TaskWorker.NQSStatus.GO:
-                    m_statusNQS1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
-                    m_statusNQS1.ForeColor = Color.Green;
+                    label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
+                    label1.ForeColor = Color.Green;
                     break;
             }
             switch ((stat.extraData as NqsServerStatusses).nqs2)
             {
                 case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
-                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
-                    m_statusNQS2.ForeColor = Color.Red;
+                    label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
+                    label2.ForeColor = Color.Red;
                     break;
                 case PluginH1TaskWorker.NQSStatus.CONNECTED:
-                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.connected;
-                    m_statusNQS2.ForeColor = Color.Orange;
+                    label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.connected;
+                    label2.ForeColor = Color.Orange;
                     break;
                 case PluginH1TaskWorker.NQSStatus.INITIALISED:
-                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.initialised;
-                    m_statusNQS2.ForeColor = Color.Green;
+                    label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.initialised;
+                    label2.ForeColor = Color.Green;
                     break;
                 case PluginH1TaskWorker.NQSStatus.GO:
-                    m_statusNQS2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
-                    m_statusNQS2.ForeColor = Color.Green;
+                    label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
+                    label2.ForeColor = Color.Green;
                     break;
             }
             m_refreshTimer.Enabled = true;
@@ -712,11 +733,9 @@ namespace Alunorf_sinec_h1_plugin
             {
                 m_rbTCPIP.Checked = !m_rbSinecH1.Checked;
             }
-            Control[] listOfObjectsToChange = {label1,label2,label3,label4,label5,label6, m_tbTSAP_NQS1_NQS, m_tbTSAP_NQS1_PC, m_tbTSAP_NQS2_NQS, m_tbTSAP_NQS2_PC, m_ownMAC, m_nqs1MAC, m_nqs2MAC};
             bool sinech1 = m_rbSinecH1.Checked;
-            foreach (Control ctrl in listOfObjectsToChange)
-                ctrl.Enabled = sinech1;
-            m_tbPortNr.Enabled = !sinech1;
+            m_tcpipParams.Visible = !sinech1;
+            m_sinecH1Params.Visible = sinech1;
         }
     }
 }
