@@ -263,7 +263,7 @@
     <Compile Include="Processing\FileProcessing.cs" />
     <Compile Include="Processing\FileQuotaCleanup.cs" />
     <Compile Include="Processing\IbaAnalyzerCollection.cs" />
-    <Compile Include="IbaAnalyzerMonitor.cs" />
+    <Compile Include="Processing\IbaAnalyzerMonitor.cs" />
     <Compile Include="Processing\Notifier.cs" />
     <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
