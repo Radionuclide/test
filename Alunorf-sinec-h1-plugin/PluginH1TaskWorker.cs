@@ -20,6 +20,13 @@ namespace Alunorf_sinec_h1_plugin
         public PluginH1TaskWorker.NQSStatus nqs2;
     }
 
+    [Serializable]
+    public class NqsServerStatussesTCPIP :  NqsServerStatusses
+    {
+        public String ip1;
+        public String ip2;
+    }
+
     public class PluginH1TaskWorker : IPluginTaskWorker
     {
         private const int THREADSLEEPTIME = 100; // sleep time between different receive/send cycles
@@ -339,7 +346,7 @@ namespace Alunorf_sinec_h1_plugin
                         if (m_acknowledgements[key]) //positively acknowledged in the mean time;
                         {
                             if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "telegram allready positively acknowledged " + key);
+                                m_logger.Log(Level.Info, "telegram already positively acknowledged " + key);
                             m_acknowledgements.Remove(key);
                             m_idToFilename.Remove(key);
                             continue;
@@ -347,7 +354,7 @@ namespace Alunorf_sinec_h1_plugin
                         else //negatively acknowledged, regard the datfile as never send
                         {
                             if (m_logger != null && m_logger.IsOpen)
-                                m_logger.Log(Level.Info, "telegram allready negatively acknowledged " + key);
+                                m_logger.Log(Level.Info, "telegram already negatively acknowledged " + key);
                             m_acknowledgements.Remove(key);
                             string item = String.Format("{0}: '{1}'", telegram.QdtType, m_nak_errors[key]); 
                             m_nak_errors.Remove(key);
@@ -502,7 +509,18 @@ namespace Alunorf_sinec_h1_plugin
         {
             PluginTaskWorkerStatus answer = new PluginTaskWorkerStatus();
             answer.started = m_started;
-            NqsServerStatusses statusses = new NqsServerStatusses();
+            NqsServerStatusses statusses = null;
+
+            if (m_tcpManager is TcpIPManager)
+            {
+                NqsServerStatussesTCPIP statusses2 = new NqsServerStatussesTCPIP();
+                statusses2.ip1 = (m_tcpManager as TcpIPManager).ipadress[0];
+                statusses2.ip2 = (m_tcpManager as TcpIPManager).ipadress[1];
+                statusses = statusses2;
+            }
+            else
+                statusses = new NqsServerStatusses();
+
             statusses.nqs1 = m_nqs1Status;
             statusses.nqs2 = m_nqs2Status;
             answer.extraData = statusses;
@@ -703,9 +721,10 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter1=0;
                     else if (vnr == m_vnr2)
                         m_disconnectedCounter2=0;
-                    WrapperTelegram wrap = new WrapperTelegram();
-                    if (m_tcpManager.FinishRead(vnr, wrap))
+                    ITelegram it = new WrapperTelegram();
+                    if (m_tcpManager.FinishRead(vnr, ref it))
                     {
+                        WrapperTelegram wrap = it as WrapperTelegram;
                         NAKTelegram nak = wrap.InnerTelegram as NAKTelegram;
                         if (nak != null && m_idToFilename.Contains(FromNonUniqueToUnique(nak.AktId,vnr)))
                         {
@@ -1265,6 +1284,19 @@ namespace Alunorf_sinec_h1_plugin
                         else if (vnr == m_vnr2)
                             m_disconnectedCounter2++;
                         return true;
+                    case H1Result.OPERATING_SYSTEM_ERROR: //tcpip, socket error
+                        if (vnr == m_vnr1)
+                        {
+                            m_disconnectedCounter1 = 0;
+                            m_nqs1Status = NQSStatus.DISCONNECTED;
+                        }
+                        else if (vnr == m_vnr2)
+                        {
+                            m_disconnectedCounter2 = 0;
+                            m_nqs2Status = NQSStatus.DISCONNECTED;
+                        }
+                        m_retryConnect = true;
+                        return true; 
                     case H1Result.WAIT_SEND:
                     case H1Result.ALREADY_RUNNING:
                         return true; //stay in queue, sending is busy with previous telegram
@@ -1305,7 +1337,7 @@ namespace Alunorf_sinec_h1_plugin
                         }
                         m_retryConnect = true;
                         return true; 
-                    case H1Result.WAIT_SEND:
+                    case H1Result.WAIT_SEND: //most likely with tcip (it sends asynchronously)
                     case H1Result.ALL_CLEAR:
                         string id = m_messageQueue[pos].id;
                         if (id != null)

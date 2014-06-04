@@ -48,7 +48,7 @@ namespace iba.Plugins
         /// to write so the new file does not replace an existing file. It does so by appending underscore and an index
         /// to the filename.
         /// </summary>
-        /// <param name="filename">The name of the file a suitable replacement is to be found if the file allready exists</param>
+        /// <param name="filename">The name of the file a suitable replacement is to be found if the file already exists</param>
         /// <returns>The same filename if the file didn't exist yet, else a modified filename of a not yet existing file</returns>
         string FindSuitableFileName(string filename);
 

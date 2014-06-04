@@ -107,7 +107,7 @@ namespace Alunorf_roh_plugin
                             if (String.IsNullOrEmpty(name)) continue;
                             if (AdditionalInfos.ContainsKey(name))
                             {
-                                String err = String.Format(Properties.Resources.ChannelAllreadyPresent, name);
+                                String err = String.Format(Properties.Resources.ChannelalreadyPresent, name);
                                 MessageBox.Show(err, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 continue;
                             }
@@ -153,7 +153,7 @@ namespace Alunorf_roh_plugin
                             continue;
                         if (AdditionalInfos.ContainsKey(name))
                         {
-                            String err = String.Format(Properties.Resources.InfoAllreadyPresent, name);
+                            String err = String.Format(Properties.Resources.InfoalreadyPresent, name);
                             MessageBox.Show(err, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             continue;
                         }

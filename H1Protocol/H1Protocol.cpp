@@ -362,7 +362,7 @@ namespace iba {
 		return (!err); 
 	}
 
-	bool CH1Manager::FinishRead(unsigned short vnr, ITelegram^ telegram)
+	bool CH1Manager::FinishRead(unsigned short vnr, ITelegram^% telegram)
 	{
 		H1_RECPARAMS *rp=0;
 		if (m_rp->find(vnr) == m_rp->end())

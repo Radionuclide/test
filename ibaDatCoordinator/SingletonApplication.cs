@@ -36,7 +36,7 @@ namespace iba
                 if (handle.ToInt32() != 0)
                     iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
                 else
-                    MessageBox.Show(iba.Properties.Resources.AllReadyRunningOtherUser, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(iba.Properties.Resources.alreadyRunningOtherUser, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return true;
 			}
 		}

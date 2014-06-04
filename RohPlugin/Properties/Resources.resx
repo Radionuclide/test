@@ -199,10 +199,10 @@
   <data name="tooltipTest" xml:space="preserve">
     <value>.roh Test Datei erstellen</value>
   </data>
-  <data name="ChannelAllreadyPresent" xml:space="preserve">
+  <data name="ChannelalreadyPresent" xml:space="preserve">
     <value>Warning, channel with duplicate name  found in .dat file: '{0}'</value>
   </data>
-  <data name="InfoAllreadyPresent" xml:space="preserve">
+  <data name="InfoalreadyPresent" xml:space="preserve">
     <value>Warning, info field with duplicate name found in .dat file: '{0}'</value>
   </data>
   <data name="KanalDataCouldNotBeLoaded" xml:space="preserve">

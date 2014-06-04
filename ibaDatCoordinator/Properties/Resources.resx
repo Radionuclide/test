@@ -937,7 +937,7 @@
   <data name="UnexpectedErrorDatFile" xml:space="preserve">
     <value>Unexpected error while processing .dat File :</value>
   </data>
-  <data name="AllReadyRunningOtherUser" xml:space="preserve">
+  <data name="alreadyRunningOtherUser" xml:space="preserve">
     <value>ibaDatCoordinator client already running (perhaps under a different user)</value>
   </data>
   <data name="DeleteFilesProblem" xml:space="preserve">

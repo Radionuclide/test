@@ -52,7 +52,7 @@ namespace iba.Processing
                     // new data with same ID
                     m_workers.Add(data, cw);
                 }
-                //else, ignore, replace is due to a belated save of an allready deleted configuration
+                //else, ignore, replace is due to a belated save of an already deleted configuration
             }
         }
 
@@ -82,7 +82,7 @@ namespace iba.Processing
             //remove spurious configurations;
             foreach (ConfigurationData dat in m_workers.Keys)
             {
-                if (!datas.Contains(dat)) //contains works because we've allready replaced all datas (it would fail otherwise because contains
+                if (!datas.Contains(dat)) //contains works because we've already replaced all datas (it would fail otherwise because contains
                     // uses  equality comparer instead of CompareTo)
                     toRemove.Add(dat);
             }

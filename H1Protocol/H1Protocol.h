@@ -53,7 +53,7 @@ namespace iba {
 		void GetConnectionStatus(unsigned short vnr, H1Result% result);
 		bool StartRead(unsigned short vnr, H1Result% result);
 		bool StoreBlockedBytes(unsigned short vnr);
-		bool FinishRead(unsigned short vnr, ITelegram^ telegram);
+		bool FinishRead(unsigned short vnr, ITelegram^% telegram);
 		void GetReadStatus(unsigned short vnr, H1Result% result);
 		bool StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram);
 		void GetSendStatus(unsigned short vnr, H1Result% result);
@@ -82,7 +82,7 @@ namespace iba {
 		virtual void GetConnectionStatus(unsigned short vnr, H1Result% result);
 		virtual bool StartRead(unsigned short vnr, H1Result% result);
 		virtual bool StoreBlockedBytes(unsigned short vnr);
-		virtual bool FinishRead(unsigned short vnr, ITelegram^ telegram);
+		virtual bool FinishRead(unsigned short vnr, ITelegram^% telegram);
 		virtual void GetReadStatus(unsigned short vnr, H1Result% result);
 		virtual bool StartSend(unsigned short vnr, H1Result% result, ITelegram^ telegram);
 		virtual void GetSendStatus(unsigned short vnr, H1Result% result);

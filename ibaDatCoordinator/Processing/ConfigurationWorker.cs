@@ -1655,7 +1655,7 @@ namespace iba.Processing
                             lock (m_candidateNewFiles)
                             {
                                 if (m_candidateNewFiles.Find(delegate(Pair<string, DateTime> arg) { return arg.First == filename; }) != null)
-                                    break; //file being written and allready monitored
+                                    break; //file being written and already monitored
                             }
                             lock (m_processedFiles)
                             {

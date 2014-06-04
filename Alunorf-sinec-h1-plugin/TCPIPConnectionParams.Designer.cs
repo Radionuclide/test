@@ -30,17 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TCPIPConnectionParams));
             this.NQS1 = new System.Windows.Forms.GroupBox();
+            this.m_lblAdress1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.m_tbPortNr1 = new System.Windows.Forms.TextBox();
             this.m_statusNQS1 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.NQS2 = new System.Windows.Forms.GroupBox();
+            this.m_lblAdress2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.m_tbPortNr2 = new System.Windows.Forms.TextBox();
             this.m_statusNQS2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.m_lblAdress1 = new System.Windows.Forms.Label();
-            this.m_lblAdress2 = new System.Windows.Forms.Label();
             this.NQS1.SuspendLayout();
             this.NQS2.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +55,11 @@
             this.NQS1.Controls.Add(this.label8);
             this.NQS1.Name = "NQS1";
             this.NQS1.TabStop = false;
+            // 
+            // m_lblAdress1
+            // 
+            resources.ApplyResources(this.m_lblAdress1, "m_lblAdress1");
+            this.m_lblAdress1.Name = "m_lblAdress1";
             // 
             // label3
             // 
@@ -88,6 +93,11 @@
             this.NQS2.Name = "NQS2";
             this.NQS2.TabStop = false;
             // 
+            // m_lblAdress2
+            // 
+            resources.ApplyResources(this.m_lblAdress2, "m_lblAdress2");
+            this.m_lblAdress2.Name = "m_lblAdress2";
+            // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
@@ -108,16 +118,6 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
-            // m_lblAdress1
-            // 
-            resources.ApplyResources(this.m_lblAdress1, "m_lblAdress1");
-            this.m_lblAdress1.Name = "m_lblAdress1";
-            // 
-            // m_lblAdress2
-            // 
-            resources.ApplyResources(this.m_lblAdress2, "m_lblAdress2");
-            this.m_lblAdress2.Name = "m_lblAdress2";
             // 
             // TCPIPConnectionParams
             // 
@@ -146,7 +146,7 @@
         public System.Windows.Forms.TextBox m_tbPortNr2;
         public System.Windows.Forms.Label m_statusNQS2;
         public System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label m_lblAdress1;
-        private System.Windows.Forms.Label m_lblAdress2;
+        public System.Windows.Forms.Label m_lblAdress1;
+        public System.Windows.Forms.Label m_lblAdress2;
     }
 }

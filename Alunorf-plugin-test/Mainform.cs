@@ -149,18 +149,8 @@ namespace Alunorf_plugin_test
 
             SetMessage("gui thread: waiting on connect");
 
-            //wait here until initialisation succeeded
-            //m_waitConnectedEvent = new AutoResetEvent(false);
-            //m_waitConnectedEvent.WaitOne(1000 * ((int)m_nudSendTimeout.Value + (int)m_nudAckTimeout.Value + (int)m_nudTryconnectTimeout.Value + 30), true);
-            //if (m_pcConnected == ConnectionState.READY)
-            //{
-                m_btStop.Enabled = true;
-                m_btGO.Enabled = true;
-            //}
-            //else
-            //{
-            //    SetMessage("gui thread: connection timed out, will retry in several seconds");
-            //}
+            m_btStop.Enabled = true;
+            m_btGO.Enabled = true;
             m_messageQueue = new List<AlunorfTelegram>();
         }
 
@@ -309,7 +299,7 @@ namespace Alunorf_plugin_test
                 m_h1manager.GetConnectionStatus(m_vnr, ref result);
                 switch (result)
                 {
-                    case CH1Manager.H1Result.ALL_CLEAR:
+                    case H1Result.ALL_CLEAR:
                         {
                             m_pcConnected = ConnectionState.CONNECTED;
                             SetMessage("state is connected");
@@ -319,10 +309,10 @@ namespace Alunorf_plugin_test
                             //SendTelegram(init, "init");
                             break;
                         }
-                    case CH1Manager.H1Result.WAIT_CONNECT:
+                    case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
                         break;
-                    case CH1Manager.H1Result.BAD_LINE:
+                    case H1Result.BAD_LINE:
                         MacAddr temp = new MacAddr();
                         temp.Address = m_otherMAC.Text;
                         byte[] otherMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
@@ -390,9 +380,9 @@ namespace Alunorf_plugin_test
         {
             //CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
             bool succes = false;
-            CH1Manager.H1Result result = CH1Manager.H1Result.WAIT_CONNECT;
+            H1Result result = H1Result.WAIT_CONNECT;
             int i = 0;
-            for (; result == CH1Manager.H1Result.WAIT_CONNECT && i < 10; i++ )
+            for (; result == H1Result.WAIT_CONNECT && i < 10; i++ )
             {
                 SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString() + telegram.GetType().ToString());
                 succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
@@ -413,7 +403,7 @@ namespace Alunorf_plugin_test
             }
             else
             {
-                if (result == CH1Manager.H1Result.WAIT_CONNECT)
+                if (result == H1Result.WAIT_CONNECT)
                 {
                     //m_pcConnected = ConnectionState.DISCONNECTED;
                     //m_retryConnect = true;
@@ -429,7 +419,7 @@ namespace Alunorf_plugin_test
         {
             if (m_pcConnected == ConnectionState.DISCONNECTED)
                 return true;
-            CH1Manager.H1Result result = CH1Manager.H1Result.ALL_CLEAR;
+            H1Result result = H1Result.ALL_CLEAR;
             
             if (m_readStarted)
                 m_h1manager.GetReadStatus(m_vnr, ref result);
@@ -437,10 +427,11 @@ namespace Alunorf_plugin_test
                 m_h1manager.StartRead(m_vnr, ref result);
             switch (result)
             {
-                case CH1Manager.H1Result.ALL_CLEAR:
-                    WrapperTelegram wrap = new WrapperTelegram();
-                    if (m_h1manager.FinishRead(m_vnr, wrap))
+                case H1Result.ALL_CLEAR:
+                    ITelegram it = new WrapperTelegram();
+                    if (m_h1manager.FinishRead(m_vnr, ref it))
                     {
+                        WrapperTelegram wrap = it as WrapperTelegram;
                         AckTelegram ack = wrap.InnerTelegram as AckTelegram;
                         if (ack != null && m_idToFilename.Contains(ack.AktId))
                         {
@@ -549,19 +540,19 @@ namespace Alunorf_plugin_test
                     }
                     else return false;
                     return true;
-                case CH1Manager.H1Result.NO_REQUEST:
+                case H1Result.NO_REQUEST:
                     m_readStarted = false;
                     return true;
-                case CH1Manager.H1Result.WAIT_CONNECT:
+                case H1Result.WAIT_CONNECT:
                     m_readStarted = false;
                     //m_pcConnected = ConnectionState.DISCONNECTED;
                     //m_retryConnect = true;
                     return true;
-                case CH1Manager.H1Result.ALREADY_RUNNING:
-                case CH1Manager.H1Result.WAIT_DATA:
+                case H1Result.ALREADY_RUNNING:
+                case H1Result.WAIT_DATA:
                     m_readStarted = true;
                     return true;
-                case CH1Manager.H1Result.BLOCKED_DATA:
+                case H1Result.BLOCKED_DATA:
                     m_readStarted = true;
                     m_h1manager.StoreBlockedBytes(m_vnr);
                     return true;

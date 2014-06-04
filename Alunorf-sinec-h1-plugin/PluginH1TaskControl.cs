@@ -247,6 +247,12 @@ namespace Alunorf_sinec_h1_plugin
             PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationGuid(), m_control.TaskIndex());
             Label label1 = m_sinecH1Params.m_statusNQS1;
             Label label2 = m_sinecH1Params.m_statusNQS2;
+            NqsServerStatussesTCPIP tcpipStat = stat.extraData as NqsServerStatussesTCPIP;
+            if (tcpipStat != null)
+            {
+                label1 = m_tcpipParams.m_statusNQS1;
+                label2 = m_tcpipParams.m_statusNQS2;
+            }
             if (stat == null) 
             {
                 label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
@@ -255,7 +261,8 @@ namespace Alunorf_sinec_h1_plugin
                 label2.ForeColor = Color.Red;
                 return;
             }
-            switch ((stat.extraData as NqsServerStatusses).nqs1)
+            PluginH1TaskWorker.NQSStatus stat1 = (stat.extraData as NqsServerStatusses).nqs1;
+            switch (stat1)
             { 
                 case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
                     label1.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
@@ -274,7 +281,16 @@ namespace Alunorf_sinec_h1_plugin
                     label1.ForeColor = Color.Green;
                     break;
             }
-            switch ((stat.extraData as NqsServerStatusses).nqs2)
+            if (tcpipStat != null)
+            {
+                string text;
+                if (stat1 != PluginH1TaskWorker.NQSStatus.DISCONNECTED)
+                    text = "Host adress: " + tcpipStat.ip1;
+                else text = "Host adress:";
+                m_tcpipParams.m_lblAdress1.Text = text;
+            }
+            PluginH1TaskWorker.NQSStatus stat2 = (stat.extraData as NqsServerStatusses).nqs2;
+            switch (stat2)
             {
                 case PluginH1TaskWorker.NQSStatus.DISCONNECTED:
                     label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.disconnected;
@@ -292,6 +308,14 @@ namespace Alunorf_sinec_h1_plugin
                     label2.Text = Alunorf_sinec_h1_plugin.Properties.Resources.go;
                     label2.ForeColor = Color.Green;
                     break;
+            }
+            if (tcpipStat != null)
+            {
+                string text;
+                if (stat2 != PluginH1TaskWorker.NQSStatus.DISCONNECTED)
+                    text = "Host adress: " + tcpipStat.ip2;
+                else text = "Host adress:";
+                m_tcpipParams.m_lblAdress2.Text = text;
             }
             m_refreshTimer.Enabled = true;
         }
