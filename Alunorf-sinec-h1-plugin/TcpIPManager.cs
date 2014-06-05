@@ -26,14 +26,13 @@ namespace Alunorf_sinec_h1_plugin
         public int index;
 	};
 
-    class TcpIPManager : IProtocolManager
+    public class TcpIPManager : IProtocolManager
     {
-        const int RECBUFFERLENGTH = 2048*20; //20 'small messages
+        const int RECBUFFERLENGTH = 2048*20; //20 small messages
         const int SENDBUFFERLENGTH = 16384; //twice as large as previously
         private Socket[] m_dataSockets;
         private Socket[] m_serverSockets;
         private H1Result[] connectionStates;
-        private H1Result[] readStates;
         private H1Result[] sendStates;
         private byte[][] readBuffer;
         private byte[][] writeBuffer;
@@ -68,7 +67,6 @@ namespace Alunorf_sinec_h1_plugin
         private void ClearStates()
         {
             connectionStates = new H1Result[2] { H1Result.BAD_LINE, H1Result.BAD_LINE };
-            readStates = new H1Result[2] { H1Result.NO_REQUEST, H1Result.NO_REQUEST };
             sendStates = new H1Result[2] { H1Result.ALL_CLEAR, H1Result.ALL_CLEAR };
         }
 
@@ -111,8 +109,23 @@ namespace Alunorf_sinec_h1_plugin
 
         public void GetReadStatus(ushort vnr, ref H1Result result)
         {
-            result = readStates[PortToIndex(vnr)];
-            //don't reset OPERATION_ERROR after being reported, new Connect will do so
+            int index = 0;
+            lock (ReceivedMessages[index])
+            {
+                if (ReceivedMessages[index].Count > 0)
+                {
+                    if (ReceivedMessages[index].Peek() == null)
+                    {
+                        ReceivedMessages[index].Dequeue();
+                        result = H1Result.TELEGRAM_ERROR;
+                        return;
+                    }
+                    result = H1Result.ALL_CLEAR;
+                    return;
+                }
+            }
+            result = H1Result.NO_REQUEST;
+            return;
         }
 
 
@@ -147,7 +160,8 @@ namespace Alunorf_sinec_h1_plugin
 
         public bool StartRead(ushort vnr, ref H1Result result)
         {
-            throw new NotImplementedException();
+            GetReadStatus(vnr, ref result);
+            return true;
         }
 
         public bool StoreBlockedBytes(ushort vnr)
@@ -189,6 +203,30 @@ namespace Alunorf_sinec_h1_plugin
             }
         }
 
+        public H1Result ActiveConnect(int portNr, String host, int timeout)
+        {
+            PortNr1 = portNr;
+            PortNr2 = 0;
+            m_bStop = false;
+            ClearStates();
+            try
+            {
+                m_serverSockets[1] = m_dataSockets[1] = null;
+                m_serverSockets[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                m_serverSockets[0].Connect(host, portNr);
+                m_serverSockets[0].SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
+                m_dataSockets[0] = m_serverSockets[0];
+                ReceiveState state = new ReceiveState(readBuffer[0], m_dataSockets[0], 0);
+                m_dataSockets[0].BeginReceive(state.recvBuffer, state.recvOffset, state.recvBuffer.Length - state.recvOffset, SocketFlags.None, new AsyncCallback(OnReceivedMessage), state);
+            }
+            catch (Exception ex)
+            {
+                m_lastError = ex.Message;
+                return connectionStates[0] = H1Result.OPERATING_SYSTEM_ERROR;
+            }
+            return connectionStates[0] = H1Result.ALL_CLEAR;
+        }
+
         private void OnAcceptConnection(IAsyncResult ar)
         {
             Socket lSocket = ar.AsyncState as Socket;
@@ -215,8 +253,8 @@ namespace Alunorf_sinec_h1_plugin
                 
                 dSocket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 dSocket.SendTimeout = sendTimeOut;
-                ipadress[index] = (dSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
-                m_dataSockets[index]= dSocket;
+                ipadress[index] = dSocket.RemoteEndPoint.ToString();
+                m_dataSockets[index] = dSocket;
                 connectionStates[index] = H1Result.ALL_CLEAR;
                 //start reads
                 ReceiveState state = new ReceiveState(readBuffer[index],m_dataSockets[index],index);
@@ -456,7 +494,7 @@ namespace Alunorf_sinec_h1_plugin
                             break;
                         }
 
-                        Byte magic = pBuf[3];
+                        Byte magic = pBuf[2];
                         if (magic != 97)
                         {
                             lock (ReceivedMessages[state.index])
@@ -482,20 +520,6 @@ namespace Alunorf_sinec_h1_plugin
                                 }
                             }
                         }
-                        //if((pMsg->byCmdType & CODREQ_MSG_TYPE_RESP_FLAG) != CODREQ_MSG_TYPE_RESP_FLAG)
-                        //    CodesysLogger::LogError(nullptr, String::Format("Received message without response flag from {0}: {1}", ToString(), pMsg->byCmdType.ToString("X2")));
-                        //else
-                        //{
-                        //    msgRecvCount++;
-                        //    Byte msgType = pMsg->byCmdType & ~CODREQ_MSG_TYPE_RESP_FLAG;
-                        //    if(msgType == CODREQ_MSG_TYPE_WATCHDOG)
-                        //        OnRecvWatchdog(pMsg);
-                        //    else if((msgType == CODREQ_MSG_TYPE_SYMBOL_REQUEST) || (msgType == CODREQ_MSG_TYPE_ADDRESS_REQUEST))
-                        //        OnRecvRequest(pMsg);
-                        //    else
-                        //        CodesysLogger::LogError(nullptr, String::Format("Received unknown message from {0}: {1}", ToString(), pMsg->byCmdType.ToString("X2")));
-                        //}
-
 				        //Advance to next command
 				        pBuf = pBuf + msgLength;
 				        recvLength -= (int)msgLength;				

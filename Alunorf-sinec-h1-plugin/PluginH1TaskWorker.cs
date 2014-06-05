@@ -86,7 +86,8 @@ namespace Alunorf_sinec_h1_plugin
         public bool OnStart()
         {
             //set the logger;
-            string directory = Path.Combine(Path.GetDirectoryName(typeof(PluginH1Task).Assembly.Location), "logfiles");
+            string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            string directory = Path.Combine(rootPath, @"iba\sinech1plugin");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
             string filename = Path.Combine(directory, "sinec-h1.log");
@@ -107,7 +108,7 @@ namespace Alunorf_sinec_h1_plugin
             //m_logger.EventFormatter.DataFormatter = new LogExtraDataFormatter(m_idToFilename);
             m_readStarted1 = m_readStarted2 = false;
             m_logger.Open();
-
+            InitMemberData();
             bool ok;
             if (m_data.TCPIP)
             {
@@ -144,7 +145,6 @@ namespace Alunorf_sinec_h1_plugin
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_data.NameInfo;
             m_started = true;
-            InitMemberData();
             m_thread.Start();
             
             //wait here until initialisation succeeded
@@ -851,12 +851,6 @@ namespace Alunorf_sinec_h1_plugin
                                         m_error = "go recieved with no previous init";
                                     }
                                 }
-                                //else if (go != null)
-                                //{
-                                //    if ((m_logger != null) && m_logger.IsOpen)
-                                //        m_logger.Log(Level.Info, "GO recieved from NQS2 but with no previous init " + go.AktId.ToString()); 
-                                //    m_error = "go recieved with no previous init";
-                                //}
                                 else
                                 {
                                     IniTelegram ini = wrap.InnerTelegram as IniTelegram;
@@ -957,6 +951,13 @@ namespace Alunorf_sinec_h1_plugin
                         m_disconnectedCounter2 = 0;
                         m_nqs2Status = NQSStatus.DISCONNECTED;
                     }
+                    if ((m_logger != null) && m_logger.IsOpen)
+                    {
+                        string error = m_tcpManager.LastError;
+                        if (error == null) error = "";
+                        m_logger.Log(Level.Exception, "Error while reading " + vnr.ToString() + " " + error);
+                    }
+
                     m_retryConnect = true;
                     return true; 
                 case H1Result.ALREADY_RUNNING:
@@ -971,6 +972,10 @@ namespace Alunorf_sinec_h1_plugin
                         m_readStarted2 = true;
                         m_disconnectedCounter2=0;
                     }
+                    return true;
+                case H1Result.TELEGRAM_ERROR:
+                    if ((m_logger != null) && m_logger.IsOpen)
+                        m_logger.Log(Level.Exception, "Telegram received without magic 97:" + vnr.ToString());
                     return true;
                 default: // error
                     return false; 
@@ -1008,8 +1013,13 @@ namespace Alunorf_sinec_h1_plugin
                     case H1Result.OPERATING_SYSTEM_ERROR:
                         m_retryConnect = true;
                         m_error = m_tcpManager.LastError;
-                        if (m_logger != null && m_logger.IsOpen && string.IsNullOrEmpty(m_error))
-                            m_logger.Log(Level.Exception, m_error);
+                        if ((m_logger != null) && m_logger.IsOpen)
+                        {
+                            m_error= m_tcpManager.LastError;
+                            if (m_error == null) m_error = "";
+                            m_logger.Log(Level.Exception, "Error while building connection " + m_vnr1.ToString() + " " + m_error);
+                        }
+
                         break;
                     case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
@@ -1080,6 +1090,12 @@ namespace Alunorf_sinec_h1_plugin
                     case H1Result.OPERATING_SYSTEM_ERROR:
                         m_retryConnect = true;
                         m_error = m_tcpManager.LastError;
+                        if ((m_logger != null) && m_logger.IsOpen)
+                        {
+                            m_error = m_tcpManager.LastError;
+                            if (m_error == null) m_error = "";
+                            m_logger.Log(Level.Exception, "Error while building connection " + m_vnr2.ToString() + " " + m_error);
+                        }
                         break;
                     case H1Result.WAIT_CONNECT:
                         m_retryConnect = true;
@@ -1088,7 +1104,7 @@ namespace Alunorf_sinec_h1_plugin
                         if (m_data.TCPIP)
                         {
                             //connectStarted = (m_tcpManager as TcpIPManager).Connect(ref m_vnr2, ref result, m_data.ConnectionTimeOut);
-                            m_vnr2 = (ushort)m_data.PortNr1;
+                            m_vnr2 = (ushort)m_data.PortNr2;
                             result = (m_tcpManager as TcpIPManager).PassiveConnect(m_vnr2, 1);
                             if (result == H1Result.WAIT_CONNECT)
                             {
@@ -1295,6 +1311,12 @@ namespace Alunorf_sinec_h1_plugin
                             m_disconnectedCounter2 = 0;
                             m_nqs2Status = NQSStatus.DISCONNECTED;
                         }
+                        if ((m_logger != null) && m_logger.IsOpen)
+                        {
+                            m_error = m_tcpManager.LastError;
+                            if (m_error == null) m_error = "";
+                            m_logger.Log(Level.Exception, "Error while sending " + vnr.ToString() + " " + m_error);
+                        }
                         m_retryConnect = true;
                         return true; 
                     case H1Result.WAIT_SEND:
@@ -1334,6 +1356,12 @@ namespace Alunorf_sinec_h1_plugin
                         {
                             m_disconnectedCounter2 = 0;
                             m_nqs2Status = NQSStatus.DISCONNECTED;
+                        }
+                        if ((m_logger != null) && m_logger.IsOpen)
+                        {
+                            m_error = m_tcpManager.LastError;
+                            if (m_error == null) m_error = "";
+                            m_logger.Log(Level.Exception, "Error while sending " + vnr.ToString() + " " + m_error);
                         }
                         m_retryConnect = true;
                         return true; 

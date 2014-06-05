@@ -13,6 +13,7 @@ using iba;
 using iba.Utility;
 using iba.Logging;
 using iba.Logging.Loggers;
+using ibaFilesProLib;
 
 namespace Alunorf_plugin_test
 {
@@ -51,7 +52,6 @@ namespace Alunorf_plugin_test
 
             byte[] otherMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
 
-            m_h1manager = new CH1Manager();
             m_idToFilename = new BiMap<int,string>();
             m_acknowledgements = new SortedDictionary<string, bool>();
             m_reconnectTimer = new System.Threading.Timer(OnReconnectTimerTick);
@@ -72,6 +72,7 @@ namespace Alunorf_plugin_test
                 m_messageQueue.Add(go);
             }
             SetMessage("go added to messagequeue");
+
 
             //m_waitSendEvent = new AutoResetEvent(false);
             //m_waitSendEvent.WaitOne(1000 * ((int) (m_nudSendTimeout.Value + m_nudAckTimeout.Value)), true);
@@ -106,10 +107,15 @@ namespace Alunorf_plugin_test
         private void m_btStart_Click(object sender, EventArgs e)
         {
             m_thread = new Thread(new ThreadStart(Run));
-            //m_thread.SetApartmentState(ApartmentState.STA);
+            m_thread.SetApartmentState(ApartmentState.STA);
             string filename = m_logfile.Text;
-            FileBackup.Backup(filename, Path.GetDirectoryName(filename), "logfile", 10);
+
             m_stop = false;
+            if (m_logger != null)
+            {
+                m_logger.Close();
+            }
+
             m_logger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}");
             m_logger.IsBufferingEnabled = false;
             m_logger.IsContextEnabled = true;
@@ -123,24 +129,39 @@ namespace Alunorf_plugin_test
             m_logger.Open();
 
 
-            MacAddr temp = new MacAddr();
-            temp.Address = m_ownMAC.Text;
-            byte[] ownMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
-            if (!m_h1manager.SetStationAddress(ownMAC))
+            if (this.doTCPIP)
             {
-                m_stop = true;
-                SetMessage("could not set station adress:" + m_h1manager.LastError);
-                return;
+                TcpIPManager ipmanager = new TcpIPManager();
+                m_tcpManager = ipmanager;
+                if (!m_tcpManager.SetSendTimeout((int)m_nudSendTimeout.Value))
+                {
+                    m_stop = true;
+                    SetMessage("could not set send time out:" + m_tcpManager.LastError);
+                    return;
+                }
             }
-            if (!m_h1manager.SetSendTimeout((int)m_nudSendTimeout.Value))
+            else
             {
-                m_stop = true;
-                SetMessage("could not set send time out:" + m_h1manager.LastError);
-                return;
+                CH1Manager h1manager = new CH1Manager();
+                m_tcpManager = h1manager;
+                MacAddr temp = new MacAddr();
+                temp.Address = m_ownMAC.Text;
+                byte[] ownMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
+                if (!h1manager.SetStationAddress(ownMAC))
+                {
+                    m_stop = true;
+                    SetMessage("could not set station adress:" + m_tcpManager.LastError);
+                    return;
+                }
+                if (!h1manager.SetSendTimeout((int)m_nudSendTimeout.Value))
+                {
+                    m_stop = true;
+                    SetMessage("could not set send time out:" + m_tcpManager.LastError);
+                    return;
+                }
+
+                SetMessage("station address and timeout set");
             }
-
-            SetMessage("station address and timeout set");
-
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for testprogram: ";
             m_retryConnect = true;
@@ -190,6 +211,15 @@ namespace Alunorf_plugin_test
             }
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (m_logger != null)
+            {
+                m_logger.Close();
+            }
+            base.OnClosing(e);
+        }
+
         private void m_btClearGrid_Click(object sender, EventArgs e)
         {
             m_messages.RowCount = 0;
@@ -221,7 +251,7 @@ namespace Alunorf_plugin_test
         }
 
         private List<PluginH1Task.Telegram> m_telegrams;
-        private CH1Manager m_h1manager;
+        private IProtocolManager m_tcpManager;
         private bool m_stop;
         private ushort m_vnr;
         private enum ConnectionState {DISCONNECTED,CONNECTED,READY};
@@ -283,7 +313,7 @@ namespace Alunorf_plugin_test
                 }
                 Thread.Sleep(100);
             }
-            m_h1manager.DisconnectAll();
+            m_tcpManager.DisconnectAll();
             m_pcConnected = ConnectionState.DISCONNECTED;
             SetMessage("stopped");
         }
@@ -296,7 +326,7 @@ namespace Alunorf_plugin_test
             if (m_pcConnected == ConnectionState.DISCONNECTED)
             {
                 H1Result result = H1Result.ALL_CLEAR;
-                m_h1manager.GetConnectionStatus(m_vnr, ref result);
+                m_tcpManager.GetConnectionStatus(m_vnr, ref result);
                 switch (result)
                 {
                     case H1Result.ALL_CLEAR:
@@ -317,7 +347,20 @@ namespace Alunorf_plugin_test
                         temp.Address = m_otherMAC.Text;
                         byte[] otherMAC = new byte[] { temp.FirstByte, temp.SecondByte, temp.ThirdByte, temp.FourthByte, temp.FifthByte, temp.SixthByte };
                         SetMessage("worker thread: trying to connect");
-                        if (m_h1manager.Connect(ref m_vnr, 4, true, otherMAC, m_ownTSAP.Text, m_otherTSAP.Text, ref result, (int) m_nudTryconnectTimeout.Value))
+
+                        bool connected = false;
+                        if (doTCPIP)
+                        {
+                            m_vnr = ushort.Parse(m_tcpipPort.Text);
+                            result = (m_tcpManager as TcpIPManager).ActiveConnect((int)m_vnr, m_tcpIPHost.Text,  (int)m_nudTryconnectTimeout.Value);
+                            connected = result == H1Result.ALL_CLEAR;
+                        }
+                        else
+                        {
+                            connected = (m_tcpManager as CH1Manager).Connect(ref m_vnr, 4, true, otherMAC, m_ownTSAP.Text, m_otherTSAP.Text, ref result, (int)m_nudTryconnectTimeout.Value);
+                        }
+
+                        if (connected)
                         {
                             m_pcConnected = ConnectionState.CONNECTED;
                             SetMessage("worker thread: connected");
@@ -328,12 +371,12 @@ namespace Alunorf_plugin_test
                         }
                         else
                         {
-                            SetMessage(m_h1manager.LastError);
+                            SetMessage(m_tcpManager.LastError);
                             m_retryConnect = true;
                         }
                         break;
                     default:
-                        SetMessage(m_h1manager.LastError);
+                        SetMessage(m_tcpManager.LastError);
                         m_retryConnect = true;
                         break;
                 }
@@ -385,7 +428,7 @@ namespace Alunorf_plugin_test
             for (; result == H1Result.WAIT_CONNECT && i < 10; i++ )
             {
                 SetMessage("message about to be sent: id " + ((id == null) ? "" : id) + " " + telegram.AktId.ToString() + telegram.GetType().ToString());
-                succes = m_h1manager.SendNoPoll(m_vnr, ref result, telegram);
+                succes = m_tcpManager.SendNoPoll(m_vnr, ref result, telegram);
                 Thread.Sleep(500);
             }
             if (succes && i < 10)
@@ -410,7 +453,7 @@ namespace Alunorf_plugin_test
                     SetMessage("noticed disconnected while trying to send message with id:" + ((id == null)?"":id.ToString()));
                 }
                 else
-                    SetMessage("error sending message with id" + ((id == null) ? "" : id.ToString()) + ": " + m_h1manager.LastError ?? "");
+                    SetMessage("error sending message with id" + ((id == null) ? "" : id.ToString()) + ": " + m_tcpManager.LastError ?? "");
                 return false;
             }
         }
@@ -422,14 +465,14 @@ namespace Alunorf_plugin_test
             H1Result result = H1Result.ALL_CLEAR;
             
             if (m_readStarted)
-                m_h1manager.GetReadStatus(m_vnr, ref result);
+                m_tcpManager.GetReadStatus(m_vnr, ref result);
             else
-                m_h1manager.StartRead(m_vnr, ref result);
+                m_tcpManager.StartRead(m_vnr, ref result);
             switch (result)
             {
                 case H1Result.ALL_CLEAR:
                     ITelegram it = new WrapperTelegram();
-                    if (m_h1manager.FinishRead(m_vnr, ref it))
+                    if (m_tcpManager.FinishRead(m_vnr, ref it))
                     {
                         WrapperTelegram wrap = it as WrapperTelegram;
                         AckTelegram ack = wrap.InnerTelegram as AckTelegram;
@@ -479,7 +522,7 @@ namespace Alunorf_plugin_test
                                     //    w.Write(qdt.Interpret(m_telegrams));
                                     //    w.Close();
                                     //}
-                                    //qdt.WriteToDatFile(m_telegrams, filename);
+                                    WriteToDatFile(qdt, m_telegrams, filename);
                                     AckTelegram ackqdt = new AckTelegram(qdt.AktId, m_messagesCount++);
                                     SetMessage("qdt telegram recieved: " + qdt.AktId.ToString() + ", written to " + filename);
                                     if (!SendTelegram(ackqdt))
@@ -554,9 +597,10 @@ namespace Alunorf_plugin_test
                     return true;
                 case H1Result.BLOCKED_DATA:
                     m_readStarted = true;
-                    m_h1manager.StoreBlockedBytes(m_vnr);
+                    m_tcpManager.StoreBlockedBytes(m_vnr);
                     return true;
                 default: // error
+                    SetMessage("Read error: " + m_tcpManager.LastError);
                     return false;
             }
         }
@@ -579,5 +623,147 @@ namespace Alunorf_plugin_test
                 m_logfile.Text = m_openFileDialog1.FileName;
             }
         }
+
+        bool doTCPIP;
+
+        private void m_tcpIPHost_TextChanged(object sender, EventArgs e)
+        {
+            doTCPIP = !String.IsNullOrEmpty((m_tcpIPHost.Text));
+            m_ownMAC.Enabled = !doTCPIP;
+            m_ownTSAP.Enabled = !doTCPIP;
+            m_otherMAC.Enabled = !doTCPIP;
+            m_otherTSAP.Enabled = !doTCPIP;
+        }
+
+        public void WriteToDatFile(QdtTelegram qdt, List<PluginH1Task.Telegram> telegrams, string filename)
+        { //to test the QDT telegram, reading has to implemented at well, by writing the values to a string
+            IbaFileWriter filewriter = new IbaFileCreatorClass();
+            filewriter.Create(filename, 1);
+            int errPos = 0;
+
+            SByte v_sbyte = 0;
+            Byte v_byte = 0;
+            Int16 v_int16 = 0;
+            Int32 v_int32 = 0;
+            string v_string = "";
+            UInt16 v_uint16 = 0;
+            UInt32 v_uint32 = 0;
+            float v_float = 0;
+            qdt.Stream.ReadInt16(ref v_int16);
+            qdt.TelegramData = telegrams.Find(delegate(PluginH1Task.Telegram tele) { return tele.QdtType == v_int16; });
+            int count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in qdt.TelegramData.DataInfo)
+            {
+                count++;
+                try
+                {
+                    int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                    uint size = uint.Parse(rec.DataType.Substring(pos));
+                    string type = rec.DataType.Substring(0, pos);
+                    if (type == "int" && size == 1)
+                    {
+                        qdt.Stream.ReadSByte(ref v_sbyte);
+                        filewriter.WriteInfoField(rec.Name, v_sbyte.ToString());
+                    }
+                    else if (type == "int" && size == 2)
+                    {
+                        qdt.Stream.ReadInt16(ref v_int16);
+                        filewriter.WriteInfoField(rec.Name, v_int16.ToString());
+                    }
+                    else if (type == "int" && size == 4)
+                    {
+                        qdt.Stream.ReadInt32(ref v_int32);
+                        filewriter.WriteInfoField(rec.Name, v_int32.ToString());
+                    }
+                    else if (type == "u. int" && size == 1)
+                    {
+                        qdt.Stream.ReadByte(ref v_byte);
+                        filewriter.WriteInfoField(rec.Name, v_byte.ToString());
+                    }
+                    else if (type == "u. int" && size == 2)
+                    {
+                        qdt.Stream.ReadUInt16(ref v_uint16);
+                        filewriter.WriteInfoField(rec.Name, v_uint16.ToString());
+                    }
+                    else if (type == "u. int" && size == 4)
+                    {
+                        qdt.Stream.ReadUInt32(ref v_uint32);
+                        filewriter.WriteInfoField(rec.Name, v_uint32.ToString());
+                    }
+                    else if (type == "float" && size == 4)
+                    {
+                        qdt.Stream.ReadFloat32(ref v_float);
+                        filewriter.WriteInfoField(rec.Name, v_float.ToString());
+                    }
+                    else if (type == "char" && size > 0)
+                    {
+                        qdt.Stream.ReadString(ref v_string, size);
+                        filewriter.WriteInfoField(rec.Name, v_string);
+                    }
+                    else
+                    {
+                        errPos = count;
+                        filewriter.Close();
+                        throw new Exception("Error reading infofield at pos " + errPos.ToString());
+                    }
+                }
+                catch (Exception inner)
+                {
+                    errPos = count;
+                    filewriter.Close();
+                    throw new Exception("Error reading infofield at pos " + errPos.ToString(), inner);
+                }
+            }
+
+            count = 0;
+            foreach (PluginH1Task.TelegramRecord rec in qdt.TelegramData.DataSignal)
+            {
+                count++;
+                try
+                {
+                    float[] vals = new float[400];
+                    for (int i = 0; i < 400; i++)
+                    {
+                        qdt.Stream.ReadFloat32(ref v_float);
+                        vals[i] = v_float;
+                    }
+                    float offset = 0;
+                    float lengthbase = 0;
+                    for (int i = 0; i < 400; i++)
+                    {
+                        qdt.Stream.ReadFloat32(ref v_float);
+                        if (i == 0) offset = v_float;
+                        if (i == 1) lengthbase = v_float - offset;
+                    }
+                    IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, count, rec.Name, lengthbase) as IbaChannelWriter;
+                    channelwriter.LengthBased = 1;
+                    channelwriter.xOffset = offset;
+                    for (int i = 0; i < 400; i++) channelwriter.WriteData(vals[i]);
+                }
+                catch (Exception inner)
+                {
+                    errPos = count;
+                    throw new Exception("Error reading signal at pos " + errPos.ToString(), inner);
+                }
+            }
+            if (count == 0) //when no signals, write a dummy one, others ibaFiles won't write the file
+            {
+                IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, 0, "dummysignal", 1) as IbaChannelWriter;
+                channelwriter.LengthBased = 1;
+                channelwriter.xOffset = 0;
+                channelwriter.WriteData(1.0f);
+                channelwriter.WriteData(2.0f);
+                channelwriter.WriteData(3.0f);
+            }
+            try
+            {
+                filewriter.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
     }
 }

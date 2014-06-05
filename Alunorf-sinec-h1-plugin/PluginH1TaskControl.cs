@@ -124,7 +124,7 @@ namespace Alunorf_sinec_h1_plugin
             BuildTree();
 
             m_rbSinecH1.Checked = !m_data.TCPIP;
-            m_rbTCPIP.Checked = !m_data.TCPIP;
+            m_rbTCPIP.Checked = m_data.TCPIP;
             m_tcpipParams.m_tbPortNr1.Text = m_data.PortNr1.ToString();
             m_tcpipParams.m_tbPortNr2.Text = m_data.PortNr2.ToString();
 
@@ -247,7 +247,7 @@ namespace Alunorf_sinec_h1_plugin
             PluginTaskWorkerStatus stat = m_datcoHost.GetStatusPlugin(m_control.ParentConfigurationGuid(), m_control.TaskIndex());
             Label label1 = m_sinecH1Params.m_statusNQS1;
             Label label2 = m_sinecH1Params.m_statusNQS2;
-            NqsServerStatussesTCPIP tcpipStat = stat.extraData as NqsServerStatussesTCPIP;
+            NqsServerStatussesTCPIP tcpipStat = stat==null?null:(stat.extraData as NqsServerStatussesTCPIP);
             if (tcpipStat != null)
             {
                 label1 = m_tcpipParams.m_statusNQS1;

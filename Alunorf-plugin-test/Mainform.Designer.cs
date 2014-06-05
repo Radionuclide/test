@@ -66,6 +66,10 @@ namespace Alunorf_plugin_test
             this.m_logfile = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.m_nudMaxgrid = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.m_tcpIPHost = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_tcpipPort = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudAckTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSendTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRetryConnectTimeInterval)).BeginInit();
@@ -160,7 +164,7 @@ namespace Alunorf_plugin_test
             // 
             this.label16.AutoSize = true;
             this.label16.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label16.Location = new System.Drawing.Point(446, 110);
+            this.label16.Location = new System.Drawing.Point(446, 128);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(115, 13);
             this.label16.TabIndex = 21;
@@ -168,7 +172,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudAckTimeout
             // 
-            this.m_nudAckTimeout.Location = new System.Drawing.Point(567, 108);
+            this.m_nudAckTimeout.Location = new System.Drawing.Point(567, 126);
             this.m_nudAckTimeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -187,7 +191,7 @@ namespace Alunorf_plugin_test
             // 
             this.label17.AutoSize = true;
             this.label17.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label17.Location = new System.Drawing.Point(639, 110);
+            this.label17.Location = new System.Drawing.Point(639, 128);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(47, 13);
             this.label17.TabIndex = 23;
@@ -197,7 +201,7 @@ namespace Alunorf_plugin_test
             // 
             this.label14.AutoSize = true;
             this.label14.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label14.Location = new System.Drawing.Point(446, 84);
+            this.label14.Location = new System.Drawing.Point(446, 102);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(75, 13);
             this.label14.TabIndex = 15;
@@ -205,7 +209,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudSendTimeout
             // 
-            this.m_nudSendTimeout.Location = new System.Drawing.Point(567, 82);
+            this.m_nudSendTimeout.Location = new System.Drawing.Point(567, 100);
             this.m_nudSendTimeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -229,7 +233,7 @@ namespace Alunorf_plugin_test
             // 
             this.label15.AutoSize = true;
             this.label15.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label15.Location = new System.Drawing.Point(639, 84);
+            this.label15.Location = new System.Drawing.Point(639, 102);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(47, 13);
             this.label15.TabIndex = 17;
@@ -239,7 +243,7 @@ namespace Alunorf_plugin_test
             // 
             this.label12.AutoSize = true;
             this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label12.Location = new System.Drawing.Point(12, 115);
+            this.label12.Location = new System.Drawing.Point(12, 133);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(136, 13);
             this.label12.TabIndex = 18;
@@ -247,7 +251,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudRetryConnectTimeInterval
             // 
-            this.m_nudRetryConnectTimeInterval.Location = new System.Drawing.Point(154, 113);
+            this.m_nudRetryConnectTimeInterval.Location = new System.Drawing.Point(154, 131);
             this.m_nudRetryConnectTimeInterval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -271,7 +275,7 @@ namespace Alunorf_plugin_test
             // 
             this.label13.AutoSize = true;
             this.label13.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label13.Location = new System.Drawing.Point(226, 115);
+            this.label13.Location = new System.Drawing.Point(226, 133);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(43, 13);
             this.label13.TabIndex = 20;
@@ -281,7 +285,7 @@ namespace Alunorf_plugin_test
             // 
             this.label11.AutoSize = true;
             this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label11.Location = new System.Drawing.Point(12, 89);
+            this.label11.Location = new System.Drawing.Point(12, 107);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(107, 13);
             this.label11.TabIndex = 12;
@@ -289,7 +293,7 @@ namespace Alunorf_plugin_test
             // 
             // m_nudTryconnectTimeout
             // 
-            this.m_nudTryconnectTimeout.Location = new System.Drawing.Point(154, 87);
+            this.m_nudTryconnectTimeout.Location = new System.Drawing.Point(154, 105);
             this.m_nudTryconnectTimeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -313,7 +317,7 @@ namespace Alunorf_plugin_test
             // 
             this.label10.AutoSize = true;
             this.label10.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label10.Location = new System.Drawing.Point(226, 89);
+            this.label10.Location = new System.Drawing.Point(226, 107);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 14;
@@ -379,6 +383,7 @@ namespace Alunorf_plugin_test
             this.m_outputDir.Name = "m_outputDir";
             this.m_outputDir.Size = new System.Drawing.Size(184, 20);
             this.m_outputDir.TabIndex = 28;
+            this.m_outputDir.Text = "d:\\klad\\plugintest\\";
             // 
             // BrowseButton
             // 
@@ -403,7 +408,7 @@ namespace Alunorf_plugin_test
             // 
             this.m_otherMAC.BackColor = System.Drawing.SystemColors.Window;
             this.m_otherMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_otherMAC.Location = new System.Drawing.Point(121, 50);
+            this.m_otherMAC.Location = new System.Drawing.Point(125, 50);
             this.m_otherMAC.Name = "m_otherMAC";
             this.m_otherMAC.Size = new System.Drawing.Size(171, 24);
             this.m_otherMAC.TabIndex = 27;
@@ -412,7 +417,7 @@ namespace Alunorf_plugin_test
             // 
             this.m_ownMAC.BackColor = System.Drawing.SystemColors.Window;
             this.m_ownMAC.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_ownMAC.Location = new System.Drawing.Point(121, 20);
+            this.m_ownMAC.Location = new System.Drawing.Point(125, 20);
             this.m_ownMAC.Name = "m_ownMAC";
             this.m_ownMAC.Size = new System.Drawing.Size(171, 24);
             this.m_ownMAC.TabIndex = 27;
@@ -442,6 +447,7 @@ namespace Alunorf_plugin_test
             this.m_logfile.Name = "m_logfile";
             this.m_logfile.Size = new System.Drawing.Size(215, 20);
             this.m_logfile.TabIndex = 31;
+            this.m_logfile.Text = "d:\\klad\\plugintest\\logfile";
             // 
             // label7
             // 
@@ -475,11 +481,50 @@ namespace Alunorf_plugin_test
             0,
             0});
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 80);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(108, 13);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "Other TCP/IP HOST:";
+            // 
+            // m_tcpIPHost
+            // 
+            this.m_tcpIPHost.Location = new System.Drawing.Point(125, 79);
+            this.m_tcpIPHost.MaxLength = 16;
+            this.m_tcpIPHost.Name = "m_tcpIPHost";
+            this.m_tcpIPHost.Size = new System.Drawing.Size(171, 20);
+            this.m_tcpIPHost.TabIndex = 36;
+            this.m_tcpIPHost.TextChanged += new System.EventHandler(this.m_tcpIPHost_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(302, 82);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(43, 13);
+            this.label9.TabIndex = 38;
+            this.label9.Text = "Port Nr:";
+            // 
+            // m_tcpipPort
+            // 
+            this.m_tcpipPort.Location = new System.Drawing.Point(351, 77);
+            this.m_tcpipPort.Name = "m_tcpipPort";
+            this.m_tcpipPort.Size = new System.Drawing.Size(100, 20);
+            this.m_tcpipPort.TabIndex = 39;
+            this.m_tcpipPort.Text = "8000";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 654);
+            this.Controls.Add(this.m_tcpipPort);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.m_tcpIPHost);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.m_nudMaxgrid);
             this.Controls.Add(this.label6);
@@ -567,6 +612,10 @@ namespace Alunorf_plugin_test
         private System.Windows.Forms.TextBox m_logfile;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown m_nudMaxgrid;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox m_tcpIPHost;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox m_tcpipPort;
     }
 }
 

@@ -369,6 +369,8 @@ namespace Alunorf_sinec_h1_plugin
             set { errInInfo = value; }
         }
 
+
+
         private void CalcSize()
         {
             errPos = -1;
@@ -405,6 +407,12 @@ namespace Alunorf_sinec_h1_plugin
 
         PluginH1Task.Telegram m_telegramData;
 
+        public PluginH1Task.Telegram TelegramData
+        {
+            get { return m_telegramData; }
+            set { m_telegramData = value; }
+        }
+
         public const byte TLGART = 22;
 
         public QdtTelegram(PluginH1Task.Telegram data, IbaFileReader file, UInt16 AktId, UInt16 Tseqnr, TimeStamp stamp)
@@ -434,6 +442,12 @@ namespace Alunorf_sinec_h1_plugin
         }
 
         H1ByteStream m_stream;
+
+        public H1ByteStream Stream
+        {
+            get { return m_stream; }
+            set { m_stream = value; }
+        }
 
         public override bool ReadBody(H1ByteStream stream)
         {
@@ -558,137 +572,6 @@ namespace Alunorf_sinec_h1_plugin
             }
             return b.ToString();
         }
-
-        /*public void WriteToDatFile(List<PluginH1Task.Telegram> telegrams, string filename)
-        { //to test the QDT telegram, reading has to implemented at well, by writing the values to a string
-            IbaFileWriter filewriter = new IbaFileCreatorClass();
-            filewriter.Create(filename,1);
-            SByte v_sbyte = 0;
-            Byte v_byte = 0;
-            Int16 v_int16 = 0;
-            Int32 v_int32 = 0;
-            string v_string = "";
-            UInt16 v_uint16 = 0;
-            UInt32 v_uint32 = 0;
-            float v_float = 0;
-            m_stream.ReadInt16(ref v_int16);
-            m_telegramData = telegrams.Find(delegate(PluginH1Task.Telegram tele) { return tele.QdtType == v_int16; });
-            int count = 0;
-            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataInfo)
-            {
-                count++;
-                try
-                {
-                    int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
-                    uint size = uint.Parse(rec.DataType.Substring(pos));
-                    string type = rec.DataType.Substring(0, pos);
-                    if (type == "int" && size == 1)
-                    {
-                        m_stream.ReadSByte(ref v_sbyte);
-                        filewriter.WriteInfoField(rec.Name,v_sbyte.ToString());
-                    }
-                    else if (type == "int" && size == 2)
-                    {
-                        m_stream.ReadInt16(ref v_int16);
-                        filewriter.WriteInfoField(rec.Name, v_int16.ToString());
-                    }
-                    else if (type == "int" && size == 4)
-                    {
-                        m_stream.ReadInt32(ref v_int32);
-                        filewriter.WriteInfoField(rec.Name, v_int32.ToString());
-                    }
-                    else if (type == "u. int" && size == 1)
-                    {
-                        m_stream.ReadByte(ref v_byte);
-                        filewriter.WriteInfoField(rec.Name, v_byte.ToString());
-                    }
-                    else if (type == "u. int" && size == 2)
-                    {
-                        m_stream.ReadUInt16(ref v_uint16);
-                        filewriter.WriteInfoField(rec.Name, v_uint16.ToString());
-                    }
-                    else if (type == "u. int" && size == 4)
-                    {
-                        m_stream.ReadUInt32(ref v_uint32);
-                        filewriter.WriteInfoField(rec.Name, v_uint32.ToString());
-                    }
-                    else if (type == "float" && size == 4)
-                    {
-                        m_stream.ReadFloat32(ref v_float);
-                        filewriter.WriteInfoField(rec.Name, v_float.ToString());
-                    }
-                    else if (type == "char" && size > 0)
-                    {
-                        m_stream.ReadString(ref v_string, size);
-                        filewriter.WriteInfoField(rec.Name, v_string);
-                    }
-                    else
-                    {
-                        errPos = count;
-                        errInInfo = true;
-                        filewriter.Close();
-                        throw new Exception("Error reading infofield at pos "+errPos.ToString());
-                    }
-                }
-                catch (Exception inner)
-                {
-                    errPos = count;
-                    errInInfo = true;
-                    filewriter.Close();
-                    throw new Exception("Error reading infofield at pos " + errPos.ToString(),inner); 
-                }
-            }
-
-            count = 0;
-            foreach (PluginH1Task.TelegramRecord rec in m_telegramData.DataSignal)
-            {
-                count++;
-                try
-                {
-                    float[] vals = new float[400];
-                    for (int i = 0; i < 400; i++)
-                    {
-                        m_stream.ReadFloat32(ref v_float);
-                        vals[i] = v_float;
-                    }
-                    float offset=0;
-                    float lengthbase=0;
-                    for (int i = 0; i < 400; i++)
-                    {
-                        m_stream.ReadFloat32(ref v_float);
-                        if (i == 0) offset = v_float;
-                        if (i == 1) lengthbase = v_float - offset;
-                    }
-                    IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, count, rec.Name, lengthbase) as IbaChannelWriter;
-                    channelwriter.LengthBased = 1;
-                    channelwriter.xOffset = offset;
-                    for (int i = 0; i < 400; i++) channelwriter.WriteData(vals[i]);
-                }
-                catch (Exception inner)
-                {
-                    errPos = count;
-                    errInInfo = false;
-                    throw new Exception("Error reading signal at pos " + errPos.ToString(), inner); 
-                }
-            }
-            if (count == 0) //when no signals, write a dummy one, others ibaFiles won't write the file
-            {
-                IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, 0, "dummysignal", 1) as IbaChannelWriter;
-                channelwriter.LengthBased = 1;
-                channelwriter.xOffset = 0;
-                channelwriter.WriteData(1.0f);
-                channelwriter.WriteData(2.0f);
-                channelwriter.WriteData(3.0f);
-            }
-            try
-            {
-                filewriter.Close();
-            }
-            catch (Exception)
-            {
-
-            }
-        }*/
 
         public override bool WriteBody(H1ByteStream stream)
         {
