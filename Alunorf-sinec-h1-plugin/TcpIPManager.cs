@@ -110,6 +110,11 @@ namespace Alunorf_sinec_h1_plugin
         public void GetReadStatus(ushort vnr, ref H1Result result)
         {
             int index = 0;
+            if (connectionStates[index] == H1Result.OPERATING_SYSTEM_ERROR)
+            {
+                result = H1Result.OPERATING_SYSTEM_ERROR;
+                return;
+            }
             lock (ReceivedMessages[index])
             {
                 if (ReceivedMessages[index].Count > 0)

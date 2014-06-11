@@ -1051,7 +1051,7 @@ namespace iba.Processing
                 if (testLicenseTimer == null) 
                     testLicenseTimer = new System.Threading.Timer(OnTestLicenseTimerTick);
                 if (!m_bTimersstopped && !m_stop)
-                    testLicenseTimer.Change(dongleFound ? TimeSpan.FromMinutes(20.0) : TimeSpan.FromSeconds(10.0), TimeSpan.Zero);
+                    testLicenseTimer.Change(dongleFound ? TimeSpan.FromMinutes(2.0) : TimeSpan.FromSeconds(10.0), TimeSpan.Zero);
             }
             return ok;
         }

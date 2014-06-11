@@ -21,8 +21,10 @@ namespace Alunorf_plugin_test
     {
         bool m_readStarted = false;
         private FileLogger m_logger;
+        private object m_counterLock;
         public MainForm()
         {
+            m_counterLock = new object();
             InitializeComponent();
             MacAddr temp = new MacAddr();
             temp.Address = m_ownMAC.Text;
@@ -61,12 +63,22 @@ namespace Alunorf_plugin_test
         private void m_btGO_Click(object sender, EventArgs e)
         {
             //ushort id = 0;
-            if (!m_idToFilename.Contains("init_pc") && m_idToFilename.Contains("init"))
-                SetMessage("go while there is no init or previous go");
-
-            GoTelegram go = new GoTelegram(m_idCounter, m_messagesCount++);
-            m_idToFilename[m_idCounter] = "go";
-            m_idCounter += 2;
+            lock (m_idToFilename)
+            {
+                if (!m_idToFilename.Contains("init_pc") && m_idToFilename.Contains("init"))
+                    SetMessage("go while there is no init or previous go");
+            }
+            UInt16 id = 0;
+            lock (m_counterLock)
+            {
+                id = m_idCounter;
+                m_idCounter++;
+            }
+            GoTelegram go = new GoTelegram(id, m_messagesCount++);
+            lock (m_idToFilename)
+            {
+                m_idToFilename[id] = "go";
+            }
             lock (m_messageQueue)
             {
                 m_messageQueue.Add(go);
@@ -89,7 +101,7 @@ namespace Alunorf_plugin_test
             //        SetMessage("GO not acknowledged in time");
             //    }
             //}
-            m_sendFurtherGoes = true;
+            //m_sendFurtherGoes = true;
         }
 
         private void m_btStop_Click(object sender, EventArgs e)
@@ -102,7 +114,7 @@ namespace Alunorf_plugin_test
             m_logger.Close();
         }
 
-        private bool m_sendFurtherGoes;
+        //private bool m_sendFurtherGoes;
 
         private void m_btStart_Click(object sender, EventArgs e)
         {
@@ -293,7 +305,11 @@ namespace Alunorf_plugin_test
                 {
                     if (m_messageQueue.Count > 0)
                     {
-                        string key = m_idToFilename[m_messageQueue[0].AktId];
+                        string key;
+                        lock (m_idToFilename)
+                        {
+                            key = m_idToFilename[m_messageQueue[0].AktId];
+                        }
                         if (m_pcConnected == ConnectionState.READY)
                         {
                             if (!SendTelegram(m_messageQueue[0], key))
@@ -307,9 +323,12 @@ namespace Alunorf_plugin_test
                 }
                 if (m_sendLive)
                 {
-                    SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
-                    m_idCounter += 2;
-                    m_sendLive = false;
+                    lock (m_counterLock)
+                    {
+                        SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                        m_idCounter += 2;
+                        m_sendLive = false;
+                    }
                 }
                 Thread.Sleep(100);
             }
@@ -435,7 +454,10 @@ namespace Alunorf_plugin_test
             {
                 if (id != null)
                 {
-                    m_idToFilename[telegram.AktId] = id;
+                    lock (m_idToFilename)
+                    {
+                        m_idToFilename[telegram.AktId] = id;
+                    }
                     if (id != "live")
                         m_acknowledgements.Remove(id);
                     SetMessage("message sent: id " + id  + " " + telegram.AktId.ToString());
@@ -450,10 +472,13 @@ namespace Alunorf_plugin_test
                 {
                     //m_pcConnected = ConnectionState.DISCONNECTED;
                     //m_retryConnect = true;
-                    SetMessage("noticed disconnected while trying to send message with id:" + ((id == null)?"":id.ToString()));
+                    SetMessage("noticed disconnected while trying to send message with id:" + ((id == null) ? "" : id.ToString()));
                 }
                 else
+                {
                     SetMessage("error sending message with id" + ((id == null) ? "" : id.ToString()) + ": " + m_tcpManager.LastError ?? "");
+                    m_retryConnect = true;
+                }
                 return false;
             }
         }
@@ -484,8 +509,11 @@ namespace Alunorf_plugin_test
                                 m_pcConnected = ConnectionState.READY;
                                 m_acknowledgements["live"] = false;
                                 //live message zenden
-                                SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
-                                m_idCounter += 2;
+                                lock (m_counterLock)
+                                {
+                                    SendTelegram(new LiveTelegram(m_idCounter, m_messagesCount++), "live");
+                                    m_idCounter += 2;
+                                }
                                 m_liveTimer.Change(TimeSpan.FromMinutes(5.0), TimeSpan.Zero);
                                 SetMessage("acknowledgement to init recieved, state is ready: " + ack.AktId.ToString());
                                 SetMessage("Please press te GO button: " + ack.AktId.ToString());
@@ -546,17 +574,22 @@ namespace Alunorf_plugin_test
                                             m_pcConnected = ConnectionState.DISCONNECTED;
                                             m_retryConnect = true;
                                         }
-                                        if (m_sendFurtherGoes)
-                                        {
-                                            GoTelegram go = new GoTelegram(m_idCounter, m_messagesCount++);
-                                            m_idCounter += 2;
-                                            if (!SendTelegram(go, "go"))
-                                            {
-                                                SetMessage("could not send a further go: state is disconnected");
-                                                m_pcConnected = ConnectionState.DISCONNECTED;
-                                                m_retryConnect = true;
-                                            }
-                                        }
+                                        //if (m_sendFurtherGoes)
+                                        //{
+                                        //    UInt16 id = 0;
+                                        //    lock (m_counterLock)
+                                        //    {
+                                        //        id = m_idCounter;
+                                        //        m_idCounter += 2;
+                                        //    }
+                                        //    GoTelegram go = new GoTelegram(id, m_messagesCount++);
+                                        //    if (!SendTelegram(go, "go"))
+                                        //    {
+                                        //        SetMessage("could not send a further go: state is disconnected");
+                                        //        m_pcConnected = ConnectionState.DISCONNECTED;
+                                        //        m_retryConnect = true;
+                                        //    }
+                                        //}
                                     }
                                     else
                                     {
@@ -601,7 +634,9 @@ namespace Alunorf_plugin_test
                     return true;
                 default: // error
                     SetMessage("Read error: " + m_tcpManager.LastError);
-                    return false;
+                    m_pcConnected = ConnectionState.DISCONNECTED;
+                    m_retryConnect = true;
+                    return true;
             }
         }
 

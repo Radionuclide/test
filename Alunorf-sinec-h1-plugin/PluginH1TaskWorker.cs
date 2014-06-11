@@ -145,12 +145,12 @@ namespace Alunorf_sinec_h1_plugin
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_data.NameInfo;
             m_started = true;
+            m_waitConnectedEvent = new AutoResetEvent(false);
             m_thread.Start();
             
             //wait here until initialisation succeeded
             if (!m_stop)
             {
-                m_waitConnectedEvent = new AutoResetEvent(false);
                 m_waitConnectedEvent.WaitOne(2000 * (m_data.SendTimeOut + m_data.AckTimeOut + m_data.ConnectionTimeOut + 30), true);
             }
             else
@@ -202,7 +202,8 @@ namespace Alunorf_sinec_h1_plugin
 
                 //signal any waiting items
                 if (m_waitSendEvent != null) m_waitSendEvent.Set();
-                if (m_waitConnectedEvent != null) m_waitConnectedEvent.Set();
+                if (m_waitConnectedEvent != null) 
+                    m_waitConnectedEvent.Set();
                 return m_thread.Join(30000);
             }
         }
@@ -984,8 +985,8 @@ namespace Alunorf_sinec_h1_plugin
 
         private void BuildConnection()
         {
-            if ((m_logger != null) && m_logger.IsOpen)
-                m_logger.Log(Level.Info, "starting build connection : " + m_vnr1.ToString() + ":" + m_nqs1Status.ToString() + " " + m_vnr2.ToString() + ":"  + m_nqs2Status.ToString());
+            //if ((m_logger != null) && m_logger.IsOpen)
+            //    m_logger.Log(Level.Info, "starting build connection : " + m_vnr1.ToString() + ":" + m_nqs1Status.ToString() + " " + m_vnr2.ToString() + ":"  + m_nqs2Status.ToString());
             m_retryConnect = false;
             TimeSpan retryConnectInterval = TimeSpan.FromMinutes((double)m_data.RetryConnectTimeInterval);
             if (m_nqs1Status == NQSStatus.DISCONNECTED)
@@ -1022,6 +1023,7 @@ namespace Alunorf_sinec_h1_plugin
 
                         break;
                     case H1Result.WAIT_CONNECT:
+                        retryConnectInterval = TimeSpan.FromSeconds(2); //look again in two seconds
                         m_retryConnect = true;
                         break;
                     case H1Result.BAD_LINE: //indicate that a connection needs to be set up
@@ -1031,7 +1033,7 @@ namespace Alunorf_sinec_h1_plugin
                             result = (m_tcpManager as TcpIPManager).PassiveConnect(m_vnr1, 0);
                             if (result == H1Result.WAIT_CONNECT)
                             {
-                                retryConnectInterval = TimeSpan.FromSeconds((double)m_data.ConnectionTimeOut);
+                                retryConnectInterval = TimeSpan.FromSeconds(2); //look again in two seconds
                             }
                             m_retryConnect = true;
                         }
@@ -1098,6 +1100,7 @@ namespace Alunorf_sinec_h1_plugin
                         }
                         break;
                     case H1Result.WAIT_CONNECT:
+                        retryConnectInterval = TimeSpan.FromSeconds(2); //look again in two seconds
                         m_retryConnect = true;
                         break;
                     case H1Result.BAD_LINE:
@@ -1108,7 +1111,7 @@ namespace Alunorf_sinec_h1_plugin
                             result = (m_tcpManager as TcpIPManager).PassiveConnect(m_vnr2, 1);
                             if (result == H1Result.WAIT_CONNECT)
                             {
-                                retryConnectInterval = TimeSpan.FromSeconds((double)m_data.ConnectionTimeOut);
+                                retryConnectInterval = TimeSpan.FromSeconds(2); //look again in two seconds
                                 m_error = ""; //blank
                             }
                             m_retryConnect = true;
@@ -1150,8 +1153,8 @@ namespace Alunorf_sinec_h1_plugin
                 m_reconnectTimer.Change(retryConnectInterval, TimeSpan.Zero);
             }
 
-            if ((m_logger != null) && m_logger.IsOpen)
-                m_logger.Log(Level.Info, "exiting buildconnection : " + m_vnr1.ToString() + ":" + m_nqs1Status.ToString() + " " + m_vnr2.ToString() + ":"  + m_nqs2Status.ToString());
+            //if ((m_logger != null) && m_logger.IsOpen)
+            //    m_logger.Log(Level.Info, "exiting buildconnection : " + m_vnr1.ToString() + ":" + m_nqs1Status.ToString() + " " + m_vnr2.ToString() + ":"  + m_nqs2Status.ToString());
         }
 
         private void OnReconnectTimerTick(object ignoreMe)
