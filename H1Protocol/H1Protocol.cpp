@@ -235,12 +235,12 @@ namespace iba {
 		
 		cr.CrParams.LenDestTSAP = Math::Min(16,destTSAP->Length);
 		IntPtr buffer = Marshal::StringToHGlobalAnsi(destTSAP);
-		strncpy((char*) cr.CrParams.DestTSAP, (char*) buffer.ToPointer(),cr.CrParams.LenDestTSAP);
+		strncpy_s((char*) cr.CrParams.DestTSAP,16, (char*) buffer.ToPointer(),cr.CrParams.LenDestTSAP);
 		Marshal::FreeHGlobal(buffer);
 
 		cr.CrParams.LenOwnTSAP = Math::Min(16,ownTSAP->Length);
 		buffer = Marshal::StringToHGlobalAnsi(ownTSAP);
-		strncpy((char*) cr.CrParams.OwnTSAP,(char*) buffer.ToPointer(),cr.CrParams.LenOwnTSAP);
+		strncpy_s((char*) cr.CrParams.OwnTSAP,16,(char*) buffer.ToPointer(),cr.CrParams.LenOwnTSAP);
 		Marshal::FreeHGlobal(buffer);
 		cr.CrParams.LenConnParams = 0;
 

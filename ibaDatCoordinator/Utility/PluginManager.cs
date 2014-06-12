@@ -73,13 +73,18 @@ namespace iba.Utility
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            //extract the simple name from the display name 
-            string displayName = args.Name;
-            string simpleName = displayName.Split(',')[0] + ".dll";
-            //build the filename 
-            string fullPath = Path.Combine(m_pluginPath, simpleName);
-            //delegate to LoadFrom and return assembly 
-            return Assembly.LoadFrom(fullPath); 
+		    //Extract dll filename
+		    string dllName = args.Name.Split(',')[0];
+            if(dllName.EndsWith("resources"))
+                return null;
+		    dllName = dllName + ".dll";
+    		
+		    //Try to load the dll from the plugin path
+            string fullPath = Path.Combine(m_pluginPath, dllName);
+            if (File.Exists(fullPath))
+                return Assembly.LoadFrom(fullPath);
+            else
+                return null;
         }
 
         public IPluginTaskData CreateTask(string name, ConfigurationData parentjob)
