@@ -2567,7 +2567,7 @@ namespace iba.Processing
             (new ExtractTaskWorker(this, task)).DoWork(filename);
         }
 
-        internal string GetDirectoryName(string filename, TaskDataUNC task)
+        internal string GetOutputDirectoryName(string filename, TaskDataUNC task)
         {
             string dir = task.DestinationMap;
             if (String.IsNullOrEmpty(dir))
@@ -2606,9 +2606,14 @@ namespace iba.Processing
                 dir = Path.GetDirectoryName(Path.Combine(dir, s0));
             }
             if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
-                && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
+                && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME
+                && task.Subfolder != TaskDataUNC.SubfolderChoice.INFOFIELD)
             {
-                dir = Path.Combine(dir, SubFolder(task,filename));
+                dir = Path.Combine(dir, TimeBasedSubFolder(task,filename));
+            }
+            else if(task.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD)
+            {
+                dir = Path.Combine(dir, InfoFieldBasedSubFolder(task, filename));
             }
             return dir;
         }
@@ -2637,7 +2642,7 @@ namespace iba.Processing
                         outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
                     else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
                         outputfile = outputfile.TrimEnd(null);
-                    
+                    outputfile = CPathCleaner.CleanFile(outputfile);
                 }
                 catch
                 {
@@ -2660,15 +2665,13 @@ namespace iba.Processing
                 string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed, task.InfoFieldForOutputFile);
                 Log(iba.Logging.Level.Warning, message, filename, task);
             }
-            filename = CPathCleaner.CleanFile(filename);
             return Path.GetFileNameWithoutExtension(filename);
         }
 
-        private string SubFolder(TaskDataUNC task, String filename)
+        private String TimeBasedSubFolder(TaskDataUNC task, String filename)
         {
-            TaskDataUNC.SubfolderChoice choice = task.Subfolder;
-	        DateTime dt = DateTime.Now;
-            if (task.UseDatModTimeForDirs && task.Subfolder != TaskDataUNC.SubfolderChoice.INFOFIELD)
+            DateTime dt = DateTime.Now;
+            if(task.UseDatModTimeForDirs && task.Subfolder != TaskDataUNC.SubfolderChoice.INFOFIELD)
             {
                 try
                 {
@@ -2679,94 +2682,57 @@ namespace iba.Processing
                     dt = DateTime.Now;
                 }
             }
-            switch (choice)
-            {
-                case TaskDataUNC.SubfolderChoice.HOUR:
-                    return dt.ToString("yyMMddHH");
-                case TaskDataUNC.SubfolderChoice.DAY:
-                    return dt.ToString("yyMMdd");
-                case TaskDataUNC.SubfolderChoice.MONTH:
-                    return dt.ToString("yyMM");
-                case TaskDataUNC.SubfolderChoice.WEEK:
-                {
-                    int weekNr = GetWeekNumber(dt);
-                    return (dt.Year - 2000).ToString("d2") + weekNr.ToString("d2");
-                }
-                case TaskDataUNC.SubfolderChoice.INFOFIELD:
-                {
-                    IbaFile ibaDatFile = new IbaFileClass();
-                    string Subdir = "";
-                    try
-                    {
-                        ibaDatFile.Open(filename);
-                        Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
-                        if (task.InfoFieldForSubdirLength == 0)
-                        {
-                            if (task.InfoFieldForSubdirStart != 0)
-                            {
-                                Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
-                            }
-                        }
-                        else
-                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
-                        if (task.InfoFieldForSubdirRemoveBlanksAll)
-                            Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
-                        else if (task.InfoFieldForSubdirRemoveBlanksEnd)
-                            Subdir = Subdir.TrimEnd(null);
-                    }
-                    catch
-                    {
-                        Subdir = "";
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            ibaDatFile.Close();
-                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
-                        }
-                        catch
-                        {
+            return task.GetSubDir(dt);
+        }
 
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(Subdir))
-                    {
-                        Subdir = CPathCleaner.CleanDirectory(Subdir);
-                        return Subdir;
-                    }
-                    Subdir = "unresolved";
-                    //warn that we failed getting the infofield
-                    string message = string.Format(iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
-                    Log(iba.Logging.Level.Warning, message, filename, task);
-                    return Subdir;
-                }
-                default:
-                    return null;
-            }
-	    }
-
-        private int GetWeekNumber(DateTime date)
+        private String InfoFieldBasedSubFolder(TaskDataUNC task, String filename)
         {
-            // Get jan 1st of the year
-            DateTime startOfYear = new DateTime(date.Year, 1, 1);
-            // Get dec 31st of the year
-            DateTime endOfYear = new DateTime(date.Year, 12, 31);
+            IbaFile ibaDatFile = new IbaFileClass();
+            string Subdir = "";
+            try
+            {
+                ibaDatFile.Open(filename);
+                Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
+                if(task.InfoFieldForSubdirLength == 0)
+                {
+                    if(task.InfoFieldForSubdirStart != 0)
+                    {
+                        Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                    }
+                }
+                else
+                    Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                if(task.InfoFieldForSubdirRemoveBlanksAll)
+                    Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                else if(task.InfoFieldForSubdirRemoveBlanksEnd)
+                    Subdir = Subdir.TrimEnd(null);
+            }
+            catch
+            {
+                Subdir = "";
+            }
+            finally
+            {
+                try
+                {
+                    ibaDatFile.Close();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                }
+                catch
+                {
 
-            // ISO 8601 weeks start with Monday 
-            // The first week of a year includes the first Thursday 
-            // DayOfWeek returns 0 for sunday up to 6 for saterday
-            int[] iso8601Correction  = {6,7,8,9,10,4,5};
-            int nds = date.Subtract(startOfYear).Days  + iso8601Correction[(int)startOfYear.DayOfWeek];
-            int wk = nds / 7;
-            if(wk == 0)
-                // Return weeknumber of dec 31st of the previous year
-                return GetWeekNumber(new DateTime(date.Year-1, 12, 31));
-            else if((wk == 53) && (endOfYear.DayOfWeek < DayOfWeek.Thursday))
-                // If dec 31st falls before thursday it is week 01 of next year
-                return 1;
-            else
-                return wk;
+                }
+            }
+            if(!string.IsNullOrEmpty(Subdir))
+            {
+                Subdir = CPathCleaner.CleanDirectory(Subdir);
+                return Subdir;
+            }
+            Subdir = "unresolved";
+            //warn that we failed getting the infofield
+            string message = string.Format(iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
+            Log(iba.Logging.Level.Warning, message, filename, task);
+            return Subdir;
         }
 
         private void Report(string filename, ReportData task)
@@ -2800,46 +2766,71 @@ namespace iba.Processing
 
                 string actualFileName = GetOutputFileName(task,filename);
                 string dir = task.DestinationMapUNC;
-                if (String.IsNullOrEmpty(dir))
+                try
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
-                    lock (m_sd.DatFileStates)
+                    dir = GetOutputDirectoryName(filename, task);
+                    if(dir == null) return;
+                    if(!Directory.Exists(dir))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(dir);
+                        }
+                        catch
+                        {
+                            bool failed = true;
+                            if(SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                            {
+                                failed = false;
+                                if(!Directory.Exists(dir))
+                                {
+                                    try
+                                    {
+                                        Directory.CreateDirectory(dir);
+                                    }
+                                    catch
+                                    {
+                                        failed = true;
+                                    }
+                                }
+                            }
+                            if(failed)
+                            {
+                                Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                                lock(m_sd.DatFileStates)
+                                {
+                                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                                }
+                                return;
+                            }
+                        }
+                        //new directory created, do directory cleanup if that is the setting
+                        if(task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                            task.DoDirCleanupNow = true;
+                    }
+                    if(task.DoDirCleanupNow)
+                    {
+                        try
+                        {
+                            CleanupDirs(filename, task, ext);
+                        }
+                        catch
+                        {
+                        }
+                        task.DoDirCleanupNow = false;
+                    }
+                }
+                catch(Exception ex) //sort of unexpected error;
+                {
+                    Log(Logging.Level.Exception, ex.Message, filename, task);
+                    lock(m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
                     return;
                 }
 
-                if (!Path.IsPathRooted(dir))
-                {  //get Absolute path relative to dir
-                    dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
-                }
-                else
-                    dir = task.DestinationMapUNC;
-                string maindir = dir;
 
-                if (dir == m_cd.DatDirectoryUNC)
-                {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                    }
-                    return;
-                }
-
-                if (m_cd.SubDirs && task.Subfolder == ReportData.SubfolderChoice.SAME)
-                {   //concatenate subfolder corresponding to dat subfolder
-                    string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
-                    string s1 = Path.GetFullPath(filename);
-                    string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
-                    dir = Path.GetDirectoryName(Path.Combine(dir, s0));
-                }
-                if (task.Subfolder != ReportData.SubfolderChoice.NONE 
-                    && task.Subfolder != ReportData.SubfolderChoice.SAME)
-                {
-                    dir = Path.Combine(dir, SubFolder(task, filename ));
-                }
 
                 if (task.Extension == "html" || task.Extension == "htm")
                 {
@@ -3233,26 +3224,20 @@ namespace iba.Processing
                 else dir = task.DestinationMapUNC;
                 string maindir = dir;
 
-                if (dir == m_cd.DatDirectoryUNC)
+                dir = null;
+                try
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
-                    lock (m_sd.DatFileStates)
+                    dir = GetOutputDirectoryName(filename, task);
+                    if(dir == null) return;
+                }
+                catch(Exception ex) //sort of unexpected error;
+                {
+                    Log(Logging.Level.Exception, ex.Message, filename, task);
+                    lock(m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
                     return;
-                }
-
-                if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME) //concatenate subfolder corresponding to dat subfolder
-                {
-                    string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
-                    string s1 = Path.GetFullPath(filename);
-                    string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
-                    dir = Path.GetDirectoryName(Path.Combine(dir, s0));
-                }
-                if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
-                {
-                    dir = Path.Combine(dir, SubFolder(task,  filename ));
                 }
                 if (!Directory.Exists(dir))
                 {
@@ -3636,35 +3621,6 @@ namespace iba.Processing
             {
             }
             string actualFileName = GetOutputFileName(task, filename);
-            string dir = task.DestinationMapUNC;
-            string arg = "";
-            if (String.IsNullOrEmpty(dir))
-            {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logNoOutputPathSpecified, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                return;
-            }
-            if (!Path.IsPathRooted(dir))
-            {  //get Absolute path relative to dir
-                dir = Path.Combine(m_cd.DatDirectoryUNC, dir);
-            }
-            else
-                dir = task.DestinationMapUNC;
-            string maindir = dir;
-
-            if (dir == m_cd.DatDirectoryUNC)
-            {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
-                return;
-            }
-
             lock (m_licensedTasks)
             {
                 bool licensed = false;
@@ -3680,17 +3636,20 @@ namespace iba.Processing
                 }
             }
 
-            if (m_cd.SubDirs && task.Subfolder == TaskDataUNC.SubfolderChoice.SAME)
-            {   //concatenate subfolder corresponding to dat subfolder
-                string s2 = Path.GetFullPath(m_cd.DatDirectoryUNC);
-                string s1 = Path.GetFullPath(filename);
-                string s0 = s2.EndsWith(@"\") ? s1.Remove(0, s2.Length) : s1.Remove(0, s2.Length + 1);
-                dir = Path.GetDirectoryName(Path.Combine(dir, s0));
-            }
-            if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE
-                && task.Subfolder != TaskDataUNC.SubfolderChoice.SAME)
+            String dir = null;
+            try
             {
-                dir = Path.Combine(dir, SubFolder(task, filename));
+                dir = GetOutputDirectoryName(filename, task);
+                if(dir == null) return;
+            }
+            catch(Exception ex) //sort of unexpected error;
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock(m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
             }
 
             if (!Directory.Exists(dir))
@@ -3742,7 +3701,7 @@ namespace iba.Processing
                 }
                 task.DoDirCleanupNow = false;
             }
-            arg = Path.Combine(dir, actualFileName + ext);
+            string arg = Path.Combine(dir, actualFileName + ext);
             try
             {
                 if (!task.OverwriteFiles)
@@ -3855,7 +3814,7 @@ namespace iba.Processing
             string dir = null;
             try
             {
-                dir = GetDirectoryName(filename, task);
+                dir = GetOutputDirectoryName(filename, task);
                 if (dir == null) return;
                 if (!Directory.Exists(dir))
                 {

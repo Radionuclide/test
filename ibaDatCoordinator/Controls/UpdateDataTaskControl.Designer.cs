@@ -232,6 +232,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_gbTarget);
+            this.MinimumSize = new System.Drawing.Size(0, 675);
             this.Name = "UpdateDataTaskControl";
             this.m_gbTarget.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

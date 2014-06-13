@@ -634,6 +634,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E.g. &apos;{0}&apos;.
+        /// </summary>
+        internal static string ExampleFolder {
+            get {
+                return ResourceManager.GetString("ExampleFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon extract_running {

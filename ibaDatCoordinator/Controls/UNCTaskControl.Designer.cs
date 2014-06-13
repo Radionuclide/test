@@ -42,6 +42,8 @@
             this.m_nudInfoStartDir = new System.Windows.Forms.NumericUpDown();
             this.m_tbInfoFieldDir = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.m_cbUse4Numbers = new System.Windows.Forms.CheckBox();
+            this.m_cbSplitSubdirs = new System.Windows.Forms.CheckBox();
             this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbOriginal = new System.Windows.Forms.RadioButton();
@@ -198,9 +200,25 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.m_cbUse4Numbers);
+            this.panel3.Controls.Add(this.m_cbSplitSubdirs);
             this.panel3.Controls.Add(this.m_cbTakeDatTime);
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
+            // 
+            // m_cbUse4Numbers
+            // 
+            resources.ApplyResources(this.m_cbUse4Numbers, "m_cbUse4Numbers");
+            this.m_cbUse4Numbers.Name = "m_cbUse4Numbers";
+            this.m_cbUse4Numbers.UseVisualStyleBackColor = true;
+            this.m_cbUse4Numbers.CheckedChanged += new System.EventHandler(this.m_cbUse4Numbers_CheckedChanged);
+            // 
+            // m_cbSplitSubdirs
+            // 
+            resources.ApplyResources(this.m_cbSplitSubdirs, "m_cbSplitSubdirs");
+            this.m_cbSplitSubdirs.Name = "m_cbSplitSubdirs";
+            this.m_cbSplitSubdirs.UseVisualStyleBackColor = true;
+            this.m_cbSplitSubdirs.CheckedChanged += new System.EventHandler(this.m_cbSplitSubdirs_CheckedChanged);
             // 
             // m_cbTakeDatTime
             // 
@@ -675,5 +693,7 @@
         private System.Windows.Forms.CheckBox m_cbInfoAllBlanks;
         private System.Windows.Forms.CheckBox m_cbInfoAllBlanksDir;
         private System.Windows.Forms.CheckBox m_cbInfoEndBlanksDir;
+        private System.Windows.Forms.CheckBox m_cbUse4Numbers;
+        private System.Windows.Forms.CheckBox m_cbSplitSubdirs;
     }
 }

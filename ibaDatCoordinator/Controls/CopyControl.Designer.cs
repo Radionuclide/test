@@ -139,6 +139,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.m_gbTarget);
+            this.MinimumSize = new System.Drawing.Size(0, 580);
             this.Name = "CopyControl";
             this.m_gbTarget.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);

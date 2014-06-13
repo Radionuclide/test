@@ -179,7 +179,7 @@ namespace iba.Processing
 
             string actualFileName = m_confWorker.GetOutputFileName(m_task, filename);
 
-            string dir = m_confWorker.GetDirectoryName(filename, m_task);
+            string dir = m_confWorker.GetOutputDirectoryName(filename, m_task);
             if (dir == null)
                 return null;
 

@@ -139,13 +139,10 @@ standalonecopy:
   ClearErrors
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
-  File "..\Dependencies\msvcr90.dll"
-  File "..\Dependencies\msvcp90.dll"
-  File "..\Dependencies\msvcm90.dll"
-  File "..\Dependencies\Microsoft.VC90.CRT.manifest"
+  File "..\Dependencies\msvcr100.dll"
+  File "..\Dependencies\msvcp100.dll"
   File "..\RohPlugin\bin\Release\Alunorf_roh_plugin.dll"
   File "..\RohPlugin\bin\Release\RohWriter.dll"
-  File "..\Dependencies\Microsoft.VisualC.STLCLR.dll"
   IfErrors standalonecopyError standalonecopyOk
 standalonecopyError:
   MessageBox MB_ICONSTOP $(FAILED_COPY)
@@ -197,11 +194,8 @@ servicecopy:
   ClearErrors
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
-  File "..\Dependencies\msvcr90.dll"
-  File "..\Dependencies\msvcp90.dll"
-  File "..\Dependencies\msvcm90.dll"
-  File "..\Dependencies\Microsoft.VisualC.STLCLR.dll"
-  File "..\Dependencies\Microsoft.VC90.CRT.manifest"
+  File "..\Dependencies\msvcr100.dll"
+  File "..\Dependencies\msvcp100.dll"
   File "..\RohPlugin\bin\Release\Alunorf_roh_plugin.dll"
   File "..\RohPlugin\bin\Release\RohWriter.dll"
   IfErrors servicecopyError servicecopyOk

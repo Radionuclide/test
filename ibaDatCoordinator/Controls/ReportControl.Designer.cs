@@ -201,6 +201,7 @@ namespace iba.Controls
             this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.MinimumSize = new System.Drawing.Size(0, 686);
             this.Name = "ReportControl";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

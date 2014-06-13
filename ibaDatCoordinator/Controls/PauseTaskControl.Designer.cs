@@ -106,6 +106,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox);
+            this.MinimumSize = new System.Drawing.Size(0, 120);
             this.Name = "PauseTaskControl";
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();

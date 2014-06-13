@@ -37,6 +37,9 @@ namespace iba.Controls
             m_rbDay.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.DAY;
             m_rbWeek.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.WEEK;
             m_rbInfofieldForDir.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD;
+            m_cbSplitSubdirs.Checked = m_data.SplitSubdirs;
+            m_cbUse4Numbers.Checked = m_data.Year4Chars;
+
 
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
@@ -70,17 +73,29 @@ namespace iba.Controls
             m_nudInfoLengthDir.Value = m_data.InfoFieldForSubdirLength;
             m_cbInfoEndBlanksDir.Checked = m_data.InfoFieldForSubdirRemoveBlanksEnd;
             m_cbInfoAllBlanksDir.Checked = m_data.InfoFieldForSubdirRemoveBlanksAll;
+            UpdateTooltips();
+        }
+
+        private void UpdateTooltips()
+        {
+            m_toolTip.SetToolTip(m_rbHour, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.HOUR, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+            m_toolTip.SetToolTip(m_rbDay, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.DAY, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+            m_toolTip.SetToolTip(m_rbWeek, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.WEEK, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+            m_toolTip.SetToolTip(m_rbMonth, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.MONTH, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
         }
 
         public void SaveData()
         {
-            if (m_rbNONE.Checked) m_data.Subfolder = ReportData.SubfolderChoice.NONE;
-            if (m_rbHour.Checked) m_data.Subfolder = ReportData.SubfolderChoice.HOUR;
-            if (m_rbDay.Checked) m_data.Subfolder = ReportData.SubfolderChoice.DAY;
-            if (m_rbWeek.Checked) m_data.Subfolder = ReportData.SubfolderChoice.WEEK;
-            if (m_rbMonth.Checked) m_data.Subfolder = ReportData.SubfolderChoice.MONTH;
-            if (m_rbOriginal.Checked) m_data.Subfolder = ReportData.SubfolderChoice.SAME;
-            if (m_rbInfofieldForDir.Checked) m_data.Subfolder = ReportData.SubfolderChoice.INFOFIELD;
+            if(m_rbNONE.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.NONE;
+            if(m_rbHour.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.HOUR;
+            if(m_rbDay.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.DAY;
+            if(m_rbWeek.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.WEEK;
+            if(m_rbMonth.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.MONTH;
+            if(m_rbOriginal.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.SAME;
+            if(m_rbInfofieldForDir.Checked) m_data.Subfolder = TaskDataUNC.SubfolderChoice.INFOFIELD;
+            m_data.SplitSubdirs = m_cbSplitSubdirs.Checked;
+            m_data.Year4Chars = m_cbUse4Numbers.Checked;
+
 
             m_data.SubfoldersNumber = (uint)m_nudDirs.Value;
             m_data.Quota = (uint) m_nudQuota.Value;
@@ -157,6 +172,8 @@ namespace iba.Controls
         {
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
+
+            UpdateTooltips();
         }
 
         private void m_rbLimitUsageChoiceChanged(object sender, EventArgs e)
@@ -263,6 +280,16 @@ namespace iba.Controls
             int widthAvailable = panel2.Right - m_tbInfoFieldDir.Right - MaxChecks - 10;
             m_tbInfoFieldDir.Size = new Size(m_tbInfoFieldDir.Width + widthAvailable, m_tbInfoFieldDir.Height);
             m_cbInfoEndBlanksDir.Left = m_cbInfoAllBlanksDir.Left = m_tbInfoFieldDir.Right + 5;
+        }
+
+        private void m_cbSplitSubdirs_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTooltips();
+        }
+
+        private void m_cbUse4Numbers_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTooltips();
         }
     }
 }

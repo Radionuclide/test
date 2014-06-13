@@ -85,6 +85,8 @@ namespace iba.Data
             m_infoFieldForSubdirLength = 0;
             m_infoFieldForSubdirRemoveBlanksEnd = false;
             m_infoFieldForSubdirRemoveBlanksAll = false;
+            m_splitSubdirs = false;
+            m_year4Chars = false;
         }
 
         protected uint m_numbFolders;
@@ -100,6 +102,19 @@ namespace iba.Data
         {
             get { return m_subfolderChoice; }
             set { m_subfolderChoice = value; }
+        }
+
+        private bool m_splitSubdirs;
+        public bool SplitSubdirs
+        {
+            get { return m_splitSubdirs; }
+            set { m_splitSubdirs = value; }
+        }
+        private bool m_year4Chars;
+        public bool Year4Chars
+        {
+            get { return m_year4Chars; }
+            set { m_year4Chars = value; }
         }
 
         protected uint m_quota;
@@ -225,6 +240,8 @@ namespace iba.Data
             uncdat.m_infoFieldForSubdirLength = m_infoFieldForSubdirLength;
             uncdat.m_infoFieldForSubdirRemoveBlanksAll = m_infoFieldForSubdirRemoveBlanksAll;
             uncdat.m_infoFieldForSubdirRemoveBlanksEnd = m_infoFieldForSubdirRemoveBlanksEnd;
+            uncdat.m_splitSubdirs = m_splitSubdirs;
+            uncdat.m_year4Chars = m_year4Chars;
         }
 
         public bool UNCDataIsSame(TaskDataUNC other)
@@ -252,7 +269,70 @@ namespace iba.Data
             other.m_infoFieldForSubdirStart == m_infoFieldForSubdirStart &&
             other.m_infoFieldForSubdirLength == m_infoFieldForSubdirLength &&
             other.m_infoFieldForSubdirRemoveBlanksAll == m_infoFieldForSubdirRemoveBlanksAll &&
-            other.m_infoFieldForSubdirRemoveBlanksEnd == m_infoFieldForSubdirRemoveBlanksEnd;
+            other.m_infoFieldForSubdirRemoveBlanksEnd == m_infoFieldForSubdirRemoveBlanksEnd &&
+            other.m_splitSubdirs == m_splitSubdirs &&
+            other.m_year4Chars == m_year4Chars;
+        }
+
+        public String GetSubDir(DateTime dt)
+        {
+            return GetSubDir(this.Subfolder, dt, this.Year4Chars, this.SplitSubdirs);
+        }
+
+        public static String GetSubDir(SubfolderChoice choice, DateTime dt, bool fourYears, bool splitDirs)
+        {
+            string yearString = fourYears ? "yyyy" : "yy";
+            string res = null;
+            switch(choice)
+            {
+                case TaskDataUNC.SubfolderChoice.HOUR:
+                    res = dt.ToString(yearString + "'~'MM'~'dd'~'HH");
+                    break;
+                case TaskDataUNC.SubfolderChoice.DAY:
+                    res = dt.ToString(yearString + "'~'MM'~'dd");
+                    break;
+                case TaskDataUNC.SubfolderChoice.MONTH:
+                    res = dt.ToString(yearString + "'~'MM");
+                    break;
+                case TaskDataUNC.SubfolderChoice.WEEK:
+                    {
+                        int weekNr = GetWeekNumber(dt);
+                        if(fourYears)
+                            res = dt.Year.ToString("d4") + "~" + weekNr.ToString("d2");
+                        else
+                            res = (dt.Year - 2000).ToString("d2") + "~" + weekNr.ToString("d2");
+                        break;
+                    }
+                default:
+                    return null;
+            }
+            if(splitDirs)
+                return res.Replace("~", @"\");
+            else
+                return res.Replace("~","");
+        }
+
+        private static int GetWeekNumber(DateTime date)
+        {
+            // Get jan 1st of the year
+            DateTime startOfYear = new DateTime(date.Year, 1, 1);
+            // Get dec 31st of the year
+            DateTime endOfYear = new DateTime(date.Year, 12, 31);
+
+            // ISO 8601 weeks start with Monday 
+            // The first week of a year includes the first Thursday 
+            // DayOfWeek returns 0 for sunday up to 6 for saterday
+            int[] iso8601Correction = { 6, 7, 8, 9, 10, 4, 5 };
+            int nds = date.Subtract(startOfYear).Days + iso8601Correction[(int)startOfYear.DayOfWeek];
+            int wk = nds / 7;
+            if(wk == 0)
+                // Return weeknumber of dec 31st of the previous year
+                return GetWeekNumber(new DateTime(date.Year - 1, 12, 31));
+            else if((wk == 53) && (endOfYear.DayOfWeek < DayOfWeek.Thursday))
+                // If dec 31st falls before thursday it is week 01 of next year
+                return 1;
+            else
+                return wk;
         }
 
         protected string m_username;

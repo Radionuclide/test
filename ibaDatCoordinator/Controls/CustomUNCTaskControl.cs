@@ -41,6 +41,7 @@ namespace iba.Controls
 
             int newHeight = m_gbTarget.Bottom + 5;
             this.Height = newHeight;
+            this.MinimumSize = new Size(this.Size.Width, newHeight);
         }
 
         //gui elements
