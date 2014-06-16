@@ -126,11 +126,29 @@
     <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PanelDatFilesJob.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PanelDatFilesJob.Designer.cs">
       <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelSheduledJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelSheduledJob.designer.cs">
+      <DependentUpon>PanelSheduledJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
@@ -262,6 +280,12 @@
     <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processing\ExtractTaskWorker.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
@@ -297,6 +321,12 @@
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
+    <Compile Include="UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
@@ -313,16 +343,28 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MonthlyTriggerSettingsControl.resx">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
       <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelSheduledJob.resx">
+      <DependentUpon>PanelSheduledJob.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StatusControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DailyTriggerSettingsControl.resx">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -352,6 +394,9 @@
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
+    <EmbeddedResource Include="UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.resx">
