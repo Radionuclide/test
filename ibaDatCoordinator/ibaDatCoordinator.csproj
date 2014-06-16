@@ -126,6 +126,12 @@
     <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.Designer.cs">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +312,9 @@
     <EmbeddedResource Include="Controls\ConfigurationControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusControl.resx">
       <SubType>Designer</SubType>

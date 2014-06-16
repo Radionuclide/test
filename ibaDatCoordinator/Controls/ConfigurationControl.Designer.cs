@@ -32,38 +32,7 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationControl));
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.m_datDirTextBox = new System.Windows.Forms.TextBox();
-            this.m_scanTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_browseDatFilesButton = new System.Windows.Forms.Button();
-            this.m_tbPass = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.m_tbUserName = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.m_checkPathButton = new System.Windows.Forms.Button();
-            this.m_browseFolderButton = new System.Windows.Forms.Button();
-            this.m_refreshDats = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.m_undoChangesBtn = new System.Windows.Forms.Button();
-            this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
-            this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
-            this.m_cbRetry = new System.Windows.Forms.CheckBox();
-            this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
-            this.m_cbRescanEnabled = new System.Windows.Forms.CheckBox();
-            this.m_stopButton = new System.Windows.Forms.Button();
-            this.m_applyToRunningBtn = new System.Windows.Forms.Button();
-            this.m_startButton = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
-            this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
-            this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.m_newTaskToolstrip = new System.Windows.Forms.ToolStrip();
@@ -97,13 +66,8 @@ namespace iba.Controls
             this.m_nudNotifyTime = new System.Windows.Forms.NumericUpDown();
             this.m_rbTime = new System.Windows.Forms.RadioButton();
             this.m_rbImmediate = new System.Windows.Forms.RadioButton();
-            this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.m_sourcePanel = new System.Windows.Forms.Panel();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.m_newTaskToolstrip.SuspendLayout();
             this.m_subfolderGroupBox.SuspendLayout();
@@ -123,126 +87,6 @@ namespace iba.Controls
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // m_datDirTextBox
-            // 
-            this.m_datDirTextBox.AllowDrop = true;
-            resources.ApplyResources(this.m_datDirTextBox, "m_datDirTextBox");
-            this.m_datDirTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.m_datDirTextBox.Name = "m_datDirTextBox";
-            this.m_datDirTextBox.TextChanged += new System.EventHandler(this.m_datDirInfoChanged);
-            this.m_datDirTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragDrop);
-            this.m_datDirTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragOver);
-            // 
-            // m_scanTimeUpDown
-            // 
-            this.m_scanTimeUpDown.DecimalPlaces = 1;
-            resources.ApplyResources(this.m_scanTimeUpDown, "m_scanTimeUpDown");
-            this.m_scanTimeUpDown.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.m_scanTimeUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.m_scanTimeUpDown.Name = "m_scanTimeUpDown";
-            this.m_scanTimeUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // m_subMapsCheckBox
-            // 
-            resources.ApplyResources(this.m_subMapsCheckBox, "m_subMapsCheckBox");
-            this.m_subMapsCheckBox.Name = "m_subMapsCheckBox";
-            this.m_subMapsCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.m_browseDatFilesButton);
-            this.groupBox1.Controls.Add(this.m_tbPass);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.m_tbUserName);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.m_checkPathButton);
-            this.groupBox1.Controls.Add(this.m_browseFolderButton);
-            this.groupBox1.Controls.Add(this.m_subMapsCheckBox);
-            this.groupBox1.Controls.Add(this.m_datDirTextBox);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // m_browseDatFilesButton
-            // 
-            resources.ApplyResources(this.m_browseDatFilesButton, "m_browseDatFilesButton");
-            this.m_browseDatFilesButton.Image = global::iba.Properties.Resources.open;
-            this.m_browseDatFilesButton.Name = "m_browseDatFilesButton";
-            this.m_toolTip.SetToolTip(this.m_browseDatFilesButton, resources.GetString("m_browseDatFilesButton.ToolTip"));
-            this.m_browseDatFilesButton.UseVisualStyleBackColor = true;
-            this.m_browseDatFilesButton.Click += new System.EventHandler(this.m_browseDatFilesButton_Click);
-            // 
-            // m_tbPass
-            // 
-            resources.ApplyResources(this.m_tbPass, "m_tbPass");
-            this.m_tbPass.Name = "m_tbPass";
-            this.m_tbPass.UseSystemPasswordChar = true;
-            this.m_tbPass.TextChanged += new System.EventHandler(this.m_datDirInfoChanged);
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            // 
-            // m_tbUserName
-            // 
-            resources.ApplyResources(this.m_tbUserName, "m_tbUserName");
-            this.m_tbUserName.Name = "m_tbUserName";
-            this.m_tbUserName.TextChanged += new System.EventHandler(this.m_datDirInfoChanged);
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // m_checkPathButton
-            // 
-            resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
-            this.m_checkPathButton.Image = global::iba.Properties.Resources.thumup;
-            this.m_checkPathButton.Name = "m_checkPathButton";
-            this.m_checkPathButton.UseVisualStyleBackColor = true;
-            this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
-            // 
-            // m_browseFolderButton
-            // 
-            resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-            this.m_browseFolderButton.Image = global::iba.Properties.Resources.open;
-            this.m_browseFolderButton.Name = "m_browseFolderButton";
-            this.m_toolTip.SetToolTip(this.m_browseFolderButton, resources.GetString("m_browseFolderButton.ToolTip"));
-            this.m_browseFolderButton.UseVisualStyleBackColor = true;
-            this.m_browseFolderButton.Click += new System.EventHandler(this.OnClickFolderBrowserButton);
-            // 
-            // m_refreshDats
-            // 
-            resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
-            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
-            this.m_refreshDats.Name = "m_refreshDats";
-            this.m_refreshDats.UseVisualStyleBackColor = true;
-            this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
-            // 
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
@@ -250,158 +94,6 @@ namespace iba.Controls
             this.groupBox2.Controls.Add(this.m_nameTextBox);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Controls.Add(this.m_undoChangesBtn);
-            this.groupBox3.Controls.Add(this.m_cbDetectNewFiles);
-            this.groupBox3.Controls.Add(this.m_cbInitialScanEnabled);
-            this.groupBox3.Controls.Add(this.m_cbRetry);
-            this.groupBox3.Controls.Add(this.m_retryUpDown);
-            this.groupBox3.Controls.Add(this.label14);
-            this.groupBox3.Controls.Add(this.m_cbRescanEnabled);
-            this.groupBox3.Controls.Add(this.m_refreshDats);
-            this.groupBox3.Controls.Add(this.m_stopButton);
-            this.groupBox3.Controls.Add(this.m_applyToRunningBtn);
-            this.groupBox3.Controls.Add(this.m_startButton);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
-            this.groupBox3.Controls.Add(this.m_enableCheckBox);
-            this.groupBox3.Controls.Add(this.m_failTimeUpDown);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.TabStop = false;
-            // 
-            // m_undoChangesBtn
-            // 
-            resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
-            this.m_undoChangesBtn.Image = global::iba.Properties.Resources.undoconfs;
-            this.m_undoChangesBtn.Name = "m_undoChangesBtn";
-            this.m_undoChangesBtn.UseVisualStyleBackColor = true;
-            this.m_undoChangesBtn.Click += new System.EventHandler(this.m_undoChangesBtn_Click);
-            // 
-            // m_cbDetectNewFiles
-            // 
-            resources.ApplyResources(this.m_cbDetectNewFiles, "m_cbDetectNewFiles");
-            this.m_cbDetectNewFiles.Name = "m_cbDetectNewFiles";
-            this.m_cbDetectNewFiles.UseVisualStyleBackColor = true;
-            this.m_cbDetectNewFiles.CheckedChanged += new System.EventHandler(this.m_cbDetectNewFiles_CheckedChanged);
-            // 
-            // m_cbInitialScanEnabled
-            // 
-            resources.ApplyResources(this.m_cbInitialScanEnabled, "m_cbInitialScanEnabled");
-            this.m_cbInitialScanEnabled.Name = "m_cbInitialScanEnabled";
-            this.m_cbInitialScanEnabled.UseVisualStyleBackColor = true;
-            // 
-            // m_cbRetry
-            // 
-            resources.ApplyResources(this.m_cbRetry, "m_cbRetry");
-            this.m_cbRetry.Name = "m_cbRetry";
-            this.m_cbRetry.UseVisualStyleBackColor = true;
-            this.m_cbRetry.CheckedChanged += new System.EventHandler(this.m_cbRetry_CheckedChanged);
-            // 
-            // m_retryUpDown
-            // 
-            resources.ApplyResources(this.m_retryUpDown, "m_retryUpDown");
-            this.m_retryUpDown.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.m_retryUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_retryUpDown.Name = "m_retryUpDown";
-            this.m_retryUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
-            // m_cbRescanEnabled
-            // 
-            resources.ApplyResources(this.m_cbRescanEnabled, "m_cbRescanEnabled");
-            this.m_cbRescanEnabled.Name = "m_cbRescanEnabled";
-            this.m_cbRescanEnabled.UseVisualStyleBackColor = true;
-            this.m_cbRescanEnabled.CheckedChanged += new System.EventHandler(this.m_cbRescanEnabled_CheckedChanged);
-            // 
-            // m_stopButton
-            // 
-            resources.ApplyResources(this.m_stopButton, "m_stopButton");
-            this.m_stopButton.Image = global::iba.Properties.Resources.Stop;
-            this.m_stopButton.Name = "m_stopButton";
-            this.m_stopButton.UseVisualStyleBackColor = true;
-            this.m_stopButton.Click += new System.EventHandler(this.m_stopButton_Click);
-            // 
-            // m_applyToRunningBtn
-            // 
-            resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
-            this.m_applyToRunningBtn.Image = global::iba.Properties.Resources.refreshconfs;
-            this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
-            this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
-            this.m_applyToRunningBtn.Click += new System.EventHandler(this.m_applyToRunningButton_Click);
-            // 
-            // m_startButton
-            // 
-            resources.ApplyResources(this.m_startButton, "m_startButton");
-            this.m_startButton.Image = global::iba.Properties.Resources.Start;
-            this.m_startButton.Name = "m_startButton";
-            this.m_startButton.UseVisualStyleBackColor = true;
-            this.m_startButton.Click += new System.EventHandler(this.m_startButton_Click);
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            // 
-            // m_autoStartCheckBox
-            // 
-            resources.ApplyResources(this.m_autoStartCheckBox, "m_autoStartCheckBox");
-            this.m_autoStartCheckBox.Name = "m_autoStartCheckBox";
-            this.m_autoStartCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // m_enableCheckBox
-            // 
-            resources.ApplyResources(this.m_enableCheckBox, "m_enableCheckBox");
-            this.m_enableCheckBox.Name = "m_enableCheckBox";
-            this.m_enableCheckBox.UseVisualStyleBackColor = true;
-            this.m_enableCheckBox.CheckedChanged += new System.EventHandler(this.m_enableCheckBox_CheckedChanged);
-            // 
-            // m_failTimeUpDown
-            // 
-            this.m_failTimeUpDown.DecimalPlaces = 1;
-            resources.ApplyResources(this.m_failTimeUpDown, "m_failTimeUpDown");
-            this.m_failTimeUpDown.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.m_failTimeUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.m_failTimeUpDown.Name = "m_failTimeUpDown";
-            this.m_failTimeUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
             // 
             // groupBox4
             // 
@@ -648,32 +340,23 @@ namespace iba.Controls
             this.m_rbImmediate.UseVisualStyleBackColor = true;
             this.m_rbImmediate.CheckedChanged += new System.EventHandler(this.m_rbImmediate_CheckedChanged);
             // 
-            // m_selectDatFilesDialog
+            // m_sourcePanel
             // 
-            this.m_selectDatFilesDialog.DefaultExt = "dat";
-            this.m_selectDatFilesDialog.FileName = "openFileDialog1";
-            this.m_selectDatFilesDialog.Multiselect = true;
+            resources.ApplyResources(this.m_sourcePanel, "m_sourcePanel");
+            this.m_sourcePanel.Name = "m_sourcePanel";
             // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_sourcePanel);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.MinimumSize = new System.Drawing.Size(720, 250);
             this.Name = "ConfigurationControl";
-            ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.m_newTaskToolstrip.ResumeLayout(false);
@@ -692,23 +375,9 @@ namespace iba.Controls
 
         private System.Windows.Forms.TextBox m_nameTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox m_datDirTextBox;
-        private System.Windows.Forms.NumericUpDown m_scanTimeUpDown;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox m_subMapsCheckBox;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
-        private System.Windows.Forms.Button m_browseFolderButton;
-        private System.Windows.Forms.CheckBox m_enableCheckBox;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.Button m_stopButton;
-        private System.Windows.Forms.Button m_startButton;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button m_refreshDats;
-        private System.Windows.Forms.CheckBox m_autoStartCheckBox;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
         private System.Windows.Forms.RadioButton m_rbNetSend;
         private System.Windows.Forms.TextBox m_tbEmail;
@@ -724,39 +393,22 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbSMTP;
         private System.Windows.Forms.Label labelnetsendhost;
         private System.Windows.Forms.Label labelmailsmtp;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckBox m_cbRescanEnabled;
-        private System.Windows.Forms.Button m_applyToRunningBtn;
-        private System.Windows.Forms.TextBox m_tbPass;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox m_tbUserName;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button m_checkPathButton;
         private System.Windows.Forms.ToolStrip m_newTaskToolstrip;
         private System.Windows.Forms.ToolStripButton m_newReportButton;
         private System.Windows.Forms.ToolStripButton m_newExtractButton;
         private System.Windows.Forms.ToolStripButton m_newBatchfileButton;
         private System.Windows.Forms.ToolStripButton m_newCopyTaskButton;
         private System.Windows.Forms.ToolStripButton m_newIfTaskButton;
-        private System.Windows.Forms.CheckBox m_cbRetry;
-        private System.Windows.Forms.NumericUpDown m_retryUpDown;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button m_testNotification;
         private System.Windows.Forms.Label labelmailpass;
         private System.Windows.Forms.TextBox m_tbMailPass;
         private System.Windows.Forms.Label labelmailuser;
         private System.Windows.Forms.TextBox m_tbMailUsername;
         private System.Windows.Forms.CheckBox m_cbAuthentication;
-        private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
-        private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
         private System.Windows.Forms.ToolStripButton m_newUpdateDataTaskButton;
         private System.Windows.Forms.ToolStripButton m_newPauseTaskButton;
-        private System.Windows.Forms.Button m_browseDatFilesButton;
-        private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
-        private System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.Label labelsender;
         private System.Windows.Forms.TextBox m_tbSender;
+        private System.Windows.Forms.Panel m_sourcePanel;
     }
 }
