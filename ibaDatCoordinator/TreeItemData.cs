@@ -59,6 +59,17 @@ namespace iba
     }
     #endregion
 
+    #region NewScheduledConfigurationTreeItemData
+    public class NewScheduledConfigurationTreeItemData : NewConfigurationTreeItemDataBase
+    {
+        public NewScheduledConfigurationTreeItemData(IPropertyPaneManager propManager) : base(propManager) { }
+        public override string What
+        {
+            get { return "NewScheduledConfigurationTreeItemData"; }
+        }
+    }
+    #endregion
+
 	#region ConfigurationTreeItemData
     public class ConfigurationTreeItemData : TreeItemData
 	{
@@ -101,26 +112,24 @@ namespace iba
 
 		public override Control CreateControl()
 		{
-            if (m_conf.OnetimeJob)
+            string what = null;
+            switch(m_conf.JobType)
             {
-                Control ctrl = manager.PropertyPanes["OneTimeConfigurationControl"] as Control;
-                if (ctrl == null)
-                {
-                    ctrl = new ConfigurationControl(m_conf.OnetimeJob);
-                    manager.PropertyPanes["OneTimeConfigurationControl"] = ctrl;
-                }
-                return ctrl;
+                case Data.ConfigurationData.JobTypeEnum.DatTriggered:
+                    what = "ConfigurationControl"; break;
+                case Data.ConfigurationData.JobTypeEnum.OneTime:
+                    what = "OneTimeConfigurationControl"; break;
+                case Data.ConfigurationData.JobTypeEnum.Scheduled:
+                    what = "ScheduledConfigurationControl"; break;
+
             }
-            else
+            Control ctrl = manager.PropertyPanes[what] as Control;
+            if (ctrl == null)
             {
-                Control ctrl = manager.PropertyPanes["ConfigurationControl"] as Control;
-                if (ctrl == null)
-                {
-                    ctrl = new ConfigurationControl(m_conf.OnetimeJob);
-                    manager.PropertyPanes["ConfigurationControl"] = ctrl;
-                }
-                return ctrl;
+                ctrl = new ConfigurationControl(m_conf.JobType);
+                manager.PropertyPanes[what] = ctrl;
             }
+            return ctrl;
 		}
 	}
 	#endregion

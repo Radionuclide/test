@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gbShedule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="gbSchedule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_repeatDurationCombo.Items" xml:space="preserve">
@@ -141,7 +141,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_repeatDurationCombo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>409, 267</value>
+    <value>409, 253</value>
   </data>
   <data name="m_repeatDurationCombo.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>
@@ -157,7 +157,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_repeatDurationCombo.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_repeatDurationCombo.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -166,7 +166,7 @@
     <value>True</value>
   </data>
   <data name="m_lblDuration.Location" type="System.Drawing.Point, System.Drawing">
-    <value>319, 270</value>
+    <value>319, 256</value>
   </data>
   <data name="m_lblDuration.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
@@ -184,7 +184,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblDuration.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_lblDuration.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -205,7 +205,7 @@
     <value>1 hour</value>
   </data>
   <data name="m_repeatIntervalCombo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>146, 267</value>
+    <value>146, 253</value>
   </data>
   <data name="m_repeatIntervalCombo.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>
@@ -220,7 +220,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_repeatIntervalCombo.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_repeatIntervalCombo.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -229,7 +229,7 @@
     <value>True</value>
   </data>
   <data name="m_cbRepeat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 269</value>
+    <value>16, 255</value>
   </data>
   <data name="m_cbRepeat.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
@@ -247,7 +247,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRepeat.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_cbRepeat.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -255,32 +255,35 @@
   <data name="gbTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_gbSubProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_gbSubProperties.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 39</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>563, 125</value>
+  <data name="m_gbSubProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>563, 109</value>
   </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gbSubProperties.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;m_gbSubProperties.Name" xml:space="preserve">
+    <value>m_gbSubProperties</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_gbSubProperties.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_gbSubProperties.Parent" xml:space="preserve">
     <value>gbTrigger</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_gbSubProperties.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_timePicker.Location" type="System.Drawing.Point, System.Drawing">
     <value>257, 13</value>
   </data>
   <data name="m_timePicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 20</value>
+    <value>101, 20</value>
   </data>
   <data name="m_timePicker.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -349,10 +352,10 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 16</value>
+    <value>101, 17</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>2, 148</value>
+    <value>2, 130</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -490,7 +493,7 @@
     <value>16, 93</value>
   </data>
   <data name="gbTrigger.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 170</value>
+    <value>678, 154</value>
   </data>
   <data name="gbTrigger.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -505,7 +508,7 @@
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;gbTrigger.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;gbTrigger.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -536,7 +539,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_undoChangesBtn.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_undoChangesBtn.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -566,7 +569,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -587,7 +590,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -617,7 +620,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -644,7 +647,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_refreshDats.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_refreshDats.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -671,7 +674,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -702,7 +705,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningBtn.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningBtn.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -729,7 +732,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -759,7 +762,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -792,7 +795,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
     <value>14</value>
@@ -825,7 +828,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
     <value>15</value>
@@ -846,7 +849,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
     <value>16</value>
@@ -876,38 +879,62 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>gbShedule</value>
+    <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="gbShedule.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="gbSchedule.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="gbShedule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 298</value>
+  <data name="gbSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 287</value>
   </data>
-  <data name="gbShedule.TabIndex" type="System.Int32, mscorlib">
+  <data name="gbSchedule.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="gbShedule.Text" xml:space="preserve">
-    <value>Shedule</value>
+  <data name="gbSchedule.Text" xml:space="preserve">
+    <value>Schedule</value>
   </data>
-  <data name="&gt;&gt;gbShedule.Name" xml:space="preserve">
-    <value>gbShedule</value>
+  <data name="&gt;&gt;gbSchedule.Name" xml:space="preserve">
+    <value>gbSchedule</value>
   </data>
-  <data name="&gt;&gt;gbShedule.Type" xml:space="preserve">
+  <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gbShedule.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gbShedule.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;gbSchedule.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>178, 361</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -924,7 +951,7 @@
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>PanelSheduledJob</value>
+    <value>PanelScheduledJob</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

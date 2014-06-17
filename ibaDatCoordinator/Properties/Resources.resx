@@ -967,6 +967,9 @@
   <data name="addOneTimeConfigurationText" xml:space="preserve">
     <value>Add One Time Job</value>
   </data>
+  <data name="addScheduledConfigurationText" xml:space="preserve">
+    <value>Add Scheduled Job</value>
+  </data>
   <data name="onetimeconfiguration" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\onetimeconfiguration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1101,5 +1104,32 @@
   </data>
   <data name="ExampleFolder" xml:space="preserve">
     <value>E.g. '{0}'</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="Fourth" xml:space="preserve">
+    <value>Fourth</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="SelectAllDays" xml:space="preserve">
+    <value>&lt;Select all days&gt;</value>
+  </data>
+  <data name="SelectAllMonths" xml:space="preserve">
+    <value>&lt;Select all months&gt;</value>
+  </data>
+  <data name="Third" xml:space="preserve">
+    <value>Third</value>
+  </data>
+  <data name="scheduled_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scheduled_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿namespace iba.Controls
 {
-    partial class PanelSheduledJob
+    partial class PanelScheduledJob
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelSheduledJob));
-            this.gbShedule = new System.Windows.Forms.GroupBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelScheduledJob));
+            this.gbSchedule = new System.Windows.Forms.GroupBox();
             this.m_repeatDurationCombo = new System.Windows.Forms.ComboBox();
             this.m_lblDuration = new System.Windows.Forms.Label();
             this.m_repeatIntervalCombo = new System.Windows.Forms.ComboBox();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.m_timePicker = new System.Windows.Forms.DateTimePicker();
             this.m_datePicker = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,35 +59,36 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.gbShedule.SuspendLayout();
+            this.button1 = new System.Windows.Forms.Button();
+            this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.SuspendLayout();
             // 
-            // gbShedule
+            // gbSchedule
             // 
-            resources.ApplyResources(this.gbShedule, "gbShedule");
-            this.gbShedule.Controls.Add(this.m_repeatDurationCombo);
-            this.gbShedule.Controls.Add(this.m_lblDuration);
-            this.gbShedule.Controls.Add(this.m_repeatIntervalCombo);
-            this.gbShedule.Controls.Add(this.m_cbRepeat);
-            this.gbShedule.Controls.Add(this.gbTrigger);
-            this.gbShedule.Controls.Add(this.m_undoChangesBtn);
-            this.gbShedule.Controls.Add(this.m_cbRetry);
-            this.gbShedule.Controls.Add(this.m_retryUpDown);
-            this.gbShedule.Controls.Add(this.label14);
-            this.gbShedule.Controls.Add(this.m_refreshDats);
-            this.gbShedule.Controls.Add(this.m_stopButton);
-            this.gbShedule.Controls.Add(this.m_applyToRunningBtn);
-            this.gbShedule.Controls.Add(this.m_startButton);
-            this.gbShedule.Controls.Add(this.label11);
-            this.gbShedule.Controls.Add(this.m_autoStartCheckBox);
-            this.gbShedule.Controls.Add(this.m_enableCheckBox);
-            this.gbShedule.Controls.Add(this.m_failTimeUpDown);
-            this.gbShedule.Controls.Add(this.label10);
-            this.gbShedule.Name = "gbShedule";
-            this.gbShedule.TabStop = false;
+            resources.ApplyResources(this.gbSchedule, "gbSchedule");
+            this.gbSchedule.Controls.Add(this.m_repeatDurationCombo);
+            this.gbSchedule.Controls.Add(this.m_lblDuration);
+            this.gbSchedule.Controls.Add(this.m_repeatIntervalCombo);
+            this.gbSchedule.Controls.Add(this.m_cbRepeat);
+            this.gbSchedule.Controls.Add(this.gbTrigger);
+            this.gbSchedule.Controls.Add(this.m_undoChangesBtn);
+            this.gbSchedule.Controls.Add(this.m_cbRetry);
+            this.gbSchedule.Controls.Add(this.m_retryUpDown);
+            this.gbSchedule.Controls.Add(this.label14);
+            this.gbSchedule.Controls.Add(this.m_refreshDats);
+            this.gbSchedule.Controls.Add(this.m_stopButton);
+            this.gbSchedule.Controls.Add(this.m_applyToRunningBtn);
+            this.gbSchedule.Controls.Add(this.m_startButton);
+            this.gbSchedule.Controls.Add(this.label11);
+            this.gbSchedule.Controls.Add(this.m_autoStartCheckBox);
+            this.gbSchedule.Controls.Add(this.m_enableCheckBox);
+            this.gbSchedule.Controls.Add(this.m_failTimeUpDown);
+            this.gbSchedule.Controls.Add(this.label10);
+            this.gbSchedule.Name = "gbSchedule";
+            this.gbSchedule.TabStop = false;
             // 
             // m_repeatDurationCombo
             // 
@@ -129,7 +130,7 @@
             // gbTrigger
             // 
             resources.ApplyResources(this.gbTrigger, "gbTrigger");
-            this.gbTrigger.Controls.Add(this.groupBox1);
+            this.gbTrigger.Controls.Add(this.m_gbSubProperties);
             this.gbTrigger.Controls.Add(this.m_timePicker);
             this.gbTrigger.Controls.Add(this.m_datePicker);
             this.gbTrigger.Controls.Add(this.label2);
@@ -141,11 +142,11 @@
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
             // 
-            // groupBox1
+            // m_gbSubProperties
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
+            resources.ApplyResources(this.m_gbSubProperties, "m_gbSubProperties");
+            this.m_gbSubProperties.Name = "m_gbSubProperties";
+            this.m_gbSubProperties.TabStop = false;
             // 
             // m_timePicker
             // 
@@ -177,6 +178,7 @@
             this.m_rbMonthly.Name = "m_rbMonthly";
             this.m_rbMonthly.TabStop = true;
             this.m_rbMonthly.UseVisualStyleBackColor = true;
+            this.m_rbMonthly.CheckedChanged += new System.EventHandler(this.OnTriggerRBChanged);
             // 
             // m_rbWeekly
             // 
@@ -184,6 +186,7 @@
             this.m_rbWeekly.Name = "m_rbWeekly";
             this.m_rbWeekly.TabStop = true;
             this.m_rbWeekly.UseVisualStyleBackColor = true;
+            this.m_rbWeekly.CheckedChanged += new System.EventHandler(this.OnTriggerRBChanged);
             // 
             // m_rbDaily
             // 
@@ -191,6 +194,7 @@
             this.m_rbDaily.Name = "m_rbDaily";
             this.m_rbDaily.TabStop = true;
             this.m_rbDaily.UseVisualStyleBackColor = true;
+            this.m_rbDaily.CheckedChanged += new System.EventHandler(this.OnTriggerRBChanged);
             // 
             // m_rbOneTime
             // 
@@ -198,6 +202,7 @@
             this.m_rbOneTime.Name = "m_rbOneTime";
             this.m_rbOneTime.TabStop = true;
             this.m_rbOneTime.UseVisualStyleBackColor = true;
+            this.m_rbOneTime.CheckedChanged += new System.EventHandler(this.OnTriggerRBChanged);
             // 
             // m_undoChangesBtn
             // 
@@ -308,14 +313,21 @@
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
             // 
-            // PanelSheduledJob
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gbShedule);
-            this.Name = "PanelSheduledJob";
-            this.gbShedule.ResumeLayout(false);
-            this.gbShedule.PerformLayout();
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.gbSchedule);
+            this.Name = "PanelScheduledJob";
+            this.gbSchedule.ResumeLayout(false);
+            this.gbSchedule.PerformLayout();
             this.gbTrigger.ResumeLayout(false);
             this.gbTrigger.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
@@ -326,7 +338,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbShedule;
+        private System.Windows.Forms.GroupBox gbSchedule;
         public System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.CheckBox m_cbRetry;
         private System.Windows.Forms.NumericUpDown m_retryUpDown;
@@ -346,7 +358,7 @@
         private System.Windows.Forms.ComboBox m_repeatIntervalCombo;
         private System.Windows.Forms.CheckBox m_cbRepeat;
         private System.Windows.Forms.GroupBox gbTrigger;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox m_gbSubProperties;
         private System.Windows.Forms.DateTimePicker m_timePicker;
         private System.Windows.Forms.DateTimePicker m_datePicker;
         private System.Windows.Forms.Label label2;
@@ -355,5 +367,6 @@
         private System.Windows.Forms.RadioButton m_rbWeekly;
         private System.Windows.Forms.RadioButton m_rbDaily;
         private System.Windows.Forms.RadioButton m_rbOneTime;
+        private System.Windows.Forms.Button button1;
     }
 }

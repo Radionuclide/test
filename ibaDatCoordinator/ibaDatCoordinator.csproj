@@ -320,6 +320,11 @@
     <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RegistryOptimizer.cs" />
     <Compile Include="UserControl1.cs">
       <SubType>UserControl</SubType>
@@ -328,6 +333,9 @@
       <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\crypt.cs" />
+    <Compile Include="Utility\CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
@@ -351,6 +359,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelSheduledJob.resx">
       <DependentUpon>PanelSheduledJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusControl.resx">
       <SubType>Designer</SubType>
@@ -368,14 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="SingletonApplication.cs" />
     <Compile Include="Utility\algorithms.cs" />
     <Compile Include="Utility\containers.cs" />
@@ -396,6 +400,9 @@
     <Compile Include="Utility\XmlWrapper.cs" />
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\CustomComboBox.resx">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -480,6 +487,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestScriptDlg.resx">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\UploadOrDownloadConfigurationsDialog.resx">
       <SubType>Designer</SubType>
@@ -507,6 +515,10 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\scheduled_configuration.ico" />
+    <None Include="Resources\scheduled_configuration_new.ico" />
+    <None Include="Resources\configuration1.ico" />
+    <None Include="Resources\configuration_new1.ico" />
     <Content Include="Resources\default.ico" />
     <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>

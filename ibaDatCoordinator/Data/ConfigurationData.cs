@@ -14,6 +14,20 @@ namespace iba.Data
     [ Serializable ]
     public class ConfigurationData : ICloneable, IComparable<ConfigurationData>, IJobData
     {
+        public enum JobTypeEnum
+        {
+            DatTriggered,
+            Scheduled,
+            OneTime
+        }
+
+        private JobTypeEnum m_jobType;
+        public iba.Data.ConfigurationData.JobTypeEnum JobType
+        {
+            get { return m_jobType; }
+            set { m_jobType = value; }
+        }
+
         private string m_name;
         public string Name
         {
@@ -203,7 +217,7 @@ namespace iba.Data
             set { m_guid = value; }
         }
 
-        public ConfigurationData() : this("",false) 
+        public ConfigurationData() : this("",JobTypeEnum.DatTriggered) 
         {
 
         }
@@ -217,27 +231,24 @@ namespace iba.Data
 
         private string ibaAnalyzerExe;
 
-
-        private bool m_onetimeJob;
         public bool OnetimeJob
         {
-            get { return m_onetimeJob; }
-            set { m_onetimeJob = value; }
+            get { return m_jobType == JobTypeEnum.OneTime; }
+            set { if (value) { m_jobType = JobTypeEnum.OneTime; } }
         }
 
-
-        public ConfigurationData(string name, bool onetimejob)
+        public ConfigurationData(string name, JobTypeEnum jobType)
         {
-            m_onetimeJob = onetimejob;
+            m_jobType = jobType;
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
-            m_bInitialScanEnabled = !onetimejob;
-            m_bDetectNewFiles = !onetimejob;
-            m_bRescanEnabled = !onetimejob;
+            m_bInitialScanEnabled = m_jobType == JobTypeEnum.DatTriggered;
+            m_bDetectNewFiles = m_jobType == JobTypeEnum.DatTriggered;
+            m_bRescanEnabled = m_jobType == JobTypeEnum.DatTriggered;
             
             m_datDirectory = System.Environment.CurrentDirectory;
             try
@@ -271,7 +282,7 @@ namespace iba.Data
 
         public object Clone()
         {
-            ConfigurationData cd = new ConfigurationData(m_name,m_onetimeJob);
+            ConfigurationData cd = new ConfigurationData(m_name,m_jobType);
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
             cd.relinkChildData();

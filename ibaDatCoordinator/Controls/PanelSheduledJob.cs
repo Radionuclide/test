@@ -15,18 +15,31 @@ using System.IO;
 
 namespace iba.Controls
 {
-    public partial class PanelSheduledJob : UserControl, IPropertyPane
+    public partial class PanelScheduledJob : UserControl, IPropertyPane
     {
-        public PanelSheduledJob()
+        public PanelScheduledJob()
         {
             InitializeComponent();
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
+
+            m_weekSettingsCtrl = new WeeklyTriggerSettingsControl();
+            m_daySettingsCtrl = new DailyTriggerSettingsControl();
+            m_monthSettingsCtrl = new MonthlyTriggerSettingsControl();
+            m_weekSettingsCtrl.Visible = m_daySettingsCtrl.Visible = m_monthSettingsCtrl.Visible = false;
+            m_weekSettingsCtrl.Dock = m_daySettingsCtrl.Dock = m_monthSettingsCtrl.Dock = DockStyle.Fill;
+            m_gbSubProperties.Controls.Add(m_weekSettingsCtrl);
+            m_gbSubProperties.Controls.Add(m_daySettingsCtrl);
+            m_gbSubProperties.Controls.Add(m_monthSettingsCtrl);
         }
 
         IPropertyPaneManager m_manager;
         ConfigurationData m_data;
+
+        private WeeklyTriggerSettingsControl m_weekSettingsCtrl;
+        private DailyTriggerSettingsControl m_daySettingsCtrl;
+        private MonthlyTriggerSettingsControl m_monthSettingsCtrl;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -62,6 +75,13 @@ namespace iba.Controls
         private void m_cbRepeat_CheckedChanged(object sender, EventArgs e)
         {
             m_repeatDurationCombo.Enabled = m_repeatIntervalCombo.Enabled = m_lblDuration.Enabled = m_cbRepeat.Checked;
+        }
+
+        private void OnTriggerRBChanged(object sender, EventArgs e)
+        {
+            m_weekSettingsCtrl.Visible = m_rbWeekly.Checked;
+            m_monthSettingsCtrl.Visible = m_rbMonthly.Checked;
+            m_daySettingsCtrl.Visible = m_rbDaily.Checked;
         }
     }
 }

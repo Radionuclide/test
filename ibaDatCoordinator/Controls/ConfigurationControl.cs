@@ -20,27 +20,47 @@ namespace iba.Controls
 {
     public partial class ConfigurationControl : UserControl, IPropertyPane
     {
-        public ConfigurationControl(bool oneTimeJob)
+        public ConfigurationControl(ConfigurationData.JobTypeEnum type)
         {
-            m_oneTimeJob = oneTimeJob;
+            m_jobType = type;
             InitializeComponent();
 
             m_sourcePanel.Visible = false;
-            m_panelDatFilesJob = new PanelDatFilesJob(oneTimeJob);
-            m_panelDatFilesJob.Size = m_sourcePanel.Size;
-            m_panelDatFilesJob.Location = m_sourcePanel.Location;
 
-            this.Controls.Add(m_panelDatFilesJob);
-            
-            if(m_oneTimeJob)
+            if(m_jobType != ConfigurationData.JobTypeEnum.Scheduled)
             {
-                m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-                groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                m_panelDatFilesJob = new PanelDatFilesJob(m_jobType == ConfigurationData.JobTypeEnum.OneTime);
+                m_panel = m_panelDatFilesJob;
+                m_panelDatFilesJob.Size = m_sourcePanel.Size;
+                m_panelDatFilesJob.Location = m_sourcePanel.Location;
+                this.Controls.Add(m_panelDatFilesJob);
+                if(m_jobType == ConfigurationData.JobTypeEnum.OneTime)
+                {
+                    m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
+                    groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                    groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                }
+                else
+                {
+                    m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                }
             }
             else
             {
-                m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                m_panelScheduledJob = new PanelScheduledJob();
+                m_panel = m_panelScheduledJob;
+                int diff = m_panelScheduledJob.Size.Height - m_sourcePanel.Size.Height;
+                //m_panelScheduledJob.Size = m_sourcePanel.Size;
+                m_panelScheduledJob.Location = m_sourcePanel.Location;
+                m_panelScheduledJob.Width = m_sourcePanel.Width;
+                m_panelScheduledJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                this.Controls.Add(m_panelScheduledJob);
+                //this.Size = new Size(0, this.Size.Height + diff);
+                this.AutoScrollMinSize = new Size(0, this.AutoScrollMinSize.Height + diff);
+                groupBox4.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + diff);
+                groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                groupBox6.Location = new Point(groupBox6.Location.X, groupBox6.Location.Y + diff);
+                groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             }
 
             ((Bitmap)m_testNotification.Image).MakeTransparent(Color.Magenta);
@@ -77,12 +97,24 @@ namespace iba.Controls
             }
 
             //common buttons
-            m_stopButton = m_panelDatFilesJob.m_stopButton;
-            m_startButton = m_panelDatFilesJob.m_startButton;
-            m_applyToRunningBtn = m_panelDatFilesJob.m_applyToRunningBtn;
-            m_autoStartCheckBox = m_panelDatFilesJob.m_autoStartCheckBox;
-            m_enableCheckBox = m_panelDatFilesJob.m_enableCheckBox;
-            m_undoChangesBtn = m_panelDatFilesJob.m_undoChangesBtn;
+            if(m_panelDatFilesJob != null)
+            {
+                m_stopButton = m_panelDatFilesJob.m_stopButton;
+                m_startButton = m_panelDatFilesJob.m_startButton;
+                m_applyToRunningBtn = m_panelDatFilesJob.m_applyToRunningBtn;
+                m_autoStartCheckBox = m_panelDatFilesJob.m_autoStartCheckBox;
+                m_enableCheckBox = m_panelDatFilesJob.m_enableCheckBox;
+                m_undoChangesBtn = m_panelDatFilesJob.m_undoChangesBtn;
+            }
+            else
+            {
+                m_stopButton = m_panelScheduledJob.m_stopButton;
+                m_startButton = m_panelScheduledJob.m_startButton;
+                m_applyToRunningBtn = m_panelScheduledJob.m_applyToRunningBtn;
+                m_autoStartCheckBox = m_panelScheduledJob.m_autoStartCheckBox;
+                m_enableCheckBox = m_panelScheduledJob.m_enableCheckBox;
+                m_undoChangesBtn = m_panelScheduledJob.m_undoChangesBtn;
+            }
 
             //events of common controls
             this.m_enableCheckBox.CheckedChanged += new System.EventHandler(this.m_enableCheckBox_CheckedChanged);
@@ -109,10 +141,11 @@ namespace iba.Controls
         public System.Windows.Forms.CheckBox m_autoStartCheckBox;
         public System.Windows.Forms.CheckBox m_enableCheckBox;
 
-        private bool m_oneTimeJob;
+        private ConfigurationData.JobTypeEnum m_jobType;
 
         private PanelDatFilesJob m_panelDatFilesJob;
-
+        private PanelScheduledJob m_panelScheduledJob;
+        private IPropertyPane m_panel;
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -124,7 +157,7 @@ namespace iba.Controls
             m_data = datasource as ConfigurationData;
             m_nameTextBox.Text = m_data.Name;
 
-            m_panelDatFilesJob.LoadData(datasource, manager);
+            m_panel.LoadData(datasource, manager);
 
             m_autoStartCheckBox.Checked = m_data.AutoStart;
             m_enableCheckBox.Checked = m_data.Enabled;
@@ -185,7 +218,7 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_panelDatFilesJob.SaveData();
+            m_panel.SaveData();
 
             m_data.Name = m_nameTextBox.Text;
             m_data.Enabled = m_enableCheckBox.Checked;

@@ -79,6 +79,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Scheduled Job.
+        /// </summary>
+        internal static string addScheduledConfigurationText {
+            get {
+                return ResourceManager.GetString("addScheduledConfigurationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Aktualisieren {
@@ -699,11 +708,29 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        internal static string First {
+            get {
+                return ResourceManager.GetString("First", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified path does not exist.
         /// </summary>
         internal static string FolderDoesNotExist {
             get {
                 return ResourceManager.GetString("FolderDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fourth.
+        /// </summary>
+        internal static string Fourth {
+            get {
+                return ResourceManager.GetString("Fourth", resourceCulture);
             }
         }
         
@@ -869,6 +896,15 @@ namespace iba.Properties {
         internal static string invalidPath {
             get {
                 return ResourceManager.GetString("invalidPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last.
+        /// </summary>
+        internal static string Last {
+            get {
+                return ResourceManager.GetString("Last", resourceCulture);
             }
         }
         
@@ -2329,6 +2365,26 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon scheduled_configuration {
+            get {
+                object obj = ResourceManager.GetObject("scheduled_configuration", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon scheduled_configuration_new {
+            get {
+                object obj = ResourceManager.GetObject("scheduled_configuration_new", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The arguments for the script could not be parsed.
         /// </summary>
         internal static string ScriptArgumentsCouldNotBeParsed {
@@ -2352,6 +2408,33 @@ namespace iba.Properties {
         internal static string ScriptReadOnly {
             get {
                 return ResourceManager.GetString("ScriptReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second.
+        /// </summary>
+        internal static string Second {
+            get {
+                return ResourceManager.GetString("Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Select all days&gt;.
+        /// </summary>
+        internal static string SelectAllDays {
+            get {
+                return ResourceManager.GetString("SelectAllDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Select all months&gt;.
+        /// </summary>
+        internal static string SelectAllMonths {
+            get {
+                return ResourceManager.GetString("SelectAllMonths", resourceCulture);
             }
         }
         
@@ -2612,6 +2695,15 @@ namespace iba.Properties {
         internal static string textFileStopped {
             get {
                 return ResourceManager.GetString("textFileStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third.
+        /// </summary>
+        internal static string Third {
+            get {
+                return ResourceManager.GetString("Third", resourceCulture);
             }
         }
         
