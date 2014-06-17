@@ -30,23 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonthlyTriggerSettingsControl));
             this.label1 = new System.Windows.Forms.Label();
-            this.m_cbMonths = new iba.Controls.CustomComboMonths();
             this.m_rbDays = new System.Windows.Forms.RadioButton();
             this.m_rbOn = new System.Windows.Forms.RadioButton();
-            this.m_cbDays = new iba.Controls.CustomComboDays();
-            this.m_cbOnPart1 = new iba.Controls.CustomComboOnPart1();
             this.m_cbOnPartWeekday = new iba.Controls.CustomComboOnWeekdays();
+            this.m_cbOnPart1 = new iba.Controls.CustomComboOnPart1();
+            this.m_cbDays = new iba.Controls.CustomComboDays();
+            this.m_cbMonths = new iba.Controls.CustomComboMonths();
             this.SuspendLayout();
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
-            // m_cbMonths
-            // 
-            resources.ApplyResources(this.m_cbMonths, "m_cbMonths");
-            this.m_cbMonths.Name = "m_cbMonths";
             // 
             // m_rbDays
             // 
@@ -62,20 +57,25 @@
             this.m_rbOn.TabStop = true;
             this.m_rbOn.UseVisualStyleBackColor = true;
             // 
-            // m_cbDays
+            // m_cbOnPartWeekday
             // 
-            resources.ApplyResources(this.m_cbDays, "m_cbDays");
-            this.m_cbDays.Name = "m_cbDays";
+            resources.ApplyResources(this.m_cbOnPartWeekday, "m_cbOnPartWeekday");
+            this.m_cbOnPartWeekday.Name = "m_cbOnPartWeekday";
             // 
             // m_cbOnPart1
             // 
             resources.ApplyResources(this.m_cbOnPart1, "m_cbOnPart1");
             this.m_cbOnPart1.Name = "m_cbOnPart1";
             // 
-            // m_cbOnPartWeekday
+            // m_cbDays
             // 
-            resources.ApplyResources(this.m_cbOnPartWeekday, "m_cbOnPartWeekday");
-            this.m_cbOnPartWeekday.Name = "m_cbOnPartWeekday";
+            resources.ApplyResources(this.m_cbDays, "m_cbDays");
+            this.m_cbDays.Name = "m_cbDays";
+            // 
+            // m_cbMonths
+            // 
+            resources.ApplyResources(this.m_cbMonths, "m_cbMonths");
+            this.m_cbMonths.Name = "m_cbMonths";
             // 
             // MonthlyTriggerSettingsControl
             // 
