@@ -334,7 +334,7 @@
     </Compile>
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\CustomComboBox.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />

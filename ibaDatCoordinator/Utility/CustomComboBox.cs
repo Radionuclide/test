@@ -15,11 +15,41 @@ using System.Windows.Forms.VisualStyles;
 
 namespace iba.Utility
 {
+
+    public class ShadowForm : Form
+    {
+        // Define the CS_DROPSHADOW constant
+        private const int CS_DROPSHADOW = 0x00020000;
+
+        // Override the CreateParams property
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                if (OSFeature.IsPresent(SystemParameter.DropShadow))
+                    cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            int borderWidth = 2;
+            Color borderColor = SystemColors.ControlLight;
+            ControlPaint.DrawBorder(e.Graphics, e.ClipRectangle, borderColor,
+              borderWidth, ButtonBorderStyle.Solid, borderColor, borderWidth,
+              ButtonBorderStyle.Solid, borderColor, borderWidth, ButtonBorderStyle.Solid,
+              borderColor, borderWidth, ButtonBorderStyle.Solid);
+        }
+    }
+
 	[ToolboxItem(false)]
 	public abstract class CustomCombo :  System.Windows.Forms.Control
 	{
 		#region Class members
-		protected Form      m_dropDownForm;
+        protected ShadowForm m_dropDownForm;
 		protected bool      m_bFirstShow = true;
 		protected bool      m_bControlBinded;
 		protected Control   m_ctrlBinded;
@@ -35,7 +65,7 @@ namespace iba.Utility
 
 		private IntPtr        m_mouseHookHandle = IntPtr.Zero;
 		private GCHandle      m_mouseProcHandle;
-		private SolidBrush    m_brushSelected = new SolidBrush(ControlPaint.LightLight(SystemColors.Highlight) );
+		//private SolidBrush    m_brushSelected = new SolidBrush(ControlPaint.LightLight(SystemColors.Highlight) );
 		private StringFormat  m_strFormat;
         
         protected string errorString;
@@ -387,12 +417,12 @@ namespace iba.Utility
 			m_editbox.KeyDown += new KeyEventHandler( OnEditKeyDown );
 			m_editbox.MouseWheel += new MouseEventHandler( OnEditMouseWheel );
 
-			m_dropDownForm = new Form();
+			m_dropDownForm = new ShadowForm();
 			m_dropDownForm.FormBorderStyle = FormBorderStyle.None;
 			m_dropDownForm.StartPosition = FormStartPosition.Manual;
 			m_dropDownForm.TopMost = true;
 			m_dropDownForm.ShowInTaskbar = false;
-			m_dropDownForm.BackColor = SystemColors.Highlight;
+			m_dropDownForm.BackColor = SystemColors.ControlLightLight;
 			m_dropDownForm.Deactivate += new EventHandler( OnDropDownLostFocus );
 			m_dropDownForm.Load += new EventHandler(OnDropFormLoad);
 		 
@@ -814,11 +844,11 @@ namespace iba.Utility
 
 				m_ctrlBinded.Size = new Size( m_dropDownForm.Width-2, m_dropDownForm.Height-2 );
 				m_ctrlBinded.Location = new Point( 1, 1 );
-
 				m_ctrlBinded.Anchor = AnchorStyles.Bottom | 
 					AnchorStyles.Left | 
 					AnchorStyles.Right | 
 					AnchorStyles.Top;
+                
         
 				m_ctrlBinded.Parent = m_dropDownForm;
 				m_ctrlBinded.KeyDown += new KeyEventHandler( OnDropDownControlKeyDown );
