@@ -276,7 +276,6 @@ namespace iba.Processing
             Log(Logging.Level.Debug, "Deletion start", "");
             var startFilesCount = m_files.Count;
             var startSize = m_size;
-            var skipFileCounter = 0;
 
             while (m_size > GetQuota() && m_files.Count > 0)
             {

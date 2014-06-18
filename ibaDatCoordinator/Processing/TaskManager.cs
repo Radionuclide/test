@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using System.Windows.Forms;
-using iba.Data;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using iba.Data;
 using iba.Utility;
 using iba.Plugins;
-using System.Runtime.InteropServices;
 
 namespace iba.Processing
 {
@@ -383,7 +387,6 @@ namespace iba.Processing
             get
             {
                 List<ConfigurationData> theC = new List<ConfigurationData>(m_workers.Keys);
-
                 return theC;
             }
             set
@@ -581,7 +584,7 @@ namespace iba.Processing
             get { return m_criticalTaskSemaphore; }
             set { m_criticalTaskSemaphore = value; }
         }
-        
+
 
         string m_password;
         virtual public string Password
@@ -614,12 +617,150 @@ namespace iba.Processing
             }
         }
 
+        private Dictionary<string, TaskControl> m_globalCleanupWorker = new Dictionary<string, TaskControl>();
+
         private List<GlobalCleanupData> m_globalCleanupDataList;
         public virtual List<GlobalCleanupData> GlobalCleanupDataList
         {
-            get { return m_globalCleanupDataList; }
-            set { m_globalCleanupDataList = value; }
+            get 
+            {
+                SyncGlobalCleanupDataList();
+                return m_globalCleanupDataList;
+            }
+            set 
+            { 
+                m_globalCleanupDataList = value;
+                SyncGlobalCleanupDataList();
+                StartAllEnabledGlobalCleanups();
+            }
         }
+
+
+        private void SyncGlobalCleanupDataList()
+        {
+            foreach (var drive in DriveUtil.LocalDrives())
+            {
+                var gcd = m_globalCleanupDataList.FirstOrDefault(x => x.DriveName == drive.Name);
+                if (gcd == null)
+                {
+                    gcd = new GlobalCleanupData() { DriveName = drive.Name };
+                    m_globalCleanupDataList.Add(gcd);
+                }
+            }
+            
+            var localDriveNames = new HashSet<string>(DriveUtil.LocalDrives().Select(d => d.Name));
+            m_globalCleanupDataList.ForEach(gcd => gcd.Active = gcd.Active && localDriveNames.Contains(gcd.DriveName));
+        }
+
+        private void StartAllEnabledGlobalCleanups()
+        {
+            foreach (var gcd in m_globalCleanupDataList)
+                ReplaceGlobalCleanupData(gcd);
+        }
+
+        private void StopAllGlobalCleanups()
+        {
+            var workers = new List<TaskControl>(m_globalCleanupWorker.Values);
+            foreach (var taskcontrol in workers)
+            {
+                taskcontrol.Cts.Cancel();
+                taskcontrol.Task.Wait();
+            }
+        }
+
+        private void StopGlobalCleanup(GlobalCleanupData data)
+        {
+            TaskControl tc;
+            if (!m_globalCleanupWorker.TryGetValue(data.DriveName, out tc))
+                return;
+
+            tc.Cts.Cancel();
+            var ended = tc.Task.Wait(60000);
+        }
+
+        public virtual void ReplaceGlobalCleanupData(GlobalCleanupData data)
+        {
+
+            if (!data.Active)
+            {
+                StopGlobalCleanup(data);
+                return;
+            }
+
+            data.Active = DriveUtil.IsDriveReady(data.DriveName);
+            if (!data.Active)
+            {
+                Log("Drive not ready for cleanup", Logging.Level.Verbose, data.DriveName);
+                return;
+            }
+
+            var cts = new CancellationTokenSource();
+            //var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
+
+            var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts))
+                .ContinueWith((cleanup) =>
+                {
+                    if (m_globalCleanupWorker.ContainsKey(data.DriveName))
+                        m_globalCleanupWorker.Remove(data.DriveName);
+                });
+
+            m_globalCleanupWorker.Add(data.DriveName, new TaskControl(task, cts));
+        }
+
+        private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationTokenSource cts)
+        {
+            var t = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
+            t.DestinationMapUNC = data.DriveName;
+
+            t.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            double factor = 1 - data.PercentageFree / 100.0;
+            double result = (data.TotalSize / 1024 / 1024) * factor;
+
+            t.Quota = (uint)result;
+
+            var quota = new FileQuotaCleanup(t, "*.*");
+            quota.FastSearch = true;
+            quota.NewLogMessage += (s, e) => { Log(e.Message, t.DestinationMapUNC); };
+
+            while (true)
+            {
+                if (cts.IsCancellationRequested)
+                    return;
+
+                var sw = Stopwatch.StartNew();
+                Log("Cleanup start", t.DestinationMapUNC);
+                quota.Init();
+                sw.Stop();
+                Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
+
+                if (cts.IsCancellationRequested)
+                    return;
+
+                sw.Restart();
+                quota.Clean("Cleanup");
+                sw.Stop();
+                Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
+
+                bool cancelled = cts.Token.WaitHandle.WaitOne(data.RescanTime * 1000 * 60);
+                if (cancelled)
+                    return;
+            }
+
+
+        }
+
+        private void Log(string message, string cleanupPath)
+        {
+            Log(message, iba.Logging.Level.Info, cleanupPath);
+        }
+        private void Log(string message, iba.Logging.Level level, string cleanupPath)
+        {
+            if (!String.IsNullOrEmpty(cleanupPath))
+                message = String.Concat(cleanupPath, " - ", message);
+            LogData.Data.Log(level, message);
+
+        }
+
     }
 
 
@@ -894,6 +1035,19 @@ namespace iba.Processing
             }
         }
 
+        public override void ReplaceGlobalCleanupData(GlobalCleanupData data)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.ReplaceGlobalCleanupData(data);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+                Manager.ReplaceGlobalCleanupData(data);
+            }
+        }
+
         public override bool CompareConfiguration(ConfigurationData data)
         {
             try
@@ -1056,7 +1210,7 @@ namespace iba.Processing
                 }
             }
         }
-        
+
         public override int PostponeMinutes
         {
             get
@@ -1320,7 +1474,7 @@ namespace iba.Processing
             }
         }
 
-        public override List<GlobalCleanupData>  GlobalCleanupDataList
+        public override List<GlobalCleanupData> GlobalCleanupDataList
         {
             get
             {

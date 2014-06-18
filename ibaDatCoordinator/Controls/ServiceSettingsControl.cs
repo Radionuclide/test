@@ -31,9 +31,6 @@ namespace iba.Controls
             }
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
-            m_globalCleanupWorker = new Dictionary<string, TaskControl>();
-            m_globalCleanupData = new Dictionary<string, GlobalCleanupData>();
-
         }
 
         #region IPropertyPane Members
@@ -115,8 +112,7 @@ namespace iba.Controls
             catch { }
             UpdatePassControls();
 
-            m_globalCleanupData.Clear();
-            m_globalCleanupData = TaskManager.Manager.GlobalCleanupDataList.ToDictionary(gc => gc.DriveName, gc => gc);
+            m_globalCleanupData = TaskManager.Manager.GlobalCleanupDataList.OrderBy(gc => gc.DriveName);
             InitializeDrives();
         }
 
@@ -137,9 +133,9 @@ namespace iba.Controls
             TaskManager.Manager.Password = m_pass;
         }
 
-        private Dictionary<string, TaskControl> m_globalCleanupWorker;
-        private Dictionary<string, GlobalCleanupData> m_globalCleanupData;
-        private string m_pass;  
+
+        private IEnumerable<GlobalCleanupData> m_globalCleanupData = new List<GlobalCleanupData>();
+        private string m_pass;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -150,12 +146,6 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            var workers = new List<TaskControl>(m_globalCleanupWorker.Values);
-            foreach (var taskcontrol in workers)
-            {
-                taskcontrol.Cts.Cancel();
-                taskcontrol.Task.Wait();
-            }
         }
 
         public void SaveData()
@@ -266,8 +256,6 @@ namespace iba.Controls
             }
             TaskManager.Manager.ProcessPriority = iPc;
 
-            TaskManager.Manager.GlobalCleanupDataList.Clear();
-            TaskManager.Manager.GlobalCleanupDataList.AddRange(m_globalCleanupData.Values);
         }
 
         #endregion
@@ -409,7 +397,6 @@ namespace iba.Controls
         {
 
             var rowIdx = 0;
-            GlobalCleanupData gcd;
             tbl_GlobalCleanup.SuspendLayout();
 
             while (tbl_GlobalCleanup.RowCount > 2)
@@ -418,6 +405,8 @@ namespace iba.Controls
                 for (int i = 0; i < tbl_GlobalCleanup.ColumnCount; i++)
                 {
                     Control c = tbl_GlobalCleanup.GetControlFromPosition(i, row);
+                    if (c == null) continue;
+
                     tbl_GlobalCleanup.Controls.Remove(c);
                     c.Dispose();
                 }
@@ -429,50 +418,41 @@ namespace iba.Controls
             tbl_GlobalCleanup.ResumeLayout(false);
             tbl_GlobalCleanup.PerformLayout();
 
-            foreach (var drive in DriveUtil.LocalDrives())
+
+            foreach (var gcd in m_globalCleanupData)
             {
-                try
+
+                var drive = new DriveInfo(gcd.DriveName);
+                gcd.IsSystemDrive = drive.IsSystemDrive();
+
+                string driveName = drive.Name;
+                if (drive.IsReady)
+                    driveName = String.Format("{0} - [{1}]", drive.Name, drive.VolumeLabel);
+
+                if (gcd.IsSystemDrive)
                 {
-                    if (!m_globalCleanupData.TryGetValue(drive.Name, out gcd))
-                    {
-                        gcd = new GlobalCleanupData() { DriveName = drive.Name };
-                        m_globalCleanupData.Add(drive.Name, gcd);
-                    }
-
-                    gcd.IsSystemDrive = drive.IsSystemDrive();
-                    gcd.TotalSize = drive.TotalSize;
-
-                    string driveName = String.Format("{0} - [{1}]", drive.Name, drive.VolumeLabel);
-                    if (gcd.IsSystemDrive)
-                    {
-                        gcd.Active = false;
-                        driveName = driveName + " - (System)";
-                    }
-
-                    Debug.WriteLine(driveName);
-
-                    rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    tbl_GlobalCleanup.RowCount++;
-
-                    AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
-                    if (drive.IsReady)
-                    {
-                        AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalSize), 1, rowIdx, ContentAlignment.TopRight);
-                        AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalFreeSpace), 2, rowIdx, ContentAlignment.TopRight);
-
-                        AddQuotaToTableLayout(gcd, 3, rowIdx);
-                        AddRescanTimeToTableLayout(gcd, 4, rowIdx);
-                        AddIsActiveToTableLayout(gcd, 5, rowIdx);
-                    }
+                    gcd.Active = false;
+                    driveName = driveName + " - (System)";
                 }
-                catch
-                { }
+
+                rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tbl_GlobalCleanup.RowCount++;
+
+                AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
+                if (drive.IsReady)
+                {
+                    gcd.TotalSize = drive.TotalSize;
+                    AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalSize), 1, rowIdx, ContentAlignment.TopRight);
+                    AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalFreeSpace), 2, rowIdx, ContentAlignment.TopRight);
+
+                    AddQuotaToTableLayout(gcd, 3, rowIdx);
+                    AddRescanTimeToTableLayout(gcd, 4, rowIdx);
+                }
+                AddIsActiveToTableLayout(gcd, 5, rowIdx, drive.IsReady);
 
             }
 
             gb_GlobalCleanup.Height = (rowIdx + 1) * 32;
-            gb_Log.Top = gb_GlobalCleanup.Top + gb_GlobalCleanup.Height + 6;
-            gb_Log.Height = gb_Log.Parent.Height - gb_Log.Top - 3;
         }
 
         private void AddTextToTableLayout(string displayValue, int colIdx, int rowIdx, ContentAlignment textAlign)
@@ -539,6 +519,8 @@ namespace iba.Controls
             nud.Minimum = 1;
             nud.Value = (decimal)data.RescanTime;
 
+            nud.ValueChanged += (s, e) => { data.RescanTime = (int)nud.Value; };
+
             Label lbl = new Label();
             lbl.Margin = new Padding(0);
             lbl.Text = "min";
@@ -561,7 +543,7 @@ namespace iba.Controls
             lbl.Location = new Point(nud.Location.X + nud.Size.Width + 5, nud.Location.Y + 2);
         }
 
-        private void AddIsActiveToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx)
+        private void AddIsActiveToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx, bool isReady)
         {
             var lblHeader = tbl_GlobalCleanup.GetControlFromPosition(colIdx, 0);
 
@@ -572,12 +554,16 @@ namespace iba.Controls
             CheckBox cb = new CheckBox();
             cb.Location = new Point(lblHeader.Width / 2 - 15 / 2, 0);
             cb.Checked = data.Active;
-            cb.Enabled = !data.IsSystemDrive;
+            cb.Enabled = !data.IsSystemDrive && isReady;
+
+            ChangeEnabledStateforRowControls(!data.Active, rowIdx);
 
             cb.CheckedChanged += (s, e) =>
             {
                 data.Active = cb.Checked;
-                StartStopCleanup(rowIdx, data);
+                ChangeEnabledStateforRowControls(!data.Active, rowIdx);
+
+                TaskManager.Manager.ReplaceGlobalCleanupData(data);
             };
 
             pnl.Controls.Add(cb);
@@ -585,140 +571,14 @@ namespace iba.Controls
             tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
         }
 
-        private void TaskEnded(int rowIdx)
-        {
-            var panel = tbl_GlobalCleanup.GetControlFromPosition(tbl_GlobalCleanup.ColumnCount - 1, rowIdx);
-            var cb = panel.Controls.OfType<CheckBox>().FirstOrDefault();
-            cb.Checked = false;
-        }
-
-        private void StartStopCleanup(int rowIdx, GlobalCleanupData data)
+        private void ChangeEnabledStateforRowControls(bool enabled, int rowIdx)
         {
             for (int i = 0; i < tbl_GlobalCleanup.ColumnCount - 1; i++)
             {
-                tbl_GlobalCleanup.GetControlFromPosition(i, rowIdx).Enabled = !data.Active;
-            }
-
-            if (data.IsSystemDrive)
-            {
-                data.Active = false;
-                return;
-            }
-
-            Stop(data);
-
-            if (!data.Active)
-                return;
-
-            if (!IsDriveReady(data))
-                return;
-
-            var cts = new CancellationTokenSource();
-            var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
-
-            var task = Task.Factory.StartNew(() => CleanupWorker(data, cts)).ContinueWith(
-                (cleanup) => {
-                    if (m_globalCleanupWorker.ContainsKey(data.DriveName))
-                        m_globalCleanupWorker.Remove(data.DriveName);
-                    TaskEnded(rowIdx);
-                }, UISyncContext);
-
-            m_globalCleanupWorker.Add(data.DriveName, new TaskControl(task, cts));
-
-        }
-
-        private static bool IsDriveReady(GlobalCleanupData data)
-        {
-            var drive = new DriveInfo(data.DriveName);
-            try
-            {
-                return drive.IsReady;
-            }
-            catch (Exception)
-            {}
-            return false;
-        }
-
-        private void CleanupWorker(GlobalCleanupData data, CancellationTokenSource cts)
-        {
-
-            var t = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
-            t.DestinationMapUNC = data.DriveName;
-
-            t.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
-            double factor = 1 - data.PercentageFree / 100.0;
-            double result = (data.TotalSize / 1024 / 1024) * factor;
-
-            t.Quota = (uint)result;
-
-            var quota = new FileQuotaCleanup(t, "*.*");
-            quota.FastSearch = true;
-            quota.NewLogMessage += (s, e) => { Log(e.Message, e.Level, t.DestinationMapUNC); };
-
-            while (true)
-            {
-                if (cts.IsCancellationRequested)
-                    return;
-
-                var sw = Stopwatch.StartNew();
-                Log("Cleanup start", t.DestinationMapUNC);
-                quota.Init();
-                sw.Stop();
-                Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
-
-                if (cts.IsCancellationRequested)
-                    return;
-
-                sw.Restart();
-                quota.Clean("Cleanup");
-                sw.Stop();
-                Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
-
-                bool cancelled = cts.Token.WaitHandle.WaitOne(data.RescanTime * 1000 * 10);
-                if (cancelled)
-                    return;
-            }
-
-
-        }
-
-        private void Stop(GlobalCleanupData data)
-        {
-            TaskControl tc;
-            if (!m_globalCleanupWorker.TryGetValue(data.DriveName, out tc))
-                return;
-
-            tc.Cts.Cancel();
-            var ended = tc.Task.Wait(1000);
-
-        }
-
-        private void CleanupFiles(FileQuotaCleanup quota, string cleanupPath)
-        {
-
-        }
-
-
-        private void Log(string message, string cleanupPath)
-        {
-            Log(message, iba.Logging.Level.Debug, cleanupPath);
-        }
-
-        private void Log(string message, iba.Logging.Level level, string cleanupPath)
-        {
-            if (lbLog.InvokeRequired)
-                lbLog.Invoke((MethodInvoker)delegate { Log(message, level, cleanupPath); });
-            else
-            {
-                if (!String.IsNullOrEmpty(cleanupPath))
-                    message = String.Concat(cleanupPath, "\t", message);
-
-                lbLog.Items.Insert(0, String.Format("{0:HH:mm:ss.fff}\t{1}\r\n", DateTime.Now, message));
-                while (lbLog.Items.Count > 50)
-                {
-                    lbLog.Items.RemoveAt(lbLog.Items.Count - 1);
-                }
-                Application.DoEvents();
+                Control ctl = tbl_GlobalCleanup.GetControlFromPosition(i, rowIdx);
+                if (ctl == null) continue;
+                
+                ctl.Enabled = enabled;
             }
         }
     }

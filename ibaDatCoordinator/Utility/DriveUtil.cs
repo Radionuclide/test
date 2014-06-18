@@ -20,5 +20,21 @@
             return (drive.Name == systemDriveName);
         }
 
+        public static bool IsDriveReady(string driveName)
+        {
+            var drive = new DriveInfo(driveName);
+            return IsDriveReady(drive);
+        }
+
+        public static bool IsDriveReady(this DriveInfo drive)
+        {
+            try
+            {
+                return drive.IsReady;
+            }
+            catch (Exception)
+            { }
+            return false;
+        }
     }
 }

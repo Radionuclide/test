@@ -277,7 +277,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -433,7 +433,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -733,7 +733,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -925,7 +925,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="gb_GlobalCleanup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1180,57 +1180,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="lbLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="lbLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="lbLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 94</value>
-  </data>
-  <data name="lbLog.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;lbLog.Name" xml:space="preserve">
-    <value>lbLog</value>
-  </data>
-  <data name="&gt;&gt;lbLog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbLog.Parent" xml:space="preserve">
-    <value>gb_Log</value>
-  </data>
-  <data name="&gt;&gt;lbLog.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gb_Log.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="gb_Log.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 624</value>
-  </data>
-  <data name="gb_Log.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 113</value>
-  </data>
-  <data name="gb_Log.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="gb_Log.Text" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="&gt;&gt;gb_Log.Name" xml:space="preserve">
-    <value>gb_Log</value>
-  </data>
-  <data name="&gt;&gt;gb_Log.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gb_Log.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gb_Log.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
