@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,8 +10,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using iba.Utility;
 using iba.Processing;
-using System.IO;
-using System.Diagnostics;
+using iba.Data;
 
 namespace iba.Controls
 {
@@ -105,6 +106,8 @@ namespace iba.Controls
             }
             catch { }
             UpdatePassControls();
+
+            InitializeDrives(TaskManager.Manager.GlobalCleanupDataList);
         }
 
         private void UpdatePassControls()
@@ -379,6 +382,164 @@ namespace iba.Controls
                 RegistryOptimizer.DoWork();
             }
         }
+
+
+        private void InitializeDrives(List<GlobalCleanupData> globalCleanups)
+        {
+            DriveInfo[] drives = DriveInfo.GetDrives();
+            var logicalDrives = Environment.GetLogicalDrives();
+
+            var systemDriveName = Path.GetPathRoot(Environment.SystemDirectory);
+
+            var rowIdx = 0;
+            foreach (DriveInfo drive in drives)
+            {
+                try
+                {
+
+                    if (drive.DriveType != DriveType.Fixed && drive.DriveType != DriveType.Removable)
+                        continue;
+
+                    string driveName = String.Format("{0} - [{1}]", drive.Name, drive.DriveType);
+                    if (drive.Name == systemDriveName)
+                        driveName = drive.Name + " - [System]";
+
+                    Debug.WriteLine(driveName);
+
+                    rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    
+                    AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
+                    if (drive.IsReady)
+                    {
+                        AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalSize), 1, rowIdx, ContentAlignment.TopRight);
+                        AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalFreeSpace), 2, rowIdx, ContentAlignment.TopRight);
+
+                        var percentageFree = 10;
+                        var rescanTime = 1;
+
+                        AddQuotaToTableLayout(drive.TotalSize, percentageFree, 3, rowIdx, ContentAlignment.TopLeft);
+                        AddRescanTimeToTableLayout(rescanTime, 4, rowIdx, ContentAlignment.TopLeft);
+                        AddIsActiveToTableLayout(false, 5, rowIdx);
+                    }
+                }
+                catch
+                { }
+
+            }
+            gb_GlobalCleanup.Height = (rowIdx + 1)  * 32;
+
+        }
+        private void AddTextToTableLayout(string displayValue, int colIdx, int rowIdx, ContentAlignment textAlign)
+        {
+
+            Panel pnl = new Panel();
+            pnl.Dock = DockStyle.Fill;
+            pnl.AutoSize = true;
+            pnl.Margin = new Padding(0, 5, 0, 0);
+
+            Label lbl = new Label();
+            lbl.Dock = DockStyle.Fill;
+            lbl.Text = displayValue;
+            lbl.TextAlign = textAlign;
+
+            pnl.Controls.Add(lbl);
+
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+        }
+
+        private void AddQuotaToTableLayout(long totalSize, double percentageFree, int colIdx, int rowIdx, ContentAlignment contentAlignment)
+        {
+            Panel pnl = new Panel();
+            pnl.Dock = DockStyle.Fill;
+            pnl.AutoSize = true;
+
+            PercentUpDown nud = new PercentUpDown();
+            nud.Location = new Point(5, 0);
+            nud.Margin = new Padding(0);
+            nud.Size = new Size(54, 20);
+            nud.Value = (decimal)percentageFree;
+
+            Label lbl = new Label();
+            lbl.Margin = new Padding(0);
+            lbl.Text = PathUtil.GetSizeReadable((long)(totalSize * (percentageFree / 100)));
+            lbl.Location = new Point(nud.Location.X + nud.Size.Width + 6, nud.Location.Y + 2);
+
+            nud.ValueChanged += (s, e) => { lbl.Text = PathUtil.GetSizeReadable((long)(totalSize * (nud.Value / 100))); };
+
+            pnl.Controls.Add(nud);
+            pnl.Controls.Add(lbl);
+
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+
+        }
+
+        private void AddRescanTimeToTableLayout(double rescanTime, int colIdx, int rowIdx, ContentAlignment contentAlignment)
+        {
+            var lblHeader = tbl_GlobalCleanup.GetControlFromPosition(colIdx, 0);
+
+            Panel pnl = new Panel();
+            pnl.Dock = DockStyle.Fill;
+            pnl.AutoSize = true;
+
+            NumericUpDown nud = new NumericUpDown();
+            nud.Location = new Point(0, 0);
+            nud.Margin = new Padding(0);
+            nud.Size = new Size(54, 20);
+            nud.Maximum = 86400; // one day 86400 min
+            nud.Minimum = 1;
+            nud.Value = (decimal)rescanTime;
+
+            Label lbl = new Label();
+            lbl.Margin = new Padding(0);
+            lbl.Text = "min";
+
+            lbl.Location = new Point(nud.Location.X + nud.Size.Width + 6, nud.Location.Y + 2);
+
+            var width = lbl.Left + lbl.PreferredWidth;
+            var left = lblHeader.Width / 2 - width / 2;
+
+            nud.Left = left;
+            lbl.Left += left;
+
+#if DEBUG
+            nud.Value = 10m;
+            lbl.Text = "sec";
+#endif
+            pnl.Controls.Add(nud);
+            pnl.Controls.Add(lbl);
+
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+
+        }
+        private void AddIsActiveToTableLayout(bool isActive, int colIdx, int rowIdx)
+        {
+            var lblHeader = tbl_GlobalCleanup.GetControlFromPosition(colIdx, 0);
+            
+            Panel pnl = new Panel();
+            pnl.Dock = DockStyle.Fill;
+            pnl.AutoSize = true;
+
+            CheckBox cb = new CheckBox();
+            cb.Location = new Point(lblHeader.Width / 2 - 15 / 2, 0);
+            cb.Checked = isActive;
+
+            cb.CheckedChanged += (s, e) => { StartStopCleanup(rowIdx, cb.Checked); };
+
+            pnl.Controls.Add(cb);
+
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+
+
+        }
+        private void StartStopCleanup(int rowIdx, bool start)
+        {
+            for (int i = 0; i < tbl_GlobalCleanup.ColumnCount - 1; i++)
+            {
+                tbl_GlobalCleanup.GetControlFromPosition(i, rowIdx).Enabled = !start;
+            }
+            Debug.WriteLine("StartStopCleanup " + start);
+        }
+
     }
 
     internal enum ServiceStart

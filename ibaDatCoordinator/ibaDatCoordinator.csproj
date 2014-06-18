@@ -126,6 +126,10 @@
     <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PercentUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>

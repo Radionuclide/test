@@ -335,6 +335,7 @@ namespace iba.Processing
             m_rememberPassTime = TimeSpan.FromMinutes(5);
             m_rememberPassEnabled = false;
             m_criticalTaskSemaphore = new FifoSemaphore(6);
+            m_globalCleanupDataList = new List<GlobalCleanupData>();
         }
 
         public static TaskManager Manager
@@ -611,6 +612,12 @@ namespace iba.Processing
                 if (pair.Key != null)
                     pair.Key.AdditionalFileNames(myList);
             }
+        }
+
+        private List<GlobalCleanupData> m_globalCleanupDataList;
+        public virtual List<GlobalCleanupData> GlobalCleanupDataList
+        {
+            get { return m_globalCleanupDataList; }
         }
     }
 
@@ -1308,6 +1315,22 @@ namespace iba.Processing
                 catch (SocketException)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
+                }
+            }
+        }
+
+        public override List<GlobalCleanupData>  GlobalCleanupDataList
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.GlobalCleanupDataList;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.GlobalCleanupDataList;
                 }
             }
         }
