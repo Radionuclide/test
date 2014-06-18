@@ -296,6 +296,7 @@
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
+    <Compile Include="Utility\DriveUtil.cs" />
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />

@@ -113,6 +113,13 @@ namespace iba.Data
             set { m_rememberTimeMinutes = value; }
         }
 
+        private List<GlobalCleanupData> m_globalCleanupDataList;
+        public List<GlobalCleanupData> GlobalCleanupDataList
+        {
+            get { return m_globalCleanupDataList; }
+            set { m_globalCleanupDataList = value; }
+        }
+
         public static ibaDatCoordinatorData Create(TaskManager manager)
         {
             ibaDatCoordinatorData answer = new ibaDatCoordinatorData();
@@ -129,12 +136,12 @@ namespace iba.Data
             answer.m_maxSimultaneousIbaAnalyzers = manager.MaxSimultaneousIbaAnalyzers;
             answer.m_maxIbaAnalyzerCalls = manager.MaxIbaAnalyzerCalls;
             answer.m_isIbaAnalyzerCallsLimited = manager.IsIbaAnalyzerCallsLimited;
+            answer.m_globalCleanupDataList = manager.GlobalCleanupDataList;
             return answer;
         }
 
         public List<ConfigurationData> ApplyToManager(TaskManager manager) //returns confs instead of applying them to manager immediately because they might need special treatment before
         {
-            List<ConfigurationData> confs;
             manager.ReplaceWatchdogData(WatchDogData);
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
@@ -146,10 +153,12 @@ namespace iba.Data
             manager.RememberPassTime = TimeSpan.FromMinutes(RememberTimeMinutes);
             manager.RememberPassEnabled = RememberPass;
             manager.Password = Password;
-            confs = Configurations;
+            manager.GlobalCleanupDataList = GlobalCleanupDataList;
+            
             if (LogItemCount == 0) LogItemCount = 50;
             LogData.Data.MaxRows = LogItemCount;
-            return confs;
+
+            return Configurations;
         }
 
         private ibaDatCoordinatorData()

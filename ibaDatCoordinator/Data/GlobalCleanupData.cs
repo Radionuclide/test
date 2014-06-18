@@ -6,18 +6,28 @@ namespace iba.Data
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Xml.Serialization;
 
     [Serializable]
     public class GlobalCleanupData : ICloneable
     {
+        [XmlAttribute]
         public string DriveName { get; set; }
+        [XmlAttribute]
         public string WorkingFolder { get; set; }
+        [XmlAttribute]
         public int RescanTime { get; set; }
+        [XmlAttribute]
         public int PercentageFree { get; set; }
+        [XmlAttribute]
         public bool Active { get; set; }
-        
-        [NonSerialized]
-        public bool IsSystem { get; set; }
+
+        [XmlIgnore]
+        public bool IsSystemDrive { get; set; }
+        [XmlIgnore]
+        public long TotalSize { get; set; }
+        [XmlIgnore]
+        public string VolumeLabel { get; set; }
 
         protected GlobalCleanupData(SerializationInfo info, StreamingContext context)
         {
@@ -35,6 +45,10 @@ namespace iba.Data
             RescanTime = 1;
             PercentageFree = 10;
             Active = false;
+
+            IsSystemDrive = false;
+            TotalSize = 0L;
+            VolumeLabel = String.Empty;
         }
 
         public object Clone()
@@ -45,6 +59,11 @@ namespace iba.Data
             gc.RescanTime = RescanTime;
             gc.PercentageFree = PercentageFree;
             gc.Active = Active;
+
+            gc.IsSystemDrive = IsSystemDrive;
+            gc.TotalSize = TotalSize;
+            gc.VolumeLabel = VolumeLabel;
+
             return gc;
         }
 

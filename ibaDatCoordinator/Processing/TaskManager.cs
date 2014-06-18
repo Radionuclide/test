@@ -618,6 +618,7 @@ namespace iba.Processing
         public virtual List<GlobalCleanupData> GlobalCleanupDataList
         {
             get { return m_globalCleanupDataList; }
+            set { m_globalCleanupDataList = value; }
         }
     }
 
