@@ -69,6 +69,8 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.lbLog = new System.Windows.Forms.ListBox();
+            this.gb_Log = new System.Windows.Forms.GroupBox();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
@@ -80,6 +82,7 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
             this.gb_GlobalCleanup.SuspendLayout();
             this.tbl_GlobalCleanup.SuspendLayout();
+            this.gb_Log.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbApp
@@ -407,10 +410,24 @@ namespace iba.Controls
             resources.ApplyResources(this.label12, "label12");
             this.label12.Name = "label12";
             // 
+            // lbLog
+            // 
+            resources.ApplyResources(this.lbLog, "lbLog");
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.Name = "lbLog";
+            // 
+            // gb_Log
+            // 
+            resources.ApplyResources(this.gb_Log, "gb_Log");
+            this.gb_Log.Controls.Add(this.lbLog);
+            this.gb_Log.Name = "gb_Log";
+            this.gb_Log.TabStop = false;
+            // 
             // ServiceSettingsControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.gb_Log);
             this.Controls.Add(this.gb_GlobalCleanup);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
@@ -435,6 +452,7 @@ namespace iba.Controls
             this.gb_GlobalCleanup.PerformLayout();
             this.tbl_GlobalCleanup.ResumeLayout(false);
             this.tbl_GlobalCleanup.PerformLayout();
+            this.gb_Log.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -480,6 +498,8 @@ namespace iba.Controls
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ListBox lbLog;
+        private System.Windows.Forms.GroupBox gb_Log;
 
     }
 }
