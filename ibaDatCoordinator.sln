@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB8B16C7-4591-4250-A8CB-EBB66086D05C}"
 	ProjectSection(SolutionItems) = preProject
 		Installer\datcoor.nsi = Installer\datcoor.nsi
@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alunorf-sinec-h1-plugin", "Alunorf-sinec-h1-plugin\Alunorf-sinec-h1-plugin.csproj", "{64BC4718-3E53-4184-8B5E-0927382EF8C1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "H1Protocol", "H1Protocol\H1Protocol.vcproj", "{A1B35688-5CD7-4931-9258-A4939CAA749A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "H1Protocol", "H1Protocol\H1Protocol.vcxproj", "{A1B35688-5CD7-4931-9258-A4939CAA749A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alunorf-plugin-test", "Alunorf-plugin-test\Alunorf-plugin-test.csproj", "{81FB0FBD-A945-4EEF-A137-EB707ECC469E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatCoUtil", "DatCoUtil\DatCoUtil.vcproj", "{3F16623A-6C9F-4D79-8A6B-351A39BF91A9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatCoUtil", "DatCoUtil\DatCoUtil.vcxproj", "{3F16623A-6C9F-4D79-8A6B-351A39BF91A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatCoordinatorPlugins", "DatCoordinatorPlugins\DatCoordinatorPlugins.csproj", "{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinator", "ibaDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinatorService", "ibaDatCoordinatorService\ibaDatCoordinatorService.csproj", "{8B2378DF-7A1D-4D46-B4C0-EE8CFEB94DA2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RohWriter", "RohWriter\RohWriter.vcproj", "{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RohWriter", "RohWriter\RohWriter.vcxproj", "{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RohPlugin", "RohPlugin\RohPlugin.csproj", "{FE90F614-BA97-4B9B-83E2-280FA2480B81}"
 EndProject
