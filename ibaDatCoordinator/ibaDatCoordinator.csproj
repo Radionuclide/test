@@ -126,6 +126,7 @@
     <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\GlobalCleanupTaskData.cs" />
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,6 +295,7 @@
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\FastDirectoryEnumerator.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />
