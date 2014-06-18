@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.VisualStyles;
+using System.Collections.Generic;
+using System.Linq;
 
 //using iba.Utility;
 //using iba.Utility.Win32;
@@ -84,7 +86,7 @@ namespace iba.Utility
 			{
 				if( value != m_editbox.Text )
 				{
-					if( OnValueValidate( value ) == true )
+					if( OnValueValidate( value ))
 					{
                         string oldVal = m_editbox.Text;
 						m_editbox.Text = value;
@@ -851,7 +853,8 @@ namespace iba.Utility
                 
         
 				m_ctrlBinded.Parent = m_dropDownForm;
-				m_ctrlBinded.KeyDown += new KeyEventHandler( OnDropDownControlKeyDown );
+                m_dropDownForm.KeyPreview = true;
+				m_dropDownForm.KeyDown += new KeyEventHandler( OnDropDownControlKeyDown );
 				m_ctrlBinded.DoubleClick += new EventHandler( OnDropDownControlDoubleClick );
 				m_bFirstShow = false;
 			}
@@ -940,6 +943,8 @@ namespace iba.Utility
 		{
 			if( e.Alt == true && ( e.KeyCode == Keys.Down || e.KeyCode == Keys.Up ) )
 			{
+                EventArgsCloseDropDown ev = new EventArgsCloseDropDown(true, e.KeyCode);
+                RaiseCloseDropDown(ev);
 				DroppedDown = false;
 			}
 			else if( ( e.Modifiers & (Keys.Shift | Keys.Alt | Keys.Control) ) == 0 )
@@ -948,6 +953,7 @@ namespace iba.Utility
 
 				if( e.KeyCode == Keys.Escape )
 				{
+                    RaiseCloseDropDown(ev);
 					DroppedDown = false;
 				} 
 				else if( e.KeyCode == Keys.F4 )
@@ -986,4 +992,237 @@ namespace iba.Utility
 		}
 		#endregion
 	}
+
+    public class CheckBoxComboBox : CustomCombo
+    {
+        protected List<CheckBox> m_items;
+        protected bool m_bFirstIsAll;
+
+
+        public CheckBoxComboBox()
+        {
+            ReadOnly = false;
+            m_editbox.Validating += new CancelEventHandler(m_editbox_Validating);
+            base.DropDownHided += new EventHandler(OnDropDownHidedHandler); 
+            base.CloseDropDown += new CloseDropDownHandler(OnCloseDropDownHandler);
+        }
+
+        public void Init(IEnumerable<string> items, bool firstIsAll)
+        {
+            m_bFirstIsAll = firstIsAll;
+            m_items = new List<CheckBox>();
+            foreach (string item in items)
+            {
+                CheckBox cb = new CheckBox();
+                cb.AutoSize = true;
+                cb.Padding = new Padding(0);
+                cb.Text = item;
+                if(firstIsAll)
+                    cb.CheckedChanged += new EventHandler(cb_CheckedChanged);
+                m_items.Add(cb);
+            }
+        }
+
+        private bool cb_CheckedChangedRecursing;
+        void cb_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox senderCB = sender as CheckBox;
+            if(!m_bFirstIsAll || senderCB == null || cb_CheckedChangedRecursing) return;
+            try
+            {
+                cb_CheckedChangedRecursing = true;
+                if(senderCB == m_items[0])
+                {
+                    foreach(CheckBox cb in m_items)
+                        cb.Checked = senderCB.Checked;
+                }
+                else if(!senderCB.Checked)
+                {
+                    m_items[0].Checked = false;
+                }
+                else
+                {
+                    bool allChecked = true;
+                    foreach(CheckBox cb in m_items)
+                    {
+                        if(cb == m_items[0]) continue;
+                        if(!cb.Checked)
+                        {
+                            allChecked = false;
+                            break;
+                        }
+                    }
+                    m_items[0].Checked = allChecked;
+                }
+            }
+            finally
+            {
+                cb_CheckedChangedRecursing = false;
+            }
+        }
+
+        protected override void OnPrevScrollItems()
+        {
+           //nothing to do
+        }
+
+        protected override void OnNextScrollItems()
+        {
+            //nothing to do
+        }
+
+        protected override void OnDropDownControlBinding(EventArgsBindDropDownControl e)
+        {
+            FlowLayoutPanel fp = new FlowLayoutPanel();
+            fp.AutoSize = true;
+            fp.FlowDirection = FlowDirection.TopDown;
+            foreach(CheckBox cb in m_items)
+            {
+                fp.Controls.Add(cb);
+            }
+            e.BindedControl = fp;
+            Parse(Value);
+        }
+
+        void m_editbox_Validating(object sender, CancelEventArgs e)
+        { //we never cancel, we correct
+            string newValue = m_editbox.Text;
+            string formatted = Parse(newValue);
+            if(formatted != newValue)
+                Value = formatted;
+        }
+
+        protected virtual string Parse(string args) //Parses string, possibly modifies it and returns it, also updates dropdown control if present
+        {
+            var selected = args.Split(new char[]{','}).Select( s => s.Trim());
+            foreach(CheckBox cb in m_items)
+            {
+                if(m_bFirstIsAll && cb == m_items[0]) continue;
+                cb.Checked = selected.Contains(cb.Text,StringComparer.CurrentCultureIgnoreCase);
+            }
+            return FromForm();
+        }
+
+        protected void OnDropDownHidedHandler(object sender, EventArgs e)
+        {
+            Value = FromForm();
+        }
+
+        protected void OnCloseDropDownHandler(object sender, EventArgsCloseDropDown e)
+        {
+            if(e.KeyCode == Keys.Escape) //reset
+                Parse(Value);
+        }
+
+        protected virtual string FromForm()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (CheckBox cb in m_items)
+            {
+                if(m_bFirstIsAll && cb == m_items[0]) continue;
+                if(cb.Checked)
+                {
+                    if(sb.Length != 0)
+                        sb.Append(", ");
+                    sb.Append(cb.Text);
+                }
+            }
+            return sb.ToString();
+        }
+
+    }
+
+    public class IntegerCheckComboBox : CheckBoxComboBox //version that groups numerics with a dash
+    {
+        private int lastFrom;
+        private int lastTo;
+        private void AddVal(StringBuilder sb, int val)
+        {
+            if(val == lastTo + 1)
+            {
+                lastTo = val; //increase range
+            }
+            else //larger or minvalue to indicate end
+            {
+                if(lastTo != int.MinValue) //add previous
+                {
+                    if(sb.Length != 0)
+                        sb.Append(", ");
+                    if(lastFrom == lastTo)
+                    {
+                        sb.Append(lastFrom);
+                    }
+                    else if(lastFrom == lastTo - 1)
+                    {
+                        sb.Append(lastFrom);
+                        sb.Append(", ");
+                        sb.Append(lastTo);
+                    }
+                    else //a range
+                    {
+                        sb.Append(lastFrom);
+                        sb.Append("-");
+                        sb.Append(lastTo);
+                    }
+                }
+                lastFrom = lastTo = val;
+            }
+        }
+        
+
+        protected override string FromForm()
+        {
+            StringBuilder sb = new StringBuilder();
+            lastFrom = int.MinValue;
+            lastTo = int.MinValue;
+            foreach(CheckBox cb in m_items) //assumes sorted num vals
+            {
+                if(m_bFirstIsAll && cb == m_items[0]) continue;
+                if(cb.Checked)
+                {
+                    int val;
+                    if(int.TryParse(cb.Text, out val))
+                    {
+                        AddVal(sb, val);
+                    }
+                    else
+                    {
+                        if(sb.Length != 0)
+                            sb.Append(", ");
+                        sb.Append(cb.Text);
+                    }
+                }
+            }
+            AddVal(sb, int.MinValue);
+            return sb.ToString(); 
+        }
+        public int min;
+        public int max;
+
+        protected override string Parse(string args)
+        {
+            var selected = args.Split(new char[] { ',' }).Select(s => s.Trim());
+            List<int> Fromranges = new List<int>();
+            foreach(string range in selected)
+            {
+                var nums = args.Split(new char[] { '-' }).Select(s => s.Trim());
+                int v1, v2;
+                if(nums.Count() == 2 && int.TryParse(nums.First(), out v1) && int.TryParse(nums.First(), out v2) && v1 < v2 && v1 >= min && v2 <= max)
+                    Fromranges.AddRange(Enumerable.Range(v1, v2));
+            }
+            foreach(CheckBox cb in m_items)
+            {
+                if(m_bFirstIsAll && cb == m_items[0]) continue;
+                bool res = selected.Contains(cb.Text, StringComparer.CurrentCultureIgnoreCase);
+                int val;
+                if(!res && int.TryParse(cb.Text,out val)) //perhaps in ranges
+                {
+                    if(Fromranges.Contains(val)) res = true;
+                }
+                cb.Checked = res;
+            }
+            return FromForm();
+        }
+    }
+
 }

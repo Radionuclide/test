@@ -54,6 +54,7 @@ namespace iba.Controls
             m_failTimeUpDown.Value = (decimal)m_data.ReprocessErrorsTimeInterval.TotalMinutes;
             m_retryUpDown.Value = (decimal)m_data.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
+            m_monthSettingsCtrl.m_cbDays.Value = "fucked";
         }
 
 

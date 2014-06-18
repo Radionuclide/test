@@ -32,10 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_rbDays = new System.Windows.Forms.RadioButton();
             this.m_rbOn = new System.Windows.Forms.RadioButton();
-            this.m_cbOnPartWeekday = new iba.Controls.CustomComboOnWeekdays();
-            this.m_cbOnPart1 = new iba.Controls.CustomComboOnPart1();
-            this.m_cbDays = new iba.Controls.CustomComboDays();
-            this.m_cbMonths = new iba.Controls.CustomComboMonths();
+            this.m_cbOnPartWeekday = new iba.Utility.CheckBoxComboBox();
+            this.m_cbOnPart1 = new iba.Utility.CheckBoxComboBox();
+            this.m_cbDays = new iba.Utility.IntegerCheckComboBox();
+            this.m_cbMonths = new iba.Utility.CheckBoxComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -49,6 +49,7 @@
             this.m_rbDays.Name = "m_rbDays";
             this.m_rbDays.TabStop = true;
             this.m_rbDays.UseVisualStyleBackColor = true;
+            this.m_rbDays.CheckedChanged += new System.EventHandler(this.m_rbDays_CheckedChanged);
             // 
             // m_rbOn
             // 
@@ -56,6 +57,7 @@
             this.m_rbOn.Name = "m_rbOn";
             this.m_rbOn.TabStop = true;
             this.m_rbOn.UseVisualStyleBackColor = true;
+            this.m_rbOn.CheckedChanged += new System.EventHandler(this.m_rbOn_CheckedChanged);
             // 
             // m_cbOnPartWeekday
             // 
@@ -97,11 +99,11 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private CustomComboMonths m_cbMonths;
+        private iba.Utility.CheckBoxComboBox m_cbMonths;
         private System.Windows.Forms.RadioButton m_rbDays;
         private System.Windows.Forms.RadioButton m_rbOn;
-        private CustomComboDays m_cbDays;
-        private CustomComboOnPart1 m_cbOnPart1;
-        private CustomComboOnWeekdays m_cbOnPartWeekday;
+        public iba.Utility.IntegerCheckComboBox m_cbDays;
+        public iba.Utility.CheckBoxComboBox m_cbOnPart1;
+        public iba.Utility.CheckBoxComboBox m_cbOnPartWeekday;
     }
 }

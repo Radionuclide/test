@@ -92,6 +92,7 @@
             // 
             // m_repeatDurationCombo
             // 
+            this.m_repeatDurationCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_repeatDurationCombo.FormattingEnabled = true;
             this.m_repeatDurationCombo.Items.AddRange(new object[] {
             resources.GetString("m_repeatDurationCombo.Items"),
@@ -110,6 +111,7 @@
             // 
             // m_repeatIntervalCombo
             // 
+            this.m_repeatIntervalCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_repeatIntervalCombo.FormattingEnabled = true;
             this.m_repeatIntervalCombo.Items.AddRange(new object[] {
             resources.GetString("m_repeatIntervalCombo.Items"),
