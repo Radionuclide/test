@@ -150,6 +150,7 @@
     <Compile Include="Controls\WeeklyTriggerSettingsControl.Designer.cs">
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\ScheduledJobData.cs" />
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -338,10 +339,14 @@
     </Compile>
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\Ellipsis.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />
     <Compile Include="Utility\ibaToolStripRenderer.cs" />
+    <Compile Include="Utility\LabelEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Processing\ConfigurationWorker.cs" />
     <Compile Include="Processing\TaskManager.cs" />
@@ -388,11 +393,17 @@
     <Compile Include="Utility\PluginManager.cs" />
     <Compile Include="Utility\Profiler.cs" />
     <Compile Include="Utility\RegistryExporter.cs" />
+    <Compile Include="Utility\RippleDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\SafeTimer.cs" />
     <Compile Include="Utility\SerializableObjectsCompare.cs" />
     <Compile Include="Utility\Shares.cs" />
     <Compile Include="Utility\SharesHandler.cs" />
     <Compile Include="Utility\SystemInfoCollector.cs" />
+    <Compile Include="Utility\TextBoxEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\VersionCheck.cs" />
     <Compile Include="Utility\WindowsAPI.cs" />
     <Compile Include="TreeItemData.cs" />

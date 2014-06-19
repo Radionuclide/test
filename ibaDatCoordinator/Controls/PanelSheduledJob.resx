@@ -255,6 +255,27 @@
   <data name="gbTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_dtStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 13</value>
+  </data>
+  <data name="m_dtStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 20</value>
+  </data>
+  <data name="m_dtStart.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_dtStart.Name" xml:space="preserve">
+    <value>m_dtStart</value>
+  </data>
+  <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
+    <value>gbTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_dtStart.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_gbSubProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -277,49 +298,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_gbSubProperties.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_timePicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 13</value>
-  </data>
-  <data name="m_timePicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 20</value>
-  </data>
-  <data name="m_timePicker.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_timePicker.Name" xml:space="preserve">
-    <value>m_timePicker</value>
-  </data>
-  <data name="&gt;&gt;m_timePicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_timePicker.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_timePicker.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_datePicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 13</value>
-  </data>
-  <data name="m_datePicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 20</value>
-  </data>
-  <data name="m_datePicker.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_datePicker.Name" xml:space="preserve">
-    <value>m_datePicker</value>
-  </data>
-  <data name="&gt;&gt;m_datePicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_datePicker.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_datePicker.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -346,7 +325,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -370,7 +349,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_rbMonthly.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -400,7 +379,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbMonthly.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_rbWeekly.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -430,7 +409,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbWeekly.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_rbDaily.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -460,7 +439,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbDaily.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_rbOneTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -487,7 +466,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbOneTime.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="gbTrigger.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 93</value>

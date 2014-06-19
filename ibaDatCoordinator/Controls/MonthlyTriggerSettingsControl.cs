@@ -23,7 +23,6 @@ namespace iba.Controls
             m_cbOnPart1.Init(new string[] { iba.Properties.Resources.First, iba.Properties.Resources.Second, iba.Properties.Resources.Third, iba.Properties.Resources.Fourth, iba.Properties.Resources.Last },false);
             m_cbOnPartWeekday.Init((new string[] { iba.Properties.Resources.SelectAllDays }).Concat(System.Globalization.DateTimeFormatInfo.CurrentInfo.DayNames.Take(7)), true);
             m_cbOnPartWeekday.DropDownHeigth = 100;
-
         }
 
         private void m_rbDays_CheckedChanged(object sender, EventArgs e)

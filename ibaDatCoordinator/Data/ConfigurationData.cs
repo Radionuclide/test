@@ -48,6 +48,11 @@ namespace iba.Data
             }
         }
 
+        public bool DatDirectorySpecified
+        {
+            get { return m_jobType != JobTypeEnum.Scheduled; }
+        }
+
         private List<TaskData> m_tasks;
 
         [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData)), XmlElement(Type = typeof(IfTaskData)), XmlElement(Type = typeof(UpdateDataTaskData)), XmlElement(Type = typeof(PauseTaskData)), XmlElement(Type = typeof(CustomTaskData)), XmlElement(Type = typeof(CustomTaskDataUNC))]
@@ -237,9 +242,17 @@ namespace iba.Data
             set { if (value) { m_jobType = JobTypeEnum.OneTime; } }
         }
 
+        private ScheduledJobData m_scheduleData;
+	    public iba.Data.ScheduledJobData ScheduleData
+	    {
+		    get { return m_scheduleData; }
+		    set { m_scheduleData = value; }
+	    }
+
         public ConfigurationData(string name, JobTypeEnum jobType)
         {
             m_jobType = jobType;
+            if (m_jobType == JobTypeEnum.Scheduled) m_scheduleData = new ScheduledJobData();
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;

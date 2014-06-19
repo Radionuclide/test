@@ -33,12 +33,10 @@
             this.gbSchedule = new System.Windows.Forms.GroupBox();
             this.m_repeatDurationCombo = new System.Windows.Forms.ComboBox();
             this.m_lblDuration = new System.Windows.Forms.Label();
-            this.m_repeatIntervalCombo = new System.Windows.Forms.ComboBox();
+            this.m_repeatEveryCombo = new System.Windows.Forms.ComboBox();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
-            this.m_timePicker = new System.Windows.Forms.DateTimePicker();
-            this.m_datePicker = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.m_rbMonthly = new System.Windows.Forms.RadioButton();
@@ -60,6 +58,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.button1 = new System.Windows.Forms.Button();
+            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
@@ -71,7 +70,7 @@
             resources.ApplyResources(this.gbSchedule, "gbSchedule");
             this.gbSchedule.Controls.Add(this.m_repeatDurationCombo);
             this.gbSchedule.Controls.Add(this.m_lblDuration);
-            this.gbSchedule.Controls.Add(this.m_repeatIntervalCombo);
+            this.gbSchedule.Controls.Add(this.m_repeatEveryCombo);
             this.gbSchedule.Controls.Add(this.m_cbRepeat);
             this.gbSchedule.Controls.Add(this.gbTrigger);
             this.gbSchedule.Controls.Add(this.m_undoChangesBtn);
@@ -111,16 +110,16 @@
             // 
             // m_repeatIntervalCombo
             // 
-            this.m_repeatIntervalCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_repeatIntervalCombo.FormattingEnabled = true;
-            this.m_repeatIntervalCombo.Items.AddRange(new object[] {
+            this.m_repeatEveryCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_repeatEveryCombo.FormattingEnabled = true;
+            this.m_repeatEveryCombo.Items.AddRange(new object[] {
             resources.GetString("m_repeatIntervalCombo.Items"),
             resources.GetString("m_repeatIntervalCombo.Items1"),
             resources.GetString("m_repeatIntervalCombo.Items2"),
             resources.GetString("m_repeatIntervalCombo.Items3"),
             resources.GetString("m_repeatIntervalCombo.Items4")});
-            resources.ApplyResources(this.m_repeatIntervalCombo, "m_repeatIntervalCombo");
-            this.m_repeatIntervalCombo.Name = "m_repeatIntervalCombo";
+            resources.ApplyResources(this.m_repeatEveryCombo, "m_repeatIntervalCombo");
+            this.m_repeatEveryCombo.Name = "m_repeatIntervalCombo";
             // 
             // m_cbRepeat
             // 
@@ -132,9 +131,8 @@
             // gbTrigger
             // 
             resources.ApplyResources(this.gbTrigger, "gbTrigger");
+            this.gbTrigger.Controls.Add(this.m_dtStart);
             this.gbTrigger.Controls.Add(this.m_gbSubProperties);
-            this.gbTrigger.Controls.Add(this.m_timePicker);
-            this.gbTrigger.Controls.Add(this.m_datePicker);
             this.gbTrigger.Controls.Add(this.label2);
             this.gbTrigger.Controls.Add(this.label1);
             this.gbTrigger.Controls.Add(this.m_rbMonthly);
@@ -149,19 +147,6 @@
             resources.ApplyResources(this.m_gbSubProperties, "m_gbSubProperties");
             this.m_gbSubProperties.Name = "m_gbSubProperties";
             this.m_gbSubProperties.TabStop = false;
-            // 
-            // m_timePicker
-            // 
-            this.m_timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            resources.ApplyResources(this.m_timePicker, "m_timePicker");
-            this.m_timePicker.Name = "m_timePicker";
-            this.m_timePicker.ShowUpDown = true;
-            // 
-            // m_datePicker
-            // 
-            this.m_datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            resources.ApplyResources(this.m_datePicker, "m_datePicker");
-            this.m_datePicker.Name = "m_datePicker";
             // 
             // label2
             // 
@@ -321,6 +306,11 @@
             this.button1.Name = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // m_dtStart
+            // 
+            resources.ApplyResources(this.m_dtStart, "m_dtStart");
+            this.m_dtStart.Name = "m_dtStart";
+            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -357,12 +347,10 @@
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.ComboBox m_repeatDurationCombo;
         private System.Windows.Forms.Label m_lblDuration;
-        private System.Windows.Forms.ComboBox m_repeatIntervalCombo;
+        private System.Windows.Forms.ComboBox m_repeatEveryCombo;
         private System.Windows.Forms.CheckBox m_cbRepeat;
         private System.Windows.Forms.GroupBox gbTrigger;
         private System.Windows.Forms.GroupBox m_gbSubProperties;
-        private System.Windows.Forms.DateTimePicker m_timePicker;
-        private System.Windows.Forms.DateTimePicker m_datePicker;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton m_rbMonthly;
@@ -370,5 +358,6 @@
         private System.Windows.Forms.RadioButton m_rbDaily;
         private System.Windows.Forms.RadioButton m_rbOneTime;
         private System.Windows.Forms.Button button1;
+        private iba.Utility.RippleDateTimePicker m_dtStart;
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 
 //using iba.Utility;
 //using iba.Utility.Win32;
+using iba.Utility.AutoEllipsis;
 
 namespace iba.Utility
 {
@@ -58,7 +59,7 @@ namespace iba.Utility
 		protected bool      m_bCanInvalidate = true;
 
 		private bool        m_bOwnValuePaint;
-		protected TextBox   m_editbox;
+		protected TextBoxEllipsis  m_editbox;
 		private Rectangle   m_clickButton;
 		private bool        m_bDropDown;
 		private int         m_iDropDownHeight = 120;
@@ -80,16 +81,16 @@ namespace iba.Utility
 		{
 			get
 			{
-				return m_editbox.Text;
+				return m_editbox.FullText;
 			}
 			set
 			{
-				if( value != m_editbox.Text )
+                //if(value != m_editbox.FullText)
 				{
 					if( OnValueValidate( value ))
 					{
-                        string oldVal = m_editbox.Text;
-						m_editbox.Text = value;
+                        string oldVal = m_editbox.FullText;
+                        m_editbox.FullText = value;
 						OnValueChanged(oldVal, value);
             
 						if( m_bCanInvalidate == true )
@@ -414,7 +415,8 @@ namespace iba.Utility
 			SetStyle( styleTrue, true );
 			SetStyle( ControlStyles.Selectable, false ); 
 
-			m_editbox = new TextBox();
+			m_editbox = new TextBoxEllipsis();
+            m_editbox.AutoEllipsis = EllipsisFormat.End | EllipsisFormat.Word;
  			m_editbox.BorderStyle = BorderStyle.None;
 			m_editbox.KeyDown += new KeyEventHandler( OnEditKeyDown );
 			m_editbox.MouseWheel += new MouseEventHandler( OnEditMouseWheel );
@@ -1086,7 +1088,7 @@ namespace iba.Utility
 
         void m_editbox_Validating(object sender, CancelEventArgs e)
         { //we never cancel, we correct
-            string newValue = m_editbox.Text;
+            string newValue = m_editbox.Text; //focusing has not happened yet so fulltext is not updated, use Text
             string formatted = Parse(newValue);
             if(formatted != newValue)
                 Value = formatted;
@@ -1185,15 +1187,16 @@ namespace iba.Utility
                     {
                         AddVal(sb, val);
                     }
-                    else
+                    else 
                     {
+                        AddVal(sb, int.MinValue); //finish previous numerics
                         if(sb.Length != 0)
                             sb.Append(", ");
                         sb.Append(cb.Text);
                     }
                 }
             }
-            AddVal(sb, int.MinValue);
+            AddVal(sb, int.MinValue); //finish previous numerics
             return sb.ToString(); 
         }
         public int min;
@@ -1205,9 +1208,9 @@ namespace iba.Utility
             List<int> Fromranges = new List<int>();
             foreach(string range in selected)
             {
-                var nums = args.Split(new char[] { '-' }).Select(s => s.Trim());
+                List<string> nums = new List<string>(range.Split(new char[] { '-' }).Select(s => s.Trim()));
                 int v1, v2;
-                if(nums.Count() == 2 && int.TryParse(nums.First(), out v1) && int.TryParse(nums.First(), out v2) && v1 < v2 && v1 >= min && v2 <= max)
+                if(nums.Count == 2 && int.TryParse(nums[0], out v1) && int.TryParse(nums[1], out v2) && v1 < v2 && v1 >= min && v2 <= max)
                     Fromranges.AddRange(Enumerable.Range(v1, v2));
             }
             foreach(CheckBox cb in m_items)
@@ -1223,6 +1226,23 @@ namespace iba.Utility
             }
             return FromForm();
         }
-    }
 
+        void FromIntegerList(IEnumerable<int> indices, bool zeroindexed)
+        {
+            foreach(CheckBox item in m_items)
+            {
+                item.Checked = false;
+            }
+            foreach (int i in indices)
+            {
+                m_items[zeroindexed ? i : (i - 1)].Checked = true;
+            }
+            Value = FromForm();
+        }
+
+        IEnumerable<int> ToIntegerList(bool zeroindexed)
+        {
+            return m_items.Select((value, index) => new { value, index }).Where(z => z.value.Checked).Select(z => z.index + (zeroindexed ? 0 : 1));
+        }
+    }
 }
