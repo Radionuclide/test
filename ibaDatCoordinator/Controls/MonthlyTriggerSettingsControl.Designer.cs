@@ -99,11 +99,11 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private iba.Utility.CheckBoxComboBox m_cbMonths;
-        private System.Windows.Forms.RadioButton m_rbDays;
-        private System.Windows.Forms.RadioButton m_rbOn;
         public iba.Utility.IntegerCheckComboBox m_cbDays;
         public iba.Utility.CheckBoxComboBox m_cbOnPart1;
         public iba.Utility.CheckBoxComboBox m_cbOnPartWeekday;
+        public Utility.CheckBoxComboBox m_cbMonths;
+        public System.Windows.Forms.RadioButton m_rbDays;
+        public System.Windows.Forms.RadioButton m_rbOn;
     }
 }

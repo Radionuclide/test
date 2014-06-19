@@ -74,7 +74,15 @@ namespace iba.Controls
             //daily
             m_daySettingsCtrl.m_nudDays.Value = (System.Decimal)(m_scheduleData.DayTriggerEveryNDay);
             // weekly
+            m_weekSettingsCtrl.m_nudWeeks.Value = (System.Decimal)(m_scheduleData.WeekTriggerEveryNWeek);
+            m_weekSettingsCtrl.SetDaysFromList(m_scheduleData.WeekTriggerWeekDays);
             //monthly
+            m_monthSettingsCtrl.m_rbDays.Checked = m_scheduleData.MonthTriggerUseDays;
+            m_monthSettingsCtrl.m_rbOn.Checked = !m_scheduleData.MonthTriggerUseDays;
+            m_monthSettingsCtrl.m_cbMonths.FromIntegerList(m_scheduleData.MonthTriggerMonths, false);
+            m_monthSettingsCtrl.m_cbDays.FromIntegerList(m_scheduleData.MonthTriggerDays, false);
+            m_monthSettingsCtrl.m_cbOnPart1.FromIntegerList(m_scheduleData.MonthTriggerOn, true);
+            m_monthSettingsCtrl.m_cbOnPartWeekday.FromIntegerList(m_scheduleData.MonthTriggerDays, true);
             //repeat options
             m_repeatEveryCombo.SelectedIndex = Array.FindIndex(m_repeatEveryOptions, ts => ts == m_scheduleData.RepeatEvery);
             m_repeatDurationCombo.SelectedIndex = Array.FindIndex(m_repeatDurationOptions, ts => ts == m_scheduleData.RepeatDuration);
@@ -94,10 +102,17 @@ namespace iba.Controls
             //daily
             m_scheduleData.DayTriggerEveryNDay = (int) m_daySettingsCtrl.m_nudDays.Value;
             // weekly
+            m_scheduleData.WeekTriggerEveryNWeek = (int)m_weekSettingsCtrl.m_nudWeeks.Value;
+            m_scheduleData.WeekTriggerWeekDays = m_weekSettingsCtrl.GetListFromDays();
             //monthly
+            m_scheduleData.MonthTriggerUseDays = m_monthSettingsCtrl.m_rbDays.Checked;
+            m_scheduleData.MonthTriggerMonths = new List<int>(m_monthSettingsCtrl.m_cbMonths.ToIntegerList(false));
+            m_scheduleData.MonthTriggerDays = new List<int>(m_monthSettingsCtrl.m_cbDays.ToIntegerList(false));
+            m_scheduleData.MonthTriggerOn = new List<int>(m_monthSettingsCtrl.m_cbOnPart1.ToIntegerList(true));
+            m_scheduleData.MonthTriggerDays = new List<int>(m_monthSettingsCtrl.m_cbOnPartWeekday.ToIntegerList(true));
             //repeat options
             if (m_repeatEveryCombo.SelectedIndex >= 0) m_scheduleData.RepeatEvery = m_repeatEveryOptions[m_repeatEveryCombo.SelectedIndex];
-            if(m_repeatDurationCombo.SelectedIndex >= 0) m_scheduleData.RepeatEvery = m_repeatDurationOptions[m_repeatDurationCombo.SelectedIndex];
+            if(m_repeatDurationCombo.SelectedIndex >= 0) m_scheduleData.RepeatDuration = m_repeatDurationOptions[m_repeatDurationCombo.SelectedIndex];
         }
 
         public void LeaveCleanup() {}

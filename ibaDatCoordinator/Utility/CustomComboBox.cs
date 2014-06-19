@@ -1132,6 +1132,23 @@ namespace iba.Utility
             return sb.ToString();
         }
 
+        public void FromIntegerList(IEnumerable<int> indices, bool zeroindexed)
+        {
+            foreach (CheckBox item in m_items)
+            {
+                item.Checked = false;
+            }
+            foreach (int i in indices)
+            {
+                m_items[zeroindexed ? i : (i - 1)].Checked = true;
+            }
+            Value = FromForm();
+        }
+
+        public IEnumerable<int> ToIntegerList(bool zeroindexed)
+        {
+            return m_items.Select((value, index) => new { value, index }).Where(z => z.value.Checked).Select(z => z.index + (zeroindexed ? 0 : 1));
+        }
     }
 
     public class IntegerCheckComboBox : CheckBoxComboBox //version that groups numerics with a dash
@@ -1225,24 +1242,6 @@ namespace iba.Utility
                 cb.Checked = res;
             }
             return FromForm();
-        }
-
-        void FromIntegerList(IEnumerable<int> indices, bool zeroindexed)
-        {
-            foreach(CheckBox item in m_items)
-            {
-                item.Checked = false;
-            }
-            foreach (int i in indices)
-            {
-                m_items[zeroindexed ? i : (i - 1)].Checked = true;
-            }
-            Value = FromForm();
-        }
-
-        IEnumerable<int> ToIntegerList(bool zeroindexed)
-        {
-            return m_items.Select((value, index) => new { value, index }).Where(z => z.value.Checked).Select(z => z.index + (zeroindexed ? 0 : 1));
         }
     }
 }

@@ -11,9 +11,24 @@ namespace iba.Controls
 {
     public partial class WeeklyTriggerSettingsControl : UserControl
     {
+        CheckBox[] cbList;
         public WeeklyTriggerSettingsControl()
         {
             InitializeComponent();
+            cbList = new CheckBox[] {m_cbSunday,m_cbMonday, m_cbTuesday, m_cbWednesday, m_cbThursday, m_cbFriday, m_cbSaturday};
+        }
+
+        public void SetDaysFromList(List<int> list)
+        {
+            foreach (CheckBox cb in cbList) 
+                cb.Checked = false;
+            foreach (int i in list)
+                cbList[i].Checked = true;
+        }
+
+        public List<int> GetListFromDays()
+        {
+            return new List<int>(cbList.Select((cb, index) => new { cb, index }).Where(z => z.cb.Checked).Select(z => z.index));
         }
     }
 }
