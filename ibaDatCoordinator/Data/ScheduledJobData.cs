@@ -120,8 +120,29 @@ namespace iba.Data
             set { m_repeatDuration= TimeSpan.FromTicks(value); }
         }
 
-        //TODO HD parameters (two ranges, sample rate and hd connection params)
+        //HD parameters (two ranges, sample rate and hd connection params)
+        private string m_HDServer;
+        public string HDServer 
+        {
+            get { return m_HDServer; }
+            set { m_HDServer = value; } 
+        }
 
+        private int m_HDPort;
+        public int HDPort
+        {
+            get { return m_HDPort; }
+            set { m_HDPort = value; }
+        }
+
+        private string[] m_HDStores;
+        public string[] HDStores
+        {
+            get { return m_HDStores; }
+            set { m_HDStores = value; }
+        }
+
+        //time ranges
         public ScheduledJobData()
         {
             m_baseTriggerTime = DateTime.Now;
@@ -132,14 +153,40 @@ namespace iba.Data
             m_monthTriggerMonths = new List<int>(Enumerable.Range(1, 12)); //all months
             m_monthTriggerUseDays = true;
             m_monthTriggerDays = new List<int>(Enumerable.Range(1, 1)); //1st day off month;
-            m_monthTriggerOn = new List<int>(Enumerable.Range(1, 1));//1st
+            m_monthTriggerOn = new List<int>(Enumerable.Repeat(0, 1));//1st
             m_monthTriggerWeekDay = new List<int>(Enumerable.Range(1, 1));//monday
             m_doRepeat = false;
             m_repeatEvery = TimeSpan.FromHours(1);
             m_repeatDuration = TimeSpan.FromDays(1);
+            m_HDPort = 9180;
+            m_HDStores = new string[] { };
+            m_HDServer = "";
         }
 
-
+        private TimeSpan m_startRangeFromTrigger;
+        [XmlIgnore]
+        public System.TimeSpan StartRangeFromTrigger
+        {
+            get { return m_startRangeFromTrigger; }
+            set { m_startRangeFromTrigger = value; }
+        }
+        public long StartRangeFromTriggerTicks
+        {
+            get { return m_startRangeFromTrigger.Ticks; }
+            set { m_startRangeFromTrigger = TimeSpan.FromTicks(value); }
+        }
+        private TimeSpan m_stopRangeFromTrigger;
+        [XmlIgnore]
+        public System.TimeSpan StopRangeFromTrigger
+        {
+            get { return m_startRangeFromTrigger; }
+            set { m_startRangeFromTrigger = value; }
+        }
+        public long StopRangeFromTriggerTicks
+        {
+            get { return m_stopRangeFromTrigger.Ticks; }
+            set { m_stopRangeFromTrigger = TimeSpan.FromTicks(value); }
+        }
 
         public object Clone()
         {
@@ -157,6 +204,11 @@ namespace iba.Data
             nsjd.m_doRepeat = m_doRepeat;
             nsjd.m_repeatEvery = m_repeatEvery;
             nsjd.m_repeatDuration = m_repeatDuration;
+            nsjd.HDServer = m_HDServer;
+            nsjd.m_HDStores = (string[]) m_HDStores.Clone();
+            nsjd.m_HDPort = m_HDPort;
+            nsjd.m_startRangeFromTrigger = m_startRangeFromTrigger;
+            nsjd.m_stopRangeFromTrigger = m_stopRangeFromTrigger;
             return nsjd;
         }
 
@@ -177,7 +229,12 @@ namespace iba.Data
             other.m_monthTriggerWeekDay.SequenceEqual(m_monthTriggerWeekDay) &&
             other.m_doRepeat == m_doRepeat &&
             other.m_repeatEvery == m_repeatEvery &&
-            other.m_repeatDuration == m_repeatDuration;
+            other.m_repeatDuration == m_repeatDuration &&
+            other.HDServer == m_HDServer &&
+            other.m_HDStores.SequenceEqual(m_HDStores) &&
+            other.m_HDPort == m_HDPort &&
+            other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
+            other.m_stopRangeFromTrigger == m_stopRangeFromTrigger;
         }
     }
 }

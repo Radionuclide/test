@@ -12,6 +12,7 @@ using iba.Utility;
 using iba.Processing;
 using iba.Dialogs;
 using System.IO;
+using iba.HD.Common;
 
 namespace iba.Controls
 {
@@ -40,6 +41,9 @@ namespace iba.Controls
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
             m_repeatEveryOptions = new TimeSpan[] {TimeSpan.FromMinutes(5),TimeSpan.FromMinutes(10),TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1)};
             m_repeatDurationOptions = new TimeSpan[] {TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
+            m_hdStorePicker.AllowedStoreType = HdStoreType.Time /*| HdStoreType.Length*/;
+            m_hdStorePicker.HideConfigureButton();
+            m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
         }
 
         IPropertyPaneManager m_manager;
@@ -82,10 +86,15 @@ namespace iba.Controls
             m_monthSettingsCtrl.m_cbMonths.FromIntegerList(m_scheduleData.MonthTriggerMonths, false);
             m_monthSettingsCtrl.m_cbDays.FromIntegerList(m_scheduleData.MonthTriggerDays, false);
             m_monthSettingsCtrl.m_cbOnPart1.FromIntegerList(m_scheduleData.MonthTriggerOn, true);
-            m_monthSettingsCtrl.m_cbOnPartWeekday.FromIntegerList(m_scheduleData.MonthTriggerDays, true);
+            m_monthSettingsCtrl.m_cbOnPartWeekday.FromIntegerList(m_scheduleData.MonthTriggerWeekDay, true);
             //repeat options
             m_repeatEveryCombo.SelectedIndex = Array.FindIndex(m_repeatEveryOptions, ts => ts == m_scheduleData.RepeatEvery);
             m_repeatDurationCombo.SelectedIndex = Array.FindIndex(m_repeatDurationOptions, ts => ts == m_scheduleData.RepeatDuration);
+
+            //hdStore
+            m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
+            m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
+            m_hdStorePicker.SelectedStores = (string[]) m_scheduleData.HDStores.Clone();
         }
 
 
@@ -109,10 +118,14 @@ namespace iba.Controls
             m_scheduleData.MonthTriggerMonths = new List<int>(m_monthSettingsCtrl.m_cbMonths.ToIntegerList(false));
             m_scheduleData.MonthTriggerDays = new List<int>(m_monthSettingsCtrl.m_cbDays.ToIntegerList(false));
             m_scheduleData.MonthTriggerOn = new List<int>(m_monthSettingsCtrl.m_cbOnPart1.ToIntegerList(true));
-            m_scheduleData.MonthTriggerDays = new List<int>(m_monthSettingsCtrl.m_cbOnPartWeekday.ToIntegerList(true));
+            m_scheduleData.MonthTriggerWeekDay = new List<int>(m_monthSettingsCtrl.m_cbOnPartWeekday.ToIntegerList(true));
             //repeat options
             if (m_repeatEveryCombo.SelectedIndex >= 0) m_scheduleData.RepeatEvery = m_repeatEveryOptions[m_repeatEveryCombo.SelectedIndex];
             if(m_repeatDurationCombo.SelectedIndex >= 0) m_scheduleData.RepeatDuration = m_repeatDurationOptions[m_repeatDurationCombo.SelectedIndex];
+            //hdStore
+            m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
+            m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
+            m_scheduleData.HDStores = (string[]) m_hdStorePicker.SelectedStores.Clone();
         }
 
         public void LeaveCleanup() {}
@@ -132,6 +145,11 @@ namespace iba.Controls
             m_weekSettingsCtrl.Visible = m_rbWeekly.Checked;
             m_monthSettingsCtrl.Visible = m_rbMonthly.Checked;
             m_daySettingsCtrl.Visible = m_rbDaily.Checked;
+        }
+
+        private void m_cbTimeBase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

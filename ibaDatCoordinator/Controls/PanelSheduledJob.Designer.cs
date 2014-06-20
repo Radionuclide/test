@@ -36,6 +36,7 @@
             this.m_repeatEveryCombo = new System.Windows.Forms.ComboBox();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
+            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -57,12 +58,43 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
+            this.gbHD = new System.Windows.Forms.GroupBox();
+            this.m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
+            this.gbTimeSelection = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.m_nudStopSeconds = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_nudStopMinutes = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.m_nudStopHours = new System.Windows.Forms.NumericUpDown();
+            this.m_nudStopDays = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.m_nudStartSeconds = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_nudStartMinutes = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
+            this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.m_lblTimebase = new System.Windows.Forms.Label();
+            this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
+            this.gbHD.SuspendLayout();
+            this.gbTimeSelection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopMinutes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopHours)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopDays)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartSeconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
             this.SuspendLayout();
             // 
             // gbSchedule
@@ -108,18 +140,18 @@
             resources.ApplyResources(this.m_lblDuration, "m_lblDuration");
             this.m_lblDuration.Name = "m_lblDuration";
             // 
-            // m_repeatIntervalCombo
+            // m_repeatEveryCombo
             // 
             this.m_repeatEveryCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_repeatEveryCombo.FormattingEnabled = true;
             this.m_repeatEveryCombo.Items.AddRange(new object[] {
-            resources.GetString("m_repeatIntervalCombo.Items"),
-            resources.GetString("m_repeatIntervalCombo.Items1"),
-            resources.GetString("m_repeatIntervalCombo.Items2"),
-            resources.GetString("m_repeatIntervalCombo.Items3"),
-            resources.GetString("m_repeatIntervalCombo.Items4")});
-            resources.ApplyResources(this.m_repeatEveryCombo, "m_repeatIntervalCombo");
-            this.m_repeatEveryCombo.Name = "m_repeatIntervalCombo";
+            resources.GetString("m_repeatEveryCombo.Items"),
+            resources.GetString("m_repeatEveryCombo.Items1"),
+            resources.GetString("m_repeatEveryCombo.Items2"),
+            resources.GetString("m_repeatEveryCombo.Items3"),
+            resources.GetString("m_repeatEveryCombo.Items4")});
+            resources.ApplyResources(this.m_repeatEveryCombo, "m_repeatEveryCombo");
+            this.m_repeatEveryCombo.Name = "m_repeatEveryCombo";
             // 
             // m_cbRepeat
             // 
@@ -141,6 +173,11 @@
             this.gbTrigger.Controls.Add(this.m_rbOneTime);
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
+            // 
+            // m_dtStart
+            // 
+            resources.ApplyResources(this.m_dtStart, "m_dtStart");
+            this.m_dtStart.Name = "m_dtStart";
             // 
             // m_gbSubProperties
             // 
@@ -300,22 +337,227 @@
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
             // 
-            // button1
+            // gbHD
             // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.gbHD, "gbHD");
+            this.gbHD.Controls.Add(this.m_hdStorePicker);
+            this.gbHD.Name = "gbHD";
+            this.gbHD.TabStop = false;
             // 
-            // m_dtStart
+            // m_hdStorePicker
             // 
-            resources.ApplyResources(this.m_dtStart, "m_dtStart");
-            this.m_dtStart.Name = "m_dtStart";
+            resources.ApplyResources(this.m_hdStorePicker, "m_hdStorePicker");
+            this.m_hdStorePicker.Name = "m_hdStorePicker";
+            this.m_hdStorePicker.SelectedPort = 9180;
+            this.m_hdStorePicker.SelectedServer = "localhost";
+            this.m_hdStorePicker.SelectedStore = "";
+            this.m_hdStorePicker.SelectedStores = new string[0];
+            // 
+            // gbTimeSelection
+            // 
+            resources.ApplyResources(this.gbTimeSelection, "gbTimeSelection");
+            this.gbTimeSelection.Controls.Add(this.m_lblTimebase);
+            this.gbTimeSelection.Controls.Add(this.m_cbTimeBase);
+            this.gbTimeSelection.Controls.Add(this.label3);
+            this.gbTimeSelection.Controls.Add(this.m_nudStopSeconds);
+            this.gbTimeSelection.Controls.Add(this.label4);
+            this.gbTimeSelection.Controls.Add(this.m_nudStopMinutes);
+            this.gbTimeSelection.Controls.Add(this.label12);
+            this.gbTimeSelection.Controls.Add(this.label13);
+            this.gbTimeSelection.Controls.Add(this.m_nudStopHours);
+            this.gbTimeSelection.Controls.Add(this.m_nudStopDays);
+            this.gbTimeSelection.Controls.Add(this.label15);
+            this.gbTimeSelection.Controls.Add(this.label5);
+            this.gbTimeSelection.Controls.Add(this.m_nudStartSeconds);
+            this.gbTimeSelection.Controls.Add(this.label6);
+            this.gbTimeSelection.Controls.Add(this.m_nudStartMinutes);
+            this.gbTimeSelection.Controls.Add(this.label7);
+            this.gbTimeSelection.Controls.Add(this.label8);
+            this.gbTimeSelection.Controls.Add(this.m_nudStartHours);
+            this.gbTimeSelection.Controls.Add(this.m_nudStartDays);
+            this.gbTimeSelection.Controls.Add(this.label9);
+            this.gbTimeSelection.Name = "gbTimeSelection";
+            this.gbTimeSelection.TabStop = false;
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // m_nudStopSeconds
+            // 
+            resources.ApplyResources(this.m_nudStopSeconds, "m_nudStopSeconds");
+            this.m_nudStopSeconds.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStopSeconds.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStopSeconds.Name = "m_nudStopSeconds";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // m_nudStopMinutes
+            // 
+            resources.ApplyResources(this.m_nudStopMinutes, "m_nudStopMinutes");
+            this.m_nudStopMinutes.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStopMinutes.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStopMinutes.Name = "m_nudStopMinutes";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
+            // m_nudStopHours
+            // 
+            resources.ApplyResources(this.m_nudStopHours, "m_nudStopHours");
+            this.m_nudStopHours.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStopHours.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStopHours.Name = "m_nudStopHours";
+            // 
+            // m_nudStopDays
+            // 
+            resources.ApplyResources(this.m_nudStopDays, "m_nudStopDays");
+            this.m_nudStopDays.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudStopDays.Name = "m_nudStopDays";
+            // 
+            // label15
+            // 
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // m_nudStartSeconds
+            // 
+            resources.ApplyResources(this.m_nudStartSeconds, "m_nudStartSeconds");
+            this.m_nudStartSeconds.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStartSeconds.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStartSeconds.Name = "m_nudStartSeconds";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // m_nudStartMinutes
+            // 
+            resources.ApplyResources(this.m_nudStartMinutes, "m_nudStartMinutes");
+            this.m_nudStartMinutes.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStartMinutes.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStartMinutes.Name = "m_nudStartMinutes";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // m_nudStartHours
+            // 
+            resources.ApplyResources(this.m_nudStartHours, "m_nudStartHours");
+            this.m_nudStartHours.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudStartHours.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudStartHours.Name = "m_nudStartHours";
+            // 
+            // m_nudStartDays
+            // 
+            resources.ApplyResources(this.m_nudStartDays, "m_nudStartDays");
+            this.m_nudStartDays.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudStartDays.Name = "m_nudStartDays";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // m_lblTimebase
+            // 
+            resources.ApplyResources(this.m_lblTimebase, "m_lblTimebase");
+            this.m_lblTimebase.Name = "m_lblTimebase";
+            // 
+            // m_cbTimeBase
+            // 
+            resources.ApplyResources(this.m_cbTimeBase, "m_cbTimeBase");
+            this.m_cbTimeBase.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.m_cbTimeBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbTimeBase.FormattingEnabled = true;
+            this.m_cbTimeBase.Name = "m_cbTimeBase";
             // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.gbTimeSelection);
+            this.Controls.Add(this.gbHD);
             this.Controls.Add(this.gbSchedule);
             this.Name = "PanelScheduledJob";
             this.gbSchedule.ResumeLayout(false);
@@ -324,6 +566,17 @@
             this.gbTrigger.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
+            this.gbHD.ResumeLayout(false);
+            this.gbTimeSelection.ResumeLayout(false);
+            this.gbTimeSelection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopMinutes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopHours)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopDays)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartSeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -357,7 +610,29 @@
         private System.Windows.Forms.RadioButton m_rbWeekly;
         private System.Windows.Forms.RadioButton m_rbDaily;
         private System.Windows.Forms.RadioButton m_rbOneTime;
-        private System.Windows.Forms.Button button1;
         private iba.Utility.RippleDateTimePicker m_dtStart;
+        private System.Windows.Forms.GroupBox gbHD;
+        private System.Windows.Forms.GroupBox gbTimeSelection;
+        private iba.HD.Client.HdControlStorePicker m_hdStorePicker;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown m_nudStopSeconds;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown m_nudStopMinutes;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown m_nudStopHours;
+        private System.Windows.Forms.NumericUpDown m_nudStopDays;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown m_nudStartSeconds;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown m_nudStartMinutes;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown m_nudStartHours;
+        private System.Windows.Forms.NumericUpDown m_nudStartDays;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label m_lblTimebase;
+        private System.Windows.Forms.ComboBox m_cbTimeBase;
     }
 }

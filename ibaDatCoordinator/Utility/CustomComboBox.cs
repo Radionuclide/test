@@ -1134,20 +1134,26 @@ namespace iba.Utility
 
         public void FromIntegerList(IEnumerable<int> indices, bool zeroindexed)
         {
-            foreach (CheckBox item in m_items)
+            foreach(CheckBox item in m_items)
             {
                 item.Checked = false;
             }
-            foreach (int i in indices)
+            int offset = 0;
+            if(!zeroindexed) offset--;
+            if(m_bFirstIsAll) offset++;
+            foreach(int i in indices)
             {
-                m_items[zeroindexed ? i : (i - 1)].Checked = true;
+                m_items[i + offset].Checked = true;
             }
             Value = FromForm();
         }
 
         public IEnumerable<int> ToIntegerList(bool zeroindexed)
         {
-            return m_items.Select((value, index) => new { value, index }).Where(z => z.value.Checked).Select(z => z.index + (zeroindexed ? 0 : 1));
+            int offset = 0;
+            if(!zeroindexed) offset--;
+            if(m_bFirstIsAll) offset++;
+            return m_items.Select((value, index) => new { value, index }).Skip(zeroindexed?1:0).Where(z => z.value.Checked).Select(z => z.index - offset);
         }
     }
 
