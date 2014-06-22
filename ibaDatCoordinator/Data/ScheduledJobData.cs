@@ -161,6 +161,9 @@ namespace iba.Data
             m_HDPort = 9180;
             m_HDStores = new string[] { };
             m_HDServer = "";
+            m_startRangeFromTrigger = TimeSpan.FromHours(1);
+            m_stopRangeFromTrigger = TimeSpan.Zero;
+            m_preferredTimeBase = 0;
         }
 
         private TimeSpan m_startRangeFromTrigger;
@@ -188,6 +191,13 @@ namespace iba.Data
             set { m_stopRangeFromTrigger = TimeSpan.FromTicks(value); }
         }
 
+        private long m_preferredTimeBase; //in ticks, 0 means auto
+        public long PreferredTimeBase
+        {
+            get { return m_preferredTimeBase; }
+            set { m_preferredTimeBase = value; }
+        }
+
         public object Clone()
         {
             ScheduledJobData nsjd = new ScheduledJobData();
@@ -209,6 +219,7 @@ namespace iba.Data
             nsjd.m_HDPort = m_HDPort;
             nsjd.m_startRangeFromTrigger = m_startRangeFromTrigger;
             nsjd.m_stopRangeFromTrigger = m_stopRangeFromTrigger;
+            nsjd.m_preferredTimeBase = m_preferredTimeBase;
             return nsjd;
         }
 
@@ -234,7 +245,8 @@ namespace iba.Data
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
-            other.m_stopRangeFromTrigger == m_stopRangeFromTrigger;
+            other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
+            other.m_preferredTimeBase == m_preferredTimeBase;
         }
     }
 }

@@ -2747,6 +2747,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to auto ( {0} );1 ms;10 ms;100 ms;1 s;1 min;1 hour;1 day.
+        /// </summary>
+        internal static string TimeSelectionChoices {
+            get {
+                return ResourceManager.GetString("TimeSelectionChoices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon tomanytimestried {
@@ -2784,6 +2793,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time base ok.
+        /// </summary>
+        internal static string TooltipGreen {
+            get {
+                return ResourceManager.GetString("TooltipGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New script.
         /// </summary>
         internal static string tooltipNewScript {
@@ -2798,6 +2816,24 @@ namespace iba.Properties {
         internal static string tooltipOpenScript {
             get {
                 return ResourceManager.GetString("tooltipOpenScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time base inadvisable when performing an extensive analysis.
+        /// </summary>
+        internal static string TooltipOrange {
+            get {
+                return ResourceManager.GetString("TooltipOrange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time base unacceptable due to limited memory resources.
+        /// </summary>
+        internal static string TooltipRed {
+            get {
+                return ResourceManager.GetString("TooltipRed", resourceCulture);
             }
         }
         

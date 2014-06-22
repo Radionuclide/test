@@ -18,9 +18,7 @@ namespace iba.Controls
 {
     public partial class PanelScheduledJob : UserControl, IPropertyPane
     {
-        private TimeSpan[] m_repeatEveryOptions;
-        private TimeSpan[] m_repeatDurationOptions;
-        RadioButton[] m_rbs;
+
         public PanelScheduledJob()
         {
             InitializeComponent();
@@ -41,11 +39,33 @@ namespace iba.Controls
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
             m_repeatEveryOptions = new TimeSpan[] {TimeSpan.FromMinutes(5),TimeSpan.FromMinutes(10),TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1)};
             m_repeatDurationOptions = new TimeSpan[] {TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
+            m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
+            m_hdStorePicker.Dock = DockStyle.Fill;
+            this.gbHD.Controls.Add(this.m_hdStorePicker);
+            m_hdStorePicker.SelectedPort = 9180;
+            m_hdStorePicker.SelectedServer = "localhost";
+            m_hdStorePicker.SelectedStore = "";
+            m_hdStorePicker.SelectedStores = new string[0];
             m_hdStorePicker.AllowedStoreType = HdStoreType.Time /*| HdStoreType.Length*/;
             m_hdStorePicker.HideConfigureButton();
             m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
+
+            string[] itemStrs = Properties.Resources.TimeSelectionChoices.Split(';');
+            long ms = 10000; //10000 * 100 nanosec = 1 ms
+            long s = 1000 * ms;
+            m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
+            int n = itemStrs.Count();
+            //Debug.Assert(n == tmpStamps.Count());
+            for (int i = 0; i < n; i++)
+                m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
         }
 
+        private TimeSpan[] m_repeatEveryOptions;
+        private TimeSpan[] m_repeatDurationOptions;
+        private RadioButton[] m_rbs;
+        private long[] m_timeBases;
+
+        private iba.HD.Client.HdControlStorePicker m_hdStorePicker;
         IPropertyPaneManager m_manager;
         ConfigurationData m_confData;
         ScheduledJobData m_scheduleData;
@@ -95,6 +115,10 @@ namespace iba.Controls
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
             m_hdStorePicker.SelectedStores = (string[]) m_scheduleData.HDStores.Clone();
+            //timeSelection
+            Start = m_scheduleData.StartRangeFromTrigger;
+            Stop = m_scheduleData.StopRangeFromTrigger;
+            m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBase);
         }
 
 
@@ -126,6 +150,10 @@ namespace iba.Controls
             m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
             m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
             m_scheduleData.HDStores = (string[]) m_hdStorePicker.SelectedStores.Clone();
+            //time selection
+            m_scheduleData.StartRangeFromTrigger = Start;
+            m_scheduleData.StopRangeFromTrigger = Stop;
+            if  (m_cbTimeBase.SelectedIndex >= 0) m_scheduleData.PreferredTimeBase = m_timeBases[m_cbTimeBase.SelectedIndex];
         }
 
         public void LeaveCleanup() {}
@@ -147,9 +175,235 @@ namespace iba.Controls
             m_daySettingsCtrl.Visible = m_rbDaily.Checked;
         }
 
+        private TimeSpan m_tsStart;
+        public TimeSpan Start
+        {
+            get { return m_tsStart; }
+            set 
+            { 
+                m_tsStart = value;
+                UpdateTimeControls(true);
+            }
+        }
+
+        private TimeSpan m_tsStop;
+        public TimeSpan Stop
+        {
+            get { return m_tsStop; }
+            set
+            {
+                m_tsStop = value;
+                UpdateTimeControls(false);
+            }
+        }
+
+        private void UpdateTimeControls(bool start)
+        {
+            if (start)
+            {
+                m_nudStartDays.Value = Math.Min(m_nudStartDays.Maximum, m_tsStart.Days);
+                m_nudStartHours.Value = m_tsStart.Hours;
+                m_nudStartMinutes.Value = m_tsStart.Minutes;
+                m_nudStartSeconds.Value = m_tsStart.Seconds;
+            }
+            else
+            {
+                m_nudStopDays.Value = Math.Min(m_nudStopDays.Maximum, m_tsStop.Days);
+                m_nudStopHours.Value = m_tsStop.Hours;
+                m_nudStopMinutes.Value = m_tsStop.Minutes;
+                m_nudStopSeconds.Value = m_tsStop.Seconds;
+            }
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
+        }
+
+        private void StartChanged(object sender, EventArgs e)
+        {
+            TimeSpan sp = new TimeSpan((int)m_nudStartDays.Value, (int)m_nudStartHours.Value, (int)m_nudStartMinutes.Value, (int)m_nudStartSeconds.Value);
+
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                if (sender == m_nudStartDays)
+                {
+                    sp = TimeSpan.FromDays((int)m_nudStartDays.Value);
+                }
+                else if (sender == m_nudStartHours)
+                {
+                    sp = TimeSpan.FromHours((int)m_nudStartHours.Value);
+                }
+                else if (sender == m_nudStartMinutes)
+                {
+                    sp = TimeSpan.FromMinutes((int)m_nudStartMinutes.Value);
+                }
+                else if (sender == m_nudStartSeconds)
+                {
+                    sp = TimeSpan.FromSeconds((int)m_nudStartSeconds.Value);
+                }
+            }
+            long diff = TimeSpan.FromSeconds(1).Ticks;
+            if (sp.Ticks >= m_tsStop.Ticks + diff)
+            {
+                Start = sp;
+            }
+            else if (sp.Ticks >= diff)
+            {
+                Start = sp;
+                Stop = TimeSpan.FromTicks(sp.Ticks - diff);
+            }
+            else
+            {
+                Stop = TimeSpan.FromTicks(0);
+                Start = TimeSpan.FromTicks(diff);
+            }
+        }
+        private void StopChanged(object sender, EventArgs e)
+        {
+            TimeSpan sp = new TimeSpan((int)m_nudStopDays.Value, (int)m_nudStopHours.Value, (int)m_nudStopMinutes.Value, (int)m_nudStopSeconds.Value);
+
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                if (sender == m_nudStopDays)
+                {
+                    sp = TimeSpan.FromDays((int)m_nudStopDays.Value);
+                }
+                else if (sender == m_nudStopHours)
+                {
+                    sp = TimeSpan.FromHours((int)m_nudStopHours.Value);
+                }
+                else if (sender == m_nudStopMinutes)
+                {
+                    sp = TimeSpan.FromMinutes((int)m_nudStopMinutes.Value);
+                }
+                else if (sender == m_nudStopSeconds)
+                {
+                    sp = TimeSpan.FromSeconds((int)m_nudStopSeconds.Value);
+                }
+            }
+            Stop = sp;
+            long diff = TimeSpan.FromSeconds(1).Ticks;
+            if (m_tsStart.Ticks < sp.Ticks + diff)
+            {
+                Start = TimeSpan.FromTicks(sp.Ticks + diff);
+            }
+        }
+
+        private void m_cbTimeBase_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            if (e.Index < 0) return;
+            string tooltipText = null;
+            string text = ((ComboBox)sender).Items[e.Index].ToString();
+            if (e.Index == 0)
+                text = String.Format(text, GetAutoItem());
+            Brush brush = null;
+            switch (CheckTimeBaseAcceptability(((ComboBox)sender).Items[e.Index] as TimeCbItem))
+            {
+                case TimeBaseAcceptability.Unknown:
+                    brush = new SolidBrush(e.ForeColor);
+                    break;
+                case TimeBaseAcceptability.Allowed:
+                    brush = Brushes.Green;
+                    tooltipText = Properties.Resources.TooltipGreen;
+                    break;
+                case TimeBaseAcceptability.Questionable:
+                    brush = Brushes.DarkOrange;
+                    tooltipText = Properties.Resources.TooltipOrange;
+                    break;
+                case TimeBaseAcceptability.Forbidden:
+                    brush = Brushes.Red;
+                    tooltipText = Properties.Resources.TooltipRed;
+                    break;
+            }
+            if ((e.State & DrawItemState.Focus) == DrawItemState.Focus)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Lavender), e.Bounds);
+            }
+            e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected && tooltipText != null && m_cbTimeBase.DroppedDown)
+            {
+                m_toolTip.Show(tooltipText, m_cbTimeBase, e.Bounds.Right, e.Bounds.Bottom + m_cbTimeBase.Height);
+            }
+        }
+
+        private TimeCbItem GetAutoItem() //auto
+        {
+            for (int i = 1; i < m_cbTimeBase.Items.Count; i++)
+            {
+                TimeCbItem item = m_cbTimeBase.Items[i] as TimeCbItem;
+                if (CheckTimeBaseAcceptability(item) == TimeBaseAcceptability.Allowed)
+                    return item;
+            }
+            //none ok, return last
+            return m_cbTimeBase.Items[m_cbTimeBase.Items.Count - 1] as TimeCbItem;
+        }
+
         private void m_cbTimeBase_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (m_cbTimeBase.SelectedItem != null)
+            {
+                switch (CheckTimeBaseAcceptability(m_cbTimeBase.SelectedItem as TimeCbItem))
+                {
+                    case TimeBaseAcceptability.Unknown:
+                        m_toolTip.SetToolTip(m_cbTimeBase, null);
+                        break;
+                    case TimeBaseAcceptability.Allowed:
+                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipGreen);
+                        break;
+                    case TimeBaseAcceptability.Questionable:
+                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipOrange);
+                        break;
+                    case TimeBaseAcceptability.Forbidden:
+                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipRed);
+                        break;
+                }
+            }
+            else
+                m_toolTip.SetToolTip(m_cbTimeBase, null);
+        }
 
+        private void m_cbTimeBase_DropDownClosed(object sender, EventArgs e)
+        {
+            m_toolTip.Hide(m_cbTimeBase);
+        }
+
+        public double ReqTimeBaseFactor()
+        {
+            return Math.Sqrt(40.0); //in the future we might need to ask the reader
+        }
+
+        public TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
+        {
+            long duration = Start.Ticks - Stop.Ticks;
+            if (duration <= 0) return TimeBaseAcceptability.Unknown;
+            if (item.m_timebaseLength == 0) return TimeBaseAcceptability.Allowed; //auto
+            double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
+            if (samples > 1.0e9) return TimeBaseAcceptability.Forbidden;
+            else if (samples > 1.0e7) return TimeBaseAcceptability.Questionable;
+            else return TimeBaseAcceptability.Allowed;
+        }
+    }
+
+    public enum TimeBaseAcceptability
+    {
+        Allowed,
+        Forbidden,
+        Questionable,
+        Unknown
+    }
+
+
+    public class TimeCbItem
+    {
+        private string m_title;
+        public long m_timebaseLength;
+        public override string ToString()
+        {
+            return m_title;
+        }
+        public TimeCbItem(string title, long timelength)
+        {
+            m_title = title;
+            m_timebaseLength = timelength;
         }
     }
 }

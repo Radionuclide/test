@@ -59,8 +59,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbHD = new System.Windows.Forms.GroupBox();
-            this.m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
             this.gbTimeSelection = new System.Windows.Forms.GroupBox();
+            this.m_lblTimebase = new System.Windows.Forms.Label();
+            this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_nudStopSeconds = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -79,8 +80,6 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.m_lblTimebase = new System.Windows.Forms.Label();
-            this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
@@ -340,18 +339,8 @@
             // gbHD
             // 
             resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Controls.Add(this.m_hdStorePicker);
             this.gbHD.Name = "gbHD";
             this.gbHD.TabStop = false;
-            // 
-            // m_hdStorePicker
-            // 
-            resources.ApplyResources(this.m_hdStorePicker, "m_hdStorePicker");
-            this.m_hdStorePicker.Name = "m_hdStorePicker";
-            this.m_hdStorePicker.SelectedPort = 9180;
-            this.m_hdStorePicker.SelectedServer = "localhost";
-            this.m_hdStorePicker.SelectedStore = "";
-            this.m_hdStorePicker.SelectedStores = new string[0];
             // 
             // gbTimeSelection
             // 
@@ -379,6 +368,23 @@
             this.gbTimeSelection.Name = "gbTimeSelection";
             this.gbTimeSelection.TabStop = false;
             // 
+            // m_lblTimebase
+            // 
+            resources.ApplyResources(this.m_lblTimebase, "m_lblTimebase");
+            this.m_lblTimebase.Name = "m_lblTimebase";
+            // 
+            // m_cbTimeBase
+            // 
+            resources.ApplyResources(this.m_cbTimeBase, "m_cbTimeBase");
+            this.m_cbTimeBase.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.m_cbTimeBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbTimeBase.FormattingEnabled = true;
+            this.m_cbTimeBase.Name = "m_cbTimeBase";
+            this.m_cbTimeBase.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.m_cbTimeBase_DrawItem);
+            this.m_cbTimeBase.SelectedIndexChanged += new System.EventHandler(this.m_cbTimeBase_SelectedIndexChanged);
+            this.m_cbTimeBase.DropDownClosed += new System.EventHandler(this.m_cbTimeBase_DropDownClosed);
+            this.m_cbTimeBase.MouseLeave += new System.EventHandler(this.m_cbTimeBase_DropDownClosed);
+            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
@@ -398,6 +404,7 @@
             0,
             -2147483648});
             this.m_nudStopSeconds.Name = "m_nudStopSeconds";
+            this.m_nudStopSeconds.ValueChanged += new System.EventHandler(this.StopChanged);
             // 
             // label4
             // 
@@ -418,6 +425,7 @@
             0,
             -2147483648});
             this.m_nudStopMinutes.Name = "m_nudStopMinutes";
+            this.m_nudStopMinutes.ValueChanged += new System.EventHandler(this.StopChanged);
             // 
             // label12
             // 
@@ -443,6 +451,7 @@
             0,
             -2147483648});
             this.m_nudStopHours.Name = "m_nudStopHours";
+            this.m_nudStopHours.ValueChanged += new System.EventHandler(this.StopChanged);
             // 
             // m_nudStopDays
             // 
@@ -453,6 +462,7 @@
             0,
             0});
             this.m_nudStopDays.Name = "m_nudStopDays";
+            this.m_nudStopDays.ValueChanged += new System.EventHandler(this.StopChanged);
             // 
             // label15
             // 
@@ -478,6 +488,7 @@
             0,
             -2147483648});
             this.m_nudStartSeconds.Name = "m_nudStartSeconds";
+            this.m_nudStartSeconds.ValueChanged += new System.EventHandler(this.StartChanged);
             // 
             // label6
             // 
@@ -498,6 +509,7 @@
             0,
             -2147483648});
             this.m_nudStartMinutes.Name = "m_nudStartMinutes";
+            this.m_nudStartMinutes.ValueChanged += new System.EventHandler(this.StartChanged);
             // 
             // label7
             // 
@@ -523,6 +535,7 @@
             0,
             -2147483648});
             this.m_nudStartHours.Name = "m_nudStartHours";
+            this.m_nudStartHours.ValueChanged += new System.EventHandler(this.StartChanged);
             // 
             // m_nudStartDays
             // 
@@ -533,24 +546,12 @@
             0,
             0});
             this.m_nudStartDays.Name = "m_nudStartDays";
+            this.m_nudStartDays.ValueChanged += new System.EventHandler(this.StartChanged);
             // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            // 
-            // m_lblTimebase
-            // 
-            resources.ApplyResources(this.m_lblTimebase, "m_lblTimebase");
-            this.m_lblTimebase.Name = "m_lblTimebase";
-            // 
-            // m_cbTimeBase
-            // 
-            resources.ApplyResources(this.m_cbTimeBase, "m_cbTimeBase");
-            this.m_cbTimeBase.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.m_cbTimeBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_cbTimeBase.FormattingEnabled = true;
-            this.m_cbTimeBase.Name = "m_cbTimeBase";
             // 
             // PanelScheduledJob
             // 
@@ -613,7 +614,6 @@
         private iba.Utility.RippleDateTimePicker m_dtStart;
         private System.Windows.Forms.GroupBox gbHD;
         private System.Windows.Forms.GroupBox gbTimeSelection;
-        private iba.HD.Client.HdControlStorePicker m_hdStorePicker;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown m_nudStopSeconds;
         private System.Windows.Forms.Label label4;

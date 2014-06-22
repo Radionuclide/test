@@ -1132,4 +1132,16 @@
   <data name="scheduled_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TimeSelectionChoices" xml:space="preserve">
+    <value>auto ( {0} );1 ms;10 ms;100 ms;1 s;1 min;1 hour;1 day</value>
+  </data>
+  <data name="TooltipGreen" xml:space="preserve">
+    <value>Time base ok</value>
+  </data>
+  <data name="TooltipOrange" xml:space="preserve">
+    <value>Time base inadvisable when performing an extensive analysis</value>
+  </data>
+  <data name="TooltipRed" xml:space="preserve">
+    <value>Time base unacceptable due to limited memory resources</value>
+  </data>
 </root>
