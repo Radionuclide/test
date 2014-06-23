@@ -349,7 +349,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
-    <Compile Include="Utility\CollapsableElementManager.cs" />
+    <Compile Include="Utility\CollapsibleElementManager.cs" />
     <Compile Include="Utility\CollapsibleGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>

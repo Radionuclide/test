@@ -6,20 +6,9 @@ using System.Windows.Forms;
 
 namespace iba.Utility
 {
-    interface CollapsablibleElement
+    public interface IVariableHeightElement
     {
-        bool Collapsed
-        {
-            get;
-            set;
-        }
-
-        int CollapsedSize
-        {
-            get;
-        }
-
-        int FullSize
+        int PrevHeight
         {
             get;
         }
@@ -29,23 +18,24 @@ namespace iba.Utility
             get;
         }
 
-        event EventHandler CollapsedChanged;
-        event EventHandler AnchorChanged;
+        event EventHandler AnchorChanged; //
+        event EventHandler HeightChanged;
     }
 
 
-    public class CollapsablibleElementManager
+    public class CollapsibleElementManager
     {
-        private List<CollapsablibleElement> m_elements;
-        CollapsablibleElement m_resizableElement;
-        public event EventHandler MinSizeChanged;
+        private List<IVariableHeightElement> m_elements;
+        IVariableHeightElement m_resizableElement;
+        private Control m_parentControl;
 
-        public CollapsablibleElementManager()
+        public CollapsibleElementManager(Control parent)
         {
-            m_elements = new List<CollapsablibleElement>();
+            m_parentControl = parent;
+            m_elements = new List<IVariableHeightElement>();
             m_resizableElement = null;
         }
-        public void AddElement(CollapsablibleElement element)
+        public void AddElement(IVariableHeightElement element)
         {
             if(element.MainControl.Anchor.HasFlag(AnchorStyles.Top) && element.MainControl.Anchor.HasFlag(AnchorStyles.Bottom))
             {
@@ -61,11 +51,11 @@ namespace iba.Utility
             {
                 throw new ArgumentException("elements before the resizable element can only have top anchor");
             }
-            element.CollapsedChanged += new EventHandler(element_CollapsedChanged);
+            element.HeightChanged += new EventHandler(element_HeightChanged);
             m_elements.Add(element);
         }
 
-        void element_CollapsedChanged(object sender, EventArgs e)
+        void element_HeightChanged(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }

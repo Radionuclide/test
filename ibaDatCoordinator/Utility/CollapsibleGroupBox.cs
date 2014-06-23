@@ -11,8 +11,10 @@ namespace iba.Utility
     /// allow it to be collapsed.
     /// </summary>
     [ToolboxBitmap(typeof(CollapsibleGroupBox))]
-    public partial class CollapsibleGroupBox : GroupBox
+    public partial class CollapsibleGroupBox : GroupBox, IVariableHeightElement
     {
+        public delegate void CollapseBoxClickedEventHandler(object sender);
+
         #region Fields
 
         private Rectangle m_toggleRect = new Rectangle(8, 2, 11, 11);
@@ -27,7 +29,6 @@ namespace iba.Utility
         #region Events & Delegates
 
         /// <summary>Fired when the Collapse Toggle button is pressed</summary>
-        public delegate void CollapseBoxClickedEventHandler(object sender);
         public event CollapseBoxClickedEventHandler CollapseBoxClickedEvent;
 
         #endregion
@@ -151,5 +152,21 @@ namespace iba.Utility
         }
 
         #endregion
+
+        public Control MainControl
+        {
+            get { return this; }
+        }
+
+        public event EventHandler CollapsedChanged;
+
+        public event EventHandler AnchorChanged;
+
+        public int PrevHeight
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler HeightChanged;
     }
 }
