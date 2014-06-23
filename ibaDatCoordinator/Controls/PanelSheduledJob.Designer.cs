@@ -36,7 +36,6 @@
             this.m_repeatEveryCombo = new System.Windows.Forms.ComboBox();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
-            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -80,11 +79,11 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
-            this.gbHD.SuspendLayout();
             this.gbTimeSelection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStopMinutes)).BeginInit();
@@ -172,11 +171,6 @@
             this.gbTrigger.Controls.Add(this.m_rbOneTime);
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
-            // 
-            // m_dtStart
-            // 
-            resources.ApplyResources(this.m_dtStart, "m_dtStart");
-            this.m_dtStart.Name = "m_dtStart";
             // 
             // m_gbSubProperties
             // 
@@ -553,6 +547,11 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
+            // m_dtStart
+            // 
+            resources.ApplyResources(this.m_dtStart, "m_dtStart");
+            this.m_dtStart.Name = "m_dtStart";
+            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -567,7 +566,6 @@
             this.gbTrigger.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
-            this.gbHD.ResumeLayout(false);
             this.gbTimeSelection.ResumeLayout(false);
             this.gbTimeSelection.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).EndInit();

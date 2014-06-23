@@ -349,6 +349,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
+    <Compile Include="Utility\CollapsableElementManager.cs" />
+    <Compile Include="Utility\CollapsibleGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\CollapsibleGroupBox.Designer.cs">
+      <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\CustomComboBox.cs">
       <SubType>Form</SubType>
@@ -540,10 +547,10 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\plus.bmp" />
+    <None Include="Resources\minus.bmp" />
     <None Include="Resources\scheduled_configuration.ico" />
     <None Include="Resources\scheduled_configuration_new.ico" />
-    <None Include="Resources\configuration1.ico" />
-    <None Include="Resources\configuration_new1.ico" />
     <Content Include="Resources\default.ico" />
     <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>

@@ -182,8 +182,8 @@ namespace iba.Data
         [XmlIgnore]
         public System.TimeSpan StopRangeFromTrigger
         {
-            get { return m_startRangeFromTrigger; }
-            set { m_startRangeFromTrigger = value; }
+            get { return m_stopRangeFromTrigger; }
+            set { m_stopRangeFromTrigger = value; }
         }
         public long StopRangeFromTriggerTicks
         {

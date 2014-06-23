@@ -815,6 +815,7 @@ namespace iba
                     pane.LoadData(datasource, this);
                 newControl.Dock = DockStyle.Fill;
                 m_rightPane.Controls.Add(newControl);
+                m_rightPane.AutoScrollMinSize = new Size(newControl.MinimumSize.Width,newControl.MinimumSize.Height+20);
             }
 
             //Remove old control, do necessary cleanup

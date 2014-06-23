@@ -905,38 +905,11 @@
   <data name="gbHD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_hdStorePicker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_hdStorePicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="m_hdStorePicker.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_hdStorePicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 191</value>
-  </data>
-  <data name="m_hdStorePicker.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_hdStorePicker.Name" xml:space="preserve">
-    <value>m_hdStorePicker</value>
-  </data>
-  <data name="&gt;&gt;m_hdStorePicker.Type" xml:space="preserve">
-    <value>iba.HD.Client.HdControlStorePicker, hdClient, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_hdStorePicker.Parent" xml:space="preserve">
-    <value>gbHD</value>
-  </data>
-  <data name="&gt;&gt;m_hdStorePicker.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="gbHD.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 293</value>
   </data>
   <data name="gbHD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 210</value>
+    <value>702, 216</value>
   </data>
   <data name="gbHD.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1485,7 +1458,7 @@
     <value>19</value>
   </data>
   <data name="gbTimeSelection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 509</value>
+    <value>0, 515</value>
   </data>
   <data name="gbTimeSelection.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 85</value>
@@ -1515,7 +1488,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 605</value>
+    <value>702, 600</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

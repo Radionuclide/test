@@ -29,7 +29,7 @@ namespace iba.Controls
             this.m_pluginPanel.Controls.Add(pluginControl);
             //int newHeight = m_pluginPanel.Bottom + 5;
             //this.Height = newHeight;
-            AutoScrollMinSize = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
+            this.MinimumSize = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
             //AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
             //AutoScrollMinSize = this.MinimumSize;
             AutoScroll = true;
