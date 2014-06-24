@@ -20,7 +20,7 @@ namespace iba.Utility
         private Rectangle m_toggleRect = new Rectangle(8, 2, 11, 11);
         private Boolean m_collapsed = false;
         private Boolean m_bResizingFromCollapse = false;
-
+        private int m_origHeight;
         private const int m_collapsedHeight = 20;
         private Size m_FullSize = Size.Empty;
 
@@ -39,6 +39,8 @@ namespace iba.Utility
         {
             InitializeComponent();
             m_bResizable = Anchor.HasFlag(AnchorStyles.Bottom | AnchorStyles.Top);
+            m_origHeight = Height;
+            if (m_bResizable) MinimumSize = Size; //should already be the case;
         }
 
         #endregion
@@ -48,7 +50,7 @@ namespace iba.Utility
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int FullHeight
         {
-            get { return m_FullSize.Height; }
+            get { return m_bResizable?m_origHeight:m_FullSize.Height; }
         }
 
         private bool m_bResizable;
@@ -63,40 +65,42 @@ namespace iba.Utility
                 {
                     m_collapsed = value;
 
-                    if(!value)
+                    if (!value)
                     {
                         // Expand
-                        this.Size = m_FullSize;
-                        if(m_bResizable)
+                        if (m_bResizable)
+                        {
                             this.Anchor |= AnchorStyles.Top | AnchorStyles.Bottom;
+                            if (AnchorChanged != null)
+                                AnchorChanged(this, EventArgs.Empty);
+                            this.MinimumSize = new Size(0, m_origHeight);
+                        }
+                        else
+                        {
+                            this.Size = m_FullSize;
+                        }
                     }
                     else
                     {
                         // Collapse
-                        m_bResizingFromCollapse = true;
-                        this.Height = m_collapsedHeight;
-                        m_bResizingFromCollapse = false;
-                        if(m_bResizable)
+                        if (m_bResizable)
                         {
                             this.Anchor |= AnchorStyles.Top;
                             this.Anchor &= ~AnchorStyles.Bottom;
+                            if (AnchorChanged != null)
+                                AnchorChanged(this, EventArgs.Empty);
+                            this.MinimumSize = Size.Empty;
                         }
+                        m_bResizingFromCollapse = true;
+                        this.Height = m_collapsedHeight;
+                        m_bResizingFromCollapse = false;
                     }
+                    if(HeightChanged != null)
+                        HeightChanged(this, EventArgs.Empty);
 
-                    if(m_bResizable)
-                    {
-                        if(AnchorChanged != null)
-                            AnchorChanged(this, EventArgs.Empty);
-                    }
-                    else
-                    {
-                        if(HeightChanged != null)
-                            HeightChanged(this, EventArgs.Empty);
-                    }
 
                     foreach(Control c in Controls)
                         c.Visible = !value;
-
                     Invalidate();
                 }
             }
@@ -172,10 +176,8 @@ namespace iba.Utility
 
         void HandleResize()
         {
-            if(!m_bResizingFromCollapse && !m_collapsed && !m_bResizable)
+            if(!m_bResizingFromCollapse && !m_collapsed)
                 m_FullSize = this.Size;
-            if(!m_bResizingFromCollapse && m_bResizable)
-                m_FullSize.Height = this.MinimumSize.Height;
         }
 
         #endregion
@@ -185,11 +187,22 @@ namespace iba.Utility
             get { return this; }
         }
 
-        public event EventHandler AnchorChanged;
 
         public int PrevHeight
         {
             get { return IsCollapsed?FullHeight:CollapsedHeight; }
+        }
+
+        public int PrevMinHeight
+        {
+            get
+            {
+                if (m_bResizable)
+                    return IsCollapsed ? m_origHeight : 0;
+                else //don't get here normally
+                    return PrevHeight;
+            }
+
         }
 
         public bool Anchored
@@ -200,6 +213,7 @@ namespace iba.Utility
             }
         }
 
+        public event EventHandler AnchorChanged;
         public event EventHandler HeightChanged;
     }
 }
