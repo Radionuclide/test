@@ -353,7 +353,7 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
-            this.MinimumSize = new System.Drawing.Size(720, 700);
+            this.MinimumSize = new System.Drawing.Size(720, 250);
             this.Name = "ConfigurationControl";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

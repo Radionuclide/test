@@ -646,7 +646,7 @@
     <value>0</value>
   </data>
   <data name="m_rightPane.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>False</value>
   </data>
   <data name="m_rightPane.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
