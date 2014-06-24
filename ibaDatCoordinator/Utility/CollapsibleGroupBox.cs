@@ -38,6 +38,7 @@ namespace iba.Utility
         public CollapsibleGroupBox()
         {
             InitializeComponent();
+            m_bResizable = Anchor.HasFlag(AnchorStyles.Bottom | AnchorStyles.Top);
         }
 
         #endregion
@@ -50,6 +51,8 @@ namespace iba.Utility
             get { return m_FullSize.Height; }
         }
 
+        private bool m_bResizable;
+
         [DefaultValue(false), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsCollapsed
         {
@@ -61,14 +64,34 @@ namespace iba.Utility
                     m_collapsed = value;
 
                     if(!value)
+                    {
                         // Expand
                         this.Size = m_FullSize;
+                        if(m_bResizable)
+                            this.Anchor |= AnchorStyles.Top | AnchorStyles.Bottom;
+                    }
                     else
                     {
                         // Collapse
                         m_bResizingFromCollapse = true;
                         this.Height = m_collapsedHeight;
                         m_bResizingFromCollapse = false;
+                        if(m_bResizable)
+                        {
+                            this.Anchor |= AnchorStyles.Top;
+                            this.Anchor &= ~AnchorStyles.Bottom;
+                        }
+                    }
+
+                    if(m_bResizable)
+                    {
+                        if(AnchorChanged != null)
+                            AnchorChanged(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        if(HeightChanged != null)
+                            HeightChanged(this, EventArgs.Empty);
                     }
 
                     foreach(Control c in Controls)
@@ -78,6 +101,8 @@ namespace iba.Utility
                 }
             }
         }
+
+        
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int CollapsedHeight
@@ -147,8 +172,10 @@ namespace iba.Utility
 
         void HandleResize()
         {
-            if(!m_bResizingFromCollapse && !m_collapsed)
+            if(!m_bResizingFromCollapse && !m_collapsed && !m_bResizable)
                 m_FullSize = this.Size;
+            if(!m_bResizingFromCollapse && m_bResizable)
+                m_FullSize.Height = this.MinimumSize.Height;
         }
 
         #endregion
@@ -158,13 +185,19 @@ namespace iba.Utility
             get { return this; }
         }
 
-        public event EventHandler CollapsedChanged;
-
         public event EventHandler AnchorChanged;
 
         public int PrevHeight
         {
-            get { throw new NotImplementedException(); }
+            get { return IsCollapsed?FullHeight:CollapsedHeight; }
+        }
+
+        public bool Anchored
+        {
+            get
+            {
+                return Anchor.HasFlag(AnchorStyles.Top | AnchorStyles.Bottom);
+            }
         }
 
         public event EventHandler HeightChanged;
