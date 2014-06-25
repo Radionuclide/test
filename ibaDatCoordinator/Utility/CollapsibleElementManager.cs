@@ -124,6 +124,23 @@ namespace iba.Utility
         }
 
         protected abstract void element_HeightChanged(object sender, EventArgs e);
+
+        protected void DisableAnchors()
+        {
+            foreach (var element in m_elements)
+            {
+                element.MainControl.Anchor &= ~AnchorStyles.Bottom;
+            }
+        }
+
+        protected void EnableAnchors()
+        {
+            if (m_resizableElement == null) return; //no bottom anchors anyway
+            for (int index = m_resizableElementIndex; index < m_elements.Count; index++)
+            {
+                m_elements[index].MainControl.Anchor |= AnchorStyles.Bottom;
+            }
+        }
     }
 
     public class CollapsibleElementManager : CollapsibleElementManagerBase //manager for the upper control, is expected to be docked filled.
@@ -156,6 +173,7 @@ namespace iba.Utility
                 scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
                 return;
             }
+            m_control.SuspendLayout();
             diff = element.MainControl.Height - element.PrevHeight;
             int elementIndex = m_elements.IndexOf(element);
             if(m_resizableElement == null) //move everything up or down
@@ -168,20 +186,20 @@ namespace iba.Utility
             }
             else if (elementIndex < m_resizableElementIndex)
             {
-                for(int index = elementIndex + 1; index <= m_resizableElementIndex; index++)
+                for (int index = elementIndex + 1; index <= m_resizableElementIndex; index++)
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
                 newscr = scr.AutoScrollMinSize.Height + diff;
                 //adapt resizable
                 int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
-                if(m_control.Height > newscr)
+                if (scr.ClientSize.Height > newscr)
                 {
-                    newHeight += m_control.Height - newscr;
+                    newHeight += scr.ClientSize.Height - newscr;
                 }
                 diff += newHeight - m_resizableElement.MainControl.Height;
                 m_resizableElement.MainControl.Height = newHeight;
-                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
+                for (int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
@@ -189,26 +207,28 @@ namespace iba.Utility
             }
             else // one of the bottoms adapted
             {
-                newscr = scr.AutoScrollMinSize.Height + diff;
                 //adapt resizable
+                newscr = scr.AutoScrollMinSize.Height + diff;
                 int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
-                if(m_control.Height > newscr)
+                if (scr.ClientSize.Height > newscr)
                 {
-                    newHeight += m_control.Height - newscr;
+                    newHeight += scr.ClientSize.Height - newscr;
                 }
                 int resizediff = newHeight - m_resizableElement.MainControl.Height;
                 m_resizableElement.MainControl.Height = newHeight;
-                for(int index = m_resizableElementIndex + 1; index <= elementIndex; index++)
+                for (int index = m_resizableElementIndex + 1; index <= elementIndex; index++)
                 {
                     m_elements[index].MainControl.Top += resizediff;
                 }
                 diff += resizediff;
-                for(int index = elementIndex + 1; index < m_elements.Count; index++)
+                for (int index = elementIndex + 1; index < m_elements.Count; index++)
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
                 scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
             }
+            m_control.ResumeLayout(false);
+            m_control.PerformLayout();
         }
     }
 
@@ -283,23 +303,6 @@ namespace iba.Utility
             }
 
             if(HeightChanged != null) HeightChanged(this, e);
-        }
-
-        private void DisableAnchors()
-        {
-           foreach (var element in m_elements)
-           {
-               element.MainControl.Anchor &= ~AnchorStyles.Bottom;
-           }
-        }
-
-        private void EnableAnchors()
-        {
-            if(m_resizableElement == null) return; //no bottom anchors anyway
-            for(int index = m_resizableElementIndex; index <= m_elements.Count; index++)
-            {
-                m_elements[index].MainControl.Anchor |= AnchorStyles.Bottom;
-            }
         }
 
         protected override void element_AnchorChanged(object sender, EventArgs e)

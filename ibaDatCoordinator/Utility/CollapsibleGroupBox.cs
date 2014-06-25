@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace iba.Utility
 {
@@ -47,7 +49,15 @@ namespace iba.Utility
             m_bResizable = Anchor.HasFlag(AnchorStyles.Bottom | AnchorStyles.Top);
             m_origHeight = Height;
             if(m_bResizable) MinimumSize = Size; //should already be the case;
+            VisibleControls = new List<Control>();
+            foreach (Control c in Controls)
+            {
+                if (c.Visible)
+                    VisibleControls.Add(c);
+            }
+
         }
+        private List<Control> VisibleControls;
 
         #region Public Properties
 
@@ -103,7 +113,7 @@ namespace iba.Utility
                         HeightChanged(this, EventArgs.Empty);
 
 
-                    foreach(Control c in Controls)
+                    foreach(Control c in VisibleControls)
                         c.Visible = !value;
                     Invalidate();
                 }
