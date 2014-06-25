@@ -19,17 +19,12 @@ namespace iba.Utility
             get;
         }
 
-        bool Anchored
-        {
-            get;
-        }
-
         Control MainControl
         {
             get;
         }
 
-        event EventHandler AnchorChanged; //
+        event EventHandler AnchorChanged; 
         event EventHandler HeightChanged;
     }
 
@@ -57,33 +52,32 @@ namespace iba.Utility
 	        get { return m_control;}
         }
 
-        public bool Anchored
+        public event EventHandler AnchorChanged
         {
-            get {return false;}
+            add {}
+            remove {}   
         }
-        public event EventHandler  AnchorChanged; //will never be fired
-
-        public event EventHandler  HeightChanged; //will never be fired
-
+        public event EventHandler HeightChanged
+        {
+            add {}
+            remove {}   
+        }
     }
 
-    public class CollapsibleElementManager
+    abstract public class CollapsibleElementManagerBase
     {
-        private List<IVariableHeightElement> m_elements;
-        IVariableHeightElement m_resizableElement;
-        int m_resizableElementIndex;
-        private Control m_control;
-	    public bool Anchored
-	    {
-		    get { return m_resizableElement != null; }
-        }
+        protected List<IVariableHeightElement> m_elements;
+        protected IVariableHeightElement m_resizableElement;
+        protected int m_resizableElementIndex;
+        protected Control m_control;
 
-        public CollapsibleElementManager(Control control)
+        public CollapsibleElementManagerBase(Control control)
         {
             m_control = control;
             m_elements = new List<IVariableHeightElement>();
             m_resizableElement = null;
         }
+
         public void AddElement(IVariableHeightElement element)
         {
             if(element.MainControl.Anchor.HasFlag(AnchorStyles.Top) && element.MainControl.Anchor.HasFlag(AnchorStyles.Bottom))
@@ -105,25 +99,61 @@ namespace iba.Utility
             m_elements.Add(element);
         }
 
-        void element_HeightChanged(object sender, EventArgs e)
+
+        protected virtual void element_AnchorChanged(object sender, EventArgs e)
         {
+            if(sender == m_resizableElement)
+            {
+                m_resizableElement = null;
+                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
+                { //make all element anchoring top
+                    m_elements[index].MainControl.Anchor &= ~AnchorStyles.Bottom;
+                    m_elements[index].MainControl.Anchor |= AnchorStyles.Top;
+                }
+            }
+            else
+            {
+                m_resizableElement = sender as IVariableHeightElement;
+                m_resizableElementIndex = m_elements.FindIndex(element => element == m_resizableElement);
+                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
+                { //make all element anchoring bottom
+                    m_elements[index].MainControl.Anchor &= ~AnchorStyles.Top;
+                    m_elements[index].MainControl.Anchor |= AnchorStyles.Bottom;
+                }
+            }
+        }
+
+        protected abstract void element_HeightChanged(object sender, EventArgs e);
+    }
+
+    public class CollapsibleElementManager : CollapsibleElementManagerBase //manager for the upper control, is expected to be docked filled.
+    {
+        public CollapsibleElementManager(Control control) : base(control)
+        {
+        }
+
+        protected override void element_HeightChanged(object sender, EventArgs e)
+        {
+            ScrollableControl scr = m_control as ScrollableControl;
+            if(scr == null) throw new ArgumentException("The element manager expects its main control to be scrollable");
             IVariableHeightElement element = sender as IVariableHeightElement;
             int diff;
+            int newscr;
             if (sender == m_resizableElement)
-            {//control will have it minsize correct set
-                int diffscr = m_resizableElement.MainControl.MinimumSize.Height - m_resizableElement.PrevMinHeight;
+            {//control will have it min size correct set, not necessarily its size
+                newscr = scr.AutoScrollMinSize.Height + m_resizableElement.MainControl.MinimumSize.Height - m_resizableElement.PrevMinHeight;
                 int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
-                ScrollableControl scr = m_control as ScrollableControl;
-                if (scr != null && m_control.Height > scr.AutoScrollMinSize.Height + diffscr)
+                if (m_control.Height > newscr)
                 {
-                    newHeight += m_control.Height - (scr.AutoScrollMinSize.Height + diffscr);
+                    newHeight += m_control.Height - newscr;
                 }
                 diff = newHeight - m_resizableElement.PrevHeight;
                 m_resizableElement.MainControl.Height = newHeight;
-                for (int index = m_resizableElementIndex+1; index  < m_elements.Count; index++)
+                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
+                {
                     m_elements[index].MainControl.Top += diff;
-                if (scr != null)
-                    scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, scr.AutoScrollMinSize.Height + diffscr);
+                }
+                scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
                 return;
             }
             diff = element.MainControl.Height - element.PrevHeight;
@@ -134,9 +164,7 @@ namespace iba.Utility
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
-                ScrollableControl scr = m_control as ScrollableControl;
-                if (scr != null)
-                    scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width,scr.AutoScrollMinSize.Height+diff);
+                scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width,scr.AutoScrollMinSize.Height+diff);
             }
             else if (elementIndex < m_resizableElementIndex)
             {
@@ -144,31 +172,176 @@ namespace iba.Utility
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
+                newscr = scr.AutoScrollMinSize.Height + diff;
                 //adapt resizable
-                int origdiff = diff;
-                if(m_resizableElement.MainControl.Height - diff >= m_resizableElement.MainControl.MinimumSize.Height)
+                int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
+                if(m_control.Height > newscr)
                 {
-                    m_resizableElement.MainControl.Height -= diff;
-                    diff = 0;
+                    newHeight += m_control.Height - newscr;
                 }
-                else
+                diff += newHeight - m_resizableElement.MainControl.Height;
+                m_resizableElement.MainControl.Height = newHeight;
+                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
                 {
-                    diff -= m_resizableElement.MainControl.Height - m_resizableElement.MainControl.MinimumSize.Height;
-                    m_resizableElement.MainControl.Height = m_resizableElement.MainControl.MinimumSize.Height;
+                    m_elements[index].MainControl.Top += diff;
                 }
-                ScrollableControl scr = m_control as ScrollableControl;
-                if(scr != null)
-                    scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, scr.AutoScrollMinSize.Height + origdiff);
+                scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
+            }
+            else // one of the bottoms adapted
+            {
+                newscr = scr.AutoScrollMinSize.Height + diff;
+                //adapt resizable
+                int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
+                if(m_control.Height > newscr)
+                {
+                    newHeight += m_control.Height - newscr;
+                }
+                int resizediff = newHeight - m_resizableElement.MainControl.Height;
+                m_resizableElement.MainControl.Height = newHeight;
+                for(int index = m_resizableElementIndex + 1; index <= elementIndex; index++)
+                {
+                    m_elements[index].MainControl.Top += resizediff;
+                }
+                diff += resizediff;
+                for(int index = elementIndex + 1; index < m_elements.Count; index++)
+                {
+                    m_elements[index].MainControl.Top += diff;
+                }
+                scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
+            }
+        }
+    }
+
+    public class CollapsibleElementSubManager : CollapsibleElementManagerBase, IVariableHeightElement
+    {
+        public CollapsibleElementSubManager(Control control) : base(control)
+        {
+        }
+
+        protected override void element_HeightChanged(object sender, EventArgs e)
+        {
+            m_prevHeight = m_control.Height;
+            m_prevMinHeight = m_control.MinimumSize.Height;
+            IVariableHeightElement element = sender as IVariableHeightElement;
+            int elementIndex = m_elements.IndexOf(element);
+            int diff;
+
+            if (sender == m_resizableElement)
+            {
+                diff = element.MainControl.MinimumSize.Height - element.PrevHeight;
+                m_resizableElement.MainControl.Height = m_resizableElement.MainControl.MinimumSize.Height;
+                for(int index = elementIndex + 1; index < m_elements.Count; index++)
+                    m_elements[index].MainControl.Top += diff;
+                diff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
+                DisableAnchors();
+                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                EnableAnchors();
+            }
+            else if(m_resizableElement == null)
+            {
+                int minDiff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
+                diff = element.MainControl.Height - element.PrevHeight;
+                for(int index = elementIndex + 1; index < m_elements.Count; index++ )
+                    m_elements[index].MainControl.Top += diff;
+                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + minDiff);
+                m_control.Height = m_control.MinimumSize.Height;
+            }
+            else if (elementIndex < m_resizableElementIndex)
+            {
+                diff = element.MainControl.Height - element.PrevHeight;
+                for(int index = elementIndex + 1; index <= m_resizableElementIndex; index++)
+                {
+                    m_elements[index].MainControl.Top += diff;
+                }
+                int resizeDiff = m_resizableElement.MainControl.Height - m_resizableElement.MainControl.MinimumSize.Height;
+                m_resizableElement.MainControl.Height = m_resizableElement.MainControl.MinimumSize.Height;
+                for(int index = m_resizableElementIndex + 1; index < m_elements.Count; index++)
+                {
+                    m_elements[index].MainControl.Top += diff - resizeDiff;
+                }
+                DisableAnchors();
+                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                m_control.Height = m_control.MinimumSize.Height;
+                EnableAnchors();
             }
             else
             {
-                //TODO
+                diff = element.MainControl.Height - element.PrevHeight;
+                int resizeDiff = m_resizableElement.MainControl.Height - m_resizableElement.MainControl.MinimumSize.Height;
+                m_resizableElement.MainControl.Height = m_resizableElement.MainControl.MinimumSize.Height;
+                for(int index = m_resizableElementIndex + 1; index <= elementIndex; index++)
+                {
+                    m_elements[index].MainControl.Top -= resizeDiff;
+                }
+                for(int index = elementIndex + 1; index <= m_elements.Count; index++)
+                {
+                    m_elements[index].MainControl.Top += diff - resizeDiff;
+                }
+                DisableAnchors();
+                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                m_control.Height = m_control.MinimumSize.Height;
+                EnableAnchors();
+            }
+
+            if(HeightChanged != null) HeightChanged(this, e);
+        }
+
+        private void DisableAnchors()
+        {
+           foreach (var element in m_elements)
+           {
+               element.MainControl.Anchor &= ~AnchorStyles.Bottom;
+           }
+        }
+
+        private void EnableAnchors()
+        {
+            if(m_resizableElement == null) return; //no bottom anchors anyway
+            for(int index = m_resizableElementIndex; index <= m_elements.Count; index++)
+            {
+                m_elements[index].MainControl.Anchor |= AnchorStyles.Bottom;
             }
         }
 
-        void element_AnchorChanged(object sender, EventArgs e)
+        protected override void element_AnchorChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            base.element_AnchorChanged(sender, e);
+            if(m_resizableElement==null) //make ourselves not resizable
+            {
+                m_control.Anchor &= ~AnchorStyles.Bottom;
+                m_control.Anchor |= AnchorStyles.Top;
+            }
+            else  //make ourselves  resizable
+            {
+                m_control.Anchor |= AnchorStyles.Top | AnchorStyles.Bottom;
+            }
+            //notify parent
+            if(AnchorChanged != null) AnchorChanged(this, e);
         }
+
+        #region IVariableHeightElement Members
+
+        private int m_prevHeight;
+        public int PrevHeight
+        {
+            get { return m_prevHeight; }
+        }
+
+        private int m_prevMinHeight;
+        public int PrevMinHeight
+        {
+            get { return m_prevMinHeight; }
+        }
+
+        public Control MainControl
+        {
+            get { return m_control; }
+        }
+
+        public event EventHandler AnchorChanged;
+
+        public event EventHandler HeightChanged;
+
+        #endregion
     }
 }

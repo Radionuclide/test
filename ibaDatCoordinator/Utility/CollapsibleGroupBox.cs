@@ -89,7 +89,7 @@ namespace iba.Utility
                             this.Anchor &= ~AnchorStyles.Bottom;
                             if (AnchorChanged != null)
                                 AnchorChanged(this, EventArgs.Empty);
-                            this.MinimumSize = Size.Empty;
+                            this.MinimumSize = new Size(0, CollapsedHeight);
                         }
                         m_bResizingFromCollapse = true;
                         this.Height = m_collapsedHeight;
@@ -198,19 +198,11 @@ namespace iba.Utility
             get
             {
                 if (m_bResizable)
-                    return IsCollapsed ? m_origHeight : 0;
-                else //don't get here normally
+                    return IsCollapsed ? m_origHeight : CollapsedHeight;
+                else 
                     return PrevHeight;
             }
 
-        }
-
-        public bool Anchored
-        {
-            get
-            {
-                return Anchor.HasFlag(AnchorStyles.Top | AnchorStyles.Bottom);
-            }
         }
 
         public event EventHandler AnchorChanged;
