@@ -30,12 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelScheduledJob));
-            this.gbSchedule = new System.Windows.Forms.GroupBox();
+            this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
             this.m_repeatDurationCombo = new System.Windows.Forms.ComboBox();
             this.m_lblDuration = new System.Windows.Forms.Label();
             this.m_repeatEveryCombo = new System.Windows.Forms.ComboBox();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
+            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -57,8 +58,8 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.gbHD = new System.Windows.Forms.GroupBox();
-            this.gbTimeSelection = new System.Windows.Forms.GroupBox();
+            this.gbHD = new iba.Utility.CollapsibleGroupBox();
+            this.gbTimeSelection = new iba.Utility.CollapsibleGroupBox();
             this.m_lblTimebase = new System.Windows.Forms.Label();
             this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -79,7 +80,6 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.gbSchedule.SuspendLayout();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
@@ -171,6 +171,11 @@
             this.gbTrigger.Controls.Add(this.m_rbOneTime);
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
+            // 
+            // m_dtStart
+            // 
+            resources.ApplyResources(this.m_dtStart, "m_dtStart");
+            this.m_dtStart.Name = "m_dtStart";
             // 
             // m_gbSubProperties
             // 
@@ -547,11 +552,6 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
-            // m_dtStart
-            // 
-            resources.ApplyResources(this.m_dtStart, "m_dtStart");
-            this.m_dtStart.Name = "m_dtStart";
-            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -582,7 +582,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbSchedule;
+        private iba.Utility.CollapsibleGroupBox gbSchedule;
         public System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.CheckBox m_cbRetry;
         private System.Windows.Forms.NumericUpDown m_retryUpDown;
@@ -610,8 +610,8 @@
         private System.Windows.Forms.RadioButton m_rbDaily;
         private System.Windows.Forms.RadioButton m_rbOneTime;
         private iba.Utility.RippleDateTimePicker m_dtStart;
-        private System.Windows.Forms.GroupBox gbHD;
-        private System.Windows.Forms.GroupBox gbTimeSelection;
+        private iba.Utility.CollapsibleGroupBox gbHD;
+        private iba.Utility.CollapsibleGroupBox gbTimeSelection;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown m_nudStopSeconds;
         private System.Windows.Forms.Label label4;

@@ -878,6 +878,9 @@
   <data name="gbSchedule.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="gbSchedule.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 287</value>
+  </data>
   <data name="gbSchedule.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 287</value>
   </data>
@@ -891,7 +894,7 @@
     <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.21.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
     <value>$this</value>
@@ -921,7 +924,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.21.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1473,7 +1476,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.21.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
     <value>$this</value>

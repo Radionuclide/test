@@ -130,8 +130,27 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_autoStartCheckBox, iba.Properties.Resources.toolTipAutoStart);
             m_toolTip.SetToolTip(m_applyToRunningBtn, iba.Properties.Resources.applyStartedButton);
             m_toolTip.SetToolTip(m_undoChangesBtn, iba.Properties.Resources.undoChangesButton);
+
+
+            //init groupBoxes
+            groupBox2.Init();
+            groupBox4.Init();
+            groupBox6.Init();
+
+            //groupBox managers
+            m_ceManager = new CollapsibleElementManager(this);
+            m_ceManager.AddElement(groupBox2);
+            if(m_panelDatFilesJob != null)
+                m_ceManager.AddElement(m_panelDatFilesJob.CreateGroupBoxManager());
+            else
+                m_ceManager.AddElement(m_panelScheduledJob.CreateGroupBoxManager());
+            m_ceManager.AddElement(groupBox4);
+            m_ceManager.AddElement(groupBox6);
+
+
         }
 
+        CollapsibleElementManager m_ceManager;
 
         public System.Windows.Forms.Button m_stopButton;
         public System.Windows.Forms.Button m_applyToRunningBtn;

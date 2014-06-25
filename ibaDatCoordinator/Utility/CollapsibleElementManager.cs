@@ -239,11 +239,10 @@ namespace iba.Utility
             }
             else if(m_resizableElement == null)
             {
-                int minDiff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
                 diff = element.MainControl.Height - element.PrevHeight;
                 for(int index = elementIndex + 1; index < m_elements.Count; index++ )
                     m_elements[index].MainControl.Top += diff;
-                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + minDiff);
+                m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
                 m_control.Height = m_control.MinimumSize.Height;
             }
             else if (elementIndex < m_resizableElementIndex)

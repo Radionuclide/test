@@ -30,7 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelDatFilesJob));
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
             this.m_undoChangesBtn = new System.Windows.Forms.Button();
             this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -49,7 +52,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_scanTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.m_browseDatFilesButton = new System.Windows.Forms.Button();
             this.m_tbPass = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -60,15 +63,18 @@
             this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
             this.m_datDirTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // m_selectDatFilesDialog
+            // 
+            this.m_selectDatFilesDialog.DefaultExt = "dat";
+            this.m_selectDatFilesDialog.FileName = "openFileDialog1";
+            this.m_selectDatFilesDialog.Multiselect = true;
             // 
             // groupBox3
             // 
@@ -331,18 +337,13 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // m_selectDatFilesDialog
-            // 
-            this.m_selectDatFilesDialog.DefaultExt = "dat";
-            this.m_selectDatFilesDialog.FileName = "openFileDialog1";
-            this.m_selectDatFilesDialog.Multiselect = true;
-            // 
             // PanelDatFilesJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
+            this.MinimumSize = new System.Drawing.Size(0, 256);
             this.Name = "PanelDatFilesJob";
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -357,7 +358,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox3;
+        private iba.Utility.CollapsibleGroupBox groupBox3;
         public System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
@@ -376,7 +377,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown m_scanTimeUpDown;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.Button m_browseDatFilesButton;
         private System.Windows.Forms.TextBox m_tbPass;
         private System.Windows.Forms.Label label12;

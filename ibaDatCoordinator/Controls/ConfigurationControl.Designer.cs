@@ -32,9 +32,9 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationControl));
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new iba.Utility.CollapsibleGroupBox();
             this.m_newTaskToolstrip = new System.Windows.Forms.ToolStrip();
             this.m_newReportButton = new System.Windows.Forms.ToolStripButton();
             this.m_newExtractButton = new System.Windows.Forms.ToolStripButton();
@@ -60,7 +60,7 @@ namespace iba.Controls
             this.m_tbEmail = new System.Windows.Forms.TextBox();
             this.m_rbEmail = new System.Windows.Forms.RadioButton();
             this.m_tbNetSend = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new iba.Utility.CollapsibleGroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_nudNotifyTime = new System.Windows.Forms.NumericUpDown();
@@ -375,15 +375,15 @@ namespace iba.Controls
 
         private System.Windows.Forms.TextBox m_nameTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private iba.Utility.CollapsibleGroupBox groupBox2;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private iba.Utility.CollapsibleGroupBox groupBox4;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
         private System.Windows.Forms.RadioButton m_rbNetSend;
         private System.Windows.Forms.TextBox m_tbEmail;
         private System.Windows.Forms.RadioButton m_rbEmail;
         private System.Windows.Forms.TextBox m_tbNetSend;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private iba.Utility.CollapsibleGroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.RadioButton m_rbTime;
         private System.Windows.Forms.RadioButton m_rbImmediate;

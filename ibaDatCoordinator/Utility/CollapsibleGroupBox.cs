@@ -38,12 +38,16 @@ namespace iba.Utility
         public CollapsibleGroupBox()
         {
             InitializeComponent();
-            m_bResizable = Anchor.HasFlag(AnchorStyles.Bottom | AnchorStyles.Top);
-            m_origHeight = Height;
-            if (m_bResizable) MinimumSize = Size; //should already be the case;
         }
 
         #endregion
+
+        public void Init()
+        {
+            m_bResizable = Anchor.HasFlag(AnchorStyles.Bottom | AnchorStyles.Top);
+            m_origHeight = Height;
+            if(m_bResizable) MinimumSize = Size; //should already be the case;
+        }
 
         #region Public Properties
 
