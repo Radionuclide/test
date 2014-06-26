@@ -78,7 +78,7 @@ namespace iba.Utility
             m_resizableElement = null;
         }
 
-        public void AddElement(IVariableHeightElement element)
+        public virtual void AddElement(IVariableHeightElement element)
         {
             if(element.MainControl.Anchor.HasFlag(AnchorStyles.Top) && element.MainControl.Anchor.HasFlag(AnchorStyles.Bottom))
             {
@@ -125,20 +125,24 @@ namespace iba.Utility
 
         protected abstract void element_HeightChanged(object sender, EventArgs e);
 
-        protected void DisableAnchors()
+        internal void DisableAnchors()
         {
-            foreach (var element in m_elements)
+            foreach (var element in m_elements) //make all top
             {
                 element.MainControl.Anchor &= ~AnchorStyles.Bottom;
+                element.MainControl.Anchor |= AnchorStyles.Top;
             }
         }
 
-        protected void EnableAnchors()
+        internal void EnableAnchors()
         {
-            if (m_resizableElement == null) return; //no bottom anchors anyway
-            for (int index = m_resizableElementIndex; index < m_elements.Count; index++)
+            if(m_resizableElement == null) //only top in the first place, nothing to do
+                return;
+            m_resizableElement.MainControl.Anchor |= AnchorStyles.Top | AnchorStyles.Bottom;
+            for (int index = m_resizableElementIndex+1; index < m_elements.Count; index++)
             {
                 m_elements[index].MainControl.Anchor |= AnchorStyles.Bottom;
+                m_elements[index].MainControl.Anchor &= ~AnchorStyles.Top;
             }
         }
     }
@@ -147,6 +151,14 @@ namespace iba.Utility
     {
         public CollapsibleElementManager(Control control) : base(control)
         {
+        }
+
+        public override void AddElement(IVariableHeightElement element)
+        {
+            base.AddElement(element);
+            CollapsibleElementSubManager sub = element as CollapsibleElementSubManager;
+            if (sub != null)
+                sub.ParentManager = this;
         }
 
         protected override void element_HeightChanged(object sender, EventArgs e)
@@ -158,6 +170,7 @@ namespace iba.Utility
             int newscr;
             if (sender == m_resizableElement)
             {//control will have it min size correct set, not necessarily its size
+                //resume and suspend layout handled and anchors handled by subcontrol
                 newscr = scr.AutoScrollMinSize.Height + m_resizableElement.MainControl.MinimumSize.Height - m_resizableElement.PrevMinHeight;
                 int newHeight = m_resizableElement.MainControl.MinimumSize.Height;
                 if (m_control.Height > newscr)
@@ -173,6 +186,7 @@ namespace iba.Utility
                 scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width, newscr);
                 return;
             }
+            DisableAnchors();
             m_control.SuspendLayout();
             diff = element.MainControl.Height - element.PrevHeight;
             int elementIndex = m_elements.IndexOf(element);
@@ -182,6 +196,7 @@ namespace iba.Utility
                 {
                     m_elements[index].MainControl.Top += diff;
                 }
+                diff = element.MainControl.Height - element.PrevMinHeight;
                 scr.AutoScrollMinSize = new Size(scr.AutoScrollMinSize.Width,scr.AutoScrollMinSize.Height+diff);
             }
             else if (elementIndex < m_resizableElementIndex)
@@ -229,6 +244,7 @@ namespace iba.Utility
             }
             m_control.ResumeLayout(false);
             m_control.PerformLayout();
+            EnableAnchors();
         }
     }
 
@@ -238,8 +254,18 @@ namespace iba.Utility
         {
         }
 
+        internal CollapsibleElementManager m_parentManager;
+	    internal iba.Utility.CollapsibleElementManager ParentManager
+	    {
+		    get { return m_parentManager; }
+		    set { m_parentManager = value; }
+	    }
+
         protected override void element_HeightChanged(object sender, EventArgs e)
         {
+            if(m_parentManager != null) m_parentManager.DisableAnchors();
+            m_control.Parent.SuspendLayout();
+            m_control.SuspendLayout();
             m_prevHeight = m_control.Height;
             m_prevMinHeight = m_control.MinimumSize.Height;
             IVariableHeightElement element = sender as IVariableHeightElement;
@@ -255,6 +281,7 @@ namespace iba.Utility
                 diff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
                 DisableAnchors();
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                m_control.Height = m_control.MinimumSize.Height;
                 EnableAnchors();
             }
             else if(m_resizableElement == null)
@@ -262,8 +289,10 @@ namespace iba.Utility
                 diff = element.MainControl.Height - element.PrevHeight;
                 for(int index = elementIndex + 1; index < m_elements.Count; index++ )
                     m_elements[index].MainControl.Top += diff;
+                DisableAnchors();
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
                 m_control.Height = m_control.MinimumSize.Height;
+                EnableAnchors();
             }
             else if (elementIndex < m_resizableElementIndex)
             {
@@ -301,8 +330,12 @@ namespace iba.Utility
                 m_control.Height = m_control.MinimumSize.Height;
                 EnableAnchors();
             }
-
+            m_control.ResumeLayout(false);
+            m_control.PerformLayout();
             if(HeightChanged != null) HeightChanged(this, e);
+            m_control.Parent.ResumeLayout(false);
+            m_control.Parent.PerformLayout();
+            if(m_parentManager != null) m_parentManager.EnableAnchors();
         }
 
         protected override void element_AnchorChanged(object sender, EventArgs e)
