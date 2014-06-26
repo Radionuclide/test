@@ -280,11 +280,8 @@ namespace iba.Utility
                     m_elements[index].MainControl.Top += diff;
                 diff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
                 DisableAnchors();
-                System.Diagnostics.Debug.WriteLine("1.1: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
-                System.Diagnostics.Debug.WriteLine("1.2: sender = res: " + m_control.MinimumSize.Height.ToString());
-                m_control.Height = m_control.MinimumSize.Height;
-                
+                m_control.Height = m_control.MinimumSize.Height;               
                 EnableAnchors();
             }
             else if(m_resizableElement == null)
@@ -293,9 +290,12 @@ namespace iba.Utility
                 for(int index = elementIndex + 1; index < m_elements.Count; index++ )
                     m_elements[index].MainControl.Top += diff;
                 DisableAnchors();
-                System.Diagnostics.Debug.WriteLine("2.1: sender = res: " + m_control.MinimumSize.Height.ToString());
+                if (m_bResizableElementCollapsing)
+                {
+                    diff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
+                    m_bResizableElementCollapsing = false;
+                }
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
-                System.Diagnostics.Debug.WriteLine("2.2: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.Height = m_control.MinimumSize.Height;
                 EnableAnchors();
             }
@@ -343,11 +343,14 @@ namespace iba.Utility
             if(m_parentManager != null) m_parentManager.EnableAnchors();
         }
 
+        private bool m_bResizableElementCollapsing;
+
         protected override void element_AnchorChanged(object sender, EventArgs e)
         {
             base.element_AnchorChanged(sender, e);
             if(m_resizableElement==null) //make ourselves not resizable
             {
+                m_bResizableElementCollapsing = true;
                 m_control.Anchor &= ~AnchorStyles.Bottom;
                 m_control.Anchor |= AnchorStyles.Top;
             }
