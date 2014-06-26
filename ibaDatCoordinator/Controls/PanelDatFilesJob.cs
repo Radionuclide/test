@@ -57,7 +57,9 @@ namespace iba.Controls
 
                 groupBox1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
                 groupBox1.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y - diff);
-                groupBox1.Size = new Size(groupBox1.Size.Width, groupBox1.Size.Height + diff);
+                int newHeight = groupBox1.Size.Height + diff;
+                groupBox1.Size = new Size(groupBox1.Size.Width, newHeight);
+                groupBox1.MinimumSize = new Size(0,newHeight);
                 m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
 
                 this.ResumeLayout();

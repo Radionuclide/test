@@ -64,7 +64,7 @@ namespace iba.Utility
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int FullHeight
         {
-            get { return m_bResizable?m_origHeight:m_FullSize.Height; }
+            get { return m_FullSize.Height; }
         }
 
         private bool m_bResizable;

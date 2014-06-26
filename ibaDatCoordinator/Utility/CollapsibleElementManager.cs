@@ -280,8 +280,11 @@ namespace iba.Utility
                     m_elements[index].MainControl.Top += diff;
                 diff = element.MainControl.MinimumSize.Height - element.PrevMinHeight;
                 DisableAnchors();
+                System.Diagnostics.Debug.WriteLine("1.1: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                System.Diagnostics.Debug.WriteLine("1.2: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.Height = m_control.MinimumSize.Height;
+                
                 EnableAnchors();
             }
             else if(m_resizableElement == null)
@@ -290,7 +293,9 @@ namespace iba.Utility
                 for(int index = elementIndex + 1; index < m_elements.Count; index++ )
                     m_elements[index].MainControl.Top += diff;
                 DisableAnchors();
+                System.Diagnostics.Debug.WriteLine("2.1: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.MinimumSize = new Size(0, m_control.MinimumSize.Height + diff);
+                System.Diagnostics.Debug.WriteLine("2.2: sender = res: " + m_control.MinimumSize.Height.ToString());
                 m_control.Height = m_control.MinimumSize.Height;
                 EnableAnchors();
             }
@@ -321,7 +326,7 @@ namespace iba.Utility
                 {
                     m_elements[index].MainControl.Top -= resizeDiff;
                 }
-                for(int index = elementIndex + 1; index <= m_elements.Count; index++)
+                for(int index = elementIndex + 1; index < m_elements.Count; index++)
                 {
                     m_elements[index].MainControl.Top += diff - resizeDiff;
                 }
