@@ -381,18 +381,6 @@ namespace iba.Controls
             else if (samples > 1.0e7) return TimeBaseAcceptability.Questionable;
             else return TimeBaseAcceptability.Allowed;
         }
-
-        public iba.Utility.CollapsibleElementSubManager CreateGroupBoxManager()
-        {
-            gbSchedule.Init();
-            gbHD.Init();
-            gbTimeSelection.Init();
-            CollapsibleElementSubManager manager = new CollapsibleElementSubManager(this);
-            manager.AddElement(gbSchedule);
-            manager.AddElement(gbHD);
-            manager.AddElement(gbTimeSelection);
-            return manager;
-        }
     }
 
     public enum TimeBaseAcceptability

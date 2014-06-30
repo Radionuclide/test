@@ -30,14 +30,14 @@ namespace iba.Controls
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchFileControl));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.m_newButton = new System.Windows.Forms.Button();
             this.m_textEditor = new ICSharpCode.TextEditor.TextEditorControl();
             this.m_batchFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browseBATCHFileButton = new System.Windows.Forms.Button();
             this.m_saveButton = new System.Windows.Forms.Button();
             this.m_executeBatchFile = new System.Windows.Forms.Button();
-            this.m_editorGroupBox = new System.Windows.Forms.GroupBox();
+            this.m_editorGroupBox = new iba.Utility.CollapsibleGroupBox();
             this.m_lblTestSide = new System.Windows.Forms.Label();
             this.m_panelSide = new System.Windows.Forms.Panel();
             this.m_rbServerSide = new System.Windows.Forms.RadioButton();
@@ -224,8 +224,8 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_editorGroupBox);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.m_editorGroupBox);
             this.MinimumSize = new System.Drawing.Size(0, 400);
             this.Name = "BatchFileControl";
             this.groupBox1.ResumeLayout(false);
@@ -240,11 +240,11 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.TextBox m_batchFileTextBox;
         private System.Windows.Forms.Button m_browseBATCHFileButton;
         private System.Windows.Forms.Button m_executeBatchFile;
-        private System.Windows.Forms.GroupBox m_editorGroupBox;
+        private iba.Utility.CollapsibleGroupBox m_editorGroupBox;
         private System.Windows.Forms.Button m_newButton;
         private System.Windows.Forms.Button m_saveButton;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;

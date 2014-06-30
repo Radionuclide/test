@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PauseTaskControl));
-            this.groupBox = new System.Windows.Forms.GroupBox();
+            this.groupBox = new iba.Utility.CollapsibleGroupBox();
             this.m_rbDatFileTime = new System.Windows.Forms.RadioButton();
             this.m_rbAbsolutePause = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
@@ -117,7 +117,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox;
+        private iba.Utility.CollapsibleGroupBox groupBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown m_nudInterval;

@@ -327,15 +327,5 @@ namespace iba.Controls
                 m_datDirTextBox.Text = sb.ToString();
             }
         }
-
-        public iba.Utility.CollapsibleElementSubManager CreateGroupBoxManager()
-        {
-            groupBox3.Init();
-            groupBox1.Init();
-            CollapsibleElementSubManager manager = new CollapsibleElementSubManager(this);
-            manager.AddElement(groupBox3);
-            manager.AddElement(groupBox1);
-            return manager;
-        }
     }
 }

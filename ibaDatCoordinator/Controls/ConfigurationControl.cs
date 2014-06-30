@@ -141,13 +141,11 @@ namespace iba.Controls
             m_ceManager = new CollapsibleElementManager(this);
             m_ceManager.AddElement(groupBox2);
             if(m_panelDatFilesJob != null)
-                m_ceManager.AddElement(m_panelDatFilesJob.CreateGroupBoxManager());
+                m_ceManager.AddSubManagerFromControl(m_panelDatFilesJob);
             else
-                m_ceManager.AddElement(m_panelScheduledJob.CreateGroupBoxManager());
+                m_ceManager.AddSubManagerFromControl(m_panelScheduledJob);
             m_ceManager.AddElement(groupBox4);
             m_ceManager.AddElement(groupBox6);
-
-
         }
 
         CollapsibleElementManager m_ceManager;

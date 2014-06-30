@@ -29,18 +29,18 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonTaskControl));
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new Utility.CollapsibleGroupBox();
             this.m_cbResourceCritical = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
-            this.m_ExecutegroupBox = new System.Windows.Forms.GroupBox();
+            this.m_ExecutegroupBox = new Utility.CollapsibleGroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rb1stFailure = new System.Windows.Forms.RadioButton();
             this.m_rbAlways = new System.Windows.Forms.RadioButton();
             this.m_rbFailure = new System.Windows.Forms.RadioButton();
             this.m_rbDisabled = new System.Windows.Forms.RadioButton();
             this.m_rbSucces = new System.Windows.Forms.RadioButton();
-            this.groupBoxNotify = new System.Windows.Forms.GroupBox();
+            this.groupBoxNotify = new Utility.CollapsibleGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbNot1stFailure = new System.Windows.Forms.RadioButton();
             this.m_rbNotAlways = new System.Windows.Forms.RadioButton();
@@ -221,11 +221,11 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox5;
+        private iba.Utility.CollapsibleGroupBox groupBox5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox m_nameTextBox;
-        private System.Windows.Forms.GroupBox m_ExecutegroupBox;
-        private System.Windows.Forms.GroupBox groupBoxNotify;
+        private iba.Utility.CollapsibleGroupBox m_ExecutegroupBox;
+        private iba.Utility.CollapsibleGroupBox groupBoxNotify;
         private System.Windows.Forms.Panel m_pluginPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.RadioButton m_rb1stFailure;

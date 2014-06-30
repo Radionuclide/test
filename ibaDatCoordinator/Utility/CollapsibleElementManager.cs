@@ -71,6 +71,12 @@ namespace iba.Utility
         protected int m_resizableElementIndex;
         protected Control m_control;
 
+
+        public int Count
+        {
+            get { return m_elements.Count; }
+        }
+
         public CollapsibleElementManagerBase(Control control)
         {
             m_control = control;
@@ -245,6 +251,24 @@ namespace iba.Utility
             m_control.ResumeLayout(false);
             m_control.PerformLayout();
             EnableAnchors();
+        }
+
+        public void AddSubManagerFromControl(Control ctrl)
+        {
+            CollapsibleElementSubManager man = new CollapsibleElementSubManager(ctrl);
+            foreach(Control c in ctrl.Controls)
+            {
+                CollapsibleGroupBox gb = c as CollapsibleGroupBox;
+                if (gb != null)
+                {
+                    gb.Init();
+                    man.AddElement(gb);
+                }
+            }
+            if (man.Count == 0) //no groupbox elements
+                AddElement(new NonVariableElement(ctrl));
+            else
+                AddElement(man);
         }
     }
 
