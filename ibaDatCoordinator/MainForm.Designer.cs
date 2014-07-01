@@ -38,6 +38,7 @@ namespace iba
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
+            this.m_btnClearLogging = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.m_rbOnlyErrors = new System.Windows.Forms.RadioButton();
             this.m_rbErrorsWarnings = new System.Windows.Forms.RadioButton();
@@ -83,12 +84,12 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_btnClearLogging = new System.Windows.Forms.Button();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.m_statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
@@ -185,6 +186,13 @@ namespace iba
             resources.ApplyResources(this.m_loggingPane, "m_loggingPane");
             this.m_loggingPane.Name = "m_loggingPane";
             // 
+            // m_btnClearLogging
+            // 
+            resources.ApplyResources(this.m_btnClearLogging, "m_btnClearLogging");
+            this.m_btnClearLogging.Name = "m_btnClearLogging";
+            this.m_btnClearLogging.UseVisualStyleBackColor = true;
+            this.m_btnClearLogging.Click += new System.EventHandler(this.m_btnClearLogging_Click);
+            // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
@@ -266,12 +274,12 @@ namespace iba
             resources.ApplyResources(this.m_configTreeView, "m_configTreeView");
             this.m_configTreeView.HideSelection = false;
             this.m_configTreeView.Name = "m_configTreeView";
-            this.m_configTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragDrop);
-            this.m_configTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnConfigurationTreeViewAfterSelect);
-            this.m_configTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_configTreeView_MouseDown);
-            this.m_configTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_configTreeView_KeyDown);
             this.m_configTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_configTreeView_ItemDrag);
+            this.m_configTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnConfigurationTreeViewAfterSelect);
+            this.m_configTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragDrop);
             this.m_configTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this.m_configTreeView_DragOver);
+            this.m_configTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_configTreeView_KeyDown);
+            this.m_configTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_configTreeView_MouseDown);
             // 
             // panel1
             // 
@@ -301,8 +309,8 @@ namespace iba
             resources.ApplyResources(this.m_rightPane, "m_rightPane");
             this.m_rightPane.HeaderFont = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.m_rightPane.Name = "m_rightPane";
-            this.m_rightPane.Leave += new System.EventHandler(this.m_rightPane_Leave);
             this.m_rightPane.Enter += new System.EventHandler(this.m_rightPane_Enter);
+            this.m_rightPane.Leave += new System.EventHandler(this.m_rightPane_Leave);
             // 
             // m_menuStrip
             // 
@@ -502,13 +510,6 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
-            // m_btnClearLogging
-            // 
-            resources.ApplyResources(this.m_btnClearLogging, "m_btnClearLogging");
-            this.m_btnClearLogging.Name = "m_btnClearLogging";
-            this.m_btnClearLogging.UseVisualStyleBackColor = true;
-            this.m_btnClearLogging.Click += new System.EventHandler(this.m_btnClearLogging_Click);
-            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -528,6 +529,7 @@ namespace iba
             this.m_statusStrip.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.m_navBar.ResumeLayout(false);
             this.m_loggingPane.ResumeLayout(false);

@@ -556,9 +556,9 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gbTimeSelection);
-            this.Controls.Add(this.gbHD);
             this.Controls.Add(this.gbSchedule);
+            this.Controls.Add(this.gbHD);
+            this.Controls.Add(this.gbTimeSelection);
             this.MinimumSize = new System.Drawing.Size(0, 600);
             this.Name = "PanelScheduledJob";
             this.gbTimeSelection.ResumeLayout(false);

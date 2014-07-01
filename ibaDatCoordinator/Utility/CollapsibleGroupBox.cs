@@ -91,7 +91,7 @@ namespace iba.Utility
                         }
                         else
                         {
-                            this.Size = m_FullSize;
+                            this.Height = m_FullSize.Height;
                         }
                     }
                     else
