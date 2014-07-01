@@ -40,7 +40,10 @@ namespace iba.Utility
         public CollapsibleGroupBox()
         {
             InitializeComponent();
+            m_textDrawBrush = new SolidBrush((new GroupBox()).ForeColor);
         }
+
+        private Brush m_textDrawBrush;
 
         #endregion
 
@@ -155,29 +158,41 @@ namespace iba.Utility
         {
             // Get windows to draw the GroupBox
             Rectangle bounds = new Rectangle(ClientRectangle.X, ClientRectangle.Y + 6, ClientRectangle.Width, ClientRectangle.Height - 6);
+            if(!Application.RenderWithVisualStyles) bounds.Height += 6;
             GroupBoxRenderer.DrawGroupBox(g, bounds, Enabled ? GroupBoxState.Normal : GroupBoxState.Disabled);
 
-            // Text Formating positioning & Size
+            //// Text Formating positioning & Size
             StringFormat sf = new StringFormat();
             int i_textPos = (bounds.X + 8) + m_toggleRect.Width + 2;
             int i_textSize = (int)g.MeasureString(Text, this.Font).Width;
             i_textSize = i_textSize < 1 ? 1 : i_textSize;
             int i_endPos = i_textPos + i_textSize + 1;
 
-            // Draw a line to cover the GroupBox border where the text will sit
-            g.DrawLine(SystemPens.Control, i_textPos, bounds.Y, i_endPos, bounds.Y);
+            g.FillRectangle(SystemBrushes.Control, i_textPos, bounds.Y - 2, i_endPos - i_textPos, 4);
 
             // Draw the GroupBox text
-            using(SolidBrush drawBrush = new SolidBrush(Color.FromArgb(0, 70, 213)))
-                g.DrawString(Text, this.Font, drawBrush, i_textPos, 0);
+            //using(SolidBrush drawBrush = new SolidBrush(Color.FromArgb(0, 70, 213)))
+            g.DrawString(Text, this.Font, m_textDrawBrush, i_textPos, 0);
         }
 
         void DrawToggleButton(Graphics g)
         {
-            if(IsCollapsed)
-                g.DrawImage(Properties.Resources.plus, m_toggleRect);
+            if(Application.RenderWithVisualStyles)
+            {
+                VisualStyleRenderer glyphRender = null;
+                if(IsCollapsed)
+                    glyphRender = new VisualStyleRenderer(VisualStyleElement.TreeView.Glyph.Closed);
+                else
+                    glyphRender = new VisualStyleRenderer(VisualStyleElement.TreeView.Glyph.Opened);
+                glyphRender.DrawBackground(g, m_toggleRect);
+            }
             else
-                g.DrawImage(Properties.Resources.minus, m_toggleRect);
+            {
+                if(IsCollapsed)
+                    g.DrawImage(Properties.Resources.plus, m_toggleRect);
+                else
+                    g.DrawImage(Properties.Resources.minus, m_toggleRect);
+            }
         }
 
         void ToggleCollapsed()
