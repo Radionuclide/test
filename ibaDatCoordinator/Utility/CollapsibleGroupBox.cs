@@ -171,7 +171,6 @@ namespace iba.Utility
             g.FillRectangle(SystemBrushes.Control, i_textPos, bounds.Y - 2, i_endPos - i_textPos, 4);
 
             // Draw the GroupBox text
-            //using(SolidBrush drawBrush = new SolidBrush(Color.FromArgb(0, 70, 213)))
             g.DrawString(Text, this.Font, m_textDrawBrush, i_textPos, 0);
         }
 
@@ -231,7 +230,6 @@ namespace iba.Utility
                 else 
                     return PrevHeight;
             }
-
         }
 
         public event EventHandler AnchorChanged;

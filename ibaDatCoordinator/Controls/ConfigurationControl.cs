@@ -218,18 +218,24 @@ namespace iba.Controls
                 m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = false;
+                if(m_panelScheduledJob != null)
+                    m_panelScheduledJob.m_btTriggerNow.Enabled = false;
             }
             else if(TaskManager.Manager.IsJobStarted(m_data.Guid))
             {
                 m_applyToRunningBtn.Enabled = true;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = true;
+                if(m_panelScheduledJob != null)
+                    m_panelScheduledJob.m_btTriggerNow.Enabled = true;
             }
             else
             {
                 m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = m_data.Enabled;
                 m_stopButton.Enabled = false;
+                if(m_panelScheduledJob != null)
+                    m_panelScheduledJob.m_btTriggerNow.Enabled = false;
             }
         }
 

@@ -381,6 +381,21 @@ namespace iba.Controls
             else if (samples > 1.0e7) return TimeBaseAcceptability.Questionable;
             else return TimeBaseAcceptability.Allowed;
         }
+
+        private void m_btShowTrigger_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_btTriggerNow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_startButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public enum TimeBaseAcceptability

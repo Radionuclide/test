@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceProcess;
+using System.Linq;
 using iba.Data;
 using iba.Controls;
 using iba.Utility;
@@ -119,8 +120,9 @@ namespace iba
             m_configTreeView.StateImageList = confsImageList2;
             ImageList statImageList = new ImageList();
             statImageList.Images.Add(iba.Properties.Resources.configuration);
-            statImageList.Images.Add(iba.Properties.Resources.brokenfile);
+            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
             statImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
+            statImageList.Images.Add(iba.Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
 
             m_quitForm = new QuitForm(this);
@@ -602,31 +604,46 @@ namespace iba
                 ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, ConfigurationData.JobTypeEnum.DatTriggered);
                 TaskManager.Manager.AddConfiguration(newData);
             }
-            List<ConfigurationData> confs = TaskManager.Manager.Configurations;
+
+            //add three top nodes
+            m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.StandardJobsNodeParent, CONFIGURATION_INDEX, CONFIGURATION_INDEX));
+            m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
+            m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
+
+            List<ConfigurationData> confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c=> c.JobType == ConfigurationData.JobTypeEnum.DatTriggered));
             confs.Sort(delegate (ConfigurationData a, ConfigurationData b) {return a.TreePosition.CompareTo(b.TreePosition);});
             foreach (ConfigurationData confIt in confs)
-                m_configTreeView.Nodes.Add(CreateConfigurationNode(confIt));
+                m_configTreeView.Nodes[0].Nodes.Add(CreateConfigurationNode(confIt));
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.Scheduled));
+            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach(ConfigurationData confIt in confs)
+                m_configTreeView.Nodes[1].Nodes.Add(CreateConfigurationNode(confIt));
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.OneTime));
+            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach(ConfigurationData confIt in confs)
+                m_configTreeView.Nodes[2].Nodes.Add(CreateConfigurationNode(confIt));
+
 
             //add the new Configuration node
             TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText, NEWCONF_INDEX, NEWCONF_INDEX);
             newConfNode.ForeColor = Color.Blue;
             newConfNode.Tag = new NewConfigurationTreeItemData(this);
-            m_configTreeView.Nodes.Add(newConfNode);
+            m_configTreeView.Nodes[0].Nodes.Add(newConfNode);
 
             //add the scheduled Configuration node
             TreeNode newSConfNode = new TreeNode(iba.Properties.Resources.addScheduledConfigurationText, NEW_SCHEDULED_CONF_INDEX, NEW_SCHEDULED_CONF_INDEX);
             newSConfNode.ForeColor = Color.Blue;
             newSConfNode.Tag = new NewScheduledConfigurationTreeItemData(this);
-            m_configTreeView.Nodes.Add(newSConfNode);
+            m_configTreeView.Nodes[1].Nodes.Add(newSConfNode);
 
             //add the new one time Configuration node
             TreeNode new1ConfNode = new TreeNode(iba.Properties.Resources.addOneTimeConfigurationText, NEW_ONETIME_CONF_INDEX, NEW_ONETIME_CONF_INDEX);
             new1ConfNode.ForeColor = Color.Blue;
             new1ConfNode.Tag = new NewOneTimeConfigurationTreeItemData(this);
-            m_configTreeView.Nodes.Add(new1ConfNode);
+            m_configTreeView.Nodes[2].Nodes.Add(new1ConfNode);
  
             m_configTreeView.EndUpdate();
-            m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
+            m_configTreeView.SelectedNode = m_configTreeView.Nodes[0].Nodes[0];
             UpdateTreePositions();
             UpdateButtons();
         }
@@ -635,25 +652,30 @@ namespace iba
         {
             m_statusTreeView.BeginUpdate();
             m_statusTreeView.Nodes.Clear();
-
-            List<ConfigurationData> confs = TaskManager.Manager.Configurations;
-            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-            foreach (ConfigurationData confIt in confs)
+            m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.StandardJobsNodeParent, CONFIGURATION_INDEX, CONFIGURATION_INDEX));
+            m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
+            m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
+            List<ConfigurationData> allconfs = TaskManager.Manager.Configurations;
+            List<ConfigurationData>[] splitconfs = {new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.DatTriggered)),
+                                                    new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Scheduled)),
+                                                    new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.OneTime)),
+                                                        };
+            for(int jobtypeindex = 0; jobtypeindex < 3; jobtypeindex++)
             {
-                TreeNode statNode;              
-                if (confIt.OnetimeJob)
-                    statNode = new TreeNode(confIt.Name, 2, 2);
-                else
-                    statNode = new TreeNode(confIt.Name, 0, 0);
-
-                statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
-                MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
-                m_statusTreeView.Nodes.Add(statNode);
-                if (confIt.LimitTimesTried)
+                splitconfs[jobtypeindex].Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                foreach(ConfigurationData confIt in splitconfs[jobtypeindex])
                 {
-                    TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 1, 1);
-                    permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, confIt);
-                    statNode.Nodes.Add(permFailedNode);
+                    TreeNode statNode;
+                    statNode = new TreeNode(confIt.Name, jobtypeindex, jobtypeindex);
+                    statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
+                    MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
+                    m_statusTreeView.Nodes.Add(statNode);
+                    if(confIt.LimitTimesTried)
+                    {
+                        TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 3, 3);
+                        permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, confIt);
+                        statNode.Nodes.Add(permFailedNode);
+                    }
                 }
             }
             m_statusTreeView.EndUpdate();
@@ -2506,15 +2528,18 @@ namespace iba
 
         private void UpdateTreePositions()
         {
-            foreach (TreeNode node in m_configTreeView.Nodes)
+            foreach(TreeNode parentNode in m_configTreeView.Nodes)
             {
-                ConfigurationTreeItemData dat = (node.Tag as ConfigurationTreeItemData);
-                if (dat != null)
+                foreach(TreeNode node in parentNode.Nodes)
                 {
-                    dat.ConfigurationData.TreePosition = node.Index;
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                    ConfigurationTreeItemData dat = (node.Tag as ConfigurationTreeItemData);
+                    if(dat != null)
                     {
-                        TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.Guid, node.Index);
+                        dat.ConfigurationData.TreePosition = node.Index;
+                        if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                        {
+                            TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.Guid, node.Index);
+                        }
                     }
                 }
             }

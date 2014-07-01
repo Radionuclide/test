@@ -1996,6 +1996,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One Time Jobs.
+        /// </summary>
+        internal static string OneTimeJobsNodeParent {
+            get {
+                return ResourceManager.GetString("OneTimeJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finished scanning directory {0} for .dat files, {1} files found.
         /// </summary>
         internal static string OnTimeJobDirScanFinished {
@@ -2405,6 +2414,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scheduled Jobs.
+        /// </summary>
+        internal static string ScheduledJobsNodeParent {
+            get {
+                return ResourceManager.GetString("ScheduledJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The arguments for the script could not be parsed.
         /// </summary>
         internal static string ScriptArgumentsCouldNotBeParsed {
@@ -2567,6 +2585,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("standalone", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard Jobs.
+        /// </summary>
+        internal static string StandardJobsNodeParent {
+            get {
+                return ResourceManager.GetString("StandardJobsNodeParent", resourceCulture);
             }
         }
         

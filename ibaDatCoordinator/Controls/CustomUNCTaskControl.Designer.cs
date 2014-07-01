@@ -76,7 +76,6 @@
             this.Size = new System.Drawing.Size(666, 600);
             this.m_gbTarget.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
