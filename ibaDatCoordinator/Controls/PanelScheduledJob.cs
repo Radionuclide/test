@@ -38,7 +38,7 @@ namespace iba.Controls
             m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " HH:mm:ss";
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
             m_repeatEveryOptions = new TimeSpan[] {TimeSpan.FromMinutes(5),TimeSpan.FromMinutes(10),TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1)};
-            m_repeatDurationOptions = new TimeSpan[] {TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
+            m_repeatDurationOptions = new TimeSpan[] {TimeSpan.Zero, TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
             m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
             m_hdStorePicker.Dock = DockStyle.Fill;
             this.gbHD.Controls.Add(this.m_hdStorePicker);
@@ -173,6 +173,17 @@ namespace iba.Controls
             m_weekSettingsCtrl.Visible = m_rbWeekly.Checked;
             m_monthSettingsCtrl.Visible = m_rbMonthly.Checked;
             m_daySettingsCtrl.Visible = m_rbDaily.Checked;
+
+            if(m_rbOneTime.Checked || m_rbDaily.Checked)
+            {
+                m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " HH:mm:ss";
+                m_dtStart.ShowUpDown = false;
+            }
+            else
+            {
+                m_dtStart.CustomFormat = "           HH:mm:ss";
+                m_dtStart.ShowUpDown = true;
+            }
         }
 
         private TimeSpan m_tsStart;

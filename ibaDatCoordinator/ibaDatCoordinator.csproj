@@ -324,6 +324,7 @@
     <Compile Include="Processing\IbaAnalyzerMonitor.cs" />
     <Compile Include="Processing\Notifier.cs" />
     <Compile Include="Processing\TCPWatchdog.cs" />
+    <Compile Include="Processing\TriggerCalculator.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
     <Compile Include="Dialogs\StartServiceDialog.cs">
       <SubType>Form</SubType>

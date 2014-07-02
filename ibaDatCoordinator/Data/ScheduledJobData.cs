@@ -142,10 +142,17 @@ namespace iba.Data
             set { m_HDStores = value; }
         }
 
+        private static DateTime Round(DateTime dateTime, TimeSpan interval)
+        {
+            var halfIntervelTicks = ((interval.Ticks + 1) >> 1);
+
+            return dateTime.AddTicks(halfIntervelTicks - ((dateTime.Ticks + halfIntervelTicks) % interval.Ticks));
+        }
+
         //time ranges
         public ScheduledJobData()
         {
-            m_baseTriggerTime = DateTime.Now;
+            m_baseTriggerTime = Round(DateTime.Now, TimeSpan.FromHours(1));
             m_triggerType = TriggerTypeEnum.Daily;
             m_dayTriggerEveryNDay = 1;
             m_weekTriggerEveryNWeek = 1;
