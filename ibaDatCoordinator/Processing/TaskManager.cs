@@ -714,9 +714,7 @@ namespace iba.Processing
 
             t.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             double factor = 1 - data.PercentageFree / 100.0;
-            double result = (data.TotalSize / 1024 / 1024) * factor;
-
-            t.Quota = (uint)result;
+            t.Quota = (uint)((data.TotalSize / 1024 / 1024) * factor);
 
             var quota = new FileQuotaCleanup(t, "*.*");
             quota.FastSearch = true;
