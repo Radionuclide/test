@@ -695,7 +695,7 @@ namespace iba.Processing
             }
 
             var cts = new CancellationTokenSource();
-            var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts))
+            var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts.Token))
                 .ContinueWith((cleanup) =>
                 {
                     TaskControl tc;
@@ -705,11 +705,11 @@ namespace iba.Processing
             m_globalCleanupWorker.TryAdd(data.DriveName, new TaskControl(task, cts));
         }
 
-        private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationTokenSource cts)
+        private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationToken ct)
         {
-            PostponeStartup(cts);
+            PostponeStartup(ct);
 
-            if (cts.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
                 return;
 
             var t = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
@@ -719,13 +719,13 @@ namespace iba.Processing
             double factor = 1 - data.PercentageFree / 100.0;
             t.Quota = (uint)((data.TotalSize / 1024 / 1024) * factor);
 
-            var quota = new FileQuotaCleanup(t, "*.*");
+            var quota = new FileQuotaCleanup(taskData, ".dat", ct);
             quota.FastSearch = true;
-            quota.NewLogMessage += (s, e) => { Log(e.Message, t.DestinationMapUNC); };
+            quota.LogMessageReceived += (s, e) => { Log(e.Message, taskData.DestinationMapUNC); };
 
             while (true)
             {
-                if (cts.IsCancellationRequested)
+                if (ct.IsCancellationRequested)
                     return;
 
                 var sw = Stopwatch.StartNew();
@@ -734,7 +734,7 @@ namespace iba.Processing
                 sw.Stop();
                 Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
 
-                if (cts.IsCancellationRequested)
+                if (ct.IsCancellationRequested)
                     return;
 
                 sw.Restart();
@@ -742,7 +742,8 @@ namespace iba.Processing
                 sw.Stop();
                 Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
 
-                bool cancelled = cts.Token.WaitHandle.WaitOne(data.RescanTime * 1000 * 60);
+                Log(Logging.Level.Info, String.Format("Next cleanup at {0:T}", System.DateTime.Now.AddMinutes(data.RescanTime)), data.DriveName);
+                bool cancelled = ct.WaitHandle.WaitOne(data.RescanTime * 60000);
                 if (cancelled)
                     return;
             }
@@ -750,7 +751,7 @@ namespace iba.Processing
 
         }
 
-        private static void PostponeStartup(CancellationTokenSource cts)
+        private static void PostponeStartup(CancellationToken ct)
         {
             bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
             int minutes = TaskManager.Manager.PostponeMinutes;
@@ -761,7 +762,7 @@ namespace iba.Processing
 
             while (((UInt32)System.Environment.TickCount) / 60000 < minutes)
             {
-                if (cts.IsCancellationRequested)
+                if (ct.IsCancellationRequested)
                     break;
 
                 Thread.Sleep(TimeSpan.FromSeconds(5.0));

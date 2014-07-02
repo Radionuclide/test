@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using iba.Data;
 using iba.Utility;
 using System.Diagnostics;
+using System.Threading;
 
 namespace iba.Processing
 {
@@ -33,12 +34,19 @@ namespace iba.Processing
         private bool m_fastSearch;
         string m_extension;
         UInt64 m_size;
+        CancellationToken m_cancelToken = new CancellationToken(false);
 
         public FileQuotaCleanup(TaskDataUNC task, string extension)
         {
             m_task = task;
             m_files = new LinkedList<String>();
             m_extension = extension;
+        }
+
+        public FileQuotaCleanup(TaskDataUNC task, string extension, CancellationToken ct)
+            : this(task, extension)
+        {
+            m_cancelToken = ct;
         }
 
         public bool FastSearch
@@ -88,7 +96,7 @@ namespace iba.Processing
             }
             m_task = newTask;
         }
-        
+
         struct DateAndName
         {
             public DateTime time;
@@ -118,6 +126,8 @@ namespace iba.Processing
                     {
                         try
                         {
+                            if (m_cancelToken.IsCancellationRequested)
+                                return;
 
                             datNam.filename = inf.FullName;
                             datNam.time = inf.LastWriteTime;
@@ -146,6 +156,9 @@ namespace iba.Processing
                             {
                                 try
                                 {
+                                    if (m_cancelToken.IsCancellationRequested)
+                                        return;
+
                                     datNam.filename = inf.FullName;
                                     datNam.time = inf.LastWriteTime;
                                     DateAndNames.Add(datNam);
@@ -169,6 +182,9 @@ namespace iba.Processing
                     {
                         try
                         {
+                            if (m_cancelToken.IsCancellationRequested)
+                                return;
+
                             FileInfo inf = new FileInfo(file);
                             datNam.filename = file;
                             datNam.time = inf.LastWriteTime;
@@ -279,6 +295,8 @@ namespace iba.Processing
 
             while (m_size > GetQuota() && m_files.Count > 0)
             {
+                if (m_cancelToken.IsCancellationRequested)
+                    break;
                 //if (bFirst)
                 //{
                 //    //string message = String.Format("Quota Exceeded: filesize: {0}  Quota: {1} Cleaning up files", m_size, m_task.Quota);
@@ -352,6 +370,7 @@ namespace iba.Processing
                 }
                 m_files.RemoveFirst();
             }
+
             Log(Logging.Level.Debug, String.Format("Deleted {0} files, freed {1}",
                 startFilesCount - m_files.Count,
                 PathUtil.GetSizeReadable((long)(startSize - m_size))
