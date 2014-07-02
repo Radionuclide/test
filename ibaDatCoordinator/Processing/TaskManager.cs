@@ -695,8 +695,6 @@ namespace iba.Processing
             }
 
             var cts = new CancellationTokenSource();
-            //var UISyncContext = TaskScheduler.FromCurrentSynchronizationContext();
-
             var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts))
                 .ContinueWith((cleanup) =>
                 {
@@ -709,6 +707,11 @@ namespace iba.Processing
 
         private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationTokenSource cts)
         {
+            PostponeStartup(cts);
+
+            if (cts.IsCancellationRequested)
+                return;
+
             var t = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
             t.DestinationMapUNC = data.DriveName;
 
@@ -745,6 +748,24 @@ namespace iba.Processing
             }
 
 
+        }
+
+        private static void PostponeStartup(CancellationTokenSource cts)
+        {
+            bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
+            int minutes = TaskManager.Manager.PostponeMinutes;
+
+            //wait until computer is fully started (if selected so)
+            if (!bPostpone)
+                return;
+
+            while (((UInt32)System.Environment.TickCount) / 60000 < minutes)
+            {
+                if (cts.IsCancellationRequested)
+                    break;
+
+                Thread.Sleep(TimeSpan.FromSeconds(5.0));
+            }
         }
 
         private void Log(string message, string cleanupPath)
