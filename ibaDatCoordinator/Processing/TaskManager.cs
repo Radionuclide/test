@@ -700,6 +700,7 @@ namespace iba.Processing
                 {
                     TaskControl tc;
                     m_globalCleanupWorker.TryRemove(data.DriveName, out tc);
+                    Log(Logging.Level.Info, "Stop Global Cleanup", data.DriveName);
                 });
 
             m_globalCleanupWorker.TryAdd(data.DriveName, new TaskControl(task, cts));
@@ -707,17 +708,19 @@ namespace iba.Processing
 
         private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationToken ct)
         {
+            var taskData = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
+            taskData.DestinationMapUNC = data.DriveName;
+
+            Log(Logging.Level.Info, "Start Global Cleanup", data.DriveName, taskData);
+
             PostponeStartup(ct);
 
             if (ct.IsCancellationRequested)
                 return;
 
-            var t = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
-            t.DestinationMapUNC = data.DriveName;
-
-            t.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             double factor = 1 - data.PercentageFree / 100.0;
-            t.Quota = (uint)((data.TotalSize / 1024 / 1024) * factor);
+            taskData.Quota = (uint)((data.TotalSize / 1024 / 1024) * factor);
 
             var quota = new FileQuotaCleanup(taskData, ".dat", ct);
             quota.FastSearch = true;
@@ -729,10 +732,10 @@ namespace iba.Processing
                     return;
 
                 var sw = Stopwatch.StartNew();
-                Log("Cleanup start", t.DestinationMapUNC);
+                Log("Cleanup start", taskData.DestinationMapUNC);
                 quota.Init();
                 sw.Stop();
-                Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
+                Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC);
 
                 if (ct.IsCancellationRequested)
                     return;
@@ -740,7 +743,7 @@ namespace iba.Processing
                 sw.Restart();
                 quota.Clean("Cleanup");
                 sw.Stop();
-                Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", t.DestinationMapUNC);
+                Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC);
 
                 Log(Logging.Level.Info, String.Format("Next cleanup at {0:T}", System.DateTime.Now.AddMinutes(data.RescanTime)), data.DriveName);
                 bool cancelled = ct.WaitHandle.WaitOne(data.RescanTime * 60000);
@@ -781,6 +784,37 @@ namespace iba.Processing
 
         }
 
+        internal void Log(Logging.Level level, string message)
+        {
+            LogExtraData data = new LogExtraData(String.Empty, null, null);
+            LogData.Data.Log(level, message, (object)data);
+        }
+
+        internal void Log(Logging.Level level, string message, string datfile)
+        {
+            LogExtraData data = new LogExtraData(datfile, null, null);
+            LogData.Data.Log(level, message, (object)data);
+            if (level == Logging.Level.Exception)
+            {
+                if (message.Contains("The operation"))
+                {
+                    string debug = message;
+                }
+            }
+        }
+
+        internal void Log(Logging.Level level, string message, string datfile, TaskData task)
+        {
+            LogExtraData data = new LogExtraData(datfile, task, null);
+            LogData.Data.Log(level, message, (object)data);
+            if (level == Logging.Level.Exception)
+            {
+                if (message != null && message.Contains("The operation"))
+                {
+                    string debug = message;
+                }
+            }
+        }
     }
 
 
