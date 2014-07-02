@@ -338,7 +338,7 @@ namespace Alunorf_sinec_h1_plugin
                     result = H1Result.TELEGRAM_ERROR;
                     return false;
                 }
-                *((UInt16*)(pBuffer)) = (UInt16)(bytesSendRequired[index]);
+                *((UInt16*)(pBuffer)) = ReverseBytes((UInt16)(bytesSendRequired[index]));
             }
 
             try
@@ -354,6 +354,11 @@ namespace Alunorf_sinec_h1_plugin
                 return false;
             }
             return true;
+        }
+
+        public static UInt16 ReverseBytes(UInt16 value)
+        {
+            return (UInt16)((value & 0xFFU) << 8 | (value & 0xFF00U) >> 8);
         }
 
         private void OnMessageSend(IAsyncResult ar)
@@ -438,7 +443,7 @@ namespace Alunorf_sinec_h1_plugin
                     result = H1Result.TELEGRAM_ERROR;
                     return false;
                 }
-                *((UInt16*)(pBuffer)) = (UInt16)(bytesSendRequired[index]);
+                *((UInt16*)(pBuffer)) = ReverseBytes((UInt16)(bytesSendRequired[index]));
             }
 
             try
@@ -488,7 +493,7 @@ namespace Alunorf_sinec_h1_plugin
 			        {
 				        //Check if we have received the complete message
                         //CODREQ_HEADER* pMsg = (CODREQ_HEADER*) pBuf;
-                        UInt32 msgLength = (UInt32)(*((UInt16*)pBuf));
+                        UInt32 msgLength = (UInt32)(ReverseBytes(*((UInt16*)pBuf)));
                         if(recvLength < msgLength)
                         {
                             //Not enough data available yet

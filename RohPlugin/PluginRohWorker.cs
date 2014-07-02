@@ -123,6 +123,7 @@ namespace Alunorf_roh_plugin
                     request.KeepAlive = false;
                     request.UsePassive = true;
                     request.UseBinary = true;
+                    request.Proxy = null;
                     request.Method = WebRequestMethods.Ftp.UploadFile;
                     FileInfo finf = new FileInfo(tempFilePath);
                     request.ContentLength = (finf).Length;
