@@ -316,22 +316,32 @@ namespace iba
                 TreeNode confNode = m_configTreeView.SelectedNode;
                 if (confNode != null)
                 {
-                    if (!(confNode.Tag is ConfigurationTreeItemData))
+                    bool skipFurther = false;
+                    for(int index = 0; index < 3; index++)
+                    {
+                        if(confNode == m_configTreeView.Nodes[index])
+                        {
+                            m_statusTreeView.SelectedNode = m_statusTreeView.Nodes[index];
+                            skipFurther = true;
+                        }
+                    }
+                    if (!skipFurther && confNode.Tag != null && !(confNode.Tag is ConfigurationTreeItemData))
                         confNode = confNode.Parent;
-                    if (confNode.Tag is ConfigurationTreeItemData)
+                    if (!skipFurther && confNode.Tag is ConfigurationTreeItemData)
                     {
 
                         ConfigurationData dat = (confNode.Tag as ConfigurationTreeItemData).ConfigurationData;
                         TreeNode statNode = null;
-                        foreach (TreeNode statCandidate in m_statusTreeView.Nodes)
-                        {
-                            if (!(statCandidate.Tag is StatusTreeItemData)) continue;
-                            if ((statCandidate.Tag as StatusTreeItemData).CorrConfigurationData.Guid == dat.Guid)
+                        for(int index = 0; index < 3; index++ )
+                            foreach(TreeNode statCandidate in m_statusTreeView.Nodes[index].Nodes)
                             {
-                                statNode = statCandidate;
-                                break;
+                                if(!(statCandidate.Tag is StatusTreeItemData)) continue;
+                                if((statCandidate.Tag as StatusTreeItemData).CorrConfigurationData.Guid == dat.Guid)
+                                {
+                                    statNode = statCandidate;
+                                    break;
+                                }
                             }
-                        }
                         if (statNode != null)
                             m_statusTreeView.SelectedNode = statNode;
                     }
@@ -345,7 +355,8 @@ namespace iba
                 }
 				else
 				{
-                    doSelection(m_statusTreeView.SelectedNode, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
+                    if(m_statusTreeView.SelectedNode.Tag != null)
+                        doSelection(m_statusTreeView.SelectedNode, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
 				}
                 statusToolStripMenuItem.Enabled = false;
                 pasteToolStripMenuItem.Enabled = false;
@@ -360,35 +371,43 @@ namespace iba
             {
                 SaveRightPaneControl();
                 TreeNode statNode = m_statusTreeView.SelectedNode;
-                if (statNode != null && statNode.Parent != null) statNode = statNode.Parent; //was on permanent error files
+                bool skipFurther = false;
                 if (statNode != null)
+                    for(int index = 0; index < 3; index++)
+                    {
+                        if(statNode == m_statusTreeView.Nodes[index])
+                        {
+                            m_configTreeView.SelectedNode = m_configTreeView.Nodes[index];
+                            skipFurther = true;
+                        }
+                    }
+                if (!skipFurther && statNode != null && statNode.Parent != null && statNode.Parent.Parent != null) statNode = statNode.Parent; //was on permanent error files
+                if (!skipFurther && statNode != null && statNode.Parent != null)
                 {
                     ConfigurationData confDat = (statNode.Tag as StatusTreeItemData).CorrConfigurationData;
 
-                    foreach (TreeNode confCandidateNode in m_configTreeView.Nodes)
-                    {
-                        if (confCandidateNode.Tag is ConfigurationTreeItemData)
+                    for(int index = 0; index < 3; index++)
+                        foreach(TreeNode confCandidateNode in m_configTreeView.Nodes[index].Nodes)
                         {
-                            ConfigurationData confCandidateDat = (confCandidateNode.Tag as ConfigurationTreeItemData).ConfigurationData;
-                            if (confCandidateDat.Guid == confDat.Guid)
+                            if(confCandidateNode.Tag is ConfigurationTreeItemData)
                             {
-                                m_configTreeView.SelectedNode = confCandidateNode;
-                                break;
+                                ConfigurationData confCandidateDat = (confCandidateNode.Tag as ConfigurationTreeItemData).ConfigurationData;
+                                if(confCandidateDat.Guid == confDat.Guid)
+                                {
+                                    m_configTreeView.SelectedNode = confCandidateNode;
+                                    break;
+                                }
                             }
                         }
-                    }
                 }
                 if (m_configTreeView.SelectedNode == null)
                 {
-                    if (m_configTreeView.Nodes.Count > 0) //do not choose the new config node
-                        m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
-                    else
-                        SetRightPaneControl(null, m_configPane.Text, null);
+                    SetRightPaneControl(null, m_configPane.Text, null);
                 }
                 else
                 {
                     TreeItemData ti = m_configTreeView.SelectedNode.Tag as TreeItemData;
-                    doSelection(m_configTreeView.SelectedNode, ti.What);
+                    if (ti != null) doSelection(m_configTreeView.SelectedNode, ti.What);
                 }
                 configurationToolStripMenuItem.Enabled = false;
                 statusToolStripMenuItem.Enabled = true;
@@ -608,30 +627,16 @@ namespace iba
         {
             m_configTreeView.BeginUpdate();
 			m_configTreeView.Nodes.Clear();
-            if (TaskManager.Manager.Count == 0)
-            {
-                ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, ConfigurationData.JobTypeEnum.DatTriggered);
-                TaskManager.Manager.AddConfiguration(newData);
-            }
+            //if (TaskManager.Manager.Count == 0)
+            //{
+            //    ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, ConfigurationData.JobTypeEnum.DatTriggered);
+            //    TaskManager.Manager.AddConfiguration(newData);
+            //}
 
             //add three top nodes
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.StandardJobsNodeParent, CONFIGURATION_INDEX, CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
-
-            List<ConfigurationData> confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c=> c.JobType == ConfigurationData.JobTypeEnum.DatTriggered));
-            confs.Sort(delegate (ConfigurationData a, ConfigurationData b) {return a.TreePosition.CompareTo(b.TreePosition);});
-            foreach (ConfigurationData confIt in confs)
-                InsertNewConf(confIt);
-            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.Scheduled));
-            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-            foreach(ConfigurationData confIt in confs)
-                InsertNewConf(confIt);
-            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.OneTime));
-            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-            foreach(ConfigurationData confIt in confs)
-                InsertNewConf(confIt);
-
 
             //add the new Configuration node
             TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText, NEWCONF_INDEX, NEWCONF_INDEX);
@@ -650,9 +655,40 @@ namespace iba
             new1ConfNode.ForeColor = Color.Blue;
             new1ConfNode.Tag = new NewOneTimeConfigurationTreeItemData(this);
             m_configTreeView.Nodes[2].Nodes.Add(new1ConfNode);
- 
+
+            TreeNode firstNode = null;
+
+            List<ConfigurationData> confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c=> c.JobType == ConfigurationData.JobTypeEnum.DatTriggered));
+            confs.Sort(delegate (ConfigurationData a, ConfigurationData b) {return a.TreePosition.CompareTo(b.TreePosition);});
+            foreach(ConfigurationData confIt in confs)
+            {
+                TreeNode node = InsertNewConf(confIt);
+                if(firstNode == null) firstNode = node;
+            }
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.Scheduled));
+            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach(ConfigurationData confIt in confs)
+            {
+                TreeNode node = InsertNewConf(confIt);
+                if(firstNode == null) firstNode = node;
+            }
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.OneTime));
+            confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach(ConfigurationData confIt in confs)
+            {
+                TreeNode node = InsertNewConf(confIt);
+                if(firstNode == null) firstNode = node;
+            }
+
+            if (firstNode == null)
+            {
+                ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, ConfigurationData.JobTypeEnum.DatTriggered);
+                TaskManager.Manager.AddConfiguration(newData);
+                firstNode = InsertNewConf(newData);
+            }
+
             m_configTreeView.EndUpdate();
-            m_configTreeView.SelectedNode = m_configTreeView.Nodes[0].Nodes[0];
+            m_configTreeView.SelectedNode = firstNode;
             UpdateTreePositions();
             UpdateButtons();
         }
@@ -678,7 +714,7 @@ namespace iba
                     statNode = new TreeNode(confIt.Name, jobtypeindex, jobtypeindex);
                     statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
                     MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
-                    m_statusTreeView.Nodes.Add(statNode);
+                    m_statusTreeView.Nodes[jobtypeindex].Nodes.Add(statNode);
                     if(confIt.LimitTimesTried)
                     {
                         TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 3, 3);
@@ -694,7 +730,12 @@ namespace iba
         private void OnStatusTreeViewAfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode node = e.Node;
-            if (node == null || node.Tag == null) return;
+            if (node == null) return;
+            if(node.Tag == null) //root items
+            {
+                SetRightPaneControl(null, "", null);
+                return;
+            }
             using (WaitCursor wait = new WaitCursor())
             {
                 doSelection(node, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
@@ -788,6 +829,12 @@ namespace iba
         private void OnConfigurationTreeViewAfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode node = e.Node;
+            if(node == null) return;
+            if(node.Tag == null) //root items
+            {
+                SetRightPaneControl(null, "", null);
+                return;
+            }
             using (WaitCursor wait = new WaitCursor())
             {
                 bool c1 = node.Tag is NewConfigurationTreeItemData;
@@ -807,7 +854,7 @@ namespace iba
                     new SetNextName(newData);
                     TaskManager.Manager.AddConfiguration(newData);
                     m_configTreeView.BeginUpdate();
-                    InsertNewConf(newData);
+                    node = InsertNewConf(newData);
                     //loadConfigurations();
                     m_configTreeView.EndUpdate();
                     m_configTreeView.SelectedNode = node;
@@ -925,16 +972,15 @@ namespace iba
                 TreeNode parent = node.Parent;
                 if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid))
                     return;
-                int newIndex = node.Index - 1;
+                TreeNode nextNode = node.NextNode;
+                if(nextNode == null || nextNode.Index == nextNode.Parent.Nodes.Count-1) nextNode = node.PrevNode;
+                if(nextNode == null) nextNode = node.Parent;
+                
+                
                 m_configTreeView.SelectedNode = null;
                 TaskManager.Manager.RemoveConfiguration((node.Tag as ConfigurationTreeItemData).ConfigurationData);
                 m_configTreeView.Nodes.Remove(node);
-                if ((newIndex < m_configTreeView.Nodes.Count) && (newIndex >= 0))
-                    m_configTreeView.SelectedNode = parent.Nodes[newIndex];
-                else if (parent.Nodes.Count > 0)
-                    m_configTreeView.SelectedNode = m_configTreeView.Nodes[0];
-                else
-                    m_configTreeView.SelectedNode = null;
+                m_configTreeView.SelectedNode = nextNode;
                 UpdateTreePositions();
             }
             else if (node.Tag is NewConfigurationTreeItemDataBase)
@@ -1020,8 +1066,7 @@ namespace iba
                 //loadConfigurations();
                 m_configTreeView.EndUpdate();
                 UpdateTreePositions();
-                node = m_configTreeView.Nodes[index];
-                m_configTreeView.SelectedNode = node;
+                m_configTreeView.SelectedNode = tn;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
                 loadStatuses();
                 UpdateButtons();
@@ -1271,10 +1316,10 @@ namespace iba
                 return;
             TreeNode node = m_configTreeView.GetNodeAt(e.X, e.Y);
             ArrayList items = new ArrayList();
-            if (node != null)
+            if (node != null && node.Tag != null)
             {
                 bool started = false;
-                if (node.Parent != null) //tasknode
+                if (node.Parent != null && node.Parent.Parent != null) //tasknode
                     started = TaskManager.Manager.IsJobStarted((node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
                 else if (node.Tag is ConfigurationTreeItemData)
                     started = TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid);
@@ -2377,7 +2422,6 @@ namespace iba
             get { return m_stopButton; }
         }
 
-
         static public void strikeOutNodeText(TreeNode node, bool cross)
         {
             if (cross)
@@ -2444,14 +2488,18 @@ namespace iba
 
             if (draggedNode.Tag is ConfigurationTreeItemData && e.Effect == DragDropEffects.Move)
             {
+                int rootIndex1 = DataToRootNodeIndex((draggedNode.Tag as ConfigurationTreeItemData ).ConfigurationData);
+                int rootIndex2 = targetNode.Parent==null?targetNode.Index:
+                    DataToRootNodeIndex((draggedNode.Tag as ConfigurationTreeItemData ).ConfigurationData);
+                if(rootIndex1 != rootIndex2) return;
                 //just move the nodes, no actual change
                 m_configTreeView.SelectedNode = null;
                 int index = targetNode.Index;
                 m_configTreeView.BeginUpdate();
-                m_configTreeView.Nodes.Remove(draggedNode);
-                m_configTreeView.Nodes.Insert(index, draggedNode);
+                m_configTreeView.Nodes[rootIndex1].Nodes.Remove(draggedNode);
+                m_configTreeView.Nodes[rootIndex1].Nodes.Insert(index, draggedNode);
                 m_configTreeView.EndUpdate();
-                m_configTreeView.SelectedNode = m_configTreeView.Nodes[index];
+                m_configTreeView.SelectedNode = m_configTreeView.Nodes[rootIndex1].Nodes[index];
                 UpdateTreePositions();
             }
             else
@@ -2491,7 +2539,27 @@ namespace iba
 
             // Retrieve the node that was dragged.
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-            if ((draggedNode.Tag is ConfigurationTreeItemData) && !(targetNode.Tag is ConfigurationTreeItemData))
+            if(targetNode == null)
+            {
+                if(!(draggedNode.Tag is ConfigurationTreeItemData))
+                    e.Effect = DragDropEffects.None;
+                else
+                    e.Effect = DragDropEffects.All;
+            }
+            else if(targetNode.Tag == null && !(draggedNode.Tag is ConfigurationTreeItemData))
+            {
+                e.Effect = DragDropEffects.None;
+            }
+            else if(targetNode.Tag == null)
+            {
+                if(DataToRootNodeIndex((draggedNode.Tag as ConfigurationTreeItemData).ConfigurationData) == targetNode.Index)
+                {
+                    if((ModifierKeys & Keys.Control) == Keys.Control)
+                        e.Effect = DragDropEffects.Copy;
+                    else e.Effect = DragDropEffects.Copy | DragDropEffects.Move;
+                }
+            }
+            else if ((draggedNode.Tag is ConfigurationTreeItemData) && !(targetNode.Tag is ConfigurationTreeItemData))
             {
                 e.Effect = DragDropEffects.None;
             }
@@ -2543,7 +2611,7 @@ namespace iba
             {
                 TreeNode draggedNode = (TreeNode) e.Item;
                 m_configTreeView.SelectedNode = draggedNode;
-                if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase))
+                if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase) || draggedNode.Tag == null)
                     DoDragDrop(e.Item, DragDropEffects.Copy | DragDropEffects.Move);
             }
         }
@@ -2568,6 +2636,7 @@ namespace iba
                 }
             }
         }
+
         #region Service related methods
         public void OnStartService()
         {
@@ -2914,5 +2983,3 @@ namespace iba
     }
     #endregion
 }
-
-//TODO: drag drop, main menu, no nodes handling (not inserting empty node, selecting NULL node);

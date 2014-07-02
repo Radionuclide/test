@@ -278,9 +278,14 @@ namespace iba.Controls
             m_startButton.Enabled = m_enableCheckBox.Checked;
             MainForm.strikeOutNodeText(m_manager.LeftTree.SelectedNode, !m_enableCheckBox.Checked);
             int index = MainForm.DataToRootNodeIndex(m_data);
-            foreach (TreeNode node in m_manager.getLeftTree("status").Nodes[index].Nodes)
-                if((node.Tag as StatusTreeItemData).CorrConfigurationData.Guid == m_data.Guid)
-                    MainForm.strikeOutNodeText(node, !m_enableCheckBox.Checked);
+            if(m_manager.getLeftTree("status").Nodes.Count > 0)
+            {
+                foreach(TreeNode node in m_manager.getLeftTree("status").Nodes[index].Nodes)
+                {
+                    if((node.Tag as StatusTreeItemData).CorrConfigurationData.Guid == m_data.Guid)
+                        MainForm.strikeOutNodeText(node, !m_enableCheckBox.Checked);
+                }
+            }
             if(!m_enableCheckBox.Checked)
                 TaskManager.Manager.StopConfiguration(m_data.Guid);
             MainForm t = m_manager as MainForm;

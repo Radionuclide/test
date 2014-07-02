@@ -160,11 +160,11 @@
     <Compile Include="Controls\PanelDatFilesJob.Designer.cs">
       <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PanelSheduledJob.cs">
+    <Compile Include="Controls\PanelScheduledJob.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PanelSheduledJob.designer.cs">
-      <DependentUpon>PanelSheduledJob.cs</DependentUpon>
+    <Compile Include="Controls\PanelScheduledJob.designer.cs">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\WeeklyTriggerSettingsControl.cs">
       <SubType>UserControl</SubType>
@@ -384,9 +384,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
       <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PanelSheduledJob.resx">
-      <DependentUpon>PanelSheduledJob.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\PanelScheduledJob.resx">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusControl.resx">

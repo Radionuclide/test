@@ -125,6 +125,7 @@
             resources.ApplyResources(this.m_cbRetry, "m_cbRetry");
             this.m_cbRetry.Name = "m_cbRetry";
             this.m_cbRetry.UseVisualStyleBackColor = true;
+            this.m_cbRetry.CheckedChanged += new System.EventHandler(this.m_cbRetry_CheckedChanged);
             // 
             // m_retryUpDown
             // 
