@@ -101,6 +101,12 @@ namespace iba.Processing
         {
             public DateTime time;
             public string filename;
+
+            public DateAndName(string filename, DateTime time)
+            {
+                this.time = time;
+                this.filename = filename;
+            }
         };
 
         private bool FailureWhilePreviouslyScanning;
@@ -117,95 +123,21 @@ namespace iba.Processing
             var sw = Stopwatch.StartNew();
             try
             {
-                DateAndName datNam = new DateAndName();
-
                 if (FastSearch)
-                {
-                    var dir = String.Empty;
-                    foreach (var inf in FastDirectoryEnumerator.EnumerateFiles(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.AllDirectories))
-                    {
-                        try
-                        {
-                            if (m_cancelToken.IsCancellationRequested)
-                                return;
-
-                            datNam.filename = inf.FullName;
-                            datNam.time = inf.LastWriteTime;
-                            DateAndNames.Add(datNam);
-                            m_size += (ulong)inf.Length;
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
-                            FailureWhilePreviouslyScanning = true;
-                        }
-                    }
-                }
+                    TraverseFilesystemFastSearch(DateAndNames);
+                else
+                    TraverseFileSystemClassic(DateAndNames);
 
 
-                if (!FastSearch)
-                {
-                    foreach (string dir in Directory.GetDirectories(m_task.DestinationMapUNC))
-                    {
-                        try
-                        {
-                            DirectoryInfo dirinf = new DirectoryInfo(dir);
-                            List<FileInfo> fileinfs = Utility.PathUtil.GetFilesInSubsSafe("*" + m_extension, dirinf);
-                            foreach (FileInfo inf in fileinfs)
-                            {
-                                try
-                                {
-                                    if (m_cancelToken.IsCancellationRequested)
-                                        return;
-
-                                    datNam.filename = inf.FullName;
-                                    datNam.time = inf.LastWriteTime;
-                                    DateAndNames.Add(datNam);
-                                    m_size += (ulong)inf.Length;
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
-                                    FailureWhilePreviouslyScanning = true;
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorDir + " " + ex.Message, "");
-                            FailureWhilePreviouslyScanning = true;
-                        }
-                    }
-                    foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.TopDirectoryOnly))
-                    {
-                        try
-                        {
-                            if (m_cancelToken.IsCancellationRequested)
-                                return;
-
-                            FileInfo inf = new FileInfo(file);
-                            datNam.filename = file;
-                            datNam.time = inf.LastWriteTime;
-                            DateAndNames.Add(datNam);
-                            m_size += (ulong)inf.Length;
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + " " + ex.Message, "");
-                            FailureWhilePreviouslyScanning = true;
-                        }
-                    }
-                }
+                if (m_cancelToken.IsCancellationRequested)
+                    return;
 
                 //Log(iba.Logging.Level.Exception, String.Format("size after counting {0}", PathUtil.GetSizeReadable((long)m_size)), "");
-
                 DateAndNames.Sort(delegate(DateAndName f1, DateAndName f2)
                 {
                     return f1.time.CompareTo(f2.time);
                 }); //oldest files last
+
 
                 foreach (DateAndName entry in DateAndNames)
                     m_files.AddLast(entry.filename);
@@ -222,6 +154,81 @@ namespace iba.Processing
             Log(iba.Logging.Level.Debug, String.Format("Generate file list took {0} s ", sw.ElapsedMilliseconds / 1000.0), "");
             Log(iba.Logging.Level.Debug, String.Format("{0} files with size of {1}", m_files.Count, PathUtil.GetSizeReadable((long)m_size)), "");
         }
+
+        private void TraverseFileSystemClassic(List<DateAndName> DateAndNames)
+        {
+            foreach (string dir in Directory.GetDirectories(m_task.DestinationMapUNC))
+            {
+                try
+                {
+                    DirectoryInfo dirinf = new DirectoryInfo(dir);
+                    List<FileInfo> fileinfs = Utility.PathUtil.GetFilesInSubsSafe("*" + m_extension, dirinf);
+                    foreach (FileInfo inf in fileinfs)
+                    {
+                        try
+                        {
+                            if (m_cancelToken.IsCancellationRequested)
+                                return;
+
+                            DateAndNames.Add(new DateAndName(inf.FullName, inf.LastWriteTime));
+                            m_size += (ulong)inf.Length;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
+                            FailureWhilePreviouslyScanning = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorDir + " " + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+            foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    if (m_cancelToken.IsCancellationRequested)
+                        return;
+
+                    FileInfo inf = new FileInfo(file);
+                    DateAndNames.Add(new DateAndName(file, inf.LastWriteTime));
+                    m_size += (ulong)inf.Length;
+
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + " " + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+        }
+
+        private void TraverseFilesystemFastSearch(List<DateAndName> DateAndNames)
+        {
+            var dir = String.Empty;
+            foreach (var inf in FastDirectoryEnumerator.EnumerateFiles(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.AllDirectories))
+            {
+                try
+                {
+                    if (m_cancelToken.IsCancellationRequested)
+                        return;
+
+                    m_size += (ulong)inf.Length;
+                    DateAndNames.Add(new DateAndName(inf.FullName, inf.LastWriteTime));
+
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+        }
+
 
         private void Log(Logging.Level level, string message, string datfile)
         {
