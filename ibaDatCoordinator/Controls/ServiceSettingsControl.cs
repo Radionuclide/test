@@ -112,7 +112,7 @@ namespace iba.Controls
             catch { }
             UpdatePassControls();
 
-            m_globalCleanupData = TaskManager.Manager.GlobalCleanupDataList.OrderBy(gc => gc.DriveName);
+            m_globalCleanupData = TaskManager.Manager.GlobalCleanupDataList;
             InitializeDrives();
         }
 
@@ -134,7 +134,7 @@ namespace iba.Controls
         }
 
 
-        private IEnumerable<GlobalCleanupData> m_globalCleanupData = new List<GlobalCleanupData>();
+        private List<GlobalCleanupData> m_globalCleanupData = new List<GlobalCleanupData>();
         private string m_pass;
 
         protected override void OnLoad(EventArgs e)
@@ -255,6 +255,7 @@ namespace iba.Controls
                 case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
             }
             TaskManager.Manager.ProcessPriority = iPc;
+            TaskManager.Manager.GlobalCleanupDataList = m_globalCleanupData;
 
         }
 
@@ -419,7 +420,7 @@ namespace iba.Controls
             tbl_GlobalCleanup.PerformLayout();
 
 
-            foreach (var gcd in m_globalCleanupData)
+            foreach (var gcd in m_globalCleanupData.OrderBy(gc => gc.DriveName))
             {
 
                 var drive = new DriveInfo(gcd.DriveName);

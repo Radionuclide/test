@@ -11,6 +11,7 @@ using System.Diagnostics;
 using iba.Data;
 using iba.Utility;
 using iba.Plugins;
+using System.Collections.Concurrent;
 
 namespace iba.Processing
 {
@@ -617,7 +618,7 @@ namespace iba.Processing
             }
         }
 
-        private Dictionary<string, TaskControl> m_globalCleanupWorker = new Dictionary<string, TaskControl>();
+        private ConcurrentDictionary<string, TaskControl> m_globalCleanupWorker = new ConcurrentDictionary<string, TaskControl>();
 
         private List<GlobalCleanupData> m_globalCleanupDataList;
         public virtual List<GlobalCleanupData> GlobalCleanupDataList
@@ -671,7 +672,7 @@ namespace iba.Processing
         private void StopGlobalCleanup(GlobalCleanupData data)
         {
             TaskControl tc;
-            if (!m_globalCleanupWorker.TryGetValue(data.DriveName, out tc))
+            if (!m_globalCleanupWorker.TryRemove(data.DriveName, out tc))
                 return;
 
             tc.Cts.Cancel();
@@ -680,12 +681,10 @@ namespace iba.Processing
 
         public virtual void ReplaceGlobalCleanupData(GlobalCleanupData data)
         {
+            StopGlobalCleanup(data);
 
             if (!data.Active)
-            {
-                StopGlobalCleanup(data);
                 return;
-            }
 
             data.Active = DriveUtil.IsDriveReady(data.DriveName);
             if (!data.Active)
@@ -700,11 +699,11 @@ namespace iba.Processing
             var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts))
                 .ContinueWith((cleanup) =>
                 {
-                    if (m_globalCleanupWorker.ContainsKey(data.DriveName))
-                        m_globalCleanupWorker.Remove(data.DriveName);
+                    TaskControl tc;
+                    m_globalCleanupWorker.TryRemove(data.DriveName, out tc);
                 });
 
-            m_globalCleanupWorker.Add(data.DriveName, new TaskControl(task, cts));
+            m_globalCleanupWorker.TryAdd(data.DriveName, new TaskControl(task, cts));
         }
 
         private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationTokenSource cts)
@@ -1486,6 +1485,19 @@ namespace iba.Processing
                     return Manager.GlobalCleanupDataList;
                 }
             }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.GlobalCleanupDataList = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.GlobalCleanupDataList = value;
+                }
+            }
         }
+
     }
 }
