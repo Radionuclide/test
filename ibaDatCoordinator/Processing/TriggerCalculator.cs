@@ -57,23 +57,80 @@ namespace iba.Processing
 
         private bool WeeklyTrigger(DateTime from, out DateTime res)
         {
-            throw new NotImplementedException();
+            List<DateTime> initialTriggers = new List<DateTime>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime candidate = m_data.BaseTriggerTime.AddDays(i);
+                if (m_data.WeekTriggerWeekDays.Contains((int)(candidate.DayOfWeek)))
+                    initialTriggers.Add(candidate);
+            }
+            if (initialTriggers.Count == 0)
+            {
+                res = from;
+                return false;
+            }
+            if (initialTriggers[0] > from)
+            {
+                res = initialTriggers[0];
+                return true;
+            }
+            DateTime TimeBefore = DateTime.MinValue;
+            DateTime TimeAfter = DateTime.MaxValue;
+            foreach (DateTime initialTrigger in initialTriggers)
+            {
+                if (initialTrigger > from)
+                {
+                    if (initialTrigger < TimeAfter)
+                        TimeAfter = initialTrigger;
+                }
+                else
+                {
+                    long times = (long)Math.Floor(((double)((from - m_data.BaseTriggerTime).Ticks)) / TimeSpan.FromDays(7*m_data.WeekTriggerEveryNWeek).Ticks);
+                    DateTime TimeBeforeCandidate = m_data.BaseTriggerTime.AddDays(7 * times * m_data.WeekTriggerEveryNWeek);
+                    if (TimeBeforeCandidate > TimeBefore)
+                        TimeBefore = TimeBeforeCandidate;
+                    DateTime TimeAfterCandidate = m_data.BaseTriggerTime.AddDays(7*(times + 1) * m_data.WeekTriggerEveryNWeek);
+                    if (TimeAfterCandidate < TimeAfter)
+                        TimeAfter = TimeAfterCandidate;
+                }
+            }
+            DateTime nextRepeatCandidate;
+            if (!NextRepeat(TimeBefore, from, out nextRepeatCandidate) || nextRepeatCandidate > TimeAfter)
+                res = TimeAfter;
+            else
+                res = nextRepeatCandidate;
+            res = from;
+            return false;
         }
 
         private bool MonthlyTrigger(DateTime from, out DateTime res)
         {
+            if (m_data.MonthTriggerUseDays)
+                return MonthlyTriggerDays(from, out res);
+            else
+                return MonthlyTriggerWeekDays(from, out res);
+        }
+
+        private bool MonthlyTriggerDays(DateTime from, out DateTime res)
+        {
             throw new NotImplementedException();
         }
 
+        private bool MonthlyTriggerWeekDays(DateTime from, out DateTime res)
+        {
+            throw new NotImplementedException();
+        }
+        
         private bool NextRepeat(DateTime baseTime, DateTime from, out DateTime res)
         {
             if(m_data.Repeat)
             {
                 if(m_data.RepeatDuration == TimeSpan.Zero || (from <= m_data.BaseTriggerTime + m_data.RepeatDuration)) //in repeat duration interval
                 {
-                    long times = (long)Math.Ceiling(((double)((from - m_data.BaseTriggerTime).Ticks)) / m_data.RepeatEveryTicks);
+                    long times = (long)Math.Ceiling(((double)((from - m_data.BaseTriggerTime).Ticks)) / m_data.RepeatEveryTicks);                  
                     DateTime candidate = m_data.BaseTriggerTime.AddTicks(times * m_data.RepeatEveryTicks);
-                    if(m_data.RepeatDuration == TimeSpan.Zero || (candidate <= m_data.BaseTriggerTime + m_data.RepeatDuration))
+                    if((m_data.RepeatDuration == TimeSpan.Zero || (candidate <= m_data.BaseTriggerTime + m_data.RepeatDuration))&& candidate > from)
                     {
                         res = candidate;
                         return true;
