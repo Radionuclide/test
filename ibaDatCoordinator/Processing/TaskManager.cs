@@ -657,13 +657,13 @@ namespace iba.Processing
             m_globalCleanupDataList.ForEach(gcd => gcd.Active = gcd.Active && localDriveNames.Contains(gcd.DriveName));
         }
 
-        public void StartAllEnabledGlobalCleanups()
+        virtual public void StartAllEnabledGlobalCleanups()
         {
             foreach (var gcd in m_globalCleanupDataList)
                 ReplaceGlobalCleanupData(gcd);
         }
 
-        private void StopAllGlobalCleanups()
+        virtual public void StopAllGlobalCleanups()
         {
             var workers = new List<TaskControl>(m_globalCleanupWorker.Values);
             workers.ForEach(tc => tc.Cts.Cancel());
@@ -1469,6 +1469,31 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                 }
+            }
+        }
+
+
+        public override void StartAllEnabledGlobalCleanups()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.StartAllEnabledGlobalCleanups();
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override void StopAllGlobalCleanups()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.StopAllGlobalCleanups();
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 

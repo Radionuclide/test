@@ -115,6 +115,7 @@ namespace iba.Services
 
         protected override void OnStop()
         {
+            m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
             m_communicationObject.SaveConfigurations();
 

@@ -256,6 +256,7 @@ namespace iba
                             break;
                     }
                 }
+                TaskManager.Manager.StopAllGlobalCleanups();
                 using (StopWaitDialog waiter = new StopWaitDialog())
                 {
                     waiter.ShowDialog(this);

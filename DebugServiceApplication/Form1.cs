@@ -28,6 +28,7 @@ namespace iba
 
         private void btStop_Click(object sender, EventArgs e)
         {
+            m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
             m_communicationObject.ForwardEvents = false;
             LogData.StopLogger();

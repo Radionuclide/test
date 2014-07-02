@@ -510,6 +510,7 @@ namespace iba
             Program.MainForm.StopButton.Enabled = false;
             Program.MainForm.SetRenderer();
             TaskManager.Manager.StopAllConfigurations();
+            TaskManager.Manager.StopAllGlobalCleanups();
             //logger resetten
             LogData.StopLogger();
             GridViewLogger gv = null;
