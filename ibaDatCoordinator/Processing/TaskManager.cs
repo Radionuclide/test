@@ -632,7 +632,6 @@ namespace iba.Processing
             { 
                 m_globalCleanupDataList = value;
                 SyncGlobalCleanupDataList();
-                StartAllEnabledGlobalCleanups();
             }
         }
 
@@ -648,12 +647,17 @@ namespace iba.Processing
                     m_globalCleanupDataList.Add(gcd);
                 }
             }
-            
+
+            DisableCleanupForNonexistingDrives();
+        }
+
+        private void DisableCleanupForNonexistingDrives()
+        {
             var localDriveNames = new HashSet<string>(DriveUtil.LocalDrives().Select(d => d.Name));
             m_globalCleanupDataList.ForEach(gcd => gcd.Active = gcd.Active && localDriveNames.Contains(gcd.DriveName));
         }
 
-        private void StartAllEnabledGlobalCleanups()
+        public void StartAllEnabledGlobalCleanups()
         {
             foreach (var gcd in m_globalCleanupDataList)
                 ReplaceGlobalCleanupData(gcd);
@@ -662,11 +666,8 @@ namespace iba.Processing
         private void StopAllGlobalCleanups()
         {
             var workers = new List<TaskControl>(m_globalCleanupWorker.Values);
-            foreach (var taskcontrol in workers)
-            {
-                taskcontrol.Cts.Cancel();
-                taskcontrol.Task.Wait();
-            }
+            workers.ForEach(tc => tc.Cts.Cancel());
+            Task.WaitAll(workers.Select(tc => tc.Task).ToArray(), 60000);
         }
 
         private void StopGlobalCleanup(GlobalCleanupData data)

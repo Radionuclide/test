@@ -81,9 +81,12 @@ namespace iba
                             return;
                         }
                         confs = dat.ApplyToManager(m_communicationObject.Manager);
+                        m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
+
                     }
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();
                     m_communicationObject.Manager.Configurations = confs;
+                    m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
                     foreach (ConfigurationData dat in confs)
                     {
                         if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);

@@ -59,6 +59,7 @@ namespace iba.Services
                             dat.relinkChildData();
                         }
                         m_communicationObject.Manager.Configurations = confs;
+                        m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
                         foreach (ConfigurationData dat in confs)
                         {
                             if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
