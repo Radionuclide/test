@@ -27,7 +27,7 @@ namespace iba.Processing
 
     public class FileQuotaCleanup
     {
-        public EventHandler<LogEventArgs> NewLogMessage = delegate { };
+        public EventHandler<LogEventArgs> LogMessageReceived = delegate { };
 
         private TaskDataUNC m_task;
         private LinkedList<String> m_files;
@@ -230,7 +230,7 @@ namespace iba.Processing
             {
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
-            NewLogMessage(this, new LogEventArgs(level, message, data));
+            LogMessageReceived(this, new LogEventArgs(level, message, data));
         }
 
         private ulong GetQuota()
