@@ -82,6 +82,7 @@ namespace XmlExtract
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
                 mes.Aggregat = info.Aggregat;
+                mes.LetzteMsgAmDurchsatz = false;
 
                 //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
                 mes.IDMessgeraet = String.Format("MI_{0}", signalId);
@@ -105,7 +106,12 @@ namespace XmlExtract
                     spur.Raster1D.WerteList = channelData.Data;
 
                 mes.Spur.Add(spur);
+                
             }
+
+            var lastIndex = met.Messung.Count - 1;
+            if (lastIndex >= 0)
+                met.Messung[lastIndex].LetzteMsgAmDurchsatz = true;
 
 
             return met;

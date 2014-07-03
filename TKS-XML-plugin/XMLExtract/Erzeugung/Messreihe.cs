@@ -510,8 +510,6 @@ namespace XmlExtract
         /// Voraussichtlich wird keine weitere Messung zu diesem Arbeitsgangdurchsatz folgen.
         /// </summary>
         public bool LetzteMsgAmDurchsatz { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LetzteMsgAmDurchsatzSpecified { get; set; }
         
         /// <summary>
         /// MessungType class constructor
