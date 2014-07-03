@@ -93,10 +93,10 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright © 2013 iba AG"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright © 2013-2014 iba AG"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_FILE_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_FILE_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_VERSION}"
 VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 Section "MainSection" SEC01
@@ -136,6 +136,10 @@ nodatcoordinator:
   MessageBox MB_ICONSTOP $(NO_DATCO_FOUND)
   Abort
 coordinatorpresent:
+  SetShellVarContext all
+  CreateDirectory $APPDATA\iba\ibaDatCoordinator\TKS-XmlExport
+  SetShellVarContext current
+  
   StrCpy $ibaDatCoordinatorPath $0
   StrCpy $PluginPath "$ibaDatCoordinatorPath\Plugins"
   DetailPrint "Path to plugins is : $PluginPath"

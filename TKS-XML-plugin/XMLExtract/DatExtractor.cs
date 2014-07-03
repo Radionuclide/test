@@ -14,6 +14,7 @@ namespace XmlExtract
     {
         private StringBuilder _error;
         private IbaFile _reader;
+        private ResolveEinheit _resolveEinheit;
 
         /// <summary>
         /// Initializes a new instance of the DatExtractor class.
@@ -21,15 +22,18 @@ namespace XmlExtract
         public DatExtractor()
         {
             _reader = new IbaFile();
+            _resolveEinheit = new ResolveEinheit();
         }
-
-
 
         public string ExtractToXml(string datfile, string xmlfile, IExtractorData data)
         {
             _error = new StringBuilder();
 
             _reader.Open(datfile);
+
+            _resolveEinheit.Open("MessreiheReduziert.xsd");
+            if (!String.IsNullOrEmpty(_resolveEinheit.Error))
+                _error.AppendLine(_resolveEinheit.Error);
 
             MaterialEreignisType met = FillMaterialEreignis(_reader, data);
             if (!String.IsNullOrEmpty(data.XmlSchemaLocation))
@@ -92,7 +96,13 @@ namespace XmlExtract
                 var spur = new SpurType();
                 spur.Bezeichner = signalId;
                 spur.DimensionX = channel.IsDefaultLengthbased() == 1 ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
-                spur.Einheit = ResolveEinheit.Parse(channel.Unit());
+
+                string channelUnit = channel.Unit();
+                spur.Einheit = _resolveEinheit.Parse(channelUnit);
+                if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
+                {
+                    spur.EinheitLocal = channelUnit;
+                }
 
                 ChannelData channelData = GetChannelData(channel);
 
@@ -106,7 +116,7 @@ namespace XmlExtract
                     spur.Raster1D.WerteList = channelData.Data;
 
                 mes.Spur.Add(spur);
-                
+
             }
 
             var lastIndex = met.Messung.Count - 1;

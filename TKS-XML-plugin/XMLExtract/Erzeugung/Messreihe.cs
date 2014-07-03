@@ -212,9 +212,10 @@ namespace XmlExtract
                 
         private System.Nullable<WerteTypeEnum> typField;
         
-        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
-        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
-        public object Einheit { get; set; }
+        public string Einheit { get; set; }
+
+        public string EinheitLocal { get; set; }
+
         /// <summary>
         /// Name der Messreihe im statischen Modell
         /// </summary>
