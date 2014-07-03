@@ -494,7 +494,16 @@ namespace XmlExtract
         /// z.B. DICKE__AL
         /// </summary>
         public string Gruppe { get; set; }
+        
+        [XmlIgnore]
         public System.DateTime Messzeitpunkt { get; set; }
+
+        [XmlElement("Messzeitpunkt")]
+        public string MesszeitpunktString
+        {
+            get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszz"); }
+            set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszz", System.Globalization.CultureInfo.CurrentCulture); }
+        }
         [System.Xml.Serialization.XmlElementAttribute("Spur")]
         public List<SpurType> Spur { get; set; }
         /// <summary>
