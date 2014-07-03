@@ -1,18 +1,16 @@
-diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs
---- E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs	Wed May 15 14:51:38 2013
-+++ E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs	Wed May 15 14:57:08 2013
-@@ -24,7 +24,9 @@
+diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs
+--- E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs	Thu Jun 19 14:58:33 2014
++++ E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs	Thu Jun 19 15:18:58 2014
+@@ -24,6 +24,8 @@
      [System.Xml.Serialization.XmlRootAttribute("Erzeugung", Namespace="http://www.thyssen.com/xml/schema/qbic", IsNullable=false)]
      public partial class MaterialEreignisType
      {
--        
 +        [System.Xml.Serialization.XmlAttributeAttribute("schemaLocation", Namespace = System.Xml.Schema.XmlSchema.InstanceNamespace)]
-+        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/REL-2_4/Messreihe.xsd";
-+
++        public string xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic http://www-eai/schema/qbic/Messung/REL-2_6_1/Messreihe.xsd";
+         
          public MaterialHeaderType MaterialHeader { get; set; }
          [System.Xml.Serialization.XmlElementAttribute("Messung")]
-         public List<MessungType> Messung { get; set; }
-@@ -44,6 +46,7 @@
+@@ -44,56 +46,20 @@
      [System.Diagnostics.DebuggerStepThroughAttribute()]
      [System.ComponentModel.DesignerCategoryAttribute("code")]
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
@@ -20,7 +18,82 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
      public partial class MaterialHeaderType
      {
          
-@@ -193,7 +196,10 @@
+-        private object itemField;
+-        
+-        private System.Nullable<StandortType> standortField;
+-        
+         private System.Nullable<MaterialArtType> materialArtField;
+         
+         [System.Xml.Serialization.XmlElementAttribute("LokalerIdent", typeof(string))]
+         [System.Xml.Serialization.XmlElementAttribute("TKSIdent", typeof(ulong))]
+-        public object Item { get; set; }
++        public object LokalerIdent { get; set; }
+         
+         /// <summary>
+-        /// BO, DO, DU
++        /// BO, DO, DU, oder Anderer
+         /// </summary>
+-        public StandortType Standort
+-        {
+-            get
+-            {
+-                if (this.standortField.HasValue)
+-                {
+-                    return this.standortField.Value;
+-                }
+-                else
+-                {
+-                    return default(StandortType);
+-                }
+-            }
+-            set
+-            {
+-                this.standortField = value;
+-            }
+-        }
+-        
+-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+-        public bool StandortSpecified
+-        {
+-            get
+-            {
+-                return this.standortField.HasValue;
+-            }
+-            set
+-            {
+-                if (value==false)
+-                {
+-                    this.standortField = null;
+-                }
+-            }
+-        }
++        public string Standort { get; set; }
+         
+         /// <summary>
+         /// Nur DU:  BR WB KB VZ BB PK
+@@ -134,21 +100,6 @@
+         }
+     }
+     
+-    /// <summary>
+-    /// Gueltige TKS-Standorte.
+-    /// </summary>
+-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+-    [System.SerializableAttribute()]
+-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+-    public enum StandortType
+-    {
+-        
+-        BO,
+-        
+-        DO,
+-        
+-        DU,
+-    }
+     
+     /// <summary>
+     /// Zusaetzliche Kennzeichnung von Duisburger Material.
+@@ -197,7 +148,10 @@
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
      public partial class Raster1DType
      {
@@ -32,21 +105,26 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
          /// <summary>
          /// Anz. der Werte, wird berechnet wenn fehlend.
          /// </summary>
-@@ -208,9 +214,32 @@
+@@ -207,14 +161,31 @@
+         /// <summary>
+         /// Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)
+         /// </summary>
+-        public double SegmentgroesseX { get; set; }
++        public float SegmentgroesseX { get; set; }
+         /// <summary>
          /// Darf weggelassen werden, dann wird 0 angenommen.
          /// </summary>
-         public double SegmentOffsetX { get; set; }
+-        public double SegmentOffsetX { get; set; }
+-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+-        public bool SegmentOffsetXSpecified { get; set; }
 -        public string WerteX { get; set; }
++        public float SegmentOffsetX { get; set; }
 +        [EditorBrowsable(EditorBrowsableState.Never)]
 +        public string WerteX
 +        {
 +            get
 +            {
-+                var stringItems = new List<string>(WerteList.Count);
-+                foreach (double item in WerteList)
-+                {
-+                    stringItems.Add(XmlConvert.ToString(item));
-+                }
++                var stringItems = WerteList.ConvertAll(w => XmlConvert.ToString(w));
 +                return String.Join(" ", stringItems.ToArray());
 +            }
 +            set
@@ -62,21 +140,18 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
 +        [XmlIgnore]
 +        public List<float> WerteList { get; set; }
      }
--    
-+
+     
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-     [System.SerializableAttribute()]
-     [System.Diagnostics.DebuggerStepThroughAttribute()]
-@@ -232,14 +261,12 @@
-     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+@@ -239,15 +210,11 @@
      public partial class SpurType
      {
--        
+         
 -        private object itemField;
 -        
-+                
          private System.Nullable<WerteTypeEnum> typField;
          
+-        private BezugDimensionEnum dimensionXField;
+-        
          [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
          [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
 -        public object Item { get; set; }
@@ -84,7 +159,7 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
          /// <summary>
          /// Name der Messreihe im statischen Modell
          /// </summary>
-@@ -248,6 +275,14 @@
+@@ -256,6 +223,14 @@
          /// Darf weggelassen werden; dann werden die Werte berechnet.
          /// </summary>
          public StatistikType Statistik { get; set; }
@@ -97,9 +172,19 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
 +            return (Statistik.Avg + Statistik.Max + Statistik.Min + Statistik.StdDev) != 0;
 +        }
          /// <summary>
-         /// Richtung der x-Achse (oder Dimension Zeit)
+         /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
          /// </summary>
-@@ -315,6 +350,9 @@
+@@ -280,7 +255,8 @@
+         {
+             this.Raster1D = new Raster1DType();
+             this.Statistik = new StatistikType();
+-            this.Bezugswert = 0;
++            this.DimensionX = BezugDimensionEnum.Laenge;
++            this.Bezugswert = 0.0;
+         }
+         
+         /// <summary>
+@@ -334,6 +310,9 @@
          
          gradC,
          
@@ -109,31 +194,27 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
          [System.Xml.Serialization.XmlEnumAttribute("m/min")]
          mmin,
          
-@@ -323,7 +361,10 @@
-         A,
+@@ -343,6 +322,9 @@
          
          V,
--        
-+
+         
 +        /// <summary>
 +        /// g/qm
 +        /// </summary>
          [System.Xml.Serialization.XmlEnumAttribute("g/qm")]
          gqm,
          
-@@ -334,7 +375,10 @@
-         mbar,
+@@ -354,6 +336,9 @@
          
          grad,
--        
-+
+         
 +        /// <summary>
 +        /// Keine/1
 +        /// </summary>
          [System.Xml.Serialization.XmlEnumAttribute("Keine/1")]
          Keine1,
          
-@@ -344,12 +388,21 @@
+@@ -363,12 +348,21 @@
          
          Test,
          
@@ -155,7 +236,7 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
          [System.Xml.Serialization.XmlEnumAttribute("U/min")]
          Umin,
          
-@@ -359,6 +412,9 @@
+@@ -378,30 +372,57 @@
          
          Hz,
          
@@ -164,24 +245,71 @@ diff U3 E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeug
 +        /// </summary>
          [System.Xml.Serialization.XmlEnumAttribute("gradC/s")]
          gradCs,
-     }
-@@ -378,7 +434,7 @@
-         Maximum,
          
-         StdDev,
--        
-+    
-         Test,
-     }
-     
-@@ -404,9 +460,7 @@
-     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
++        /// <summary>
++        /// m3/s
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("m3/s")]
+         m3s,
+         
++        /// <summary>
++        /// m3/h
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("m3/h")]
+         m3h,
+         
++        /// <summary>
++        /// t/h
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("t/h")]
+         th,
+         
++        /// <summary>
++        /// mikroS/cm
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("mikroS/cm")]
+         mikroScm,
+         
++        /// <summary>
++        /// N/m2
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("N/m2")]
+         Nm2,
+         
++        /// <summary>
++        /// m/s
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("m/s")]
+         ms,
+         
++        /// <summary>
++        /// A/qm
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("A/qm")]
+         Aqm,
+         
++        /// <summary>
++        /// cm-1
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("cm-1")]
+         cm1,
+         
+@@ -411,6 +432,9 @@
+         
+         m3,
+         
++        /// <summary>
++        /// ml/min
++        /// </summary>
+         [System.Xml.Serialization.XmlEnumAttribute("ml/min")]
+         mlmin,
+         
+@@ -459,8 +483,6 @@
      public partial class MessungType
      {
--        
+         
 -        private BandlaufrichtungEnum bandlaufrichtungField;
 -        
-+                
-         private System.Nullable<MessungTypeEnum> messgroesseField;
-         
          public string IDMessgeraet { get; set; }
+         /// <summary>
+         /// z.B. BEFB02

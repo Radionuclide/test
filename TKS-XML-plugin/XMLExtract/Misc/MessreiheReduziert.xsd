@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Mit XMLSpy v2013 sp1 (x64) (http://www.altova.com) von Struk (ThyssenKrupp Steel Europe AG) bearbeitet -->
 <xsd:schema xmlns="http://www.thyssen.com/xml/schema/qbic" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.thyssen.com/xml/schema/qbic" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- DEV-2_6_1 -->
 	<xsd:element name="Erzeugung" type="MaterialEreignisType"/>
 	<xsd:complexType name="MaterialEreignisType">
 		<xsd:sequence>
@@ -10,7 +11,10 @@
 	</xsd:complexType>
 	<xsd:complexType name="MaterialHeaderType">
 		<xsd:sequence>
-			<xsd:element name="LokalerIdent" type="StringMax10"/>
+			<xsd:choice>
+				<xsd:element name="LokalerIdent" type="StringMax10" minOccurs="0"/>
+				<xsd:element name="TKSIdent" type="xsd:unsignedLong" minOccurs="0"/>
+			</xsd:choice>
 			<xsd:element name="Standort" type="StandortType" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>BO, DO, DU</xsd:documentation>
@@ -80,15 +84,24 @@
 			</xsd:element>
 			<xsd:element name="Bandlaufrichtung" type="BandlaufrichtungEnum"/>
 			<xsd:element name="Endprodukt" type="xsd:boolean"/>
-			<xsd:element name="Messgroesse" type="MessungTypeEnum" minOccurs="0"/>
+			<xsd:element name="Gruppe" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z.B. DICKE__AL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 			<xsd:element name="Messzeitpunkt" type="xsd:dateTime"/>
 			<xsd:element name="Spur" type="SpurType" maxOccurs="unbounded"/>
+			<xsd:element name="LetzteMsgAmDurchsatz" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Voraussichtlich wird keine weitere Messung zu diesem Arbeitsgangdurchsatz folgen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="SpurType" abstract="false">
 		<xsd:sequence>
 			<xsd:choice>
-			<xsd:element name="Einheit" type="EinheitEnum"/>
+				<xsd:element name="Einheit" type="EinheitEnum"/>
 				<xsd:element name="EinheitLokal" type="StringMax100">
 					<xsd:annotation>
 						<xsd:documentation>Nicht verwenden! Temporaere Loesung</xsd:documentation>
@@ -110,7 +123,17 @@
 					<xsd:documentation>Darf weggelassen werden; dann werden die Werte berechnet.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="DimensionX" type="BezugDimensionEnum" default="Laenge">
+			<xsd:element name="Bezugswert" type="xsd:double" default="0" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isAbsolut" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Darf weggelassen werden; dann wird true angenommen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DimensionX" type="BezugDimensionEnum">
 				<xsd:annotation>
 					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit)  </xsd:documentation>
 				</xsd:annotation>
@@ -130,7 +153,7 @@
 					<xsd:documentation>Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="SegmentOffsetX" type="xsd:double">
+			<xsd:element name="SegmentOffsetX" type="xsd:double" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>Darf weggelassen werden, dann wird 0 angenommen.</xsd:documentation>
 				</xsd:annotation>
@@ -138,8 +161,6 @@
 			<xsd:element name="WerteX" type="ListOfDoubleType"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	
-	
 	<xsd:simpleType name="BandlaufrichtungEnum">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="InWalzRichtung"/>
@@ -171,6 +192,19 @@
 			<xsd:enumeration value="KNm"/>
 			<xsd:enumeration value="Hz"/>
 			<xsd:enumeration value="gradC/s"/>
+			<xsd:enumeration value="m3/s"/>
+			<xsd:enumeration value="m3/h"/>
+			<xsd:enumeration value="t/h"/>
+			<xsd:enumeration value="mikroS/cm"/>
+			<xsd:enumeration value="N/m2"/>
+			<xsd:enumeration value="m/s"/>
+			<xsd:enumeration value="A/qm"/>
+			<xsd:enumeration value="cm-1"/>
+			<xsd:enumeration value="s"/>
+			<xsd:enumeration value="mikroS"/>
+			<xsd:enumeration value="m3"/>
+			<xsd:enumeration value="ml/min"/>
+			<xsd:enumeration value="lgbar"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BezugDimensionEnum">
@@ -201,31 +235,9 @@
 			<xsd:enumeration value="Test"/>
 		</xsd:restriction>
 	</xsd:simpleType>
-	<xsd:simpleType name="MessungTypeEnum">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Laenge"/>
-			<xsd:enumeration value="Temperatur"/>
-			<xsd:enumeration value="Geschwindigkeit"/>
-			<xsd:enumeration value="Leistung"/>
-			<xsd:enumeration value="Strom"/>
-			<xsd:enumeration value="Spannung"/>
-			<xsd:enumeration value="Zinkauflage"/>
-			<xsd:enumeration value="Eisenanteil"/>
-			<xsd:enumeration value="Taupunkt"/>
-			<xsd:enumeration value="Dressiergrad"/>
-			<xsd:enumeration value="Winkel"/>
-			<xsd:enumeration value="Kraft"/>
-			<xsd:enumeration value="Streckgrad"/>
-			<xsd:enumeration value="Zugfestigkeit"/>
-			<xsd:enumeration value="Druck"/>
-			<xsd:enumeration value="Einoelgrad"/>
-			<xsd:enumeration value="Test"/>
-		</xsd:restriction>
-	</xsd:simpleType>
 	<xsd:simpleType name="ListOfDoubleType">
 		<xsd:list itemType="xsd:double"/>
 	</xsd:simpleType>
-
 	<xsd:complexType name="StatistikType">
 		<xsd:sequence>
 			<xsd:element name="Min" type="xsd:double"/>
