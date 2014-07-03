@@ -35,7 +35,7 @@ namespace iba.Controls
             m_gbSubProperties.Controls.Add(m_daySettingsCtrl);
             m_gbSubProperties.Controls.Add(m_monthSettingsCtrl);
             m_dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " HH:mm:ss";
+            m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + "  " + System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
             m_repeatEveryOptions = new TimeSpan[] {TimeSpan.FromMinutes(5),TimeSpan.FromMinutes(10),TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1)};
             m_repeatDurationOptions = new TimeSpan[] {TimeSpan.Zero, TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
@@ -108,6 +108,7 @@ namespace iba.Controls
             m_monthSettingsCtrl.m_cbOnPart1.FromIntegerList(m_scheduleData.MonthTriggerOn, true);
             m_monthSettingsCtrl.m_cbOnPartWeekday.FromIntegerList(m_scheduleData.MonthTriggerWeekDay, true);
             //repeat options
+            m_cbRepeat.Checked = m_scheduleData.Repeat;
             m_repeatEveryCombo.SelectedIndex = Array.FindIndex(m_repeatEveryOptions, ts => ts == m_scheduleData.RepeatEvery);
             m_repeatDurationCombo.SelectedIndex = Array.FindIndex(m_repeatDurationOptions, ts => ts == m_scheduleData.RepeatDuration);
 
@@ -144,6 +145,7 @@ namespace iba.Controls
             m_scheduleData.MonthTriggerOn = new List<int>(m_monthSettingsCtrl.m_cbOnPart1.ToIntegerList(true));
             m_scheduleData.MonthTriggerWeekDay = new List<int>(m_monthSettingsCtrl.m_cbOnPartWeekday.ToIntegerList(true));
             //repeat options
+            m_scheduleData.Repeat = m_cbRepeat.Checked;
             if (m_repeatEveryCombo.SelectedIndex >= 0) m_scheduleData.RepeatEvery = m_repeatEveryOptions[m_repeatEveryCombo.SelectedIndex];
             if(m_repeatDurationCombo.SelectedIndex >= 0) m_scheduleData.RepeatDuration = m_repeatDurationOptions[m_repeatDurationCombo.SelectedIndex];
             //hdStore
@@ -173,17 +175,6 @@ namespace iba.Controls
             m_weekSettingsCtrl.Visible = m_rbWeekly.Checked;
             m_monthSettingsCtrl.Visible = m_rbMonthly.Checked;
             m_daySettingsCtrl.Visible = m_rbDaily.Checked;
-
-            if(m_rbOneTime.Checked || m_rbDaily.Checked)
-            {
-                m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " HH:mm:ss";
-                m_dtStart.ShowUpDown = false;
-            }
-            else
-            {
-                m_dtStart.CustomFormat = "           HH:mm:ss";
-                m_dtStart.ShowUpDown = true;
-            }
         }
 
         private TimeSpan m_tsStart;
@@ -395,15 +386,23 @@ namespace iba.Controls
 
         private void m_btShowTrigger_Click(object sender, EventArgs e)
         {
+            SaveData();
+            TriggerCalculator calc = new TriggerCalculator(m_scheduleData);
 
+            StringBuilder sb = new StringBuilder();
+
+            DateTime from = DateTime.Now;
+            for(int i = 0; i < 10; i++)
+            {
+                DateTime next;
+                if (!calc.NextTrigger(from,out next)) break;
+                sb.AppendLine(next.ToString() + " (" + next.DayOfWeek.ToString() + ")");
+                from = next;
+            }
+            MessageBox.Show(sb.ToString());
         }
 
         private void m_btTriggerNow_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_startButton_Click(object sender, EventArgs e)
         {
 
         }

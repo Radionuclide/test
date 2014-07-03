@@ -121,6 +121,80 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btShowTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btShowTrigger.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_btShowTrigger.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_btShowTrigger.Location" type="System.Drawing.Point, System.Drawing">
+    <value>500, 11</value>
+  </data>
+  <data name="m_btShowTrigger.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 23</value>
+  </data>
+  <data name="m_btShowTrigger.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_btShowTrigger.Text" xml:space="preserve">
+    <value>Next trigger info</value>
+  </data>
+  <data name="m_btShowTrigger.ToolTip" xml:space="preserve">
+    <value>Calculate and report next trigger time</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Name" xml:space="preserve">
+    <value>m_btShowTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Parent" xml:space="preserve">
+    <value>gbTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btTriggerNow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btTriggerNow.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_btTriggerNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btTriggerNow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>597, 11</value>
+  </data>
+  <data name="m_btTriggerNow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btTriggerNow.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_btTriggerNow.Text" xml:space="preserve">
+    <value>Trigger now</value>
+  </data>
+  <data name="m_btTriggerNow.ToolTip" xml:space="preserve">
+    <value>Force an immediate trigger</value>
+  </data>
+  <data name="&gt;&gt;m_btTriggerNow.Name" xml:space="preserve">
+    <value>m_btTriggerNow</value>
+  </data>
+  <data name="&gt;&gt;m_btTriggerNow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTriggerNow.Parent" xml:space="preserve">
+    <value>gbTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_btTriggerNow.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="gbSchedule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -142,14 +216,12 @@
   <data name="m_repeatDurationCombo.Items5" xml:space="preserve">
     <value>1 day</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_repeatDurationCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>409, 253</value>
   </data>
   <data name="m_repeatDurationCombo.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_repeatDurationCombo.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
@@ -264,77 +336,11 @@
   <data name="gbTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_btTriggerNow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btTriggerNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btTriggerNow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>597, 11</value>
-  </data>
-  <data name="m_btTriggerNow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btTriggerNow.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_btTriggerNow.Text" xml:space="preserve">
-    <value>Trigger now</value>
-  </data>
-  <data name="m_btTriggerNow.ToolTip" xml:space="preserve">
-    <value>Force an immediate trigger</value>
-  </data>
-  <data name="&gt;&gt;m_btTriggerNow.Name" xml:space="preserve">
-    <value>m_btTriggerNow</value>
-  </data>
-  <data name="&gt;&gt;m_btTriggerNow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btTriggerNow.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btTriggerNow.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_btShowTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btShowTrigger.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btShowTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>516, 11</value>
-  </data>
-  <data name="m_btShowTrigger.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btShowTrigger.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_btShowTrigger.Text" xml:space="preserve">
-    <value>Next trigger</value>
-  </data>
-  <data name="m_btShowTrigger.ToolTip" xml:space="preserve">
-    <value>Calculate and report next trigger time</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Name" xml:space="preserve">
-    <value>m_btShowTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_dtStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 13</value>
   </data>
   <data name="m_dtStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 20</value>
+    <value>169, 20</value>
   </data>
   <data name="m_dtStart.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>

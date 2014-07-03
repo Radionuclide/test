@@ -104,33 +104,119 @@ namespace iba.Processing
             return false;
         }
 
+
+
         private bool MonthlyTrigger(DateTime from, out DateTime res)
         {
-            if (m_data.MonthTriggerUseDays)
-                return MonthlyTriggerDays(from, out res);
+            DateTime TimeBefore = DateTime.MinValue;
+            DateTime TimeAfter = DateTime.MaxValue;
+            foreach(int month in m_data.MonthTriggerMonths)
+            {
+                foreach(int day in m_data.MonthTriggerDays)
+                {
+                    for (int offset = -1; offset <= 1; offset++) //try year before, current and next year
+                    {
+                        if(m_data.MonthTriggerUseDays)
+                            MonthlyTriggerDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
+                        else
+                            MonthlyTriggerWeekDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
+                    }
+                }
+            }
+            if (TimeBefore == DateTime.MinValue && TimeAfter == DateTime.MaxValue)
+            {//no candidates found
+                res = from;
+                return false;
+            }
+            else if(TimeBefore == DateTime.MinValue)
+            {
+                res = DateTime.MaxValue;
+                return true;
+            }
+            else if (TimeAfter == DateTime.MaxValue)
+            {
+                return NextRepeat(TimeBefore,from,out res);
+            }
             else
-                return MonthlyTriggerWeekDays(from, out res);
+            {
+                DateTime nextRepeatCandidate;
+                if(!NextRepeat(TimeBefore, from, out nextRepeatCandidate) || nextRepeatCandidate > TimeAfter)
+                    res = TimeAfter;
+                else
+                    res = nextRepeatCandidate;
+                return true;
+            }
         }
 
-        private bool MonthlyTriggerDays(DateTime from, out DateTime res)
+        void MonthlyTriggerDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter)
         {
-            throw new NotImplementedException();
+            foreach(int day in m_data.MonthTriggerDays)
+            {
+                try
+                {
+                    int dayc = day;
+                    if(dayc == 0) //last
+                        dayc = DateTime.DaysInMonth(year, month);
+                    DateTime candidate = new DateTime(year, month, dayc, m_data.BaseTriggerTime.Hour,
+                        m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond);
+                    if(candidate >= m_data.BaseTriggerTime)
+                    {
+                        if(candidate <= from && candidate > TimeBefore)
+                            TimeBefore = candidate;
+                        if(candidate > from && candidate < TimeAfter)
+                            TimeAfter = candidate;
+                    }
+                }
+                catch(ArgumentOutOfRangeException) //badly formed date, ignore
+                {
+                }
+            }
         }
 
-        private bool MonthlyTriggerWeekDays(DateTime from, out DateTime res)
+        void MonthlyTriggerWeekDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter)
         {
-            throw new NotImplementedException();
+            foreach(int weekday in m_data.MonthTriggerWeekDay)
+            {
+                List<DateTime> timesonweekday = new List<DateTime>(Enumerable.Range(1, DateTime.DaysInMonth(year, month)).Select(n => new DateTime(year, month, n, 
+                    m_data.BaseTriggerTime.Hour,m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond))
+                    .Where(d => ((int)(d.DayOfWeek))==weekday));
+
+                if(timesonweekday.Count == 0) continue;
+
+                foreach(int index in m_data.MonthTriggerOn)
+                {
+                    DateTime candidate;
+                    if(index == 0)
+                    {
+                        candidate = timesonweekday[timesonweekday.Count - 1];
+                    }
+                    else
+                    {
+                        if(index > timesonweekday.Count) continue;
+                        candidate = timesonweekday[index - 1];
+                    }
+                    if(candidate >= m_data.BaseTriggerTime)
+                    {
+                        if(candidate <= from && candidate > TimeBefore)
+                            TimeBefore = candidate;
+                        if(candidate > from && candidate < TimeAfter)
+                            TimeAfter = candidate;
+                    }
+                }
+            }
         }
         
         private bool NextRepeat(DateTime baseTime, DateTime from, out DateTime res)
         {
             if(m_data.Repeat)
             {
-                if(m_data.RepeatDuration == TimeSpan.Zero || (from <= m_data.BaseTriggerTime + m_data.RepeatDuration)) //in repeat duration interval
+                if(m_data.RepeatDuration == TimeSpan.Zero || (from <= baseTime + m_data.RepeatDuration)) //in repeat duration interval
                 {
-                    long times = (long)Math.Ceiling(((double)((from - m_data.BaseTriggerTime).Ticks)) / m_data.RepeatEveryTicks);                  
-                    DateTime candidate = m_data.BaseTriggerTime.AddTicks(times * m_data.RepeatEveryTicks);
-                    if((m_data.RepeatDuration == TimeSpan.Zero || (candidate <= m_data.BaseTriggerTime + m_data.RepeatDuration))&& candidate > from)
+                    long times = (long)Math.Ceiling(((double)((from - baseTime).Ticks)) / m_data.RepeatEveryTicks);                  
+                    DateTime candidate = baseTime.AddTicks(times * m_data.RepeatEveryTicks);
+                    if(candidate == from)
+                        candidate = candidate.AddTicks(m_data.RepeatEveryTicks);
+                    if((m_data.RepeatDuration == TimeSpan.Zero || (candidate <= baseTime + m_data.RepeatDuration))&& candidate > from)
                     {
                         res = candidate;
                         return true;
