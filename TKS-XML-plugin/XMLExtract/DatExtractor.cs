@@ -31,7 +31,7 @@ namespace XmlExtract
 
             _reader.Open(datfile);
 
-            _resolveEinheit.Open("MessreiheReduziert.xsd");
+            _resolveEinheit.Open(data.XsdLocation);
             if (!String.IsNullOrEmpty(_resolveEinheit.Error))
                 _error.AppendLine(_resolveEinheit.Error);
 

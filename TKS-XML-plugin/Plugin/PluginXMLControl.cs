@@ -44,6 +44,7 @@ namespace iba.TKS_XML_Plugin
 
             m_txtAndererStandort.Text = m_data.AndererStandort.Trim();
             m_txtSchemaLocation.Text = m_data.XmlSchemaLocation.Trim();
+            m_txtXsdLocation.Text = m_data.XsdLocation.Trim();
 
         }
 
@@ -67,6 +68,7 @@ namespace iba.TKS_XML_Plugin
 
             m_data.AndererStandort = m_txtAndererStandort.Text.Trim();
             m_data.XmlSchemaLocation = m_txtSchemaLocation.Text.Trim();
+            m_data.XsdLocation = m_txtXsdLocation.Text.Trim();
         }
 
         public void LeaveCleanup()
