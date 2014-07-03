@@ -1,6 +1,6 @@
 diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs
 --- E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe-generated.cs	Thu Jun 19 14:58:33 2014
-+++ E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs	Thu Jun 19 15:18:58 2014
++++ E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeugung/Messreihe.cs	Thu Jul 03 12:24:14 2014
 @@ -24,6 +24,8 @@
      [System.Xml.Serialization.XmlRootAttribute("Erzeugung", Namespace="http://www.thyssen.com/xml/schema/qbic", IsNullable=false)]
      public partial class MaterialEreignisType
@@ -142,7 +142,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -239,15 +210,11 @@
+@@ -239,15 +210,12 @@
      public partial class SpurType
      {
          
@@ -151,15 +151,17 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          private System.Nullable<WerteTypeEnum> typField;
          
 -        private BezugDimensionEnum dimensionXField;
--        
-         [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
-         [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
++        public string Einheit { get; set; }
++
++        public string EinheitLocal { get; set; }
+         
+-        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
+-        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
 -        public object Item { get; set; }
-+        public object Einheit { get; set; }
          /// <summary>
          /// Name der Messreihe im statischen Modell
          /// </summary>
-@@ -256,6 +223,14 @@
+@@ -256,6 +224,14 @@
          /// Darf weggelassen werden; dann werden die Werte berechnet.
          /// </summary>
          public StatistikType Statistik { get; set; }
@@ -174,7 +176,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          /// <summary>
          /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
          /// </summary>
-@@ -280,7 +255,8 @@
+@@ -280,7 +256,8 @@
          {
              this.Raster1D = new Raster1DType();
              this.Statistik = new StatistikType();
@@ -184,7 +186,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          }
          
          /// <summary>
-@@ -334,6 +310,9 @@
+@@ -334,6 +311,9 @@
          
          gradC,
          
@@ -194,7 +196,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("m/min")]
          mmin,
          
-@@ -343,6 +322,9 @@
+@@ -343,6 +323,9 @@
          
          V,
          
@@ -204,7 +206,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("g/qm")]
          gqm,
          
-@@ -354,6 +336,9 @@
+@@ -354,6 +337,9 @@
          
          grad,
          
@@ -214,7 +216,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("Keine/1")]
          Keine1,
          
-@@ -363,12 +348,21 @@
+@@ -363,12 +349,21 @@
          
          Test,
          
@@ -236,7 +238,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("U/min")]
          Umin,
          
-@@ -378,30 +372,57 @@
+@@ -378,30 +373,57 @@
          
          Hz,
          
@@ -294,7 +296,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("cm-1")]
          cm1,
          
-@@ -411,6 +432,9 @@
+@@ -411,6 +433,9 @@
          
          m3,
          
@@ -304,7 +306,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          [System.Xml.Serialization.XmlEnumAttribute("ml/min")]
          mlmin,
          
-@@ -459,8 +483,6 @@
+@@ -459,8 +484,6 @@
      public partial class MessungType
      {
          
@@ -313,3 +315,28 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
          public string IDMessgeraet { get; set; }
          /// <summary>
          /// z.B. BEFB02
+@@ -472,15 +495,22 @@
+         /// z.B. DICKE__AL
+         /// </summary>
+         public string Gruppe { get; set; }
++        
++        [XmlIgnore]
+         public System.DateTime Messzeitpunkt { get; set; }
++
++        [XmlElement("Messzeitpunkt")]
++        public string MesszeitpunktString
++        {
++            get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszzz"); }
++            set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszzz", System.Globalization.CultureInfo.CurrentCulture); }
++        }
+         [System.Xml.Serialization.XmlElementAttribute("Spur")]
+         public List<SpurType> Spur { get; set; }
+         /// <summary>
+         /// Voraussichtlich wird keine weitere Messung zu diesem Arbeitsgangdurchsatz folgen.
+         /// </summary>
+         public bool LetzteMsgAmDurchsatz { get; set; }
+-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+-        public bool LetzteMsgAmDurchsatzSpecified { get; set; }
+         
+         /// <summary>
+         /// MessungType class constructor
