@@ -502,8 +502,8 @@ namespace XmlExtract
         [XmlElement("Messzeitpunkt")]
         public string MesszeitpunktString
         {
-            get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszz"); }
-            set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszz", System.Globalization.CultureInfo.CurrentCulture); }
+            get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszzz"); }
+            set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszzz", System.Globalization.CultureInfo.CurrentCulture); }
         }
         [System.Xml.Serialization.XmlElementAttribute("Spur")]
         public List<SpurType> Spur { get; set; }
