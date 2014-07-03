@@ -9,31 +9,26 @@ namespace XmlExtract
 
     internal class ResolveEinheit
     {
-        readonly static Dictionary<string, EinheitEnum> _map = new Dictionary<string, EinheitEnum>() { 
+        readonly static Dictionary<string, EinheitEnum> _specialsMap = new Dictionary<string, EinheitEnum>() { 
             { "µm", EinheitEnum.mikrom },
             { "°C", EinheitEnum.gradC },
-            { "gradC", EinheitEnum.gradC },
-            { "m/min", EinheitEnum.mmin },
-            { "g/qm", EinheitEnum.gqm },
             { "g/m²", EinheitEnum.gqm },
             { "%", EinheitEnum.Prozent },
-            { "Keine/1", EinheitEnum.Keine1 },
             { "int", EinheitEnum.Keine1 },
             { "", EinheitEnum.Keine1 },
             { "As/m²", EinheitEnum.Asqm },
-            { "As/qm", EinheitEnum.Asqm },
-            { "m/qs", EinheitEnum.mqs },
-            { "U/min", EinheitEnum.Umin },
-            { "gradC/s", EinheitEnum.gradCs },
         };
 
         public static object Parse(string unit)
         {
             EinheitEnum einheit;
+            if (Enum<EinheitEnum>.TryParseXmlString(unit, out einheit))
+                return einheit;
+            
             if (Enum<EinheitEnum>.TryParse(unit, true, out einheit))
                 return einheit;
 
-            if (_map.TryGetValue(unit, out einheit))
+            if (_specialsMap.TryGetValue(unit, out einheit))
                 return einheit;
 
             if (unit.StartsWith("[") && unit.EndsWith("]"))

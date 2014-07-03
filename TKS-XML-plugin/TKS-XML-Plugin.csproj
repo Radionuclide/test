@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XMLExtract\EnumGenericXml.cs" />
     <Compile Include="Plugin\PluginCollection.cs" />
     <Compile Include="Plugin\PluginXMLControl.cs">
       <SubType>UserControl</SubType>
@@ -66,7 +67,6 @@
     <Compile Include="XMLExtract\Info.cs" />
     <Compile Include="XMLExtract\ResolveEinheit.cs" />
     <Compile Include="XMLExtract\ResolveInfo.cs" />
-    <Compile Include="XMLExtract\ResolveMessgroesse.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ibaFilesLiteLib">
