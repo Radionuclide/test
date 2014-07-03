@@ -86,6 +86,7 @@ namespace XmlExtract
                 mes.Endprodukt = info.Endprodukt;
                 mes.Messzeitpunkt = info.Messzeitpunkt;
                 mes.Aggregat = info.Aggregat;
+                mes.Gruppe = ResolveGruppe.Resolve(signalId);
                 mes.LetzteMsgAmDurchsatz = false;
 
                 //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
