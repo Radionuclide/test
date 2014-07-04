@@ -107,17 +107,11 @@ namespace iba.Data
             set { m_repeatEvery = TimeSpan.FromTicks(value); }
         }
 
-        private TimeSpan m_repeatDuration;
-        [XmlIgnore]
-        public TimeSpan RepeatDuration
+        private int m_repeatTimes;
+        public int RepeatTimes
         {
-            get { return m_repeatDuration; }
-            set { m_repeatDuration = value; }
-        }
-        public long RepeatDurationTicks
-        {
-            get { return m_repeatDuration.Ticks; }
-            set { m_repeatDuration= TimeSpan.FromTicks(value); }
+            get { return m_repeatTimes; }
+            set { m_repeatTimes = value; }
         }
 
         //HD parameters (two ranges, sample rate and hd connection params)
@@ -164,13 +158,14 @@ namespace iba.Data
             m_monthTriggerWeekDay = new List<int>(Enumerable.Range(1, 1));//monday
             m_doRepeat = false;
             m_repeatEvery = TimeSpan.FromHours(1);
-            m_repeatDuration = TimeSpan.FromDays(1);
+            m_repeatTimes = 0;
             m_HDPort = 9180;
-            m_HDStores = new string[] { };
+            m_HDStores = new string[] {""};
             m_HDServer = "";
             m_startRangeFromTrigger = TimeSpan.FromHours(1);
             m_stopRangeFromTrigger = TimeSpan.Zero;
-            m_preferredTimeBase = 0;
+            m_preferredTimeBaseTicks = 0;
+            m_bPreferredTimeBaseIsAuto = true;
         }
 
         private TimeSpan m_startRangeFromTrigger;
@@ -198,11 +193,33 @@ namespace iba.Data
             set { m_stopRangeFromTrigger = TimeSpan.FromTicks(value); }
         }
 
-        private long m_preferredTimeBase; //in ticks, 0 means auto
-        public long PreferredTimeBase
+        private long m_preferredTimeBaseTicks; //in ticks
+        public long PreferredTimeBaseTicks
         {
-            get { return m_preferredTimeBase; }
-            set { m_preferredTimeBase = value; }
+            get { return m_preferredTimeBaseTicks; }
+            set { m_preferredTimeBaseTicks = value; }
+        }
+
+        [XmlIgnore]
+        public System.TimeSpan PreferredTimeBase
+        {
+            get { return TimeSpan.FromTicks(m_preferredTimeBaseTicks); }
+            set { m_preferredTimeBaseTicks = value.Ticks; }
+        }
+
+        private bool m_bPreferredTimeBaseIsAuto;
+        public bool PreferredTimeBaseIsAuto
+        {
+            get { return m_bPreferredTimeBaseIsAuto; }
+            set { m_bPreferredTimeBaseIsAuto = value; }
+        }
+
+        public TimeSpan RepeatDuration 
+        {
+            get
+            {
+                return TimeSpan.FromTicks(m_repeatEvery.Ticks * m_repeatTimes);
+            }
         }
 
         public object Clone()
@@ -220,13 +237,14 @@ namespace iba.Data
             nsjd.m_monthTriggerWeekDay = new List<int>(m_monthTriggerWeekDay);
             nsjd.m_doRepeat = m_doRepeat;
             nsjd.m_repeatEvery = m_repeatEvery;
-            nsjd.m_repeatDuration = m_repeatDuration;
+            nsjd.m_repeatTimes = m_repeatTimes;
             nsjd.HDServer = m_HDServer;
             nsjd.m_HDStores = (string[]) m_HDStores.Clone();
             nsjd.m_HDPort = m_HDPort;
             nsjd.m_startRangeFromTrigger = m_startRangeFromTrigger;
             nsjd.m_stopRangeFromTrigger = m_stopRangeFromTrigger;
-            nsjd.m_preferredTimeBase = m_preferredTimeBase;
+            nsjd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
+            nsjd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
             return nsjd;
         }
 
@@ -247,13 +265,15 @@ namespace iba.Data
             other.m_monthTriggerWeekDay.SequenceEqual(m_monthTriggerWeekDay) &&
             other.m_doRepeat == m_doRepeat &&
             other.m_repeatEvery == m_repeatEvery &&
-            other.m_repeatDuration == m_repeatDuration &&
+            other.m_repeatTimes == m_repeatTimes &&
             other.HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
             other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
-            other.m_preferredTimeBase == m_preferredTimeBase;
+            other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks &&
+            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
         }
+
     }
 }

@@ -1159,4 +1159,7 @@
   <data name="StandardJobsNodeParent" xml:space="preserve">
     <value>Standard Jobs</value>
   </data>
+  <data name="Indefinite" xml:space="preserve">
+    <value>Indefinite</value>
+  </data>
 </root>

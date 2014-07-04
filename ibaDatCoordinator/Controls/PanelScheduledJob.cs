@@ -18,7 +18,6 @@ namespace iba.Controls
 {
     public partial class PanelScheduledJob : UserControl, IPropertyPane
     {
-
         public PanelScheduledJob()
         {
             InitializeComponent();
@@ -37,8 +36,6 @@ namespace iba.Controls
             m_dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + "  " + System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
-            m_repeatEveryOptions = new TimeSpan[] {TimeSpan.FromMinutes(5),TimeSpan.FromMinutes(10),TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1)};
-            m_repeatDurationOptions = new TimeSpan[] {TimeSpan.Zero, TimeSpan.FromMinutes(15),TimeSpan.FromMinutes(30),TimeSpan.FromHours(1),TimeSpan.FromHours(12),TimeSpan.FromDays(1)};
             m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
             m_hdStorePicker.Dock = DockStyle.Fill;
             this.gbHD.Controls.Add(this.m_hdStorePicker);
@@ -60,8 +57,6 @@ namespace iba.Controls
                 m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
         }
 
-        private TimeSpan[] m_repeatEveryOptions;
-        private TimeSpan[] m_repeatDurationOptions;
         private RadioButton[] m_rbs;
         private long[] m_timeBases;
 
@@ -109,17 +104,21 @@ namespace iba.Controls
             m_monthSettingsCtrl.m_cbOnPartWeekday.FromIntegerList(m_scheduleData.MonthTriggerWeekDay, true);
             //repeat options
             m_cbRepeat.Checked = m_scheduleData.Repeat;
-            m_repeatEveryCombo.SelectedIndex = Array.FindIndex(m_repeatEveryOptions, ts => ts == m_scheduleData.RepeatEvery);
-            m_repeatDurationCombo.SelectedIndex = Array.FindIndex(m_repeatDurationOptions, ts => ts == m_scheduleData.RepeatDuration);
+
+            RepeatInterval = m_scheduleData.RepeatEvery;
+            m_nudRepeatTimes.Value = m_scheduleData.RepeatTimes;
 
             //hdStore
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
-            m_hdStorePicker.SelectedStores = (string[]) m_scheduleData.HDStores.Clone();
+            m_hdStorePicker.SelectedStore = m_scheduleData.HDStores[0];
             //timeSelection
             Start = m_scheduleData.StartRangeFromTrigger;
             Stop = m_scheduleData.StopRangeFromTrigger;
-            m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBase);
+            if(m_scheduleData.PreferredTimeBaseIsAuto)
+                m_cbTimeBase.SelectedIndex = 0;
+            else
+                m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
         }
 
 
@@ -146,16 +145,25 @@ namespace iba.Controls
             m_scheduleData.MonthTriggerWeekDay = new List<int>(m_monthSettingsCtrl.m_cbOnPartWeekday.ToIntegerList(true));
             //repeat options
             m_scheduleData.Repeat = m_cbRepeat.Checked;
-            if (m_repeatEveryCombo.SelectedIndex >= 0) m_scheduleData.RepeatEvery = m_repeatEveryOptions[m_repeatEveryCombo.SelectedIndex];
-            if(m_repeatDurationCombo.SelectedIndex >= 0) m_scheduleData.RepeatDuration = m_repeatDurationOptions[m_repeatDurationCombo.SelectedIndex];
+            m_scheduleData.RepeatTimes = (int)m_nudRepeatTimes.Value;
+            m_scheduleData.RepeatEvery = RepeatInterval;
             //hdStore
             m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
             m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
-            m_scheduleData.HDStores = (string[]) m_hdStorePicker.SelectedStores.Clone();
+            m_scheduleData.HDStores = new string[]{m_hdStorePicker.SelectedStore};
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
             m_scheduleData.StopRangeFromTrigger = Stop;
-            if  (m_cbTimeBase.SelectedIndex >= 0) m_scheduleData.PreferredTimeBase = m_timeBases[m_cbTimeBase.SelectedIndex];
+            if(m_cbTimeBase.SelectedIndex == 0) //auto
+            {
+                m_scheduleData.PreferredTimeBaseTicks = GetAutoItem().m_timebaseLength;
+                m_scheduleData.PreferredTimeBaseIsAuto = true;
+            }
+            else if(m_cbTimeBase.SelectedIndex > 0)
+            {
+                m_scheduleData.PreferredTimeBaseTicks = m_timeBases[m_cbTimeBase.SelectedIndex];
+                m_scheduleData.PreferredTimeBaseIsAuto = false;
+            }
         }
 
         public void LeaveCleanup() {}
@@ -167,7 +175,7 @@ namespace iba.Controls
 
         private void m_cbRepeat_CheckedChanged(object sender, EventArgs e)
         {
-            m_repeatDurationCombo.Enabled = m_repeatEveryCombo.Enabled = m_lblDuration.Enabled = m_cbRepeat.Checked;
+            m_nudRepeatTimes.Enabled = m_nudRepeatHours.Enabled = m_nudRepeatMinutes.Enabled = m_cbRepeat.Checked;
         }
 
         private void OnTriggerRBChanged(object sender, EventArgs e)
@@ -175,6 +183,21 @@ namespace iba.Controls
             m_weekSettingsCtrl.Visible = m_rbWeekly.Checked;
             m_monthSettingsCtrl.Visible = m_rbMonthly.Checked;
             m_daySettingsCtrl.Visible = m_rbDaily.Checked;
+        }
+
+        private TimeSpan m_repeatInterval;
+        public System.TimeSpan RepeatInterval
+        {
+            get { return m_repeatInterval; }
+            set { 
+                m_repeatInterval = value;
+                if(m_repeatInterval > TimeSpan.FromDays(1))
+                    m_repeatInterval = TimeSpan.FromDays(1);
+                if(m_repeatInterval < TimeSpan.FromMinutes(1))
+                    m_repeatInterval = TimeSpan.FromMinutes(1);
+                m_nudRepeatHours.Value = m_repeatInterval.Hours;
+                m_nudRepeatMinutes.Value = m_repeatInterval.Minutes;
+            }
         }
 
         private TimeSpan m_tsStart;
@@ -406,6 +429,22 @@ namespace iba.Controls
         {
 
         }
+
+        private void m_nudRepeat_ValueChanged(object sender, EventArgs e)
+        {
+            RepeatInterval = TimeSpan.FromHours((int)(m_nudRepeatHours.Value)).Add(TimeSpan.FromMinutes(((int)(m_nudRepeatMinutes.Value))));
+        }
+    }
+
+    public class CustomNumericUpDown : NumericUpDown
+    {
+        protected override void UpdateEditText()
+        {
+            if(this.Value == 0)
+                this.Text = iba.Properties.Resources.Indefinite;
+            else
+                this.Text = this.Value.ToString();
+        }
     }
 
     public enum TimeBaseAcceptability
@@ -415,7 +454,6 @@ namespace iba.Controls
         Questionable,
         Unknown
     }
-
 
     public class TimeCbItem
     {

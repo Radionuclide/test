@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using iba.Data;
+using System.IO;
 namespace iba.Processing
 {
     public class TriggerCalculator
@@ -86,11 +87,11 @@ namespace iba.Processing
                 }
                 else
                 {
-                    long times = (long)Math.Floor(((double)((from - m_data.BaseTriggerTime).Ticks)) / TimeSpan.FromDays(7*m_data.WeekTriggerEveryNWeek).Ticks);
-                    DateTime TimeBeforeCandidate = m_data.BaseTriggerTime.AddDays(7 * times * m_data.WeekTriggerEveryNWeek);
+                    long times = (long)Math.Floor(((double)((from - initialTrigger).Ticks)) / TimeSpan.FromDays(7*m_data.WeekTriggerEveryNWeek).Ticks);
+                    DateTime TimeBeforeCandidate = initialTrigger.AddDays(7 * times * m_data.WeekTriggerEveryNWeek);
                     if (TimeBeforeCandidate > TimeBefore)
                         TimeBefore = TimeBeforeCandidate;
-                    DateTime TimeAfterCandidate = m_data.BaseTriggerTime.AddDays(7*(times + 1) * m_data.WeekTriggerEveryNWeek);
+                    DateTime TimeAfterCandidate = initialTrigger.AddDays(7 * (times + 1) * m_data.WeekTriggerEveryNWeek);
                     if (TimeAfterCandidate < TimeAfter)
                         TimeAfter = TimeAfterCandidate;
                 }
@@ -100,8 +101,7 @@ namespace iba.Processing
                 res = TimeAfter;
             else
                 res = nextRepeatCandidate;
-            res = from;
-            return false;
+            return true;
         }
 
 
@@ -130,7 +130,7 @@ namespace iba.Processing
             }
             else if(TimeBefore == DateTime.MinValue)
             {
-                res = DateTime.MaxValue;
+                res = TimeAfter;
                 return true;
             }
             else if (TimeAfter == DateTime.MaxValue)
@@ -186,14 +186,14 @@ namespace iba.Processing
                 foreach(int index in m_data.MonthTriggerOn)
                 {
                     DateTime candidate;
-                    if(index == 0)
+                    if(index == 4)
                     {
                         candidate = timesonweekday[timesonweekday.Count - 1];
                     }
                     else
                     {
-                        if(index > timesonweekday.Count) continue;
-                        candidate = timesonweekday[index - 1];
+                        if(index >= timesonweekday.Count) continue;
+                        candidate = timesonweekday[index];
                     }
                     if(candidate >= m_data.BaseTriggerTime)
                     {
@@ -227,9 +227,23 @@ namespace iba.Processing
             return false;
         }
 
-        public void GenerateHDQFile(DateTime trigger)
+        public void GenerateHDQFile(DateTime trigger, String path)
         {
-
+            using(StreamWriter sw = new StreamWriter(path, false, Encoding.ASCII))
+            {
+                sw.WriteLine("[HDQ file]");
+                sw.WriteLine("type=time");
+                sw.WriteLine("server=" + m_data.HDServer);
+                sw.WriteLine("portnumber=" + m_data.HDPort);
+                sw.WriteLine("store=" + m_data.HDStores[0]);
+                DateTime startTime = trigger - m_data.StartRangeFromTrigger;
+                String  temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("starttime=" + temp);
+                DateTime stopTime = trigger - m_data.StartRangeFromTrigger;
+                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("stoptime=" + temp);
+                sw.WriteLine("timebase=" + m_data.PreferredTimeBase.TotalSeconds.ToString());
+            }
         }
     }
 }

@@ -873,6 +873,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indefinite.
+        /// </summary>
+        internal static string Indefinite {
+            get {
+                return ResourceManager.GetString("Indefinite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The .dat file is corrupt or is not a valid iba .dat file.
         /// </summary>
         internal static string InvalidDatFile {

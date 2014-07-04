@@ -7,6 +7,13 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        static PanelScheduledJob()
+        {
+            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+        }
+
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -34,9 +41,11 @@
             this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.m_btTriggerNow = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
-            this.m_repeatDurationCombo = new System.Windows.Forms.ComboBox();
-            this.m_lblDuration = new System.Windows.Forms.Label();
-            this.m_repeatEveryCombo = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.m_nudRepeatMinutes = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.m_nudRepeatHours = new System.Windows.Forms.NumericUpDown();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
             this.m_dtStart = new iba.Utility.RippleDateTimePicker();
@@ -82,7 +91,10 @@
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.gbHD = new iba.Utility.CollapsibleGroupBox();
+            this.m_nudRepeatTimes = new CustomNumericUpDown();
             this.gbSchedule.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatHours)).BeginInit();
             this.gbTrigger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -95,6 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             this.SuspendLayout();
             // 
             // m_btShowTrigger
@@ -116,9 +129,12 @@
             // gbSchedule
             // 
             resources.ApplyResources(this.gbSchedule, "gbSchedule");
-            this.gbSchedule.Controls.Add(this.m_repeatDurationCombo);
-            this.gbSchedule.Controls.Add(this.m_lblDuration);
-            this.gbSchedule.Controls.Add(this.m_repeatEveryCombo);
+            this.gbSchedule.Controls.Add(this.m_nudRepeatTimes);
+            this.gbSchedule.Controls.Add(this.label18);
+            this.gbSchedule.Controls.Add(this.label16);
+            this.gbSchedule.Controls.Add(this.m_nudRepeatMinutes);
+            this.gbSchedule.Controls.Add(this.label17);
+            this.gbSchedule.Controls.Add(this.m_nudRepeatHours);
             this.gbSchedule.Controls.Add(this.m_cbRepeat);
             this.gbSchedule.Controls.Add(this.gbTrigger);
             this.gbSchedule.Controls.Add(this.m_undoChangesBtn);
@@ -137,37 +153,46 @@
             this.gbSchedule.Name = "gbSchedule";
             this.gbSchedule.TabStop = false;
             // 
-            // m_repeatDurationCombo
+            // label18
             // 
-            this.m_repeatDurationCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_repeatDurationCombo.FormattingEnabled = true;
-            this.m_repeatDurationCombo.Items.AddRange(new object[] {
-            resources.GetString("m_repeatDurationCombo.Items"),
-            resources.GetString("m_repeatDurationCombo.Items1"),
-            resources.GetString("m_repeatDurationCombo.Items2"),
-            resources.GetString("m_repeatDurationCombo.Items3"),
-            resources.GetString("m_repeatDurationCombo.Items4"),
-            resources.GetString("m_repeatDurationCombo.Items5")});
-            resources.ApplyResources(this.m_repeatDurationCombo, "m_repeatDurationCombo");
-            this.m_repeatDurationCombo.Name = "m_repeatDurationCombo";
+            resources.ApplyResources(this.label18, "label18");
+            this.label18.Name = "label18";
             // 
-            // m_lblDuration
+            // label16
             // 
-            resources.ApplyResources(this.m_lblDuration, "m_lblDuration");
-            this.m_lblDuration.Name = "m_lblDuration";
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
             // 
-            // m_repeatEveryCombo
+            // m_nudRepeatMinutes
             // 
-            this.m_repeatEveryCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_repeatEveryCombo.FormattingEnabled = true;
-            this.m_repeatEveryCombo.Items.AddRange(new object[] {
-            resources.GetString("m_repeatEveryCombo.Items"),
-            resources.GetString("m_repeatEveryCombo.Items1"),
-            resources.GetString("m_repeatEveryCombo.Items2"),
-            resources.GetString("m_repeatEveryCombo.Items3"),
-            resources.GetString("m_repeatEveryCombo.Items4")});
-            resources.ApplyResources(this.m_repeatEveryCombo, "m_repeatEveryCombo");
-            this.m_repeatEveryCombo.Name = "m_repeatEveryCombo";
+            resources.ApplyResources(this.m_nudRepeatMinutes, "m_nudRepeatMinutes");
+            this.m_nudRepeatMinutes.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudRepeatMinutes.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudRepeatMinutes.Name = "m_nudRepeatMinutes";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
+            // 
+            // m_nudRepeatHours
+            // 
+            resources.ApplyResources(this.m_nudRepeatHours, "m_nudRepeatHours");
+            this.m_nudRepeatHours.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+            this.m_nudRepeatHours.Name = "m_nudRepeatHours";
+            this.m_nudRepeatHours.ValueChanged += new System.EventHandler(this.m_nudRepeat_ValueChanged);
             // 
             // m_cbRepeat
             // 
@@ -573,6 +598,11 @@
             this.gbHD.Name = "gbHD";
             this.gbHD.TabStop = false;
             // 
+            // m_nudRepeatTimes
+            // 
+            resources.ApplyResources(this.m_nudRepeatTimes, "m_nudRepeatTimes");
+            this.m_nudRepeatTimes.Name = "m_nudRepeatTimes";
+            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -584,6 +614,8 @@
             this.Name = "PanelScheduledJob";
             this.gbSchedule.ResumeLayout(false);
             this.gbSchedule.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatHours)).EndInit();
             this.gbTrigger.ResumeLayout(false);
             this.gbTrigger.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
@@ -598,6 +630,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -619,9 +652,6 @@
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.ComboBox m_repeatDurationCombo;
-        private System.Windows.Forms.Label m_lblDuration;
-        private System.Windows.Forms.ComboBox m_repeatEveryCombo;
         private System.Windows.Forms.CheckBox m_cbRepeat;
         private System.Windows.Forms.GroupBox gbTrigger;
         private System.Windows.Forms.GroupBox m_gbSubProperties;
@@ -656,5 +686,11 @@
         private System.Windows.Forms.ComboBox m_cbTimeBase;
         private System.Windows.Forms.Button m_btShowTrigger;
         internal System.Windows.Forms.Button m_btTriggerNow;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown m_nudRepeatMinutes;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown m_nudRepeatHours;
+        private CustomNumericUpDown m_nudRepeatTimes;
     }
 }
