@@ -37,7 +37,7 @@ namespace iba.TKS_XML_Plugin
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
             if (taskname == "TKS-XML")
-                return new PluginXMLTaskData(taskname, DatCoordinatorHost, parentjob);
+                return new PluginXMLTask(taskname, DatCoordinatorHost, parentjob);
             else return null;
         }
 
