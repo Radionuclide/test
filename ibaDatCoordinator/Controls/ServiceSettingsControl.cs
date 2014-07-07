@@ -451,6 +451,8 @@ namespace iba.Controls
                 }
                 AddIsActiveToTableLayout(gcd, 5, rowIdx, drive.IsReady);
 
+                if (gcd.IsSystemDrive)
+                    ChangeEnabledStateforRowControls(false, rowIdx);
             }
 
             gb_GlobalCleanup.Height = (rowIdx + 1) * 32;
