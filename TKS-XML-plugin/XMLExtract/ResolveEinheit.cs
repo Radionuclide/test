@@ -33,20 +33,17 @@ namespace XmlExtract
         public string Parse(string unit)
         {
             EinheitEnum einheit;
-            if (Enum<EinheitEnum>.TryParseXmlString(unit, true, out einheit))
-                return Enum<EinheitEnum>.GetXmlName(einheit);
-            
-            if (Enum<EinheitEnum>.TryParse(unit, true, out einheit))
-                return Enum<EinheitEnum>.GetXmlName(einheit);
+            if (EnumWithXmlAttribute<EinheitEnum>.TryParse(unit, true, out einheit))
+                return EnumWithXmlAttribute<EinheitEnum>.GetXmlName(einheit);
 
             if (_specialsMap.TryGetValue(unit, out einheit))
-                return Enum<EinheitEnum>.GetXmlName(einheit);
+                return EnumWithXmlAttribute<EinheitEnum>.GetXmlName(einheit);
 
-            if (_xsdEntries.ContainsKey(unit))
+            if (_xsdEntries != null && _xsdEntries.ContainsKey(unit))
                 return unit;
 
             if (unit.StartsWith("[") && unit.EndsWith("]"))
-                return Enum<EinheitEnum>.GetXmlName(EinheitEnum.Keine1);
+                return EnumWithXmlAttribute<EinheitEnum>.GetXmlName(EinheitEnum.Keine1);
 
             return null;
         }

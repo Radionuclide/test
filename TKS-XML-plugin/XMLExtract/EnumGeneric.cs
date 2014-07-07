@@ -4,15 +4,13 @@
     using System.Collections.Generic;
 
 
-    static partial class Enum<T> where T : struct, IConvertible
+    static class Enum<T> where T : struct, IConvertible
     {
         private static readonly List<T> All = new List<T>();
         private static readonly Dictionary<string, T> InsensitiveNames = new Dictionary<string, T>();
         private static readonly Dictionary<string, T> SensitiveNames = new Dictionary<string, T>();
         private static readonly Dictionary<int, T> Values = new Dictionary<int, T>();
         private static readonly Dictionary<T, string> Names = new Dictionary<T, string>();
-
-        static partial void InitPartialExtension(T item); 
 
         static Enum()
         {
@@ -23,7 +21,6 @@
                 SensitiveNames.Add(item.ToString(), item);
                 Values.Add(Convert.ToInt32(item), item);
                 Names.Add(item, item.ToString());
-                InitPartialExtension(item);
             }
 
         }
