@@ -28,10 +28,10 @@ namespace iba.TKS_XML_Plugin
 
         #region IPluginControl Members
 
-        PluginXMLTask m_data;
+        PluginXMLTaskData m_data;
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
-            m_data = datasource as PluginXMLTask;
+            m_data = datasource as PluginXMLTaskData;
             
             m_rbDO.Checked = m_data.StandOrt == StandortType.DO;
             m_rbDU.Checked = m_data.StandOrt == StandortType.DU;

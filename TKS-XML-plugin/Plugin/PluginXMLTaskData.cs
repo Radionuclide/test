@@ -7,14 +7,14 @@ using XmlExtract;
 namespace iba.TKS_XML_Plugin
 {
     [Serializable]
-    public class PluginXMLTask : IPluginTaskDataUNC, IPluginTaskDataIsSame, IExtractorData
+    public class PluginXMLTaskData : IPluginTaskDataUNC, IPluginTaskDataIsSame, IExtractorData
     {
-        public PluginXMLTask()
+        public PluginXMLTaskData()
         {
             InitData(null, null, null);
         }
 
-        public PluginXMLTask(string name, IDatCoHost host, IJobData parentJob)
+        public PluginXMLTaskData(string name, IDatCoHost host, IJobData parentJob)
         {
             InitData(name, host, parentJob);
         }
@@ -133,7 +133,7 @@ namespace iba.TKS_XML_Plugin
 
         public object Clone()
         {
-            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, null);
+            PluginXMLTaskData xt = new PluginXMLTaskData(m_nameInfo, m_datcoHost, null);
             xt.StandOrt = StandOrt;
             xt.IdField = IdField;
             xt.AndererStandort = AndererStandort;
@@ -148,7 +148,7 @@ namespace iba.TKS_XML_Plugin
 
         public bool IsSame(IPluginTaskDataIsSame data)
         {
-            var other = data as PluginXMLTask;
+            var other = data as PluginXMLTaskData;
             if (other == null) return false;
 
             return (other.StandOrt == StandOrt

@@ -7,11 +7,11 @@ namespace iba.TKS_XML_Plugin
 {
     class PluginXMLWorker : IPluginTaskWorkerUNC
     {
-        private PluginXMLTask m_data;
-        private PluginXMLTask m_dataToApply;
+        private PluginXMLTaskData m_data;
+        private PluginXMLTaskData m_dataToApply;
         private bool m_started;
         private XmlExtract.DatExtractor m_extractor;
-        public PluginXMLWorker(PluginXMLTask data)
+        public PluginXMLWorker(PluginXMLTaskData data)
         {
             m_data = data;
             m_dataToApply = null;
@@ -58,9 +58,9 @@ namespace iba.TKS_XML_Plugin
             return true;
         }
 
-        public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
+        public bool OnApply(IPluginTaskData newtaskData, IJobData newParentJob)
         {
-            m_dataToApply = newtask as PluginXMLTask;
+            m_dataToApply = newtaskData as PluginXMLTaskData;
             return true;
         }
 
