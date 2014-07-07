@@ -61,6 +61,14 @@ namespace iba.Controls
             this.m_SetChangePassBtn = new System.Windows.Forms.Button();
             this.m_cbRememberPassword = new System.Windows.Forms.CheckBox();
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
+            this.gb_GlobalCleanup = new System.Windows.Forms.GroupBox();
+            this.tbl_GlobalCleanup = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
@@ -70,6 +78,8 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxIbaAnalyzers)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
+            this.gb_GlobalCleanup.SuspendLayout();
+            this.tbl_GlobalCleanup.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbApp
@@ -349,10 +359,59 @@ namespace iba.Controls
             resources.ApplyResources(this.m_passwordStatusLabel, "m_passwordStatusLabel");
             this.m_passwordStatusLabel.Name = "m_passwordStatusLabel";
             // 
+            // gb_GlobalCleanup
+            // 
+            resources.ApplyResources(this.gb_GlobalCleanup, "gb_GlobalCleanup");
+            this.gb_GlobalCleanup.Controls.Add(this.tbl_GlobalCleanup);
+            this.gb_GlobalCleanup.Name = "gb_GlobalCleanup";
+            this.gb_GlobalCleanup.TabStop = false;
+            // 
+            // tbl_GlobalCleanup
+            // 
+            resources.ApplyResources(this.tbl_GlobalCleanup, "tbl_GlobalCleanup");
+            this.tbl_GlobalCleanup.Controls.Add(this.label7, 0, 0);
+            this.tbl_GlobalCleanup.Controls.Add(this.label8, 1, 0);
+            this.tbl_GlobalCleanup.Controls.Add(this.label9, 2, 0);
+            this.tbl_GlobalCleanup.Controls.Add(this.label10, 3, 0);
+            this.tbl_GlobalCleanup.Controls.Add(this.label11, 4, 0);
+            this.tbl_GlobalCleanup.Controls.Add(this.label12, 5, 0);
+            this.tbl_GlobalCleanup.Name = "tbl_GlobalCleanup";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
             // ServiceSettingsControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.gb_GlobalCleanup);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox1);
@@ -372,6 +431,10 @@ namespace iba.Controls
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).EndInit();
+            this.gb_GlobalCleanup.ResumeLayout(false);
+            this.gb_GlobalCleanup.PerformLayout();
+            this.tbl_GlobalCleanup.ResumeLayout(false);
+            this.tbl_GlobalCleanup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -409,6 +472,14 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
         private System.Windows.Forms.Button m_btnOptimize;
+        private System.Windows.Forms.GroupBox gb_GlobalCleanup;
+        private System.Windows.Forms.TableLayoutPanel tbl_GlobalCleanup;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
 
     }
 }

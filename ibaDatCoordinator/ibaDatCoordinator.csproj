@@ -126,6 +126,13 @@
     <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PercentUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Processing\GlobalCleanupManager.cs" />
+    <Compile Include="Utility\TaskControl.cs" />
+    <Compile Include="Data\GlobalCleanupData.cs" />
+    <Compile Include="Data\GlobalCleanupTaskData.cs" />
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,9 +298,11 @@
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
+    <Compile Include="Utility\DriveUtil.cs" />
     <Compile Include="Utility\crypt.cs" />
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\FastDirectoryEnumerator.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />

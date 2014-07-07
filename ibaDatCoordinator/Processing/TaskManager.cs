@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
-using iba.Data;
+using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using iba.Data;
 using iba.Utility;
 using iba.Plugins;
-using System.Runtime.InteropServices;
 
 namespace iba.Processing
 {
@@ -335,6 +335,7 @@ namespace iba.Processing
             m_rememberPassTime = TimeSpan.FromMinutes(5);
             m_rememberPassEnabled = false;
             m_criticalTaskSemaphore = new FifoSemaphore(6);
+            m_globalCleanup = new GlobalCleanupManager();
         }
 
         public static TaskManager Manager
@@ -382,7 +383,6 @@ namespace iba.Processing
             get
             {
                 List<ConfigurationData> theC = new List<ConfigurationData>(m_workers.Keys);
-
                 return theC;
             }
             set
@@ -580,7 +580,7 @@ namespace iba.Processing
             get { return m_criticalTaskSemaphore; }
             set { m_criticalTaskSemaphore = value; }
         }
-        
+
 
         string m_password;
         virtual public string Password
@@ -612,6 +612,30 @@ namespace iba.Processing
                     pair.Key.AdditionalFileNames(myList);
             }
         }
+
+        private GlobalCleanupManager m_globalCleanup;
+        public virtual List<GlobalCleanupData> GlobalCleanupDataList
+        {
+            get { return m_globalCleanup.GlobalCleanupDataList; }
+            set { m_globalCleanup.GlobalCleanupDataList = value; }
+        }
+
+
+        public virtual void StartAllEnabledGlobalCleanups()
+        {
+            m_globalCleanup.StartAllEnabledGlobalCleanups();
+        }
+
+        public virtual void StopAllGlobalCleanups()
+        {
+            m_globalCleanup.StopAllGlobalCleanups();
+        }
+
+        public virtual void ReplaceGlobalCleanupData(GlobalCleanupData data)
+        {
+            m_globalCleanup.ReplaceGlobalCleanupData(data);
+        }
+
     }
 
 
@@ -886,6 +910,19 @@ namespace iba.Processing
             }
         }
 
+        public override void ReplaceGlobalCleanupData(GlobalCleanupData data)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.ReplaceGlobalCleanupData(data);
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+                Manager.ReplaceGlobalCleanupData(data);
+            }
+        }
+
         public override bool CompareConfiguration(ConfigurationData data)
         {
             try
@@ -1048,7 +1085,7 @@ namespace iba.Processing
                 }
             }
         }
-        
+
         public override int PostponeMinutes
         {
             get
@@ -1311,5 +1348,59 @@ namespace iba.Processing
                 }
             }
         }
+
+
+        public override void StartAllEnabledGlobalCleanups()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.StartAllEnabledGlobalCleanups();
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override void StopAllGlobalCleanups()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.StopAllGlobalCleanups();
+            }
+            catch (SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override List<GlobalCleanupData> GlobalCleanupDataList
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.GlobalCleanupDataList;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    return Manager.GlobalCleanupDataList;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.GlobalCleanupDataList = value;
+                }
+                catch (SocketException)
+                {
+                    Program.CommunicationObject.HandleBrokenConnection();
+                    Manager.GlobalCleanupDataList = value;
+                }
+            }
+        }
+
     }
 }

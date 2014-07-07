@@ -4,6 +4,9 @@ using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
 using iba.Data;
+using iba.Utility;
+using System.Diagnostics;
+using System.Threading;
 
 namespace iba.Processing
 {
@@ -11,15 +14,28 @@ namespace iba.Processing
     {
         private TaskDataUNC m_task;
         private LinkedList<String> m_files;
+        private bool m_fastSearch;
         string m_extension;
         UInt64 m_size;
+        CancellationToken m_cancelToken = new CancellationToken(false);
 
         public FileQuotaCleanup(TaskDataUNC task, string extension)
         {
             m_task = task;
             m_files = new LinkedList<String>();
             m_extension = extension;
-            Reset();
+        }
+
+        public FileQuotaCleanup(TaskDataUNC task, string extension, CancellationToken ct)
+            : this(task, extension)
+        {
+            m_cancelToken = ct;
+        }
+
+        public bool FastSearch
+        {
+            get { return m_fastSearch; }
+            set { m_fastSearch = value; }
         }
 
         public void AddFile(string filename)
@@ -48,6 +64,11 @@ namespace iba.Processing
             }
         }
 
+        public void Init()
+        {
+            Reset();
+        }
+
         public void ResetTask(TaskDataUNC newTask, string extension)
         {
             if (newTask.DestinationMapUNC != m_task.DestinationMapUNC || newTask.Quota < m_task.Quota || extension != m_extension)
@@ -58,11 +79,17 @@ namespace iba.Processing
             }
             m_task = newTask;
         }
-        
+
         struct DateAndName
         {
             public DateTime time;
             public string filename;
+
+            public DateAndName(string filename, DateTime time)
+            {
+                this.time = time;
+                this.filename = filename;
+            }
         };
 
         private bool FailureWhilePreviouslyScanning;
@@ -76,61 +103,24 @@ namespace iba.Processing
 
             List<DateAndName> DateAndNames = new List<DateAndName>();
 
+            var sw = Stopwatch.StartNew();
             try
             {
-                DateAndName datNam = new DateAndName();
-                foreach (string dir in Directory.GetDirectories(m_task.DestinationMapUNC))
-                {
-                    try
-                    {
-                        DirectoryInfo dirinf = new DirectoryInfo(dir);
-                        List<FileInfo> fileinfs = Utility.PathUtil.GetFilesInSubsSafe("*" + m_extension, dirinf);
-                        foreach (FileInfo inf in fileinfs)
-                        {
-                            try
-                            {
-                                datNam.filename = inf.FullName;
-                                datNam.time = inf.LastWriteTime;
-                                DateAndNames.Add(datNam);
-                                m_size += (ulong)inf.Length;
+                if (FastSearch)
+                    TraverseFilesystemFastSearch(DateAndNames);
+                else
+                    TraverseFileSystemClassic(DateAndNames);
 
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
-                                FailureWhilePreviouslyScanning = true;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorDir + " " + ex.Message, "");
-                        FailureWhilePreviouslyScanning = true;
-                    }
-                }
-                foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC,"*" + m_extension,SearchOption.TopDirectoryOnly))
-                {
-                    try
-                    {
-                        FileInfo inf = new FileInfo(file);
-                        datNam.filename = file;
-                        datNam.time = inf.LastWriteTime;
-                        DateAndNames.Add(datNam);
-                        m_size += (ulong)inf.Length;
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + " " + ex.Message, "");
-                        FailureWhilePreviouslyScanning = true;
-                    }
-                }
-                //Log(iba.Logging.Level.Exception, String.Format("size after counting {0}",m_size) , "");
+                if (m_cancelToken.IsCancellationRequested)
+                    return;
 
+                //Log(iba.Logging.Level.Exception, String.Format("size after counting {0}", PathUtil.GetSizeReadable((long)m_size)), "");
                 DateAndNames.Sort(delegate(DateAndName f1, DateAndName f2)
                 {
                     return f1.time.CompareTo(f2.time);
                 }); //oldest files last
+
 
                 foreach (DateAndName entry in DateAndNames)
                     m_files.AddLast(entry.filename);
@@ -142,13 +132,92 @@ namespace iba.Processing
                 FailureWhilePreviouslyScanning = true;
                 m_files.Clear();
             }
+
+            sw.Stop();
+            Log(iba.Logging.Level.Debug, String.Format("Generate file list took {0} s ", sw.ElapsedMilliseconds / 1000.0), "");
+            Log(iba.Logging.Level.Debug, String.Format("{0} files with size of {1}", m_files.Count, PathUtil.GetSizeReadable((long)m_size)), "");
         }
+
+        private void TraverseFileSystemClassic(List<DateAndName> DateAndNames)
+        {
+            foreach (string dir in Directory.GetDirectories(m_task.DestinationMapUNC))
+            {
+                try
+                {
+                    DirectoryInfo dirinf = new DirectoryInfo(dir);
+                    List<FileInfo> fileinfs = Utility.PathUtil.GetFilesInSubsSafe("*" + m_extension, dirinf);
+                    foreach (FileInfo inf in fileinfs)
+                    {
+                        try
+                        {
+                            if (m_cancelToken.IsCancellationRequested)
+                                return;
+
+                            DateAndNames.Add(new DateAndName(inf.FullName, inf.LastWriteTime));
+                            m_size += (ulong)inf.Length;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
+                            FailureWhilePreviouslyScanning = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorDir + " " + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+            foreach (string file in Utility.PathUtil.GetFilesMultipleExtensions(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    if (m_cancelToken.IsCancellationRequested)
+                        return;
+
+                    FileInfo inf = new FileInfo(file);
+                    DateAndNames.Add(new DateAndName(file, inf.LastWriteTime));
+                    m_size += (ulong)inf.Length;
+
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.logCleanupTallyingErrorGeneral + " " + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+        }
+
+        private void TraverseFilesystemFastSearch(List<DateAndName> DateAndNames)
+        {
+            var dir = String.Empty;
+            foreach (var inf in FastDirectoryEnumerator.EnumerateFiles(m_task.DestinationMapUNC, "*" + m_extension, SearchOption.AllDirectories))
+            {
+                try
+                {
+                    if (m_cancelToken.IsCancellationRequested)
+                        return;
+
+                    m_size += (ulong)inf.Length;
+                    DateAndNames.Add(new DateAndName(inf.FullName, inf.LastWriteTime));
+
+                }
+                catch (Exception ex)
+                {
+                    Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.logCleanupTallyingErrorFile, dir) + ex.Message, "");
+                    FailureWhilePreviouslyScanning = true;
+                }
+            }
+        }
+
 
         private void Log(Logging.Level level, string message, string datfile)
         {
-            if (LogData.Data.Logger.IsOpen)
+            LogExtraData data = new LogExtraData(datfile, m_task, m_task.ParentConfigurationData);
+            if (LogData.Data.Logger != null && LogData.Data.Logger.IsOpen)
             {
-                LogExtraData data = new LogExtraData(datfile, m_task, m_task.ParentConfigurationData);
                 LogData.Data.Logger.Log(level, message, (object)data);
             }
         }
@@ -157,17 +226,16 @@ namespace iba.Processing
         {
             try
             {
-                if (m_task.OutputLimitChoice== TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
-                    return (((ulong) (m_task.Quota)) * 1024 * 1024);
+                if (m_task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace)
+                    return (((ulong)(m_task.Quota)) * 1024 * 1024);
                 else if (m_task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace)
                 {
                     ulong FreeBytesAvailable;
                     ulong TotalNumberOfBytes;
                     ulong TotalNumberOfFreeBytes;
-                    bool success = GetDiskFreeSpaceEx(m_task.DestinationMapUNC, out FreeBytesAvailable, out TotalNumberOfBytes,
-                    out TotalNumberOfFreeBytes);
+                    bool success = GetDiskFreeSpaceEx(m_task.DestinationMapUNC, out FreeBytesAvailable, out TotalNumberOfBytes, out TotalNumberOfFreeBytes);
                     if (!success) return ulong.MaxValue;
-                    long delta = ((long)TotalNumberOfFreeBytes)- ((long) (m_task.QuotaFree)) * 1024 * 1024;
+                    long delta = ((long)TotalNumberOfFreeBytes) - ((long)(m_task.QuotaFree)) * 1024 * 1024;
                     if (delta < 0 && (((long)(m_size)) < -delta)) return 0;
                     return (ulong)(((long)(m_size)) + delta);
                 }
@@ -187,9 +255,37 @@ namespace iba.Processing
                 Reset();
                 if (FailureWhilePreviouslyScanning) return; //fix next time.
             }
+
+            string origPath = Path.GetFullPath(m_task.DestinationMapUNC);
+
             //bool bFirst = true;
+            var drive = new DriveInfo(Path.GetPathRoot(m_task.DestinationMapUNC));
+            var quota = GetQuota();
+
+            var bytesToDelete = 0L;
+            if (m_size > quota)
+                bytesToDelete = (long)(m_size - quota);
+
+            Log(Logging.Level.Debug, String.Format("Drive: {1} Size: {2} Used: {5} Free: {3} Quota: {0} Quota exceeded: {4}",
+                PathUtil.GetSizeReadable((long)quota),
+                drive.Name,
+                PathUtil.GetSizeReadable(drive.TotalSize),
+                PathUtil.GetSizeReadable(drive.TotalFreeSpace),
+                PathUtil.GetSizeReadable(bytesToDelete),
+                PathUtil.GetSizeReadable(drive.TotalSize - drive.TotalFreeSpace)
+                ), "");
+
+            if (m_size < quota)
+                return;
+
+            Log(Logging.Level.Debug, "Deletion start", "");
+            var startFilesCount = m_files.Count;
+            var startSize = m_size;
+
             while (m_size > GetQuota() && m_files.Count > 0)
             {
+                if (m_cancelToken.IsCancellationRequested)
+                    break;
                 //if (bFirst)
                 //{
                 //    //string message = String.Format("Quota Exceeded: filesize: {0}  Quota: {1} Cleaning up files", m_size, m_task.Quota);
@@ -215,15 +311,21 @@ namespace iba.Processing
                             return; //forget about cleanup until problem is fixed.
                         }
                     }
-                    string origPath = (new DirectoryInfo(m_task.DestinationMapUNC)).FullName;
                     FileInfo inf = new FileInfo(file);
                     DirectoryInfo parent = inf.Directory;
-                    ulong size = (ulong) inf.Length;
+                    ulong size = (ulong)inf.Length;
                     try
                     {
 
                         File.Delete(file);
-                        string message = String.Format(iba.Properties.Resources.logCleanupSuccessRemoveFile, file);
+
+                        if (size > m_size)
+                            m_size = 0;
+                        else
+                            m_size -= size;
+
+                        //string message = String.Format(iba.Properties.Resources.logCleanupSuccessRemoveFile, file);
+                        string message = String.Format("Removed FileTime: {2} File: {0} Size: {1} ", file, PathUtil.GetSizeReadable(inf.Length), inf.LastWriteTime);
                         Log(iba.Logging.Level.Info, message, datfile);
                         //Log(iba.Logging.Level.Exception, String.Format("size before deleting {0}, filesize {1}, difference {2}", m_size, size, m_size - size), file);
                     }
@@ -233,10 +335,7 @@ namespace iba.Processing
                         Log(iba.Logging.Level.Warning, message, datfile);
                         throw ex;
                     }
-                    if (size > m_size)
-                        m_size = 0;
-                    else
-                        m_size -= size;
+
                     while (DirectoryEmpty(parent.FullName) && parent.FullName != origPath)
                     {
                         DirectoryInfo grandParent = parent.Parent;
@@ -260,6 +359,12 @@ namespace iba.Processing
                 }
                 m_files.RemoveFirst();
             }
+
+            Log(Logging.Level.Debug, String.Format("Deleted {0} files, freed {1}",
+                startFilesCount - m_files.Count,
+                PathUtil.GetSizeReadable((long)(startSize - m_size))
+                ), "");
+
             //if (bFirst)
             //{
             //    string message = String.Format("Quota Not Exceeded: filesize: {0}  Quota: {1}", m_size, m_task.Quota);

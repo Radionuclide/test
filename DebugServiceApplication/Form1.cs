@@ -28,6 +28,7 @@ namespace iba
 
         private void btStop_Click(object sender, EventArgs e)
         {
+            m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
             m_communicationObject.ForwardEvents = false;
             LogData.StopLogger();
@@ -81,9 +82,12 @@ namespace iba
                             return;
                         }
                         confs = dat.ApplyToManager(m_communicationObject.Manager);
+                        m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
+
                     }
                     foreach (ConfigurationData dat in confs) dat.relinkChildData();
                     m_communicationObject.Manager.Configurations = confs;
+                    m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
                     foreach (ConfigurationData dat in confs)
                     {
                         if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);

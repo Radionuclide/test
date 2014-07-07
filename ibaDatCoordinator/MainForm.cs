@@ -256,6 +256,7 @@ namespace iba
                             break;
                     }
                 }
+                TaskManager.Manager.StopAllGlobalCleanups();
                 using (StopWaitDialog waiter = new StopWaitDialog())
                 {
                     waiter.ShowDialog(this);
@@ -1748,10 +1749,13 @@ namespace iba
                     }
                     TaskManager.Manager.Configurations = confs;
                     if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
+                    {
+                        TaskManager.Manager.StartAllEnabledGlobalCleanups();
                         foreach (ConfigurationData dat in confs)
                         {
                             if (dat.AutoStart && dat.Enabled) TaskManager.Manager.StartConfiguration(dat);
                         }
+                    }
                 }
             }
             catch (Exception ex)
@@ -2587,6 +2591,7 @@ namespace iba
                                 SaveRightPaneControl();
                                 if (data != null) data.ApplyToManager(TaskManager.Manager);
                                 ReplaceManagerFromTree(TaskManager.Manager);
+                                TaskManager.Manager.StartAllEnabledGlobalCleanups();
                                 foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                                 {
                                     if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);

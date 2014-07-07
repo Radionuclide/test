@@ -3359,9 +3359,14 @@ namespace iba.Processing
 
         internal void CleanupWithQuota(string filename, TaskDataUNC task, string extension)
         { //the parameter filename is used for logging, nothing else
-            if (!m_quotaCleanups.ContainsKey(task.Guid))
-                m_quotaCleanups.Add(task.Guid,new FileQuotaCleanup(task,extension));
-            m_quotaCleanups[task.Guid].Clean(filename);
+            FileQuotaCleanup fqc = null;
+            if (!m_quotaCleanups.TryGetValue(task.Guid, out fqc))
+            {
+                fqc = new FileQuotaCleanup(task, extension);
+                fqc.Init();
+                m_quotaCleanups.Add(task.Guid, fqc);
+            }
+            fqc.Clean(filename);
         }
 
         private void Batchfile(string filename,BatchFileData task)
