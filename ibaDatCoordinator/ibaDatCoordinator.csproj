@@ -129,6 +129,7 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Processing\GlobalCleanupManager.cs" />
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
