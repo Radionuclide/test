@@ -102,7 +102,7 @@ namespace XmlExtract
                 spur.Einheit = _resolveEinheit.Parse(channelUnit);
                 if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
                 {
-                    spur.EinheitLocal = channelUnit;
+                    spur.EinheitLokal = channelUnit;
                 }
 
                 ChannelData channelData = GetChannelData(channel);

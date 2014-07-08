@@ -153,7 +153,7 @@ diff U3b E:/Projects/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract/Erzeu
 -        private BezugDimensionEnum dimensionXField;
 +        public string Einheit { get; set; }
 +
-+        public string EinheitLocal { get; set; }
++        public string EinheitLokal { get; set; }
          
 -        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
 -        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]

@@ -214,7 +214,7 @@ namespace XmlExtract
         
         public string Einheit { get; set; }
 
-        public string EinheitLocal { get; set; }
+        public string EinheitLokal { get; set; }
 
         /// <summary>
         /// Name der Messreihe im statischen Modell
