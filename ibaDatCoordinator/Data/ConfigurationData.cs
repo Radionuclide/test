@@ -40,6 +40,8 @@ namespace iba.Data
         {
             get 
             {
+                if(m_jobType == JobTypeEnum.Scheduled)
+                    return HDQDirectory;
                 return m_datDirectory;
             }
             set 
@@ -48,9 +50,16 @@ namespace iba.Data
             }
         }
 
-        public bool DatDirectorySpecified
+        private string m_hdqDirectory;
+        [XmlIgnore]
+        public string HDQDirectory
         {
-            get { return m_jobType != JobTypeEnum.Scheduled; }
+            get
+            {
+                if(string.IsNullOrEmpty(m_hdqDirectory))
+                    DetermineHDQFolder();
+                return m_hdqDirectory;
+            }
         }
 
         private List<TaskData> m_tasks;
@@ -391,6 +400,17 @@ namespace iba.Data
                 if (task != null)
                     task.AdditionalFileNames(myList, safeConfName);
             }
+        }
+
+        private void DetermineHDQFolder()
+        {
+            //throw new Exception("The method or operation is not implemented.");
+        }
+
+        public string CreateHDQFileDescription()
+        {
+            //throw new Exception("The method or operation is not implemented.");
+            return "";
         }
 
         #region IJobData Members

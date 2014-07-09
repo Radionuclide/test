@@ -1804,6 +1804,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next {0} triggers:.
+        /// </summary>
+        internal static string NextNTriggers {
+            get {
+                return ResourceManager.GetString("NextNTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ibaDatCoordinator (connected).
         /// </summary>
         internal static string niConnected {
@@ -1981,6 +1990,24 @@ namespace iba.Properties {
         internal static string notifyTestMessage {
             get {
                 return ResourceManager.GetString("notifyTestMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No triggers are scheduled! Please review your trigger settings..
+        /// </summary>
+        internal static string NoTriggers {
+            get {
+                return ResourceManager.GetString("NoTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No triggers are scheduled after these..
+        /// </summary>
+        internal static string NoTriggersAfter {
+            get {
+                return ResourceManager.GetString("NoTriggersAfter", resourceCulture);
             }
         }
         
@@ -2926,6 +2953,15 @@ namespace iba.Properties {
         internal static string TriedToManyTimes {
             get {
                 return ResourceManager.GetString("TriedToManyTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger info for job &apos;{0}&apos;.
+        /// </summary>
+        internal static string TriggerInfoCaption {
+            get {
+                return ResourceManager.GetString("TriggerInfoCaption", resourceCulture);
             }
         }
         

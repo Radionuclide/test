@@ -21,7 +21,7 @@ namespace iba.Controls
         public PanelScheduledJob()
         {
             InitializeComponent();
-            ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
+            //((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
 
@@ -242,73 +242,97 @@ namespace iba.Controls
             m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
+        bool StartChangedRecursing;
         private void StartChanged(object sender, EventArgs e)
         {
-            TimeSpan sp = new TimeSpan((int)m_nudStartDays.Value, (int)m_nudStartHours.Value, (int)m_nudStartMinutes.Value, (int)m_nudStartSeconds.Value);
+            if(StartChangedRecursing) return;
+            try
+            {
+                StartChangedRecursing = true;
+                TimeSpan sp = new TimeSpan((int)m_nudStartDays.Value, (int)m_nudStartHours.Value, (int)m_nudStartMinutes.Value, (int)m_nudStartSeconds.Value);
 
-            if (Control.ModifierKeys == Keys.Control)
-            {
-                if (sender == m_nudStartDays)
+                if(Control.ModifierKeys == Keys.Control)
                 {
-                    sp = TimeSpan.FromDays((int)m_nudStartDays.Value);
+                    if(sender == m_nudStartDays)
+                    {
+                        sp = TimeSpan.FromDays((int)m_nudStartDays.Value);
+                    }
+                    else if(sender == m_nudStartHours)
+                    {
+                        sp = TimeSpan.FromHours((int)m_nudStartHours.Value);
+                    }
+                    else if(sender == m_nudStartMinutes)
+                    {
+                        sp = TimeSpan.FromMinutes((int)m_nudStartMinutes.Value);
+                    }
+                    else if(sender == m_nudStartSeconds)
+                    {
+                        sp = TimeSpan.FromSeconds((int)m_nudStartSeconds.Value);
+                    }
                 }
-                else if (sender == m_nudStartHours)
+                long diff = TimeSpan.FromSeconds(1).Ticks;
+                if(sp.Ticks >= m_tsStop.Ticks + diff)
                 {
-                    sp = TimeSpan.FromHours((int)m_nudStartHours.Value);
+                    Start = sp;
                 }
-                else if (sender == m_nudStartMinutes)
+                else if(sp.Ticks >= diff)
                 {
-                    sp = TimeSpan.FromMinutes((int)m_nudStartMinutes.Value);
+                    Start = sp;
+                    Stop = TimeSpan.FromTicks(sp.Ticks - diff);
                 }
-                else if (sender == m_nudStartSeconds)
+                else
                 {
-                    sp = TimeSpan.FromSeconds((int)m_nudStartSeconds.Value);
+                    Stop = TimeSpan.FromTicks(0);
+                    Start = TimeSpan.FromTicks(diff);
                 }
             }
-            long diff = TimeSpan.FromSeconds(1).Ticks;
-            if (sp.Ticks >= m_tsStop.Ticks + diff)
+            finally
             {
-                Start = sp;
-            }
-            else if (sp.Ticks >= diff)
-            {
-                Start = sp;
-                Stop = TimeSpan.FromTicks(sp.Ticks - diff);
-            }
-            else
-            {
-                Stop = TimeSpan.FromTicks(0);
-                Start = TimeSpan.FromTicks(diff);
+                StartChangedRecursing = false;
             }
         }
+
+        
+        bool StopChangedRecursing;
+
         private void StopChanged(object sender, EventArgs e)
         {
-            TimeSpan sp = new TimeSpan((int)m_nudStopDays.Value, (int)m_nudStopHours.Value, (int)m_nudStopMinutes.Value, (int)m_nudStopSeconds.Value);
-
-            if (Control.ModifierKeys == Keys.Control)
+            if(StopChangedRecursing) return;
+            try
             {
-                if (sender == m_nudStopDays)
+                StopChangedRecursing = true;
+
+                TimeSpan sp = new TimeSpan((int)m_nudStopDays.Value, (int)m_nudStopHours.Value, (int)m_nudStopMinutes.Value, (int)m_nudStopSeconds.Value);
+
+                if(Control.ModifierKeys == Keys.Control)
                 {
-                    sp = TimeSpan.FromDays((int)m_nudStopDays.Value);
+                    if(sender == m_nudStopDays)
+                    {
+                        sp = TimeSpan.FromDays((int)m_nudStopDays.Value);
+                    }
+                    else if(sender == m_nudStopHours)
+                    {
+                        sp = TimeSpan.FromHours((int)m_nudStopHours.Value);
+                    }
+                    else if(sender == m_nudStopMinutes)
+                    {
+                        sp = TimeSpan.FromMinutes((int)m_nudStopMinutes.Value);
+                    }
+                    else if(sender == m_nudStopSeconds)
+                    {
+                        sp = TimeSpan.FromSeconds((int)m_nudStopSeconds.Value);
+                    }
                 }
-                else if (sender == m_nudStopHours)
+                Stop = sp;
+                long diff = TimeSpan.FromSeconds(1).Ticks;
+                if(m_tsStart.Ticks < sp.Ticks + diff)
                 {
-                    sp = TimeSpan.FromHours((int)m_nudStopHours.Value);
-                }
-                else if (sender == m_nudStopMinutes)
-                {
-                    sp = TimeSpan.FromMinutes((int)m_nudStopMinutes.Value);
-                }
-                else if (sender == m_nudStopSeconds)
-                {
-                    sp = TimeSpan.FromSeconds((int)m_nudStopSeconds.Value);
+                    Start = TimeSpan.FromTicks(sp.Ticks + diff);
                 }
             }
-            Stop = sp;
-            long diff = TimeSpan.FromSeconds(1).Ticks;
-            if (m_tsStart.Ticks < sp.Ticks + diff)
+            finally
             {
-                Start = TimeSpan.FromTicks(sp.Ticks + diff);
+                StopChangedRecursing = false;
             }
         }
 
@@ -415,14 +439,30 @@ namespace iba.Controls
             StringBuilder sb = new StringBuilder();
 
             DateTime from = DateTime.Now;
+            int count = 10;
             for(int i = 0; i < 10; i++)
             {
                 DateTime next;
-                if (!calc.NextTrigger(from,out next)) break;
+                if(!calc.NextTrigger(from, out next))
+                {
+                    count = i;
+                    break;
+                }
                 sb.AppendLine(next.ToString() + " (" + next.DayOfWeek.ToString() + ")");
                 from = next;
             }
-            MessageBox.Show(sb.ToString());
+            string caption = m_confData.Name;
+            if (count == 0)
+            {
+                MessageBox.Show(iba.Properties.Resources.NoTriggers,caption);
+            }
+            else
+            {
+                string message = string.Format(iba.Properties.Resources.NextNTriggers, count) + Environment.NewLine + sb.ToString();
+                message = message.TrimEnd();
+                if(count < 10) message += Environment.NewLine + iba.Properties.Resources.NoTriggersAfter;
+                MessageBox.Show(message,caption);
+            }
         }
 
         private void m_btTriggerNow_Click(object sender, EventArgs e)

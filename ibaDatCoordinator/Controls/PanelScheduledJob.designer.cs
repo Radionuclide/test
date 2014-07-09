@@ -41,6 +41,7 @@
             this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.m_btTriggerNow = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
+            this.m_nudRepeatTimes = new iba.Controls.CustomNumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.m_nudRepeatMinutes = new System.Windows.Forms.NumericUpDown();
@@ -60,7 +61,6 @@
             this.m_cbRetry = new System.Windows.Forms.CheckBox();
             this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
-            this.m_refreshDats = new System.Windows.Forms.Button();
             this.m_stopButton = new System.Windows.Forms.Button();
             this.m_applyToRunningBtn = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
@@ -91,8 +91,8 @@
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.gbHD = new iba.Utility.CollapsibleGroupBox();
-            this.m_nudRepeatTimes = new CustomNumericUpDown();
             this.gbSchedule.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatHours)).BeginInit();
             this.gbTrigger.SuspendLayout();
@@ -107,7 +107,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             this.SuspendLayout();
             // 
             // m_btShowTrigger
@@ -141,7 +140,6 @@
             this.gbSchedule.Controls.Add(this.m_cbRetry);
             this.gbSchedule.Controls.Add(this.m_retryUpDown);
             this.gbSchedule.Controls.Add(this.label14);
-            this.gbSchedule.Controls.Add(this.m_refreshDats);
             this.gbSchedule.Controls.Add(this.m_stopButton);
             this.gbSchedule.Controls.Add(this.m_applyToRunningBtn);
             this.gbSchedule.Controls.Add(this.m_startButton);
@@ -152,6 +150,11 @@
             this.gbSchedule.Controls.Add(this.label10);
             this.gbSchedule.Name = "gbSchedule";
             this.gbSchedule.TabStop = false;
+            // 
+            // m_nudRepeatTimes
+            // 
+            resources.ApplyResources(this.m_nudRepeatTimes, "m_nudRepeatTimes");
+            this.m_nudRepeatTimes.Name = "m_nudRepeatTimes";
             // 
             // label18
             // 
@@ -309,13 +312,6 @@
             // 
             resources.ApplyResources(this.label14, "label14");
             this.label14.Name = "label14";
-            // 
-            // m_refreshDats
-            // 
-            resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
-            this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
-            this.m_refreshDats.Name = "m_refreshDats";
-            this.m_refreshDats.UseVisualStyleBackColor = true;
             // 
             // m_stopButton
             // 
@@ -598,11 +594,6 @@
             this.gbHD.Name = "gbHD";
             this.gbHD.TabStop = false;
             // 
-            // m_nudRepeatTimes
-            // 
-            resources.ApplyResources(this.m_nudRepeatTimes, "m_nudRepeatTimes");
-            this.m_nudRepeatTimes.Name = "m_nudRepeatTimes";
-            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -614,6 +605,7 @@
             this.Name = "PanelScheduledJob";
             this.gbSchedule.ResumeLayout(false);
             this.gbSchedule.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatHours)).EndInit();
             this.gbTrigger.ResumeLayout(false);
@@ -630,7 +622,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -642,7 +633,6 @@
         private System.Windows.Forms.CheckBox m_cbRetry;
         private System.Windows.Forms.NumericUpDown m_retryUpDown;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button m_refreshDats;
         public System.Windows.Forms.Button m_stopButton;
         public System.Windows.Forms.Button m_applyToRunningBtn;
         public System.Windows.Forms.Button m_startButton;

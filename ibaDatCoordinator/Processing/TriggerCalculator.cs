@@ -112,15 +112,12 @@ namespace iba.Processing
             DateTime TimeAfter = DateTime.MaxValue;
             foreach(int month in m_data.MonthTriggerMonths)
             {
-                foreach(int day in m_data.MonthTriggerDays)
+                for (int offset = -1; offset <= 1; offset++) //try year before, current and next year
                 {
-                    for (int offset = -1; offset <= 1; offset++) //try year before, current and next year
-                    {
-                        if(m_data.MonthTriggerUseDays)
-                            MonthlyTriggerDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
-                        else
-                            MonthlyTriggerWeekDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
-                    }
+                    if(m_data.MonthTriggerUseDays)
+                        MonthlyTriggerDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
+                    else
+                        MonthlyTriggerWeekDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
                 }
             }
             if (TimeBefore == DateTime.MinValue && TimeAfter == DateTime.MaxValue)
@@ -155,7 +152,7 @@ namespace iba.Processing
                 try
                 {
                     int dayc = day;
-                    if(dayc == 0) //last
+                    if(dayc == 32) //last
                         dayc = DateTime.DaysInMonth(year, month);
                     DateTime candidate = new DateTime(year, month, dayc, m_data.BaseTriggerTime.Hour,
                         m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond);
@@ -229,7 +226,7 @@ namespace iba.Processing
 
         public void GenerateHDQFile(DateTime trigger, String path)
         {
-            using(StreamWriter sw = new StreamWriter(path, false, Encoding.ASCII))
+            using(StreamWriter sw = new StreamWriter(path, false))
             {
                 sw.WriteLine("[HDQ file]");
                 sw.WriteLine("type=time");

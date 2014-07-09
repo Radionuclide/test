@@ -29,8 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.21.2.0")]
-[assembly: AssemblyFileVersion("1.21.2.0")]
+[assembly: AssemblyVersion("1.22.0.0")]
+[assembly: AssemblyFileVersion("1.22.0.0")]
 
 namespace iba
 {

@@ -9,7 +9,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
-using Crownwood.DotNetMagic.Menus;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -23,6 +22,8 @@ using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
+//using System.ComponentModel.Design;
+using Crownwood.DotNetMagic.Menus;
 
 namespace iba
 {
@@ -857,8 +858,8 @@ namespace iba
                     node = InsertNewConf(newData);
                     //loadConfigurations();
                     m_configTreeView.EndUpdate();
-                    m_configTreeView.SelectedNode = node;
                     loadStatuses();
+                    m_configTreeView.SelectedNode = node;
                     UpdateButtons();
                     UpdateTreePositions();
                 }
@@ -1284,6 +1285,8 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewIfTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewPauseTask]);
+
+
             for (int i = 0; i < customcount; i++)
             {
                 m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);

@@ -1162,4 +1162,16 @@
   <data name="Indefinite" xml:space="preserve">
     <value>Indefinite</value>
   </data>
+  <data name="NextNTriggers" xml:space="preserve">
+    <value>Next {0} triggers:</value>
+  </data>
+  <data name="NoTriggers" xml:space="preserve">
+    <value>No triggers are scheduled! Please review your trigger settings.</value>
+  </data>
+  <data name="NoTriggersAfter" xml:space="preserve">
+    <value>No triggers are scheduled after these.</value>
+  </data>
+  <data name="TriggerInfoCaption" xml:space="preserve">
+    <value>Trigger info for job '{0}'</value>
+  </data>
 </root>

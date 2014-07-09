@@ -144,7 +144,7 @@ namespace iba.Processing
                         if (m_notifyTimer == null) m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
                         m_notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                     }
-                    if (m_toUpdate.RescanEnabled && !m_toUpdate.OnetimeJob)
+                    if (m_toUpdate.RescanEnabled && m_toUpdate.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     {
                         if (rescanTimer == null)
                         {
@@ -498,6 +498,16 @@ namespace iba.Processing
         private void Run()
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
+
+            m_bTimersstopped = false;
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            {
+                Log(Logging.Level.Exception, "Execution of scheduled jobs disabled in this beta version");
+                m_sd.Started = false;
+                Stop = true;
+                return;
+            }
+
             if (m_stop)
             {
                 m_sd.Started = false;
@@ -509,8 +519,6 @@ namespace iba.Processing
             {
                 m_licensedTasks.Clear();
             }
-
-
 
             bool bPostpone = TaskManager.Manager.DoPostponeProcessing;
             int minutes = TaskManager.Manager.PostponeMinutes;
