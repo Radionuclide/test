@@ -1254,6 +1254,8 @@ namespace iba
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
+            //TODO: Popupmenu vervangen door ContextMenuStrip
+            //MenuCommand vervangen door ToolStripMenuItem
 
             int customcount = PluginManager.Manager.PluginInfos.Count;
             m_menuItems = new MenuCommand[13 + customcount];
