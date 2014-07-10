@@ -18,7 +18,7 @@ namespace iba.Utility
         }
 
 
-        bool Read()
+        public bool Read()
         {
             Sections.Clear();
             string currentSection = "";
@@ -53,7 +53,7 @@ namespace iba.Utility
             }
         }
 
-        void Write()
+        public void Write()
         {
             using(StreamWriter writer = new StreamWriter(m_fileName, false))
             {

@@ -22,8 +22,6 @@ using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
-//using System.ComponentModel.Design;
-using Crownwood.DotNetMagic.Menus;
 
 namespace iba
 {
@@ -1228,8 +1226,8 @@ namespace iba
         }
 
         #region Popup menu stuff
-        private PopupMenu m_popupMenu = new PopupMenu();
-        private MenuCommand[] m_menuItems;
+        private ContextMenuStrip m_popupMenu = new ContextMenuStrip();
+        private ToolStripMenuItem[] m_menuItems;
 
 
         //methods for rightclicking copy paste
@@ -1254,44 +1252,42 @@ namespace iba
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
-            //TODO: Popupmenu vervangen door ContextMenuStrip
-            //MenuCommand vervangen door ToolStripMenuItem
-
             int customcount = PluginManager.Manager.PluginInfos.Count;
-            m_menuItems = new MenuCommand[13 + customcount];
-            m_menuItems[(int)MenuItemsEnum.Delete] = new MenuCommand(iba.Properties.Resources.deleteTitle, il.List, MyImageList.Delete, Shortcut.Del, new EventHandler(OnDeleteMenuItem));
-            m_menuItems[(int)MenuItemsEnum.CollapseAll] = new MenuCommand(iba.Properties.Resources.collapseTitle, il.List, -1, Shortcut.None, new EventHandler(OnCollapseAllMenuItem));
-            m_menuItems[(int)MenuItemsEnum.Cut] = new MenuCommand(iba.Properties.Resources.cutTitle, menuImages, 0, Shortcut.CtrlX, new EventHandler(OnCutMenuItem));
-            m_menuItems[(int)MenuItemsEnum.Copy] = new MenuCommand(iba.Properties.Resources.copyTitle, menuImages, 1, Shortcut.CtrlC, new EventHandler(OnCopyMenuItem));
-            m_menuItems[(int)MenuItemsEnum.Paste] = new MenuCommand(iba.Properties.Resources.pasteTitle, menuImages, 2, Shortcut.CtrlV, new EventHandler(OnPasteMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewTask] = new MenuCommand(iba.Properties.Resources.NewTaskTitle, il.List, -1, Shortcut.None);
-            m_menuItems[(int)MenuItemsEnum.NewReport] = new MenuCommand(iba.Properties.Resources.NewReportTitle, menuImages, 3, Shortcut.None, new EventHandler(OnNewReportMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewExtract] = new MenuCommand(iba.Properties.Resources.NewExtractTitle, menuImages, 4, Shortcut.None, new EventHandler(OnNewExtractMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new MenuCommand(iba.Properties.Resources.NewBatchfileTitle, menuImages, 5, Shortcut.None, new EventHandler(OnNewBatchfileMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewCopyTask] = new MenuCommand(iba.Properties.Resources.NewCopyTaskTitle,menuImages, 6,Shortcut.None, new EventHandler(OnNewCopyTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewIfTask] = new MenuCommand(iba.Properties.Resources.NewIfTaskTitle, menuImages, 7, Shortcut.None, new EventHandler(OnNewIfTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new MenuCommand(iba.Properties.Resources.NewUpdateDataTaskTitle, Shortcut.None, new EventHandler(OnNewUpdateDataTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask].Image = iba.Properties.Resources.updatedatatask;//png, don't use imagelist because imagelist has problem with alpha channel pixels in the png
-            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new MenuCommand(iba.Properties.Resources.NewPauseTaskTitle, Shortcut.None, new EventHandler(OnNewPauseTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewPauseTask].Image = iba.Properties.Resources.pausetask;//png, don't use imagelist because imagelist has problem with alpha channel pixels in the png
+            m_menuItems = new ToolStripMenuItem[13 + customcount];
+            m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
+            m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
+            m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.Copy] = new ToolStripMenuItem(iba.Properties.Resources.copyTitle, menuImages.Images[1], new EventHandler(OnCopyMenuItem), Keys.C | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.Paste] = new ToolStripMenuItem(iba.Properties.Resources.pasteTitle, menuImages.Images[2], new EventHandler(OnPasteMenuItem), Keys.V | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(iba.Properties.Resources.NewTaskTitle, null, null, iba.Properties.Resources.NewTaskTitle);
+            
 
+            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(iba.Properties.Resources.NewTaskTitle);
+            m_menuItems[(int)MenuItemsEnum.NewReport] = new ToolStripMenuItem(iba.Properties.Resources.NewReportTitle, menuImages.Images[3], new EventHandler(OnNewReportMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewExtract] = new ToolStripMenuItem(iba.Properties.Resources.NewExtractTitle,  menuImages.Images[4], new EventHandler(OnNewExtractMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new ToolStripMenuItem(iba.Properties.Resources.NewBatchfileTitle, menuImages.Images[5], new EventHandler(OnNewBatchfileMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewCopyTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCopyTaskTitle, menuImages.Images[6], new EventHandler(OnNewCopyTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewIfTask] = new ToolStripMenuItem(iba.Properties.Resources.NewIfTaskTitle, menuImages.Images[7], new EventHandler(OnNewIfTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUpdateDataTaskTitle, iba.Properties.Resources.updatedatatask, new EventHandler(OnNewUpdateDataTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new ToolStripMenuItem(iba.Properties.Resources.NewPauseTaskTitle, iba.Properties.Resources.pausetask, new EventHandler(OnNewPauseTaskMenuItem));
+            
             for (int i = 0; i < customcount; i++)
             {
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
-                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new MenuCommand(title, menuImages, NR_TASKS+3+i, Shortcut.None, new EventHandler(OnNewCustomTaskMenuItem));
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new ToolStripMenuItem(title, menuImages.Images[NR_TASKS+3+i], new EventHandler(OnNewCustomTaskMenuItem));
             }
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewBatchfile]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewCopyTask]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewIfTask]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask]);
-            m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[(int)MenuItemsEnum.NewPauseTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown = new ContextMenuStrip();
 
-
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewReport]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewExtract]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewBatchfile]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCopyTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewIfTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewPauseTask]);
             for (int i = 0; i < customcount; i++)
             {
-                m_menuItems[(int)MenuItemsEnum.NewTask].MenuCommands.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
+                m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
             }
         }
 
@@ -1378,16 +1374,16 @@ namespace iba
                 m_menuItems[(int)MenuItemsEnum.Paste].Enabled = (m_cd_copy != null);
                 items.Add(MenuItemsEnum.Paste);
             }
-            m_popupMenu.MenuCommands.Clear();
+            m_popupMenu.Items.Clear();
             foreach (MenuItemsEnum item in items)
             {
-                MenuCommand mc = m_menuItems[(int)item];
+                ToolStripMenuItem mc = m_menuItems[(int)item];
                 mc.Tag = node;
-                m_popupMenu.MenuCommands.Add(mc);
+                m_popupMenu.Items.Add(mc);
                 if (item == MenuItemsEnum.NewTask)
                 {
-                    int index = PluginManager.Manager.PluginInfos.Count - mc.MenuCommands.Count;
-                    foreach (MenuCommand mc2 in mc.MenuCommands)
+                    int index = PluginManager.Manager.PluginInfos.Count - mc.DropDown.Items.Count;
+                    foreach(ToolStripMenuItem mc2 in mc.DropDown.Items)
                     {
                         if (index < 0)
                             mc2.Tag = node;
@@ -1397,12 +1393,12 @@ namespace iba
                     }
                 }
             }
-            m_popupMenu.TrackPopup(Cursor.Position);
+            m_popupMenu.Show(Cursor.Position);
         }
 
         private void OnDeleteMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             Delete(node);
         }
@@ -1410,7 +1406,7 @@ namespace iba
         private void OnCutMenuItem(object sender, EventArgs e)
         {
             OnCopyMenuItem(sender, e);
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             if (node != null && node.Tag is ConfigurationTreeItemData && !Utility.Crypt.CheckPassword(this)) return;
             Delete(node, false);
@@ -1418,14 +1414,14 @@ namespace iba
 
         private void OnPasteMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             pasteNode(node);
         }
 
         private void OnCopyMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             copyNode(node);
         }
@@ -1441,7 +1437,7 @@ namespace iba
 
         private void OnNewReportMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             ReportData report = new ReportData(confData);
@@ -1458,7 +1454,7 @@ namespace iba
 
         private void OnNewExtractMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             ExtractData extract = new ExtractData(confData);
@@ -1475,7 +1471,7 @@ namespace iba
 
         private void OnNewBatchfileMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             BatchFileData bat = new BatchFileData(confData);
@@ -1492,7 +1488,7 @@ namespace iba
 
         private void OnNewIfTaskMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             IfTaskData condo = new IfTaskData(confData);
@@ -1527,7 +1523,7 @@ namespace iba
                 return;
             }
 
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             UpdateDataTaskData udt = new UpdateDataTaskData(confData);
@@ -1544,7 +1540,7 @@ namespace iba
 
         private void OnNewCopyTaskMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             CopyMoveTaskData cop = new CopyMoveTaskData(confData);
@@ -1561,7 +1557,7 @@ namespace iba
 
         private void OnNewPauseTaskMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             PauseTaskData pause = new PauseTaskData(confData);
@@ -1578,7 +1574,7 @@ namespace iba
 
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
         {
-            MenuCommand mc = (MenuCommand)sender;
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             Pair<TreeNode, int> p = mc.Tag as Pair<TreeNode, int>;
             TreeNode node = p.First;
             int index = p.Second;

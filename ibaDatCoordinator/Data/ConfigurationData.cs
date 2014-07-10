@@ -404,13 +404,34 @@ namespace iba.Data
 
         private void DetermineHDQFolder()
         {
-            //throw new Exception("The method or operation is not implemented.");
+            string p1 = System.IO.Path.GetTempPath();
+            string p2 = "{" + Guid.ToString()+ "_" + Name + "}";
+            p2 = CPathCleaner.CleanFile(p2);
+            string dir = Path.Combine(p1, p2);
+            if(!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            m_hdqDirectory = dir;
         }
 
-        public string CreateHDQFileDescription()
+        private string lastHDQFile;
+        private string lastHDQDescription;
+        public string CreateHDQFileDescription(string hdqfile)
         {
+            if (hdqfile == lastHDQFile) return lastHDQDescription;
             //throw new Exception("The method or operation is not implemented.");
-            return "";
+            try
+            {
+                IniParser ini = new IniParser(hdqfile);
+                if (!ini.Read()) return hdqfile;
+                string desc =  ini.Sections["HDQ file"]["store"] + " " + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
+                lastHDQDescription = desc;
+                lastHDQFile = hdqfile;
+                return desc;
+            }
+            catch
+            {
+                return hdqfile;
+            }
         }
 
         #region IJobData Members

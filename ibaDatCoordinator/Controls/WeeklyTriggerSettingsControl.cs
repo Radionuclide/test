@@ -16,6 +16,9 @@ namespace iba.Controls
         {
             InitializeComponent();
             cbList = new CheckBox[] {m_cbSunday,m_cbMonday, m_cbTuesday, m_cbWednesday, m_cbThursday, m_cbFriday, m_cbSaturday};
+            List<string> daynames = new List<String>(System.Globalization.DateTimeFormatInfo.CurrentInfo.DayNames.Take(7));
+            for(int i = 0; i < 7; i++)
+                cbList[i].Text = daynames[i];
         }
 
         public void SetDaysFromList(List<int> list)

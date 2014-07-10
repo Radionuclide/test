@@ -40,7 +40,7 @@ namespace iba.Data
 
         public LogExtraData(string datFile, TaskData task, ConfigurationData cd)
         {
-            if(cd.JobType == ConfigurationData.JobTypeEnum.Scheduled) m_datFile = cd.CreateHDQFileDescription();
+            if(cd.JobType == ConfigurationData.JobTypeEnum.Scheduled) m_datFile = cd.CreateHDQFileDescription(datFile);
             else
                 m_datFile = datFile;
             m_cd = cd;
