@@ -266,7 +266,7 @@ namespace iba.Data
             other.m_doRepeat == m_doRepeat &&
             other.m_repeatEvery == m_repeatEvery &&
             other.m_repeatTimes == m_repeatTimes &&
-            other.HDServer == m_HDServer &&
+            other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
@@ -274,6 +274,5 @@ namespace iba.Data
             other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks &&
             other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
         }
-
     }
 }

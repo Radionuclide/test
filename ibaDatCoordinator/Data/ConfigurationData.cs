@@ -337,24 +337,27 @@ namespace iba.Data
             {
                 if (!other.m_tasks[i].IsSame(m_tasks[i])) return false;
             }
+            if(m_jobType != other.m_jobType) return false;
+            if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
+
 
             return
-            other.m_enabled == m_enabled &&
-            other.m_autoStart == m_autoStart &&
-            other.m_datDirectory == m_datDirectory &&
-            other.m_doSubDirs == m_doSubDirs &&
-            other.m_bDetectNewFiles == m_bDetectNewFiles &&
-            other.m_reproccessTime == m_reproccessTime &&
-            other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
-            other.m_rescanTime == m_rescanTime &&
-            other.m_notify.IsSame(m_notify) &&
-            other.m_bRescanEnabled == m_bRescanEnabled &&
-                //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
-            other.m_username == m_username &&
-            other.m_pass == m_pass &&
-            other.m_bLimitTimesTried == m_bLimitTimesTried &&
-                //other.m_treePosition == m_treePosition; //don't care about this one
-            other.m_nrTimes == m_nrTimes;
+                other.m_enabled == m_enabled &&
+                other.m_autoStart == m_autoStart &&
+                other.m_datDirectory == m_datDirectory &&
+                other.m_doSubDirs == m_doSubDirs &&
+                other.m_bDetectNewFiles == m_bDetectNewFiles &&
+                other.m_reproccessTime == m_reproccessTime &&
+                other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
+                other.m_rescanTime == m_rescanTime &&
+                other.m_notify.IsSame(m_notify) &&
+                other.m_bRescanEnabled == m_bRescanEnabled &&
+                    //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
+                other.m_username == m_username &&
+                other.m_pass == m_pass &&
+                other.m_bLimitTimesTried == m_bLimitTimesTried &&
+                    //other.m_treePosition == m_treePosition; //don't care about this one
+                other.m_nrTimes == m_nrTimes;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()
@@ -431,6 +434,25 @@ namespace iba.Data
             catch
             {
                 return hdqfile;
+            }
+        }
+
+        public void GenerateHDQFile(DateTime trigger, String path)
+        {
+            using(StreamWriter sw = new StreamWriter(path, false))
+            {
+                sw.WriteLine("[HDQ file]");
+                sw.WriteLine("type=time");
+                sw.WriteLine("server=" + m_data.HDServer);
+                sw.WriteLine("portnumber=" + m_data.HDPort);
+                sw.WriteLine("store=" + m_data.HDStores[0]);
+                DateTime startTime = trigger - m_data.StartRangeFromTrigger;
+                String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("starttime=" + temp);
+                DateTime stopTime = trigger - m_data.StartRangeFromTrigger;
+                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("stoptime=" + temp);
+                sw.WriteLine("timebase=" + m_data.PreferredTimeBase.TotalSeconds.ToString());
             }
         }
 

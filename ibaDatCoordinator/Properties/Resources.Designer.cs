@@ -643,6 +643,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No next trigger scheduled! Job will be halted. Please review your trigger settings..
+        /// </summary>
+        internal static string ErrorScheduleNextTrigger {
+            get {
+                return ResourceManager.GetString("ErrorScheduleNextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E.g. &apos;{0}&apos;.
         /// </summary>
         internal static string ExampleFolder {

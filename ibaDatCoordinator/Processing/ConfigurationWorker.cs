@@ -568,8 +568,13 @@ namespace iba.Processing
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
                    
-                    retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
-                    retryAccessTimer.Period = TimeSpan.FromSeconds(1);
+                    if (m_cd.JobType != ConfigurationData.JobTypeEnum.Scheduled)
+                    {
+                        retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
+                        retryAccessTimer.Period = TimeSpan.FromSeconds(1);
+                    }
+                    else
+                        ScheduleNextEvent();
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
@@ -672,6 +677,11 @@ namespace iba.Processing
                     {
                         retryAccessTimer.Dispose();
                         retryAccessTimer = null;
+                    }
+                    if (NextEventTimer != null)
+                    {
+                        NextEventTimer.Dispose();
+                        NextEventTimer = null;
                     }
                     if (testLicenseTimer != null)
                     {
@@ -2096,7 +2106,7 @@ namespace iba.Processing
             }
         }
 
-        private void ProcessDatfile(string DatFile)
+        private void ProcessDatfile(string InputFile) 
         {
             if (m_needIbaAnalyzer)
             {
@@ -2107,19 +2117,20 @@ namespace iba.Processing
             {
                 lock (m_processedFiles)
                 {
-                    if( ! m_processedFiles.Contains(DatFile))
-                    m_processedFiles.Add(DatFile);
+                    if( ! m_processedFiles.Contains(InputFile))
+                    m_processedFiles.Add(InputFile);
                 }
               
                 try
                 {
-                    if (!m_cd.OnetimeJob) //no exclusive access required when doing one time job
+                    if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered) //exclusive access required when getting from PDA
                     {
-                        FileStream fs = new FileStream(DatFile, FileMode.Open, FileAccess.Write, FileShare.None);
+                        FileStream fs = new FileStream(InputFile, FileMode.Open, FileAccess.Write, FileShare.None);
                         fs.Close();
                         fs.Dispose();
                     }
-                    if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0,DatFile);
+                    if (m_needIbaAnalyzer) 
+                        m_ibaAnalyzer.OpenDataFile(0,InputFile); //works both with hdq and .dat
                 }
                 catch (Exception ex)
                 {
@@ -2132,7 +2143,7 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, InputFile);
                     }
                     return;
                 }
@@ -2140,20 +2151,20 @@ namespace iba.Processing
                 bool completeSucces = true;
                 foreach (TaskData task in m_cd.Tasks)
                 {
-                    if (!shouldTaskBeDone(task, DatFile))
+                    if (!shouldTaskBeDone(task, InputFile))
                     {
                         if (task.WhenToExecute != TaskData.WhenToDo.DISABLED && task is TaskDataUNC)
                         {
                             TaskDataUNC tunc = task as TaskDataUNC;
                             if (tunc.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace)
-                                DoCleanupAnyway(DatFile, tunc);
+                                DoCleanupAnyway(InputFile, tunc);
                         }
 
                         //set the outputfile of previous run if any for the next batchtask
                         lock (m_sd.DatFileStates)
                         {
-                            if (m_sd.DatFileStates.ContainsKey(DatFile))
-                                m_sd.DatFileStates[DatFile].OutputFiles.TryGetValue(task, out m_outPutFile);
+                            if (m_sd.DatFileStates.ContainsKey(InputFile))
+                                m_sd.DatFileStates[InputFile].OutputFiles.TryGetValue(task, out m_outPutFile);
                         }
                         continue;
                     }
@@ -2172,11 +2183,11 @@ namespace iba.Processing
                                 completeSucces = false;
                                 break;
                             }
-                            continueProcessing = ProcessTask(DatFile, task, ref failedOnce);
+                            continueProcessing = ProcessTask(InputFile, task, ref failedOnce);
                         }
                     }
                     else
-                        continueProcessing = ProcessTask(DatFile, task, ref failedOnce);
+                        continueProcessing = ProcessTask(InputFile, task, ref failedOnce);
                     if (!continueProcessing) return;
 
                     //touch the file
@@ -2187,17 +2198,17 @@ namespace iba.Processing
                         {
                             try
                             {
-                                DateTime utcTime = File.GetLastWriteTimeUtc(DatFile);
+                                DateTime utcTime = File.GetLastWriteTimeUtc(InputFile);
                                 File.SetLastWriteTimeUtc(m_outPutFile, utcTime);
                             }
                             catch (System.Exception ex)
                             {
-                               Log(iba.Logging.Level.Warning, iba.Properties.Resources.WriteTimeModificationFailed + ex.Message, DatFile, task);
+                               Log(iba.Logging.Level.Warning, iba.Properties.Resources.WriteTimeModificationFailed + ex.Message, InputFile, task);
                             }
                         }
                     }
 
-                    completeSucces = completeSucces && DoNotification(DatFile, task, failedOnce);
+                    completeSucces = completeSucces && DoNotification(InputFile, task, failedOnce);
 
                     if (m_stop)
                     {
@@ -2214,13 +2225,16 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile);
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, InputFile);
                         StopIbaAnalyzer();
                     }
                 }
 
-
-                if (!m_cd.OnetimeJob) //onetime job state does not need to be written in the .dat file
+                lock(m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[InputFile].TimesTried++;
+                }
+                if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered) // written in the .dat file
                 {
                     Nullable<DateTime> time = null;
                     try
@@ -2228,18 +2242,15 @@ namespace iba.Processing
                         IbaFile ibaDatFile = new IbaFileClass();
                         try
                         {
-                            ibaDatFile.OpenForUpdate(DatFile);
-                            time = File.GetLastWriteTime(DatFile);
+                            ibaDatFile.OpenForUpdate(InputFile);
+                            time = File.GetLastWriteTime(InputFile);
                         }
                         catch //happens when timed out and proc has not released its resources yet
                         {
                             m_sd.Changed = true;
                             return;
                         }
-                        lock (m_sd.DatFileStates)
-                        {
-                            m_sd.DatFileStates[DatFile].TimesTried++;
-                        }
+
 
                         if (completeSucces)
                         {
@@ -2254,12 +2265,12 @@ namespace iba.Processing
                             {
                                 string guids = "";
                                 string outputfiles = "";
-                                foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[DatFile].States)
+                                foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
                                     if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
                                     {
                                         guids += stat.Key.Guid.ToString() + ";";
-                                        if (m_sd.DatFileStates[DatFile].OutputFiles.ContainsKey(stat.Key))
-                                            outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[DatFile].OutputFiles[stat.Key] + ";";
+                                        if (m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
+                                            outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[InputFile].OutputFiles[stat.Key] + ";";
                                     }
                                 ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
                                 ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
@@ -2268,36 +2279,29 @@ namespace iba.Processing
 
                         lock (m_sd.DatFileStates)
                         {
-                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[DatFile].TimesTried.ToString());
+                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[InputFile].TimesTried.ToString());
                         }
                         ibaDatFile.Close();
                         System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
                     }
                     catch (Exception ex)
                     {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, DatFile);
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, InputFile);
                         lock (m_sd.DatFileStates)
                         {
                             foreach (TaskData t in m_cd.Tasks)
-                                m_sd.DatFileStates[DatFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
+                                m_sd.DatFileStates[InputFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
                     }
                     if (time != null)
                     {
                         try
                         {
-                            File.SetLastWriteTime(DatFile, time.Value);
+                            File.SetLastWriteTime(InputFile, time.Value);
                         }
                         catch (Exception)
                         {
                         }
-                    }
-                }
-                else
-                {
-                    lock (m_sd.DatFileStates)
-                    {
-                        m_sd.DatFileStates[DatFile].TimesTried++;
                     }
                 }
                 m_sd.Changed = true;
@@ -3973,6 +3977,85 @@ namespace iba.Processing
             {
 
             }
+        }
+
+        private DateTime m_nextTrigger;
+        private System.Threading.Timer NextEventTimer;
+
+        private void ScheduleNextEvent()
+        {
+            ScheduleNextEvent(DateTime.Now);
+        }
+        private void ScheduleNextEvent(DateTime triggerFrom)
+        {
+            TriggerCalculator tc = new TriggerCalculator(m_cd.ScheduleData);
+            if(!tc.NextTrigger(triggerFrom, out m_nextTrigger))
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.ErrorScheduleNextTrigger);
+                Stop = true;
+                return;
+            }
+            if(NextEventTimer == null)
+            {
+                NextEventTimer = new System.Threading.Timer(OnScheduleCheckTick);
+            }
+            SetScheduleCheckTickTimer();
+        }
+
+        private void SetScheduleCheckTickTimer()
+        {
+            try
+            {
+                TimeSpan waitTime = m_nextTrigger - DateTime.Now;
+                if(waitTime.Ticks < 0) waitTime = TimeSpan.Zero;
+                if(waitTime > TimeSpan.FromSeconds(10)) waitTime = TimeSpan.FromSeconds(10);
+                NextEventTimer.Change(waitTime, TimeSpan.Zero);
+            }
+            catch //disposed exceptions on timer
+            {
+
+            }
+        }
+
+        private void OnScheduleCheckTick(object ignoreMe)
+        {
+            if(m_bTimersstopped || m_stop) return;
+            NextEventTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            if((DateTime.Now - m_nextTrigger).Ticks >= TimeSpan.FromMilliseconds(10).Ticks)
+            { //FIRE
+                String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}.hdq", m_nextTrigger));
+                try
+                {
+                    m_cd.GenerateHDQFile(m_nextTrigger, path);
+                }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message,path);
+                    ScheduleNextEvent(m_nextTrigger);
+                    return;
+                }
+
+                lock(m_processedFiles)
+                {
+                    lock(m_toProcessFiles)
+                    {
+                        bool doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                        if(doit)
+                        {
+                            m_toProcessFiles.Add(filename);
+                            lock(m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename] = new DatFileStatus();
+                            }
+                            m_waitEvent.Set();
+                        }
+                    }
+                }
+
+                ScheduleNextEvent(m_nextTrigger);
+            }
+            else
+                SetScheduleCheckTickTimer();
         }
     }
 }

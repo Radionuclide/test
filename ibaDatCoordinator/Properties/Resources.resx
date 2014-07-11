@@ -1174,4 +1174,7 @@
   <data name="TriggerInfoCaption" xml:space="preserve">
     <value>Trigger info for job '{0}'</value>
   </data>
+  <data name="ErrorScheduleNextTrigger" xml:space="preserve">
+    <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
+  </data>
 </root>
