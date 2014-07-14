@@ -188,6 +188,7 @@
             0,
             -2147483648});
             this.m_nudRepeatMinutes.Name = "m_nudRepeatMinutes";
+            this.m_nudRepeatMinutes.ValueChanged += new System.EventHandler(this.m_nudRepeat_ValueChanged);
             // 
             // label17
             // 

@@ -32,7 +32,10 @@ namespace iba.Data
         public string Name
         {
             get { return m_name ; }
-            set { if (value.Length != 0) m_name = value; }
+            set { 
+                if (value.Length != 0) 
+                    m_name = value; 
+            }
         }
 
         private string m_datDirectory;
@@ -307,6 +310,8 @@ namespace iba.Data
             ConfigurationData cd = new ConfigurationData(m_name,m_jobType);
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
+            if(m_jobType == JobTypeEnum.Scheduled)
+                cd.m_scheduleData = m_scheduleData.Clone() as ScheduledJobData;
             cd.relinkChildData();
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
@@ -449,7 +454,7 @@ namespace iba.Data
                 DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
                 String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("starttime=" + temp);
-                DateTime stopTime = trigger - ScheduleData.StartRangeFromTrigger;
+                DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
                 temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("stoptime=" + temp);
                 sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());

@@ -31,7 +31,7 @@ namespace iba.Utility
                         string line = reader.ReadLine();
                         line = line.Trim();
                         if(line == "") continue;
-                        if(line[0] == ']')
+                        if(line[0] == '[')
                         {
                             int index = line.IndexOf(']');
                             if(index < 1) return false;

@@ -500,13 +500,13 @@ namespace iba.Processing
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
 
             m_bTimersstopped = false;
-            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-            {
-                Log(Logging.Level.Exception, "Execution of scheduled jobs disabled in this beta version");
-                m_sd.Started = false;
-                Stop = true;
-                return;
-            }
+            //if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            //{
+            //    Log(Logging.Level.Exception, "Execution of scheduled jobs disabled in this beta version");
+            //    m_sd.Started = false;
+            //    Stop = true;
+            //    return;
+            //}
 
             if (m_stop)
             {
@@ -1455,7 +1455,7 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                if (!IsInvalidOrProcessed(filename))
+                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || !IsInvalidOrProcessed(filename)) //hdq files will be deleted.
                 {
                     lock (m_candidateNewFiles)
                     {
@@ -1466,6 +1466,7 @@ namespace iba.Processing
                         }
                     }
                 }
+                
 
                 if (count >= 50)
                 {
@@ -2248,19 +2249,6 @@ namespace iba.Processing
         }
 
         private AutoResetEvent m_waitEvent;
-
-        private void ClearInfo(string dest)
-        {
-            IbaFile a = new IbaFileClass();
-            a.OpenForUpdate(dest);
-            a.WriteInfoField("$DATCOOR_status", "");
-            a.WriteInfoField("$DATCOOR_TasksDone", "");
-            a.WriteInfoField("$DATCOOR_times_tried", "0");
-            a.WriteInfoField("$DATCOOR_OutputFiles", "");
-            a.Close();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(a);
-        }
-
         private bool shouldTaskBeDone(TaskData task, string filename)
         {
             lock (m_sd.DatFileStates)
@@ -2523,8 +2511,10 @@ namespace iba.Processing
 
                 if(completeSucces)
                 {
-                    Section["$DATCOOR_status"]="processed";
-                    Section["$DATCOOR_OutputFiles"]= ""; //erase any previous outputfiles;
+                    //File.Delete(InputFile); //hdq files get deleted
+                    return;
+                    //Section["$DATCOOR_status"]="processed";
+                    //Section["$DATCOOR_OutputFiles"]= ""; //erase any previous outputfiles;
                 }
                 else
                 {
@@ -3578,8 +3568,6 @@ namespace iba.Processing
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
-                    //write empty infofields in file
-                    //ClearInfo(dest);
                     File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
                     m_outPutFile = dest;
@@ -3591,8 +3579,6 @@ namespace iba.Processing
                         m_quotaCleanups[task.Guid].RemoveFile(dest);
                     }
                     File.Copy(fileToCopy, dest, true);
-                    //write empty infofields in file
-                    //ClearInfo(dest);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFile = dest;
                 }
@@ -4283,7 +4269,7 @@ namespace iba.Processing
             NextEventTimer.Change(Timeout.Infinite, Timeout.Infinite);
             if((DateTime.Now - m_nextTrigger).Ticks >= TimeSpan.FromMilliseconds(10).Ticks)
             { //FIRE
-                String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}.hdq", m_nextTrigger));
+                String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0:yyyy-MM-dd_HH-mm-ss}.hdq", m_nextTrigger));
                 try
                 {
                     m_cd.GenerateHDQFile(m_nextTrigger, filename);

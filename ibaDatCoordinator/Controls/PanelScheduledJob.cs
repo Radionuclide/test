@@ -108,6 +108,7 @@ namespace iba.Controls
 
             RepeatInterval = m_scheduleData.RepeatEvery;
             m_nudRepeatTimes.Value = m_scheduleData.RepeatTimes;
+            m_nudRepeatHours.Enabled = m_nudRepeatMinutes.Enabled = m_nudRepeatTimes.Enabled = m_cbRepeat.Checked;
 
             //hdStore
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
@@ -191,14 +192,17 @@ namespace iba.Controls
         public System.TimeSpan RepeatInterval
         {
             get { return m_repeatInterval; }
-            set { 
+            set 
+            { 
                 m_repeatInterval = value;
                 if(m_repeatInterval > TimeSpan.FromDays(1))
                     m_repeatInterval = TimeSpan.FromDays(1);
                 if(m_repeatInterval < TimeSpan.FromMinutes(1))
                     m_repeatInterval = TimeSpan.FromMinutes(1);
+                DisableRepeatChanged = true;
                 m_nudRepeatHours.Value = m_repeatInterval.Hours;
                 m_nudRepeatMinutes.Value = m_repeatInterval.Minutes;
+                DisableRepeatChanged = false;
             }
         }
 
@@ -228,29 +232,34 @@ namespace iba.Controls
         {
             if (start)
             {
+                DisableStartChangedEvent = true;
                 m_nudStartDays.Value = Math.Min(m_nudStartDays.Maximum, m_tsStart.Days);
                 m_nudStartHours.Value = m_tsStart.Hours;
                 m_nudStartMinutes.Value = m_tsStart.Minutes;
                 m_nudStartSeconds.Value = m_tsStart.Seconds;
+                DisableStartChangedEvent = false;
+
             }
             else
             {
+                DisableStopChangedEvent = true;
                 m_nudStopDays.Value = Math.Min(m_nudStopDays.Maximum, m_tsStop.Days);
                 m_nudStopHours.Value = m_tsStop.Hours;
                 m_nudStopMinutes.Value = m_tsStop.Minutes;
                 m_nudStopSeconds.Value = m_tsStop.Seconds;
+                DisableStopChangedEvent = false;
             }
             m_cbTimeBase.Invalidate();
             m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
-        bool StartChangedRecursing;
+        bool DisableStartChangedEvent;
         private void StartChanged(object sender, EventArgs e)
         {
-            if(StartChangedRecursing) return;
+            if(DisableStartChangedEvent) return;
             try
             {
-                StartChangedRecursing = true;
+                DisableStartChangedEvent = true;
                 TimeSpan sp = new TimeSpan((int)m_nudStartDays.Value, (int)m_nudStartHours.Value, (int)m_nudStartMinutes.Value, (int)m_nudStartSeconds.Value);
 
                 if(Control.ModifierKeys == Keys.Control)
@@ -290,19 +299,19 @@ namespace iba.Controls
             }
             finally
             {
-                StartChangedRecursing = false;
+                DisableStartChangedEvent = false;
             }
         }
 
         
-        bool StopChangedRecursing;
+        bool DisableStopChangedEvent;
 
         private void StopChanged(object sender, EventArgs e)
         {
-            if(StopChangedRecursing) return;
+            if(DisableStopChangedEvent) return;
             try
             {
-                StopChangedRecursing = true;
+                DisableStopChangedEvent = true;
 
                 TimeSpan sp = new TimeSpan((int)m_nudStopDays.Value, (int)m_nudStopHours.Value, (int)m_nudStopMinutes.Value, (int)m_nudStopSeconds.Value);
 
@@ -325,6 +334,7 @@ namespace iba.Controls
                         sp = TimeSpan.FromSeconds((int)m_nudStopSeconds.Value);
                     }
                 }
+                if(sp.Ticks < 0) sp = TimeSpan.Zero;
                 Stop = sp;
                 long diff = TimeSpan.FromSeconds(1).Ticks;
                 if(m_tsStart.Ticks < sp.Ticks + diff)
@@ -334,7 +344,7 @@ namespace iba.Controls
             }
             finally
             {
-                StopChangedRecursing = false;
+                DisableStopChangedEvent = false;
             }
         }
 
@@ -472,9 +482,14 @@ namespace iba.Controls
 
         }
 
+        bool DisableRepeatChanged;
         private void m_nudRepeat_ValueChanged(object sender, EventArgs e)
         {
+            if(DisableRepeatChanged) return;
+            DisableRepeatChanged = true;
             RepeatInterval = TimeSpan.FromHours((int)(m_nudRepeatHours.Value)).Add(TimeSpan.FromMinutes(((int)(m_nudRepeatMinutes.Value))));
+            DisableRepeatChanged = false;
+
         }
     }
 
