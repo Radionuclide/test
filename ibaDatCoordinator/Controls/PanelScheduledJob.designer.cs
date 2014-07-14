@@ -41,6 +41,7 @@
             this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.m_btTriggerNow = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_nudRepeatTimes = new iba.Controls.CustomNumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -128,6 +129,7 @@
             // gbSchedule
             // 
             resources.ApplyResources(this.gbSchedule, "gbSchedule");
+            this.gbSchedule.Controls.Add(this.m_cbInitialScanEnabled);
             this.gbSchedule.Controls.Add(this.m_nudRepeatTimes);
             this.gbSchedule.Controls.Add(this.label18);
             this.gbSchedule.Controls.Add(this.label16);
@@ -150,6 +152,12 @@
             this.gbSchedule.Controls.Add(this.label10);
             this.gbSchedule.Name = "gbSchedule";
             this.gbSchedule.TabStop = false;
+            // 
+            // m_cbInitialScanEnabled
+            // 
+            resources.ApplyResources(this.m_cbInitialScanEnabled, "m_cbInitialScanEnabled");
+            this.m_cbInitialScanEnabled.Name = "m_cbInitialScanEnabled";
+            this.m_cbInitialScanEnabled.UseVisualStyleBackColor = true;
             // 
             // m_nudRepeatTimes
             // 
@@ -601,7 +609,7 @@
             this.Controls.Add(this.gbSchedule);
             this.Controls.Add(this.gbHD);
             this.Controls.Add(this.gbTimeSelection);
-            this.MinimumSize = new System.Drawing.Size(0, 600);
+            this.MinimumSize = new System.Drawing.Size(0, 620);
             this.Name = "PanelScheduledJob";
             this.gbSchedule.ResumeLayout(false);
             this.gbSchedule.PerformLayout();
@@ -682,5 +690,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.NumericUpDown m_nudRepeatHours;
         private CustomNumericUpDown m_nudRepeatTimes;
+        private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
     }
 }

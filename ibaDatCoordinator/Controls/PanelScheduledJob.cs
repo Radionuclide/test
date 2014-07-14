@@ -81,6 +81,7 @@ namespace iba.Controls
             else if(m_failTimeUpDown.Maximum < (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_confData.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double)m_failTimeUpDown.Maximum);
 
+            m_cbInitialScanEnabled.Checked = m_confData.InitialScanEnabled;
             m_failTimeUpDown.Value = (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes;
             m_retryUpDown.Value = (decimal)m_confData.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_confData.LimitTimesTried;
@@ -125,6 +126,7 @@ namespace iba.Controls
         public void SaveData()
         {
             //options of ConfData
+            m_confData.InitialScanEnabled = m_cbInitialScanEnabled.Checked;
             m_confData.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double)m_failTimeUpDown.Value);
             m_confData.NrTryTimes = (int)m_retryUpDown.Value;
             m_confData.LimitTimesTried = m_cbRetry.Checked;

@@ -443,16 +443,16 @@ namespace iba.Data
             {
                 sw.WriteLine("[HDQ file]");
                 sw.WriteLine("type=time");
-                sw.WriteLine("server=" + m_data.HDServer);
-                sw.WriteLine("portnumber=" + m_data.HDPort);
-                sw.WriteLine("store=" + m_data.HDStores[0]);
-                DateTime startTime = trigger - m_data.StartRangeFromTrigger;
+                sw.WriteLine("server=" + ScheduleData.HDServer);
+                sw.WriteLine("portnumber=" + ScheduleData.HDPort);
+                sw.WriteLine("store=" + ScheduleData.HDStores[0]);
+                DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
                 String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("starttime=" + temp);
-                DateTime stopTime = trigger - m_data.StartRangeFromTrigger;
+                DateTime stopTime = trigger - ScheduleData.StartRangeFromTrigger;
                 temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("stoptime=" + temp);
-                sw.WriteLine("timebase=" + m_data.PreferredTimeBase.TotalSeconds.ToString());
+                sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
             }
         }
 

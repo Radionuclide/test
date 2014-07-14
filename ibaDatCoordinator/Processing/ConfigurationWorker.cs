@@ -556,6 +556,30 @@ namespace iba.Processing
                     initialScanThread.Priority = ThreadPriority.BelowNormal;
                     initialScanThread.Start();
                 }
+                else if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                {
+                    //try to delete all previous hdq files
+                    String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
+                    try
+                    {
+                        DirectoryInfo dirInfo = new DirectoryInfo(m_cd.HDQDirectory);
+                        FileInfo[] fileInfos = dirInfo.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
+                        foreach(var file in fileInfos)
+                        {
+                            try
+                            {
+                                File.Delete(file.FullName);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+
                 //Thread.CurrentThread.Priority = ThreadPriority.Normal;
                 if (m_stop)
                 {
@@ -1367,15 +1391,18 @@ namespace iba.Processing
             DirectoryInfo dirInfo = new DirectoryInfo(datDir);
             FileInfo[] fileInfos = null;
             m_sd.UpdatingFileList = true;
+
+            String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
+
             try
             {
                 if (m_cd.SubDirs)
                 {
-                    List<FileInfo> fileInfosList = Utility.PathUtil.GetFilesInSubsSafe("*.dat", dirInfo);
+                    List<FileInfo> fileInfosList = Utility.PathUtil.GetFilesInSubsSafe(searchPattern, dirInfo);
                     fileInfos = fileInfosList.ToArray();
                 }
                 else
-                    fileInfos = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
+                    fileInfos = dirInfo.GetFiles("searchPattern", SearchOption.TopDirectoryOnly);
                 Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
                 {
                     int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
@@ -1646,7 +1673,12 @@ namespace iba.Processing
                     if (m_stop) break;
                     if (fi == null) continue;
                     string filename = fi.FullName;
-                    switch (ProcessDatfileReadyness(filename))
+                    DatFileStatus.State state;
+                    if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                        state = ProcessDatfileReadyness(filename);
+                    else
+                        state = ProcessHDQfileReadyness(filename);
+                    switch (state)
                     {
                         case DatFileStatus.State.NOT_STARTED:
                             if (!m_toProcessFiles.Contains(filename))
@@ -1798,9 +1830,7 @@ namespace iba.Processing
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
-
-                Stopwatch st = new Stopwatch();
-
+                
                 try
                 {
                     string status = "";
@@ -1999,6 +2029,161 @@ namespace iba.Processing
             }
         }
 
+        private DatFileStatus.State ProcessHDQfileReadyness(string filename)
+        {
+            try
+            {
+                if(!File.Exists(filename))
+                {
+                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                    return DatFileStatus.State.COMPLETED_FAILURE;
+                }
+
+                IniParser iniParser = new IniParser(filename);
+                Nullable<DateTime> time = null;
+                if (!iniParser.Read())
+                {
+                    Log(Logging.Level.Exception, "Could not read HDQ file", filename);
+                    return DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                try
+                {
+                    time = File.GetLastWriteTime(filename);
+                }
+                catch
+                {
+                    time = null;
+                }
+
+                var Section = iniParser.Sections["DatCoordinatorData"];
+
+                try
+                {
+                    string status = "";
+                    try
+                    {
+                        status = Section["$DATCOOR_status"];
+                        if(string.IsNullOrEmpty(status))
+                            throw new Exception("no info field present");
+                    }
+                    catch //old way
+                    {
+                        status = Section["status"];
+                        if(string.IsNullOrEmpty(status))
+                            throw new Exception("no info field present");
+                    }
+                    if(status == "processed")
+                    {
+                        try { if(time != null) File.SetLastWriteTime(filename, time.Value); }
+                        catch { }
+                        return DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    }
+                    else if(status == "processingfailed")
+                    {
+                        int timesProcessed = 1;
+                        try
+                        {
+                            string timesString = Section["$DATCOOR_times_tried"];
+                            timesProcessed = int.Parse(timesString);
+                        }
+                        catch
+                        {
+                        }
+                        lock(m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].TimesTried = timesProcessed;
+                        }
+                        List<string> guids = null;
+                        string guidstring = Section["$DATCOOR_TasksDone"];
+                        if(!string.IsNullOrEmpty(guidstring))
+                        {
+                            guidstring = guidstring.Trim(new char[] { ';' });
+                            guids = new List<string>(guidstring.Split(new char[] { ';' }));
+                            guids.Sort();
+                        }
+                        else
+                            guids = new List<string>();
+
+                        //get outputfiles
+                        string outputfilesString =  Section["$DATCOOR_OutputFiles"];
+                        SortedList<string, string> keyvalues = null;
+                        if(!string.IsNullOrEmpty(outputfilesString))
+                        {
+                            outputfilesString = outputfilesString.Trim(new char[] { ';' });
+                            List<string> outputfilesKeyValuesString = new List<string>(outputfilesString.Split(new char[] { ';' }));
+                            keyvalues = new SortedList<string, string>();
+                            foreach(string pairString in outputfilesKeyValuesString)
+                            {
+                                string[] splitted = pairString.Split(new char[] { '|' });
+                                keyvalues.Add(splitted[0], splitted[1]);
+                            }
+                        }
+                        else
+                        {
+                            keyvalues = new SortedList<string, string>();
+                        }
+
+                        lock(m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].OutputFiles.Clear();
+                            foreach(TaskData task in m_cd.Tasks)
+                            {
+                                string key = task.Guid.ToString();
+                                try
+                                {
+                                    if(guids.BinarySearch(key) >= 0)
+                                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                                    if(keyvalues.ContainsKey(key))
+                                        m_sd.DatFileStates[filename].OutputFiles.Add(task, keyvalues[key]);
+                                }
+                                catch(Exception ex)
+                                {
+                                    throw new Exception("location1", ex);
+                                }
+                            }
+                        }
+                        if(m_cd.LimitTimesTried && timesProcessed >= m_cd.NrTryTimes)
+                        {
+                            try { if(time != null) File.SetLastWriteTime(filename, time.Value); }
+                            catch { }
+                            Log(Logging.Level.Warning, iba.Properties.Resources.TriedToManyTimes, filename);
+                            return DatFileStatus.State.TRIED_TOO_MANY_TIMES;
+                        }
+                        try
+                        {
+                            if(time != null) File.SetLastWriteTime(filename, time.Value);
+                        }
+                        catch
+                        {
+                        }
+                        return DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    else if(status == "restart" || status == "readyToProcess")
+                    {
+                        return DatFileStatus.State.NOT_STARTED;
+                    }
+                    else if(status == "")
+                    {
+                        throw new Exception("no info field present");
+                    }
+                    else
+                    {
+                        return DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                }
+                catch //no status field
+                {
+                    Section["$DATCOOR_status"] = "readyToProcess";
+                    iniParser.Write();
+                    return DatFileStatus.State.NOT_STARTED;
+                }
+            }
+            catch (Exception ex) //general exception that may have happened
+            {
+                Log(Logging.Level.Exception, "General error accessing HDQ file:" + ex.Message, filename);
+                return DatFileStatus.State.COMPLETED_FAILURE;
+            }
+        }
 
         private DatFileStatus.State ProcessDatfileReadynessOneTimeJob(string filename)
         {
@@ -2236,75 +2421,150 @@ namespace iba.Processing
                 }
                 if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered) // written in the .dat file
                 {
-                    Nullable<DateTime> time = null;
-                    try
-                    {
-                        IbaFile ibaDatFile = new IbaFileClass();
-                        try
-                        {
-                            ibaDatFile.OpenForUpdate(InputFile);
-                            time = File.GetLastWriteTime(InputFile);
-                        }
-                        catch //happens when timed out and proc has not released its resources yet
-                        {
-                            m_sd.Changed = true;
-                            return;
-                        }
-
-
-                        if (completeSucces)
-                        {
-                            ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
-                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
-                        }
-                        else
-                        {
-                            ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
-                            //write GUIDs of those that were succesfull
-                            lock (m_sd.DatFileStates)
-                            {
-                                string guids = "";
-                                string outputfiles = "";
-                                foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
-                                    if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
-                                    {
-                                        guids += stat.Key.Guid.ToString() + ";";
-                                        if (m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
-                                            outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[InputFile].OutputFiles[stat.Key] + ";";
-                                    }
-                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
-                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
-                            }
-                        }
-
-                        lock (m_sd.DatFileStates)
-                        {
-                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[InputFile].TimesTried.ToString());
-                        }
-                        ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, InputFile);
-                        lock (m_sd.DatFileStates)
-                        {
-                            foreach (TaskData t in m_cd.Tasks)
-                                m_sd.DatFileStates[InputFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
-                        }
-                    }
-                    if (time != null)
-                    {
-                        try
-                        {
-                            File.SetLastWriteTime(InputFile, time.Value);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
+                    WriteStateInDatFile(InputFile, completeSucces);
+                }
+                else if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                {
+                    WriteStateInHDQFile(InputFile, completeSucces);
                 }
                 m_sd.Changed = true;
+            }
+        }
+
+        private void WriteStateInDatFile(string InputFile, bool completeSucces)
+        {
+            Nullable<DateTime> time = null;
+            try
+            {
+                IbaFile ibaDatFile = new IbaFileClass();
+                try
+                {
+                    ibaDatFile.OpenForUpdate(InputFile);
+                    time = File.GetLastWriteTime(InputFile);
+                }
+                catch //happens when timed out and proc has not released its resources yet
+                {
+                    m_sd.Changed = true;
+                    return;
+                }
+
+                if(completeSucces)
+                {
+                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
+                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
+                }
+                else
+                {
+                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
+                    //write GUIDs of those that were succesfull
+                    lock(m_sd.DatFileStates)
+                    {
+                        string guids = "";
+                        string outputfiles = "";
+                        foreach(KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
+                            if(stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                            {
+                                guids += stat.Key.Guid.ToString() + ";";
+                                if(m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
+                                    outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[InputFile].OutputFiles[stat.Key] + ";";
+                            }
+                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                    }
+                }
+
+                lock(m_sd.DatFileStates)
+                {
+                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[InputFile].TimesTried.ToString());
+                }
+                ibaDatFile.Close();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+            }
+            catch(Exception ex)
+            {
+                Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, InputFile);
+                lock(m_sd.DatFileStates)
+                {
+                    foreach(TaskData t in m_cd.Tasks)
+                        m_sd.DatFileStates[InputFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            if(time != null)
+            {
+                try
+                {
+                    File.SetLastWriteTime(InputFile, time.Value);
+                }
+                catch(Exception)
+                {
+                }
+            }
+        }
+
+        private void WriteStateInHDQFile(string InputFile, bool completeSucces)
+        {
+            Nullable<DateTime> time = null;
+            try
+            {
+                IniParser iniParser;
+                try
+                {
+                    iniParser = new IniParser(InputFile);
+                    iniParser.Read();
+                    time = File.GetLastWriteTime(InputFile);
+                }
+                catch //happens when timed out and proc has not released its resources yet
+                {
+                    m_sd.Changed = true;
+                    return;
+                }
+
+                var Section = iniParser.Sections["DatCoordinatorData"];
+
+                if(completeSucces)
+                {
+                    Section["$DATCOOR_status"]="processed";
+                    Section["$DATCOOR_OutputFiles"]= ""; //erase any previous outputfiles;
+                }
+                else
+                {
+                    Section["$DATCOOR_status"] = "processingfailed";
+                    //write GUIDs of those that were succesfull
+                    lock(m_sd.DatFileStates)
+                    {
+                        string guids = "";
+                        string outputfiles = "";
+                        foreach(KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
+                            if(stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                            {
+                                guids += stat.Key.Guid.ToString() + ";";
+                                if(m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
+                                    outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[InputFile].OutputFiles[stat.Key] + ";";
+                            }
+                        Section["$DATCOOR_TasksDone"]=guids;
+                        Section["$DATCOOR_OutputFiles"] = outputfiles;
+                    }
+                }
+                iniParser.Write();
+            }
+            catch(Exception ex)
+            {
+                Log(iba.Logging.Level.Exception, iba.Properties.Resources.DatFileCloseFailed + ex.Message, InputFile);
+                lock(m_sd.DatFileStates)
+                {
+                    foreach(TaskData t in m_cd.Tasks)
+                        m_sd.DatFileStates[InputFile].States[t] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            if(time != null)
+            {
+                try
+                {
+                    File.SetLastWriteTime(InputFile, time.Value);
+                }
+                catch(Exception)
+                {
+                }
             }
         }
 
@@ -4026,11 +4286,11 @@ namespace iba.Processing
                 String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}.hdq", m_nextTrigger));
                 try
                 {
-                    m_cd.GenerateHDQFile(m_nextTrigger, path);
+                    m_cd.GenerateHDQFile(m_nextTrigger, filename);
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message,path);
+                    Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message, filename);
                     ScheduleNextEvent(m_nextTrigger);
                     return;
                 }
