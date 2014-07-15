@@ -29,8 +29,8 @@ namespace iba
     public partial class MainForm : Form, IPropertyPaneManager, IExternalCommand
     {
         public static readonly int CONFIGURATION_INDEX = 0;
-        public static readonly int ONETIME_CONFIGURATION_INDEX = 1;
-        public static readonly int SCHEDULED_CONFIGURATION_INDEX = 2;
+        public static readonly int SCHEDULED_CONFIGURATION_INDEX = 1;
+        public static readonly int ONETIME_CONFIGURATION_INDEX = 2;
         public static readonly int REPORTTASK_INDEX = 3;
         public static readonly int EXTRACTTASK_INDEX = 4;
         public static readonly int BATCHFILETASK_INDEX = 5;
@@ -92,8 +92,8 @@ namespace iba
 
             ImageList confsImageList = new ImageList();
             confsImageList.Images.Add(iba.Properties.Resources.configuration);
-            confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration.ToBitmap()));
+            confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             confsImageList.Images.Add(iba.Properties.Resources.report_running);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.extract_running.ToBitmap()));
             confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
@@ -206,7 +206,7 @@ namespace iba
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (WindowState != FormWindowState.Minimized || Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            if (WindowState != FormWindowState.Minimized)
                 FormStateSerializer.SaveSettings(this, "MainForm");
 
             SaveRightPaneControl();
@@ -271,14 +271,16 @@ namespace iba
         }
 
         bool bHandleResize = false;
+
         protected override void OnResize(EventArgs e)
         {
-            if (bHandleResize && WindowState == FormWindowState.Minimized)
+            base.OnResize(e);
+            if(bHandleResize && WindowState == FormWindowState.Minimized)
             {
+                FormStateSerializer.SaveSettings(this, "MainForm");
                 ShowInTaskbar = false;
                 Hide();
             }
-            base.OnResize(e);
         }
 
         public void fromStatusToConfiguration()
@@ -517,7 +519,7 @@ namespace iba
             if (WindowState == FormWindowState.Minimized)
             {
                 Hide();
-                bHandleResize = true;
+                bHandleResize = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
             }
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
                 m_iconEx.Visible = true;
@@ -2845,7 +2847,7 @@ namespace iba
             Show();
             Activate();
             WindowState = FormWindowState.Normal;
-            FormStateSerializer.LoadSettings(this, "MainForm");
+            FormStateSerializer.LoadSettings(this, "MainForm", true);
             ShowInTaskbar = true;
         }
 

@@ -1687,6 +1687,8 @@ namespace iba.Processing
                             lock (m_sd.DatFileStates)
                             {
                                 m_sd.DatFileStates[filename] = new DatFileStatus();
+                                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                    m_sd.DatFileStates[filename].AlternativeFileDescription = m_cd.CreateHDQFileDescription(filename);
                             }
                             break;
                         case DatFileStatus.State.COMPLETED_SUCCESFULY:
@@ -2511,10 +2513,10 @@ namespace iba.Processing
 
                 if(completeSucces)
                 {
-                    //File.Delete(InputFile); //hdq files get deleted
-                    return;
+                    File.Delete(InputFile); //hdq files get deleted
                     //Section["$DATCOOR_status"]="processed";
                     //Section["$DATCOOR_OutputFiles"]= ""; //erase any previous outputfiles;
+                    return;
                 }
                 else
                 {
@@ -4269,7 +4271,7 @@ namespace iba.Processing
             NextEventTimer.Change(Timeout.Infinite, Timeout.Infinite);
             if((DateTime.Now - m_nextTrigger).Ticks >= TimeSpan.FromMilliseconds(10).Ticks)
             { //FIRE
-                String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0:yyyy-MM-dd_HH-mm-ss}.hdq", m_nextTrigger));
+                String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),m_nextTrigger));
                 try
                 {
                     m_cd.GenerateHDQFile(m_nextTrigger, filename);
@@ -4280,7 +4282,7 @@ namespace iba.Processing
                     ScheduleNextEvent(m_nextTrigger);
                     return;
                 }
-
+                m_sd.UpdatingFileList = true;
                 lock(m_processedFiles)
                 {
                     lock(m_toProcessFiles)
@@ -4292,12 +4294,15 @@ namespace iba.Processing
                             lock(m_sd.DatFileStates)
                             {
                                 m_sd.DatFileStates[filename] = new DatFileStatus();
+                                m_sd.DatFileStates[filename].AlternativeFileDescription = m_cd.CreateHDQFileDescription(filename);
                             }
                             m_waitEvent.Set();
                         }
+                        m_sd.Changed = true;
                     }
                 }
-
+                m_sd.UpdatingFileList = false;
+                m_sd.MergeProcessedAndToProcessLists();
                 ScheduleNextEvent(m_nextTrigger);
             }
             else

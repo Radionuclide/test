@@ -240,7 +240,7 @@ namespace iba.Controls
             {
                 if (((bool) row.Cells[0].Value))
                 {
-                    string filename = row.Cells[1].Value as string;
+                    string filename = row.Cells[1].Tag as string;
                     if (!string.IsNullOrEmpty(filename))
                         m_checkedFiles.Add(filename);
                 }
@@ -276,7 +276,8 @@ namespace iba.Controls
             int count = 0;
             foreach (MinimalDatFileStatus dfs in m_data.Files)
             {
-                m_gridView.Rows[count].Cells[1].Value = dfs.Filename;
+                m_gridView.Rows[count].Cells[1].Value = dfs.Description;
+                m_gridView.Rows[count].Cells[1].Tag = dfs.Filename;
                 m_gridView.Rows[count].Cells[0].Value = m_checkedFiles.Contains(dfs.Filename);
                 List<bool> blank = new List<bool>();
                 for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
