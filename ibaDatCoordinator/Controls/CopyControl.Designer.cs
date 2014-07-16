@@ -29,15 +29,15 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CopyControl));
-            this.m_gbTarget = new System.Windows.Forms.GroupBox();
+            this.m_gbTarget = new Utility.CollapsibleGroupBox();
             this.panelOut = new System.Windows.Forms.Panel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new Utility.CollapsibleGroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new Utility.CollapsibleGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbMove = new System.Windows.Forms.RadioButton();
             this.m_rbDelete = new System.Windows.Forms.RadioButton();
@@ -136,8 +136,8 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox6);           
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.m_gbTarget);
             this.MinimumSize = new System.Drawing.Size(0, 580);
             this.Name = "CopyControl";
@@ -154,14 +154,14 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox m_gbTarget;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private Utility.CollapsibleGroupBox m_gbTarget;
+        private Utility.CollapsibleGroupBox groupBox6;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
         private System.Windows.Forms.RadioButton m_rbPrevOutput;
         private System.Windows.Forms.RadioButton m_rbDatFile;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private Utility.CollapsibleGroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.RadioButton m_rbMove;
         private System.Windows.Forms.RadioButton m_rbDelete;

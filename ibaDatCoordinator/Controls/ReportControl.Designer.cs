@@ -29,7 +29,7 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportControl));
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.m_panelFile = new System.Windows.Forms.Panel();
             this.m_extensionComboBox = new System.Windows.Forms.ComboBox();
             this.m_rbPrint = new System.Windows.Forms.RadioButton();
@@ -38,8 +38,8 @@ namespace iba.Controls
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browseFileButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_monitorGroup = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
+            this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.m_nudTime = new System.Windows.Forms.NumericUpDown();
@@ -198,9 +198,9 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_monitorGroup);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.m_monitorGroup);
             this.MinimumSize = new System.Drawing.Size(0, 686);
             this.Name = "ReportControl";
             this.groupBox2.ResumeLayout(false);
@@ -217,7 +217,6 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;
         private System.Windows.Forms.ComboBox m_extensionComboBox;
         private System.Windows.Forms.RadioButton m_rbPrint;
@@ -225,9 +224,10 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_pdoFileTextBox;
         private System.Windows.Forms.Button m_browseFileButton;
         private System.Windows.Forms.Button m_executeIBAAButton;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox2;
         private System.Windows.Forms.Panel m_panelFile;
-        private System.Windows.Forms.GroupBox m_monitorGroup;
+        private iba.Utility.CollapsibleGroupBox m_monitorGroup;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown m_nudTime;

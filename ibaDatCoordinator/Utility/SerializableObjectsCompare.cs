@@ -25,13 +25,15 @@ namespace iba.Utility
 
                 byte[] ar1 = str1.GetBuffer();
                 byte[] ar2 = str2.GetBuffer();
-
-                for (long i = 0; i < str1.Length;i++)
+                //File.WriteAllBytes(@"d:\klad\ar1.bin", ar1);
+                //File.WriteAllBytes(@"d:\klad\ar2.bin", ar2);
+                for (int i = 0; i < (int) str1.Length;i++)
                     if (ar1[i] != ar2[i]) return false;
                 return true;
             }
-            catch
+            catch //(Exception ex)
             {
+                //File.WriteAllText(@"d:\klad\errormessage", ex.Message);
                 return false;
             }
         }

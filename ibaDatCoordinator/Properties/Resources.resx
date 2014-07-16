@@ -967,6 +967,9 @@
   <data name="addOneTimeConfigurationText" xml:space="preserve">
     <value>Add One Time Job</value>
   </data>
+  <data name="addScheduledConfigurationText" xml:space="preserve">
+    <value>Add Scheduled Job</value>
+  </data>
   <data name="onetimeconfiguration" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\onetimeconfiguration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1101,5 +1104,77 @@
   </data>
   <data name="ExampleFolder" xml:space="preserve">
     <value>E.g. '{0}'</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="Fourth" xml:space="preserve">
+    <value>Fourth</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="SelectAllDays" xml:space="preserve">
+    <value>&lt;Select all days&gt;</value>
+  </data>
+  <data name="SelectAllMonths" xml:space="preserve">
+    <value>&lt;Select all months&gt;</value>
+  </data>
+  <data name="Third" xml:space="preserve">
+    <value>Third</value>
+  </data>
+  <data name="scheduled_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scheduled_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TimeSelectionChoices" xml:space="preserve">
+    <value>auto ( {0} );1 ms;10 ms;100 ms;1 s;1 min;1 hour;1 day</value>
+  </data>
+  <data name="TooltipGreen" xml:space="preserve">
+    <value>Time base ok</value>
+  </data>
+  <data name="TooltipOrange" xml:space="preserve">
+    <value>Time base inadvisable when performing an extensive analysis</value>
+  </data>
+  <data name="TooltipRed" xml:space="preserve">
+    <value>Time base unacceptable due to limited memory resources</value>
+  </data>
+  <data name="minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OneTimeJobsNodeParent" xml:space="preserve">
+    <value>One Time Jobs</value>
+  </data>
+  <data name="ScheduledJobsNodeParent" xml:space="preserve">
+    <value>Scheduled Jobs</value>
+  </data>
+  <data name="StandardJobsNodeParent" xml:space="preserve">
+    <value>Standard Jobs</value>
+  </data>
+  <data name="Indefinite" xml:space="preserve">
+    <value>Indefinite</value>
+  </data>
+  <data name="NextNTriggers" xml:space="preserve">
+    <value>Next {0} triggers:</value>
+  </data>
+  <data name="NoTriggers" xml:space="preserve">
+    <value>No triggers are scheduled! Please review your trigger settings.</value>
+  </data>
+  <data name="NoTriggersAfter" xml:space="preserve">
+    <value>No triggers are scheduled after these.</value>
+  </data>
+  <data name="TriggerInfoCaption" xml:space="preserve">
+    <value>Trigger info for job '{0}'</value>
+  </data>
+  <data name="ErrorScheduleNextTrigger" xml:space="preserve">
+    <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
   </data>
 </root>

@@ -69,8 +69,11 @@ namespace iba.Data
             copy.m_timesTried = m_timesTried;
             foreach(KeyValuePair<TaskData,string> pair in m_outputFiles)
                 copy.m_outputFiles.Add(pair.Key,pair.Value);
+            copy.AlternativeFileDescription = AlternativeFileDescription;
             return copy;
         }
+
+        public string AlternativeFileDescription;
     }
 
     [Serializable]
@@ -303,6 +306,8 @@ namespace iba.Data
                                 DatFileStatus dfs = m_datFileStates[file];
                                 MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
+                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                    newdfs.Description = dfs.AlternativeFileDescription;
                                 newdfs.TimesTried = dfs.TimesTried;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
                                 {
@@ -338,6 +343,8 @@ namespace iba.Data
                                 MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
                                 newdfs.TimesTried = dfs.TimesTried;
+                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                    newdfs.Description = dfs.AlternativeFileDescription;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
                                 {
                                     //try
@@ -415,6 +422,15 @@ namespace iba.Data
             get { return m_filename; }
             set { m_filename = value; }
         }
+
+        private string m_description;
+        public string Description
+        {
+            get { return m_description ?? m_filename; }
+            set { m_description = value; }
+        }
+
+
         private int m_timesTried;
         public int TimesTried
         {

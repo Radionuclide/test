@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.m_gbTarget = new System.Windows.Forms.GroupBox();
+            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.panelOut = new System.Windows.Forms.Panel();
             this.m_pluginPanel = new System.Windows.Forms.Panel();
             this.m_gbTarget.SuspendLayout();
@@ -76,12 +76,11 @@
             this.Size = new System.Drawing.Size(666, 600);
             this.m_gbTarget.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox m_gbTarget;
+        private iba.Utility.CollapsibleGroupBox m_gbTarget;
         private System.Windows.Forms.Panel panelOut;
         private System.Windows.Forms.Panel m_pluginPanel;
     }

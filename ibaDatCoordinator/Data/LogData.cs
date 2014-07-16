@@ -40,7 +40,9 @@ namespace iba.Data
 
         public LogExtraData(string datFile, TaskData task, ConfigurationData cd)
         {
-            m_datFile = datFile;
+            if(cd.JobType == ConfigurationData.JobTypeEnum.Scheduled && !string.IsNullOrEmpty(datFile)) m_datFile = cd.CreateHDQFileDescription(datFile);
+            else
+                m_datFile = datFile;
             m_cd = cd;
             m_task = task;
         }
@@ -606,7 +608,17 @@ namespace iba.Data
                 fileLogger.MakeDailyArchive = true;
                 fileLogger.MaximumArchiveFiles = 10;
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
-                fileLogger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + "\r\n";
+
+                string logWhat = "";
+                switch(appState)
+                {
+                    case ApplicationState.CLIENTCONNECTED: logWhat = "(client-connected)"; break;
+                    case ApplicationState.CLIENTDISCONNECTED: logWhat = "(client-disconnected)"; break;
+                    case ApplicationState.CLIENTSTANDALONE: logWhat = "(standalone)"; break;
+                    case ApplicationState.SERVICE: logWhat = "(service)"; break;
+                }
+
+                fileLogger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + " " + logWhat + "\r\n";
 
                 WindowsEventLogger eventLogger = Logger.CreateWindowsEventLogger("ibaDatCoordinator");
                 eventLogger.EventFormatter = new iba.Logging.EventFormatters.PatternEventFormatter("{msg}\t{data}");

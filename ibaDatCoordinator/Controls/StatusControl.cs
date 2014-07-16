@@ -239,7 +239,7 @@ namespace iba.Controls
             int count = 0;
             foreach (MinimalDatFileStatus dfs in m_data.Files)
             {
-                m_gridView.Rows[count].Cells[0].Value = dfs.Filename;
+                m_gridView.Rows[count].Cells[0].Value = dfs.Description;
                 List<bool> blank = new List<bool>();
                 for (int i = 0; i < m_gridView.Rows[count].Cells.Count; i++)
                     blank.Add(true);

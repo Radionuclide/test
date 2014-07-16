@@ -29,7 +29,7 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IfTaskControl));
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.m_XTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,13 +38,13 @@ namespace iba.Controls
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browsePDOFileButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.m_testButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browseDatFileButton = new System.Windows.Forms.Button();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_monitorGroup = new System.Windows.Forms.GroupBox();
+            this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.m_nudTime = new System.Windows.Forms.NumericUpDown();
@@ -234,9 +234,9 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_monitorGroup);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.m_monitorGroup);
             this.MinimumSize = new System.Drawing.Size(0, 296);
             this.Name = "IfTaskControl";
             this.groupBox2.ResumeLayout(false);
@@ -253,14 +253,14 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
+        private iba.Utility.CollapsibleGroupBox groupBox2;
         private System.Windows.Forms.TextBox m_pdoFileTextBox;
         private System.Windows.Forms.Button m_browsePDOFileButton;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox m_expressionTextBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.Button m_testButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox m_datFileTextBox;
@@ -268,7 +268,7 @@ namespace iba.Controls
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox m_XTypeComboBox;
-        private System.Windows.Forms.GroupBox m_monitorGroup;
+        private iba.Utility.CollapsibleGroupBox m_monitorGroup;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown m_nudTime;

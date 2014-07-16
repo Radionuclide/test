@@ -24,16 +24,25 @@ namespace iba.Controls
             pluginControl.Width = m_pluginPanel.Width;
             //m_pluginPanel.Height = pluginControl.Height;
             //m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
-            pluginControl.Dock = DockStyle.Fill;
-            //m_pluginPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            this.m_pluginPanel.Controls.Add(pluginControl);
-            //int newHeight = m_pluginPanel.Bottom + 5;
-            //this.Height = newHeight;
-            AutoScrollMinSize = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
-            //AutoScrollMinSize = new System.Drawing.Size(AutoScrollMinSize.Width, newHeight);
-            //AutoScrollMinSize = this.MinimumSize;
+            //pluginControl.Size = m_pluginPanel.Size;
+            pluginControl.Location = m_pluginPanel.Location;
+            m_pluginPanel.Visible = false;
+            pluginControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            this.AutoScrollMinSize = this.Size = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
+            this.Controls.Add(pluginControl);
             AutoScroll = true;
+            m_ceManager = new CollapsibleElementManager(this);
+            groupBox5.Init();
+            m_ceManager.AddElement(groupBox5);
+            m_ExecutegroupBox.Init();
+            m_ceManager.AddElement(m_ExecutegroupBox);
+            groupBoxNotify.Init();
+            m_ceManager.AddElement(groupBoxNotify);
+            m_ceManager.AddSubManagerFromControl(pluginControl);
         }
+
+        private CollapsibleElementManager m_ceManager;
+
 
         private void m_nameTextBox_TextChanged(object sender, EventArgs e)
         {

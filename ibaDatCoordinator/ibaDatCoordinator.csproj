@@ -55,6 +55,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,13 +69,35 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetMagic, Version=2.3.0.0, Culture=neutral, PublicKeyToken=6cf6edec59e036ec">
+    <Reference Include="DevExpress.Data.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\DotNetMagic.DLL</HintPath>
+      <HintPath>..\Dependencies\DevExpress.Data.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DevExpress.Utils.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DevExpress.XtraEditors.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DevExpress.XtraGrid.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetMagic2005, Version=6.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DotNetMagic2005.dll</HintPath>
     </Reference>
     <Reference Include="Eyefinder, Version=1.3.0.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
+    </Reference>
+    <Reference Include="hdClient">
+      <HintPath>..\Dependencies\hdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="hdCommon">
+      <HintPath>..\Dependencies\hdCommon.dll</HintPath>
     </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -133,6 +156,31 @@
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.Designer.cs">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelScheduledJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelScheduledJob.designer.cs">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ScheduledJobData.cs" />
     <Compile Include="Dialogs\PasswordConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +311,12 @@
     <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processing\ExtractTaskWorker.cs" />
     <Compile Include="GeneralInterfaces.cs" />
     <Compile Include="MainForm.cs">
@@ -276,8 +330,10 @@
     <Compile Include="Processing\FileQuotaCleanup.cs" />
     <Compile Include="Processing\IbaAnalyzerCollection.cs" />
     <Compile Include="Processing\IbaAnalyzerMonitor.cs" />
+    <Compile Include="Utility\IniParser.cs" />
     <Compile Include="Processing\Notifier.cs" />
     <Compile Include="Processing\TCPWatchdog.cs" />
+    <Compile Include="Processing\TriggerCalculator.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
     <Compile Include="Dialogs\StartServiceDialog.cs">
       <SubType>Form</SubType>
@@ -297,16 +353,35 @@
     <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RegistryOptimizer.cs" />
     <Compile Include="Utility\DriveUtil.cs" />
+    <Compile Include="Utility\CollapsibleElementManager.cs" />
+    <Compile Include="Utility\CollapsibleGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\CollapsibleGroupBox.Designer.cs">
+      <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\crypt.cs" />
+    <Compile Include="Utility\CustomComboBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\FastDirectoryEnumerator.cs" />
+    <Compile Include="Utility\Ellipsis.cs" />
     <Compile Include="Utility\FileSetWithTimeStamps.cs" />
     <Compile Include="Utility\FormSerializer.cs" />
     <Compile Include="Utility\GraphicsUtilities.cs" />
     <Compile Include="Utility\ibaToolStripRenderer.cs" />
+    <Compile Include="Utility\LabelEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\nextname.cs" />
     <Compile Include="Processing\ConfigurationWorker.cs" />
     <Compile Include="Processing\TaskManager.cs" />
@@ -316,24 +391,36 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MonthlyTriggerSettingsControl.resx">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelScheduledJob.resx">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DailyTriggerSettingsControl.resx">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="SingletonApplication.cs" />
     <Compile Include="Utility\algorithms.cs" />
     <Compile Include="Utility\containers.cs" />
@@ -342,16 +429,25 @@
     <Compile Include="Utility\PluginManager.cs" />
     <Compile Include="Utility\Profiler.cs" />
     <Compile Include="Utility\RegistryExporter.cs" />
+    <Compile Include="Utility\RippleDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\SafeTimer.cs" />
     <Compile Include="Utility\SerializableObjectsCompare.cs" />
     <Compile Include="Utility\Shares.cs" />
     <Compile Include="Utility\SharesHandler.cs" />
     <Compile Include="Utility\SystemInfoCollector.cs" />
+    <Compile Include="Utility\TextBoxEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\VersionCheck.cs" />
     <Compile Include="Utility\WindowsAPI.cs" />
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
+    <EmbeddedResource Include="Utility\CustomComboBox.resx">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.resx">
@@ -417,6 +513,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UNCTaskControl.resx">
       <DependentUpon>UNCTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UpdateDataTaskControl.resx">
       <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
@@ -435,6 +532,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestScriptDlg.resx">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\UploadOrDownloadConfigurationsDialog.resx">
       <SubType>Designer</SubType>
@@ -462,6 +560,10 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\plus.bmp" />
+    <None Include="Resources\minus.bmp" />
+    <None Include="Resources\scheduled_configuration.ico" />
+    <None Include="Resources\scheduled_configuration_new.ico" />
     <Content Include="Resources\default.ico" />
     <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>

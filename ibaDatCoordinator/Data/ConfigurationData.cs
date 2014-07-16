@@ -14,11 +14,28 @@ namespace iba.Data
     [ Serializable ]
     public class ConfigurationData : ICloneable, IComparable<ConfigurationData>, IJobData
     {
+        public enum JobTypeEnum
+        {
+            DatTriggered,
+            Scheduled,
+            OneTime
+        }
+
+        private JobTypeEnum m_jobType;
+        public iba.Data.ConfigurationData.JobTypeEnum JobType
+        {
+            get { return m_jobType; }
+            set { m_jobType = value; }
+        }
+
         private string m_name;
         public string Name
         {
             get { return m_name ; }
-            set { if (value.Length != 0) m_name = value; }
+            set { 
+                if (value.Length != 0) 
+                    m_name = value; 
+            }
         }
 
         private string m_datDirectory;
@@ -26,11 +43,25 @@ namespace iba.Data
         {
             get 
             {
+                if(m_jobType == JobTypeEnum.Scheduled)
+                    return HDQDirectory;
                 return m_datDirectory;
             }
             set 
             { 
                 if (!String.IsNullOrEmpty(value)) m_datDirectory = XMLMultilineTextFixer.Fix(value);
+            }
+        }
+
+        private string m_hdqDirectory;
+        [XmlIgnore]
+        public string HDQDirectory
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(m_hdqDirectory))
+                    DetermineHDQFolder();
+                return m_hdqDirectory;
             }
         }
 
@@ -203,7 +234,7 @@ namespace iba.Data
             set { m_guid = value; }
         }
 
-        public ConfigurationData() : this("",false) 
+        public ConfigurationData() : this("",JobTypeEnum.DatTriggered) 
         {
 
         }
@@ -217,27 +248,32 @@ namespace iba.Data
 
         private string ibaAnalyzerExe;
 
-
-        private bool m_onetimeJob;
         public bool OnetimeJob
         {
-            get { return m_onetimeJob; }
-            set { m_onetimeJob = value; }
+            get { return m_jobType == JobTypeEnum.OneTime; }
+            set { if (value) { m_jobType = JobTypeEnum.OneTime; } }
         }
 
+        private ScheduledJobData m_scheduleData;
+	    public iba.Data.ScheduledJobData ScheduleData
+	    {
+		    get { return m_scheduleData; }
+		    set { m_scheduleData = value; }
+	    }
 
-        public ConfigurationData(string name, bool onetimejob)
+        public ConfigurationData(string name, JobTypeEnum jobType)
         {
-            m_onetimeJob = onetimejob;
+            m_jobType = jobType;
+            if (m_jobType == JobTypeEnum.Scheduled) m_scheduleData = new ScheduledJobData();
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
-            m_bInitialScanEnabled = !onetimejob;
-            m_bDetectNewFiles = !onetimejob;
-            m_bRescanEnabled = !onetimejob;
+            m_bInitialScanEnabled = m_jobType == JobTypeEnum.DatTriggered;
+            m_bDetectNewFiles = m_jobType == JobTypeEnum.DatTriggered;
+            m_bRescanEnabled = m_jobType == JobTypeEnum.DatTriggered;
             
             m_datDirectory = System.Environment.CurrentDirectory;
             try
@@ -271,9 +307,11 @@ namespace iba.Data
 
         public object Clone()
         {
-            ConfigurationData cd = new ConfigurationData(m_name,m_onetimeJob);
+            ConfigurationData cd = new ConfigurationData(m_name,m_jobType);
             foreach (TaskData task in m_tasks)
                 cd.m_tasks.Add(task.Clone() as TaskData);
+            if(m_jobType == JobTypeEnum.Scheduled)
+                cd.m_scheduleData = m_scheduleData.Clone() as ScheduledJobData;
             cd.relinkChildData();
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
@@ -304,24 +342,25 @@ namespace iba.Data
             {
                 if (!other.m_tasks[i].IsSame(m_tasks[i])) return false;
             }
-
+            if(m_jobType != other.m_jobType) return false;
+            if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
             return
-            other.m_enabled == m_enabled &&
-            other.m_autoStart == m_autoStart &&
-            other.m_datDirectory == m_datDirectory &&
-            other.m_doSubDirs == m_doSubDirs &&
-            other.m_bDetectNewFiles == m_bDetectNewFiles &&
-            other.m_reproccessTime == m_reproccessTime &&
-            other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
-            other.m_rescanTime == m_rescanTime &&
-            other.m_notify.IsSame(m_notify) &&
-            other.m_bRescanEnabled == m_bRescanEnabled &&
-                //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
-            other.m_username == m_username &&
-            other.m_pass == m_pass &&
-            other.m_bLimitTimesTried == m_bLimitTimesTried &&
-                //other.m_treePosition == m_treePosition; //don't care about this one
-            other.m_nrTimes == m_nrTimes;
+                other.m_enabled == m_enabled &&
+                other.m_autoStart == m_autoStart &&
+                other.m_datDirectory == m_datDirectory &&
+                other.m_doSubDirs == m_doSubDirs &&
+                other.m_bDetectNewFiles == m_bDetectNewFiles &&
+                other.m_reproccessTime == m_reproccessTime &&
+                other.m_bInitialScanEnabled == m_bInitialScanEnabled &&
+                other.m_rescanTime == m_rescanTime &&
+                other.m_notify.IsSame(m_notify) &&
+                other.m_bRescanEnabled == m_bRescanEnabled &&
+                    //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
+                other.m_username == m_username &&
+                other.m_pass == m_pass &&
+                other.m_bLimitTimesTried == m_bLimitTimesTried &&
+                    //other.m_treePosition == m_treePosition; //don't care about this one
+                other.m_nrTimes == m_nrTimes;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()
@@ -366,6 +405,57 @@ namespace iba.Data
             {
                 if (task != null)
                     task.AdditionalFileNames(myList, safeConfName);
+            }
+        }
+
+        private void DetermineHDQFolder()
+        {
+            string p1 = System.IO.Path.GetTempPath();
+            string p2 = "{" + Guid.ToString()+ "_" + Name + "}";
+            p2 = CPathCleaner.CleanFile(p2);
+            string dir = Path.Combine(p1, p2);
+            if(!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            m_hdqDirectory = dir;
+        }
+
+        private string lastHDQFile;
+        private string lastHDQDescription;
+        public string CreateHDQFileDescription(string hdqfile)
+        {
+            if (hdqfile == lastHDQFile) return lastHDQDescription;
+            //throw new Exception("The method or operation is not implemented.");
+            try
+            {
+                IniParser ini = new IniParser(hdqfile);
+                if (!ini.Read()) return hdqfile;
+                string desc =  ini.Sections["HDQ file"]["store"] + " " + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
+                lastHDQDescription = desc;
+                lastHDQFile = hdqfile;
+                return desc;
+            }
+            catch
+            {
+                return hdqfile;
+            }
+        }
+
+        public void GenerateHDQFile(DateTime trigger, String path)
+        {
+            using(StreamWriter sw = new StreamWriter(path, false))
+            {
+                sw.WriteLine("[HDQ file]");
+                sw.WriteLine("type=time");
+                sw.WriteLine("server=" + ScheduleData.HDServer);
+                sw.WriteLine("portnumber=" + ScheduleData.HDPort);
+                sw.WriteLine("store=" + ScheduleData.HDStores[0]);
+                DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
+                String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("starttime=" + temp);
+                DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
+                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("stoptime=" + temp);
+                sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
             }
         }
 

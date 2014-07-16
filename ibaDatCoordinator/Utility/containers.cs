@@ -19,6 +19,20 @@ namespace iba.Utility
         }
     }
 
+    public class STLLikeMapStringValue<Key> : SortedDictionary<Key, string> //string does not have a default constructor
+    {
+        new public string this[Key key]
+        {
+            get
+            {
+                if(!ContainsKey(key))
+                    Add(key, "");
+                return base[key];
+            }
+            set { base[key] = value; }
+        }
+    }
+
     [Serializable]
     public class Pair<TFirst, TSecond>
     {

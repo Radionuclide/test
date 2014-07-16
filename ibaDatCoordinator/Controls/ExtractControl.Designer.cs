@@ -31,12 +31,12 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtractControl));
             this.m_rbTextFile = new System.Windows.Forms.RadioButton();
             this.m_rbBinaryFile = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.m_browseFileButton = new System.Windows.Forms.Button();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
             this.m_rbDbase = new System.Windows.Forms.RadioButton();
             this.m_rbFile = new System.Windows.Forms.RadioButton();
             this.m_panelFile = new System.Windows.Forms.Panel();
@@ -44,7 +44,7 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbTDMS = new System.Windows.Forms.RadioButton();
             this.m_rbComtrade = new System.Windows.Forms.RadioButton();
-            this.m_monitorGroup = new System.Windows.Forms.GroupBox();
+            this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.m_nudTime = new System.Windows.Forms.NumericUpDown();
@@ -245,9 +245,9 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_monitorGroup);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.m_monitorGroup);
             this.MinimumSize = new System.Drawing.Size(100, 646);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
@@ -268,12 +268,12 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Button m_browseFileButton;
         private System.Windows.Forms.TextBox m_pdoFileTextBox;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private iba.Utility.CollapsibleGroupBox groupBox3;
         private System.Windows.Forms.GroupBox m_groupBoxFileType;
         private System.Windows.Forms.RadioButton m_rbTextFile;
         private System.Windows.Forms.RadioButton m_rbBinaryFile;
@@ -281,7 +281,7 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbDbase;
         private System.Windows.Forms.RadioButton m_rbFile;
         private System.Windows.Forms.Panel m_panelFile;
-        private System.Windows.Forms.GroupBox m_monitorGroup;
+        private iba.Utility.CollapsibleGroupBox m_monitorGroup;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
         private System.Windows.Forms.Label label1;
