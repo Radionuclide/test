@@ -116,8 +116,8 @@ namespace iba.Processing
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if (pair.Key.Guid == data.Guid)
-                    return SerializableObjectsCompare.Compare(data, pair.Key);
+                if(pair.Key.Guid == data.Guid)
+                    return data.IsSame(pair.Key);
             }
             return false;
         }
@@ -611,6 +611,12 @@ namespace iba.Processing
                 if (pair.Key != null)
                     pair.Key.AdditionalFileNames(myList);
             }
+        }
+
+        //HDTrigger
+        virtual public void ForceTrigger(ConfigurationData data)
+        {
+            m_workers[data].ForceTrigger();
         }
     }
 
@@ -1309,6 +1315,18 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                 }
+            }
+        }
+
+        public override void ForceTrigger(ConfigurationData data)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.ForceTrigger(data);
+            }
+            catch(SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
             }
         }
     }

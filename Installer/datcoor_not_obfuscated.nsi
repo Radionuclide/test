@@ -344,7 +344,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"  
 ;HD-stuff
-  File "..\InstallFiles\Protected\hdClient.dll"
+  File "..\Dependencies\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
   File "..\Dependencies\DevExpress.XtraEditors.v6.3.dll"
@@ -354,23 +354,16 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.IbaAnalyzer.dll"
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
 
-  File "..\InstallFiles\Protected\DatCoUtil.dll"
+  File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "readme.htm"
-  
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
-  
-  ;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
@@ -399,7 +392,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"  
 ;HD-stuff
-  File "..\InstallFiles\Protected\hdClient.dll"
+  File "..\Dependencies\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
   File "..\Dependencies\DevExpress.XtraEditors.v6.3.dll"
@@ -408,28 +401,24 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\DevExpress.Utils.v6.3.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.IbaAnalyzer.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
   
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.IbaAnalyzer.dll"
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\running.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
-  File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
+  File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe"
   File "readme.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
-  
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
 
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
 
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
@@ -545,15 +534,9 @@ Function un.UninstallTasks
   Delete "$INSTDIR\readme.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
-
-  ; runtime
-  Delete "$INSTDIR\ibaRuntime.dll"
-  ;resources
   Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
-  Delete "$INSTDIR\de\hdClient.resources.dll"
   RMDir "$INSTDIR\de"
   Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
-  Delete "$INSTDIR\fr\hdClient.resources.dll"
   RMDir "$INSTDIR\fr"
   ;Remove install dir
   RMDir "$INSTDIR"

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<HVMProject version ="2">
+    <Assemblies>
+        <assembly>
+            <path>.\DatCoUtil.dll</path>
+        </assembly>
+        <assembly>
+            <path>.\ibaDatCoordinator.exe</path>
+        </assembly>
+		<assembly>
+            <path>.\ibaDatCoordinatorService.exe</path>
+        </assembly>
+		<assembly>
+            <path>.\hdClient.dll</path>
+        </assembly>
+    </Assemblies>
+    <Output>
+        <path>.\Output</path>
+        <runtime rename ="true">ibaRunTime.dll</runtime>
+        <runtime64>HVMRun64.dll</runtime64>
+    </Output>
+    <Settings>
+	    <AntiIldasm>true</AntiIldasm>
+        <EncryptNew>true</EncryptNew>
+        <EncryptBlob>true</EncryptBlob>
+        <AntiDis>true</AntiDis>
+        <HVM>true</HVM>
+        <HVMSig>true</HVMSig>
+        <HVMEH>true</HVMEH>
+        <Level>3</Level>
+    </Settings>
+    <Obfuscation>
+        <RenameMode>0</RenameMode>
+    </Obfuscation>
+    <TrialSettings>
+    </TrialSettings>
+</HVMProject>

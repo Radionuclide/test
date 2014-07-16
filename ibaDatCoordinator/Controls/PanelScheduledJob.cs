@@ -113,7 +113,7 @@ namespace iba.Controls
             //hdStore
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
-            m_hdStorePicker.SelectedStore = m_scheduleData.HDStores[0];
+            m_hdStorePicker.SelectedStore = m_scheduleData.HDStores.Length>0?m_scheduleData.HDStores[0]:"";
             //timeSelection
             Start = m_scheduleData.StartRangeFromTrigger;
             Stop = m_scheduleData.StopRangeFromTrigger;
@@ -479,7 +479,8 @@ namespace iba.Controls
 
         private void m_btTriggerNow_Click(object sender, EventArgs e)
         {
-
+            SaveData();
+            TaskManager.Manager.ForceTrigger(m_confData);
         }
 
         bool DisableRepeatChanged;
@@ -489,7 +490,6 @@ namespace iba.Controls
             DisableRepeatChanged = true;
             RepeatInterval = TimeSpan.FromHours((int)(m_nudRepeatHours.Value)).Add(TimeSpan.FromMinutes(((int)(m_nudRepeatMinutes.Value))));
             DisableRepeatChanged = false;
-
         }
     }
 

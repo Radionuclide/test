@@ -257,6 +257,9 @@ namespace iba.Controls
             m_data.NotificationData.Password = m_tbMailPass.Text;
             m_data.NotificationData.Sender = m_tbSender.Text;
 
+            //Debug.Assert(m_data.Clone_AlsoCopyGuids().IsSame(m_data));
+                
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
         }

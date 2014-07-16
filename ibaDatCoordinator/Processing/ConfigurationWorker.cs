@@ -4308,5 +4308,10 @@ namespace iba.Processing
             else
                 SetScheduleCheckTickTimer();
         }
+
+        public void ForceTrigger()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

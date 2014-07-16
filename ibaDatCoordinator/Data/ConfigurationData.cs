@@ -344,8 +344,6 @@ namespace iba.Data
             }
             if(m_jobType != other.m_jobType) return false;
             if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
-
-
             return
                 other.m_enabled == m_enabled &&
                 other.m_autoStart == m_autoStart &&

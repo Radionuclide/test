@@ -612,7 +612,7 @@ namespace iba
         {
             TaskManager.Manager.ClearConfigurations();
             loadConfigurations();
-            loadStatuses();
+            //loadStatuses();
         }
 
         private TreeNode InsertNewConf(ConfigurationData data)
@@ -1048,7 +1048,7 @@ namespace iba
                 m_configTreeView.SelectedNode = node;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
                 UpdateTreePositions();
-                loadStatuses();
+                //loadStatuses();
                 UpdateButtons();
             }
             else if (node.Tag is ConfigurationTreeItemData && m_cd_copy != null && m_confCopiedMostRecent)
@@ -1069,7 +1069,7 @@ namespace iba
                 UpdateTreePositions();
                 m_configTreeView.SelectedNode = tn;
                 m_cd_copy = m_cd_copy.Clone() as ConfigurationData;
-                loadStatuses();
+                //loadStatuses();
                 UpdateButtons();
             }
             else if (node.Tag is ConfigurationTreeItemData && m_task_copy != null)
@@ -1830,6 +1830,7 @@ namespace iba
             loadFromFile(m_openFileDialog.FileName,false);
             loadConfigurations();
             loadStatuses();
+            m_navBar.SelectedPane = m_configPane;
             ReloadRightPane();
         }
 
@@ -1901,6 +1902,7 @@ namespace iba
             m_filename = null;
             clearAllConfigurations();
             this.Text = "ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
+            m_navBar.SelectedPane = m_configPane;
         }
 
         internal struct PreviousMenuItems
