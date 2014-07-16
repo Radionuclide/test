@@ -27,8 +27,16 @@ namespace iba.Controls
                 m_cbAutoStart.Visible = false;
             }
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
-
+            m_ceManager = new CollapsibleElementManager(this);
+            CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { m_gbApp, groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
+            foreach (var box in gboxes)
+            {
+                box.Init();
+                m_ceManager.AddElement(box);
+            }
         }
+
+        private CollapsibleElementManager m_ceManager;
 
         #region IPropertyPane Members
 

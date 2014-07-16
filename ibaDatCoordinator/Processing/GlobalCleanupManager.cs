@@ -111,7 +111,7 @@ namespace iba.Processing
 
         private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationToken ct)
         {
-            var taskData = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, false));
+            var taskData = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, ConfigurationData.JobTypeEnum.DatTriggered));
             taskData.DestinationMapUNC = data.DriveName;
 
             Log(Logging.Level.Info, "Start Global Cleanup", data.DriveName, taskData);

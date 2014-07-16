@@ -148,7 +148,7 @@ namespace iba.Controls
             m_ceManager.AddElement(groupBox6);
         }
 
-        CollapsibleElementManager m_ceManager;
+        private CollapsibleElementManager m_ceManager;
 
         public System.Windows.Forms.Button m_stopButton;
         public System.Windows.Forms.Button m_applyToRunningBtn;

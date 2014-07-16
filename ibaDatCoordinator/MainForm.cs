@@ -516,7 +516,7 @@ namespace iba
             loadConfigurations();
             loadStatuses();
             UpdateButtons();
-
+            m_navBar.SelectedPane = m_configPane;
             if (WindowState == FormWindowState.Minimized)
             {
                 Hide();
@@ -2751,6 +2751,7 @@ namespace iba
                                 loadConfigurations();
                                 loadStatuses();
                                 ReloadRightPane();
+                                
                             }
                             UpdateButtons();
                         };

@@ -30,18 +30,18 @@ namespace iba.Controls
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceSettingsControl));
-            this.m_gbApp = new System.Windows.Forms.GroupBox();
+            this.m_gbApp = new iba.Utility.CollapsibleGroupBox();
             this.m_btnOptimize = new System.Windows.Forms.Button();
             this.m_comboPriority = new System.Windows.Forms.ComboBox();
             this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_nudResourceCritical = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
@@ -54,14 +54,14 @@ namespace iba.Controls
             this.label5 = new System.Windows.Forms.Label();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_ClearPassBtn = new System.Windows.Forms.Button();
             this.m_nudRememberTime = new System.Windows.Forms.NumericUpDown();
             this.m_SetChangePassBtn = new System.Windows.Forms.Button();
             this.m_cbRememberPassword = new System.Windows.Forms.CheckBox();
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
-            this.gb_GlobalCleanup = new System.Windows.Forms.GroupBox();
+            this.gb_GlobalCleanup = new iba.Utility.CollapsibleGroupBox();
             this.tbl_GlobalCleanup = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -441,15 +441,15 @@ namespace iba.Controls
 
         #endregion
 
-        private System.Windows.Forms.GroupBox m_gbApp;
+        private iba.Utility.CollapsibleGroupBox m_gbApp;
         private System.Windows.Forms.CheckBox m_cbAutoStart;
         private System.Windows.Forms.Label m_lblPriority;
         private System.Windows.Forms.ComboBox m_comboPriority;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.CheckBox m_cbPostpone;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown m_nudPostponeTime;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private iba.Utility.CollapsibleGroupBox groupBox5;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
@@ -457,7 +457,7 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private iba.Utility.CollapsibleGroupBox groupBox2;
         private System.Windows.Forms.Label m_passwordStatusLabel;
         private System.Windows.Forms.Button m_ClearPassBtn;
         private System.Windows.Forms.Button m_SetChangePassBtn;
@@ -472,7 +472,7 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
         private System.Windows.Forms.Button m_btnOptimize;
-        private System.Windows.Forms.GroupBox gb_GlobalCleanup;
+        private iba.Utility.CollapsibleGroupBox gb_GlobalCleanup;
         private System.Windows.Forms.TableLayoutPanel tbl_GlobalCleanup;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
