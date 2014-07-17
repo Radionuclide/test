@@ -47,6 +47,9 @@
             this.m_gbSchemaLocation = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_txtSchemaLocation = new System.Windows.Forms.TextBox();
+            this.m_grpXsdLocation = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_txtXsdLocation = new System.Windows.Forms.TextBox();
             this.m_gbStandort.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.m_gbId.SuspendLayout();
@@ -54,6 +57,8 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.m_gbSchemaLocation.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.m_grpXsdLocation.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbStandort
@@ -279,25 +284,60 @@
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(452, 24);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(503, 24);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // m_txtSchemaLocation
             // 
             this.m_txtSchemaLocation.Location = new System.Drawing.Point(3, 3);
             this.m_txtSchemaLocation.Name = "m_txtSchemaLocation";
-            this.m_txtSchemaLocation.Size = new System.Drawing.Size(446, 20);
+            this.m_txtSchemaLocation.Size = new System.Drawing.Size(497, 20);
             this.m_txtSchemaLocation.TabIndex = 0;
+            // 
+            // m_grpXsdLocation
+            // 
+            this.m_grpXsdLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_grpXsdLocation.Controls.Add(this.tableLayoutPanel5);
+            this.m_grpXsdLocation.Location = new System.Drawing.Point(0, 165);
+            this.m_grpXsdLocation.Name = "m_grpXsdLocation";
+            this.m_grpXsdLocation.Size = new System.Drawing.Size(666, 49);
+            this.m_grpXsdLocation.TabIndex = 3;
+            this.m_grpXsdLocation.TabStop = false;
+            this.m_grpXsdLocation.Text = "Speicherort für Messreihe.xsd";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.m_txtXsdLocation, 0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(6, 15);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(500, 24);
+            this.tableLayoutPanel5.TabIndex = 0;
+            // 
+            // m_txtXsdLocation
+            // 
+            this.m_txtXsdLocation.Location = new System.Drawing.Point(3, 3);
+            this.m_txtXsdLocation.Name = "m_txtXsdLocation";
+            this.m_txtXsdLocation.ReadOnly = true;
+            this.m_txtXsdLocation.Size = new System.Drawing.Size(494, 20);
+            this.m_txtXsdLocation.TabIndex = 0;
             // 
             // PluginXMLControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_grpXsdLocation);
             this.Controls.Add(this.m_gbSchemaLocation);
             this.Controls.Add(this.m_gbId);
             this.Controls.Add(this.m_gbStandort);
             this.Name = "PluginXMLControl";
-            this.Size = new System.Drawing.Size(666, 160);
+            this.Size = new System.Drawing.Size(666, 215);
             this.m_gbStandort.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -309,6 +349,9 @@
             this.m_gbSchemaLocation.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.m_grpXsdLocation.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -334,5 +377,8 @@
         private System.Windows.Forms.TextBox m_txtSchemaLocation;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TextBox m_txtAndererStandort;
+        private System.Windows.Forms.GroupBox m_grpXsdLocation;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.TextBox m_txtXsdLocation;
     }
 }

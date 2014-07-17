@@ -11,5 +11,6 @@ namespace XmlExtract
         IdFieldLocation IdField { get; set; }
         string AndererStandort { get; set; }
         string XmlSchemaLocation { get; set; }
+        string XsdLocation { get; set; }
     }
 }

@@ -47,11 +47,15 @@ namespace XmlExtract
     public partial class MaterialHeaderType
     {
         
+        private object itemField;
+        
         private System.Nullable<StandortType> standortField;
         
         private System.Nullable<MaterialArtType> materialArtField;
         
-        public string LokalerIdent { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("LokalerIdent", typeof(string))]
+        [System.Xml.Serialization.XmlElementAttribute("TKSIdent", typeof(ulong))]
+        public object Item { get; set; }
         
         /// <summary>
         /// BO, DO, DU
@@ -208,6 +212,8 @@ namespace XmlExtract
         /// Darf weggelassen werden, dann wird 0 angenommen.
         /// </summary>
         public double SegmentOffsetX { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool SegmentOffsetXSpecified { get; set; }
         public string WerteX { get; set; }
     }
     
@@ -237,6 +243,8 @@ namespace XmlExtract
         
         private System.Nullable<WerteTypeEnum> typField;
         
+        private BezugDimensionEnum dimensionXField;
+        
         [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
         [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
         public object Item { get; set; }
@@ -248,6 +256,17 @@ namespace XmlExtract
         /// Darf weggelassen werden; dann werden die Werte berechnet.
         /// </summary>
         public StatistikType Statistik { get; set; }
+        /// <summary>
+        /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
+        /// </summary>
+        [System.ComponentModel.DefaultValueAttribute(0)]
+        public double Bezugswert { get; set; }
+        /// <summary>
+        /// Darf weggelassen werden; dann wird true angenommen.
+        /// </summary>
+        public bool isAbsolut { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isAbsolutSpecified { get; set; }
         /// <summary>
         /// Richtung der x-Achse (oder Dimension Zeit)
         /// </summary>
@@ -261,7 +280,7 @@ namespace XmlExtract
         {
             this.Raster1D = new Raster1DType();
             this.Statistik = new StatistikType();
-            this.DimensionX = BezugDimensionEnum.Laenge;
+            this.Bezugswert = 0;
         }
         
         /// <summary>
@@ -361,6 +380,41 @@ namespace XmlExtract
         
         [System.Xml.Serialization.XmlEnumAttribute("gradC/s")]
         gradCs,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("m3/s")]
+        m3s,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("m3/h")]
+        m3h,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("t/h")]
+        th,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("mikroS/cm")]
+        mikroScm,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("N/m2")]
+        Nm2,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("m/s")]
+        ms,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("A/qm")]
+        Aqm,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("cm-1")]
+        cm1,
+        
+        s,
+        
+        mikroS,
+        
+        m3,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("ml/min")]
+        mlmin,
+        
+        lgbar,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -407,8 +461,6 @@ namespace XmlExtract
         
         private BandlaufrichtungEnum bandlaufrichtungField;
         
-        private System.Nullable<MessungTypeEnum> messgroesseField;
-        
         public string IDMessgeraet { get; set; }
         /// <summary>
         /// z.B. BEFB02
@@ -416,9 +468,19 @@ namespace XmlExtract
         public string Aggregat { get; set; }
         public BandlaufrichtungEnum Bandlaufrichtung { get; set; }
         public bool Endprodukt { get; set; }
+        /// <summary>
+        /// z.B. DICKE__AL
+        /// </summary>
+        public string Gruppe { get; set; }
         public System.DateTime Messzeitpunkt { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Spur")]
         public List<SpurType> Spur { get; set; }
+        /// <summary>
+        /// Voraussichtlich wird keine weitere Messung zu diesem Arbeitsgangdurchsatz folgen.
+        /// </summary>
+        public bool LetzteMsgAmDurchsatz { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LetzteMsgAmDurchsatzSpecified { get; set; }
         
         /// <summary>
         /// MessungType class constructor
@@ -426,41 +488,6 @@ namespace XmlExtract
         public MessungType()
         {
             this.Spur = new List<SpurType>();
-        }
-        
-        public MessungTypeEnum Messgroesse
-        {
-            get
-            {
-                if (this.messgroesseField.HasValue)
-                {
-                    return this.messgroesseField.Value;
-                }
-                else
-                {
-                    return default(MessungTypeEnum);
-                }
-            }
-            set
-            {
-                this.messgroesseField = value;
-            }
-        }
-        
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool MessgroesseSpecified
-        {
-            get
-            {
-                return this.messgroesseField.HasValue;
-            }
-            set
-            {
-                if (value==false)
-                {
-                    this.messgroesseField = null;
-                }
-            }
         }
     }
     
@@ -473,46 +500,5 @@ namespace XmlExtract
         InWalzRichtung,
         
         GegenWalzRichtung,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public enum MessungTypeEnum
-    {
-        
-        Laenge,
-        
-        Temperatur,
-        
-        Geschwindigkeit,
-        
-        Leistung,
-        
-        Strom,
-        
-        Spannung,
-        
-        Zinkauflage,
-        
-        Eisenanteil,
-        
-        Taupunkt,
-        
-        Dressiergrad,
-        
-        Winkel,
-        
-        Kraft,
-        
-        Streckgrad,
-        
-        Zugfestigkeit,
-        
-        Druck,
-        
-        Einoelgrad,
-        
-        Test,
     }
 }

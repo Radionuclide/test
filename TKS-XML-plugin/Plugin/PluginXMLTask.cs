@@ -90,18 +90,6 @@ namespace iba.TKS_XML_Plugin
 
         #endregion
 
-        #region ICloneable Members
-
-        public object Clone()
-        {
-            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, null);
-            xt.StandOrt = StandOrt;
-            xt.IdField = IdField;
-            return xt;
-        }
-
-        #endregion
-
         // IExtractorData Members
         private XmlExtract.StandortType _standOrt = XmlExtract.StandortType.DU;
         public XmlExtract.StandortType StandOrt
@@ -132,7 +120,29 @@ namespace iba.TKS_XML_Plugin
             set { _xsiSchemaLocation = value; }
         }
 
+        private string _xsdLocation = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                                             @"iba\ibaDatCoordinator\TKS-XmlExport\Messreihe.xsd");
+        public string XsdLocation
+        {
+            get { return _xsdLocation; }
+            set { _xsdLocation = value; }
+        }
 
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, null);
+            xt.StandOrt = StandOrt;
+            xt.IdField = IdField;
+            xt.AndererStandort = AndererStandort;
+            xt.XmlSchemaLocation = XmlSchemaLocation;
+            xt.XsdLocation = XsdLocation;
+            return xt;
+        }
+
+        #endregion
 
         #region IPluginTaskDataIsSame Members
 
@@ -144,7 +154,8 @@ namespace iba.TKS_XML_Plugin
             return (other.StandOrt == StandOrt
                 && other.IdField == IdField
                 && other.AndererStandort == AndererStandort
-                && other.XmlSchemaLocation == XmlSchemaLocation);
+                && other.XmlSchemaLocation == XmlSchemaLocation
+                && other.XsdLocation == XsdLocation);
         }
         #endregion
 
