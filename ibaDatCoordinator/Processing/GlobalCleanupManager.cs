@@ -98,23 +98,34 @@ namespace iba.Processing
             }
 
             var cts = new CancellationTokenSource();
-            var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, cts.Token))
+            var taskData = new GlobalCleanupTaskData(new ConfigurationData("Global Cleanup", ConfigurationData.JobTypeEnum.DatTriggered));
+            taskData.Name = "Cleanup drive " + data.DriveName;
+            taskData.DestinationMapUNC = data.DriveName;
+
+            if (data.IsSystemDrive && !String.IsNullOrEmpty(data.WorkingFolder))
+                taskData.DestinationMapUNC = data.WorkingFolder;
+
+            var task = Task.Factory.StartNew(() => StartGlobalCleanupWorker(data, taskData, cts.Token))
                 .ContinueWith((_) =>
                 {
                     TaskControl tc;
                     m_globalCleanupWorker.TryRemove(data.DriveName, out tc);
-                    Log(Logging.Level.Info, "Stop Global Cleanup", data.DriveName);
+                    Log(Logging.Level.Info, "Stop Global Cleanup", taskData.DestinationMapUNC, taskData);
                 });
 
             m_globalCleanupWorker.TryAdd(data.DriveName, new TaskControl(task, cts));
         }
 
-        private void StartGlobalCleanupWorker(GlobalCleanupData data, CancellationToken ct)
+        private void StartGlobalCleanupWorker(GlobalCleanupData data, GlobalCleanupTaskData taskData, CancellationToken ct)
         {
-            var taskData = new GlobalCleanupTaskData(new ConfigurationData(data.DriveName, ConfigurationData.JobTypeEnum.DatTriggered));
-            taskData.DestinationMapUNC = data.DriveName;
+            if (!VerifySystemDriveCouldRun(data, taskData))
+            {
+                data.Active = false;
+                data.WorkingFolder = String.Empty;
+                return;
+            }
 
-            Log(Logging.Level.Info, "Start Global Cleanup", data.DriveName, taskData);
+            Log(Logging.Level.Info, "Start Global Cleanup", taskData.DestinationMapUNC, taskData);
 
             PostponeStartup(ct);
 
@@ -124,17 +135,15 @@ namespace iba.Processing
 
             var quota = new FileQuotaCleanup(taskData, ".dat", ct);
             quota.FastSearch = true;
-            //quota.LogMessageReceived += (s, e) => { Log(e.Level, e.Message, taskData.DestinationMapUNC); };
-
 
             bool cancelled = ct.IsCancellationRequested;
             while (!cancelled)
             {
                 var sw = Stopwatch.StartNew();
-                Log("Cleanup start", taskData.DestinationMapUNC);
+                Log(Logging.Level.Info, "Cleanup start", taskData.DestinationMapUNC, taskData);
                 quota.Init();
                 sw.Stop();
-                Log("Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC);
+                Log(Logging.Level.Info, "Cleanup init finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC, taskData);
 
                 if (ct.IsCancellationRequested)
                     return;
@@ -142,13 +151,39 @@ namespace iba.Processing
                 sw.Restart();
                 quota.Clean("Cleanup");
                 sw.Stop();
-                Log("Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC);
+                Log(Logging.Level.Info, "Cleanup finished " + (sw.ElapsedMilliseconds / 1000.0).ToString("0.000") + "s", taskData.DestinationMapUNC, taskData);
 
-                Log(Logging.Level.Info, String.Format("Next cleanup at {0:T}", System.DateTime.Now.AddMinutes(data.RescanTime)), data.DriveName);
+                Log(Logging.Level.Info, String.Format("Next cleanup at {0:T}", System.DateTime.Now.AddMinutes(data.RescanTime)), taskData.DestinationMapUNC, taskData);
                 cancelled = ct.WaitHandle.WaitOne(data.RescanTime * 60000);
             }
 
 
+        }
+
+        private bool VerifySystemDriveCouldRun(GlobalCleanupData data, GlobalCleanupTaskData taskData)
+        {
+            if (!data.IsSystemDrive)
+                return true;
+
+            if (String.IsNullOrEmpty(data.WorkingFolder))
+            {
+                Log(Logging.Level.Warning, "System drive must have a sub folder defined!", taskData.DestinationMapUNC, taskData);
+                return false;
+            }
+
+            if (data.WorkingFolder.Equals(data.DriveName, StringComparison.OrdinalIgnoreCase))
+            {
+                Log(Logging.Level.Warning, "System drive must have a sub folder defined!", taskData.DestinationMapUNC, taskData);
+                return false;
+            }
+
+            if (!data.WorkingFolder.StartsWith(data.DriveName))
+            {
+                Log(Logging.Level.Warning, String.Format("Working folder must must be a sub folder of drive {0}!", data.DriveName), taskData.DestinationMapUNC, taskData);
+                return false;
+            }
+
+            return true;
         }
 
         private static void PostponeStartup(CancellationToken ct)
@@ -202,7 +237,7 @@ namespace iba.Processing
 
         internal void Log(Logging.Level level, string message, string datfile, TaskData task)
         {
-            LogExtraData data = new LogExtraData(datfile, task, null);
+            LogExtraData data = new LogExtraData(datfile, task, task.ParentConfigurationData);
             LogData.Data.Log(level, message, (object)data);
             if (level == Logging.Level.Exception)
             {

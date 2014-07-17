@@ -69,6 +69,7 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.m_gbApp.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
@@ -480,6 +481,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
 
     }
 }

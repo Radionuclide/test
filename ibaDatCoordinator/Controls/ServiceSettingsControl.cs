@@ -427,24 +427,25 @@ namespace iba.Controls
 
             foreach (var gcd in m_globalCleanupData.OrderBy(gc => gc.DriveName))
             {
-
                 var drive = new DriveInfo(gcd.DriveName);
                 gcd.IsSystemDrive = drive.IsSystemDrive();
 
                 string driveName = drive.Name;
                 if (drive.IsReady)
-                    driveName = String.Format("{0} - [{1}]", drive.Name, drive.VolumeLabel);
-
-                if (gcd.IsSystemDrive)
                 {
-                    gcd.Active = false;
-                    driveName = driveName + " - (System)";
+                    driveName = String.Format("{0} - [{1}]", drive.Name, drive.VolumeLabel);
+                    gcd.VolumeLabel = drive.VolumeLabel;
                 }
 
                 rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl_GlobalCleanup.RowCount++;
+                tbl_GlobalCleanup.RowCount++;   
+                
+                
+                if (gcd.IsSystemDrive)
+                    AddSystemToTableLayout(gcd, 0, rowIdx, ContentAlignment.MiddleCenter);
+                else
+                    AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
 
-                AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
                 if (drive.IsReady)
                 {
                     gcd.TotalSize = drive.TotalSize;
@@ -456,8 +457,8 @@ namespace iba.Controls
                 }
                 AddIsActiveToTableLayout(gcd, 5, rowIdx, drive.IsReady);
 
-                if (gcd.IsSystemDrive)
-                    ChangeEnabledStateforRowControls(false, rowIdx);
+                //if (gcd.IsSystemDrive)
+                //    ChangeEnabledStateforRowControls(false, rowIdx);
             }
 
             gb_GlobalCleanup.Height = (rowIdx + 1) * 32;
@@ -479,6 +480,46 @@ namespace iba.Controls
             pnl.Controls.Add(lbl);
 
             tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+        }
+
+        private void AddSystemToTableLayout(GlobalCleanupData gcd, int colIdx, int rowIdx, ContentAlignment textAlign)
+        {
+
+            string cleanupFolder = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
+
+            Panel pnl = new Panel();
+            pnl.Dock = DockStyle.Fill;
+            pnl.AutoSize = true;
+            pnl.Margin = new Padding(0, 0, 0, 0);
+
+            Label lbl = new Label();
+            lbl.Dock = DockStyle.Left;
+            lbl.Padding = new Padding(0, 5, 0, 0);
+            lbl.Text = String.Format("{0} - [{1}]", cleanupFolder, gcd.VolumeLabel);
+            lbl.TextAlign = textAlign;
+            lbl.AutoSize = true;
+
+            Button btn = new Button();
+            btn.Dock = DockStyle.Right;
+            btn.Size = new Size(40, 23);
+            btn.Image = global::iba.Properties.Resources.open;
+            btn.Click += (s, e) =>
+            {
+                m_folderBrowserDialog1.SelectedPath = cleanupFolder;
+                DialogResult result = m_folderBrowserDialog1.ShowDialog();
+                if (result == DialogResult.OK && m_folderBrowserDialog1.SelectedPath.StartsWith(gcd.DriveName))
+                {
+                    lbl.Text = String.Format("{0} - [{1}]", m_folderBrowserDialog1.SelectedPath, gcd.VolumeLabel);
+                    gcd.WorkingFolder = m_folderBrowserDialog1.SelectedPath;
+                }
+
+            };
+
+            pnl.Controls.Add(lbl);
+            pnl.Controls.Add(btn);
+
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+
         }
 
         private void AddQuotaToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx)
@@ -562,7 +603,7 @@ namespace iba.Controls
             CheckBox cb = new CheckBox();
             cb.Location = new Point(lblHeader.Width / 2 - 15 / 2, 0);
             cb.Checked = data.Active;
-            cb.Enabled = !data.IsSystemDrive && isReady;
+            cb.Enabled = isReady; // && !data.IsSystemDrive
 
             ChangeEnabledStateforRowControls(!data.Active, rowIdx);
 
