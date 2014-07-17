@@ -109,14 +109,26 @@ namespace iba.Dialogs
                     try
                     {
                         time = File.GetLastWriteTime(filename);
-                        ibaDatFile.OpenForUpdate(filename);
-                        ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
-                        ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
-                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
+                        if(filename.EndsWith(".hdq"))
+                        {
+                            iba.Utility.IniParser parser = new iba.Utility.IniParser(filename);
+                            parser.Read();
+                            parser.Sections["DatCoordinatorData"]["$DATCOOR_status"] = "readyToProcess";
+                            parser.Sections["DatCoordinatorData"]["$DATCOOR_TasksDone"] = "";
+                            parser.Sections["DatCoordinatorData"]["$DATCOOR_times_tried"] = "0";
+                            parser.Sections["DatCoordinatorData"]["$DATCOOR_OutputFiles"] = "";
+                            parser.Write();
+                        }
+                        else
+                        {
+                            ibaDatFile.OpenForUpdate(filename);
+                            ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                            ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
+                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                        }
                         backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));
                     }
-                    catch (Exception ex)//updating didn't work, forget about it
+                    catch(Exception ex)//updating didn't work, forget about it
                     {
                         string message = ex.Message;
                     }

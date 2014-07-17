@@ -460,6 +460,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting triggers.
+        /// </summary>
+        internal static string DeleteDialogTitleHDQ {
+            get {
+                return ResourceManager.GetString("DeleteDialogTitleHDQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Extract options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteExtractQuestion {
@@ -2242,6 +2251,42 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to iba .Dat-files.
+        /// </summary>
+        internal static string PermErrorsColumnHeaderDat {
+            get {
+                return ResourceManager.GetString("PermErrorsColumnHeaderDat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to triggers.
+        /// </summary>
+        internal static string PermErrorsColumnHeaderHDQ {
+            get {
+                return ResourceManager.GetString("PermErrorsColumnHeaderHDQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following files have been attempted the maximum amount of attempts for job.
+        /// </summary>
+        internal static string PermErrorsLabelDat {
+            get {
+                return ResourceManager.GetString("PermErrorsLabelDat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following triggers have been attempted the maximum amount of attempts for job.
+        /// </summary>
+        internal static string PermErrorsLabelHDQ {
+            get {
+                return ResourceManager.GetString("PermErrorsLabelHDQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap plus {
@@ -2337,7 +2382,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to reprocess all selected files ?.
+        ///   Looks up a localized string similar to Are you sure you want to reprocess all selected items ?.
         /// </summary>
         internal static string refreshPermanentErrorFilesWarning {
             get {
@@ -2428,7 +2473,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Problem removing markings from .dat Files: .
+        ///   Looks up a localized string similar to Problem removing markings: .
         /// </summary>
         internal static string RemoveMarkingsProblem {
             get {
@@ -3125,6 +3170,15 @@ namespace iba.Properties {
         internal static string UnexpectedErrorProcessingDatFile {
             get {
                 return ResourceManager.GetString("UnexpectedErrorProcessingDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmarking triggers.
+        /// </summary>
+        internal static string UnmarkDialogTitleHDQ {
+            get {
+                return ResourceManager.GetString("UnmarkDialogTitleHDQ", resourceCulture);
             }
         }
         

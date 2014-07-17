@@ -195,7 +195,16 @@ namespace iba.Controls
             bFirstLoad = true;
             m_data = datasource as MinimalStatusData;
             m_cd = TaskManager.Manager.GetConfigurationFromWorker(m_data.CorrConfigurationGuid);
-
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            {
+                m_infoLabel.Text = Properties.Resources.PermErrorsLabelHDQ;
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderHDQ;
+            }
+            else
+            {
+                m_infoLabel.Text = Properties.Resources.PermErrorsLabelDat;
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderDat;
+            }
             m_confNameLinkLabel.Text = m_cd.Name;
             int count = m_cd.Tasks.Count;
             if (m_gridView.ColumnCount != (count + 3))
@@ -343,6 +352,8 @@ namespace iba.Controls
                 return;
             DetermineCheckedFiles();
             DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_cd.DatDirectoryUNC,m_cd.Username, m_cd.Password, m_checkedFiles);
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                dlg.Text = iba.Properties.Resources.DeleteDialogTitleHDQ;
             dlg.StartPosition = FormStartPosition.CenterParent;
             dlg.ShowDialog(this);
             TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERDELETE, m_data.CorrConfigurationGuid, m_checkedFiles);
@@ -357,6 +368,9 @@ namespace iba.Controls
 
             DetermineCheckedFiles();
             RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles);
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                dlg.Text = iba.Properties.Resources.UnmarkDialogTitleHDQ;
+
             dlg.StartPosition = FormStartPosition.CenterParent;
             dlg.ShowDialog(this);
             TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERREFRESH, m_data.CorrConfigurationGuid, m_checkedFiles);

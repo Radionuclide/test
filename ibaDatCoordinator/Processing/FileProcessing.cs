@@ -53,7 +53,8 @@ namespace iba.Processing
 
         public void RemoveMarkings(List<string> files, FileProcessingProgressBar myBar)
         {
-            if (!String.IsNullOrEmpty(m_error)) return;
+            if(!String.IsNullOrEmpty(m_error) || files.Count == 0) return;
+
             IbaFile ibaDatFile = new IbaFileClass();
             bool stop = false;
             for (int count = 0; count < files.Count && !stop; count++)
@@ -65,11 +66,24 @@ namespace iba.Processing
                 try
                 {
                     time = File.GetLastWriteTime(filename);
-                    ibaDatFile.OpenForUpdate(filename);
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                    ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
-                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
-                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
+                    if(filename.EndsWith(".hdq"))
+                    {
+                        IniParser parser = new IniParser(filename);
+                        parser.Read();
+                        parser.Sections["DatCoordinatorData"]["$DATCOOR_status"] = "readyToProcess";
+                        parser.Sections["DatCoordinatorData"]["$DATCOOR_TasksDone"] = "";
+                        parser.Sections["DatCoordinatorData"]["$DATCOOR_times_tried"] = "0";
+                        parser.Sections["DatCoordinatorData"]["$DATCOOR_OutputFiles"] = "";
+                        parser.Write();
+                    }
+                    else
+                    {
+                        ibaDatFile.OpenForUpdate(filename);
+                        ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
+                        ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
+                    }
                 }
                 catch (Exception ex)//updating didn't work, forget about it
                 {

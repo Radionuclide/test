@@ -329,8 +329,7 @@ namespace iba.Controls
             m_stopButton.Enabled = false;
             if(t != null) t.UpdateButtons();
         }
-
-
+        
         private void m_newReportButton_Click(object sender, EventArgs e)
         {
             ReportData report = new ReportData(m_data);

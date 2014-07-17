@@ -81,6 +81,7 @@ namespace iba.Processing
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
+            networkErrorOccured = false;
             if (m_cd.OnetimeJob)
                 m_thread = new Thread(new ThreadStart(RunOneTimeJob));
             else
@@ -2535,6 +2536,7 @@ namespace iba.Processing
                             }
                         Section["$DATCOOR_TasksDone"]=guids;
                         Section["$DATCOOR_OutputFiles"] = outputfiles;
+                        Section["$DATCOOR_times_tried"] = m_sd.DatFileStates[InputFile].TimesTried.ToString();
                     }
                 }
                 iniParser.Write();

@@ -944,7 +944,7 @@
     <value>Problem deleting  .dat Files:</value>
   </data>
   <data name="RemoveMarkingsProblem" xml:space="preserve">
-    <value>Problem removing markings from .dat Files: </value>
+    <value>Problem removing markings: </value>
   </data>
   <data name="deletePermanentErrorFilesWarning" xml:space="preserve">
     <value>Are you sure you want to permanently delete all selected files ?</value>
@@ -953,7 +953,7 @@
     <value>Are you sure you want to reprocess all .dat files ?</value>
   </data>
   <data name="refreshPermanentErrorFilesWarning" xml:space="preserve">
-    <value>Are you sure you want to reprocess all selected files ?</value>
+    <value>Are you sure you want to reprocess all selected items ?</value>
   </data>
   <data name="RegisterIbaAnalyzer" xml:space="preserve">
     <value>Register this ibaAnalyzer</value>
@@ -1177,8 +1177,26 @@
   <data name="ErrorScheduleNextTrigger" xml:space="preserve">
     <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
   </data>
+  <data name="DeleteDialogTitleHDQ" xml:space="preserve">
+    <value>Deleting triggers</value>
   <data name="logGlobalCleanupStartCleanup" xml:space="preserve">
     <value>Cleanup start</value>
+  </data>
+  <data name="PermErrorsColumnHeaderDat" xml:space="preserve">
+    <value>iba .Dat-files</value>
+  </data>
+  <data name="PermErrorsColumnHeaderHDQ" xml:space="preserve">
+    <value>triggers</value>
+  </data>
+  <data name="PermErrorsLabelDat" xml:space="preserve">
+    <value>The following files have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="PermErrorsLabelHDQ" xml:space="preserve">
+    <value>The following triggers have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="UnmarkDialogTitleHDQ" xml:space="preserve">
+    <value>Unmarking triggers</value>
+  </data>
   </data>
   <data name="logGlobalCleanupInitFinished" xml:space="preserve">
     <value>Cleanup init finished {0:0.000}s</value>
