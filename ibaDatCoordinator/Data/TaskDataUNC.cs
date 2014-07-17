@@ -118,6 +118,9 @@ namespace iba.Data
         }
 
         protected uint m_quota;
+        /// <summary>
+        /// Maximum used space in MB usually
+        /// </summary>
         public uint Quota
         {
             get { return m_quota; }
@@ -125,6 +128,9 @@ namespace iba.Data
         }
 
         protected uint m_quotaFree;
+        /// <summary>
+        /// Minimum of free space in MB usually
+        /// </summary>
         public uint QuotaFree
         {
             get { return m_quotaFree; }

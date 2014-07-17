@@ -1177,4 +1177,31 @@
   <data name="ErrorScheduleNextTrigger" xml:space="preserve">
     <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
   </data>
+  <data name="logGlobalCleanupStartCleanup" xml:space="preserve">
+    <value>Cleanup start</value>
+  </data>
+  <data name="logGlobalCleanupInitFinished" xml:space="preserve">
+    <value>Cleanup init finished {0:0.000}s</value>
+  </data>
+  <data name="logGlobalCleanupFinished" xml:space="preserve">
+    <value>Cleanup finished {0:0.000}s</value>
+  </data>
+  <data name="logGlobalCleanupNextCleanup" xml:space="preserve">
+    <value>Next cleanup at {0:T}</value>
+  </data>
+  <data name="logGlobalCleanupSystemDriveNeedsSubFolder" xml:space="preserve">
+    <value>A sub-directory must be selected for the system drive!</value>
+  </data>
+  <data name="logGlobalCleanupFolderMustBeFolderOfDrive" xml:space="preserve">
+    <value>Working folder must be a sub folder of drive {0}!</value>
+  </data>
+  <data name="logGlobalCleanupStart" xml:space="preserve">
+    <value>Start Global Cleanup</value>
+  </data>
+  <data name="logGlobalCleanupStop" xml:space="preserve">
+    <value>Stop Global Cleanup</value>
+  </data>
+  <data name="logGlobalCleanupDriveNotReadyForCleanup" xml:space="preserve">
+    <value>Drive not ready for cleanup</value>
+  </data>
 </root>
