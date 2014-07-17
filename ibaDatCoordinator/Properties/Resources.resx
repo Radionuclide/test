@@ -206,7 +206,7 @@
     <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
   </data>
   <data name="refreshDatButton" xml:space="preserve">
-    <value>Remove the "already processed" mark from the .dat files</value>
+    <value>Remove the "already processed" mark from items</value>
   </data>
   <data name="logExtractTimeout" xml:space="preserve">
     <value>extracting timed out</value>
@@ -329,7 +329,7 @@
     <value>ibaDatCoordinator (connected)</value>
   </data>
   <data name="logCheckingForErrorDatFiles" xml:space="preserve">
-    <value>Scanning for .dat files for which operations failed</value>
+    <value>Scanning for items for which operations failed</value>
   </data>
   <data name="statText3" xml:space="preserve">
     <value>stopped</value>
@@ -716,7 +716,7 @@
     <value>..\Resources\tomanytimestried.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TriedToManyTimes" xml:space="preserve">
-    <value>The .dat file could not be processed within the maximum number of attempts, further processing will not be attempted</value>
+    <value>The item could not be processed within the maximum number of attempts, further processing will not be attempted</value>
   </data>
   <data name="brokenfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\brokenfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1179,6 +1179,7 @@
   </data>
   <data name="DeleteDialogTitleHDQ" xml:space="preserve">
     <value>Deleting triggers</value>
+  </data>
   <data name="logGlobalCleanupStartCleanup" xml:space="preserve">
     <value>Cleanup start</value>
   </data>
@@ -1196,7 +1197,6 @@
   </data>
   <data name="UnmarkDialogTitleHDQ" xml:space="preserve">
     <value>Unmarking triggers</value>
-  </data>
   </data>
   <data name="logGlobalCleanupInitFinished" xml:space="preserve">
     <value>Cleanup init finished {0:0.000}s</value>

@@ -153,6 +153,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Processing\GlobalCleanupManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
@@ -352,11 +357,6 @@
     </Compile>
     <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegistryOptimizer.cs" />
     <Compile Include="Utility\DriveUtil.cs" />

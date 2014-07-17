@@ -185,6 +185,9 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as MinimalStatusData;
             m_cd = TaskManager.Manager.GetConfigurationFromWorker(m_data.CorrConfigurationGuid);
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderHDQ;
+
             m_confNameLinkLabel.Text = m_cd.Name;
             int count = m_cd.Tasks.Count;
             if (m_gridView.ColumnCount != (count + 2))
