@@ -203,7 +203,7 @@
     <value>Add Report Task</value>
   </data>
   <data name="NotificationFailures" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" failed for the following .dat files :</value>
+    <value>Task "{0}" for job "{1}" failed for the following files :</value>
   </data>
   <data name="refreshDatButton" xml:space="preserve">
     <value>Remove the "already processed" mark from items</value>
@@ -398,7 +398,7 @@
     <value>file was successfuly moved, subsequent tasks will be ignored</value>
   </data>
   <data name="NotificationSuccesses" xml:space="preserve">
-    <value>Task "{0}" for job "{1}" was completed successfully for the following .dat files :</value>
+    <value>Task "{0}" for job "{1}" was completed successfully for the following files :</value>
   </data>
   <data name="logExtractSuccess" xml:space="preserve">
     <value>extracting successfully completed</value>
@@ -896,7 +896,7 @@
     <value>error retrieving data from database</value>
   </data>
   <data name="logUDTFinalFileCopyProblem" xml:space="preserve">
-    <value>could not copy the .dat file to target directory</value>
+    <value>could not copy the file to target directory</value>
   </data>
   <data name="logUDTibaFilesOpenProblem" xml:space="preserve">
     <value>ibaFiles could not open the .dat file for updating</value>

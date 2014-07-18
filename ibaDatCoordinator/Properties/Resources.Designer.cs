@@ -1693,7 +1693,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to could not copy the .dat file to target directory.
+        ///   Looks up a localized string similar to could not copy the file to target directory.
         /// </summary>
         internal static string logUDTFinalFileCopyProblem {
             get {
@@ -2030,7 +2030,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task &quot;{0}&quot; for job &quot;{1}&quot; failed for the following .dat files :.
+        ///   Looks up a localized string similar to Task &quot;{0}&quot; for job &quot;{1}&quot; failed for the following files :.
         /// </summary>
         internal static string NotificationFailures {
             get {
@@ -2039,7 +2039,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task &quot;{0}&quot; for job &quot;{1}&quot; was completed successfully for the following .dat files :.
+        ///   Looks up a localized string similar to Task &quot;{0}&quot; for job &quot;{1}&quot; was completed successfully for the following files :.
         /// </summary>
         internal static string NotificationSuccesses {
             get {
