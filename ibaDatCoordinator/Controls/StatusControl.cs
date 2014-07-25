@@ -298,7 +298,6 @@ namespace iba.Controls
             m_refreshTimer.Enabled = true;
         }
 
-
         private void m_confNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             (m_manager as MainForm).fromStatusToConfiguration();

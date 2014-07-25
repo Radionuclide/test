@@ -164,6 +164,7 @@
             this.m_refreshDats.Image = global::iba.Properties.Resources.refreshdats;
             this.m_refreshDats.Name = "m_refreshDats";
             this.m_refreshDats.UseVisualStyleBackColor = true;
+            this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
             // 
             // m_stopButton
             // 

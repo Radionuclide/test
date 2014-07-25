@@ -43,6 +43,11 @@ namespace iba.Controls
                 groupBox3.Size = new Size(groupBox3.Size.Width, groupbox3NewHeight);
 
                 m_datDirTextBox.Multiline = true;
+                m_datDirTextBox.ScrollBars = ScrollBars.Vertical;
+                EventHandler eh = new EventHandler(tb_Changed);
+                m_datDirTextBox.TextChanged += eh;
+                m_datDirTextBox.ClientSizeChanged += eh;  
+
                 foreach(Control c in groupBox1.Controls)
                 {
                     if(c == label2)
@@ -80,6 +85,29 @@ namespace iba.Controls
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
         }
+
+        private bool busy = false;
+        void tb_Changed(object sender, EventArgs e)
+        {
+            if(busy) return;
+            busy = true;
+            TextBox tb = sender as TextBox;
+            Size tS = TextRenderer.MeasureText(tb.Text, tb.Font);
+            bool Hsb = tb.ClientSize.Height < tS.Height + Convert.ToInt32(tb.Font.Size);
+            bool Vsb = tb.ClientSize.Width < tS.Width;
+
+            if(Hsb && Vsb)
+                tb.ScrollBars = ScrollBars.Both;
+            else if(!Hsb && !Vsb)
+                tb.ScrollBars = ScrollBars.None;
+            else if(Hsb && !Vsb)
+                tb.ScrollBars = ScrollBars.Vertical;
+            else if(!Hsb && Vsb)
+                tb.ScrollBars = ScrollBars.Horizontal;
+
+            sender = tb as object;
+            busy = false;
+        }  
 
         private bool m_oneTimeJob;
         IPropertyPaneManager m_manager;

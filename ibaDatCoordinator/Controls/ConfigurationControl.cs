@@ -218,6 +218,7 @@ namespace iba.Controls
                 m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = false;
+                m_newTaskToolstrip.Enabled = true;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
             }
@@ -225,6 +226,7 @@ namespace iba.Controls
             {
                 m_applyToRunningBtn.Enabled = true;
                 m_startButton.Enabled = false;
+                m_newTaskToolstrip.Enabled = false;
                 m_stopButton.Enabled = true;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = true;
@@ -233,6 +235,7 @@ namespace iba.Controls
             {
                 m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = m_data.Enabled;
+                m_newTaskToolstrip.Enabled = true;
                 m_stopButton.Enabled = false;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
