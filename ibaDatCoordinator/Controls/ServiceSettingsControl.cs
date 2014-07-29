@@ -484,8 +484,8 @@ namespace iba.Controls
 
         private void AddSystemToTableLayout(GlobalCleanupData gcd, int colIdx, int rowIdx, ContentAlignment textAlign)
         {
-
             string cleanupFolder = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
+            string volumeLabel = String.Format(" - [{0}]", gcd.VolumeLabel);
 
             Panel pnl = new Panel();
             pnl.Dock = DockStyle.Fill;
@@ -493,33 +493,48 @@ namespace iba.Controls
             pnl.Margin = new Padding(0, 0, 0, 0);
 
             Label lbl = new Label();
-            lbl.Dock = DockStyle.Left;
             lbl.Padding = new Padding(0, 5, 0, 0);
-            lbl.Text = String.Format("{0} - [{1}]", cleanupFolder, gcd.VolumeLabel);
+            lbl.Text = CompactDisplayFolder(cleanupFolder, volumeLabel, lbl);
             lbl.TextAlign = textAlign;
             lbl.AutoSize = true;
 
+            pnl.Controls.Add(lbl);
+
             Button btn = new Button();
-            btn.Dock = DockStyle.Right;
-            btn.Size = new Size(40, 23);
+            btn.Left = lbl.Left + lbl.Width + 5;
+            btn.Size = new Size(24, 24);
             btn.Image = global::iba.Properties.Resources.open;
             btn.Click += (s, e) =>
             {
-                m_folderBrowserDialog1.SelectedPath = cleanupFolder;
-                DialogResult result = m_folderBrowserDialog1.ShowDialog();
-                if (result == DialogResult.OK && m_folderBrowserDialog1.SelectedPath.StartsWith(gcd.DriveName))
+                m_folderBrowserDialog.ShowNewFolderButton = false;
+                m_folderBrowserDialog.SelectedPath = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
+                DialogResult result = m_folderBrowserDialog.ShowDialog();
+                if (result == DialogResult.OK && m_folderBrowserDialog.SelectedPath.StartsWith(gcd.DriveName))
                 {
-                    lbl.Text = String.Format("{0} - [{1}]", m_folderBrowserDialog1.SelectedPath, gcd.VolumeLabel);
-                    gcd.WorkingFolder = m_folderBrowserDialog1.SelectedPath;
+                    lbl.Text = CompactDisplayFolder(m_folderBrowserDialog.SelectedPath, volumeLabel, lbl);
+                    btn.Left = lbl.Left + lbl.Width + 5;
+                    gcd.WorkingFolder = m_folderBrowserDialog.SelectedPath;
                 }
 
             };
 
-            pnl.Controls.Add(lbl);
             pnl.Controls.Add(btn);
 
             tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+        }
 
+        private string CompactDisplayFolder(string cleanupFolder, string volumeLabel, Label lbl)
+        {
+            const int maxWidth = 450;
+            var volSize = System.Windows.Forms.TextRenderer.MeasureText(volumeLabel, lbl.Font);
+            var newText = PathUtil.CompactPath(cleanupFolder, maxWidth - volSize.Width, lbl.Font, TextFormatFlags.PathEllipsis);
+            
+            if (newText != cleanupFolder)
+                m_toolTip.SetToolTip(lbl, cleanupFolder);
+            else
+                m_toolTip.SetToolTip(lbl, String.Empty);
+            
+            return String.Concat(newText, volumeLabel) ;
         }
 
         private void AddQuotaToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx)

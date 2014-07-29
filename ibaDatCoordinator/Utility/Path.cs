@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace iba.Utility
 {
@@ -158,6 +159,17 @@ namespace iba.Utility
             readable = readable / 1024;
 
             return sign + readable.ToString("0.## ") + suffix;
+        }
+
+        /// <summary>
+        /// Compact string like paths 
+        /// </summary>
+        public static string CompactPath(string str, int width, Font font, System.Windows.Forms.TextFormatFlags formatFlags)
+        {
+            // Need to copy string here since MeasureText will change result internally
+            string result = String.Copy(str);
+            System.Windows.Forms.TextRenderer.MeasureText(result, font, new Size(width, 0), formatFlags | System.Windows.Forms.TextFormatFlags.ModifyString);
+            return result;
         }
     }    
 }

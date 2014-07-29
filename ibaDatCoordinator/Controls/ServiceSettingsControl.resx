@@ -943,13 +943,13 @@
     <value>3, 0</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 13</value>
+    <value>113, 13</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Drive</value>
+    <value>Drive - [Volume Name]</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -970,7 +970,7 @@
     <value>Fill</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 0</value>
+    <value>122, 0</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 13</value>
@@ -1003,7 +1003,7 @@
     <value>Fill</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 0</value>
+    <value>197, 0</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 13</value>
@@ -1036,7 +1036,7 @@
     <value>Fill</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>383, 0</value>
+    <value>297, 0</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 13</value>
@@ -1069,7 +1069,7 @@
     <value>Fill</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>513, 0</value>
+    <value>427, 0</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 13</value>
@@ -1102,7 +1102,7 @@
     <value>Fill</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>623, 0</value>
+    <value>537, 0</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
@@ -1138,7 +1138,7 @@
     <value>2</value>
   </data>
   <data name="tbl_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>690, 221</value>
+    <value>604, 221</value>
   </data>
   <data name="tbl_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1156,7 +1156,7 @@
     <value>0</value>
   </data>
   <data name="tbl_GlobalCleanup.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,205,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="gb_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 378</value>
@@ -1182,8 +1182,8 @@
   <data name="&gt;&gt;gb_GlobalCleanup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>397, 17</value>
+  <metadata name="m_folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>362, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1212,10 +1212,10 @@
   <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Name" xml:space="preserve">
-    <value>m_folderBrowserDialog1</value>
+  <data name="&gt;&gt;m_folderBrowserDialog.Name" xml:space="preserve">
+    <value>m_folderBrowserDialog</value>
   </data>
-  <data name="&gt;&gt;m_folderBrowserDialog1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
