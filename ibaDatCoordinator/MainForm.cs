@@ -2709,93 +2709,101 @@ namespace iba
         {
             if (m_tryConnectTimer != null)
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-
-            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            try
             {
-                CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
-                CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
-                if (wrapper.TestConnection()) //succesfully connected
+
+                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
-                    if (m_tryConnectTimer != null) //this is not the first call, restore stuff
+                    CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
+                    MessageBox.Show(com.ToString());
+                    CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
+                    if(wrapper.TestConnection()) //succesfully connected
                     {
-                        MethodInvoker m = delegate()
+                        if(m_tryConnectTimer != null) //this is not the first call, restore stuff
+                        {
+                            MethodInvoker m = delegate()
+                            {
+                                Program.RunsWithService = Program.ServiceEnum.CONNECTED;
+                                ibaDatCoordinatorData data = null;
+                                if(TaskManager.ClientManager != null)
+                                {
+                                    data = ibaDatCoordinatorData.Create(TaskManager.ClientManager);
+                                }
+                                TaskManager.ClientManager = null; //remove previous client taskmanager so it does not stay
+                                // alive during the online session
+                                Program.CommunicationObject = wrapper;
+                                if(NeedUploadToServer())
+                                {
+                                    //initialise with configurations;
+                                    SaveRightPaneControl();
+                                    if(data != null) data.ApplyToManager(TaskManager.Manager);
+                                    ReplaceManagerFromTree(TaskManager.Manager);
+                                    TaskManager.Manager.StartAllEnabledGlobalCleanups();
+                                    foreach(ConfigurationData dat in TaskManager.Manager.Configurations)
+                                    {
+                                        if(dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                                    }
+                                    if(m_navBar.SelectedPane == m_statusPane)
+                                        loadStatuses();
+                                    else if(m_navBar.SelectedPane == m_configPane)
+                                        loadConfigurations();
+                                    ReloadRightPane();
+                                }
+                                else //download
+                                {
+                                    loadConfigurations();
+                                    loadStatuses();
+                                    ReloadRightPane();
+
+                                }
+                                UpdateButtons();
+                            };
+                            Invoke(m);
+                        }
+                        else
                         {
                             Program.RunsWithService = Program.ServiceEnum.CONNECTED;
-                            ibaDatCoordinatorData data = null;
-                            if (TaskManager.ClientManager != null)
-                            {
-                                data = ibaDatCoordinatorData.Create(TaskManager.ClientManager);
-                            }
-                            TaskManager.ClientManager = null; //remove previous client taskmanager so it does not stay
+                            TaskManager.Manager = null; //remove previous client taskmanager so it does not stay
                             // alive during the online session
                             Program.CommunicationObject = wrapper;
-                            if (NeedUploadToServer())
-                            {
-                                //initialise with configurations;
-                                SaveRightPaneControl();
-                                if (data != null) data.ApplyToManager(TaskManager.Manager);
-                                ReplaceManagerFromTree(TaskManager.Manager);
-                                TaskManager.Manager.StartAllEnabledGlobalCleanups();
-                                foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
-                                {
-                                    if (dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
-                                }
-                                if (m_navBar.SelectedPane == m_statusPane)
-                                    loadStatuses();
-                                else if (m_navBar.SelectedPane == m_configPane)
-                                    loadConfigurations();
-                                ReloadRightPane();
-                            }
-                            else //download
-                            {
-                                loadConfigurations();
-                                loadStatuses();
-                                ReloadRightPane();
-                                
-                            }
-                            UpdateButtons();
-                        };
-                        Invoke(m);
+                        }
+                        LogData.Data.Logger.Close();
+                        GridViewLogger gv = null; ;
+                        if(LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
+                            gv = LogData.Data.Logger.Children[0] as GridViewLogger;
+                        else
+                            gv = LogData.Data.Logger as GridViewLogger;
+                        LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTCONNECTED);
+                        Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
+                        m_firstConnectToService = false;
+                        SetRenderer();
                     }
                     else
                     {
-                        Program.RunsWithService = Program.ServiceEnum.CONNECTED;
-                        TaskManager.Manager = null; //remove previous client taskmanager so it does not stay
-                        // alive during the online session
-                        Program.CommunicationObject = wrapper;
+                        Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
                     }
-                    LogData.Data.Logger.Close();
-                    GridViewLogger gv = null; ;
-                    if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
-                        gv = LogData.Data.Logger.Children[0] as GridViewLogger;
-                    else
-                        gv = LogData.Data.Logger as GridViewLogger;
-                    LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTCONNECTED);
-                    Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
-                    m_firstConnectToService = false;
-                    SetRenderer();
                 }
-                else
+                else if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 {
-                    Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-                }
-            }
-            else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                try
-                {
-                    if (!Program.CommunicationObject.TestConnection())
+                    try
                     {
-                        MethodInvoker m2 = delegate()
+                        if(!Program.CommunicationObject.TestConnection())
                         {
-                            Program.CommunicationObject.HandleBrokenConnection();
-                        };
-                        Invoke(m2);
+                            MethodInvoker m2 = delegate()
+                            {
+                                Program.CommunicationObject.HandleBrokenConnection();
+                            };
+                            Invoke(m2);
+                        }
                     }
+                    catch { }
                 }
-                catch { }
             }
-
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.StackTrace);
+            }
             if (m_tryConnectTimer == null)
                 m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);

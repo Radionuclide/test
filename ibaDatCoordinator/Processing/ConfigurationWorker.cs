@@ -4318,7 +4318,38 @@ namespace iba.Processing
 
         public void ForceTrigger()
         {
-            throw new NotImplementedException();
+            DateTime nextTrigger = DateTime.Now;
+            String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), nextTrigger));
+            try
+            {
+                m_cd.GenerateHDQFile(nextTrigger, filename);
+            }
+            catch(Exception ex)
+            {
+                Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message, filename);
+                return;
+            }
+            m_sd.UpdatingFileList = true;
+            lock(m_processedFiles)
+            {
+                lock(m_toProcessFiles)
+                {
+                    bool doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                    if(doit)
+                    {
+                        m_toProcessFiles.Add(filename);
+                        lock(m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename] = new DatFileStatus();
+                            m_sd.DatFileStates[filename].AlternativeFileDescription = m_cd.CreateHDQFileDescription(filename);
+                        }
+                        m_waitEvent.Set();
+                    }
+                    m_sd.Changed = true;
+                }
+            }
+            m_sd.UpdatingFileList = false;
+            m_sd.MergeProcessedAndToProcessLists();
         }
     }
 }

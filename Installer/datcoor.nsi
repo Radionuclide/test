@@ -108,6 +108,7 @@ Page custom PreInstall
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
 Page custom InstalltypeSelect
+Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -171,6 +172,8 @@ ${StrLoc}
 
 VAR WinVer
 VAR PrevUninstall
+Var ServiceUserName
+Var ServicePassword
 
 
 InstType "service"
@@ -189,6 +192,13 @@ Function .onInit
 !else
   
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "serviceorstandalone.ini"
+  ${If} $LANGUAGE == 1031       ;German
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "ServiceAccount_de.ini" "ServiceAccount.ini"
+  ${ElseIf} $LANGUAGE == 1036   ;French
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "ServiceAccount_fr.ini" "ServiceAccount.ini"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "ServiceAccount_en.ini" "ServiceAccount.ini"
+  ${EndIf}
   ;!insertmacro MUI_INSTALLOPTIONS_EXTRACT "welcome.ini"
   ;Display language selection dialog
   ;!insertmacro MUI_LANGDLL_DISPLAY
@@ -220,6 +230,17 @@ Function InstalltypeSelect
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSERVICE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSTANDALONE)"
   !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  ${If} $0 == "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
+  ${EndIf}
+  
+  
+  
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
   ${If} $0 != "1"
@@ -273,6 +294,8 @@ FunctionEnd
 Function CheckPreviousVersions
 
   StrCpy $PrevUninstall ""
+  StrCpy $ServiceUserName ""
+  StrCpy $ServicePassword ""
 
   ;Check if previous install found
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion"
@@ -310,6 +333,8 @@ Function CheckPreviousVersions
   upgrade:
   ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallDir"
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+  ReadRegStr $ServiceUserName ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service1" ;Retrieve user name
+  ReadRegStr $ServicePassword ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service2" ;Retrieve password
   StrCpy $PrevUninstall '"$0" /S _?=$INSTDIR'  ;add silent parameter switch to uninstall string
 
   end:
@@ -381,7 +406,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
-
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "0"
 SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
@@ -436,8 +461,24 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
   
   DetailPrint $(TEXT_SERVICE_INSTALL)
-  nsSCMEx::Install /NOUNLOAD "ibaDatCoordinatorService" "iba DatCoordinator Service" 0x010 2 "$INSTDIR\ibaDatCoordinatorService.exe" "" "" "" ""
+  !insertmacro MUI_INSTALLOPTIONS_READ $R0 "ServiceAccount.ini" "Field 2" "State" ;local system
+  ${If} $R0 == "1"
+    StrCpy $ServiceUserName ""
+    StrCpy $ServicePassword ""
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_READ $ServiceUserName "ServiceAccount.ini" "Field 5" "State" ;user name
+    !insertmacro MUI_INSTALLOPTIONS_READ $ServicePassword "ServiceAccount.ini" "Field 7" "State" ;password
+  ${EndIf}
+  nsSCMEx::Install /NOUNLOAD "ibaDatCoordinatorService" "iba DatCoordinator Service" 0x010 2 "$INSTDIR\ibaDatCoordinatorService.exe" "" "" $ServiceUserName $ServicePassword
+  Pop $R0
+  ${If} $R0 != "success"
+    Pop $R0
+    MessageBox MB_OK|MB_ICONSTOP "Error installing service, error code $R0" 
+  ${EndIf}
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "1"
+  ;Save username and password
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service1" $ServiceUserName
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service2" $ServicePassword
 
   ;Add serverstatus to autorun
   WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinator.exe /service"
@@ -810,9 +851,35 @@ Function GetVersionNr
 
 FunctionEnd
 
+
+;--------------------------------
+; Service account page
+
+Function ServiceAccountPage
+  ;Check if install as service is selected
+  ${Unless} ${SectionIsSelected} ${DATCOOR_SERVICE}
+    Abort
+  ${EndUnless}
+  !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEACCOUNT_TITLE)" "$(TEXT_SERVICEACCOUNT_SUBTITLE)"
+  ${If} $ServiceUserName == ""
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 2" "State" "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 3" "State" "0"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 2" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 3" "State" "1"
+  ${EndIf}
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 5" "State" $ServiceUserName
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "ServiceAccount.ini" "Field 7" "State" $ServicePassword
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ServiceAccount.ini"
+
+FunctionEnd
+
+
 ;--------------------------------
 ; String resources
 
+LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_ENGLISH} "Select user account"
+LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_ENGLISH} "Select the user account the ibaDatCoordinator service should use."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_ENGLISH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Service"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "This operating system is not supported."
@@ -843,6 +910,8 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordin
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
 
+LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
+LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN} "Das Betriebssystem ist nicht unterstützt."
@@ -873,6 +942,8 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur 
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 
+LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
+LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
