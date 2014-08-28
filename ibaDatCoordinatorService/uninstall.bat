@@ -1,1 +1,1 @@
-"c:\windows\microsoft.NET\framework\v2.0.50727\InstallUtil.exe" /u bin\debug\ibaDatCoordinatorService.exe
+"C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe" /u bin\debug\ibaDatCoordinatorService.exe
