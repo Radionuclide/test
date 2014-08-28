@@ -428,7 +428,6 @@ namespace iba.Controls
             foreach (var gcd in m_globalCleanupData.OrderBy(gc => gc.DriveName))
             {
                 var drive = new DriveInfo(gcd.DriveName);
-                gcd.IsSystemDrive = drive.IsSystemDrive();
 
                 string driveName = drive.Name;
                 if (drive.IsReady)
@@ -438,9 +437,9 @@ namespace iba.Controls
                 }
 
                 rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                tbl_GlobalCleanup.RowCount++;   
-                
-                
+                tbl_GlobalCleanup.RowCount++;
+
+
                 if (gcd.IsSystemDrive)
                     AddSystemToTableLayout(gcd, 0, rowIdx, ContentAlignment.MiddleCenter);
                 else
@@ -448,11 +447,10 @@ namespace iba.Controls
 
                 if (drive.IsReady)
                 {
-                    gcd.TotalSize = drive.TotalSize;
                     AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalSize), 1, rowIdx, ContentAlignment.TopRight);
                     AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalFreeSpace), 2, rowIdx, ContentAlignment.TopRight);
 
-                    AddQuotaToTableLayout(gcd, 3, rowIdx);
+                    AddQuotaToTableLayout(gcd, drive.TotalSize, 3, rowIdx);
                     AddRescanTimeToTableLayout(gcd, 4, rowIdx);
                 }
                 AddIsActiveToTableLayout(gcd, 5, rowIdx, drive.IsReady);
@@ -537,7 +535,7 @@ namespace iba.Controls
             return String.Concat(newText, volumeLabel) ;
         }
 
-        private void AddQuotaToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx)
+        private void AddQuotaToTableLayout(GlobalCleanupData data, long driveSize, int colIdx, int rowIdx)
         {
             Panel pnl = new Panel();
             pnl.Dock = DockStyle.Fill;
@@ -551,13 +549,13 @@ namespace iba.Controls
 
             Label lbl = new Label();
             lbl.Margin = new Padding(0);
-            lbl.Text = PathUtil.GetSizeReadable((long)(data.TotalSize * (data.PercentageFree / 100.0)));
+            lbl.Text = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
             lbl.Location = new Point(nud.Location.X + nud.Size.Width + 6, nud.Location.Y + 2);
 
             nud.ValueChanged += (s, e) =>
             {
                 data.PercentageFree = (int)nud.Value;
-                lbl.Text = PathUtil.GetSizeReadable((long)(data.TotalSize * (data.PercentageFree / 100.0)));
+                lbl.Text = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
             };
 
             pnl.Controls.Add(nud);

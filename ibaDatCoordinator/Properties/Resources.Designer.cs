@@ -1225,6 +1225,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Determining file sizes finished {0:0.000}s.
+        /// </summary>
+        internal static string logGlobalCleanupDetermineSizeFinished {
+            get {
+                return ResourceManager.GetString("logGlobalCleanupDetermineSizeFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive not ready for cleanup.
         /// </summary>
         internal static string logGlobalCleanupDriveNotReadyForCleanup {
@@ -1252,15 +1261,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cleanup init finished {0:0.000}s.
-        /// </summary>
-        internal static string logGlobalCleanupInitFinished {
-            get {
-                return ResourceManager.GetString("logGlobalCleanupInitFinished", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Next cleanup at {0:T}.
         /// </summary>
         internal static string logGlobalCleanupNextCleanup {
@@ -1270,7 +1270,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start Global Cleanup.
+        ///   Looks up a localized string similar to Global Cleanup started.
         /// </summary>
         internal static string logGlobalCleanupStart {
             get {
@@ -1288,7 +1288,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop Global Cleanup.
+        ///   Looks up a localized string similar to Global Cleanup stopped.
         /// </summary>
         internal static string logGlobalCleanupStop {
             get {

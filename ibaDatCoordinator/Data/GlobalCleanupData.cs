@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using iba.Utility;
 
 namespace iba.Data
 {
@@ -22,10 +23,11 @@ namespace iba.Data
         [XmlAttribute]
         public bool Active { get; set; }
 
-        [XmlIgnore]
-        public bool IsSystemDrive { get; set; }
-        [XmlIgnore]
-        public long TotalSize { get; set; }
+        public bool IsSystemDrive
+        {
+            get { return DriveUtil.IsSystemDrive(DriveName); }
+        }
+
         [XmlIgnore]
         public string VolumeLabel { get; set; }
 
@@ -46,8 +48,6 @@ namespace iba.Data
             PercentageFree = 10;
             Active = false;
 
-            IsSystemDrive = false;
-            TotalSize = 0L;
             VolumeLabel = String.Empty;
         }
 
@@ -60,8 +60,6 @@ namespace iba.Data
             gc.PercentageFree = PercentageFree;
             gc.Active = Active;
 
-            gc.IsSystemDrive = IsSystemDrive;
-            gc.TotalSize = TotalSize;
             gc.VolumeLabel = VolumeLabel;
 
             return gc;

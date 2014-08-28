@@ -1199,7 +1199,7 @@
     <value>Unmarking triggers</value>
   </data>
   <data name="logGlobalCleanupInitFinished" xml:space="preserve">
-    <value>Cleanup init finished {0:0.000}s</value>
+    <value>Determining file sizes finished {0:0.000}s</value>
   </data>
   <data name="logGlobalCleanupFinished" xml:space="preserve">
     <value>Cleanup finished {0:0.000}s</value>
@@ -1214,10 +1214,10 @@
     <value>Working folder must be a sub folder of drive {0}!</value>
   </data>
   <data name="logGlobalCleanupStart" xml:space="preserve">
-    <value>Start Global Cleanup</value>
+    <value>Global Cleanup started</value>
   </data>
   <data name="logGlobalCleanupStop" xml:space="preserve">
-    <value>Stop Global Cleanup</value>
+    <value>Global Cleanup stopped</value>
   </data>
   <data name="logGlobalCleanupDriveNotReadyForCleanup" xml:space="preserve">
     <value>Drive not ready for cleanup</value>

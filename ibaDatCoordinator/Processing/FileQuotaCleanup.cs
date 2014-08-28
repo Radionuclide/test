@@ -266,13 +266,13 @@ namespace iba.Processing
             if (m_size > quota)
                 bytesToDelete = (long)(m_size - quota);
 
-            Log(Logging.Level.Debug, String.Format("Drive: {1} Size: {2} Used: {5} Free: {3} Quota: {0} Quota exceeded: {4}",
-                PathUtil.GetSizeReadable((long)quota),
+            Log(Logging.Level.Debug, String.Format("Drive: {0} Size: {1} Used: {2} Free: {3} Quota: {4} Quota exceeded: {5}",
                 drive.Name,
                 PathUtil.GetSizeReadable(drive.TotalSize),
+                PathUtil.GetSizeReadable((long)(m_size)),
                 PathUtil.GetSizeReadable(drive.TotalFreeSpace),
-                PathUtil.GetSizeReadable(bytesToDelete),
-                PathUtil.GetSizeReadable(drive.TotalSize - drive.TotalFreeSpace)
+                PathUtil.GetSizeReadable((long)quota),
+                PathUtil.GetSizeReadable(bytesToDelete)
                 ), "");
 
             if (m_size < quota)
@@ -324,8 +324,8 @@ namespace iba.Processing
                         else
                             m_size -= size;
 
-                        //string message = String.Format(iba.Properties.Resources.logCleanupSuccessRemoveFile, file);
-                        string message = String.Format("Removed FileTime: {2} File: {0} Size: {1} ", file, PathUtil.GetSizeReadable(inf.Length), inf.LastWriteTime);
+                        string message = String.Format(iba.Properties.Resources.logCleanupSuccessRemoveFile, file);
+                        // string message = String.Format("Deleted File Time: {2} File: {0} Size: {1} ", file, PathUtil.GetSizeReadable(inf.Length), inf.LastWriteTime);
                         Log(iba.Logging.Level.Info, message, datfile);
                         //Log(iba.Logging.Level.Exception, String.Format("size before deleting {0}, filesize {1}, difference {2}", m_size, size, m_size - size), file);
                     }

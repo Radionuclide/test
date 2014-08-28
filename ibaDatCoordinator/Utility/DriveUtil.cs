@@ -15,9 +15,9 @@
             return DriveInfo.GetDrives().OrderBy(d => d.Name).Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Removable);
         }
 
-        public static bool IsSystemDrive(this DriveInfo drive)
+        public static bool IsSystemDrive(string driveName)
         {
-            return (drive.Name == systemDriveName);
+            return (driveName == systemDriveName);
         }
 
         public static bool IsDriveReady(string driveName)
@@ -26,7 +26,7 @@
             return IsDriveReady(drive);
         }
 
-        public static bool IsDriveReady(this DriveInfo drive)
+        public static bool IsDriveReady(DriveInfo drive)
         {
             try
             {

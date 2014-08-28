@@ -13,6 +13,7 @@ namespace iba.Processing
     using System.Threading.Tasks;
     using System.Threading;
     using System.Diagnostics;
+    using System.IO;
 
     public class GlobalCleanupManager
     {
@@ -121,6 +122,13 @@ namespace iba.Processing
         {
             Log(Logging.Level.Info, Resources.logGlobalCleanupStart, taskData.DestinationMapUNC, taskData);
 
+            var drive = new DriveInfo(data.DriveName);
+            if (!drive.IsReady)
+            {
+                Log(Logging.Level.Warning, iba.Properties.Resources.logGlobalCleanupDriveNotReadyForCleanup, taskData.DestinationMapUNC, taskData);
+                return;
+            }
+            
             if (!VerifySystemDriveCouldRun(data, taskData))
             {
                 data.Active = false;
@@ -130,9 +138,9 @@ namespace iba.Processing
 
             PostponeStartup(ct);
 
-            taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             double factor = 1 - data.PercentageFree / 100.0;
-            taskData.Quota = (uint)((data.TotalSize / 1024 / 1024) * factor);
+            taskData.Quota = (uint)((drive.TotalSize / 1024 / 1024) * factor);
+            taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
 
             var quota = new FileQuotaCleanup(taskData, ".dat", ct);
             quota.FastSearch = true;
@@ -144,7 +152,7 @@ namespace iba.Processing
                 Log(Logging.Level.Info, Resources.logGlobalCleanupStartCleanup, taskData.DestinationMapUNC, taskData);
                 quota.Init();
                 sw.Stop();
-                Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupInitFinished, sw.ElapsedMilliseconds / 1000.0), taskData.DestinationMapUNC, taskData);
+                Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupDetermineSizeFinished, sw.ElapsedMilliseconds / 1000.0), taskData.DestinationMapUNC, taskData);
 
                 if (ct.IsCancellationRequested)
                     return;
