@@ -266,14 +266,17 @@ namespace iba.Processing
             if (m_size > quota)
                 bytesToDelete = (long)(m_size - quota);
 
-            Log(Logging.Level.Debug, String.Format("Drive: {0} Size: {1} Used: {2} Free: {3} Quota: {4} Quota exceeded: {5}",
+            var msg = String.Format("Drive: {0} Size: {1} Used: {2} Free: {3} Min Free: {4} Filelist Size: {5} Bytes to delete: {6}",
                 drive.Name,
                 PathUtil.GetSizeReadable(drive.TotalSize),
-                PathUtil.GetSizeReadable((long)(m_size)),
+                PathUtil.GetSizeReadable(drive.TotalSize - drive.TotalFreeSpace),
                 PathUtil.GetSizeReadable(drive.TotalFreeSpace),
-                PathUtil.GetSizeReadable((long)quota),
+                PathUtil.GetSizeReadable((long)m_task.QuotaFree * 1024 * 1024),
+                PathUtil.GetSizeReadable((long)m_size),
                 PathUtil.GetSizeReadable(bytesToDelete)
-                ), "");
+                );
+
+            Log(Logging.Level.Debug, msg, "");
 
             if (m_size < quota)
                 return;
@@ -282,6 +285,7 @@ namespace iba.Processing
             var startFilesCount = m_files.Count;
             var startSize = m_size;
 
+            //bool bFirst = true;
             while (m_size > GetQuota() && m_files.Count > 0)
             {
                 if (m_cancelToken.IsCancellationRequested)

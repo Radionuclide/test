@@ -138,9 +138,8 @@ namespace iba.Processing
 
             PostponeStartup(ct);
 
-            double factor = 1 - data.PercentageFree / 100.0;
-            taskData.Quota = (uint)((drive.TotalSize / 1024 / 1024) * factor);
-            taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
+            taskData.QuotaFree = (uint)((drive.TotalSize / 1024 / 1024) * (data.PercentageFree / 100.0));
+            taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
 
             var quota = new FileQuotaCleanup(taskData, ".dat", ct);
             quota.FastSearch = true;
