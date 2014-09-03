@@ -2206,7 +2206,7 @@ namespace iba
             string readmeFile = "";
             try
             {
-               readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "readme.htm");
+               readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "versions_dat.htm");
                System.Diagnostics.Process.Start(readmeFile);
             }
             catch (System.Exception ex)
@@ -2715,7 +2715,6 @@ namespace iba
                 if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
-                    MessageBox.Show(com.ToString());
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
                     if(wrapper.TestConnection()) //succesfully connected
                     {

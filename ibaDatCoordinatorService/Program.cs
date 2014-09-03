@@ -33,7 +33,7 @@ namespace iba.Services
                 ServiceBase.Run(ServicesToRun);
 
 #else
-				ServiceBase.Run(servicesToRun);
+				ServiceBase.Run(ServicesToRun);
 #endif
         }
 

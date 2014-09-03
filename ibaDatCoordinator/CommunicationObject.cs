@@ -317,10 +317,8 @@ namespace iba
                 m_com.TestConnection();
                 return true;
             }
-            catch (SocketException ex)
+            catch (SocketException) //Do Nothing
             {
-                //TODO: change back to nothing
-                MessageBox.Show(ex.Message);
                 return false;
             }
         }

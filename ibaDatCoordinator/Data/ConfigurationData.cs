@@ -566,7 +566,8 @@ namespace iba.Data
 
         public NotificationData()
         {
-            m_sender = "ibaDatCoordinator <noreply@iba-ag.com>";
+            //m_sender = "ibaDatCoordinator <noreply@iba-ag.com>";
+            m_sender = "";
             m_email = "";
             m_host = "";
             m_smtpServer = "";

@@ -112,9 +112,9 @@ namespace iba.Processing
                 {
                     message.From = new MailAddress(m_cd.NotificationData.Sender);
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + ex.Message;
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidSender;
                 }
                 if (logFailed != null)
                 {
@@ -264,9 +264,9 @@ namespace iba.Processing
                 {
                     message.From = new MailAddress(m_cd.NotificationData.Sender);
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + ex.Message;
+                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidSender;
                 }
                 if (logFailed != null)
                 {

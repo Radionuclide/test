@@ -146,6 +146,8 @@ namespace iba.Controls
                 m_ceManager.AddSubManagerFromControl(m_panelScheduledJob);
             m_ceManager.AddElement(groupBox4);
             m_ceManager.AddElement(groupBox6);
+
+            CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
 
         private CollapsibleElementManager m_ceManager;

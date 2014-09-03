@@ -440,7 +440,7 @@
     <value>..\Resources\Speichern.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
-    <value>The notification e-mail address is invalid or not supplied</value>
+    <value>The recipient e-mail address is invalid or not supplied</value>
   </data>
   <data name="toolTipStartAll" xml:space="preserve">
     <value>Start ALLjobs</value>
@@ -1198,7 +1198,7 @@
   <data name="UnmarkDialogTitleHDQ" xml:space="preserve">
     <value>Unmarking triggers</value>
   </data>
-  <data name="logGlobalCleanupInitFinished" xml:space="preserve">
+  <data name="logGlobalCleanupDetermineSizeFinished" xml:space="preserve">
     <value>Determining file sizes finished {0:0.000}s</value>
   </data>
   <data name="logGlobalCleanupFinished" xml:space="preserve">
@@ -1221,5 +1221,8 @@
   </data>
   <data name="logGlobalCleanupDriveNotReadyForCleanup" xml:space="preserve">
     <value>Drive not ready for cleanup</value>
+  </data>
+  <data name="invalidSender" xml:space="preserve">
+    <value>The sender e-mail address is not correctly formatted, invalid or not supplied</value>
   </data>
 </root>

@@ -384,7 +384,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Protected\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
-  File "readme.htm"
+  File "versions_dat.htm"
   
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
@@ -442,7 +442,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\ibaDatCoordinator\Resources\running.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
-  File "readme.htm"
+  File "versions_dat.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
   
@@ -583,7 +583,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
   Delete "$INSTDIR\default.ico"
-  Delete "$INSTDIR\readme.htm"
+  Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
 

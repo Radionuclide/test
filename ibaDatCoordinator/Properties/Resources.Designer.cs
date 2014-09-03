@@ -909,7 +909,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The notification e-mail address is invalid or not supplied.
+        ///   Looks up a localized string similar to The recipient e-mail address is invalid or not supplied.
         /// </summary>
         internal static string invalidEmail {
             get {
@@ -923,6 +923,15 @@ namespace iba.Properties {
         internal static string invalidPath {
             get {
                 return ResourceManager.GetString("invalidPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sender e-mail address is not correctly formatted, invalid or not supplied.
+        /// </summary>
+        internal static string invalidSender {
+            get {
+                return ResourceManager.GetString("invalidSender", resourceCulture);
             }
         }
         
