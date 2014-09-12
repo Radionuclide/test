@@ -84,7 +84,7 @@ namespace iba.Controls
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
-            m_nudTime.Value = m_data.MonitorData.TimeLimit.Minutes;
+            m_nudTime.Value = (Decimal) Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes,1));
 
             m_uncControl.SetData(m_data);
 

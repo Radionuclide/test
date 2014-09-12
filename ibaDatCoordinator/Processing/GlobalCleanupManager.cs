@@ -40,7 +40,6 @@ namespace iba.Processing
             }
         }
 
-
         private void SyncGlobalCleanupDataList()
         {
             foreach (var drive in DriveUtil.LocalDrives())

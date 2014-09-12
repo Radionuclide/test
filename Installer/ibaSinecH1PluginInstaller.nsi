@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Sinec-H1 Plugin Installer"
-!define PRODUCT_VERSION "2.0"
+!define PRODUCT_VERSION "2.1"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -80,10 +80,10 @@ Section "MainSection" SEC01
     Push $0
     Call GetVersionNr
     Pop $R0
-    IntCmp $R0 1070000 okVersion oldVersion okVersion
+    IntCmp $R0 1220000 okVersion oldVersion okVersion
 
     oldVersion:
-    MessageBox MB_ICONSTOP "ibaDatCoordinator v1.7.0 or higher is required for plugins.$\r$\nPlease contact iba-AG for an upgrade."
+    MessageBox MB_ICONSTOP "ibaDatCoordinator v1.22.0 or higher is required for this plugin.$\r$\nPlease contact iba-AG for an upgrade."
     Abort
 
     okVersion:
@@ -134,7 +134,6 @@ standalonecopy:
   File "..\Dependencies\Wmknt.dll"
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
-  File "..\Dependencies\Wmknt.dll"
   SetOutPath "$PluginPath\de"
   File "..\Alunorf-sinec-h1-plugin\bin\Release\de\Alunorf-sinec-h1-plugin.resources.dll"
   ;not copying ibaFiles as this should already be included with the datcoordinator
