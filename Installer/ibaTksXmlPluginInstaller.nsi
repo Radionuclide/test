@@ -2,8 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator TKS Xml Plugin Installer"
-!define PRODUCT_VERSION "1.1.0"
-!define PRODUCT_FILE_VERSION "1.1.0.0"
+!define PRODUCT_VERSION "1.2.0"
+!define PRODUCT_FILE_VERSION "1.2.0.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -110,7 +110,7 @@ Section "MainSection" SEC01
     Push $0
     Call GetVersionNr
     Pop $R0
-    IntCmp $R0 1140000 okVersion oldVersion okVersion
+    IntCmp $R0 1220000 okVersion oldVersion okVersion
 
     oldVersion:
     MessageBox MB_ICONSTOP $(UPGRADE_REQUIRED)
@@ -364,7 +364,7 @@ Function GetVersionNr
 
 FunctionEnd
 
-LangString UPGRADE_REQUIRED                  ${LANG_ENGLISH} "ibaDatCoordinator v1.14.0 or higher is required for plugins.$\r$\nPlease contact iba-AG for an upgrade."
+LangString UPGRADE_REQUIRED                  ${LANG_ENGLISH} "ibaDatCoordinator v1.22.0 or higher is required for this plugin.$\r$\nPlease contact iba-AG for an upgrade."
 LangString NO_DATCO                          ${LANG_ENGLISH} "ibaDatCoordinator is not installed."
 LangString NO_DATCO_FOUND                    ${LANG_ENGLISH} "No DatCoordinator found, please install the iba DatCoordinator first"
 LangString STOP_DATCO_REQ                    ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
@@ -374,7 +374,7 @@ LangString DATCO_RUNNING_FAILURE             ${LANG_ENGLISH} "The plugin dlls ca
 LangString STOP_DATCO_SERVICE_REQ            ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator service now?"
 LangString RUN_DATCO                         ${LANG_ENGLISH} "Restart ibaDatCoordinator"
 
-LangString UPGRADE_REQUIRED                  ${LANG_GERMAN} "ibaDatCoordinator v1.14.0 or higher is required for plugins.$\r$\nPlease contact iba-AG for an upgrade."
+LangString UPGRADE_REQUIRED                  ${LANG_GERMAN} "ibaDatCoordinator v1.22.0 or higher is required for this plugin.$\r$\nPlease contact iba-AG for an upgrade."
 LangString NO_DATCO                          ${LANG_GERMAN} "ibaDatCoordinator is not installed."
 LangString NO_DATCO_FOUND                    ${LANG_GERMAN} "No DatCoordinator found, please install the iba DatCoordinator first"
 LangString STOP_DATCO_REQ                    ${LANG_GERMAN} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
