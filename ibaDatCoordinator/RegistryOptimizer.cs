@@ -169,10 +169,13 @@ namespace iba
                     ibaProc.StartInfo.CreateNoWindow = true;
                     ibaProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     ibaProc.StartInfo.Arguments = String.Format("EXPORT \"{0}\" \"{1}\"", key, filename);
-                    if (System.Environment.OSVersion.Version.Major >= 6)
-                    {
-                        ibaProc.StartInfo.Arguments += " /y";
-                    }
+                    if (File.Exists(filename))
+                        File.Delete(filename);
+                    //if (System.Environment.OSVersion.Version.Major >= 6)
+                    //{
+                     //   ibaProc.StartInfo.Arguments += " /y";
+                    //
+                    //}
                     ibaProc.Start();
                     ibaProc.WaitForExit();
                 }

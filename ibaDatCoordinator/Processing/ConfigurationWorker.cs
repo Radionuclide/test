@@ -496,6 +496,8 @@ namespace iba.Processing
         private bool m_needIbaAnalyzer;
 
         private FileSystemWatcher fswt = null;
+
+        private string fileCurrentlyBeingProcessed;
         private void Run()
         {
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
@@ -624,17 +626,15 @@ namespace iba.Processing
                         while (true)
                         {
                             string file = null;
-                            lock (m_toProcessFiles)
+                            lock(m_toProcessFiles)
                             {
                                 file = m_toProcessFiles.OldestExistingFile();
-                            }
-                            if (file == null) //no existing file
-                            {
-                                lock (m_toProcessFiles)
+                                fileCurrentlyBeingProcessed = file;
+                                if(file == null) //no existing file
                                 {
                                     m_toProcessFiles.Clear();
+                                    break;
                                 }
-                                break;
                             }
                             if (m_needIbaAnalyzer) StartIbaAnalyzer();
                             //might have waited, see if we can stop
@@ -657,6 +657,7 @@ namespace iba.Processing
                             lock (m_toProcessFiles)
                             {
                                 m_toProcessFiles.Remove(file);
+                                fileCurrentlyBeingProcessed = null;
                             }
                             bool neededIbaAnalyzerBeforeUpdate = m_needIbaAnalyzer;
                             UpdateConfiguration();
@@ -1394,7 +1395,6 @@ namespace iba.Processing
             m_sd.UpdatingFileList = true;
 
             String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
-
             try
             {
                 if (m_cd.SubDirs)
@@ -1403,12 +1403,23 @@ namespace iba.Processing
                     fileInfos = fileInfosList.ToArray();
                 }
                 else
-                    fileInfos = dirInfo.GetFiles("searchPattern", SearchOption.TopDirectoryOnly);
+                    fileInfos = dirInfo.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
+
+                
+                foreach(var it in fileInfos)
+                {
+                    Log(Logging.Level.Debug, it.FullName);
+                }
+
                 Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
                 {
                     int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
                     return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
                 }); //oldest files first
+                foreach(var it in fileInfos)
+                {
+                    Log(Logging.Level.Debug, it.FullName);
+                }
             }
             catch (Exception ex)
             {
@@ -1436,7 +1447,6 @@ namespace iba.Processing
                 }
                 m_sd.MergeProcessedAndToProcessLists();
             }
-
             int count = 0;
             m_directoryFiles = new List<string>();
             m_sd.UpdatingFileList = false;
@@ -1460,7 +1470,7 @@ namespace iba.Processing
                 {
                     lock (m_candidateNewFiles)
                     {
-                        if (m_candidateNewFiles.Find(delegate(Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
+                        if(m_candidateNewFiles.Find(delegate(Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
                         {
                             m_directoryFiles.Add(filename);
                             count++;
@@ -1468,7 +1478,6 @@ namespace iba.Processing
                     }
                 }
                 
-
                 if (count >= 50)
                 {
                     lock (m_listUpdatingLock)
@@ -1572,23 +1581,23 @@ namespace iba.Processing
             {
                 int count = m_processedFiles.Count;
                 fileInfos = new FileInfo[count];
-
                 if (what == WhatToUpdate.ERRORS)
                 {
                     for (int i = 0; i < count; i++)
                     {
                         lock (m_sd.DatFileStates)
                         {
-                            if (File.Exists(m_processedFiles[i])
+                            if(m_processedFiles[i] != fileCurrentlyBeingProcessed && File.Exists(m_processedFiles[i])
                                 && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
                             {
                                 fileInfos[i] = new FileInfo(m_processedFiles[i]);
                             }
                             else
+                            {
                                 fileInfos[i] = null;
+                            }
                         }
                     }
-
                 }
                 else if (what == WhatToUpdate.NEW)//NEW
                 {
@@ -1597,7 +1606,7 @@ namespace iba.Processing
                     for (int i = 0; i < count; i++)
                     {
                         string filename = m_newFiles[i];
-                        if (File.Exists(filename)
+                        if(fileCurrentlyBeingProcessed != filename && File.Exists(filename)
                             && (!m_sd.DatFileStates.ContainsKey(filename)))
                         {
                             fileInfos[i] = new FileInfo(m_newFiles[i]);
@@ -1614,21 +1623,25 @@ namespace iba.Processing
                     for (int i = 0; i < count; i++)
                     {
                         string filename = m_directoryFiles[i];
-                        if (File.Exists(filename)
+                        if(fileCurrentlyBeingProcessed != filename && File.Exists(filename)
                             && (!m_sd.DatFileStates.ContainsKey(filename)))
                         {
                             fileInfos[i] = new FileInfo(m_directoryFiles[i]);
                         }
                         else
+                        {
                             fileInfos[i] = null;
+                        }
                     }
                     m_directoryFiles.Clear();
                 }
 
                 for (int i = 0; i < count; i++)
                 {
-                    if (fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
+                    if(fileInfos[i] != null && m_processedFiles.Contains(fileInfos[i].FullName))
+                    {
                         m_processedFiles.Remove(fileInfos[i].FullName);
+                    }
                 }
 
                 count = m_processedFiles.Count;
@@ -1666,6 +1679,7 @@ namespace iba.Processing
                     }
                     toCleanup.RemoveAt(0);
                 }
+                //remaining, mark them, so they do not 
             }
             lock (m_toProcessFiles)
             {
@@ -1702,8 +1716,10 @@ namespace iba.Processing
                         case DatFileStatus.State.MEMORY_EXCEEDED:
                         case DatFileStatus.State.TIMED_OUT:
                         case DatFileStatus.State.COMPLETED_FAILURE:
-                            if (!m_toProcessFiles.Contains(filename))
+                            if(!m_toProcessFiles.Contains(filename))
+                            {
                                 m_toProcessFiles.Add(filename);
+                            }
                             break;
                         case DatFileStatus.State.NO_ACCESS:
                             lock (m_candidateNewFiles)

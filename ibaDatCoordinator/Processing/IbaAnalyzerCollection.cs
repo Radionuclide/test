@@ -207,17 +207,17 @@ namespace iba.Processing
                     case IbaAnalyzerServerStatus.UNDETERMINED:
                         try
                         {
-                            Log(iba.Logging.Level.Debug, "Trying to create an instance of noninteractive ibaAnalyzer",cd);
+                            Log(iba.Logging.Level.Debug, "Trying to create an instance of non interactive ibaAnalyzer",cd);
                             analyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
-                            Log(iba.Logging.Level.Debug, "Create an instance of noninteractive ibaAnalyzer succesful",cd);
+                            Log(iba.Logging.Level.Debug, "Create an instance of non interactive ibaAnalyzer successful",cd);
                             ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.NONINTERACTIVE;
                         }
                         catch (Exception ex1)
                         {
-                            Log(iba.Logging.Level.Debug, "Create an instance of noninteractive ibaAnalyzer failed: " + ex1.Message,cd);
+                            Log(iba.Logging.Level.Debug, "Create an instance of non interactive ibaAnalyzer failed: " + ex1.Message,cd);
                             Log(iba.Logging.Level.Debug, "Trying to create an instance of interactive ibaAnalyzer",cd);
                             analyzer = new IbaAnalyzer.IbaAnalysisClass();
-                            Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer succesful",cd);
+                            Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer successful",cd);
                             ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.CLASSIC;
                         }
                         break;
