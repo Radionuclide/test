@@ -233,7 +233,10 @@ namespace iba.Processing
                     ulong FreeBytesAvailable;
                     ulong TotalNumberOfBytes;
                     ulong TotalNumberOfFreeBytes;
-                    bool success = GetDiskFreeSpaceEx(m_task.DestinationMapUNC, out FreeBytesAvailable, out TotalNumberOfBytes, out TotalNumberOfFreeBytes);
+                    string path = m_task.DestinationMapUNC;
+                    if(!path.EndsWith(@"\"))
+                        path = path + @"\";
+                    bool success = GetDiskFreeSpaceEx(path, out FreeBytesAvailable, out TotalNumberOfBytes, out TotalNumberOfFreeBytes);
                     if (!success) return ulong.MaxValue;
                     long delta = ((long)TotalNumberOfFreeBytes) - ((long)(m_task.QuotaFree)) * 1024 * 1024;
                     if (delta < 0 && (((long)(m_size)) < -delta)) return 0;
@@ -258,25 +261,30 @@ namespace iba.Processing
 
             string origPath = Path.GetFullPath(m_task.DestinationMapUNC);
 
-            //bool bFirst = true;
-            var drive = new DriveInfo(Path.GetPathRoot(m_task.DestinationMapUNC));
             var quota = GetQuota();
 
             var bytesToDelete = 0L;
             if (m_size > quota)
                 bytesToDelete = (long)(m_size - quota);
 
-            var msg = String.Format("Drive: {0} Size: {1} Used: {2} Free: {3} Min Free: {4} Filelist Size: {5} Bytes to delete: {6}",
-                drive.Name,
-                PathUtil.GetSizeReadable(drive.TotalSize),
-                PathUtil.GetSizeReadable(drive.TotalSize - drive.TotalFreeSpace),
-                PathUtil.GetSizeReadable(drive.TotalFreeSpace),
-                PathUtil.GetSizeReadable((long)m_task.QuotaFree * 1024 * 1024),
-                PathUtil.GetSizeReadable((long)m_size),
-                PathUtil.GetSizeReadable(bytesToDelete)
-                );
+            //try
+            //{
+            //    var drive = new DriveInfo(Path.GetPathRoot(m_task.DestinationMapUNC));
+            //    var msg = String.Format("Drive: {0} Size: {1} Used: {2} Free: {3} Min Free: {4} Filelist Size: {5} Bytes to delete: {6}",
+            //        drive.Name,
+            //        PathUtil.GetSizeReadable(drive.TotalSize),
+            //        PathUtil.GetSizeReadable(drive.TotalSize - drive.TotalFreeSpace),
+            //        PathUtil.GetSizeReadable(drive.TotalFreeSpace),
+            //        PathUtil.GetSizeReadable((long)m_task.QuotaFree * 1024 * 1024),
+            //        PathUtil.GetSizeReadable((long)m_size),
+            //        PathUtil.GetSizeReadable(bytesToDelete)
+            //        );
 
-            Log(Logging.Level.Debug, msg, "");
+            //    Log(Logging.Level.Debug, msg, "");
+            //}
+            //catch ///DriveInfo does not work for unc path...
+            //{
+            //}
 
             if (m_size < quota)
                 return;

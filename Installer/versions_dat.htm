@@ -38,11 +38,18 @@ Execute ibaDatCoordinatorInstall_v1.22.2.exe and follow instructions.</p>
 <p>&nbsp; </p>
 <P class="btn_selected">Version history</P>
 <p>&nbsp; </p>
-<P class="header1">Version 1.22.2 - 23/09/2014</P>
+<P class="header1">Version 1.22.2 - 15/10/2014</P>
+<P class="header2">New features (N)</P>
+<OL>
+	<LI>Option to create output folders from the start time in the .dat file, requires ibaAnalyzer 6.5.0</LI>
+
+</OL>
 <P class="header2">Bug fixes (B)</P>
+
 <OL>
 	<LI>Creating the support file caused ibaDatCoordinator to hang on Windows 2003 when done for a second time.</LI>
 	<LI>For small error scan cycles and disk scan cycles, it might happen than a .dat file for which a task failed did not get reprocessed.</LI>
+	<LI>Cleanup for output producing tasks did not work anymore if the output directory was a network share.</LI>
 </OL>
 <p>&nbsp; </p>
 <P class="header1">Version 1.22.1 - 19/09/2014</P>

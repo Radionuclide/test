@@ -406,12 +406,15 @@ namespace iba.Processing
                         }
 
 
+                        TaskDataUNC uncTask = t as TaskDataUNC;
+
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData)
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || 
+                            (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
+                            )
                             m_needIbaAnalyzer = true;
 
 
-                        TaskDataUNC uncTask = t as TaskDataUNC;
                         if (uncTask != null && uncTask.Subfolder != TaskDataUNC.SubfolderChoice.NONE 
                             && uncTask.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                         {
@@ -1404,22 +1407,11 @@ namespace iba.Processing
                 }
                 else
                     fileInfos = dirInfo.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
-
-                
-                foreach(var it in fileInfos)
-                {
-                    Log(Logging.Level.Debug, it.FullName);
-                }
-
                 Array.Sort(fileInfos, delegate(FileInfo f1, FileInfo f2)
                 {
                     int onTime = f1.LastWriteTime.CompareTo(f2.LastWriteTime);
                     return onTime == 0 ? f1.FullName.CompareTo(f2.FullName) : onTime;
                 }); //oldest files first
-                foreach(var it in fileInfos)
-                {
-                    Log(Logging.Level.Debug, it.FullName);
-                }
             }
             catch (Exception ex)
             {
@@ -2298,6 +2290,8 @@ namespace iba.Processing
             }
         }
 
+        private DateTime? m_startTimeFromDatFile;
+
         private void ProcessDatfile(string InputFile) 
         {
             if (m_needIbaAnalyzer)
@@ -2305,6 +2299,8 @@ namespace iba.Processing
                 if (m_ibaAnalyzer == null) StartIbaAnalyzer(); //safety, ibaAnalyzer should be present
                 if (m_ibaAnalyzer == null) return;
             }
+            m_startTimeFromDatFile = null;
+
             lock (m_listUpdatingLock)
             {
                 lock (m_processedFiles)
@@ -2321,8 +2317,22 @@ namespace iba.Processing
                         fs.Close();
                         fs.Dispose();
                     }
-                    if (m_needIbaAnalyzer) 
-                        m_ibaAnalyzer.OpenDataFile(0,InputFile); //works both with hdq and .dat
+                    if(m_needIbaAnalyzer)
+                    {
+                        m_ibaAnalyzer.OpenDataFile(0, InputFile); //works both with hdq and .dat
+                        try
+                        {
+                            DateTime dt = new DateTime();
+                            int microsec = 0;
+                            m_ibaAnalyzer.GetStartTime(ref dt, ref microsec);
+                            dt.AddTicks(microsec * 10);
+                            m_startTimeFromDatFile = dt;
+                        }
+                        catch
+                        {
+                            m_startTimeFromDatFile = null;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2953,16 +2963,26 @@ namespace iba.Processing
         private String TimeBasedSubFolder(TaskDataUNC task, String filename)
         {
             DateTime dt = DateTime.Now;
-            if(task.UseDatModTimeForDirs && task.Subfolder != TaskDataUNC.SubfolderChoice.INFOFIELD)
+            switch (task.DirTimeChoice)
             {
-                try
-                {
-                    dt = File.GetLastWriteTime(filename);
-                }
-                catch
-                {
-                    dt = DateTime.Now;
-                }
+                case TaskDataUNC.DirTimeChoiceEnum.InFile:
+                    if(m_startTimeFromDatFile.HasValue)
+                        dt = m_startTimeFromDatFile.Value;
+                    else
+                        goto case TaskDataUNC.DirTimeChoiceEnum.Modified;
+                    break;
+                case TaskDataUNC.DirTimeChoiceEnum.Modified:
+                    try
+                    {
+                        dt = File.GetLastWriteTime(filename);
+                    }
+                    catch
+                    {
+                        dt = DateTime.Now;
+                    }
+                    break;
+                default: 
+                    break;
             }
             return task.GetSubDir(dt);
         }

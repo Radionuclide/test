@@ -51,7 +51,7 @@ namespace iba.Controls
             m_nudFree.Value = m_data.QuotaFree;
             
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
-            m_cbTakeDatTime.Checked = m_data.UseDatModTimeForDirs;
+            m_cbTimeDir.SelectedIndex = (int) m_data.DirTimeChoice;
 
             m_targetFolderTextBox.Text = m_data.DestinationMap;
             m_checkPathButton.Image = null;
@@ -111,7 +111,7 @@ namespace iba.Controls
                 m_data.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
 
             m_data.OverwriteFiles = m_cbOverwrite.Checked;
-            m_data.UseDatModTimeForDirs = m_cbTakeDatTime.Checked;
+            m_data.DirTimeChoice = (TaskDataUNC.DirTimeChoiceEnum) m_cbTimeDir.SelectedIndex;
 
             m_data.CopyModTime = m_cbModifyDate.Checked;
             m_data.DestinationMap = m_targetFolderTextBox.Text;
@@ -121,13 +121,13 @@ namespace iba.Controls
             m_data.UseInfoFieldForOutputFile = m_cbUseInfofieldForName.Checked;
             m_data.InfoFieldForOutputFile = m_tbInfoField.Text;
             m_data.InfoFieldForOutputFileStart = (int) m_nudInfoStart.Value;
-            m_data.InfoFieldForOutputFileLength = (int)m_nudInfoLength.Value;
+            m_data.InfoFieldForOutputFileLength = (int) m_nudInfoLength.Value;
             m_data.InfoFieldForOutputFileRemoveBlanksEnd = m_cbInfoEndBlanks.Checked;
             m_data.InfoFieldForOutputFileRemoveBlanksAll = m_cbInfoAllBlanks.Checked;
 
             m_data.InfoFieldForSubdir = m_tbInfoFieldDir.Text;
-            m_data.InfoFieldForSubdirStart = (int)m_nudInfoStartDir.Value;
-            m_data.InfoFieldForSubdirLength = (int)m_nudInfoLengthDir.Value;
+            m_data.InfoFieldForSubdirStart = (int) m_nudInfoStartDir.Value;
+            m_data.InfoFieldForSubdirLength = (int) m_nudInfoLengthDir.Value;
             m_data.InfoFieldForSubdirRemoveBlanksEnd = m_cbInfoEndBlanksDir.Checked;
             m_data.InfoFieldForSubdirRemoveBlanksAll = m_cbInfoAllBlanksDir.Checked;
             m_data.UpdateUNC();

@@ -72,7 +72,7 @@ namespace iba.Data
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
             m_doDirCleanup = false;
-            m_useDatModTimeForDirs = false;
+            m_dirTimeChoice = DirTimeChoiceEnum.Current;
             m_copyDatModTime = false;
             m_useInfoFieldForOutputFile = false;
             m_infoFieldForOutputFile = "";
@@ -153,12 +153,36 @@ namespace iba.Data
             set { m_destinationMapUNC = value; }
         }
 
-        protected bool m_useDatModTimeForDirs;
-        public bool UseDatModTimeForDirs
+        //protected bool m_useDatModTimeForDirs;
+        public enum DirTimeChoiceEnum { Current, Modified, InFile };
+
+        protected DirTimeChoiceEnum m_dirTimeChoice;
+        public iba.Data.TaskDataUNC.DirTimeChoiceEnum DirTimeChoice
         {
-            get { return m_useDatModTimeForDirs; }
-            set { m_useDatModTimeForDirs = value; }
+            get 
+            { 
+                return m_dirTimeChoice; 
+            }
+            set 
+            { 
+                m_dirTimeChoice = value; 
+            }
         }
+
+        //for backwards compatibility
+        //public bool UseDatModTimeForDirs
+        //{
+        //    get 
+        //    { 
+        //        return m_dirTimeChoice == DirTimeChoiceEnum.Modified; 
+        //    }
+
+        //    set
+        //    {
+        //        if (value) 
+        //            m_dirTimeChoice = DirTimeChoiceEnum.Modified;  
+        //    }
+        //}
 
         protected bool m_copyDatModTime;
         public bool CopyModTime
@@ -233,7 +257,7 @@ namespace iba.Data
             uncdat.m_outputLimitChoice = m_outputLimitChoice;
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
-            uncdat.m_useDatModTimeForDirs = m_useDatModTimeForDirs;
+            uncdat.m_dirTimeChoice = m_dirTimeChoice;
             uncdat.m_copyDatModTime = m_copyDatModTime;
             uncdat.m_useInfoFieldForOutputFile = m_useInfoFieldForOutputFile;
             uncdat.m_infoFieldForOutputFile = m_infoFieldForOutputFile;
@@ -257,13 +281,13 @@ namespace iba.Data
             other.m_numbFolders == m_numbFolders &&
             other.m_username == m_username &&
             other.m_pass == m_pass &&
-                //other.m_destinationMapUNC == m_destinationMapUNC &&
+            // other.m_destinationMapUNC == m_destinationMapUNC &&
             other.m_quota == m_quota &&
             other.m_quotaFree == m_quotaFree &&
             other.m_outputLimitChoice == m_outputLimitChoice &&
             other.m_overwriteFiles == m_overwriteFiles &&
             other.m_subfolderChoice == m_subfolderChoice &&
-            other.m_useDatModTimeForDirs == m_useDatModTimeForDirs &&
+            other.m_dirTimeChoice == m_dirTimeChoice &&
             other.m_copyDatModTime == m_copyDatModTime &&
             other.m_useInfoFieldForOutputFile == m_useInfoFieldForOutputFile &&
             other.m_infoFieldForOutputFile == m_infoFieldForOutputFile &&

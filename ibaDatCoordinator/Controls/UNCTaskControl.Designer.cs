@@ -42,9 +42,10 @@
             this.m_nudInfoStartDir = new System.Windows.Forms.NumericUpDown();
             this.m_tbInfoFieldDir = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.m_cbTimeDir = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.m_cbUse4Numbers = new System.Windows.Forms.CheckBox();
             this.m_cbSplitSubdirs = new System.Windows.Forms.CheckBox();
-            this.m_cbTakeDatTime = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbOriginal = new System.Windows.Forms.RadioButton();
             this.m_rbNONE = new System.Windows.Forms.RadioButton();
@@ -200,11 +201,28 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.m_cbTimeDir);
+            this.panel3.Controls.Add(this.label5);
             this.panel3.Controls.Add(this.m_cbUse4Numbers);
             this.panel3.Controls.Add(this.m_cbSplitSubdirs);
-            this.panel3.Controls.Add(this.m_cbTakeDatTime);
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
+            // 
+            // m_cbTimeDir
+            // 
+            this.m_cbTimeDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbTimeDir.FormattingEnabled = true;
+            this.m_cbTimeDir.Items.AddRange(new object[] {
+            resources.GetString("m_cbTimeDir.Items"),
+            resources.GetString("m_cbTimeDir.Items1"),
+            resources.GetString("m_cbTimeDir.Items2")});
+            resources.ApplyResources(this.m_cbTimeDir, "m_cbTimeDir");
+            this.m_cbTimeDir.Name = "m_cbTimeDir";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
             // m_cbUse4Numbers
             // 
@@ -219,14 +237,6 @@
             this.m_cbSplitSubdirs.Name = "m_cbSplitSubdirs";
             this.m_cbSplitSubdirs.UseVisualStyleBackColor = true;
             this.m_cbSplitSubdirs.CheckedChanged += new System.EventHandler(this.m_cbSplitSubdirs_CheckedChanged);
-            // 
-            // m_cbTakeDatTime
-            // 
-            resources.ApplyResources(this.m_cbTakeDatTime, "m_cbTakeDatTime");
-            this.m_cbTakeDatTime.Checked = true;
-            this.m_cbTakeDatTime.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.m_cbTakeDatTime.Name = "m_cbTakeDatTime";
-            this.m_cbTakeDatTime.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel3
             // 
@@ -681,7 +691,6 @@
         private System.Windows.Forms.Label m_lblInfoStart;
         private System.Windows.Forms.Label m_lblInfoLength;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.CheckBox m_cbTakeDatTime;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label m_lblInfoLengthDir;
         private System.Windows.Forms.Label m_lblInfoStartDir;
@@ -695,5 +704,7 @@
         private System.Windows.Forms.CheckBox m_cbInfoEndBlanksDir;
         private System.Windows.Forms.CheckBox m_cbUse4Numbers;
         private System.Windows.Forms.CheckBox m_cbSplitSubdirs;
+        private System.Windows.Forms.ComboBox m_cbTimeDir;
+        private System.Windows.Forms.Label label5;
     }
 }

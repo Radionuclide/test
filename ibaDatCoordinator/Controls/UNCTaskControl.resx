@@ -372,6 +372,63 @@
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_cbTimeDir.Items" xml:space="preserve">
+    <value>Current system time</value>
+  </data>
+  <data name="m_cbTimeDir.Items1" xml:space="preserve">
+    <value>'Date modified' from .dat file</value>
+  </data>
+  <data name="m_cbTimeDir.Items2" xml:space="preserve">
+    <value>StartTime in .dat file</value>
+  </data>
+  <data name="m_cbTimeDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 0</value>
+  </data>
+  <data name="m_cbTimeDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>230, 21</value>
+  </data>
+  <data name="m_cbTimeDir.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="&gt;&gt;m_cbTimeDir.Name" xml:space="preserve">
+    <value>m_cbTimeDir</value>
+  </data>
+  <data name="&gt;&gt;m_cbTimeDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbTimeDir.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;m_cbTimeDir.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 3</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 13</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Time used to create directory:</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_cbUse4Numbers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -400,7 +457,7 @@
     <value>panel3</value>
   </data>
   <data name="&gt;&gt;m_cbUse4Numbers.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_cbSplitSubdirs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -430,37 +487,7 @@
     <value>panel3</value>
   </data>
   <data name="&gt;&gt;m_cbSplitSubdirs.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_cbTakeDatTime.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbTakeDatTime.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbTakeDatTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 1</value>
-  </data>
-  <data name="m_cbTakeDatTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>285, 17</value>
-  </data>
-  <data name="m_cbTakeDatTime.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_cbTakeDatTime.Text" xml:space="preserve">
-    <value>Use 'Date Modified' time of .dat file to create directories</value>
-  </data>
-  <data name="&gt;&gt;m_cbTakeDatTime.Name" xml:space="preserve">
-    <value>m_cbTakeDatTime</value>
-  </data>
-  <data name="&gt;&gt;m_cbTakeDatTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbTakeDatTime.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;m_cbTakeDatTime.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
