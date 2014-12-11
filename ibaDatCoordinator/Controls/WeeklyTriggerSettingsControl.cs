@@ -21,15 +21,15 @@ namespace iba.Controls
                 cbList[i].Text = daynames[i];
             if(System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek != DayOfWeek.Sunday)
             {
+                var OrigLocs = cbList.Select(x => x.Location).ToArray();
+                var OrigTabs = cbList.Select(x => x.TabIndex).ToArray();
                 Point tpoint = cbList[6].Location;
-                int ti = cbList[6].TabIndex;
-                for(int i = 6; i > 0; i--)
+                int shift = (int)System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek;
+                for(int i = 0; i < 7; i++)
                 {
-                    cbList[i].Location = cbList[i-1].Location;
-                    cbList[i].TabIndex = cbList[i-1].TabIndex;
+                    cbList[(i + shift) % 7].Location = OrigLocs.ElementAt(i);
+                    cbList[(i + shift) % 7].TabIndex = OrigTabs.ElementAt(i);
                 }
-                cbList[0].Location = tpoint;
-                cbList[0].TabIndex = ti;
             }
         }
 
