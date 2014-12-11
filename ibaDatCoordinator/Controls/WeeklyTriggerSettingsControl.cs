@@ -19,6 +19,18 @@ namespace iba.Controls
             List<string> daynames = new List<String>(System.Globalization.DateTimeFormatInfo.CurrentInfo.DayNames.Take(7));
             for(int i = 0; i < 7; i++)
                 cbList[i].Text = daynames[i];
+            if(System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek != DayOfWeek.Sunday)
+            {
+                Point tpoint = cbList[6].Location;
+                int ti = cbList[6].TabIndex;
+                for(int i = 6; i > 0; i--)
+                {
+                    cbList[i].Location = cbList[i-1].Location;
+                    cbList[i].TabIndex = cbList[i-1].TabIndex;
+                }
+                cbList[0].Location = tpoint;
+                cbList[0].TabIndex = ti;
+            }
         }
 
         public void SetDaysFromList(List<int> list)

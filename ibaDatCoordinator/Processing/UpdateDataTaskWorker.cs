@@ -186,11 +186,12 @@ namespace iba.Processing
             string newFileName;
             SortedDictionary<string,string> newInfoFields = new SortedDictionary<string,string>();
             Created = new DateTime();
+            bool creationTimeGotten = false;
             try
             {
                 using (DbCommand cmd = m_connection.CreateCommand())
                 {
-                    cmd.CommandText = String.Format("SELECT * FROM {0} WHERE ID_REF='{1}'", m_udt.DbTblName, key);
+                    cmd.CommandText = String.Format("SELECT * FROM {0} WHERE ID_REF='{1}' AND PROCESSED=0", m_udt.DbTblName, key);
                     using (DbDataReader dbdr = cmd.ExecuteReader())
                     {
                         if (!dbdr.HasRows) throw new ApplicationException(iba.Properties.Resources.logUDTNoResults);
@@ -213,7 +214,7 @@ namespace iba.Processing
                                 throw new ApplicationException(String.Format(iba.Properties.Resources.logUDTColumnIsNull, columnNames[i]));
                         }
 
-                        bool creationTimeGotten = true;
+                        creationTimeGotten = true;
                         try
                         {
                             Created = dbdr.GetDateTime(columnOrds[4]);
@@ -304,7 +305,7 @@ namespace iba.Processing
             {
                 using (DbCommand cmd = m_connection.CreateCommand())
                 {
-                    cmd.CommandText = String.Format("UPDATE {0} SET PROCESSED=1 WHERE ID_REF='{1}'", m_udt.DbTblName, key); 
+                    cmd.CommandText = String.Format("UPDATE {0} SET PROCESSED=1 WHERE ID_REF='{1}' AND PROCESSED=0", m_udt.DbTblName, key);
                     cmd.ExecuteNonQuery();
                 }
             }
