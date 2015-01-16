@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
@@ -2365,14 +2366,36 @@ namespace iba.Processing
                         //set the outputfile of previous run if any for the next batchtask
                         lock (m_sd.DatFileStates)
                         {
-                            if (m_sd.DatFileStates.ContainsKey(InputFile))
-                                m_sd.DatFileStates[InputFile].OutputFiles.TryGetValue(task, out m_outPutFile);
+                            if(m_sd.DatFileStates.ContainsKey(InputFile))
+                            {
+                                string outFile;
+                                if(m_sd.DatFileStates[InputFile].OutputFiles.TryGetValue(task, out outFile))
+                                {
+                                    if(task is ExtractData)
+                                    {
+                                        string ext = ExtractTaskWorker.GetSecondaryExtractExtension(task as ExtractData);
+                                        if(!String.IsNullOrEmpty(ext) && ext != ".mp4") //mp4 is more than one file -> don't support
+                                        {
+                                            string outFile2 = Path.ChangeExtension(outFile, ext);
+                                            m_outPutFilesPrevTask = new string[] { outFile, outFile2 };
+                                        }
+                                        else
+                                        {
+                                            m_outPutFilesPrevTask = new string[] { outFile };
+                                        }
+                                    }
+                                    else
+                                    {
+                                        m_outPutFilesPrevTask = new string[] { outFile };
+                                    }
+                                }
+                            }
                         }
                         continue;
                     }
                     if (!(task is BatchFileData) && !(task is CopyMoveTaskData))
                     {
-                        m_outPutFile = null;
+                        m_outPutFilesPrevTask = null;
                     }
                     bool failedOnce = false;
                     bool continueProcessing = true;
@@ -2393,19 +2416,23 @@ namespace iba.Processing
                     if (!continueProcessing) return;
 
                     //touch the file
-                    if (!String.IsNullOrEmpty(m_outPutFile))
+                    if (m_outPutFilesPrevTask != null)
                     {
-                        TaskDataUNC tunc = task as TaskDataUNC;
-                        if (tunc != null && tunc.CopyModTime)
+                        foreach (string outputfile in m_outPutFilesPrevTask)
                         {
-                            try
+                            if(string.IsNullOrEmpty(outputfile) || !File.Exists(outputfile)) continue;
+                            TaskDataUNC tunc = task as TaskDataUNC;
+                            if (tunc != null && tunc.CopyModTime)
                             {
-                                DateTime utcTime = File.GetLastWriteTimeUtc(InputFile);
-                                File.SetLastWriteTimeUtc(m_outPutFile, utcTime);
-                            }
-                            catch (System.Exception ex)
-                            {
-                               Log(iba.Logging.Level.Warning, iba.Properties.Resources.WriteTimeModificationFailed + ex.Message, InputFile, task);
+                                try
+                                {
+                                    DateTime utcTime = File.GetLastWriteTimeUtc(InputFile);
+                                    File.SetLastWriteTimeUtc(outputfile, utcTime);
+                                }
+                                catch (System.Exception ex)
+                                {
+                                   Log(iba.Logging.Level.Warning, iba.Properties.Resources.WriteTimeModificationFailed + ex.Message, InputFile, task);
+                                }
                             }
                         }
                     }
@@ -2852,7 +2879,7 @@ namespace iba.Processing
             }
         }
 
-        internal string m_outPutFile;
+        internal string[] m_outPutFilesPrevTask;
 
         void Extract(string filename, ExtractData task)
         {
@@ -3246,7 +3273,7 @@ namespace iba.Processing
                                 m_quotaCleanups[task.Guid].RemoveFile(arg);
                         }
                         mon.Execute(delegate() { m_ibaAnalyzer.Report(arg); });
-                        m_outPutFile = arg;
+                        m_outPutFilesPrevTask = new string[] { arg };
                         if (task.UsesQuota)
                         {
                             if (task.Extension == "html" || task.Extension == "htm")
@@ -3258,7 +3285,7 @@ namespace iba.Processing
                                 }
                             }
                             else
-                                m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                                m_quotaCleanups[task.Guid].AddFile(m_outPutFilesPrevTask[0]);
                         }
                     }
                     else
@@ -3268,7 +3295,10 @@ namespace iba.Processing
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                        if (m_outPutFilesPrevTask == null)
+                            m_sd.DatFileStates[filename].OutputFiles[task] = null;
+                        else
+                            m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logReportSuccess, filename, task);
                 }
@@ -3472,8 +3502,8 @@ namespace iba.Processing
 
         private void CopyDatFile(string filename, CopyMoveTaskData task)
         {
-            string dest = null;
-            string fileToCopy = filename;
+            string[] destinations = null;
+            string[] filesToCopy = new string[] {filename};
 
             lock (m_sd.DatFileStates)
             {
@@ -3496,19 +3526,19 @@ namespace iba.Processing
                 string extension = new FileInfo(filename).Extension;
                 if (task.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT)
                 {
-                    if (m_outPutFile == null)
+                    if(m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                         Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
                         return;
                     }
-                    if (m_outPutFile != null)
+                    if (m_outPutFilesPrevTask != null)
                     {
-                        fileToCopy = m_outPutFile;
-                        extension = new FileInfo(fileToCopy).Extension;
+                        filesToCopy = m_outPutFilesPrevTask;
+                        extension = string.Join(",",m_outPutFilesPrevTask.Select((f) => Path.GetExtension(f)));
                     }
                 }
-                m_outPutFile = null;
+                m_outPutFilesPrevTask = null;
 
                 try
                 {
@@ -3589,47 +3619,73 @@ namespace iba.Processing
                     }
                     task.DoDirCleanupNow = false;
                 }
-                dest = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + extension);
+                destinations = filesToCopy.Clone() as string[];
+                int i = 0;
+                foreach (string fileToCopy in filesToCopy)
+                {
+                    string currentext = Path.GetExtension(fileToCopy);
+                    destinations[i] = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + currentext);
+                    i++;
+                }
+
                 if (!task.OverwriteFiles)
-                    dest = DatCoordinatorHostImpl.Host.FindSuitableFileName(dest);
+                {
+                    for (i = 0; i < destinations.Length; i++)
+                    {
+                        destinations[i] = DatCoordinatorHostImpl.Host.FindSuitableFileName(destinations[i]);
+                    }
+                }
             }
             try
             {
                 if (task.ActionDelete)
                 {
-                    File.Delete(fileToCopy);
+                    foreach (string fileToCopy in filesToCopy)
+                        File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logDeleteTaskSuccess, filename, task);
-                    m_outPutFile = null;
+                    m_outPutFilesPrevTask = null;
                 }
                 else if (task.RemoveSource)
                 {
-                    if (task.OverwriteFiles && task.UsesQuota && File.Exists(dest))
+                    for (int i = 0; i < destinations.Length; i++)
                     {
-                        m_quotaCleanups[task.Guid].RemoveFile(dest);
+                            if (task.OverwriteFiles && task.UsesQuota && File.Exists(destinations[i]))
+                            {
+                                m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
+                            }
+                            File.Copy(filesToCopy[i], destinations[i], true);
+                            File.Delete(filesToCopy[i]);
                     }
-                    File.Copy(fileToCopy, dest, true);
-                    File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
-                    m_outPutFile = dest;
+                    m_outPutFilesPrevTask = destinations;
                 }
                 else
                 {
-                    if (task.OverwriteFiles && task.UsesQuota && File.Exists(dest))
+                    for (int i = 0; i < destinations.Length; i++)
                     {
-                        m_quotaCleanups[task.Guid].RemoveFile(dest);
+                        if (task.OverwriteFiles && task.UsesQuota &&  File.Exists(destinations[i]))
+                        {
+                            m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
+                        }
+                        File.Copy(filesToCopy[i], destinations[i], true);
                     }
-                    File.Copy(fileToCopy, dest, true);
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
-                    m_outPutFile = dest;
+                    m_outPutFilesPrevTask = destinations;
                 }
 
-                if (!task.ActionDelete && task.UsesQuota)
-                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                if (!task.ActionDelete && task.UsesQuota && m_outPutFilesPrevTask != null)
+                {
+                    foreach (string file in m_outPutFilesPrevTask)
+                    {
+                        m_quotaCleanups[task.Guid].AddFile(file);
+                    }
+                }
 
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                    if (!task.ActionDelete) m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                    if (!task.ActionDelete && m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0) 
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
                 }
             }
             catch (Exception ex)
@@ -3681,14 +3737,17 @@ namespace iba.Processing
             string arguments = null;
             if (task.WhatFile == BatchFileData.WhatFileEnum.PREVOUTPUT)
             {
-                if (m_outPutFile == null)
+                string outputFile = null;
+                if(m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0 && !string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
+                    outputFile = m_outPutFilesPrevTask[0];
+                if (outputFile == null)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFile, filename, task);
                     return;
                 }
-                if (m_outPutFile != null)
-                    arguments = task.ParsedArguments(m_outPutFile);
+                if (outputFile != null)
+                    arguments = task.ParsedArguments(outputFile);
             }
             else
             {
@@ -4027,17 +4086,17 @@ namespace iba.Processing
                     return;
                 }
                 //success
-                m_outPutFile = arg;
+                m_outPutFilesPrevTask = new string[]{arg};
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                    m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                    m_sd.DatFileStates[filename].OutputFiles[task] = arg;
                 }
                 message = string.Format(iba.Properties.Resources.logTaskSuccess, task.Plugin.NameInfo);
                 Log(Logging.Level.Info, message, filename, task);
                 if (task.UsesQuota)
                 {
-                    m_quotaCleanups[task.Guid].AddFile(m_outPutFile);
+                    m_quotaCleanups[task.Guid].AddFile(arg);
                 }
             }
             catch (Exception ex)
@@ -4183,7 +4242,7 @@ namespace iba.Processing
             try
             {
                 outfile = worker.DoWork(dir, filename);
-                m_outPutFile = outfile;
+                m_outPutFilesPrevTask = new string[]{outfile};
             }
             catch (Exception ex)
             {
@@ -4218,7 +4277,7 @@ namespace iba.Processing
             lock (m_sd.DatFileStates)
             {
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFile;
+                m_sd.DatFileStates[filename].OutputFiles[task] = outfile;
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
         }
@@ -4246,8 +4305,8 @@ namespace iba.Processing
                     CopyMoveTaskData cpm = task as CopyMoveTaskData;
                     if (!cpm.ActionDelete)
                     {
-                        if (cpm.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT && m_outPutFile != null)
-                            ext = new FileInfo(m_outPutFile).Extension;
+                        if (cpm.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT && m_outPutFilesPrevTask != null)
+                            ext = string.Join(",", m_outPutFilesPrevTask.Select((f) => Path.GetExtension(f)));
                         else if (cpm.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
                             ext = new FileInfo(DatFile).Extension;
                     }

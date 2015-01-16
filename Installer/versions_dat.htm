@@ -38,11 +38,17 @@ Execute ibaDatCoordinatorInstall_v1.22.3.exe and follow instructions.</p>
 <p>&nbsp; </p>
 <P class="btn_selected">Version history</P>
 <p>&nbsp; </p>
-<P class="header1">Version 1.22.3 - 28/10/2014</P>
-<P class="header2">Improvement(I)</P>
+<P class="header1">Version 1.22.3 - 16/01/2015</P>
+<P class="header2">Improvements(I)</P>
 <OL>
 	<LI>Update data task modified so processed entries are ignored entirely rather than giving an error, this allows for .dat files with the same file name</LI>
+	<LI>Copy task working on the output of a previous task will now also copy the ".cfg"-file of an extract task performing an extract to the COMTRADE file format.</LI>
+	<LI>In the scheduled job configuration pane, weekdays are now shown in the order as determined by the current UI culture.</LI>
 
+</OL>
+<P class="header2">Bugfixes(B)</P>
+<OL>
+	<LI>The option to scan subfolders for .dat files was partially hidden underneath other controls when running ibaDatCoordinator in French.</LI>
 </OL>
 <p>&nbsp; </p>
 <P class="header1">Version 1.22.2 - 15/10/2014</P>

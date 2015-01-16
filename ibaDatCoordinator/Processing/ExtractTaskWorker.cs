@@ -78,10 +78,16 @@ namespace iba.Processing
                         }
 
                         mon.Execute(delegate() { m_ibaAnalyzer.Extract(1, outFile); });
-                        m_confWorker.m_outPutFile = outFile;
+                        string ext = GetSecondaryExtractExtension(m_task);
+                        if(!string.IsNullOrEmpty(outFile2) && File.Exists(outFile2))
+                        {
+                            m_confWorker.m_outPutFilesPrevTask = new string[] { outFile, outFile2 };
+                        }
+                        else
+                            m_confWorker.m_outPutFilesPrevTask = new string[] { outFile };
                         if (m_task.UsesQuota)
                         {
-                            m_confWorker.m_quotaCleanups[m_task.Guid].AddFile(m_confWorker.m_outPutFile);
+                            m_confWorker.m_quotaCleanups[m_task.Guid].AddFile(m_confWorker.m_outPutFilesPrevTask[0]);
                             if (IsExternalVideoExport(m_task))
                             {
                                 try
@@ -116,7 +122,7 @@ namespace iba.Processing
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                        m_sd.DatFileStates[filename].OutputFiles[m_task] = m_confWorker.m_outPutFile;
+                        m_sd.DatFileStates[filename].OutputFiles[m_task] = m_confWorker.m_outPutFilesPrevTask[0];
                     }
                     m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, m_task);
                 }
