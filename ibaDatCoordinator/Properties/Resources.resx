@@ -1225,4 +1225,7 @@
   <data name="invalidSender" xml:space="preserve">
     <value>The sender e-mail address is not correctly formatted, invalid or not supplied</value>
   </data>
+  <data name="TransferIbaAnalyzerSettingsSuccess" xml:space="preserve">
+    <value>ibaAnalyzer settings succesfuly transfered from local account to service account</value>
+  </data>
 </root>

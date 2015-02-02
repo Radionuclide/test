@@ -25,6 +25,7 @@ namespace iba.Controls
                 m_gbApp.Text = iba.Properties.Resources.Application;
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
                 m_cbAutoStart.Visible = false;
+                m_btTransferAnalyzerSettings.Visible = false;
             }
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
             m_ceManager = new CollapsibleElementManager(this);
@@ -641,6 +642,26 @@ namespace iba.Controls
                 if (ctl == null) continue;
                 
                 ctl.Enabled = enabled;
+            }
+        }
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //copy mcr and other files
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                TaskManager.Manager.CopyIbaAnalyzerFiles(path);
+                string tempDir = System.IO.Path.GetTempPath();
+                string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
+                Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
+                TaskManager.Manager.RegisterIbaAnalyzerSettings(outFile);
+                File.Delete(outFile);
+                MessageBox.Show(this, Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

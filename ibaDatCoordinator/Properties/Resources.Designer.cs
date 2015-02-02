@@ -3092,6 +3092,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer settings succesfuly transfered from local account to service account.
+        /// </summary>
+        internal static string TransferIbaAnalyzerSettingsSuccess {
+            get {
+                return ResourceManager.GetString("TransferIbaAnalyzerSettingsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The item could not be processed within the maximum number of attempts, further processing will not be attempted.
         /// </summary>
         internal static string TriedToManyTimes {

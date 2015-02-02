@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using iba.Data;
 using iba.Utility;
 using iba.Plugins;
+using System.IO;
 
 namespace iba.Processing
 {
@@ -638,9 +639,36 @@ namespace iba.Processing
 
 
         //HDTrigger
-        virtual public void ForceTrigger(ConfigurationData data)
+        public virtual void ForceTrigger(ConfigurationData data)
         {
             m_workers[data].ForceTrigger();
+        }
+
+        public virtual void CopyIbaAnalyzerFiles(string sourcePath)
+        {
+            string targetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            targetPath = Path.Combine(targetPath, "iba", "ibaAnalyzer");
+            if(!Directory.Exists(targetPath))
+                Directory.CreateDirectory(targetPath);
+            var extensions = new[] { ".mcr", ".fil", ".xml" }; 
+            var files = (from file in Directory.EnumerateFiles(sourcePath)
+                         where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase) // comment this out if you don't want to filter extensions
+                         select new
+                         {
+                             Source = file,
+                             Destination = Path.Combine(targetPath, Path.GetFileName(file))
+                         });
+
+            foreach(var file in files)
+            {
+                File.Copy(file.Source, file.Destination,true);
+            }
+        }
+
+        public virtual void RegisterIbaAnalyzerSettings(string outFile)
+        {
+            System.Diagnostics.Process regeditProcess = System.Diagnostics.Process.Start("regedit.exe", "/s \"" + outFile + "\"");
+            regeditProcess.WaitForExit();
         }
     }
 
@@ -1414,6 +1442,30 @@ namespace iba.Processing
             try
             {
                 Program.CommunicationObject.Manager.ForceTrigger(data);
+            }
+            catch(SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override void RegisterIbaAnalyzerSettings(string outFile)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.RegisterIbaAnalyzerSettings(outFile);
+            }
+            catch(SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override void CopyIbaAnalyzerFiles(string folder)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.CopyIbaAnalyzerFiles(folder);
             }
             catch(SocketException)
             {

@@ -42,6 +42,7 @@ namespace iba.Controls
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
+            this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
@@ -197,6 +198,7 @@ namespace iba.Controls
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.m_btTransferAnalyzerSettings);
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
@@ -209,6 +211,14 @@ namespace iba.Controls
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // m_btTransferAnalyzerSettings
+            // 
+            resources.ApplyResources(this.m_btTransferAnalyzerSettings, "m_btTransferAnalyzerSettings");
+            this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
+            this.m_toolTip.SetToolTip(this.m_btTransferAnalyzerSettings, resources.GetString("m_btTransferAnalyzerSettings.ToolTip"));
+            this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
+            this.m_btTransferAnalyzerSettings.Click += new System.EventHandler(this.btnTransfer_Click);
             // 
             // label6
             // 
@@ -482,6 +492,7 @@ namespace iba.Controls
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog;
+        private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
 
     }
 }
