@@ -70,5 +70,39 @@ namespace iba.Services
             // Keep the console alive for a second to allow the user to see the message.
             Thread.Sleep(1000);
         }
+
+        static int m_servicePortNr = -1;
+        public static int ServicePortNr
+        {
+            get
+            {
+                if(m_servicePortNr < 0)
+                {
+                    var key =
+                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    if(key == null)
+                        m_servicePortNr = 8800;
+                    else
+                        m_servicePortNr = (int)key.GetValue("PortNr", 8800);
+                }
+                return m_servicePortNr;
+            }
+            //no setter on service side
+            //set
+            //{
+            //    if(m_servicePortNr != value)
+            //    {
+            //        m_servicePortNr = value;
+            //        var key =
+            //        Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+            //        "iba", "ibaDatCoordinator"));
+            //        if(key != null)
+            //        {
+            //            key.SetValue("PortNr", m_servicePortNr);
+            //            key.Close();
+            //        }
+            //    }
+            //}
+        }
     }
 }

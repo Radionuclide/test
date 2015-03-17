@@ -2421,6 +2421,16 @@ namespace iba
             }
         }
 
+        public void UpdateServiceSettingsPane()
+        {
+            if(m_navBar.SelectedPane != m_settingsPane || m_settingsPane == null) return; //will be updated on load
+            ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
+            if(pane != null)
+            {
+                pane.UpdateServiceControls();
+            }
+        }
+
         public Button StartButton
         {
             get { return m_startButton; }
@@ -2714,7 +2724,7 @@ namespace iba
 
                 if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
-                    CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
+                    CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
                     if(wrapper.TestConnection()) //succesfully connected
                     {
@@ -2750,10 +2760,13 @@ namespace iba
                                 }
                                 else //download
                                 {
+                                    var prevPane = m_navBar.SelectedPane;
                                     loadConfigurations();
                                     loadStatuses();
-                                    ReloadRightPane();
-
+                                    if(prevPane != m_settingsPane)
+                                        ReloadRightPane();
+                                    else
+                                        m_navBar.SelectedPane = prevPane;
                                 }
                                 UpdateButtons();
                             };
@@ -2776,6 +2789,7 @@ namespace iba
                         Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
                         m_firstConnectToService = false;
                         SetRenderer();
+                        UpdateServiceSettingsPane();
                     }
                     else
                     {
@@ -2949,6 +2963,8 @@ namespace iba
         private ToolStripMenuItem m_miStopService;
         private ToolStripMenuItem m_miExit;
         #endregion
+
+
     }    
     #endregion
 

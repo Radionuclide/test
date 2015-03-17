@@ -266,6 +266,7 @@ namespace iba.Controls
             if (m_data.UpdatingFileList)
             {
                 this.Cursor = Cursors.WaitCursor;
+                m_gridView.Cursor = this.Cursor;
                 m_deleteDats.Enabled = m_refreshDats.Enabled = false;
             }
             else
@@ -361,11 +362,16 @@ namespace iba.Controls
 
         private void m_refreshDats_Click(object sender, EventArgs e)
         {
+
+            if(!TaskManager.Manager.IsJobStarted(m_cd.Guid) && !m_cd.InitialScanEnabled && !m_cd.RescanEnabled)
+            {
+                MessageBox.Show(this, iba.Properties.Resources.refreshPermanentErrorFilesError,
+                    iba.Properties.Resources.refreshDatButton, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             DialogResult res = MessageBox.Show(this, iba.Properties.Resources.refreshPermanentErrorFilesWarning,
                 iba.Properties.Resources.refreshDatButton, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-            if (res != DialogResult.Yes)
+            if(res != DialogResult.Yes)
                 return;
-
             DetermineCheckedFiles();
             RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles);
             if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)

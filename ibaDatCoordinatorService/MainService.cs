@@ -76,7 +76,7 @@ namespace iba.Services
                 serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
                 BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
                 IDictionary props = new Hashtable();
-                props["port"] = 8800;
+                props["port"] = Program.ServicePortNr;
                 props["machineName"] = "localhost";
                 TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(localChannel, false);

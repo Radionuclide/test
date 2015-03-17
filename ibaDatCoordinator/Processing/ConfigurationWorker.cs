@@ -507,13 +507,6 @@ namespace iba.Processing
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStarted);
 
             m_bTimersstopped = false;
-            //if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-            //{
-            //    Log(Logging.Level.Exception, "Execution of scheduled jobs disabled in this beta version");
-            //    m_sd.Started = false;
-            //    Stop = true;
-            //    return;
-            //}
 
             if (m_stop)
             {
@@ -660,7 +653,7 @@ namespace iba.Processing
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
-                                m_toProcessFiles.Remove(file);
+                                bool res = m_toProcessFiles.Remove(file);
                                 fileCurrentlyBeingProcessed = null;
                             }
                             bool neededIbaAnalyzerBeforeUpdate = m_needIbaAnalyzer;
@@ -1222,8 +1215,10 @@ namespace iba.Processing
                                 lock (m_toProcessFiles)
                                 {
                                     doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
-                                    if (doit)
+                                    if(doit)
+                                    {
                                         m_newFiles.Add(filename);
+                                    }
                                 }
                             }
                             toRemove.Add(filename);
@@ -1249,8 +1244,10 @@ namespace iba.Processing
                             }
                         }
                     }
-                    foreach (string filename in toRemove)
-                        m_candidateNewFiles.RemoveAll(delegate(Pair<string,DateTime> arg) { return arg.First==filename; });
+                    foreach(string filename in toRemove)
+                    {
+                        m_candidateNewFiles.RemoveAll(delegate(Pair<string, DateTime> arg) { return arg.First == filename; });
+                    }
                 }
                 if (changed)
                 {
@@ -1262,7 +1259,7 @@ namespace iba.Processing
             if (!changed && networkErrorOccured)
                 tickCount++;
 
-            if (tickCount >= 20) //retry restoring dataaccess every 20 seconds
+            if (tickCount >= 20) //retry restoring data-access every 20 seconds
             {
                 tickCount = 0;
                 if (m_cd.DatDirectoryUNC.StartsWith(@"\\"))
@@ -1565,6 +1562,15 @@ namespace iba.Processing
             }
         }
 
+        public void AddFilesToProcess(List<string> files)
+        {
+            lock(m_listUpdatingLock)
+            {
+                m_newFiles = new List<string>(files);
+                updateDatFileList(WhatToUpdate.NEW);
+            }
+        }
+
         private void updateDatFileList(WhatToUpdate what)
         {
             string datDir = m_cd.DatDirectoryUNC;
@@ -1592,7 +1598,7 @@ namespace iba.Processing
                         }
                     }
                 }
-                else if (what == WhatToUpdate.NEW)//NEW
+                else if (what == WhatToUpdate.NEW)//REF files
                 {
                     count = m_newFiles.Count;
                     fileInfos = new FileInfo[count];
@@ -1609,11 +1615,11 @@ namespace iba.Processing
                     }
                     m_newFiles.Clear();
                 }
-                else if (what == WhatToUpdate.DIRECTORY)//DIRECTORY
+                else if(what == WhatToUpdate.DIRECTORY)//DIRECTORY
                 {
                     count = m_directoryFiles.Count;
                     fileInfos = new FileInfo[count];
-                    for (int i = 0; i < count; i++)
+                    for(int i = 0; i < count; i++)
                     {
                         string filename = m_directoryFiles[i];
                         if(fileCurrentlyBeingProcessed != filename && File.Exists(filename)
@@ -1684,14 +1690,29 @@ namespace iba.Processing
                     string filename = fi.FullName;
                     DatFileStatus.State state;
                     if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
-                        state = ProcessDatfileReadyness(filename);
+                        state = ProcessDatfileReadyness(filename, what == WhatToUpdate.ERRORS);
                     else
                         state = ProcessHDQfileReadyness(filename);
+
+
+                    //if (what == WhatToUpdate.ERRORS && state != DatFileStatus.State.COMPLETED_SUCCESFULY && state != DatFileStatus.State.NOT_STARTED)
+                    //{
+                    //    string message = string.Format("found file with error in it: {0}", state);
+                    //    Log(iba.Logging.Level.Debug, message, filename);
+                    //}
+                    //if (what == WhatToUpdate.ERRORS && state == DatFileStatus.State.NOT_STARTED)
+                    //{
+                    //    string message = string.Format("while checking errors found file that was not started: {0}", state);
+                    //    Log(iba.Logging.Level.Debug, message,filename);
+                    //}
+
                     switch (state)
                     {
                         case DatFileStatus.State.NOT_STARTED:
-                            if (!m_toProcessFiles.Contains(filename))
+                            if(!m_toProcessFiles.Contains(filename))
+                            {
                                 m_toProcessFiles.Add(filename);
+                            }
                             lock (m_sd.DatFileStates)
                             {
                                 m_sd.DatFileStates[filename] = new DatFileStatus();
@@ -1722,8 +1743,10 @@ namespace iba.Processing
                             }
                             lock (m_processedFiles)
                             {
-                                if (!m_processedFiles.Contains(filename))
+                                if(!m_processedFiles.Contains(filename))
+                                {
                                     m_processedFiles.Add(filename);
+                                }
                             }
                             DatFileStatus status = new DatFileStatus();
                             lock (m_sd.DatFileStates)
@@ -1757,7 +1780,7 @@ namespace iba.Processing
         }
 
 
-        private DatFileStatus.State ProcessDatfileReadyness(string filename)
+        private DatFileStatus.State ProcessDatfileReadyness(string filename, bool forErrors)
         {
             try
             {
@@ -1997,7 +2020,7 @@ namespace iba.Processing
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
-                catch //no status field
+                catch (Exception testWhenError)//no status field
                 {
                     ibaDatFile.Close();
                     ibaDatFile.OpenForUpdate(filename);
@@ -2035,8 +2058,9 @@ namespace iba.Processing
                     return DatFileStatus.State.NOT_STARTED;
                 }
             }
-            catch //general exception that may have happened
+            catch(Exception generalException) //general exception that may have happened
             {
+                Log(Logging.Level.Debug, "General exception happened while investigating .dat file readyness: " + generalException.ToString(), filename);
                 Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                 return DatFileStatus.State.COMPLETED_FAILURE;
             }
@@ -2413,8 +2437,11 @@ namespace iba.Processing
                     }
                     else
                         continueProcessing = ProcessTask(InputFile, task, ref failedOnce);
-                    if (!continueProcessing) return;
-
+                    if(!continueProcessing)
+                    {
+                        //Log(iba.Logging.Level.Debug, "ContinueProcessing is FALSE: {0}", InputFile);
+                        return;
+                    }
                     //touch the file
                     if (m_outPutFilesPrevTask != null)
                     {
@@ -2450,6 +2477,8 @@ namespace iba.Processing
                 {
                     try
                     {
+                        //string message = string.Format("Closing .dat file");
+                        //Log(iba.Logging.Level.Debug, message,InputFile);
                         m_ibaAnalyzer.CloseDataFiles();
                     }
                     catch
@@ -2486,11 +2515,17 @@ namespace iba.Processing
                     ibaDatFile.OpenForUpdate(InputFile);
                     time = File.GetLastWriteTime(InputFile);
                 }
-                catch //happens when timed out and proc has not released its resources yet
+                catch (Exception ex) //happens when timed out and proc has not released its resources yet
                 {
+                    string error = String.Format("Error writing state in .dat file: {0}}", ex.Message);
+                    Log(iba.Logging.Level.Debug, error, InputFile);
                     m_sd.Changed = true;
                     return;
                 }
+
+                //string message = String.Format("Writing state in .dat file {0}", completeSucces);
+
+                //Log(iba.Logging.Level.Debug, message, InputFile);
 
                 if(completeSucces)
                 {
@@ -2812,13 +2847,14 @@ namespace iba.Processing
             } 
             return completeSucces;
         }
-        public void MovePermanentFileErrorListToProcessedList(List<string> files)
-        {
-            lock (m_listUpdatingLock)
-            {
-                m_sd.MovePermanentFileErrorListToProcessedList(files);
-            }
-        }
+
+        //public void MovePermanentFileErrorListToProcessedList(List<string> files)
+        //{
+        //    lock (m_listUpdatingLock)
+        //    {
+        //        m_sd.MovePermanentFileErrorListToProcessedList(files);
+        //    }
+        //}
 
         private void DoCustomTask(string DatFile, CustomTaskData task)
         {

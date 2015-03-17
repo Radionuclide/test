@@ -2391,6 +2391,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This action is not allowed because the files will not be processed.
+        ///Please either start the job or enable scans for .dat files before attempting this action again..
+        /// </summary>
+        internal static string refreshPermanentErrorFilesError {
+            get {
+                return ResourceManager.GetString("refreshPermanentErrorFilesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to reprocess all selected items ?.
         /// </summary>
         internal static string refreshPermanentErrorFilesWarning {
@@ -2515,6 +2525,15 @@ namespace iba.Properties {
         internal static string reportTitle {
             get {
                 return ResourceManager.GetString("reportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The new port number will not take effect until the server is restarted. Do you want to restart the server now?.
+        /// </summary>
+        internal static string RestartServerQuestion {
+            get {
+                return ResourceManager.GetString("RestartServerQuestion", resourceCulture);
             }
         }
         
@@ -2707,6 +2726,24 @@ namespace iba.Properties {
         internal static string ServiceConnectProblemCaption {
             get {
                 return ResourceManager.GetString("ServiceConnectProblemCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        internal static string serviceStatRunning {
+            get {
+                return ResourceManager.GetString("serviceStatRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        internal static string serviceStatStopped {
+            get {
+                return ResourceManager.GetString("serviceStatStopped", resourceCulture);
             }
         }
         
@@ -3092,7 +3129,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer settings succesfuly transfered from local account to service account.
+        ///   Looks up a localized string similar to ibaAnalyzer settings successfully transfered from local account to service account.
         /// </summary>
         internal static string TransferIbaAnalyzerSettingsSuccess {
             get {

@@ -225,8 +225,12 @@ namespace iba.Controls
             m_refreshTimer.Enabled = false;
             if (sender != null) //refresh
                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
-            if (m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
-            else this.Cursor = Cursors.Default; 
+            if(m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
+            else
+            {
+                this.Cursor = Cursors.Default;
+                m_gridView.Cursor = this.Cursor; //workaround for cursor in gridview not changing
+            }
             if (!m_data.Changed && sender != null)
             {
                 m_refreshTimer.Enabled = true;

@@ -176,7 +176,6 @@ namespace iba.Data
             }
         }
 
-
         private void update(Event _event)
         {
             if ((_event.Level == Logging.Level.Info && m_logLevel > 0) || (_event.Level == Logging.Level.Warning && m_logLevel > 1))
@@ -572,7 +571,8 @@ namespace iba.Data
             GridViewLogger gvLogger = new GridViewLogger(grid,control);
             gvLogger.EventFormatter = new Logging.EventFormatters.SimpleEventFormatter();
             gvLogger.Level = Level.Info;
-
+            FileLogger fileLogger=null;
+            string VersionLine = null;
             if (appState != ApplicationState.CLIENTCONNECTED)
             {
                 string rootPath = Utility.DataPath.Folder(appState);
@@ -599,7 +599,7 @@ namespace iba.Data
                     }
                 }
 
-                FileLogger fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
+                fileLogger = Logger.CreateFileLogger(filename, "{ts}\t{ln}\t{msg}\t{data}");
                 fileLogger.IsBufferingEnabled = false;
                 fileLogger.IsContextEnabled = true;
                 fileLogger.AutoFlushInterval = 1000;
@@ -617,9 +617,8 @@ namespace iba.Data
                     case ApplicationState.CLIENTSTANDALONE: logWhat = "(standalone)"; break;
                     case ApplicationState.SERVICE: logWhat = "(service)"; break;
                 }
-
-                fileLogger.DailyString = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + " " + logWhat + "\r\n";
-
+                VersionLine = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + " " + logWhat;
+                fileLogger.DailyString = VersionLine + "\r\n";
                 WindowsEventLogger eventLogger = Logger.CreateWindowsEventLogger("ibaDatCoordinator");
                 eventLogger.EventFormatter = new iba.Logging.EventFormatters.PatternEventFormatter("{msg}\t{data}");
                 eventLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
@@ -642,6 +641,7 @@ namespace iba.Data
             try
             {
                 m_data.Logger.Open();
+                if (fileLogger != null && VersionLine != null) fileLogger.Log(VersionLine); //so it is inserted in the first logfile
             }
             catch
             {

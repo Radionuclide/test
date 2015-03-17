@@ -122,7 +122,7 @@ namespace iba.Processing
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                        m_sd.DatFileStates[filename].OutputFiles[m_task] = m_confWorker.m_outPutFilesPrevTask[0];
+                        m_sd.DatFileStates[filename].OutputFiles[m_task] = (m_confWorker.m_outPutFilesPrevTask == null)? null : (m_confWorker.m_outPutFilesPrevTask[0]);
                     }
                     m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, m_task);
                 }

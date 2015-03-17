@@ -15,15 +15,32 @@ namespace iba.Utility
         {
 	        errorMsg = String.Empty;
             bool doNotDisconnect = false; //set to true to avoid disconnecting the unc path
+            //LogData.Data.Log(Logging.Level.Debug, "Attempt to connect to: " + path + " username " + userName + " pasword length: " + passWord.Length);
             if(path.StartsWith(@"\\"))
 	        {
 		        try
 		        {
 			        //First add connection
 			        String computer = Path.GetPathRoot(path);
+                    //LogData.Data.Log(Logging.Level.Debug, "computername " + computer );
+                    bool ISDTS = false;
+                    if(computer.Contains(".") && !ComputerIsIP(computer)) //contains a dot, assume DFS
+                    {
+                        computer = path;
+                        ISDTS = true;
+                    }
+
 			        int error = Shares.ConnectToComputer(computer, userName, passWord);
 			        if(error != 0 )
 			        {
+                        //LogData.Data.Log(Logging.Level.Debug, "ConnectToComputer error code returned " + error.ToString());
+                        if(ISDTS && error != 1219)
+                        {
+                            errorMsg = GetErrorMessage(error);
+                            if(error == 59)
+                                errorMsg += Environment.NewLine + "DFS was detected, please check if the account is not locked out.";
+                            return false;
+                        }
                         if (!Directory.Exists(computer))
                         {
                             errorMsg = GetErrorMessage(error);
@@ -31,34 +48,40 @@ namespace iba.Utility
                         } //in case computer exists, the connect was not necessary
                         else
                         {
-                            //LogData.Data.Log(Logging.Level.Warning, "connection to: " + path + " already existed");
+                            //LogData.Data.Log(Logging.Level.Debug, "connection to: " + path + " already existed");
                             doNotDisconnect = true;
                         }
 			        }
 		        }
-		        catch
+		        catch (Exception ex)
 		        {
+                    LogData.Data.Log(Logging.Level.Debug, "Exception: " + ex.Message);
 			        return false;
 		        }
 	        }
 	        try
 	        {
 		        DirectoryInfo dirInfo = new DirectoryInfo(path);
-                if (!dirInfo.Exists)
+                if(!dirInfo.Exists)
                 {
-                    FileInfo fileInfo = new FileInfo(path);
-                    if (!fileInfo.Exists) //it's not a file
+                    dirInfo.Refresh();
+                    if(!dirInfo.Exists)
                     {
-                        if (createallowed)
-                            dirInfo.Create();
-                        else
+                        FileInfo fileInfo = new FileInfo(path);
+                        if(!fileInfo.Exists) //it's not a file
                         {
-                            errorMsg = iba.Properties.Resources.FolderDoesNotExist;
-                            return false;
+                            if(createallowed)
+                            {
+                                dirInfo.Create();
+                            }
+                            else
+                            {
+                                errorMsg = iba.Properties.Resources.FolderDoesNotExist;
+                                return false;
+                            }
                         }
                     }
                 }
-
                 if( bTestWriteAccess )
 		        {
 			        String fileName = Path.Combine(path, Guid.NewGuid().ToString("N"));
@@ -68,7 +91,7 @@ namespace iba.Utility
 			        {
 				        File.Delete(fileName);
 			        }
-			        catch(Exception)
+			        catch
 			        {
 			        }
 		        }
@@ -88,6 +111,17 @@ namespace iba.Utility
 			        Shares.DisconnectFromComputer(computer, false);
 		        }
 	        }
+        }
+
+        private static bool ComputerIsIP(string computer)
+        {
+            if(computer.StartsWith(@"\\"))
+                computer = computer.Remove(0, 2);
+            int index = computer.IndexOf('\\');
+            if(index > 0)
+                computer = computer.Substring(0, index);
+            System.Net.IPAddress dummy;
+            return System.Net.IPAddress.TryParse(computer,out dummy);
         }
 
         private SortedDictionary<string, int> m_connectedComputers;
@@ -123,12 +157,16 @@ namespace iba.Utility
                         m_connectedComputers.Add(computer, 1);
                         return 1;
                     }
-                    else if (Directory.Exists(computer)) //already available, do not add
+                    else if (Directory.Exists(computer) ) //already available, do not add
                     {
-                        //LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " already existed");
+                        LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " already existed" + m_error.ToString());
                         return 1;
                     }
-                    else return 0;
+                    else
+                    {
+                        LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " failed: " + m_error.ToString());
+                        return 0;
+                    }
                 }
             }
         }
@@ -165,7 +203,7 @@ namespace iba.Utility
         public void AddReferencesFromConfiguration(ConfigurationData conf, out object error)
         {
             error = null;
-            if (!conf.OnetimeJob && IsUNC(conf.DatDirectoryUNC)) //onetimejobs may have multiple folders and are handled differently
+            if (!conf.OnetimeJob && IsUNC(conf.DatDirectoryUNC)) //one time jobs may have multiple folders and are handled differently
             {
                 if (AddReference(ComputerName(conf.DatDirectoryUNC), conf.Username, conf.Password) == 0)
                 {
@@ -205,7 +243,8 @@ namespace iba.Utility
         {
             try
             {
-                return Path.GetPathRoot(path);
+                string computer = Path.GetPathRoot(path);
+                return (computer.Contains(".")&&!ComputerIsIP(computer))?path:computer;
             }
             catch 
             {

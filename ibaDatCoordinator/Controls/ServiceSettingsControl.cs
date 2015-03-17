@@ -24,8 +24,21 @@ namespace iba.Controls
             {
                 m_gbApp.Text = iba.Properties.Resources.Application;
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
-                m_cbAutoStart.Visible = false;
-                m_btTransferAnalyzerSettings.Visible = false;
+                Control[]ToHide = new Control[] {m_cbAutoStart,
+                    m_btTransferAnalyzerSettings,m_btnStart,m_btnStop, 
+                    m_udPort, m_lblServiceStatus, m_lbServStatus, m_lbServPort};
+                foreach (var ctrl in ToHide)
+                {
+                    ctrl.Visible = false;
+                }
+                int Offset = m_gbApp.Height - m_lblServiceStatus.Top;
+                m_gbApp.Height -= Offset;
+                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
+                foreach(var box in gboxesLower)
+                {
+                    //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
+                    box.Top -= Offset;
+                }
             }
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
             m_ceManager = new CollapsibleElementManager(this);
@@ -60,6 +73,11 @@ namespace iba.Controls
                         MessageBoxIcon.Error);
                 }
                 service.Close();
+
+                m_udPort.Validated -= new EventHandler(m_udPort_Validated);
+                m_udPort.Value = Program.ServicePortNr;
+                m_udPort.Validated += new EventHandler(m_udPort_Validated);
+                UpdateServiceControls();
             }
 
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
@@ -263,8 +281,55 @@ namespace iba.Controls
             TaskManager.Manager.ProcessPriority = iPc;
             TaskManager.Manager.GlobalCleanupDataList = m_globalCleanupData;
 
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                PortNrValidate();
+            }
+            else if(Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //disconnected, don't care then.
+            {
+                Program.ServicePortNr = (int) m_udPort.Value;
+            }
         }
 
+        private void PortNrValidate()
+        {
+            int prevNr = Program.ServicePortNr;
+            int newNr = (int)m_udPort.Value;
+            if(prevNr != newNr)
+            {
+                string text = iba.Properties.Resources.RestartServerQuestion;
+                DialogResult res = DialogResult.No;
+                res = MessageBox.Show(this, text, ParentForm.Text,
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
+                    MessageBoxDefaultButton.Button1);
+                try
+                {
+                    if(res == DialogResult.Yes)
+                    {
+                        Program.ServicePortNr = newNr;
+                        btStop_Click(this, EventArgs.Empty);
+                        btStart_Click(this, EventArgs.Empty);
+                    }
+                    else if(res == DialogResult.No)
+                    {
+                        Program.ServicePortNr = newNr; //not in effect until manually restart
+                    }
+                    else
+                    {
+                        m_udPort.Value = prevNr;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    string msg = ex.Message;
+                    if(ex.InnerException != null)
+                        msg += "\r\n" + ex.InnerException.Message;
+
+                    MessageBox.Show(this, msg, "", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+        }
         #endregion
 
         private void m_browseIbaAnalyzerButton_Click(object sender, EventArgs e)
@@ -651,6 +716,7 @@ namespace iba.Controls
             {
                 //copy mcr and other files
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                path = Path.Combine(path, "iba", "ibaAnalyzer");
                 TaskManager.Manager.CopyIbaAnalyzerFiles(path);
                 string tempDir = System.IO.Path.GetTempPath();
                 string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
@@ -663,6 +729,45 @@ namespace iba.Controls
             {
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btStart_Click(object sender, EventArgs e)
+        {
+            Program.MainForm.OnStartService();
+        }
+
+        private void btStop_Click(object sender, EventArgs e)
+        {
+            Program.MainForm.OnStopService();
+        }
+
+        public void UpdateServiceControls()
+        {
+            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatRunning;
+                m_lblServiceStatus.BackColor = Color.LimeGreen;
+                m_btnStart.Enabled = false;
+                m_btnStop.Enabled = true;
+            }
+            else if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
+                m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatStopped;
+                m_lblServiceStatus.BackColor = Color.Red;
+                m_btnStart.Enabled = true;
+                m_btnStop.Enabled = false;
+            }
+        }
+
+        private void m_udPort_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+                PortNrValidate();
+        }
+
+        private void m_udPort_Validated(object sender, EventArgs e)
+        {
+            PortNrValidate();
         }
     }
 

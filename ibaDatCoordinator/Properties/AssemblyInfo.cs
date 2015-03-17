@@ -34,12 +34,12 @@ using System.Runtime.InteropServices;
 
 namespace iba
 {
-    internal class DatCoVersion
+    public class DatCoVersion
     {
         public static string GetClientVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            ver = ver + " BETA1";
+            ver = ver + " BETA15";
             return ver;
         }
     }

@@ -51,7 +51,7 @@ namespace iba.Data
         public SortedList<TaskData, string> OutputFiles
         {
             get { return m_outputFiles; }
-            set { m_outputFiles = value; }
+            //set { m_outputFiles = value; }
         }
 
         public DatFileStatus()
@@ -120,10 +120,10 @@ namespace iba.Data
         }
 
         //folowing methods should be called with ConfigurationWorkers m_updatelistlock locked
-        public void MovePermanentFileErrorListToProcessedList(List<string> files)
-        {
-            UpdatePermanentFileErrorList(null,files); //moves them all, resets count
-        }
+        //public void MovePermanentFileErrorListToProcessedList(List<string> files)
+        //{
+        //    UpdatePermanentFileErrorList(null,files); //moves them all, resets count
+        //}
 
         private void UpdatePermanentFileErrorList(ConfigurationData newConf,List<string> files)
         {

@@ -1226,6 +1226,19 @@
     <value>The sender e-mail address is not correctly formatted, invalid or not supplied</value>
   </data>
   <data name="TransferIbaAnalyzerSettingsSuccess" xml:space="preserve">
-    <value>ibaAnalyzer settings succesfuly transfered from local account to service account</value>
+    <value>ibaAnalyzer settings successfully transfered from local account to service account</value>
+  </data>
+  <data name="refreshPermanentErrorFilesError" xml:space="preserve">
+    <value>This action is not allowed because the files will not be processed.
+Please either start the job or enable scans for .dat files before attempting this action again.</value>
+  </data>
+  <data name="RestartServerQuestion" xml:space="preserve">
+    <value>The new port number will not take effect until the server is restarted. Do you want to restart the server now?</value>
+  </data>
+  <data name="serviceStatRunning" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="serviceStatStopped" xml:space="preserve">
+    <value>Stopped</value>
   </data>
 </root>

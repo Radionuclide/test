@@ -274,10 +274,11 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid)
                 {
-                    if (todo == AlterPermanentFileErrorListWhatToDo.AFTERDELETE)
-                        pair.Value.Status.ClearPermanentFileErrorList(files);
-                    else
-                        pair.Value.MovePermanentFileErrorListToProcessedList(files);
+                    if (todo == AlterPermanentFileErrorListWhatToDo.AFTERREFRESH)
+                    {
+                        pair.Value.AddFilesToProcess(files);
+                    }
+                    pair.Value.Status.ClearPermanentFileErrorList(files);
                     return;
                 }
             }

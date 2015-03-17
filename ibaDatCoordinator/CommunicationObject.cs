@@ -509,6 +509,7 @@ namespace iba
             Program.MainForm.StartButton.Enabled = false;
             Program.MainForm.StopButton.Enabled = false;
             Program.MainForm.SetRenderer();
+            Program.MainForm.UpdateServiceSettingsPane();
             TaskManager.Manager.StopAllConfigurations();
             TaskManager.Manager.StopAllGlobalCleanups();
             //logger resetten

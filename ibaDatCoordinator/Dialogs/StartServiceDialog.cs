@@ -91,7 +91,7 @@ namespace iba.Dialogs
                 m_result = false;
                 return;
             }
-            CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), "tcp://localhost:8800/IbaDatCoordinatorCommunicationObject");
+            CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
             Program.CommunicationObject = new CommunicationObjectWrapper(com);
         }
 
