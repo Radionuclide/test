@@ -225,6 +225,7 @@ servicecopy:
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
   File "..\TKS-XML-plugin\bin\Release\TKS-XML-plugin.dll"
+  File "..\TKS-XML-plugin\bin\Release\ibaFilesLiteDotNet.dll"
   IfErrors servicecopyError servicecopyOk
 
 servicecopyError:

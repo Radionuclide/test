@@ -1,5 +1,4 @@
 ﻿
-using iba.TKS_XML_Plugin.Properties;
 
 namespace XmlExtract
 {
@@ -7,7 +6,9 @@ namespace XmlExtract
     using System.Collections.Generic;
     using System.Text;
     using System.Globalization;
-    using ibaFilesLiteLib;
+
+    using iba.TKS_XML_Plugin.Properties;
+    using iba.ibaFilesLiteDotNet;
 
 
     internal class ResolveInfo
@@ -39,19 +40,19 @@ namespace XmlExtract
             //Kunde = reader.QueryInfoByName("$DE_KUNDE").Trim();
             //Laenge = Single.Parse(reader.QueryInfoByName("$DE_LAENGE").Trim());
 
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_BUNDNR)))
-                info.LocalIdent = reader.QueryInfoByName(DE_BUNDNR).Trim();
+            string infoFieldValue;
+            if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
+                info.LocalIdent = infoFieldValue;
             else
                 _missingFields.Add(DE_BUNDNR);
 
 
             if (st == StandortType.DU)
             {
-                if (Convert.ToBoolean(reader.IsInfoPresent(DE_MATERIALART)))
+                if (reader.InfoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
                 {
-                    var matValue = reader.QueryInfoByName(DE_MATERIALART).Trim();
                     MaterialArtType mat;
-                    if (Enum<MaterialArtType>.TryParse(matValue, true, out mat))
+                    if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out mat))
                         info.MaterialArt = mat;
                     else
                         _wrongValueFields.Add(DE_MATERIALART);
@@ -61,11 +62,10 @@ namespace XmlExtract
             }
 
 
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_BANDLAUFRICHTUNG)))
+            if (reader.InfoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
             {
-                var blrValue = reader.QueryInfoByName(DE_BANDLAUFRICHTUNG).Trim();
                 var blr = BandlaufrichtungEnum.InWalzRichtung;
-                if (Enum<BandlaufrichtungEnum>.TryParse(blrValue, true, out blr))
+                if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out blr))
                     info.Bandlaufrichtung = blr;
                 else
                     _wrongValueFields.Add(DE_BANDLAUFRICHTUNG);
@@ -74,17 +74,16 @@ namespace XmlExtract
                 _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
 
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_AGGREGAT)))
-                info.Aggregat = reader.QueryInfoByName(DE_AGGREGAT).Trim();
+            if (reader.InfoFields.TryGetValue(DE_AGGREGAT, out infoFieldValue))
+                info.Aggregat = infoFieldValue.Trim();
             else
                 _missingFields.Add(DE_AGGREGAT);
 
 
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_ENDPRODUKT)))
+            if (reader.InfoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
             {
-                var epValue = reader.QueryInfoByName(DE_ENDPRODUKT).Trim();
                 var ep = true;
-                if (TryConvertToBoolean(epValue, out ep))
+                if (TryConvertToBoolean(infoFieldValue.Trim(), out ep))
                     info.Endprodukt = ep;
                 else
                     _wrongValueFields.Add(DE_ENDPRODUKT);
@@ -125,28 +124,20 @@ namespace XmlExtract
 
         private static DateTime GetMesszeit(IbaFileReader reader)
         {
-            DateTime messzeit = DateTime.Now;
-
             string dtValue;
             DateTime dt;
-            if (Convert.ToBoolean(reader.IsInfoPresent(DE_MESSZEITPUNKT)))
+            if (reader.InfoFields.TryGetValue(DE_MESSZEITPUNKT, out dtValue))
             {
-                dtValue = reader.QueryInfoByName(DE_MESSZEITPUNKT);
                 if (GetDateTimeParseExact(dtValue, out dt))
-                    messzeit = dt;
+                    return dt;
                 else
                     _wrongValueFields.Add(DE_MESSZEITPUNKT);
             }
-            else if (Convert.ToBoolean(reader.IsInfoPresent(STARTTIME)))
+            else 
             {
-                dtValue = reader.QueryInfoByName(STARTTIME);
-                if (GetDateTimeParseExact(dtValue, out dt))
-                    messzeit = dt;
-                else
-                    _wrongValueFields.Add(STARTTIME);
+                return reader.StartTime;
             }
-
-            return messzeit;
+            return DateTime.Now;
         }
 
         internal static Boolean GetDateTimeParseExact(string val, out DateTime date)
