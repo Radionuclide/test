@@ -325,8 +325,7 @@ namespace XmlExtract
     public partial class EinzelwertComplexType
     {
         
-        [System.Xml.Serialization.XmlElementAttribute("Aggregat")]
-        public string Item { get; set; }
+        public string Aggregat { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
         public List<EinzelwertType> Einzelwert { get; set; }
         

@@ -3,6 +3,7 @@ namespace XmlExtract
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Globalization;
     using System.Xml.Serialization;
@@ -79,53 +80,98 @@ namespace XmlExtract
 
             foreach (IbaChannelReader channel in reader.Channels)
             {
+
                 var signalId = channel.ResolveSignalId(data.IdField);
-
-                var mes = new MessungType();
-                mes.Bandlaufrichtung = info.Bandlaufrichtung;
-                mes.Endprodukt = info.Endprodukt;
-                mes.Messzeitpunkt = info.Messzeitpunkt;
-                mes.Aggregat = info.Aggregat;
-                mes.Gruppe = ResolveGruppe.Resolve(signalId);
-                mes.LetzteMsgAmDurchsatz = false;
-
-                //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
-                mes.IDMessgeraet = String.Format("MI_{0}", signalId);
-
-                met.Messung.Add(mes);
-
-                var spur = new SpurType();
-                spur.Bezeichner = signalId;
-                spur.DimensionX = channel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
-
-                string channelUnit = channel.Unit;
-                spur.Einheit = _resolveEinheit.Parse(channelUnit);
-                if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
+                if (channel.Name.Contains("__IE__") || channel.Name.Contains("__SE__"))
                 {
-                    spur.EinheitLokal = channelUnit;
+                    EinzelwertType ew = GetEinzelWert(channel, signalId);
+                    met.Einzelwerte.Einzelwert.Add(ew);
                 }
-
-                ChannelData channelData = GetChannelData(channel);
-
-                if (null == channelData)
-                    continue;
-
-                spur.Raster1D.SegmentgroesseX = channelData.Interval;
-                spur.Raster1D.SegmentOffsetX = channelData.XOffset;
-
-                if (null != channelData.Data)
-                    spur.Raster1D.WerteList = channelData.Data;
-
-                mes.Spur.Add(spur);
+                else
+                {
+                    MessungType mes = GetMessung(info, channel, signalId);
+                    met.Messung.Add(mes);
+                }
 
             }
 
-            var lastIndex = met.Messung.Count - 1;
-            if (lastIndex >= 0)
-                met.Messung[lastIndex].LetzteMsgAmDurchsatz = true;
+            if (met.Einzelwerte.Einzelwert.Count > 0)
+                met.Einzelwerte.Aggregat = info.Aggregat;
+
+            var letzteMessung = met.Messung.LastOrDefault();
+            if (letzteMessung != null)
+                letzteMessung.LetzteMsgAmDurchsatz = true;
 
 
             return met;
+        }
+
+        private MessungType GetMessung(Info info, IbaChannelReader channel, string signalId)
+        {
+            var mes = new MessungType();
+            mes.Bandlaufrichtung = info.Bandlaufrichtung;
+            mes.Endprodukt = info.Endprodukt;
+            mes.Messzeitpunkt = info.Messzeitpunkt;
+            mes.Aggregat = info.Aggregat;
+            mes.Gruppe = ResolveGruppe.Resolve(signalId);
+            mes.LetzteMsgAmDurchsatz = false;
+
+            //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
+            mes.IDMessgeraet = String.Format("MI_{0}", signalId);
+
+            var spur = new SpurType();
+            spur.Bezeichner = signalId;
+            spur.DimensionX = channel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
+
+            var channelUnit = channel.Unit;
+            spur.Einheit = _resolveEinheit.Parse(channelUnit);
+            if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
+                spur.EinheitLokal = channelUnit;
+
+            ChannelData channelData = GetChannelData(channel);
+
+            if (channelData != null)
+            {
+                spur.Raster1D.SegmentgroesseX = channelData.Interval;
+                spur.Raster1D.SegmentOffsetX = channelData.XOffset;
+
+                if (channelData.Data != null)
+                    spur.Raster1D.WerteList = channelData.Data;
+
+                mes.Spur.Add(spur);
+            }
+            return mes;
+        }
+
+        private EinzelwertType GetEinzelWert(IbaChannelReader channel, string signalId)
+        {
+            var ew = new EinzelwertType();
+            ew.Bezeichner = signalId;
+
+            string ewChannelUnit = channel.Unit;
+            ew.Einheit = _resolveEinheit.Parse(ewChannelUnit);
+            if (ew.Einheit == null && !String.IsNullOrEmpty(ewChannelUnit))
+                ew.EinheitLokal = ewChannelUnit;
+
+            if (channel.Text)
+            {
+                string[] textData = null;
+                double[] timeStampDate = null;
+                try
+                {
+                    channel.QueryNEData(channel.DefaultXBaseType, out timeStampDate, out textData);
+                }
+                catch { }
+
+                if (textData != null && textData.Length > 0)
+                    ew.Wert = textData[0];
+                return ew;
+            }
+
+            var ewChannelData = GetChannelData(channel);
+            if (ewChannelData != null && ewChannelData.Data != null && ewChannelData.Data.Count > 0)
+                ew.Wert = System.Xml.XmlConvert.ToString(ewChannelData.Data[0]);
+            return ew;
         }
 
         private static ChannelData GetChannelData(IbaChannelReader channel)
