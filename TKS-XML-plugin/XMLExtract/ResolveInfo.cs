@@ -14,6 +14,7 @@ namespace XmlExtract
     internal class ResolveInfo
     {
         const string DE_BUNDNR = "$DE_BUNDNR";
+        const string DE_TKSIDENT = "$DE_TKSIDENT";
         const string DE_MATERIALART = "$DE_MATERIALART";
         const string DE_MESSZEITPUNKT = "$DE_MESSZEITPUNKT";
         const string STARTTIME = "starttime";
@@ -41,10 +42,13 @@ namespace XmlExtract
             //Laenge = Single.Parse(reader.QueryInfoByName("$DE_LAENGE").Trim());
 
             string infoFieldValue;
-            if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
+            // return when tksident (is set && not empty && <> 0)
+            if (reader.InfoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
+                info.TKSIdent = infoFieldValue;
+            else if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
                 info.LocalIdent = infoFieldValue;
             else
-                _missingFields.Add(DE_BUNDNR);
+                _missingFields.Add(String.Concat(DE_TKSIDENT, "' oder '", DE_BUNDNR));
 
 
             if (st == StandortType.DU)
@@ -140,7 +144,7 @@ namespace XmlExtract
             return DateTime.Now;
         }
 
-        internal static Boolean GetDateTimeParseExact(string val, out DateTime date)
+        internal static bool GetDateTimeParseExact(string val, out DateTime date)
         {
             return DateTime.TryParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"), DateTimeStyles.None, out date);
         }
@@ -148,10 +152,7 @@ namespace XmlExtract
         internal static string StripPrefix(string value)
         {
             const string prefix = "$DE_";
-            if (value.StartsWith(prefix))
-                return value.Substring(prefix.Length);
-
-            return value;
+            return value.Replace(prefix, "");
         }
 
 

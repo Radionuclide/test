@@ -67,6 +67,7 @@ namespace XmlExtract
                 _error.AppendLine(info.Error);
 
             var met = new ErzeugungType();
+            met.MaterialHeader.TKSIdent = info.TKSIdent;
             met.MaterialHeader.LokalerIdent = info.LocalIdent;
 
             if (data.StandOrt == StandortType.Anderer)

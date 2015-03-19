@@ -53,9 +53,10 @@ namespace XmlExtract
         
         private System.Nullable<MaterialArtType> materialArtField;
         
-        [System.Xml.Serialization.XmlElementAttribute("LokalerIdent", typeof(string))]
-        [System.Xml.Serialization.XmlElementAttribute("TKSIdent", typeof(ulong))]
-        public object LokalerIdent { get; set; }
+
+        public string LokalerIdent { get; set; }
+
+        public string TKSIdent { get; set; }
         
         /// <summary>
         /// BO, DO, DU, SI oder Anderer
