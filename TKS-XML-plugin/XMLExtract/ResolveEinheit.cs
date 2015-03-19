@@ -19,6 +19,9 @@ namespace XmlExtract
             { "int", EinheitEnum.Keine1 },
             { "", EinheitEnum.Keine1 },
             { "As/m²", EinheitEnum.Asqm },
+            { "m³", EinheitEnum.m3 },
+            { "m³/s", EinheitEnum.m3s },
+            { "m³/h", EinheitEnum.m3h },
         };
 
         private Dictionary<string, string> _xsdEntries;

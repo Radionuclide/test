@@ -95,7 +95,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
-copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
+    <PostBuildEvent>if not exist "$(ProjectDir)..\ibaDatCoordinator\bin\debug\plugins" mkdir "$(ProjectDir)..\ibaDatCoordinator\bin\debug\plugins"
+copy "$(TargetPath)" "$(ProjectDir)..\ibaDatCoordinator\bin\debug\plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>
