@@ -2,11 +2,13 @@
 <!-- Mit XMLSpy v2013 sp1 (x64) (http://www.altova.com) von Struk (ThyssenKrupp Steel Europe AG) bearbeitet -->
 <xsd:schema xmlns="http://www.thyssen.com/xml/schema/qbic" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.thyssen.com/xml/schema/qbic" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- DEV-2_6_1 -->
-	<xsd:element name="Erzeugung" type="MaterialEreignisType"/>
-	<xsd:complexType name="MaterialEreignisType">
+	<xsd:element name="Erzeugung" type="ErzeugungType"/>
+	<xsd:complexType name="ErzeugungType">
+
 		<xsd:sequence>
 			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
 			<xsd:element name="Messung" type="MessungType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Einzelwerte" type="EinzelwertComplexType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="MaterialHeaderType">
@@ -17,7 +19,7 @@
 			</xsd:choice>
 			<xsd:element name="Standort" type="StandortType" minOccurs="0">
 				<xsd:annotation>
-					<xsd:documentation>BO, DO, DU</xsd:documentation>
+					<xsd:documentation>BO, DO, DU, SI</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="MaterialArt" type="MaterialArtType" minOccurs="0">
@@ -35,6 +37,7 @@
 			<xsd:enumeration value="BO"/>
 			<xsd:enumeration value="DO"/>
 			<xsd:enumeration value="DU"/>
+			<xsd:enumeration value="SI"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="MaterialArtType">
@@ -135,10 +138,10 @@
 			</xsd:element>
 			<xsd:element name="DimensionX" type="BezugDimensionEnum">
 				<xsd:annotation>
-					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit)  </xsd:documentation>
+					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit, Windungen)  </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="Raster1D" type="Raster1DType"/>
+			<xsd:element name="Raster1D" type="Raster1DType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="Raster1DType">
@@ -159,6 +162,18 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="WerteX" type="ListOfDoubleType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EinzelwertComplexType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="Aggregat" type="StringMax10" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>z.B. BEFB02</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="Einzelwert" type="EinzelwertType" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:simpleType name="BandlaufrichtungEnum">
@@ -205,6 +220,9 @@
 			<xsd:enumeration value="m3"/>
 			<xsd:enumeration value="ml/min"/>
 			<xsd:enumeration value="lgbar"/>
+			<xsd:enumeration value="g/l"/>
+			<xsd:enumeration value="I-Unit"/>
+			<xsd:enumeration value="pH"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BezugDimensionEnum">
@@ -213,6 +231,7 @@
 			<xsd:enumeration value="Laenge"/>
 			<xsd:enumeration value="Breite"/>
 			<xsd:enumeration value="Dicke"/>
+			<xsd:enumeration value="Windungen"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="StringMax10">
@@ -238,12 +257,24 @@
 	<xsd:simpleType name="ListOfDoubleType">
 		<xsd:list itemType="xsd:double"/>
 	</xsd:simpleType>
+	<xsd:complexType name="EinzelwertType">
+		<xsd:sequence>
+			<xsd:element name="Bezeichner" type="StringMax100">
+				<xsd:annotation>
+					<xsd:documentation>z.B. TemperaturZinkbad</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Wert" type="xsd:string"/>
+			<xsd:element name="Einheit" type="EinheitEnum" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
 	<xsd:complexType name="StatistikType">
 		<xsd:sequence>
 			<xsd:element name="Min" type="xsd:double"/>
 			<xsd:element name="Max" type="xsd:double"/>
 			<xsd:element name="Avg" type="xsd:double"/>
 			<xsd:element name="StdDev" type="xsd:double"/>
+			<xsd:element name="Median" type="xsd:double" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

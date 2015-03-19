@@ -12,6 +12,7 @@ namespace XmlExtract
         BO,
         DO,
         DU,
+        SI,
         Anderer,
     }
 }

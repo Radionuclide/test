@@ -22,18 +22,20 @@ namespace XmlExtract
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
     [System.Xml.Serialization.XmlRootAttribute("Erzeugung", Namespace="http://www.thyssen.com/xml/schema/qbic", IsNullable=false)]
-    public partial class MaterialEreignisType
+    public partial class ErzeugungType
     {
         
         public MaterialHeaderType MaterialHeader { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Messung")]
         public List<MessungType> Messung { get; set; }
+        public EinzelwertComplexType Einzelwerte { get; set; }
         
         /// <summary>
-        /// MaterialEreignisType class constructor
+        /// ErzeugungType class constructor
         /// </summary>
-        public MaterialEreignisType()
+        public ErzeugungType()
         {
+            this.Einzelwerte = new EinzelwertComplexType();
             this.Messung = new List<MessungType>();
             this.MaterialHeader = new MaterialHeaderType();
         }
@@ -58,7 +60,7 @@ namespace XmlExtract
         public object Item { get; set; }
         
         /// <summary>
-        /// BO, DO, DU
+        /// BO, DO, DU, SI
         /// </summary>
         public StandortType Standort
         {
@@ -148,6 +150,8 @@ namespace XmlExtract
         DO,
         
         DU,
+        
+        SI,
     }
     
     /// <summary>
@@ -195,128 +199,48 @@ namespace XmlExtract
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public partial class Raster1DType
+    public partial class EinzelwertType
     {
         
+        private System.Nullable<EinheitEnum> einheitField;
+        
         /// <summary>
-        /// Anz. der Werte, wird berechnet wenn fehlend.
-        /// </summary>
-        public int AnzahlX { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AnzahlXSpecified { get; set; }
-        /// <summary>
-        /// Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)
-        /// </summary>
-        public double SegmentgroesseX { get; set; }
-        /// <summary>
-        /// Darf weggelassen werden, dann wird 0 angenommen.
-        /// </summary>
-        public double SegmentOffsetX { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool SegmentOffsetXSpecified { get; set; }
-        public string WerteX { get; set; }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public partial class StatistikType
-    {
-        
-        public double Min { get; set; }
-        public double Max { get; set; }
-        public double Avg { get; set; }
-        public double StdDev { get; set; }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
-    public partial class SpurType
-    {
-        
-        private object itemField;
-        
-        private System.Nullable<WerteTypeEnum> typField;
-        
-        private BezugDimensionEnum dimensionXField;
-        
-        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
-        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
-        public object Item { get; set; }
-        /// <summary>
-        /// Name der Messreihe im statischen Modell
+        /// z.B. TemperaturZinkbad
         /// </summary>
         public string Bezeichner { get; set; }
-        /// <summary>
-        /// Darf weggelassen werden; dann werden die Werte berechnet.
-        /// </summary>
-        public StatistikType Statistik { get; set; }
-        /// <summary>
-        /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
-        /// </summary>
-        [System.ComponentModel.DefaultValueAttribute(0)]
-        public double Bezugswert { get; set; }
-        /// <summary>
-        /// Darf weggelassen werden; dann wird true angenommen.
-        /// </summary>
-        public bool isAbsolut { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isAbsolutSpecified { get; set; }
-        /// <summary>
-        /// Richtung der x-Achse (oder Dimension Zeit)
-        /// </summary>
-        public BezugDimensionEnum DimensionX { get; set; }
-        public Raster1DType Raster1D { get; set; }
+        public string Wert { get; set; }
         
-        /// <summary>
-        /// SpurType class constructor
-        /// </summary>
-        public SpurType()
-        {
-            this.Raster1D = new Raster1DType();
-            this.Statistik = new StatistikType();
-            this.Bezugswert = 0;
-        }
-        
-        /// <summary>
-        /// Neben den Datenspuren koennen z.B. stat. Daten oder Validitaetsflags vorliegen. Falls fehlend, wird der Typ Daten angenommen.
-        /// </summary>
-        public WerteTypeEnum Typ
+        public EinheitEnum Einheit
         {
             get
             {
-                if (this.typField.HasValue)
+                if (this.einheitField.HasValue)
                 {
-                    return this.typField.Value;
+                    return this.einheitField.Value;
                 }
                 else
                 {
-                    return default(WerteTypeEnum);
+                    return default(EinheitEnum);
                 }
             }
             set
             {
-                this.typField = value;
+                this.einheitField = value;
             }
         }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool TypSpecified
+        public bool EinheitSpecified
         {
             get
             {
-                return this.typField.HasValue;
+                return this.einheitField.HasValue;
             }
             set
             {
                 if (value==false)
                 {
-                    this.typField = null;
+                    this.einheitField = null;
                 }
             }
         }
@@ -415,6 +339,170 @@ namespace XmlExtract
         mlmin,
         
         lgbar,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("g/l")]
+        gl,
+        
+        [System.Xml.Serialization.XmlEnumAttribute("I-Unit")]
+        IUnit,
+        
+        pH,
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+    public partial class EinzelwertComplexType
+    {
+        
+        [System.Xml.Serialization.XmlElementAttribute("Aggregat")]
+        public string Item { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
+        public List<EinzelwertType> Einzelwert { get; set; }
+        
+        /// <summary>
+        /// EinzelwertComplexType class constructor
+        /// </summary>
+        public EinzelwertComplexType()
+        {
+            this.Einzelwert = new List<EinzelwertType>();
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+    public partial class Raster1DType
+    {
+        
+        /// <summary>
+        /// Anz. der Werte, wird berechnet wenn fehlend.
+        /// </summary>
+        public int AnzahlX { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool AnzahlXSpecified { get; set; }
+        /// <summary>
+        /// Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)
+        /// </summary>
+        public double SegmentgroesseX { get; set; }
+        /// <summary>
+        /// Darf weggelassen werden, dann wird 0 angenommen.
+        /// </summary>
+        public double SegmentOffsetX { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool SegmentOffsetXSpecified { get; set; }
+        public string WerteX { get; set; }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+    public partial class StatistikType
+    {
+        
+        public double Min { get; set; }
+        public double Max { get; set; }
+        public double Avg { get; set; }
+        public double StdDev { get; set; }
+        public double Median { get; set; }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
+    public partial class SpurType
+    {
+        
+        private object itemField;
+        
+        private System.Nullable<WerteTypeEnum> typField;
+        
+        private BezugDimensionEnum dimensionXField;
+        
+        [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
+        [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
+        public object Item { get; set; }
+        /// <summary>
+        /// Name der Messreihe im statischen Modell
+        /// </summary>
+        public string Bezeichner { get; set; }
+        /// <summary>
+        /// Darf weggelassen werden; dann werden die Werte berechnet.
+        /// </summary>
+        public StatistikType Statistik { get; set; }
+        /// <summary>
+        /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
+        /// </summary>
+        [System.ComponentModel.DefaultValueAttribute(0)]
+        public double Bezugswert { get; set; }
+        /// <summary>
+        /// Darf weggelassen werden; dann wird true angenommen.
+        /// </summary>
+        public bool isAbsolut { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isAbsolutSpecified { get; set; }
+        /// <summary>
+        /// Richtung der x-Achse (oder Dimension Zeit, Windungen)
+        /// </summary>
+        public BezugDimensionEnum DimensionX { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Raster1D")]
+        public List<Raster1DType> Raster1D { get; set; }
+        
+        /// <summary>
+        /// SpurType class constructor
+        /// </summary>
+        public SpurType()
+        {
+            this.Raster1D = new List<Raster1DType>();
+            this.Statistik = new StatistikType();
+            this.Bezugswert = 0;
+        }
+        
+        /// <summary>
+        /// Neben den Datenspuren koennen z.B. stat. Daten oder Validitaetsflags vorliegen. Falls fehlend, wird der Typ Daten angenommen.
+        /// </summary>
+        public WerteTypeEnum Typ
+        {
+            get
+            {
+                if (this.typField.HasValue)
+                {
+                    return this.typField.Value;
+                }
+                else
+                {
+                    return default(WerteTypeEnum);
+                }
+            }
+            set
+            {
+                this.typField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool TypSpecified
+        {
+            get
+            {
+                return this.typField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.typField = null;
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -449,6 +537,8 @@ namespace XmlExtract
         Breite,
         
         Dicke,
+        
+        Windungen,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]

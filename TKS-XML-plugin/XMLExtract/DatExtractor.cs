@@ -35,7 +35,7 @@ namespace XmlExtract
             if (!String.IsNullOrEmpty(_resolveEinheit.Error))
                 _error.AppendLine(_resolveEinheit.Error);
 
-            MaterialEreignisType met = FillMaterialEreignis(_reader, data);
+            ErzeugungType met = FillMaterialEreignis(_reader, data);
             if (!String.IsNullOrEmpty(data.XmlSchemaLocation))
                 met.xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic " + data.XmlSchemaLocation;
 
@@ -46,7 +46,7 @@ namespace XmlExtract
 
             using (var stream = File.CreateText(xmlfile))
             {
-                var ser = new XmlSerializer(typeof(MaterialEreignisType));
+                var ser = new XmlSerializer(typeof(ErzeugungType));
                 ser.Serialize(stream, met);
             }
 
@@ -55,7 +55,7 @@ namespace XmlExtract
         }
 
 
-        internal MaterialEreignisType FillMaterialEreignis(IbaFileReader reader, IExtractorData data)
+        internal ErzeugungType FillMaterialEreignis(IbaFileReader reader, IExtractorData data)
         {
 
             var infoParser = new ResolveInfo();
@@ -65,7 +65,7 @@ namespace XmlExtract
             if (!String.IsNullOrEmpty(info.Error))
                 _error.AppendLine(info.Error);
 
-            var met = new MaterialEreignisType();
+            var met = new ErzeugungType();
             met.MaterialHeader.LokalerIdent = info.LocalIdent;
 
             if (data.StandOrt == StandortType.Anderer)
@@ -136,7 +136,7 @@ namespace XmlExtract
             {
                 channel.QueryData(channel.DefaultXBaseType, out interval, out xoffset, out data);
             }
-            catch(Exception ex)
+            catch
             {
                 return null;
             }

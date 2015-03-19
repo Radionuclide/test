@@ -1,16 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Mit XMLSpy v2013 sp1 (x64) (http://www.altova.com) von Struk (ThyssenKrupp Steel Europe AG) bearbeitet -->
 <xsd:schema xmlns="http://www.thyssen.com/xml/schema/qbic" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.thyssen.com/xml/schema/qbic" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<!-- DEV-2_6_1 -->
-	<xsd:element name="Erzeugung" type="MaterialEreignisType"/>
+	<xsd:element name="Erzeugung" type="ErzeugungType"/>
 	<xsd:element name="DefectMap" type="DefectMapType"/>
-	<xsd:complexType name="MaterialEreignisType">
+	<xsd:element name="VorabmeldungMaterialErzeugung" type="VorabmeldungMaterialErzeugungType"/>
+	<xsd:element name="MaterialereignisTrigger" type="MaterialereignisTriggerType"/>	
+	<xsd:complexType name="ErzeugungType">
 		<xsd:sequence>
 			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
 			<xsd:element name="Messung" type="MessungType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Einzelwerte" type="EinzelwertComplexType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
+	<xsd:complexType name="MaterialereignisTriggerType">
+		<xsd:sequence>
+			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
+			<xsd:element name="Aggregat" type="StringMax10">
+				<xsd:annotation>
+					<xsd:documentation>z.B. BEFB02</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Ereignistyp" type="EreignistypEnum"/>
+		</xsd:sequence>				
+	</xsd:complexType>
+	<xsd:simpleType name="EreignistypEnum">
+		<xsd:annotation>
+			<xsd:documentation>Gueltige Materialereignisse.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Vorstrasse"/>
+			<xsd:enumeration value="Fertigstrasse"/>
+			<xsd:enumeration value="Haspel"/>
+			<xsd:enumeration value="Waage"/>
+		</xsd:restriction>
+	</xsd:simpleType>			
+	<xsd:complexType name="VorabmeldungMaterialErzeugungType">
+		<xsd:sequence>
+			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
+			<xsd:element name="Aggregat" type="StringMax10">
+				<xsd:annotation>
+					<xsd:documentation>z.B. BEFB02</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element name="Einsatzzeitpunkt" type="xsd:dateTime"/>
+			<xsd:element name="Auftragsnummer" type="StringMax8"/>
+			<xsd:element name="Auftragsposition" type="StringMax3"/>
+		</xsd:sequence>
+	</xsd:complexType>		
 	<xsd:complexType name="MaterialHeaderType">
 		<xsd:sequence>
 			<xsd:choice>
@@ -19,7 +55,7 @@
 			</xsd:choice>
 			<xsd:element name="Standort" type="StandortType" minOccurs="0">
 				<xsd:annotation>
-					<xsd:documentation>BO, DO, DU</xsd:documentation>
+					<xsd:documentation>BO, DO, DU, SI</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="MaterialArt" type="MaterialArtType" minOccurs="0">
@@ -37,6 +73,7 @@
 			<xsd:enumeration value="BO"/>
 			<xsd:enumeration value="DO"/>
 			<xsd:enumeration value="DU"/>
+			<xsd:enumeration value="SI"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="MaterialArtType">
@@ -137,7 +174,7 @@
 			</xsd:element>
 			<xsd:element name="DimensionX" type="BezugDimensionEnum">
 				<xsd:annotation>
-					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit)  </xsd:documentation>
+					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit, Windungen)  </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="DimensionY" type="BezugDimensionEnum" minOccurs="0">
@@ -338,6 +375,9 @@
 			<xsd:enumeration value="m3"/>
 			<xsd:enumeration value="ml/min"/>
 			<xsd:enumeration value="lgbar"/>
+			<xsd:enumeration value="g/l"/>
+			<xsd:enumeration value="I-Unit"/>
+			<xsd:enumeration value="pH"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BezugDimensionEnum">
@@ -346,13 +386,24 @@
 			<xsd:enumeration value="Laenge"/>
 			<xsd:enumeration value="Breite"/>
 			<xsd:enumeration value="Dicke"/>
+			<xsd:enumeration value="Windungen"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="StringMax3">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="3"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringMax8">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>			
 	<xsd:simpleType name="StringMax10">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="10"/>
 		</xsd:restriction>
-	</xsd:simpleType>
+	</xsd:simpleType>	
 	<xsd:simpleType name="StringMax100">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="100"/>
@@ -453,6 +504,7 @@
 			<xsd:element name="Max" type="xsd:double"/>
 			<xsd:element name="Avg" type="xsd:double"/>
 			<xsd:element name="StdDev" type="xsd:double"/>
+			<xsd:element name="Median" type="xsd:double" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="DefectMapType">
