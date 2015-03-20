@@ -41,6 +41,12 @@ namespace XmlExtract
             this.Messung = new List<MessungType>();
             this.MaterialHeader = new MaterialHeaderType();
         }
+
+        public bool ShouldSerializeEinzelwerte()
+        {
+            return (Einzelwerte.Einzelwert.Count > 0);
+        }
+
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
