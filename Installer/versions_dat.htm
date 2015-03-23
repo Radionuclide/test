@@ -17,11 +17,11 @@
   #comp td.sep  {background-color: white; height:20px}                                                  
   li.highlight {color: red; font-size: 14px; font-weight: bold}                                                       
 </style>                                                                                                             
-<TITLE>ibaAnalyzer Version History</TITLE>                                                                           
+<TITLE>ibaDatCoordinator Version History</TITLE>                                                                           
 </HEAD>    
 
 <body>
-<P class="title">iba DatCoordinator</P>
+<P class="title">ibaDatCoordinator</P>
 <p>&nbsp; </p>
 <P class="btn_selected">Files</P>
 <OL>
@@ -38,21 +38,21 @@ Execute ibaDatCoordinatorInstall_v1.22.3.exe and follow instructions.</p>
 <p>&nbsp; </p>
 <P class="btn_selected">Version history</P>
 <p>&nbsp; </p>
-<P class="header1">Version 1.22.3 - 16/02/2015</P>
+<P class="header1">Version 1.22.3 - 19/03/2015</P>
 <P class="header2">New features (N)</P>
 <OL>
 	<LI>Ability to transfer ibaAnalyzer settings (preferences, macros, filters) to the service account.</LI>
-	<LI>In the ibaDatCoodinator client, is is possible to set a different TCP port number to communicate with the service. This is useful in the case the standard port number (8800) is already in use.</LI>
+	<LI>In the ibaDatCoodinator client, it is possible to set a different TCP port number to communicate with the service. This is useful in the case the standard port number (8800) is already in use.</LI>
 </OL>
-<P class="header2">Improvements(I)</P>
+<P class="header2">Improvements (I)</P>
 <OL>
 	<LI>Update data task modified so processed entries are ignored entirely rather than giving an error, this allows for .dat files with the same file name</LI>
 	<LI>Copy task working on the output of a previous task will now also copy the ".cfg"-file of an extract task performing an extract to the COMTRADE file format.</LI>
 	<LI>In the scheduled job configuration pane, weekdays are now shown in the order as determined by the current UI culture.</LI>
 	<LI>When clearing "permanently failed" files, ibaDatCoordinator will now immediately reprocess them rather than waiting until the next rescan cycle.</LI>
-
+	<LI>Windows Distributed File System network shares are now supported.</LI>
 </OL>
-<P class="header2">Bugfixes(B)</P>
+<P class="header2">Bugfixes (B)</P>
 <OL>
 	<LI>The option to scan subfolders for .dat files was partially hidden underneath other controls when running ibaDatCoordinator in French.</LI>
 </OL>
