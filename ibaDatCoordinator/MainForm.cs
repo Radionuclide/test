@@ -719,7 +719,8 @@ namespace iba
                     m_statusTreeView.Nodes[jobtypeindex].Nodes.Add(statNode);
                     if(confIt.LimitTimesTried)
                     {
-                        TreeNode permFailedNode = new TreeNode(iba.Properties.Resources.PermanentlyFailedDatFiles, 3, 3);
+                        string text = jobtypeindex==1?iba.Properties.Resources.PermanentlyFailedTriggers:iba.Properties.Resources.PermanentlyFailedDatFiles;
+                        TreeNode permFailedNode = new TreeNode(text, 3, 3);
                         permFailedNode.Tag = new StatusPermanentlyErrorFilesTreeItemData(this as IPropertyPaneManager, confIt);
                         statNode.Nodes.Add(permFailedNode);
                     }

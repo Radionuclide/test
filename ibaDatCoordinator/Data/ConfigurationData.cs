@@ -77,7 +77,10 @@ namespace iba.Data
         private string m_datdirectoryUNC;
         public string DatDirectoryUNC
         {
-            get { return m_datdirectoryUNC; }
+            get {
+                if(m_jobType == JobTypeEnum.Scheduled)
+                    return HDQDirectory;
+                return m_datdirectoryUNC; }
             set {
                 m_datdirectoryUNC = XMLMultilineTextFixer.Fix(value);
             }

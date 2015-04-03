@@ -2260,6 +2260,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to permanently failed triggers.
+        /// </summary>
+        internal static string PermanentlyFailedTriggers {
+            get {
+                return ResourceManager.GetString("PermanentlyFailedTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to iba .Dat-files.
         /// </summary>
         internal static string PermErrorsColumnHeaderDat {

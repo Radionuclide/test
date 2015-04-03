@@ -482,7 +482,6 @@ namespace iba.Controls
                 return;
             }
 
-
             new SetNextName(cust);
             m_data.Tasks.Add(cust);
  

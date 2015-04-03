@@ -1241,4 +1241,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="serviceStatStopped" xml:space="preserve">
     <value>Stopped</value>
   </data>
+  <data name="PermanentlyFailedTriggers" xml:space="preserve">
+    <value>permanently failed triggers</value>
+  </data>
 </root>

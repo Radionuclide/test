@@ -191,7 +191,7 @@ namespace iba.Processing
                     ConfigurationData oldConfigurationData = m_cd;
                     m_cd = m_toUpdate.Clone_AlsoCopyGuids();
 
-                    if (!m_cd.OnetimeJob)
+                    if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     {
                         object errorObject;
                         SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
@@ -235,7 +235,7 @@ namespace iba.Processing
                         if (!m_cd.DetectNewFiles)
                             DisposeFswt();
                     }
-                    else
+                    else if (m_cd.JobType == ConfigurationData.JobTypeEnum.OneTime)
                     {
                         object errorObject;
                         SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
@@ -1382,6 +1382,10 @@ namespace iba.Processing
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logCheckingForUnprocessedDatFiles);
 
+            if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            {
+
+            }
             string datDir = m_cd.DatDirectoryUNC;
             if (!Directory.Exists(datDir))
             {
@@ -2020,7 +2024,7 @@ namespace iba.Processing
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
-                catch (Exception testWhenError)//no status field
+                catch (Exception )//no status field
                 {
                     ibaDatFile.Close();
                     ibaDatFile.OpenForUpdate(filename);

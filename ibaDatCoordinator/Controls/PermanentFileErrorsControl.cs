@@ -205,6 +205,7 @@ namespace iba.Controls
                 m_infoLabel.Text = Properties.Resources.PermErrorsLabelDat;
                 DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderDat;
             }
+            m_confNameLinkLabel.Left = m_infoLabel.Right + 5;
             m_confNameLinkLabel.Text = m_cd.Name;
             int count = m_cd.Tasks.Count;
             if (m_gridView.ColumnCount != (count + 3))
