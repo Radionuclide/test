@@ -2640,17 +2640,19 @@ namespace iba
 
         private void UpdateTreePositions()
         {
+            int suffix = 0;
             foreach(TreeNode parentNode in m_configTreeView.Nodes)
             {
+                suffix += 1000;
                 foreach(TreeNode node in parentNode.Nodes)
                 {
                     ConfigurationTreeItemData dat = (node.Tag as ConfigurationTreeItemData);
                     if(dat != null)
                     {
-                        dat.ConfigurationData.TreePosition = node.Index;
+                        dat.ConfigurationData.TreePosition = suffix + node.Index;
                         if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                         {
-                            TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.Guid, node.Index);
+                            TaskManager.Manager.UpdateTreePosition(dat.ConfigurationData.Guid, dat.ConfigurationData.TreePosition);
                         }
                     }
                 }
