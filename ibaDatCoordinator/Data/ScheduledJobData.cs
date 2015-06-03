@@ -164,6 +164,7 @@ namespace iba.Data
             m_HDServer = "";
             m_startRangeFromTrigger = TimeSpan.FromHours(1);
             m_stopRangeFromTrigger = TimeSpan.Zero;
+            m_bUsePreviousTriggerAsStart = false;
             m_preferredTimeBaseTicks = 0;
             m_bPreferredTimeBaseIsAuto = true;
         }
@@ -191,6 +192,13 @@ namespace iba.Data
         {
             get { return m_stopRangeFromTrigger.Ticks; }
             set { m_stopRangeFromTrigger = TimeSpan.FromTicks(value); }
+        }
+
+        private bool m_bUsePreviousTriggerAsStart;
+        public bool UsePreviousTriggerAsStart
+        {
+            get { return m_bUsePreviousTriggerAsStart; }
+            set { m_bUsePreviousTriggerAsStart = value; }
         }
 
         private long m_preferredTimeBaseTicks; //in ticks
@@ -243,6 +251,7 @@ namespace iba.Data
             nsjd.m_HDPort = m_HDPort;
             nsjd.m_startRangeFromTrigger = m_startRangeFromTrigger;
             nsjd.m_stopRangeFromTrigger = m_stopRangeFromTrigger;
+            nsjd.m_bUsePreviousTriggerAsStart = m_bUsePreviousTriggerAsStart;
             nsjd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
             nsjd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
             return nsjd;
@@ -271,6 +280,7 @@ namespace iba.Data
             other.m_HDPort == m_HDPort &&
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
             other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
+            other.m_bUsePreviousTriggerAsStart == m_bUsePreviousTriggerAsStart &&
             other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks &&
             other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
         }

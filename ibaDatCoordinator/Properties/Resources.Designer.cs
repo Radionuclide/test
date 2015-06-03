@@ -1215,6 +1215,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to determine previous trigger, please review trigger settings of Job {0}.
+        /// </summary>
+        internal static string logFailDeterminePreviousTrigger {
+            get {
+                return ResourceManager.GetString("logFailDeterminePreviousTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous trigger inside deadband of current trigger, please review trigger settings of Job {0}.
+        /// </summary>
+        internal static string logFailDeterminePreviousTrigger2 {
+            get {
+                return ResourceManager.GetString("logFailDeterminePreviousTrigger2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to this version of ibaDatCoordinator requires ibaAnalyzer version 5.0 or higher.
         /// </summary>
         internal static string logFileVersionToLow {

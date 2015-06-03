@@ -55,6 +55,7 @@ namespace iba.Controls
             //Debug.Assert(n == tmpStamps.Count());
             for (int i = 0; i < n; i++)
                 m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
+            AddEventsToTriggerControls(gbTrigger);
         }
 
         private RadioButton[] m_rbs;
@@ -115,6 +116,7 @@ namespace iba.Controls
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
             m_hdStorePicker.SelectedStore = m_scheduleData.HDStores.Length>0?m_scheduleData.HDStores[0]:"";
             //timeSelection
+            m_scheduleData.UsePreviousTriggerAsStart = m_cbUseTriggerAsStart.Checked; //must come first, otherwise eventhandlers caused by assignments below don't work
             Start = m_scheduleData.StartRangeFromTrigger;
             Stop = m_scheduleData.StopRangeFromTrigger;
             if(m_scheduleData.PreferredTimeBaseIsAuto)
@@ -157,6 +159,7 @@ namespace iba.Controls
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
             m_scheduleData.StopRangeFromTrigger = Stop;
+            m_scheduleData.UsePreviousTriggerAsStart = m_cbUseTriggerAsStart.Checked;
             if(m_cbTimeBase.SelectedIndex == 0) //auto
             {
                 m_scheduleData.PreferredTimeBaseTicks = GetAutoItem().m_timebaseLength;
@@ -254,7 +257,7 @@ namespace iba.Controls
         }
 
         bool DisableStartChangedEvent;
-        private void StartChanged(object sender, EventArgs e)
+        private void OnStartChanged(object sender, EventArgs e)
         {
             if(DisableStartChangedEvent) return;
             try
@@ -281,20 +284,23 @@ namespace iba.Controls
                         sp = TimeSpan.FromSeconds((int)m_nudStartSeconds.Value);
                     }
                 }
-                long diff = TimeSpan.FromSeconds(1).Ticks;
-                if(sp.Ticks >= m_tsStop.Ticks + diff)
+                if(!m_cbUseTriggerAsStart.Checked)
                 {
-                    Start = sp;
-                }
-                else if(sp.Ticks >= diff)
-                {
-                    Start = sp;
-                    Stop = TimeSpan.FromTicks(sp.Ticks - diff);
-                }
-                else
-                {
-                    Stop = TimeSpan.FromTicks(0);
-                    Start = TimeSpan.FromTicks(diff);
+                    long diff = TimeSpan.FromSeconds(1).Ticks;
+                    if(sp.Ticks >= m_tsStop.Ticks + diff)
+                    {
+                        Start = sp;
+                    }
+                    else if(sp.Ticks >= diff)
+                    {
+                        Start = sp;
+                        Stop = TimeSpan.FromTicks(sp.Ticks - diff);
+                    }
+                    else
+                    {
+                        Stop = TimeSpan.FromTicks(0);
+                        Start = TimeSpan.FromTicks(diff);
+                    }
                 }
             }
             finally
@@ -306,7 +312,7 @@ namespace iba.Controls
         
         bool DisableStopChangedEvent;
 
-        private void StopChanged(object sender, EventArgs e)
+        private void OnStopChanged(object sender, EventArgs e)
         {
             if(DisableStopChangedEvent) return;
             try
@@ -336,10 +342,13 @@ namespace iba.Controls
                 }
                 if(sp.Ticks < 0) sp = TimeSpan.Zero;
                 Stop = sp;
-                long diff = TimeSpan.FromSeconds(1).Ticks;
-                if(m_tsStart.Ticks < sp.Ticks + diff)
+                if(!m_cbUseTriggerAsStart.Checked)
                 {
-                    Start = TimeSpan.FromTicks(sp.Ticks + diff);
+                    long diff = TimeSpan.FromSeconds(1).Ticks;
+                    if(m_tsStart.Ticks < sp.Ticks + diff)
+                    {
+                        Start = TimeSpan.FromTicks(sp.Ticks + diff);
+                    }
                 }
             }
             finally
@@ -353,14 +362,13 @@ namespace iba.Controls
             e.DrawBackground();
             if (e.Index < 0) return;
             string tooltipText = null;
-            string text = ((ComboBox)sender).Items[e.Index].ToString();
-            if (e.Index == 0)
-                text = String.Format(text, GetAutoItem());
             Brush brush = null;
+            bool unknowntba = false;
             switch (CheckTimeBaseAcceptability(((ComboBox)sender).Items[e.Index] as TimeCbItem))
             {
                 case TimeBaseAcceptability.Unknown:
-                    brush = new SolidBrush(e.ForeColor);
+                    brush = new SolidBrush(SystemColors.WindowText);
+                    unknowntba = true;
                     break;
                 case TimeBaseAcceptability.Allowed:
                     brush = Brushes.Green;
@@ -374,6 +382,14 @@ namespace iba.Controls
                     brush = Brushes.Red;
                     tooltipText = Properties.Resources.TooltipRed;
                     break;
+            }
+            string text = ((ComboBox)sender).Items[e.Index].ToString();
+            if(e.Index == 0)
+            {
+                if (unknowntba)
+                    text = String.Format(text, "?");
+                else
+                    text = String.Format(text, GetAutoItem());
             }
             if ((e.State & DrawItemState.Focus) == DrawItemState.Focus)
             {
@@ -434,7 +450,11 @@ namespace iba.Controls
 
         public TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
         {
-            long duration = Start.Ticks - Stop.Ticks;
+            long duration = 0;
+            if(m_cbUseTriggerAsStart.Checked)
+                duration = m_queryRangeUseTriggerAsStart.Ticks;
+            else
+                duration = Start.Ticks - Stop.Ticks;
             if (duration <= 0) return TimeBaseAcceptability.Unknown;
             if (item.m_timebaseLength == 0) return TimeBaseAcceptability.Allowed; //auto
             double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
@@ -491,6 +511,49 @@ namespace iba.Controls
             RepeatInterval = TimeSpan.FromHours((int)(m_nudRepeatHours.Value)).Add(TimeSpan.FromMinutes(((int)(m_nudRepeatMinutes.Value))));
             DisableRepeatChanged = false;
         }
+
+        private void m_cbUseTriggerAsStart_CheckedChanged(object sender, EventArgs e)
+        {
+            //Control[] toHide = new Control[] {label5,label6,label7,label8,label9, m_nudStartDays, m_nudStartHours, m_nudRepeatMinutes, m_nudStartSeconds };
+            //foreach(Control ctrl in toHide)
+            //{
+            //    ctrl.Enabled = !ck;
+            //}
+            bool ck = m_cbUseTriggerAsStart.Checked;
+            if(ck)
+                OnTriggerControlValidated(sender, e);
+            OnStartChanged(sender, e);
+        }
+
+        private TimeSpan m_queryRangeUseTriggerAsStart;
+
+        private void OnTriggerControlValidated(object sender, EventArgs e)
+        {
+            if(!m_cbUseTriggerAsStart.Checked) 
+                return; //not interested in case of fixed query range
+            ScheduledJobData oldData = m_scheduleData.Clone() as ScheduledJobData;
+            SaveData();
+            if(oldData.IsSame(m_scheduleData))
+                return; //nothing relevant changed
+            TriggerCalculator c = new TriggerCalculator(m_scheduleData);
+            m_queryRangeUseTriggerAsStart = c.MaxQueryRange();
+            long correct = Start.Ticks - Stop.Ticks;
+            if(m_queryRangeUseTriggerAsStart.Ticks <= 0 || m_queryRangeUseTriggerAsStart.Ticks+correct <= 0)
+                m_queryRangeUseTriggerAsStart = TimeSpan.Zero;
+            else
+                m_queryRangeUseTriggerAsStart += TimeSpan.FromTicks(correct);
+            m_cbTimeBase.Invalidate();
+        }
+
+        private void AddEventsToTriggerControls(Control ctrl)
+        {
+            ctrl.Validated += new System.EventHandler(this.OnTriggerControlValidated);
+            foreach(Control child in ctrl.Controls)
+            {
+                AddEventsToTriggerControls(child);
+            }
+        }
+
     }
 
     public class CustomNumericUpDown : NumericUpDown

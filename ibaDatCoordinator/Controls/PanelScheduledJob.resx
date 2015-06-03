@@ -121,53 +121,17 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btShowTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btShowTrigger.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_btShowTrigger.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_btShowTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>500, 11</value>
-  </data>
-  <data name="m_btShowTrigger.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 23</value>
-  </data>
-  <data name="m_btShowTrigger.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_btShowTrigger.Text" xml:space="preserve">
-    <value>Next trigger info</value>
-  </data>
-  <data name="m_btShowTrigger.ToolTip" xml:space="preserve">
-    <value>Calculate and report next trigger time</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Name" xml:space="preserve">
-    <value>m_btShowTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btShowTrigger.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btTriggerNow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btTriggerNow.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_btTriggerNow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btTriggerNow.Location" type="System.Drawing.Point, System.Drawing">
     <value>597, 11</value>
   </data>
@@ -194,6 +158,42 @@
   </data>
   <data name="&gt;&gt;m_btTriggerNow.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btShowTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btShowTrigger.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_btShowTrigger.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btShowTrigger.Location" type="System.Drawing.Point, System.Drawing">
+    <value>500, 11</value>
+  </data>
+  <data name="m_btShowTrigger.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 23</value>
+  </data>
+  <data name="m_btShowTrigger.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_btShowTrigger.Text" xml:space="preserve">
+    <value>Next trigger info</value>
+  </data>
+  <data name="m_btShowTrigger.ToolTip" xml:space="preserve">
+    <value>Calculate and report next trigger time</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Name" xml:space="preserve">
+    <value>m_btShowTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.Parent" xml:space="preserve">
+    <value>gbTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_btShowTrigger.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="gbSchedule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -244,7 +244,7 @@
     <value>m_nudRepeatTimes</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Type" xml:space="preserve">
-    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=1.22.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Parent" xml:space="preserve">
     <value>gbSchedule</value>
@@ -254,6 +254,9 @@
   </data>
   <data name="label18.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
     <value>245, 280</value>
@@ -427,7 +430,7 @@
     <value>m_dtStart</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
-    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=1.22.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
     <value>gbTrigger</value>
@@ -660,6 +663,38 @@
   <data name="m_undoChangesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_undoChangesBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk12BgAAAAAAADYEAAAoAAAAGAAAABgAAAABAAgAAAAAAAAAAAASCwAAEgsAAAABAAAAAQAAAAAA/2BI
+        MP9gUED/QFhw/0BgcP9wcHD/gGhQ/wCAAP9geJD//wD//1CIoP9QmLD/cJCg/2Cw0P9wuND/cMjg/3DQ
+        4P9w2PD/sKCQ/4CQoP+AmKD/kJig/5CgsP+QqLD/sLCw/8CgkP/AqKD/wLCg/9CwoP/QuKD/0Liw/9DA
+        sP/gwLD/sLjA/5DA0P+QyND/sMDA/7DQ0P+A0OD/gNjw/4Dg8P/AwMD/0MDA/9D////g////8P////7+
+        /v//////AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wkJ
+        CQkJCQkJCQkAAAAAAAAAAAAAAAAACQkJCQkJCQkJCQkALi4uLi4uLi4uLi4ACQkJCQkJCQkJCQkALi4u
+        Ly4uLi4uLi4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLi4ACQkJCQkJCQkJCQkALi8vLwcHBy8vLy4ACQkJ
+        CQkJCQkJCQkALi4vBwcHBwcuLy4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi8v
+        Li4HLi8uLi4ACQkJCQkJCQkJCQkALi8uLi4HLi8vLi4ACQkJCQkJCQkJCQMALi8vLy8HLy8vLy4ACQkJ
+        CQkJCQkJAwMALi4uLi8HLy8vLi4ACQkJCQkJCQkDAw8ALi4uLi8HLi8uLi4ACQkJCQkJCQkDDg4ALi4u
+        Li4uLi4AAAAACQkJCQkJCQkEBAoALi4uLi4uLi4AAAAJCQkJCQkJAwQLDSgALi4uLi4uLi4AAAkJCQkJ
+        CQkDAw0QESYAAAAAAAAAAAAACQkJCRIBAQIDDigiFBQoCCgDJxMJCQkJCQkJCRIvIAwmJhYWJigUKAgo
+        ExQJCQkJCQkJCRkvKhcjFyElFRQjFCgTBQkJCQkJCQkJCRovBikXKQYpBiEUExMYAQkJCQkJCQkJCRsv
+        Ki8qLyotKSwkKyQgAQkJCQkJCQkJCR4vBioGKgYqBikGJAYgAQkJCQkJCQkJCR8vLy8vLy8vLy0tLCwr
+        AQkJCQkJCQkJCSAgHx8fHx8fHh4eHR0dHAkJCQkJCQkJCQ==
+</value>
+  </data>
   <data name="m_undoChangesBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -772,6 +807,20 @@
   <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_stopButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
+        Cw4BQL7hQQAAAaFJREFUSEuVlFd2wzAMBHX/A+R06b335hQpO3paB6RImf4YEaDEXTyYcDcMQ5Wdrhta
+        yM9FipswHmxkyaS4uUm8n/gN1ExmGy2VW/xn4lt8iZJJkrSIg8UtvBKf4kPkJuugVRxsEMXfxZt4EdFk
+        fGwjDhhQPeJUjfireBaP4l7YZGtxcPWuPBe/FdcC7cSg7/uRPI/YwPmNYsTjN5fKITHgRRR2XMtpD9UT
+        Y8JqYeITrVWDnPwdOe3hRyUuGRxoTQx8EKKY9/McA3pPbANjo5lBFNiUlwzOtSJM9bsiMeADTyhxnFRy
+        rqUhR/xpim1wprVuAPoIEPWUAntUbNx74DoC8alWDPbFzGBp/D2lVO3KH4TvO6JUz805FIsGtfHnriMM
+        cZgQp/dUfyxmBv6raBn/uwl6fiUuRBQ/EvR/T4yFj6XrYZOW8XfViNMWxGkN4q7e4okB8ILqaYvFXbFb
+        AVHYlSPu4Yqa68DwAT13ry3uHzEXtXBeuUkSw4fckiiOKEIWM/Q79jxntmE4QL9pCVUjzM0oUROH4qbh
+        YAv5uX+G7g/umyRiyuMG7AAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_stopButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -798,6 +847,38 @@
   </data>
   <data name="m_applyToRunningBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_applyToRunningBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk12BgAAAAAAADYEAAAoAAAAGAAAABgAAAABAAgAAAAAAAAAAAASCwAAEgsAAAABAAAAAQAAAAAA/2BI
+        MP9gUED/QFhw/0BgcP9wcHD/gGhQ/wCAAP9geJD//wD//1CIoP9QmLD/cJCg/2Cw0P9wuND/cMjg/3DQ
+        4P9w2PD/sKCQ/4CQoP+AmKD/kJig/5CgsP+QqLD/sLCw/8CgkP/AqKD/wLCg/9CwoP/QuKD/0Liw/9DA
+        sP/gwLD/sLjA/5DA0P+QyND/sMDA/7DQ0P+A0OD/gNjw/4Dg8P/AwMD/0MDA/9D////g////8P////7+
+        /v//////AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wkJ
+        CQkJCQkJCQkAAAAAAAAAAAAAAAAACQkJCQkJCQkJCQkALi4uLi4uLi4uLi4ACQkJCQkJCQkJCQkALi4u
+        Ly4uLi4uLi4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLi4ACQkJCQkJCQkJCQkALi8vLy8HLy8vLy4ACQkJ
+        CQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi8v
+        Li4HLi8uLi4ACQkJCQkJCQkJCQkALi8uLi4HLi8vLi4ACQkJCQkJCQkJCQMALi8vBwcHBwcvLy4ACQkJ
+        CQkJCQkJAwMALi4uLgcHBy8vLi4ACQkJCQkJCQkDAw8ALi4uLi4HLi8uLi4ACQkJCQkJCQkDDg4ALi4u
+        Li4uLi4AAAAACQkJCQkJCQkEBAoALi4uLi4uLi4AAAAJCQkJCQkJAwQLDSgALi4uLi4uLi4AAAkJCQkJ
+        CQkDAw0QESYAAAAAAAAAAAAACQkJCRIBAQIDDigiFBQoCCgDJxMJCQkJCQkJCRIvIAwmJhYWJigUKAgo
+        ExQJCQkJCQkJCRkvKhcjFyElFRQjFCgTBQkJCQkJCQkJCRovBikXKQYpBiEUExMYAQkJCQkJCQkJCRsv
+        Ki8qLyotKSwkKyQgAQkJCQkJCQkJCR4vBioGKgYqBikGJAYgAQkJCQkJCQkJCR8vLy8vLy8vLy0tLCwr
+        AQkJCQkJCQkJCSAgHx8fHx8fHh4eHR0dHAkJCQkJCQkJCQ==
+</value>
   </data>
   <data name="m_applyToRunningBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -829,6 +910,23 @@
   </data>
   <data name="m_startButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_startButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
+        Cw4BQL7hQQAAAlFJREFUSEu1lUlLXFEQhQsCSiItIYPGmEEj/h//i5uoEVGRBGIGJKCLJOJCXYibIK6k
+        t67d57d0eb56775+kx2C3YuD91bVOTXd15q7/xMzS+ZtqMe1odUIykK2vNiKckydn9BqDNH3C24r79xW
+        hbV5tw/Ceg7O2PARo9i7kjQMIQ4ZoY05t823bttv3HZeu33KwRkbPmKIFactSeUS4lQHaUvkEH3l9nnW
+        7etLt72ZDJyx4SOGWDji1pNUxdfULoHbIlDprgS+S+yHRA+m3X5NZeCMDR8xxMKBK41ykr44M6dVqvko
+        whdVSLX7Evv53O3oqdvpkwycseEjhlg4cNEo7aSfgGVRwY5mu5uLU+nhM7djiZ49dvszmYEzNnzEEAsH
+        LhrSaibgRbA02qX1/Rfe6/UqsKuJDBedql2xwYGLhrSKBCHOu2b+zJGZar5BPNYozlXtZcet+8jtejwQ
+        Pmz4FBN3dgIXDbTy76SfgNdDi99UidoOEqNQtdZ9KOExt5sHgfBhw6eYuDMquGig1UjAcmiReeqlBIl5
+        aySc4/5XsUKc6YZxKSbuvC64aKD1PwmKsdwrwYARcY77vUZUW3LqIshaaPzNl8zCky/sVH/Xkgc9U/ut
+        j+lE753XQrWMBHDGho+YQc+0SDDyD22UPxVFEmZHBcyRdpkprTNfKmXWgDM2fMQQCweuNJJ4JQGIJLwA
+        AqlmmD/XCVknSkKrkFjasP7hJEQSdsLieV0kpDOEAGds+IgpzbyOhiEBQkJ8Jy0ox9T5Ca3GOspCZdTj
+        mnC7BSd5ouM0yB4TAAAAAElFTkSuQmCC
+</value>
   </data>
   <data name="m_startButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1017,7 +1115,7 @@
     <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1025,8 +1123,65 @@
   <data name="&gt;&gt;gbSchedule.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="gbHD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="gbHD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 313</value>
+  </data>
+  <data name="gbHD.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 216</value>
+  </data>
+  <data name="gbHD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 216</value>
+  </data>
+  <data name="gbHD.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gbHD.Text" xml:space="preserve">
+    <value>HD Connection</value>
+  </data>
+  <data name="&gt;&gt;gbHD.Name" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbHD.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="gbTimeSelection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>62, 50</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 17</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.Text" xml:space="preserve">
+    <value>Use previous trigger time</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseTriggerAsStart.Name" xml:space="preserve">
+    <value>m_cbUseTriggerAsStart</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseTriggerAsStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseTriggerAsStart.Parent" xml:space="preserve">
+    <value>gbTimeSelection</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseTriggerAsStart.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_lblTimebase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1044,7 +1199,7 @@
     <value>101, 13</value>
   </data>
   <data name="m_lblTimebase.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="m_lblTimebase.Text" xml:space="preserve">
     <value>Preferred time base:</value>
@@ -1059,19 +1214,19 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_lblTimebase.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_cbTimeBase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_cbTimeBase.Location" type="System.Drawing.Point, System.Drawing">
-    <value>562, 42</value>
+    <value>559, 42</value>
   </data>
   <data name="m_cbTimeBase.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 21</value>
   </data>
   <data name="m_cbTimeBase.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="&gt;&gt;m_cbTimeBase.Name" xml:space="preserve">
     <value>m_cbTimeBase</value>
@@ -1083,7 +1238,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_cbTimeBase.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1092,13 +1247,13 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>375, 53</value>
+    <value>375, 75</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>seconds before trigger time</value>
@@ -1113,16 +1268,16 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_nudStopSeconds.Location" type="System.Drawing.Point, System.Drawing">
-    <value>329, 51</value>
+    <value>329, 73</value>
   </data>
   <data name="m_nudStopSeconds.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
   </data>
   <data name="m_nudStopSeconds.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="&gt;&gt;m_nudStopSeconds.Name" xml:space="preserve">
     <value>m_nudStopSeconds</value>
@@ -1134,7 +1289,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStopSeconds.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1143,13 +1298,13 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>280, 53</value>
+    <value>280, 75</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>minutes</value>
@@ -1164,16 +1319,16 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_nudStopMinutes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 52</value>
+    <value>234, 74</value>
   </data>
   <data name="m_nudStopMinutes.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
   </data>
   <data name="m_nudStopMinutes.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;m_nudStopMinutes.Name" xml:space="preserve">
     <value>m_nudStopMinutes</value>
@@ -1185,7 +1340,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStopMinutes.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1194,13 +1349,13 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 53</value>
+    <value>195, 75</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>hours</value>
@@ -1215,7 +1370,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1224,13 +1379,13 @@
     <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 53</value>
+    <value>108, 75</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>days</value>
@@ -1245,16 +1400,16 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_nudStopHours.Location" type="System.Drawing.Point, System.Drawing">
-    <value>149, 51</value>
+    <value>149, 73</value>
   </data>
   <data name="m_nudStopHours.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
   </data>
   <data name="m_nudStopHours.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;m_nudStopHours.Name" xml:space="preserve">
     <value>m_nudStopHours</value>
@@ -1266,16 +1421,16 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStopHours.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_nudStopDays.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 51</value>
+    <value>62, 73</value>
   </data>
   <data name="m_nudStopDays.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
   </data>
   <data name="m_nudStopDays.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_nudStopDays.Name" xml:space="preserve">
     <value>m_nudStopDays</value>
@@ -1287,7 +1442,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStopDays.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1296,13 +1451,13 @@
     <value>NoControl</value>
   </data>
   <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 53</value>
+    <value>15, 75</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 13</value>
   </data>
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>Stop:</value>
@@ -1317,7 +1472,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1347,7 +1502,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_nudStartSeconds.Location" type="System.Drawing.Point, System.Drawing">
     <value>329, 24</value>
@@ -1368,7 +1523,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStartSeconds.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1398,7 +1553,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_nudStartMinutes.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 24</value>
@@ -1419,7 +1574,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStartMinutes.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1449,7 +1604,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1479,7 +1634,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="m_nudStartHours.Location" type="System.Drawing.Point, System.Drawing">
     <value>149, 24</value>
@@ -1500,7 +1655,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStartHours.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="m_nudStartDays.Location" type="System.Drawing.Point, System.Drawing">
     <value>62, 24</value>
@@ -1521,7 +1676,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;m_nudStartDays.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1551,13 +1706,13 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="gbTimeSelection.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 535</value>
   </data>
   <data name="gbTimeSelection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 85</value>
+    <value>702, 101</value>
   </data>
   <data name="gbTimeSelection.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1569,43 +1724,13 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="gbHD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="gbHD.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 313</value>
-  </data>
-  <data name="gbHD.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 216</value>
-  </data>
-  <data name="gbHD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 216</value>
-  </data>
-  <data name="gbHD.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gbHD.Text" xml:space="preserve">
-    <value>HD Connection</value>
-  </data>
-  <data name="&gt;&gt;gbHD.Name" xml:space="preserve">
-    <value>gbHD</value>
-  </data>
-  <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbHD.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1614,7 +1739,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 620</value>
+    <value>702, 639</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

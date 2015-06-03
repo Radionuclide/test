@@ -38,8 +38,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelScheduledJob));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.m_btTriggerNow = new System.Windows.Forms.Button();
+            this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_nudRepeatTimes = new iba.Controls.CustomNumericUpDown();
@@ -70,7 +70,9 @@
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
+            this.gbHD = new iba.Utility.CollapsibleGroupBox();
             this.gbTimeSelection = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbUseTriggerAsStart = new System.Windows.Forms.CheckBox();
             this.m_lblTimebase = new System.Windows.Forms.Label();
             this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -91,7 +93,6 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.gbHD = new iba.Utility.CollapsibleGroupBox();
             this.gbSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
@@ -110,14 +111,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
             this.SuspendLayout();
             // 
-            // m_btShowTrigger
-            // 
-            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
-            this.m_btShowTrigger.Name = "m_btShowTrigger";
-            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
-            this.m_btShowTrigger.UseVisualStyleBackColor = true;
-            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
-            // 
             // m_btTriggerNow
             // 
             resources.ApplyResources(this.m_btTriggerNow, "m_btTriggerNow");
@@ -125,6 +118,14 @@
             this.m_toolTip.SetToolTip(this.m_btTriggerNow, resources.GetString("m_btTriggerNow.ToolTip"));
             this.m_btTriggerNow.UseVisualStyleBackColor = true;
             this.m_btTriggerNow.Click += new System.EventHandler(this.m_btTriggerNow_Click);
+            // 
+            // m_btShowTrigger
+            // 
+            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
+            this.m_btShowTrigger.Name = "m_btShowTrigger";
+            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
+            this.m_btShowTrigger.UseVisualStyleBackColor = true;
+            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
             // 
             // gbSchedule
             // 
@@ -163,6 +164,7 @@
             // 
             resources.ApplyResources(this.m_nudRepeatTimes, "m_nudRepeatTimes");
             this.m_nudRepeatTimes.Name = "m_nudRepeatTimes";
+            this.m_nudRepeatTimes.Validated += new System.EventHandler(this.OnTriggerControlValidated);
             // 
             // label18
             // 
@@ -189,6 +191,7 @@
             -2147483648});
             this.m_nudRepeatMinutes.Name = "m_nudRepeatMinutes";
             this.m_nudRepeatMinutes.ValueChanged += new System.EventHandler(this.m_nudRepeat_ValueChanged);
+            this.m_nudRepeatMinutes.Validated += new System.EventHandler(this.OnTriggerControlValidated);
             // 
             // label17
             // 
@@ -205,6 +208,7 @@
             0});
             this.m_nudRepeatHours.Name = "m_nudRepeatHours";
             this.m_nudRepeatHours.ValueChanged += new System.EventHandler(this.m_nudRepeat_ValueChanged);
+            this.m_nudRepeatHours.Validated += new System.EventHandler(this.OnTriggerControlValidated);
             // 
             // m_cbRepeat
             // 
@@ -286,7 +290,6 @@
             // m_undoChangesBtn
             // 
             resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
-            this.m_undoChangesBtn.Image = global::iba.Properties.Resources.undoconfs;
             this.m_undoChangesBtn.Name = "m_undoChangesBtn";
             this.m_undoChangesBtn.UseVisualStyleBackColor = true;
             // 
@@ -325,21 +328,18 @@
             // m_stopButton
             // 
             resources.ApplyResources(this.m_stopButton, "m_stopButton");
-            this.m_stopButton.Image = global::iba.Properties.Resources.Stop;
             this.m_stopButton.Name = "m_stopButton";
             this.m_stopButton.UseVisualStyleBackColor = true;
             // 
             // m_applyToRunningBtn
             // 
             resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
-            this.m_applyToRunningBtn.Image = global::iba.Properties.Resources.refreshconfs;
             this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
             this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
             // 
             // m_startButton
             // 
             resources.ApplyResources(this.m_startButton, "m_startButton");
-            this.m_startButton.Image = global::iba.Properties.Resources.Start;
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
             // 
@@ -386,9 +386,16 @@
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
             // 
+            // gbHD
+            // 
+            resources.ApplyResources(this.gbHD, "gbHD");
+            this.gbHD.Name = "gbHD";
+            this.gbHD.TabStop = false;
+            // 
             // gbTimeSelection
             // 
             resources.ApplyResources(this.gbTimeSelection, "gbTimeSelection");
+            this.gbTimeSelection.Controls.Add(this.m_cbUseTriggerAsStart);
             this.gbTimeSelection.Controls.Add(this.m_lblTimebase);
             this.gbTimeSelection.Controls.Add(this.m_cbTimeBase);
             this.gbTimeSelection.Controls.Add(this.label3);
@@ -411,6 +418,13 @@
             this.gbTimeSelection.Controls.Add(this.label9);
             this.gbTimeSelection.Name = "gbTimeSelection";
             this.gbTimeSelection.TabStop = false;
+            // 
+            // m_cbUseTriggerAsStart
+            // 
+            resources.ApplyResources(this.m_cbUseTriggerAsStart, "m_cbUseTriggerAsStart");
+            this.m_cbUseTriggerAsStart.Name = "m_cbUseTriggerAsStart";
+            this.m_cbUseTriggerAsStart.UseVisualStyleBackColor = true;
+            this.m_cbUseTriggerAsStart.CheckedChanged += new System.EventHandler(this.m_cbUseTriggerAsStart_CheckedChanged);
             // 
             // m_lblTimebase
             // 
@@ -448,7 +462,7 @@
             0,
             -2147483648});
             this.m_nudStopSeconds.Name = "m_nudStopSeconds";
-            this.m_nudStopSeconds.ValueChanged += new System.EventHandler(this.StopChanged);
+            this.m_nudStopSeconds.ValueChanged += new System.EventHandler(this.OnStopChanged);
             // 
             // label4
             // 
@@ -469,7 +483,7 @@
             0,
             -2147483648});
             this.m_nudStopMinutes.Name = "m_nudStopMinutes";
-            this.m_nudStopMinutes.ValueChanged += new System.EventHandler(this.StopChanged);
+            this.m_nudStopMinutes.ValueChanged += new System.EventHandler(this.OnStopChanged);
             // 
             // label12
             // 
@@ -495,7 +509,7 @@
             0,
             -2147483648});
             this.m_nudStopHours.Name = "m_nudStopHours";
-            this.m_nudStopHours.ValueChanged += new System.EventHandler(this.StopChanged);
+            this.m_nudStopHours.ValueChanged += new System.EventHandler(this.OnStopChanged);
             // 
             // m_nudStopDays
             // 
@@ -506,7 +520,7 @@
             0,
             0});
             this.m_nudStopDays.Name = "m_nudStopDays";
-            this.m_nudStopDays.ValueChanged += new System.EventHandler(this.StopChanged);
+            this.m_nudStopDays.ValueChanged += new System.EventHandler(this.OnStopChanged);
             // 
             // label15
             // 
@@ -532,7 +546,7 @@
             0,
             -2147483648});
             this.m_nudStartSeconds.Name = "m_nudStartSeconds";
-            this.m_nudStartSeconds.ValueChanged += new System.EventHandler(this.StartChanged);
+            this.m_nudStartSeconds.ValueChanged += new System.EventHandler(this.OnStartChanged);
             // 
             // label6
             // 
@@ -553,7 +567,7 @@
             0,
             -2147483648});
             this.m_nudStartMinutes.Name = "m_nudStartMinutes";
-            this.m_nudStartMinutes.ValueChanged += new System.EventHandler(this.StartChanged);
+            this.m_nudStartMinutes.ValueChanged += new System.EventHandler(this.OnStartChanged);
             // 
             // label7
             // 
@@ -579,7 +593,7 @@
             0,
             -2147483648});
             this.m_nudStartHours.Name = "m_nudStartHours";
-            this.m_nudStartHours.ValueChanged += new System.EventHandler(this.StartChanged);
+            this.m_nudStartHours.ValueChanged += new System.EventHandler(this.OnStartChanged);
             // 
             // m_nudStartDays
             // 
@@ -590,18 +604,12 @@
             0,
             0});
             this.m_nudStartDays.Name = "m_nudStartDays";
-            this.m_nudStartDays.ValueChanged += new System.EventHandler(this.StartChanged);
+            this.m_nudStartDays.ValueChanged += new System.EventHandler(this.OnStartChanged);
             // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            // 
-            // gbHD
-            // 
-            resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Name = "gbHD";
-            this.gbHD.TabStop = false;
             // 
             // PanelScheduledJob
             // 
@@ -692,5 +700,6 @@
         private System.Windows.Forms.NumericUpDown m_nudRepeatHours;
         private CustomNumericUpDown m_nudRepeatTimes;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
+        private System.Windows.Forms.CheckBox m_cbUseTriggerAsStart;
     }
 }

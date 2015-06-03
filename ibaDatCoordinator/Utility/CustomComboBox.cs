@@ -1153,7 +1153,7 @@ namespace iba.Utility
             int offset = 0;
             if(!zeroindexed) offset--;
             if(m_bFirstIsAll) offset++;
-            return m_items.Select((value, index) => new { value, index }).Skip(zeroindexed?1:0).Where(z => z.value.Checked).Select(z => z.index - offset);
+            return m_items.Select((value, index) => new { value, index }).Skip(m_bFirstIsAll ? 1 : 0).Where(z => z.value.Checked).Select(z => z.index - offset);
         }
     }
 

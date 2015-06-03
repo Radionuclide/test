@@ -337,7 +337,7 @@ namespace iba.Data
 
         public bool IsSame(ConfigurationData other)
         {
-            //compares but don't care about transient fields like m_uncPath and treepostion
+            //compares but don't care about transient fields like m_uncPath and tree position
             if (other == null) return false;
             if (other == this) return true;
             if (m_tasks.Count != other.m_tasks.Count) return false;
@@ -453,9 +453,26 @@ namespace iba.Data
                 sw.WriteLine("portnumber=" + ScheduleData.HDPort);
                 sw.WriteLine("store=" + ScheduleData.HDStores[0]);
                 DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
+                DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
                 String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("starttime=" + temp);
-                DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
+                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("stoptime=" + temp);
+                sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+            }
+        }
+
+        public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
+        {
+            using(StreamWriter sw = new StreamWriter(path, false))
+            {
+                sw.WriteLine("[HDQ file]");
+                sw.WriteLine("type=time");
+                sw.WriteLine("server=" + ScheduleData.HDServer);
+                sw.WriteLine("portnumber=" + ScheduleData.HDPort);
+                sw.WriteLine("store=" + ScheduleData.HDStores[0]);
+                String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                sw.WriteLine("starttime=" + temp);
                 temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("stoptime=" + temp);
                 sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());

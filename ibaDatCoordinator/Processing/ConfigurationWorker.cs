@@ -4416,7 +4416,32 @@ namespace iba.Processing
                 String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),m_nextTrigger));
                 try
                 {
-                    m_cd.GenerateHDQFile(m_nextTrigger, filename);
+                    if(m_cd.ScheduleData.UsePreviousTriggerAsStart)
+                    {
+                        DateTime stopTime = m_nextTrigger - m_cd.ScheduleData.StopRangeFromTrigger;
+                        TriggerCalculator tc = new TriggerCalculator(m_cd.ScheduleData);
+                        DateTime startTime;
+                        if(!tc.PrevTrigger(stopTime, out startTime))
+                        {
+                            String message = String.Format(iba.Properties.Resources.logFailDeterminePreviousTrigger, m_cd.Name);
+                            Log(Logging.Level.Exception, message, filename);
+                            ScheduleNextEvent(m_nextTrigger);
+                            return;
+                        }
+                        startTime -= m_cd.ScheduleData.StartRangeFromTrigger;
+                        if(startTime >= stopTime)
+                        {
+                            String message = String.Format(iba.Properties.Resources.logFailDeterminePreviousTrigger2, m_cd.Name);
+                            Log(Logging.Level.Exception, message, filename);
+                            ScheduleNextEvent(m_nextTrigger);
+                            return;
+                        }
+                        m_cd.GenerateHDQFile(startTime, stopTime, filename);
+                    }
+                    else
+                    {
+                        m_cd.GenerateHDQFile(m_nextTrigger, filename);
+                    }
                 }
                 catch (Exception ex)
                 {

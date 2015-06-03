@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using iba.Data;
 using System.IO;
+
 namespace iba.Processing
 {
     public class TriggerCalculator
@@ -33,13 +34,71 @@ namespace iba.Processing
             res = from;
             switch(m_data.TriggerType)
             {
-                case ScheduledJobData.TriggerTypeEnum.OneTime: return OneTimePrevTrigger(from, out res);
-                case ScheduledJobData.TriggerTypeEnum.Daily: return DailyPrevTrigger(from, out res);
-                case ScheduledJobData.TriggerTypeEnum.Weekly: return WeeklyPrevTrigger(from, out res);
-                case ScheduledJobData.TriggerTypeEnum.Monthly: return MonthlyPrevTrigger(from, out res);
+                case ScheduledJobData.TriggerTypeEnum.OneTime:
+                    return OneTimePrevTrigger(from, out res);
+                case ScheduledJobData.TriggerTypeEnum.Daily: 
+                    return DailyPrevTrigger(from, out res);
+                case ScheduledJobData.TriggerTypeEnum.Weekly: 
+                    return WeeklyPrevTrigger(from, out res);
+                case ScheduledJobData.TriggerTypeEnum.Monthly: 
+                    return MonthlyPrevTrigger(from, out res);
             }
             return false;
         }
+
+        public TimeSpan MaxQueryRange()
+        {
+            TimeSpan res = TimeSpan.Zero;
+            switch(m_data.TriggerType)
+            {
+                case ScheduledJobData.TriggerTypeEnum.Daily: 
+                    res = MaxQueryRangeDaily(); 
+                    break;
+                case ScheduledJobData.TriggerTypeEnum.Weekly: 
+                    res = MaxQueryRangeWeekly(); 
+                    break;
+                case ScheduledJobData.TriggerTypeEnum.Monthly: 
+                    res = MaxQueryRangeMonthly(); 
+                    break;
+
+            }
+            if(m_data.Repeat)
+            {
+                if(m_data.RepeatDuration == TimeSpan.Zero) //indefinite repeat
+                {
+                    if(res != TimeSpan.Zero)
+                    {
+                        if (m_data.RepeatEvery < res)
+                            res = m_data.RepeatEvery;
+                    }
+                    else
+                        res = m_data.RepeatEvery;
+                }
+                else
+                {
+                    if(res != TimeSpan.Zero)
+                    {
+                        if(m_data.RepeatDuration > res)
+                        {
+                            if(m_data.RepeatEvery < res)
+                                res = m_data.RepeatEvery;
+                        }
+                        else
+                        {
+                            TimeSpan remTime = res - m_data.RepeatDuration;
+                            if(remTime > m_data.RepeatEvery)
+                                res = remTime;
+                            else
+                                res = m_data.RepeatEvery;
+                        }
+                    }
+                    else
+                        res = m_data.RepeatEvery;
+                }
+            }
+            return res;
+        }
+
 
         private bool OneTimeNextTrigger(DateTime from, out DateTime res)
         {
@@ -348,6 +407,112 @@ namespace iba.Processing
             }
             res = target;
             return false;
+        }
+
+        private TimeSpan MaxQueryRangeDaily()
+        {
+            return TimeSpan.FromDays((double) m_data.DayTriggerEveryNDay);
+        }
+
+        private TimeSpan MaxQueryRangeWeekly()
+        {
+            if(m_data.WeekTriggerWeekDays.Count == 0) 
+                return TimeSpan.Zero; //no days selected, invalid
+            if(m_data.WeekTriggerWeekDays.Count == 1)
+                return TimeSpan.FromDays(7.0 * m_data.WeekTriggerEveryNWeek); //only one day
+            if(m_data.WeekTriggerEveryNWeek == 1)
+            {
+                int t = m_data.WeekTriggerWeekDays.Count;
+                int m = 1;
+                for(int i = 0; i < t; i++)
+                {
+                    int diff = (7+m_data.WeekTriggerWeekDays[(i+1)%t]-m_data.WeekTriggerWeekDays[i])%7;
+                    if (diff>m)
+                        m = diff;
+                }
+                return TimeSpan.FromDays((double)m);
+            }
+            else
+            {
+                int lastday = 0;
+                int firstday = 6;
+                int startDay = (int) System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek;
+                foreach(int d in m_data.WeekTriggerWeekDays)
+                {
+                    int c = (d - startDay + 7) % 7;
+                    if (c < firstday)
+                        firstday = c;
+                    if (c>lastday)
+                        lastday = c;
+                }
+                return TimeSpan.FromDays(7+firstday-lastday + 7.0 * (m_data.WeekTriggerEveryNWeek-1));
+            }
+        }
+
+        private TimeSpan MaxQueryRangeMonthly()
+        {
+            int startyear = m_data.BaseTriggerTime.Year;
+            int nextyear = startyear + 1;
+            List<DateTime> triggersThisAndNextYear = new List<DateTime>();
+            for(int year = startyear; year <= nextyear; year++)
+            {
+                foreach (int month in m_data.MonthTriggerMonths)
+                {
+                    if(m_data.MonthTriggerUseDays)
+                    {
+                        foreach(int day in m_data.MonthTriggerDays)
+                        {
+                            try
+                            {
+                                int dayc = day;
+                                if(dayc == 32) //last
+                                    dayc = DateTime.DaysInMonth(year, month);
+                                triggersThisAndNextYear.Add(new DateTime(year, month, dayc, m_data.BaseTriggerTime.Hour,
+                                    m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond));
+                            }
+                            catch(ArgumentOutOfRangeException) //badly formed date, ignore
+                            {
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach(int weekday in m_data.MonthTriggerWeekDay)
+                        {
+                            List<DateTime> timesonweekday = new List<DateTime>(Enumerable.Range(1, DateTime.DaysInMonth(year, month)).Select(n => new DateTime(year, month, n,
+                                m_data.BaseTriggerTime.Hour, m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond))
+                                .Where(d => ((int)(d.DayOfWeek)) == weekday));
+
+                            if(timesonweekday.Count == 0) continue;
+
+                            foreach(int index in m_data.MonthTriggerOn)
+                            {
+                                DateTime candidate;
+                                if(index == 4)
+                                {
+                                    candidate = timesonweekday[timesonweekday.Count - 1];
+                                }
+                                else
+                                {
+                                    if(index >= timesonweekday.Count) continue;
+                                    candidate = timesonweekday[index];
+                                }
+                                triggersThisAndNextYear.Add(candidate);
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(triggersThisAndNextYear.Count == 0)
+                return TimeSpan.Zero;
+            if(triggersThisAndNextYear.Count == 1)
+            {
+                DateTime t = m_data.BaseTriggerTime;
+                return t.AddYears(1) - t;
+            }
+            triggersThisAndNextYear.Sort();
+            return triggersThisAndNextYear.Zip(triggersThisAndNextYear.Skip(1), (x, y) => y - x).Max();
         }
     }
 }

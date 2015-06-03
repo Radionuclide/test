@@ -1244,4 +1244,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="PermanentlyFailedTriggers" xml:space="preserve">
     <value>permanently failed triggers</value>
   </data>
+  <data name="logFailDeterminePreviousTrigger" xml:space="preserve">
+    <value>Failed to determine previous trigger, please review trigger settings of Job {0}</value>
+  </data>
+  <data name="logFailDeterminePreviousTrigger2" xml:space="preserve">
+    <value>Previous trigger inside deadband of current trigger, please review trigger settings of Job {0}</value>
+  </data>
 </root>
