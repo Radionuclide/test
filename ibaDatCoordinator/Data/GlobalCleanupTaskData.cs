@@ -36,8 +36,6 @@ namespace iba.Data
             if (other == this) return true;
             if (!UNCDataIsSame(other)) return false;
             return true;
-                //other.x == x &&
-                //other.y == y &&
         }
     }
 }

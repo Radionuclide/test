@@ -239,7 +239,6 @@ namespace iba.Data
 
         public ConfigurationData() : this("",JobTypeEnum.DatTriggered) 
         {
-
         }
 
         private NotificationData m_notify;
@@ -475,7 +474,26 @@ namespace iba.Data
                 sw.WriteLine("starttime=" + temp);
                 temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 sw.WriteLine("stoptime=" + temp);
-                sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+
+                if (!ScheduleData.PreferredTimeBaseIsAuto)
+                    sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+                else
+                {
+                    long ms = 10000; //10000 * 100 nanosec = 1 ms
+                    long s = 1000 * ms;
+                    long[] timeBases = new long[] { 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
+                    long duration = stopTime.Ticks - startTime.Ticks;
+                    TimeSpan tb = TimeSpan.FromDays(1);
+                    foreach(long tBase in timeBases)
+                    {
+                        double samples = ((double)(duration)) / ((double)(tBase)) * Math.Sqrt(40.0);
+                        if(samples < 1.0e9)
+                        {
+                            tb = TimeSpan.FromTicks(tBase);
+                        }
+                    }
+                    sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
+                }
             }
         }
 

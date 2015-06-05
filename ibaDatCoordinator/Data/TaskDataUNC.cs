@@ -7,10 +7,22 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    public abstract class TaskDataUNC : TaskData
+    public class TaskDataCleanup : TaskData
     {
-        public enum OutputLimitChoiceEnum {None,LimitDirectories,LimitDiskspace,SaveFreeSpace}
-        private OutputLimitChoiceEnum m_outputLimitChoice;
+        public TaskDataCleanup(ConfigurationData parent)
+            : base(parent) 
+        {
+            m_pass = "";
+            m_username = "";
+            m_destinationMapUNC = "";
+            m_numbFolders = 10;
+            m_quota = 1024;
+            m_quotaFree = 1024;
+            m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
+        }
+
+        public enum OutputLimitChoiceEnum { None, LimitDirectories, LimitDiskspace, SaveFreeSpace }
+        protected OutputLimitChoiceEnum m_outputLimitChoice;
         public OutputLimitChoiceEnum OutputLimitChoice
         {
             get { return m_outputLimitChoice; }
@@ -19,12 +31,114 @@ namespace iba.Data
 
         public bool UsesQuota
         {
-            get { 
-                return m_outputLimitChoice == OutputLimitChoiceEnum.SaveFreeSpace 
-                || m_outputLimitChoice == OutputLimitChoiceEnum.LimitDiskspace; 
+            get
+            {
+                return m_outputLimitChoice == OutputLimitChoiceEnum.SaveFreeSpace
+                || m_outputLimitChoice == OutputLimitChoiceEnum.LimitDiskspace;
             }
         }
 
+        protected uint m_numbFolders;
+        public uint SubfoldersNumber
+        {
+            get { return m_numbFolders; }
+            set { m_numbFolders = value; }
+        }
+
+        protected uint m_quota;
+        /// <summary>
+        /// Maximum used space in MB usually
+        /// </summary>
+        public uint Quota
+        {
+            get { return m_quota; }
+            set { m_quota = value; }
+        }
+
+        protected uint m_quotaFree;
+        /// <summary>
+        /// Minimum of free space in MB usually
+        /// </summary>
+        public uint QuotaFree
+        {
+            get { return m_quotaFree; }
+            set { m_quotaFree = value; }
+        }
+
+        protected string m_username;
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
+        protected string m_pass;
+
+        [XmlIgnore]
+        public string Password
+        {
+            get { return m_pass; }
+            set { m_pass = value; }
+        }
+
+        public string PasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_pass); }
+            set { m_pass = Crypt.Decrypt(value); }
+        }
+
+        protected string m_destinationMap;
+        public string DestinationMap
+        {
+            get { return m_destinationMap; }
+            set { m_destinationMap = value; }
+        }
+
+        protected string m_destinationMapUNC;
+        public string DestinationMapUNC
+        {
+            get { return m_destinationMapUNC; }
+            set { m_destinationMapUNC = value; }
+        }
+
+        public bool CleanupDataIsSame(TaskDataCleanup other)
+        {
+            return other.m_numbFolders == m_numbFolders &&
+            other.m_destinationMap == m_destinationMap &&
+            other.m_username == m_username &&
+            other.m_pass == m_pass &&
+            other.m_quota == m_quota &&
+            other.m_quotaFree == m_quotaFree &&
+            other.m_outputLimitChoice == m_outputLimitChoice;
+        }
+
+        public void CopyCleanupData(TaskDataCleanup cdat)
+        {
+            cdat.m_numbFolders = m_numbFolders;
+            cdat.m_username = m_username;
+            cdat.m_pass = m_pass;
+            cdat.m_destinationMapUNC = m_destinationMapUNC;
+            cdat.m_quota = m_quota;
+            cdat.m_quotaFree = m_quotaFree;
+            cdat.m_outputLimitChoice = m_outputLimitChoice;
+        }
+
+        override public TaskData CloneInternal()
+        {
+            TaskDataCleanup res = new TaskDataCleanup(m_parentCD);
+            CopyCleanupData(res);
+            return res;
+        }
+
+        override public bool IsSameInternal(TaskData taskData)
+        {
+            return CleanupDataIsSame(taskData as TaskDataCleanup);
+        }
+    }
+
+    [Serializable]
+    public abstract class TaskDataUNC : TaskDataCleanup
+    {
         private bool m_overwriteFiles;
         public bool OverwriteFiles
         {
@@ -60,18 +174,12 @@ namespace iba.Data
             set { m_infoFieldForSubdirRemoveBlanksAll = value; }
         }
 
-        public TaskDataUNC(ConfigurationData parent) : base(parent) 
+        //nobody can make pure
+        protected TaskDataUNC(ConfigurationData parent) : base(parent) 
         {
-            m_pass = "";
-            m_username = "";
-            m_destinationMapUNC = "";
-            m_numbFolders = 10;
-            m_quota = 1024;
-            m_quotaFree = 1024;
-            m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
+            m_doDirCleanup = false;
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
-            m_doDirCleanup = false;
             m_dirTimeChoice = DirTimeChoiceEnum.Current;
             m_copyDatModTime = false;
             m_useInfoFieldForOutputFile = false;
@@ -87,13 +195,6 @@ namespace iba.Data
             m_infoFieldForSubdirRemoveBlanksAll = false;
             m_splitSubdirs = false;
             m_year4Chars = false;
-        }
-
-        protected uint m_numbFolders;
-        public uint SubfoldersNumber
-        {
-            get { return m_numbFolders; }
-            set { m_numbFolders = value; }
         }
 
         public enum SubfolderChoice { SAME, NONE, HOUR, DAY, WEEK, MONTH, INFOFIELD };
@@ -117,41 +218,7 @@ namespace iba.Data
             set { m_year4Chars = value; }
         }
 
-        protected uint m_quota;
-        /// <summary>
-        /// Maximum used space in MB usually
-        /// </summary>
-        public uint Quota
-        {
-            get { return m_quota; }
-            set { m_quota = value; }
-        }
-
-        protected uint m_quotaFree;
-        /// <summary>
-        /// Minimum of free space in MB usually
-        /// </summary>
-        public uint QuotaFree
-        {
-            get { return m_quotaFree; }
-            set { m_quotaFree = value; }
-        }
-
         public TaskDataUNC() : this(null) { }
-
-        protected string m_destinationMap;
-        public string DestinationMap
-        {
-            get { return m_destinationMap; }
-            set { m_destinationMap = value; }
-        }
-
-        protected string m_destinationMapUNC;
-        public string DestinationMapUNC
-        {
-            get { return m_destinationMapUNC; }
-            set { m_destinationMapUNC = value; }
-        }
 
         //protected bool m_useDatModTimeForDirs;
         public enum DirTimeChoiceEnum { Current, Modified, InFile };
@@ -168,21 +235,6 @@ namespace iba.Data
                 m_dirTimeChoice = value; 
             }
         }
-
-        //for backwards compatibility
-        //public bool UseDatModTimeForDirs
-        //{
-        //    get 
-        //    { 
-        //        return m_dirTimeChoice == DirTimeChoiceEnum.Modified; 
-        //    }
-
-        //    set
-        //    {
-        //        if (value) 
-        //            m_dirTimeChoice = DirTimeChoiceEnum.Modified;  
-        //    }
-        //}
 
         protected bool m_copyDatModTime;
         public bool CopyModTime
@@ -247,14 +299,8 @@ namespace iba.Data
 
         public void CopyUNCData(TaskDataUNC uncdat)
         {
+            CopyCleanupData(uncdat);
             uncdat.m_destinationMap = m_destinationMap;
-            uncdat.m_numbFolders = m_numbFolders;
-            uncdat.m_username = m_username;
-            uncdat.m_pass = m_pass;
-            uncdat.m_destinationMapUNC = m_destinationMapUNC;
-            uncdat.m_quota = m_quota;
-            uncdat.m_quotaFree = m_quotaFree;
-            uncdat.m_outputLimitChoice = m_outputLimitChoice;
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
             uncdat.m_dirTimeChoice = m_dirTimeChoice;
@@ -276,15 +322,7 @@ namespace iba.Data
 
         public bool UNCDataIsSame(TaskDataUNC other)
         {
-            return
-            other.m_destinationMap == m_destinationMap &&
-            other.m_numbFolders == m_numbFolders &&
-            other.m_username == m_username &&
-            other.m_pass == m_pass &&
-            // other.m_destinationMapUNC == m_destinationMapUNC &&
-            other.m_quota == m_quota &&
-            other.m_quotaFree == m_quotaFree &&
-            other.m_outputLimitChoice == m_outputLimitChoice &&
+            return CleanupDataIsSame(other) &&
             other.m_overwriteFiles == m_overwriteFiles &&
             other.m_subfolderChoice == m_subfolderChoice &&
             other.m_dirTimeChoice == m_dirTimeChoice &&
@@ -363,28 +401,6 @@ namespace iba.Data
                 return 1;
             else
                 return wk;
-        }
-
-        protected string m_username;
-        public string Username
-        {
-            get { return m_username; }
-            set { m_username = value; }
-        }
-
-        protected string m_pass;
-
-        [XmlIgnore]
-        public string Password
-        {
-            get { return m_pass; }
-            set { m_pass = value; }
-        }
-
-        public string PasswordCrypted
-        {
-            get { return Crypt.Encrypt(m_pass); }
-            set { m_pass = Crypt.Decrypt(value); }
         }
 
         [XmlIgnore]
