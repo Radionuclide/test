@@ -421,6 +421,47 @@ namespace iba
     }
     #endregion
 
+    #region CleanupTaskTreeItemData
+    public class CleanupTaskTreeItemData : TreeItemData
+    {
+        public CleanupTaskTreeItemData(IPropertyPaneManager propManager, CleanupTaskData tdc)
+            : base(propManager)
+        {
+            m_tdc = tdc;
+        }
+
+        public override string What
+        {
+            get { return "CleanupTask"; }
+        }
+
+        protected CleanupTaskData m_tdc;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_tdc;
+            }
+            set
+            {
+                m_tdc = value as CleanupTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["CleanupTaskControl"] as Control;
+            if(ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new CleanupTaskControl());
+                manager.PropertyPanes["CleanupTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region CustomTaskTreeItemData
     public class CustomTaskTreeItemData : TreeItemData
     {

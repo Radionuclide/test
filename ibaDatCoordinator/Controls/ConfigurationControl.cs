@@ -73,6 +73,7 @@ namespace iba.Controls
             m_newIfTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.iftask.Handle);
             m_newUpdateDataTaskButton.Image = iba.Properties.Resources.updatedatatask;
             m_newPauseTaskButton.Image = iba.Properties.Resources.pausetask;
+            m_newCleanupTaskButton.Image = iba.Properties.Resources.broom;
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -81,6 +82,7 @@ namespace iba.Controls
             m_newIfTaskButton.ToolTipText = iba.Properties.Resources.iftaskButton;
             m_newUpdateDataTaskButton.ToolTipText = iba.Properties.Resources.updatedatataskButton;
             m_newPauseTaskButton.ToolTipText = iba.Properties.Resources.pausetaskButton;
+            m_newCleanupTaskButton.ToolTipText = iba.Properties.Resources.cleanuptaskButton;
 
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
@@ -456,6 +458,22 @@ namespace iba.Controls
             m_manager.LeftTree.SelectedNode = newNode;
         }
 
+
+        private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
+        {
+            CleanupTaskData cleanup = new CleanupTaskData(m_data);
+            new SetNextName(cleanup);
+            m_data.Tasks.Add(cleanup);
+            if(m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(cleanup.Name, MainForm.CLEANUPTASK_INDEX, MainForm.CLEANUPTASK_INDEX);
+            newNode.Tag = new CleanupTaskTreeItemData(m_manager, cleanup);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+        }
+
         void newCustomTaskButton_Click(object sender, EventArgs e)
         {
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton)sender).Tag);
@@ -566,5 +584,6 @@ namespace iba.Controls
             = m_tbMailUsername.Enabled = labelmailuser.Enabled
             = m_cbAuthentication.Checked && m_rbEmail.Checked;
         }
+
     }
 }

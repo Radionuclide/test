@@ -1250,4 +1250,19 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logFailDeterminePreviousTrigger2" xml:space="preserve">
     <value>Previous trigger inside deadband of current trigger, please review trigger settings of Job {0}</value>
   </data>
+  <data name="broom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\broom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cleanuptaskButton" xml:space="preserve">
+    <value>add new cleanup task</value>
+  </data>
+  <data name="cleanupTaskTitle" xml:space="preserve">
+    <value>Clean up</value>
+  </data>
+  <data name="deleteCleanupTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Cleanup options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewCleanupTaskTitle" xml:space="preserve">
+    <value>Add Cleanup Task</value>
+  </data>
 </root>

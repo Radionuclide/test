@@ -103,6 +103,8 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.updateDataTaskTitle;
             else if (this is PauseTaskData)
                 m_name = iba.Properties.Resources.pauseTaskTitle;
+            else if (this is CleanupTaskData)
+                m_name = iba.Properties.Resources.cleanupTaskTitle; 
         }
 
         public int CompareTo(TaskData other)

@@ -33,7 +33,7 @@ namespace iba.Data
                 "xml"});
 
         private string m_extension;
-        public string Extension
+        public override string Extension
         {
             get { return m_extension; }
             set { if (m_allowedExtensions.Contains(value)) m_extension = value;}

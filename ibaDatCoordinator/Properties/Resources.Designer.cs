@@ -210,6 +210,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap broom {
+            get {
+                object obj = ResourceManager.GetObject("broom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         internal static string ChangeStr {
@@ -233,6 +243,24 @@ namespace iba.Properties {
         internal static string CleanupDirectoriesFailed {
             get {
                 return ResourceManager.GetString("CleanupDirectoriesFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add new cleanup task.
+        /// </summary>
+        internal static string cleanuptaskButton {
+            get {
+                return ResourceManager.GetString("cleanuptaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean up.
+        /// </summary>
+        internal static string cleanupTaskTitle {
+            get {
+                return ResourceManager.GetString("cleanupTaskTitle", resourceCulture);
             }
         }
         
@@ -419,6 +447,15 @@ namespace iba.Properties {
         internal static string deleteBatchfileQuestion {
             get {
                 return ResourceManager.GetString("deleteBatchfileQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Cleanup options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteCleanupTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteCleanupTaskQuestion", resourceCulture);
             }
         }
         
@@ -1835,6 +1872,15 @@ namespace iba.Properties {
         internal static string NewBatchfileTitle {
             get {
                 return ResourceManager.GetString("NewBatchfileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Cleanup Task.
+        /// </summary>
+        internal static string NewCleanupTaskTitle {
+            get {
+                return ResourceManager.GetString("NewCleanupTaskTitle", resourceCulture);
             }
         }
         

@@ -38,7 +38,6 @@ namespace Alunorf_roh_plugin
                 m_dataToApply = null;
             }
             m_error = "";
-            return true;
             try
             {
                 string root = Path.GetFileNameWithoutExtension(datFile);

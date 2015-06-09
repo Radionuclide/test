@@ -137,6 +137,12 @@
     <Compile Include="Controls\BatchFileControl.Designer.cs">
       <DependentUpon>BatchFileControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CleanupTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CleanupTaskControl.Designer.cs">
+      <DependentUpon>CleanupTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ConfigurationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -388,6 +394,9 @@
     <Compile Include="Processing\TaskManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\CleanupTaskControl.resx">
+      <DependentUpon>CleanupTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ConfigurationControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
@@ -565,6 +574,7 @@
     <None Include="Resources\minus.bmp" />
     <None Include="Resources\scheduled_configuration.ico" />
     <None Include="Resources\scheduled_configuration_new.ico" />
+    <None Include="Resources\broom.png" />
     <Content Include="Resources\default.ico" />
     <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>

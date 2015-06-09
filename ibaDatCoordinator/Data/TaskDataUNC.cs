@@ -7,9 +7,9 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    public class TaskDataCleanup : TaskData
+    public class CleanupTaskData : TaskData
     {
-        public TaskDataCleanup(ConfigurationData parent)
+        public CleanupTaskData(ConfigurationData parent)
             : base(parent) 
         {
             m_pass = "";
@@ -25,8 +25,14 @@ namespace iba.Data
         protected OutputLimitChoiceEnum m_outputLimitChoice;
         public OutputLimitChoiceEnum OutputLimitChoice
         {
-            get { return m_outputLimitChoice; }
-            set { m_outputLimitChoice = value; }
+            get 
+            { 
+                return m_outputLimitChoice; 
+            }
+            set 
+            {
+                m_outputLimitChoice = value; 
+            }
         }
 
         public bool UsesQuota
@@ -95,13 +101,45 @@ namespace iba.Data
         }
 
         protected string m_destinationMapUNC;
+        
+        
+        private String m_extension;
+        public virtual System.String Extension
+        {
+            get { return m_extension; }
+            set { m_extension = Sanitize(value); }
+        }
+
+        private string Sanitize(string value)
+        {
+            if(String.IsNullOrEmpty(value)) return ""; //keep empty
+            value = value.Replace(",", ";"); //comma is ok as separator as well
+            string[] parts = value.Split(';');
+            StringBuilder sb = new StringBuilder();
+            foreach(string part in parts)
+            {
+                string t = part;
+                if(String.IsNullOrEmpty(part))
+                    continue;
+                if(part == ".") 
+                    continue;
+                if(!part.StartsWith("."))
+                    t = "." + part;
+                if(sb.Length > 0)
+                    sb.Append(";");
+                sb.Append(t);
+            }
+            return sb.ToString();
+        }
+
+
         public string DestinationMapUNC
         {
             get { return m_destinationMapUNC; }
             set { m_destinationMapUNC = value; }
         }
 
-        public bool CleanupDataIsSame(TaskDataCleanup other)
+        public bool CleanupDataIsSame(CleanupTaskData other)
         {
             return other.m_numbFolders == m_numbFolders &&
             other.m_destinationMap == m_destinationMap &&
@@ -112,7 +150,7 @@ namespace iba.Data
             other.m_outputLimitChoice == m_outputLimitChoice;
         }
 
-        public void CopyCleanupData(TaskDataCleanup cdat)
+        public void CopyCleanupData(CleanupTaskData cdat)
         {
             cdat.m_numbFolders = m_numbFolders;
             cdat.m_username = m_username;
@@ -125,19 +163,25 @@ namespace iba.Data
 
         override public TaskData CloneInternal()
         {
-            TaskDataCleanup res = new TaskDataCleanup(m_parentCD);
+            CleanupTaskData res = new CleanupTaskData(m_parentCD);
             CopyCleanupData(res);
             return res;
         }
 
         override public bool IsSameInternal(TaskData taskData)
         {
-            return CleanupDataIsSame(taskData as TaskDataCleanup);
+            return CleanupDataIsSame(taskData as CleanupTaskData);
         }
+
+        public void UpdateUNC()
+        {
+            m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
+        }
+
     }
 
     [Serializable]
-    public abstract class TaskDataUNC : TaskDataCleanup
+    public abstract class TaskDataUNC : CleanupTaskData
     {
         private bool m_overwriteFiles;
         public bool OverwriteFiles
@@ -292,9 +336,18 @@ namespace iba.Data
             set { m_infoFieldForSubdirLength = value; }
         }
 
-        public void UpdateUNC()
+
+        [XmlIgnore]
+        public override string Extension
         {
-            m_destinationMapUNC = Shares.PathToUnc(m_destinationMap, false);
+            get
+            {
+                return base.Extension;
+            }
+            set
+            {
+                base.Extension = value;
+            }
         }
 
         public void CopyUNCData(TaskDataUNC uncdat)

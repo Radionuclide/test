@@ -38,12 +38,13 @@ namespace iba
         public static readonly int IFTASK_INDEX = 7;
         public static readonly int UPDATEDATATASK_INDEX = 8;
         public static readonly int PAUSETASK_INDEX = 9;
+        public static readonly int CLEANUPTASK_INDEX = 10;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int NEWCONF_INDEX = 10;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 11;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 12;
-        public static readonly int CUSTOMTASK_INDEX = 13;
-        public static readonly int NR_TASKS = 7; 
+        public static readonly int NEWCONF_INDEX = 11;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 12;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 13;
+        public static readonly int CUSTOMTASK_INDEX = 14;
+        public static readonly int NR_TASKS = 8; 
 
         public MainForm()
         {
@@ -101,7 +102,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.iftask);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.updatedatatask));
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.pausetask));
-
+            confsImageList.Images.Add(iba.Properties.Resources.broom);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
@@ -579,6 +580,11 @@ namespace iba
                     taskNode = new TreeNode(task.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, task as PauseTaskData);
                 }
+                else if(task is CleanupTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, task as CleanupTaskData);
+                }
                 else
                 {
                     ICustomTaskData cust = task as ICustomTaskData;
@@ -808,6 +814,7 @@ namespace iba
                 case "IfTask":
                 case "UpdateDataTask":
                 case "PauseTask":
+                case "CleanupTask":
                 case "CustomTaskUNC":
                 case "CustomTask":
                 case "task":
@@ -959,6 +966,8 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteUpdateDataTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is PauseTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deletePauseTaskQuestion, node.Text, node.Parent.Text);
+                    else if(node.Tag is CleanupTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteCleanupTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is CustomTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
                         (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,
@@ -1117,6 +1126,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
+                else if(m_task_copy is CleanupTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData)
                 {
                     ICustomTaskData cust = (ICustomTaskData) m_task_copy;
@@ -1191,6 +1205,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
+                else if(m_task_copy is CleanupTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData)
                 {
                     ICustomTaskData cust = (ICustomTaskData)m_task_copy;
@@ -1253,11 +1272,12 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.iftask);
             menuImages.Images.Add(iba.Properties.Resources.updatedatatask);
             menuImages.Images.Add(iba.Properties.Resources.pausetask);
+            menuImages.Images.Add(iba.Properties.Resources.broom);
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
             int customcount = PluginManager.Manager.PluginInfos.Count;
-            m_menuItems = new ToolStripMenuItem[13 + customcount];
+            m_menuItems = new ToolStripMenuItem[14 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1274,6 +1294,7 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewIfTask] = new ToolStripMenuItem(iba.Properties.Resources.NewIfTaskTitle, menuImages.Images[7], new EventHandler(OnNewIfTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUpdateDataTaskTitle, iba.Properties.Resources.updatedatatask, new EventHandler(OnNewUpdateDataTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new ToolStripMenuItem(iba.Properties.Resources.NewPauseTaskTitle, iba.Properties.Resources.pausetask, new EventHandler(OnNewPauseTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
             
             for (int i = 0; i < customcount; i++)
             {
@@ -1289,6 +1310,7 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewIfTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewPauseTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             for (int i = 0; i < customcount; i++)
             {
                 m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
@@ -1310,7 +1332,8 @@ namespace iba
             NewIfTask = 10,
             NewUpdateDataTask = 11,
             NewPauseTask = 12,
-            NewCustomTask = 13
+            NewCleanupTask = 13,
+            NewCustomTask = 14
         }
 
         private string ibaAnalyzerExe;
@@ -1574,6 +1597,23 @@ namespace iba
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+        }
+        
+        private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            CleanupTaskData cleanup = new CleanupTaskData(confData);
+            new SetNextName(cleanup);
+            confData.Tasks.Add(cleanup);
+            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(cleanup.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
+            newNode.Tag = new CleanupTaskTreeItemData(this, cleanup);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if(confData.AdjustDependencies()) AdjustFrontIcons(confData);
         }
 
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
