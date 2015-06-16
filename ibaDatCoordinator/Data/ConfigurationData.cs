@@ -31,8 +31,12 @@ namespace iba.Data
         private string m_name;
         public string Name
         {
-            get { return m_name ; }
-            set { 
+            get 
+            { 
+                return m_name; 
+            }
+            set 
+            { 
                 if (value.Length != 0) 
                     m_name = value; 
             }
@@ -77,11 +81,14 @@ namespace iba.Data
         private string m_datdirectoryUNC;
         public string DatDirectoryUNC
         {
-            get {
+            get 
+            {
                 if(m_jobType == JobTypeEnum.Scheduled)
                     return HDQDirectory;
-                return m_datdirectoryUNC; }
-            set {
+                return m_datdirectoryUNC; 
+            }
+            set 
+            {
                 m_datdirectoryUNC = XMLMultilineTextFixer.Fix(value);
             }
         }
@@ -180,6 +187,13 @@ namespace iba.Data
             set { m_bRescanEnabled = value; }
         }
 
+        private bool m_bReprocessErrors;
+        public bool ReprocessErrors
+        {
+            get { return m_bReprocessErrors; }
+            set { m_bReprocessErrors = value; }
+        }
+
         private bool m_bDetectNewFiles;
         public bool DetectNewFiles
         {
@@ -276,6 +290,7 @@ namespace iba.Data
             m_bInitialScanEnabled = m_jobType == JobTypeEnum.DatTriggered;
             m_bDetectNewFiles = m_jobType == JobTypeEnum.DatTriggered;
             m_bRescanEnabled = m_jobType == JobTypeEnum.DatTriggered;
+            m_bReprocessErrors = m_jobType == JobTypeEnum.DatTriggered;
             
             m_datDirectory = System.Environment.CurrentDirectory;
             try
@@ -325,6 +340,7 @@ namespace iba.Data
             cd.m_rescanTime = m_rescanTime;
             cd.m_notify = m_notify.Clone() as NotificationData;
             cd.m_bRescanEnabled = m_bRescanEnabled;
+            cd.m_bReprocessErrors = m_bReprocessErrors;
             cd.m_datdirectoryUNC = m_datdirectoryUNC;
             cd.m_username = m_username;
             cd.m_pass = m_pass;
@@ -357,6 +373,7 @@ namespace iba.Data
                 other.m_rescanTime == m_rescanTime &&
                 other.m_notify.IsSame(m_notify) &&
                 other.m_bRescanEnabled == m_bRescanEnabled &&
+                other.m_bReprocessErrors == m_bReprocessErrors &&
                     //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
                 other.m_username == m_username &&
                 other.m_pass == m_pass &&

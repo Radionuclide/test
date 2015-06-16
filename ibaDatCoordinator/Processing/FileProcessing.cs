@@ -33,7 +33,6 @@ namespace iba.Processing
             get { return m_error; }
         }
 
-
         public void RemoveFiles(List<string> files, FileProcessingProgressBar myBar)
         {
             if (!String.IsNullOrEmpty(m_error)) return;
@@ -138,7 +137,6 @@ namespace iba.Processing
                     }
                     catch //ignore directories one has no access to
                     {
-
                     }
                 }
                 return files;

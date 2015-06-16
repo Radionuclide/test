@@ -157,7 +157,7 @@
     <value>16, 71</value>
   </data>
   <data name="m_textEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>629, 90</value>
+    <value>629, 105</value>
   </data>
   <data name="m_textEditor.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -259,7 +259,7 @@
     <value>0, 176</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 176</value>
+    <value>666, 191</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -271,7 +271,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.21.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -286,13 +286,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeBatchFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 133</value>
+    <value>605, 154</value>
   </data>
   <data name="m_executeBatchFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
   <data name="m_executeBatchFile.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;m_executeBatchFile.Name" xml:space="preserve">
     <value>m_executeBatchFile</value>
@@ -304,10 +304,91 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_executeBatchFile.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
   </data>
   <data name="m_editorGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 18</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 13</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Abort script if it takes more than</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>288, 18</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 13</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>minutes to complete</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_nudTime.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="m_nudTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>204, 16</value>
+  </data>
+  <data name="m_nudTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 20</value>
+  </data>
+  <data name="m_nudTime.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>m_editorGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_lblTestSide.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,13 +397,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblTestSide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 178</value>
+    <value>13, 199</value>
   </data>
   <data name="m_lblTestSide.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 13</value>
   </data>
   <data name="m_lblTestSide.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_lblTestSide.Text" xml:space="preserve">
     <value>Test script on</value>
@@ -337,7 +418,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_lblTestSide.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="m_rbServerSide.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -397,13 +478,13 @@
     <value>1</value>
   </data>
   <data name="m_panelSide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 170</value>
+    <value>90, 191</value>
   </data>
   <data name="m_panelSide.Size" type="System.Drawing.Size, System.Drawing">
     <value>421, 30</value>
   </data>
   <data name="m_panelSide.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;m_panelSide.Name" xml:space="preserve">
     <value>m_panelSide</value>
@@ -415,7 +496,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_panelSide.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="m_rbPrevOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -424,13 +505,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbPrevOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 116</value>
+    <value>16, 137</value>
   </data>
   <data name="m_rbPrevOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 17</value>
   </data>
   <data name="m_rbPrevOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_rbPrevOutput.Text" xml:space="preserve">
     <value>Use the output of a previous task as file in arguments</value>
@@ -445,7 +526,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_rbDatFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -454,13 +535,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDatFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 93</value>
+    <value>16, 114</value>
   </data>
   <data name="m_rbDatFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>174, 17</value>
   </data>
   <data name="m_rbDatFile.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="m_rbDatFile.Text" xml:space="preserve">
     <value>Use .dat file as file in arguments</value>
@@ -475,7 +556,7 @@
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -484,13 +565,13 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 43</value>
+    <value>181, 64</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 39</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>e.g.: "c:\dats\file1.dat"
@@ -508,7 +589,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="m_browseDatFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -517,13 +598,13 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>559, 133</value>
+    <value>559, 154</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.Name" xml:space="preserve">
     <value>m_browseDatFileButton</value>
@@ -535,7 +616,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -544,13 +625,13 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 43</value>
+    <value>13, 64</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 39</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>%f:
@@ -567,7 +648,7 @@ e.g.: file1
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -576,13 +657,13 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>43, 43</value>
+    <value>43, 64</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 39</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>"entire file path"
@@ -599,7 +680,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -608,13 +689,13 @@ filename without extension</value>
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 19</value>
+    <value>13, 40</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>arguments:</value>
@@ -629,19 +710,19 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="m_argumentsTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_argumentsTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 19</value>
+    <value>103, 40</value>
   </data>
   <data name="m_argumentsTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>542, 20</value>
   </data>
   <data name="m_argumentsTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.Name" xml:space="preserve">
     <value>m_argumentsTextBox</value>
@@ -653,7 +734,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -662,13 +743,13 @@ filename without extension</value>
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 147</value>
+    <value>13, 168</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Test file:</value>
@@ -683,19 +764,19 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="m_datFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_datFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 144</value>
+    <value>103, 165</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>450, 20</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.Name" xml:space="preserve">
     <value>m_datFileTextBox</value>
@@ -707,13 +788,13 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="m_editorGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 182</value>
+    <value>0, 197</value>
   </data>
   <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 204</value>
+    <value>666, 229</value>
   </data>
   <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -725,7 +806,7 @@ filename without extension</value>
     <value>m_editorGroupBox</value>
   </data>
   <data name="&gt;&gt;m_editorGroupBox.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.21.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_editorGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -749,7 +830,7 @@ filename without extension</value>
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 400</value>
+    <value>666, 440</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog1.Name" xml:space="preserve">
     <value>m_openFileDialog1</value>

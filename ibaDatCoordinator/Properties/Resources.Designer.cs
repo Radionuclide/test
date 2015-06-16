@@ -790,6 +790,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to last time the .dat file was modified.
+        /// </summary>
+        internal static string FromDatFileTextForLabel {
+            get {
+                return ResourceManager.GetString("FromDatFileTextForLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the trigger fired.
+        /// </summary>
+        internal static string FromTriggerTextForLabel {
+            get {
+                return ResourceManager.GetString("FromTriggerTextForLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon greenarrow {

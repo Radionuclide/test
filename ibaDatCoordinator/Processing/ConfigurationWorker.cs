@@ -241,7 +241,7 @@ namespace iba.Processing
                         SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
                         if (errorObject != null)
                         {
-                            TaskDataUNC t = errorObject as TaskDataUNC;
+                            CleanupTaskData t = errorObject as CleanupTaskData;
                             if (t != null)
                             {
                                 Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
@@ -1586,21 +1586,25 @@ namespace iba.Processing
                 fileInfos = new FileInfo[count];
                 if (what == WhatToUpdate.ERRORS)
                 {
-                    for (int i = 0; i < count; i++)
+                    if(m_cd.ReprocessErrors)
                     {
-                        lock (m_sd.DatFileStates)
+                        for(int i = 0; i < count; i++)
                         {
-                            if(m_processedFiles[i] != fileCurrentlyBeingProcessed && File.Exists(m_processedFiles[i])
-                                && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
+                            lock(m_sd.DatFileStates)
                             {
-                                fileInfos[i] = new FileInfo(m_processedFiles[i]);
-                            }
-                            else
-                            {
-                                fileInfos[i] = null;
+                                if(m_processedFiles[i] != fileCurrentlyBeingProcessed && File.Exists(m_processedFiles[i])
+                                    && (m_sd.DatFileStates.ContainsKey(m_processedFiles[i])))
+                                {
+                                    fileInfos[i] = new FileInfo(m_processedFiles[i]);
+                                }
+                                else
+                                {
+                                    fileInfos[i] = null;
+                                }
                             }
                         }
                     }
+                    //if not, no new files reported, keep them forever in the list.
                 }
                 else if (what == WhatToUpdate.NEW)//REF files
                 {
@@ -3443,7 +3447,7 @@ namespace iba.Processing
             }
         }
 
-        internal void CleanupDirs(string filename, TaskDataUNC task, string extension)
+        internal void CleanupDirs(string filename, CleanupTaskData task, string extension)
         {
             try
             {
@@ -3452,7 +3456,7 @@ namespace iba.Processing
                 if (subdirs.Count <= task.SubfoldersNumber) return; //everything ok
                 if (subdirs.Count == task.SubfoldersNumber + 1) //optimization, don't sort the list, only remove oldest directory
                 {
-                    Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which is one too many ",subdirs.Count), filename,task);
+                    //Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which is one too many ",subdirs.Count), filename,task);
                     string dir=null;
                     DateTime dtoldest = new DateTime();
                     foreach (string dirC in subdirs)
@@ -3468,12 +3472,12 @@ namespace iba.Processing
                     if (dir != null)
                     {
                         RemoveDirectory(filename,task,extension,dir);
-                        Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (one directory removal): " + dir, filename, task);
+                        //Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (one directory removal): " + dir, filename, task);
                     }
                     return;
                 }
 
-                Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which are several too many ",subdirs.Count), filename,task);
+                //Log(Logging.Level.Warning,String.Format("cleanup by folder number, counted {0} folders, which are several too many ",subdirs.Count), filename,task);
 
                 subdirs.Sort(delegate(string dir1, string dir2)
                 {
@@ -3482,7 +3486,7 @@ namespace iba.Processing
                 for (int i = subdirs.Count - 1; i >= task.SubfoldersNumber;i--)
                 {
                     string dir = subdirs[i];
-                    Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (multiple directory removal): " + dir, filename, task);
+                    //Log(Logging.Level.Warning, "cleanup by folder number: Remove directory (multiple directory removal): " + dir, filename, task);
                     RemoveDirectory(filename,task,extension,dir);
                 }
             }
@@ -3492,7 +3496,7 @@ namespace iba.Processing
             }
         }
 
-        private void RemoveDirectory(string filename, TaskDataUNC task, string extension, string dir)
+        private void RemoveDirectory(string filename, CleanupTaskData task, string extension, string dir)
         {
             try
             {
@@ -3763,6 +3767,26 @@ namespace iba.Processing
             fqc.Clean(filename);
         }
 
+
+        private void CleanupTask(string filename, CleanupTaskData data)
+        {
+            switch(data.OutputLimitChoice)
+            {
+                case CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories:
+                    CleanupDirs(filename, data, data.Extension);
+                    break;
+                case CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace:
+                    break;
+                case CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace:
+                    break;
+            }
+            lock(m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[data] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+            }
+        }
+
+
         private void Batchfile(string filename,BatchFileData task)
         {
             if( ! File.Exists(task.BatchFile) )
@@ -3818,9 +3842,8 @@ namespace iba.Processing
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logBatchfileStarted, filename,task);
-                    int MAXMINUTES = 15; //wait maximum 15 minutes  
-                    int INCRECEMENTSECONDS = 10;
-                    int MAXLOOPS = MAXMINUTES * 60 / INCRECEMENTSECONDS;
+                    int INCRECEMENTSECONDS = 1;
+                    int MAXLOOPS =  (int) Math.Ceiling(task.TimeOut.TotalSeconds / INCRECEMENTSECONDS);
                     bool succeeded = false;
                     for (int i = 0; !succeeded && !m_stop && i < MAXLOOPS; i++)
                     {

@@ -1265,4 +1265,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="NewCleanupTaskTitle" xml:space="preserve">
     <value>Add Cleanup Task</value>
   </data>
+  <data name="FromDatFileTextForLabel" xml:space="preserve">
+    <value>last time the .dat file was modified</value>
+  </data>
+  <data name="FromTriggerTextForLabel" xml:space="preserve">
+    <value>the trigger fired</value>
+  </data>
 </root>

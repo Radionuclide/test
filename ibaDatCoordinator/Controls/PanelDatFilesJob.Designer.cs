@@ -45,7 +45,6 @@
             this.m_stopButton = new System.Windows.Forms.Button();
             this.m_applyToRunningBtn = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
             this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
@@ -63,6 +62,7 @@
             this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
             this.m_datDirTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -79,6 +79,7 @@
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.m_cbRepErr);
             this.groupBox3.Controls.Add(this.m_undoChangesBtn);
             this.groupBox3.Controls.Add(this.m_cbDetectNewFiles);
             this.groupBox3.Controls.Add(this.m_cbInitialScanEnabled);
@@ -90,7 +91,6 @@
             this.groupBox3.Controls.Add(this.m_stopButton);
             this.groupBox3.Controls.Add(this.m_applyToRunningBtn);
             this.groupBox3.Controls.Add(this.m_startButton);
-            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
             this.groupBox3.Controls.Add(this.m_enableCheckBox);
             this.groupBox3.Controls.Add(this.m_failTimeUpDown);
@@ -188,11 +188,6 @@
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
             this.m_startButton.Click += new System.EventHandler(this.m_startButton_Click);
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
             // 
             // m_autoStartCheckBox
             // 
@@ -339,6 +334,12 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
+            // m_cbRepErr
+            // 
+            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
+            this.m_cbRepErr.Name = "m_cbRepErr";
+            this.m_cbRepErr.UseVisualStyleBackColor = true;
+            // 
             // PanelDatFilesJob
             // 
             resources.ApplyResources(this, "$this");
@@ -372,7 +373,6 @@
         public System.Windows.Forms.Button m_stopButton;
         public System.Windows.Forms.Button m_applyToRunningBtn;
         public System.Windows.Forms.Button m_startButton;
-        private System.Windows.Forms.Label label11;
         public System.Windows.Forms.CheckBox m_autoStartCheckBox;
         public System.Windows.Forms.CheckBox m_enableCheckBox;
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
@@ -393,5 +393,6 @@
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
+        private System.Windows.Forms.CheckBox m_cbRepErr;
     }
 }

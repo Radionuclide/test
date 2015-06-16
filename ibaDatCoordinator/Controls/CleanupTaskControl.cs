@@ -69,7 +69,6 @@ namespace iba.Controls
 
         public void SaveData()
         {
-
             m_data.SubfoldersNumber = (uint)m_nudDirs.Value;
             m_data.Quota = (uint)m_nudQuota.Value;
             m_data.QuotaFree = (uint)m_nudFree.Value;

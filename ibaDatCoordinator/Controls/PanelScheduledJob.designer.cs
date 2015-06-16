@@ -65,7 +65,6 @@
             this.m_stopButton = new System.Windows.Forms.Button();
             this.m_applyToRunningBtn = new System.Windows.Forms.Button();
             this.m_startButton = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
             this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
@@ -93,6 +92,7 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.gbSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
@@ -130,6 +130,7 @@
             // gbSchedule
             // 
             resources.ApplyResources(this.gbSchedule, "gbSchedule");
+            this.gbSchedule.Controls.Add(this.m_cbRepErr);
             this.gbSchedule.Controls.Add(this.m_cbInitialScanEnabled);
             this.gbSchedule.Controls.Add(this.m_nudRepeatTimes);
             this.gbSchedule.Controls.Add(this.label18);
@@ -146,7 +147,6 @@
             this.gbSchedule.Controls.Add(this.m_stopButton);
             this.gbSchedule.Controls.Add(this.m_applyToRunningBtn);
             this.gbSchedule.Controls.Add(this.m_startButton);
-            this.gbSchedule.Controls.Add(this.label11);
             this.gbSchedule.Controls.Add(this.m_autoStartCheckBox);
             this.gbSchedule.Controls.Add(this.m_enableCheckBox);
             this.gbSchedule.Controls.Add(this.m_failTimeUpDown);
@@ -342,11 +342,6 @@
             resources.ApplyResources(this.m_startButton, "m_startButton");
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
             // 
             // m_autoStartCheckBox
             // 
@@ -611,6 +606,12 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
+            // m_cbRepErr
+            // 
+            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
+            this.m_cbRepErr.Name = "m_cbRepErr";
+            this.m_cbRepErr.UseVisualStyleBackColor = true;
+            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -653,7 +654,6 @@
         public System.Windows.Forms.Button m_stopButton;
         public System.Windows.Forms.Button m_applyToRunningBtn;
         public System.Windows.Forms.Button m_startButton;
-        private System.Windows.Forms.Label label11;
         public System.Windows.Forms.CheckBox m_autoStartCheckBox;
         public System.Windows.Forms.CheckBox m_enableCheckBox;
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
@@ -701,5 +701,6 @@
         private CustomNumericUpDown m_nudRepeatTimes;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
         private System.Windows.Forms.CheckBox m_cbUseTriggerAsStart;
+        private System.Windows.Forms.CheckBox m_cbRepErr;
     }
 }

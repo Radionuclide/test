@@ -46,12 +46,28 @@ namespace iba.Data
             set { m_whatFile = value; }
         }
 
+        private TimeSpan m_timeOut;
+
+        [XmlIgnore]
+        public TimeSpan TimeOut
+        {
+            get { return m_timeOut; }
+            set { m_timeOut = value; }
+        }
+
+        public long TimeOutTicks
+        {
+            get { return m_timeOut.Ticks; }
+            set { m_timeOut = new TimeSpan(value); }
+        }
+
         public BatchFileData(ConfigurationData parent) : base(parent)
         {
             m_name = iba.Properties.Resources.batchfileTitle;
             m_testDatFile = m_arguments = m_batchFile = String.Empty;
             m_whatFile = WhatFileEnum.DATFILE;
             m_testOnClientSide = false;
+            m_timeOut = TimeSpan.FromMinutes(15);
         }
 
         public BatchFileData() : this(null)
@@ -68,6 +84,7 @@ namespace iba.Data
             bfd.m_arguments = m_arguments;
             bfd.m_whatFile = m_whatFile;
             bfd.m_testOnClientSide = m_testOnClientSide;
+            bfd.m_timeOut = m_timeOut;
             return bfd;
         }
 
@@ -102,17 +119,19 @@ namespace iba.Data
             myList.Add(new KeyValuePair<string, string>(BatchFile, sb.ToString()));
         }
 
-        override public bool IsSameInternal(TaskData taskData)
+        public override bool IsSameInternal(TaskData taskData)
         {
             BatchFileData other = taskData as BatchFileData;
             if (other == null) return false;
             if (other == this) return true;
+            
             return other.m_pdoFile == m_pdoFile &&
-            other.m_batchFile == m_batchFile &&
-            other.m_testDatFile == m_testDatFile &&
-            other.m_arguments == m_arguments &&
-            other.m_whatFile == m_whatFile &&
-            other.m_testOnClientSide == m_testOnClientSide;
+                other.m_batchFile == m_batchFile &&
+                other.m_testDatFile == m_testDatFile &&
+                other.m_arguments == m_arguments &&
+                other.m_whatFile == m_whatFile &&
+                other.m_testOnClientSide == m_testOnClientSide &&
+                other.m_timeOut == m_timeOut;
         }
     }
 }

@@ -40,20 +40,20 @@
             this.m_tbExtension = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_cleanupGroupBox = new System.Windows.Forms.GroupBox();
-            this.m_rbLimitDirectories = new System.Windows.Forms.RadioButton();
-            this.m_nudDirs = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.m_rbQuota = new System.Windows.Forms.RadioButton();
-            this.m_nudQuota = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.m_rbLimitFree = new System.Windows.Forms.RadioButton();
             this.m_nudFree = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_rbQuota = new System.Windows.Forms.RadioButton();
+            this.m_nudQuota = new System.Windows.Forms.NumericUpDown();
+            this.m_rbLimitDirectories = new System.Windows.Forms.RadioButton();
+            this.m_nudDirs = new System.Windows.Forms.NumericUpDown();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_cleanupGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudFree)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).BeginInit();
             this.SuspendLayout();
             // 
             // m_checkPathButton
@@ -147,7 +147,7 @@
             this.m_tbExtension.Size = new System.Drawing.Size(135, 20);
             this.m_tbExtension.TabIndex = 17;
             this.m_toolTip.SetToolTip(this.m_tbExtension, "To cleanup several types of files, specify the extensions separated by \';\'\r\ne.g.:" +
-        " \".dat;.txt;.csv\"");
+        " \"*.dat,*.txt,*.csv\"");
             this.m_tbExtension.UseSystemPasswordChar = true;
             // 
             // label1
@@ -179,37 +179,47 @@
             this.m_cleanupGroupBox.TabStop = false;
             this.m_cleanupGroupBox.Text = "Cleanup strategy";
             // 
-            // m_rbLimitDirectories
+            // label5
             // 
-            this.m_rbLimitDirectories.AutoSize = true;
-            this.m_rbLimitDirectories.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbLimitDirectories.Location = new System.Drawing.Point(6, 19);
-            this.m_rbLimitDirectories.Name = "m_rbLimitDirectories";
-            this.m_rbLimitDirectories.Size = new System.Drawing.Size(126, 17);
-            this.m_rbLimitDirectories.TabIndex = 2;
-            this.m_rbLimitDirectories.TabStop = true;
-            this.m_rbLimitDirectories.Text = "Limit subdirectories to";
-            this.m_rbLimitDirectories.UseVisualStyleBackColor = true;
+            this.label5.AutoSize = true;
+            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label5.Location = new System.Drawing.Point(231, 73);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(22, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Mb";
             // 
-            // m_nudDirs
+            // m_rbLimitFree
             // 
-            this.m_nudDirs.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.m_nudDirs.Location = new System.Drawing.Point(147, 19);
-            this.m_nudDirs.Maximum = new decimal(new int[] {
-            1000,
+            this.m_rbLimitFree.AutoSize = true;
+            this.m_rbLimitFree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbLimitFree.Location = new System.Drawing.Point(6, 71);
+            this.m_rbLimitFree.Name = "m_rbLimitFree";
+            this.m_rbLimitFree.Size = new System.Drawing.Size(135, 17);
+            this.m_rbLimitFree.TabIndex = 7;
+            this.m_rbLimitFree.TabStop = true;
+            this.m_rbLimitFree.Text = "Minimal free disk space";
+            this.m_rbLimitFree.UseVisualStyleBackColor = true;
+            // 
+            // m_nudFree
+            // 
+            this.m_nudFree.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.m_nudFree.Location = new System.Drawing.Point(147, 71);
+            this.m_nudFree.Maximum = new decimal(new int[] {
+            1000000000,
             0,
             0,
             0});
-            this.m_nudDirs.Minimum = new decimal(new int[] {
+            this.m_nudFree.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.m_nudDirs.Name = "m_nudDirs";
-            this.m_nudDirs.Size = new System.Drawing.Size(78, 20);
-            this.m_nudDirs.TabIndex = 3;
-            this.m_nudDirs.Value = new decimal(new int[] {
-            1,
+            this.m_nudFree.Name = "m_nudFree";
+            this.m_nudFree.Size = new System.Drawing.Size(78, 20);
+            this.m_nudFree.TabIndex = 8;
+            this.m_nudFree.Value = new decimal(new int[] {
+            1024,
             0,
             0,
             0});
@@ -259,47 +269,37 @@
             0,
             0});
             // 
-            // label5
+            // m_rbLimitDirectories
             // 
-            this.label5.AutoSize = true;
-            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label5.Location = new System.Drawing.Point(231, 73);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(22, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Mb";
+            this.m_rbLimitDirectories.AutoSize = true;
+            this.m_rbLimitDirectories.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbLimitDirectories.Location = new System.Drawing.Point(6, 19);
+            this.m_rbLimitDirectories.Name = "m_rbLimitDirectories";
+            this.m_rbLimitDirectories.Size = new System.Drawing.Size(126, 17);
+            this.m_rbLimitDirectories.TabIndex = 2;
+            this.m_rbLimitDirectories.TabStop = true;
+            this.m_rbLimitDirectories.Text = "Limit subdirectories to";
+            this.m_rbLimitDirectories.UseVisualStyleBackColor = true;
             // 
-            // m_rbLimitFree
+            // m_nudDirs
             // 
-            this.m_rbLimitFree.AutoSize = true;
-            this.m_rbLimitFree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbLimitFree.Location = new System.Drawing.Point(6, 71);
-            this.m_rbLimitFree.Name = "m_rbLimitFree";
-            this.m_rbLimitFree.Size = new System.Drawing.Size(135, 17);
-            this.m_rbLimitFree.TabIndex = 7;
-            this.m_rbLimitFree.TabStop = true;
-            this.m_rbLimitFree.Text = "Minimal free disk space";
-            this.m_rbLimitFree.UseVisualStyleBackColor = true;
-            // 
-            // m_nudFree
-            // 
-            this.m_nudFree.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.m_nudFree.Location = new System.Drawing.Point(147, 71);
-            this.m_nudFree.Maximum = new decimal(new int[] {
-            1000000000,
+            this.m_nudDirs.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.m_nudDirs.Location = new System.Drawing.Point(147, 19);
+            this.m_nudDirs.Maximum = new decimal(new int[] {
+            1000,
             0,
             0,
             0});
-            this.m_nudFree.Minimum = new decimal(new int[] {
+            this.m_nudDirs.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.m_nudFree.Name = "m_nudFree";
-            this.m_nudFree.Size = new System.Drawing.Size(78, 20);
-            this.m_nudFree.TabIndex = 8;
-            this.m_nudFree.Value = new decimal(new int[] {
-            1024,
+            this.m_nudDirs.Name = "m_nudDirs";
+            this.m_nudDirs.Size = new System.Drawing.Size(78, 20);
+            this.m_nudDirs.TabIndex = 3;
+            this.m_nudDirs.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -323,9 +323,9 @@
             this.Size = new System.Drawing.Size(666, 238);
             this.m_cleanupGroupBox.ResumeLayout(false);
             this.m_cleanupGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudFree)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudQuota)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDirs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -55,9 +55,13 @@ namespace iba.Controls
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_nudTime = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.m_editorGroupBox.SuspendLayout();
             this.m_panelSide.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -121,6 +125,9 @@ namespace iba.Controls
             // m_editorGroupBox
             // 
             resources.ApplyResources(this.m_editorGroupBox, "m_editorGroupBox");
+            this.m_editorGroupBox.Controls.Add(this.label7);
+            this.m_editorGroupBox.Controls.Add(this.label6);
+            this.m_editorGroupBox.Controls.Add(this.m_nudTime);
             this.m_editorGroupBox.Controls.Add(this.m_lblTestSide);
             this.m_editorGroupBox.Controls.Add(this.m_panelSide);
             this.m_editorGroupBox.Controls.Add(this.m_rbPrevOutput);
@@ -220,6 +227,36 @@ namespace iba.Controls
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // m_nudTime
+            // 
+            resources.ApplyResources(this.m_nudTime, "m_nudTime");
+            this.m_nudTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.m_nudTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudTime.Name = "m_nudTime";
+            this.m_nudTime.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
             // BatchFileControl
             // 
             resources.ApplyResources(this, "$this");
@@ -234,6 +271,7 @@ namespace iba.Controls
             this.m_editorGroupBox.PerformLayout();
             this.m_panelSide.ResumeLayout(false);
             this.m_panelSide.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -265,6 +303,9 @@ namespace iba.Controls
         private System.Windows.Forms.Panel m_panelSide;
         private System.Windows.Forms.RadioButton m_rbServerSide;
         private System.Windows.Forms.RadioButton m_rbClientSide;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown m_nudTime;
 
     }
 }

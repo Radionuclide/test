@@ -27,6 +27,10 @@ namespace iba.Controls
             m_nudInterval.Value = (decimal) m_data.Interval.TotalSeconds;
             m_rbAbsolutePause.Checked = !m_data.MeasureFromFileTime;
             m_rbDatFileTime.Checked = m_data.MeasureFromFileTime;
+            if (m_data.ParentConfigurationData.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                m_rbDatFileTime.Text = iba.Properties.Resources.FromTriggerTextForLabel;
+            else
+                m_rbDatFileTime.Text = iba.Properties.Resources.FromDatFileTextForLabel;
         }
 
         public void LeaveCleanup()

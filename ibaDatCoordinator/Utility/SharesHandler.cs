@@ -215,14 +215,14 @@ namespace iba.Utility
             foreach (TaskData dat in conf.Tasks)
             {
                 if (!dat.Enabled) continue;
-                TaskDataUNC datUNC = dat as TaskDataUNC;
+                CleanupTaskData datUNC = dat as CleanupTaskData;
                 if (datUNC != null && IsUNC(datUNC.DestinationMapUNC))
                 {
                     if (AddReference(ComputerName(datUNC.DestinationMapUNC), datUNC.Username, datUNC.Password) == 0)
                     {
                         foreach (TaskData dat2 in conf.Tasks)
                         {
-                            TaskDataUNC datUNC2 = dat2 as TaskDataUNC;
+                            CleanupTaskData datUNC2 = dat2 as CleanupTaskData;
                             if (datUNC == datUNC2) break;
                             if (datUNC2 != null)
                                 Release(ComputerName(datUNC2.DestinationMapUNC));

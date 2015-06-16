@@ -143,6 +143,7 @@ namespace iba.Controls
             m_scanTimeUpDown.Enabled = m_cbRescanEnabled.Checked = m_data.RescanEnabled;
             m_cbInitialScanEnabled.Checked = m_data.InitialScanEnabled;
             m_failTimeUpDown.Value = (decimal)m_data.ReprocessErrorsTimeInterval.TotalMinutes;
+            m_cbRepErr.Checked = m_data.ReprocessErrors;
             m_retryUpDown.Value = (decimal)m_data.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_data.LimitTimesTried;
 
@@ -171,6 +172,7 @@ namespace iba.Controls
         {
             m_data.DatDirectory = m_datDirTextBox.Text;
             m_data.SubDirs = m_subMapsCheckBox.Checked;
+            m_data.ReprocessErrors = m_cbRepErr.Checked;
             m_data.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double)m_failTimeUpDown.Value);
             m_data.RescanTimeInterval = TimeSpan.FromMinutes((double)m_scanTimeUpDown.Value);
             m_data.RescanEnabled = m_cbRescanEnabled.Checked;

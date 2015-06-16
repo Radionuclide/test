@@ -12,14 +12,14 @@ namespace iba.Processing
 {
     public class FileQuotaCleanup
     {
-        private TaskDataUNC m_task;
+        private CleanupTaskData m_task;
         private LinkedList<String> m_files;
         private bool m_fastSearch;
         string m_extension;
         UInt64 m_size;
         CancellationToken m_cancelToken = new CancellationToken(false);
 
-        public FileQuotaCleanup(TaskDataUNC task, string extension)
+        public FileQuotaCleanup(CleanupTaskData task, string extension)
         {
             m_task = task;
             m_files = new LinkedList<String>();

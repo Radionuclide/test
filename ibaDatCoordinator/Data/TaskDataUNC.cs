@@ -113,20 +113,23 @@ namespace iba.Data
         private string Sanitize(string value)
         {
             if(String.IsNullOrEmpty(value)) return ""; //keep empty
-            value = value.Replace(",", ";"); //comma is ok as separator as well
-            string[] parts = value.Split(';');
+            value = value.Replace(";", ","); //comma is ok as separator as well
+            string[] parts = value.Split(',');
             StringBuilder sb = new StringBuilder();
             foreach(string part in parts)
             {
-                string t = part;
                 if(String.IsNullOrEmpty(part))
                     continue;
-                if(part == ".") 
+                string t = part;
+                t = t.Trim();
+                t = t.Replace(".", String.Empty);
+                t = t.Replace("*", String.Empty);
+                if(String.IsNullOrEmpty(part))
                     continue;
-                if(!part.StartsWith("."))
-                    t = "." + part;
+                t = t.Trim();
+                t = "*." + t;
                 if(sb.Length > 0)
-                    sb.Append(";");
+                    sb.Append(",");
                 sb.Append(t);
             }
             return sb.ToString();
