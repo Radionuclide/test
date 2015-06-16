@@ -3776,8 +3776,12 @@ namespace iba.Processing
                     CleanupDirs(filename, data, data.Extension);
                     break;
                 case CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace:
-                    break;
                 case CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace:
+                    {
+                        FileQuotaCleanup fqc = new FileQuotaCleanup(data, data.Extension);
+                        fqc.Init();
+                        fqc.Clean("filename");
+                    }
                     break;
             }
             lock(m_sd.DatFileStates)
