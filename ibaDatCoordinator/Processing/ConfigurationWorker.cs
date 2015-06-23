@@ -77,7 +77,7 @@ namespace iba.Processing
         {
             if (m_sd.Started) return;
             m_stop = false;
-
+            m_delayedHDQStop = false;
             UpdateConfiguration();
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
@@ -591,14 +591,23 @@ namespace iba.Processing
                 {
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
-                   
-                    if (m_cd.JobType != ConfigurationData.JobTypeEnum.Scheduled)
+
+                    if(m_cd.JobType != ConfigurationData.JobTypeEnum.Scheduled)
                     {
                         retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
                         retryAccessTimer.Period = TimeSpan.FromSeconds(1);
                     }
                     else
+                    {
+                        m_delayedHDQStop = false;
                         ScheduleNextEvent();
+                        if(m_delayedHDQStop)
+                        {
+                            m_delayedHDQStop = false;
+                            Log(Logging.Level.Exception, iba.Properties.Resources.ErrorScheduleNextTrigger);
+                            Stop = true;
+                        }
+                    }
 
                     if (!m_cd.NotificationData.NotifyImmediately)
                     {
@@ -650,6 +659,13 @@ namespace iba.Processing
                                 Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), file);
                             }
                             if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
+                            if(m_delayedHDQStop)
+                            {
+                                m_delayedHDQStop = false;
+                                Log(Logging.Level.Exception, iba.Properties.Resources.ErrorScheduleNextTrigger);
+                                Stop = true;
+                            }
+
                             if (m_stop) break;
                             lock (m_toProcessFiles)
                             {
@@ -4403,13 +4419,15 @@ namespace iba.Processing
         {
             ScheduleNextEvent(DateTime.Now);
         }
+
+        private bool m_delayedHDQStop;
+
         private void ScheduleNextEvent(DateTime triggerFrom)
         {
             TriggerCalculator tc = new TriggerCalculator(m_cd.ScheduleData);
             if(!tc.NextTrigger(triggerFrom, out m_nextTrigger))
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.ErrorScheduleNextTrigger);
-                Stop = true;
+                m_delayedHDQStop = true;
                 return;
             }
             if(NextEventTimer == null)
@@ -4448,7 +4466,7 @@ namespace iba.Processing
                         DateTime stopTime = m_nextTrigger - m_cd.ScheduleData.StopRangeFromTrigger;
                         TriggerCalculator tc = new TriggerCalculator(m_cd.ScheduleData);
                         DateTime startTime;
-                        if(!tc.PrevTrigger(stopTime, out startTime))
+                        if(!tc.PrevTrigger(m_nextTrigger, out startTime))
                         {
                             String message = String.Format(iba.Properties.Resources.logFailDeterminePreviousTrigger, m_cd.Name);
                             Log(Logging.Level.Exception, message, filename);

@@ -304,6 +304,8 @@ namespace iba.Controls
                         Start = TimeSpan.FromTicks(diff);
                     }
                 }
+                else
+                    Start = sp;
             }
             finally
             {
@@ -482,7 +484,36 @@ namespace iba.Controls
                     count = i;
                     break;
                 }
-                sb.AppendLine(next.ToString() + " (" + next.DayOfWeek.ToString() + ")");
+
+                string rangeText;
+                if(m_scheduleData.UsePreviousTriggerAsStart)
+                {
+                    DateTime startTime;
+                    DateTime stopTime = next - m_scheduleData.StopRangeFromTrigger;
+                    rangeText = "";
+                    if(!calc.PrevTrigger(next, out startTime))
+                    {
+                        rangeText = iba.Properties.Resources.BadRangeStart;
+                        return;
+                    }
+                    else
+                    {
+                        startTime -= m_scheduleData.StartRangeFromTrigger;
+                        if(startTime >= stopTime)
+                        {
+                            rangeText = String.Format(iba.Properties.Resources.BadRangeTextFormatter, startTime, stopTime);
+                        }
+                        else
+                            rangeText = String.Format(iba.Properties.Resources.RangeTextFormatter, startTime, stopTime);
+                    }
+                }
+                else
+                {
+                    DateTime startTime = next - m_scheduleData.StartRangeFromTrigger;
+                    DateTime stopTime = next - m_scheduleData.StopRangeFromTrigger;
+                    rangeText = String.Format(iba.Properties.Resources.RangeTextFormatter, startTime, stopTime);
+                }
+                sb.AppendLine(next.ToString() + " (" + next.DayOfWeek.ToString() + ") " + rangeText);
                 from = next;
             }
             string caption = m_confData.Name;
@@ -495,7 +526,7 @@ namespace iba.Controls
                 string message = string.Format(iba.Properties.Resources.NextNTriggers, count) + Environment.NewLine + sb.ToString();
                 message = message.TrimEnd();
                 if(count < 10) message += Environment.NewLine + iba.Properties.Resources.NoTriggersAfter;
-                MessageBox.Show(message,caption);
+                FlexibleMessageBox.Show(message,caption);
             }
         }
 

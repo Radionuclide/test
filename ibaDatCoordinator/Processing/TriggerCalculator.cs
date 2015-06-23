@@ -277,7 +277,7 @@ namespace iba.Processing
             }
         }
 
-        void MonthlyTriggerDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter)
+        void MonthlyTriggerDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter, bool ignoreBase = false)
         {
             foreach(int day in m_data.MonthTriggerDays)
             {
@@ -288,7 +288,7 @@ namespace iba.Processing
                         dayc = DateTime.DaysInMonth(year, month);
                     DateTime candidate = new DateTime(year, month, dayc, m_data.BaseTriggerTime.Hour,
                         m_data.BaseTriggerTime.Minute, m_data.BaseTriggerTime.Second, m_data.BaseTriggerTime.Millisecond);
-                    if(candidate >= m_data.BaseTriggerTime)
+                    if(candidate >= m_data.BaseTriggerTime || ignoreBase)
                     {
                         if(candidate <= from && candidate > TimeBefore)
                             TimeBefore = candidate;
@@ -302,7 +302,7 @@ namespace iba.Processing
             }
         }
 
-        void MonthlyTriggerWeekDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter)
+        void MonthlyTriggerWeekDaysOptionPart(int year, int month, DateTime from, ref DateTime TimeBefore, ref DateTime TimeAfter, bool ignoreBase = false)
         {
             foreach(int weekday in m_data.MonthTriggerWeekDay)
             {
@@ -324,7 +324,7 @@ namespace iba.Processing
                         if(index >= timesonweekday.Count) continue;
                         candidate = timesonweekday[index];
                     }
-                    if(candidate >= m_data.BaseTriggerTime)
+                    if(candidate >= m_data.BaseTriggerTime || ignoreBase)
                     {
                         if(candidate <= from && candidate > TimeBefore)
                             TimeBefore = candidate;
@@ -339,14 +339,15 @@ namespace iba.Processing
         {
             DateTime TimeBefore = DateTime.MinValue;
             DateTime TimeAfter = DateTime.MaxValue; //don't need this
+            TimeSpan delta = TimeSpan.FromMilliseconds(1.0);
             foreach(int month in m_data.MonthTriggerMonths)
             {
                 for(int offset = -1; offset <= 0; offset++) //try year before, and current year
                 {
                     if(m_data.MonthTriggerUseDays)
-                        MonthlyTriggerDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
+                        MonthlyTriggerDaysOptionPart(from.Year + offset, month, from-delta, ref TimeBefore, ref TimeAfter, true);
                     else
-                        MonthlyTriggerWeekDaysOptionPart(from.Year + offset, month, from, ref TimeBefore, ref TimeAfter);
+                        MonthlyTriggerWeekDaysOptionPart(from.Year + offset, month, from-delta, ref TimeBefore, ref TimeAfter,true);
                 }
             }
             if(TimeBefore == DateTime.MinValue)

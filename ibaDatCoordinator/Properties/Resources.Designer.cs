@@ -162,6 +162,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bad Range: Could not determine start of range!.
+        /// </summary>
+        internal static string BadRangeStart {
+            get {
+                return ResourceManager.GetString("BadRangeStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query range: {0} - {1} &lt;- Bad Range! Stop in front of Start!.
+        /// </summary>
+        internal static string BadRangeTextFormatter {
+            get {
+                return ResourceManager.GetString("BadRangeTextFormatter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon batchfile_running {
@@ -2402,6 +2420,15 @@ namespace iba.Properties {
         internal static string PriorityApp {
             get {
                 return ResourceManager.GetString("PriorityApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query range: {0} - {1}.
+        /// </summary>
+        internal static string RangeTextFormatter {
+            get {
+                return ResourceManager.GetString("RangeTextFormatter", resourceCulture);
             }
         }
         

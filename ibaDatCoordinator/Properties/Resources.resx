@@ -1271,4 +1271,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="FromTriggerTextForLabel" xml:space="preserve">
     <value>the trigger fired</value>
   </data>
+  <data name="BadRangeStart" xml:space="preserve">
+    <value>Bad Range: Could not determine start of range!</value>
+  </data>
+  <data name="BadRangeTextFormatter" xml:space="preserve">
+    <value>Query range: {0} - {1} &lt;- Bad Range! Stop in front of Start!</value>
+  </data>
+  <data name="RangeTextFormatter" xml:space="preserve">
+    <value>Query range: {0} - {1}</value>
+  </data>
 </root>
