@@ -347,6 +347,7 @@
             0,
             0,
             0});
+            this.m_nudDirs.ValueChanged += new System.EventHandler(this.m_nudDirs_ValueChanged);
             // 
             // panel5
             // 
@@ -388,6 +389,7 @@
             0,
             0,
             0});
+            this.m_nudQuota.ValueChanged += new System.EventHandler(this.m_nudQuota_ValueChanged);
             // 
             // panel6
             // 
@@ -443,6 +445,7 @@
             0,
             0,
             0});
+            this.m_nudFree.ValueChanged += new System.EventHandler(this.m_nudFree_ValueChanged);
             // 
             // m_cbOverwrite
             // 

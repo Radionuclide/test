@@ -43,6 +43,11 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as CleanupTaskData;
 
+
+            m_nudDirs.Value = m_data.SubfoldersNumber;
+            m_nudQuota.Value = m_data.Quota;
+            m_nudFree.Value = m_data.QuotaFree;
+
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_rbLimitFree.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
@@ -50,10 +55,6 @@ namespace iba.Controls
             {
                 m_rbLimitDirectories.Checked = true;
             }
-            m_nudDirs.Value = m_data.SubfoldersNumber;
-            m_nudQuota.Value = m_data.Quota;
-            m_nudFree.Value = m_data.QuotaFree;
-
             m_targetFolderTextBox.Text = m_data.DestinationMap;
             m_checkPathButton.Image = null;
             m_checkPathButton.Text = "?";
@@ -83,7 +84,7 @@ namespace iba.Controls
             m_data.DestinationMap = m_targetFolderTextBox.Text;
             m_data.Password = m_tbPass.Text;
             m_data.Username = m_tbUserName.Text;
-
+            m_data.Extension = m_tbExtension.Text;
             m_data.UpdateUNC();
         }
 
@@ -111,6 +112,27 @@ namespace iba.Controls
                 m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
             }
             ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void m_nudDirs_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbLimitDirectories.Checked = true;
+            m_rbQuota.Checked = false;
+            m_rbLimitFree.Checked = false;
+        }
+
+        private void m_nudQuota_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbLimitDirectories.Checked = false;
+            m_rbQuota.Checked = true;
+            m_rbLimitFree.Checked = false;
+        }
+
+        private void m_nudFree_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbLimitDirectories.Checked = false;
+            m_rbQuota.Checked = false;
+            m_rbLimitFree.Checked = true;
         }
     }
 }

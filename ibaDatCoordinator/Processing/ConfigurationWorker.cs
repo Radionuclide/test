@@ -2778,6 +2778,10 @@ namespace iba.Processing
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
             }
+            else if(task is CleanupTaskData)
+            {
+                DoCleanupTask(DatFile, task as CleanupTaskData);
+            }
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;
         }
@@ -3784,7 +3788,7 @@ namespace iba.Processing
         }
 
 
-        private void CleanupTask(string filename, CleanupTaskData data)
+        private void DoCleanupTask(string filename, CleanupTaskData data)
         {
             switch(data.OutputLimitChoice)
             {

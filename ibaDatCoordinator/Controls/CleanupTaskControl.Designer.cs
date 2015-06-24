@@ -146,9 +146,8 @@
             this.m_tbExtension.Name = "m_tbExtension";
             this.m_tbExtension.Size = new System.Drawing.Size(135, 20);
             this.m_tbExtension.TabIndex = 17;
-            this.m_toolTip.SetToolTip(this.m_tbExtension, "To cleanup several types of files, specify the extensions separated by \';\'\r\ne.g.:" +
-        " \"*.dat,*.txt,*.csv\"");
-            this.m_tbExtension.UseSystemPasswordChar = true;
+            this.m_toolTip.SetToolTip(this.m_tbExtension, "To cleanup several types of files, specify the extensions separated by \',\' \r\ne.g." +
+        ": \"*.dat,*.txt,*.csv\"");
             // 
             // label1
             // 
@@ -223,6 +222,7 @@
             0,
             0,
             0});
+            this.m_nudFree.ValueChanged += new System.EventHandler(this.m_nudFree_ValueChanged);
             // 
             // label2
             // 
@@ -268,6 +268,7 @@
             0,
             0,
             0});
+            this.m_nudQuota.ValueChanged += new System.EventHandler(this.m_nudQuota_ValueChanged);
             // 
             // m_rbLimitDirectories
             // 
@@ -303,6 +304,7 @@
             0,
             0,
             0});
+            this.m_nudDirs.ValueChanged += new System.EventHandler(this.m_nudDirs_ValueChanged);
             // 
             // CleanupTaskControl
             // 

@@ -19,6 +19,7 @@ namespace iba.Data
             m_quota = 1024;
             m_quotaFree = 1024;
             m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
+            m_extension = "*.dat";
         }
 
         public enum OutputLimitChoiceEnum { None, LimitDirectories, LimitDiskspace, SaveFreeSpace }

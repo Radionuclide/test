@@ -40,15 +40,14 @@ namespace iba.Controls
             m_cbSplitSubdirs.Checked = m_data.SplitSubdirs;
             m_cbUse4Numbers.Checked = m_data.Year4Chars;
 
+            m_nudDirs.Value = m_data.SubfoldersNumber;
+            m_nudQuota.Value = m_data.Quota;
+            m_nudFree.Value = m_data.QuotaFree;
 
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_rbLimitNone.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.None;
             m_rbLimitFree.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
-            
-            m_nudDirs.Value = m_data.SubfoldersNumber;
-            m_nudQuota.Value = m_data.Quota;
-            m_nudFree.Value = m_data.QuotaFree;
             
             m_cbOverwrite.Checked = m_data.OverwriteFiles;
             m_cbTimeDir.SelectedIndex = (int) m_data.DirTimeChoice;
@@ -186,36 +185,24 @@ namespace iba.Controls
                     m_rbQuota.Checked = false;
                     m_rbLimitNone.Checked = false;
                     m_rbLimitFree.Checked = false;
-                    m_nudQuota.Enabled = false;
-                    m_nudFree.Enabled = false;
-                    m_nudDirs.Enabled = true;
                 }
                 else if (rb == m_rbQuota)
                 {
                     m_rbLimitDirectories.Checked = false;
                     m_rbLimitNone.Checked = false;
                     m_rbLimitFree.Checked = false;
-                    m_nudQuota.Enabled = true;
-                    m_nudFree.Enabled = false ;
-                    m_nudDirs.Enabled = false;
                 }
                 else if (rb == m_rbLimitFree)
                 {
                     m_rbQuota.Checked = false;
                     m_rbLimitDirectories.Checked = false;
                     m_rbLimitNone.Checked = false;
-                    m_nudQuota.Enabled = false;
-                    m_nudFree.Enabled = true ;
-                    m_nudDirs.Enabled = false;
                 }
                 else
                 {
                     m_rbQuota.Checked = false;
                     m_rbLimitDirectories.Checked = false;
                     m_rbLimitFree.Checked = false;
-                    m_nudQuota.Enabled = false;
-                    m_nudFree.Enabled = false;
-                    m_nudDirs.Enabled = false;
                 }
             }
         }
@@ -290,6 +277,30 @@ namespace iba.Controls
         private void m_cbUse4Numbers_CheckedChanged(object sender, EventArgs e)
         {
             UpdateTooltips();
+        }
+
+        private void m_nudQuota_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbQuota.Checked = true;
+            m_rbLimitNone.Checked = false;
+            m_rbLimitFree.Checked = false;
+            m_rbLimitDirectories.Checked = false;
+        }
+
+        private void m_nudDirs_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbQuota.Checked = false;
+            m_rbLimitNone.Checked = false;
+            m_rbLimitFree.Checked = false;
+            m_rbLimitDirectories.Checked = true;
+        }
+
+        private void m_nudFree_ValueChanged(object sender, EventArgs e)
+        {
+            m_rbQuota.Checked = false;
+            m_rbLimitNone.Checked = false;
+            m_rbLimitFree.Checked = true;
+            m_rbLimitDirectories.Checked = false;
         }
     }
 }
