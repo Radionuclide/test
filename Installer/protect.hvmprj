@@ -16,7 +16,7 @@
     </Assemblies>
     <Output>
         <path>.\Output</path>
-        <runtime rename ="true">ibaRunTime.dll</runtime>
+        <runtime rename ="true">ibaRuntime.dll</runtime>
         <runtime64>HVMRun64.dll</runtime64>
     </Output>
     <Settings>
