@@ -38,13 +38,20 @@ Execute ibaDatCoordinatorInstall_v1.23.0.exe and follow instructions.</p>
 <p>&nbsp; </p>
 <P class="btn_selected">Version history</P>
 <p>&nbsp; </p>
-<P class="header1">Version 1.23.0 - 24/06/2015</P>
+<P class="header1">Version 1.23.0 - 25/06/2015</P>
 <P class="header2">New features (N)</P>
 <OL>
 	<LI>For the scheduled jobs, the trigger range can now be specified relative to the last trigger. 
 	This allows for example querying for a month, that was previously not possible because months can have a variable number of days.</LI>
 	<LI>New cleanup task.</LI>
 	<LI>The error rescan can be disabled.</LI>
+	<li>ibaDongleViewer is part of the installer.</li>
+</OL>
+<P class="header2">Bugfixes (B)</P>
+<OL>
+	<LI>Updated dongle library to prevent incorrect missing dongle errors when multiple iba products try to access the dongle at once.</LI>
+	<LI>Scheduled jobs, the one time option was not working, even if the date was in the future. The job was stopped before any tasks were performed.</LI>
+
 </OL>
 <p>&nbsp; </p>
 <P class="header1">Version 1.22.3 - 19/03/2015</P>

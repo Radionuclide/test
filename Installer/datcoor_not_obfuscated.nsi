@@ -385,6 +385,16 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  
+  ; runtime
+  File "..\InstallFiles\Protected\ibaRuntime.dll"
+  
+  ; dongle viewer
+  SetOutPath "$INSTDIR"
+  File "..\Dependencies\ibaDongleViewerSetup.exe"
+  nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
+  Delete "$INSTDIR\ibaDongleViewerSetup.exe"
+  ;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   SetOutPath "$INSTDIR\fr"
@@ -439,7 +449,12 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "versions_dat.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
-
+    ; dongle viewer
+  SetOutPath "$INSTDIR"
+  File "..\Dependencies\ibaDongleViewerSetup.exe"
+  nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
+  Delete "$INSTDIR\ibaDongleViewerSetup.exe"
+;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   SetOutPath "$INSTDIR\fr"
