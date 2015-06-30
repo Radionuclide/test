@@ -173,6 +173,7 @@ ${StrLoc}
 
 VAR WinVer
 VAR PrevUninstall
+Var StartMenuFolder
 Var ServiceUserName
 Var ServicePassword
 
@@ -225,6 +226,14 @@ FunctionEnd
 Function PreInstall
   Call CheckRequirements
   Call CheckPreviousVersions
+
+  ${If} $WinVer == "Win8"
+  ${OrIf} $WinVer == "Win8.1"
+    StrCpy $StartMenuFolder "ibaDatCoordinator" 
+  ${Else}
+    StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
+  ${EndIf}
+      
 FunctionEnd
 
 Function InstalltypeSelect
@@ -413,10 +422,12 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
 
   SetOutPath "$INSTDIR"
   ;Create uninstall shortcut
-  CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
-  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
+
+  
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
-  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "0"
 SectionEnd
 
@@ -507,10 +518,10 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   nsSCMEx::Start /NOUNLOAD "Spooler"
 
   ;shortcut
-  CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
-  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\ibaDatCoordinator Service Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Service Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
-  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
   ;Start service
    nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
 SectionEnd
@@ -534,8 +545,8 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallDir" "$INSTDIR"
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
-  CreateDirectory "$SMPROGRAMS\iba\ibaDatCoordinator"
-  CreateShortCut "$SMPROGRAMS\iba\ibaDatCoordinator\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
 
   IfSilent +1 +2
     Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
@@ -562,6 +573,7 @@ Section Uninstall
   Delete "$INSTDIR\uninst.exe"
 
   ;Delete shortcuts
+  RMDir /r "$SMPROGRAMS\ibaDatCoordinator"
   RMDir /r "$SMPROGRAMS\iba\ibaDatCoordinator"
   RMDir "$SMPROGRAMS\iba" ;it will only be removed when it is empty
 
@@ -752,6 +764,7 @@ Function GetDotNETVersion
 FunctionEnd
 
 
+; latest version: http://nsis.sourceforge.net/Get_Windows_version
 ;--------------------------------
 ; GetWindowsVersion
 ;
