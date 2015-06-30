@@ -151,11 +151,12 @@ ShowInstDetails hide
 ShowUnInstDetails hide
 BrandingText "iba AG"
 
+!define /date CurrentYear "%Y"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright ?2006 iba AG"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2006-${CurrentYear} by iba AG"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
 VIProductVersion "${PRODUCT_FILE_VERSION}"
@@ -281,10 +282,15 @@ Function CheckRequirements
   ;Check if required .NET framework version is installed
   Call GetDotNETVersion
   Pop $0
-  ${If} $0 == "not found"
-       MessageBox MB_OK|MB_ICONSTOP $(TEXT_FRAMEWORK_MISSING)
-       Quit
-  ${EndIf}
+  Pop $1
+
+  ;Check if .NET framework 4.0 full is installed
+  ${VersionCompare} $0 "4.0.1" $2
+  ${If} $2 == 2
+    ;Framework 4.0 not found --> stop installer
+    MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_FRAMEWORK_MISSING)
+    Quit
+  ${EndIf}  
 
 FunctionEnd
 
@@ -663,15 +669,74 @@ FunctionEnd
 ;      = "VERSION" with VERSION the version of the .NET framework installed
 
 
+;Function GetDotNETVersion
+;  Push $0
+;  Push $1
+;
+;  System::Call "mscoree::GetCORVersion(w .r0, i ${NSIS_MAX_STRLEN}, *i) i .r1"
+;  StrCmp $1 0 +2
+;    StrCpy $0 "not found"
+;
+;  Pop $1
+;  Exch $0
+;FunctionEnd
+
 Function GetDotNETVersion
   Push $0
   Push $1
+  Push $2
+  StrCpy $0 ""
+  StrCpy $1 ""
+  StrCpy $2 ""
+  
+  ;in x64
+  ;ReadRegDWORD $0 HKLM "SOFTWARE\Wow6432node\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
+  
+  ;Check if v4.0 full is installed
+  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
+  StrCmp $2 "1" +1 +3
+  StrCpy $0 "4.0.1"  ;full version
+  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Version"
+  Goto checkCLR2
+  
+  ;Check if v4.0 client is installed
+  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Install"
+  StrCmp $2 "1" +1 +3
+  StrCpy $0 "4.0.0"  ;client version
+  Goto checkCLR2
+  
+  checkCLR2:
+  
+  ;Check if v3.5 is installed
+  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
+  StrCmp $2 "1" +1 +3
+  StrCpy $1 "3.5"
+  Goto end
+  
+  ;Check if v3.0 is installed
+  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.0" "Install"
+  StrCmp $2 "1" +1 +3
+  StrCpy $1 "3.0"
+  Goto end
+  
+  ;Check if v2.0 is installed
+  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727" "Install"
+  StrCmp $2 "1" +1 +3
+  StrCpy $1 "2.0.50727"
+  Goto end
+  
+  ;Check if v1.1 is installed
+  ;ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v1.1.4322" "Install"
+  ;StrCmp $0 "1" +1 +3
+  ;StrCpy $0 "1.1.4322"
+  ;Goto end
+  
+  ;StrCpy $0 "none"
 
-  System::Call "mscoree::GetCORVersion(w .r0, i ${NSIS_MAX_STRLEN}, *i) i .r1"
-  StrCmp $1 0 +2
-    StrCpy $0 "not found"
-
-  Pop $1
+  end:
+  Pop $2
+  Exch $1
+  Exch 1
   Exch $0
 FunctionEnd
 
@@ -882,7 +947,7 @@ LangString DESC_DATCOOR_NOSERVICE         ${LANG_ENGLISH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Service"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "This operating system is not supported."
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_ENGLISH} "You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 2.0 is not installed. Please install this before running the ibaDatCoordinator installer. The .NET framework can be found on the distribution cd (dotnetfx.exe) or it can be downloaded from http://www.microsoft.com"
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.0 is not installed. Please install this before running the ibaDatCoordinator installer. The .NET framework can be found on the distribution cd (dotnetfx.exe) or it can be downloaded from http://www.microsoft.com"
 LangString TEXT_UNINSTALL                 ${LANG_ENGLISH} "Uninstall ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_ENGLISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} is already installed. Do you wish to reinstall?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_ENGLISH} "An older version of ${PRODUCT_NAME} is installed. Do you wish to upgrade to version ${PRODUCT_VERSION}?"
@@ -914,7 +979,7 @@ LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN} "Das Betriebssystem ist nicht unterstützt."
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_GERMAN} "Sie besitzen keine ausreichenden Berechtigungen, um diese Installation für alle Benutzer dieses Computers auszuführen. Melden Sie sich als Administrator an, und wiederholen Sie diese Installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN} "Das .NET Framework, Version 2.0, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaDatCoordinator beginnen. Das .NET Framework finden Sie auf der Programm-CD (dotnetfx.exe) oder als Download via http://www.microsoft.com."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN} "Das .NET Framework, Version 4.0, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaDatCoordinator beginnen. Das .NET Framework finden Sie auf der Programm-CD (dotnetfx.exe) oder als Download via http://www.microsoft.com."
 LangString TEXT_UNINSTALL                 ${LANG_GERMAN} "${PRODUCT_NAME} deinstallieren"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_GERMAN} "${PRODUCT_NAME} v${PRODUCT_VERSION} ist bereits installiert. Wollen Sie die Neuinstallation trotzdem durchführen?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_GERMAN} "Eine ältere Version von ${PRODUCT_NAME} ist bereits installiert. Wollen Sie ein upgrade auf die neuere Version ${PRODUCT_VERSION} durchführen?"
@@ -946,7 +1011,7 @@ LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH} "Le .NET framework, version 2.0, n'est pas install? Installez-le avant de commencer l'installation d'ibaDatCoordinator. Le .NET framework est sur le CD programme (dotnetfx.exe) ou vous pouvez le télécharger via http://www.microsoft.com."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH} "Le .NET framework, version 4.0, n'est pas install? Installez-le avant de commencer l'installation d'ibaDatCoordinator. Le .NET framework est sur le CD programme (dotnetfx.exe) ou vous pouvez le télécharger via http://www.microsoft.com."
 LangString TEXT_UNINSTALL                 ${LANG_FRENCH} "Désinstaller ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_FRENCH} "${PRODUCT_NAME} v${PRODUCT_VERSION} est déj?install? Souhaitez-vous procéder ?une réinstallation?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_FRENCH} "Une ancienne version de ${PRODUCT_NAME} est déj?installée. Souhaitez-vous une mise ?niveau ?la nouvelle version ${PRODUCT_VERSION}?"
