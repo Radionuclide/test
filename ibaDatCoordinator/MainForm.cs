@@ -580,7 +580,7 @@ namespace iba
                     taskNode = new TreeNode(task.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, task as PauseTaskData);
                 }
-                else if(task is CleanupTaskData)
+                else if(task.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
                     taskNode.Tag = new CleanupTaskTreeItemData(this, task as CleanupTaskData);
@@ -1126,7 +1126,7 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if(m_task_copy is CleanupTaskData)
+                else if(m_task_copy.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
                     taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);
@@ -1205,7 +1205,7 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if(m_task_copy is CleanupTaskData)
+                else if(m_task_copy.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
                     taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);

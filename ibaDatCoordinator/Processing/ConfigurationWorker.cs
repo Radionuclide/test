@@ -1059,12 +1059,13 @@ namespace iba.Processing
                         else
                             m_licensedTasks.Add(task, true);
                     }
+                    if(cust.Plugin.DongleBitPos < 0) continue;
                     if (info == null)
                     {
                         info = CDongleInfo.ReadDongle();
                         if (info.DongleFound) dongleFound = true;
                     }
-                    if (!info.PluginsLicensed() || !info.IsPluginLicensed(cust.Plugin.DongleBitPos))
+                    if (!info.IsPluginLicensed(cust.Plugin.DongleBitPos))
                     {
                         ok = false;
                         lock (m_licensedTasks)
@@ -2770,6 +2771,10 @@ namespace iba.Processing
                 else
                     CopyDatFile(DatFile, dat);
             }
+            else if(task.GetType() == typeof(CleanupTaskData))
+            {
+                DoCleanupTask(DatFile, task as CleanupTaskData);
+            }
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -2777,10 +2782,6 @@ namespace iba.Processing
             else if (task is CustomTaskDataUNC)
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
-            }
-            else if(task is CleanupTaskData)
-            {
-                DoCleanupTask(DatFile, task as CleanupTaskData);
             }
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;

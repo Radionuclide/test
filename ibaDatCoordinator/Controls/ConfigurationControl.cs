@@ -457,8 +457,7 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
         }
-
-
+        
         private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
         {
             CleanupTaskData cleanup = new CleanupTaskData(m_data);

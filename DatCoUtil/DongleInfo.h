@@ -31,7 +31,6 @@ namespace iba {
 			dongleFound = false;
 		}
 		bool IsPluginLicensed(int pluginbit);
-		bool PluginsLicensed();
 		static CDongleInfo^ ReadDongle();
 		static String^ GetDongleLibVersion();
 	private:
