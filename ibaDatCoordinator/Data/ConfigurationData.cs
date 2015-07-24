@@ -71,7 +71,17 @@ namespace iba.Data
 
         private List<TaskData> m_tasks;
 
-        [XmlElement(Type = typeof(ReportData)), XmlElement(Type = typeof(ExtractData)), XmlElement(Type = typeof(BatchFileData)), XmlElement(Type = typeof(CopyMoveTaskData)), XmlElement(Type = typeof(IfTaskData)), XmlElement(Type = typeof(UpdateDataTaskData)), XmlElement(Type = typeof(PauseTaskData)), XmlElement(Type = typeof(CustomTaskData)), XmlElement(Type = typeof(CustomTaskDataUNC))]
+        
+        [XmlElement(Type = typeof(ReportData)), 
+        XmlElement(Type = typeof(ExtractData)), 
+        XmlElement(Type = typeof(BatchFileData)),
+        XmlElement(Type = typeof(CopyMoveTaskData)),
+        XmlElement(Type = typeof(IfTaskData)), 
+        XmlElement(Type = typeof(UpdateDataTaskData)), 
+        XmlElement(Type = typeof(PauseTaskData)),
+        XmlElement(Type = typeof(CleanupTaskData)), 
+        XmlElement(Type = typeof(CustomTaskData)), 
+        XmlElement(Type = typeof(CustomTaskDataUNC))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }

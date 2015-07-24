@@ -69,16 +69,6 @@ namespace iba
             LogData.InitializeLogger(theLogControl.LogView, theLogControl, state);
             theLogControl.CreateControl();
 
-            //if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            //{
-            //    LogData.Data.MaxRows = Program.CommunicationObject.LoggerMaxRows;
-            //    Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
-            //    ConfigurationData.IdCounter = TaskManager.Manager.IdCounter;
-            //    string lf = LogData.Data.FileName;
-            //    //if (lf != null)
-            //    //    LogData.OpenFromFile(LogData.Data.FileName);
-            //}
-
             configurationToolStripMenuItem.Enabled = false;
             statusToolStripMenuItem.Enabled = true;
             m_filename = null;
@@ -249,7 +239,8 @@ namespace iba
                 if (!string.IsNullOrEmpty(s2) && s1 != s2)
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
-                            iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                            iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, 
+                            MessageBoxDefaultButton.Button2);
                     switch (res)
                     {
                         case DialogResult.Cancel:

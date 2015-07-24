@@ -22,6 +22,10 @@ namespace iba.Data
             m_extension = "*.dat";
         }
 
+        public CleanupTaskData() : this(null)
+        {
+        }
+
         public enum OutputLimitChoiceEnum { None, LimitDirectories, LimitDiskspace, SaveFreeSpace }
         protected OutputLimitChoiceEnum m_outputLimitChoice;
         public OutputLimitChoiceEnum OutputLimitChoice
