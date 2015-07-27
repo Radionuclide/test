@@ -397,6 +397,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\CleanupTaskControl.resx">
       <DependentUpon>CleanupTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ConfigurationControl.resx">
       <SubType>Designer</SubType>
@@ -404,6 +405,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MonthlyTriggerSettingsControl.resx">
       <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
       <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
@@ -419,6 +421,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
@@ -426,6 +429,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DailyTriggerSettingsControl.resx">
       <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -471,9 +475,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\PasswordConfirm.resx">
       <DependentUpon>PasswordConfirm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PauseTaskControl.resx">
       <DependentUpon>PauseTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\RemoveMarkingsDialog.resx">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
@@ -517,6 +523,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\SpecifyPasswordDialog.resx">
       <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\StopWaitDialog.resx">
       <SubType>Designer</SubType>
@@ -528,6 +535,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UpdateDataTaskControl.resx">
       <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WatchdogControl.resx">
       <SubType>Designer</SubType>

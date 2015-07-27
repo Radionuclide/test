@@ -151,6 +151,7 @@ namespace iba.Data
         {
             return other.m_numbFolders == m_numbFolders &&
             other.m_destinationMap == m_destinationMap &&
+            other.m_extension == m_extension &&
             other.m_username == m_username &&
             other.m_pass == m_pass &&
             other.m_quota == m_quota &&
@@ -167,6 +168,7 @@ namespace iba.Data
             cdat.m_quota = m_quota;
             cdat.m_quotaFree = m_quotaFree;
             cdat.m_outputLimitChoice = m_outputLimitChoice;
+            cdat.m_extension = m_extension;
         }
 
         override public TaskData CloneInternal()
