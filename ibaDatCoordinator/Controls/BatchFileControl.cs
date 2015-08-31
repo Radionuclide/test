@@ -28,8 +28,16 @@ namespace iba.Controls
             m_tooltip.SetToolTip(m_saveButton, iba.Properties.Resources.tooltipSaveScript);
             m_tooltip.SetToolTip(m_executeBatchFile, iba.Properties.Resources.tooltipExecuteScript);
             m_tooltip.SetToolTip(m_browseDatFileButton, iba.Properties.Resources.tooltipBrowseTestFile);
-            m_lblTestSide.Visible = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
-            m_panelSide.Visible = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
+            if(Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                m_lblTestSide.Visible = false;
+                m_panelSide.Visible = false;
+                int height = this.Size.Height - 30;
+                int height2 = m_executeGroupBox.Size.Height - 30;
+                this.Size = new Size(this.Size.Width, height);
+                this.MinimumSize = new Size(this.Size.Width, height);
+                m_executeGroupBox.Size = new Size(m_executeGroupBox.Size.Width, height2);
+            }
         }
 
         void Document_DocumentChanged(object sender, ICSharpCode.TextEditor.Document.DocumentEventArgs e)
@@ -351,7 +359,7 @@ namespace iba.Controls
                 return false;
             }
             m_executeBatchFile.Enabled = true;
-            m_editorGroupBox.Enabled = true;
+            m_executeGroupBox.Enabled = true;
             return true;
         }
 

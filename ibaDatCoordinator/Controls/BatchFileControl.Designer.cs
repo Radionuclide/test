@@ -30,14 +30,19 @@ namespace iba.Controls
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchFileControl));
+            this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.m_newButton = new System.Windows.Forms.Button();
             this.m_textEditor = new ICSharpCode.TextEditor.TextEditorControl();
             this.m_batchFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browseBATCHFileButton = new System.Windows.Forms.Button();
             this.m_saveButton = new System.Windows.Forms.Button();
-            this.m_executeBatchFile = new System.Windows.Forms.Button();
-            this.m_editorGroupBox = new iba.Utility.CollapsibleGroupBox();
+            this.m_executeGroupBox = new iba.Utility.CollapsibleGroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_nudTime = new System.Windows.Forms.NumericUpDown();
             this.m_lblTestSide = new System.Windows.Forms.Label();
             this.m_panelSide = new System.Windows.Forms.Panel();
             this.m_rbServerSide = new System.Windows.Forms.RadioButton();
@@ -52,16 +57,11 @@ namespace iba.Controls
             this.m_argumentsTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
-            this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.label6 = new System.Windows.Forms.Label();
-            this.m_nudTime = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
+            this.m_executeBatchFile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            this.m_editorGroupBox.SuspendLayout();
-            this.m_panelSide.SuspendLayout();
+            this.m_executeGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
+            this.m_panelSide.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -114,35 +114,57 @@ namespace iba.Controls
             this.m_saveButton.UseVisualStyleBackColor = true;
             this.m_saveButton.Click += new System.EventHandler(this.m_saveButton_Click);
             // 
-            // m_executeBatchFile
+            // m_executeGroupBox
             // 
-            resources.ApplyResources(this.m_executeBatchFile, "m_executeBatchFile");
-            this.m_executeBatchFile.Image = global::iba.Properties.Resources.DOS;
-            this.m_executeBatchFile.Name = "m_executeBatchFile";
-            this.m_executeBatchFile.UseVisualStyleBackColor = true;
-            this.m_executeBatchFile.Click += new System.EventHandler(this.m_executeBatchFile_Click);
+            resources.ApplyResources(this.m_executeGroupBox, "m_executeGroupBox");
+            this.m_executeGroupBox.Controls.Add(this.label7);
+            this.m_executeGroupBox.Controls.Add(this.label6);
+            this.m_executeGroupBox.Controls.Add(this.m_nudTime);
+            this.m_executeGroupBox.Controls.Add(this.m_lblTestSide);
+            this.m_executeGroupBox.Controls.Add(this.m_panelSide);
+            this.m_executeGroupBox.Controls.Add(this.m_rbPrevOutput);
+            this.m_executeGroupBox.Controls.Add(this.m_rbDatFile);
+            this.m_executeGroupBox.Controls.Add(this.label5);
+            this.m_executeGroupBox.Controls.Add(this.m_browseDatFileButton);
+            this.m_executeGroupBox.Controls.Add(this.label4);
+            this.m_executeGroupBox.Controls.Add(this.label2);
+            this.m_executeGroupBox.Controls.Add(this.label1);
+            this.m_executeGroupBox.Controls.Add(this.m_argumentsTextBox);
+            this.m_executeGroupBox.Controls.Add(this.label3);
+            this.m_executeGroupBox.Controls.Add(this.m_datFileTextBox);
+            this.m_executeGroupBox.Controls.Add(this.m_executeBatchFile);
+            this.m_executeGroupBox.Name = "m_executeGroupBox";
+            this.m_executeGroupBox.TabStop = false;
             // 
-            // m_editorGroupBox
+            // label7
             // 
-            resources.ApplyResources(this.m_editorGroupBox, "m_editorGroupBox");
-            this.m_editorGroupBox.Controls.Add(this.label7);
-            this.m_editorGroupBox.Controls.Add(this.label6);
-            this.m_editorGroupBox.Controls.Add(this.m_nudTime);
-            this.m_editorGroupBox.Controls.Add(this.m_lblTestSide);
-            this.m_editorGroupBox.Controls.Add(this.m_panelSide);
-            this.m_editorGroupBox.Controls.Add(this.m_rbPrevOutput);
-            this.m_editorGroupBox.Controls.Add(this.m_rbDatFile);
-            this.m_editorGroupBox.Controls.Add(this.label5);
-            this.m_editorGroupBox.Controls.Add(this.m_browseDatFileButton);
-            this.m_editorGroupBox.Controls.Add(this.label4);
-            this.m_editorGroupBox.Controls.Add(this.label2);
-            this.m_editorGroupBox.Controls.Add(this.label1);
-            this.m_editorGroupBox.Controls.Add(this.m_argumentsTextBox);
-            this.m_editorGroupBox.Controls.Add(this.label3);
-            this.m_editorGroupBox.Controls.Add(this.m_datFileTextBox);
-            this.m_editorGroupBox.Controls.Add(this.m_executeBatchFile);
-            this.m_editorGroupBox.Name = "m_editorGroupBox";
-            this.m_editorGroupBox.TabStop = false;
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // m_nudTime
+            // 
+            resources.ApplyResources(this.m_nudTime, "m_nudTime");
+            this.m_nudTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.m_nudTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudTime.Name = "m_nudTime";
+            this.m_nudTime.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
             // 
             // m_lblTestSide
             // 
@@ -227,51 +249,29 @@ namespace iba.Controls
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             // 
-            // label6
+            // m_executeBatchFile
             // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // m_nudTime
-            // 
-            resources.ApplyResources(this.m_nudTime, "m_nudTime");
-            this.m_nudTime.Maximum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            this.m_nudTime.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_nudTime.Name = "m_nudTime";
-            this.m_nudTime.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
+            resources.ApplyResources(this.m_executeBatchFile, "m_executeBatchFile");
+            this.m_executeBatchFile.Image = global::iba.Properties.Resources.DOS;
+            this.m_executeBatchFile.Name = "m_executeBatchFile";
+            this.m_executeBatchFile.UseVisualStyleBackColor = true;
+            this.m_executeBatchFile.Click += new System.EventHandler(this.m_executeBatchFile_Click);
             // 
             // BatchFileControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.m_editorGroupBox);
-            this.MinimumSize = new System.Drawing.Size(0, 400);
+            this.Controls.Add(this.m_executeGroupBox);
+            this.MinimumSize = new System.Drawing.Size(0, 440);
             this.Name = "BatchFileControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.m_editorGroupBox.ResumeLayout(false);
-            this.m_editorGroupBox.PerformLayout();
+            this.m_executeGroupBox.ResumeLayout(false);
+            this.m_executeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             this.m_panelSide.ResumeLayout(false);
             this.m_panelSide.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -282,7 +282,7 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_batchFileTextBox;
         private System.Windows.Forms.Button m_browseBATCHFileButton;
         private System.Windows.Forms.Button m_executeBatchFile;
-        private iba.Utility.CollapsibleGroupBox m_editorGroupBox;
+        private iba.Utility.CollapsibleGroupBox m_executeGroupBox;
         private System.Windows.Forms.Button m_newButton;
         private System.Windows.Forms.Button m_saveButton;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog1;

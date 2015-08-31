@@ -556,7 +556,7 @@ namespace iba.Processing
                     initialScanThread.Priority = ThreadPriority.BelowNormal;
                     initialScanThread.Start();
                 }
-                else if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
                 {
                     //try to delete all previous hdq files
                     String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";

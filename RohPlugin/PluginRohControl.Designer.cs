@@ -454,8 +454,8 @@
             this.m_datagvKanalbeschreibung.Name = "m_datagvKanalbeschreibung";
             this.m_datagvKanalbeschreibung.Size = new System.Drawing.Size(551, 326);
             this.m_datagvKanalbeschreibung.TabIndex = 3;
-            this.m_datagvKanalbeschreibung.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvKanalbeschreibung.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.m_datagvKanalbeschreibung_CellValidating);
+            this.m_datagvKanalbeschreibung.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagv_RowPostPaint);
             this.m_datagvKanalbeschreibung.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagv_KeyDown);
             // 
             // m_kanalColumnInfoField
@@ -612,8 +612,8 @@
             // 
             // m_ftpDirectory
             // 
-            this.m_ftpDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ftpDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_ftpDirectory.Location = new System.Drawing.Point(91, 51);
             this.m_ftpDirectory.Name = "m_ftpDirectory";
             this.m_ftpDirectory.Size = new System.Drawing.Size(424, 20);
@@ -630,8 +630,8 @@
             // 
             // m_ftpHost
             // 
-            this.m_ftpHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ftpHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_ftpHost.Location = new System.Drawing.Point(91, 25);
             this.m_ftpHost.Name = "m_ftpHost";
             this.m_ftpHost.Size = new System.Drawing.Size(424, 20);
@@ -694,8 +694,8 @@
             // 
             // m_datFileTextBox
             // 
-            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_datFileTextBox.Location = new System.Drawing.Point(108, 17);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             this.m_datFileTextBox.Size = new System.Drawing.Size(309, 20);
@@ -720,7 +720,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.m_tabControl);
             this.Controls.Add(this.m_Panel);
-            this.MinimumSize = new System.Drawing.Size(0, 200);
+            this.MinimumSize = new System.Drawing.Size(0, 410);
             this.Name = "PluginRohControl";
             this.Size = new System.Drawing.Size(565, 410);
             this.m_tabControl.ResumeLayout(false);

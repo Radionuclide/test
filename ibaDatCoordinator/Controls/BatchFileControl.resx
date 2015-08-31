@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="m_saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>163, 17</value>
+  </metadata>
+  <metadata name="m_tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>307, 17</value>
+  </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -256,7 +265,7 @@
     <value>0, 0</value>
   </data>
   <data name="groupBox1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 176</value>
+    <value>0, 100</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 191</value>
@@ -271,7 +280,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -279,38 +288,14 @@
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_executeBatchFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_executeBatchFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_executeBatchFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 154</value>
-  </data>
-  <data name="m_executeBatchFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_executeBatchFile.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_executeBatchFile.Name" xml:space="preserve">
-    <value>m_executeBatchFile</value>
-  </data>
-  <data name="&gt;&gt;m_executeBatchFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeBatchFile.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
-  </data>
-  <data name="&gt;&gt;m_executeBatchFile.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_editorGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_executeGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 18</value>
@@ -331,7 +316,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -361,7 +346,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -370,7 +355,7 @@
     <value>Left</value>
   </data>
   <data name="m_nudTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>204, 16</value>
+    <value>195, 16</value>
   </data>
   <data name="m_nudTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 20</value>
@@ -385,7 +370,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -415,7 +400,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblTestSide.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_lblTestSide.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -452,6 +437,9 @@
   </data>
   <data name="m_rbClientSide.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbClientSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_rbClientSide.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 6</value>
@@ -493,7 +481,7 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_panelSide.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_panelSide.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -523,7 +511,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbPrevOutput.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -553,7 +541,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbDatFile.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -586,7 +574,7 @@ e.g.: file1
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -613,7 +601,7 @@ e.g.: file1
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -645,7 +633,7 @@ e.g.: file1
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -677,7 +665,7 @@ filename without extension</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -707,7 +695,7 @@ filename without extension</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -731,7 +719,7 @@ filename without extension</value>
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_argumentsTextBox.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -761,7 +749,7 @@ filename without extension</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -785,44 +773,65 @@ filename without extension</value>
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.Parent" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+    <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="m_editorGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_executeBatchFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_executeBatchFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_executeBatchFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>605, 154</value>
+  </data>
+  <data name="m_executeBatchFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_executeBatchFile.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_executeBatchFile.Name" xml:space="preserve">
+    <value>m_executeBatchFile</value>
+  </data>
+  <data name="&gt;&gt;m_executeBatchFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeBatchFile.Parent" xml:space="preserve">
+    <value>m_executeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;m_executeBatchFile.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_executeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 197</value>
   </data>
-  <data name="m_editorGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_executeGroupBox.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 229</value>
+  </data>
+  <data name="m_executeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 229</value>
   </data>
-  <data name="m_editorGroupBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_executeGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_editorGroupBox.Text" xml:space="preserve">
+  <data name="m_executeGroupBox.Text" xml:space="preserve">
     <value>Execute</value>
   </data>
-  <data name="&gt;&gt;m_editorGroupBox.Name" xml:space="preserve">
-    <value>m_editorGroupBox</value>
+  <data name="&gt;&gt;m_executeGroupBox.Name" xml:space="preserve">
+    <value>m_executeGroupBox</value>
   </data>
-  <data name="&gt;&gt;m_editorGroupBox.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;m_executeGroupBox.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;m_editorGroupBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_executeGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_editorGroupBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_executeGroupBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="m_saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>163, 17</value>
-  </metadata>
-  <metadata name="m_tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>307, 17</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

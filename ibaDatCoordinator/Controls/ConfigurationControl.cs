@@ -50,10 +50,8 @@ namespace iba.Controls
                 m_panelScheduledJob = new PanelScheduledJob();
                 m_panel = m_panelScheduledJob;
                 int diff = m_panelScheduledJob.Size.Height - m_sourcePanel.Size.Height;
-                //m_panelScheduledJob.Size = m_sourcePanel.Size;
                 m_panelScheduledJob.Location = m_sourcePanel.Location;
                 m_panelScheduledJob.Width = m_sourcePanel.Width;
-                //this.MinimumSize = new Size(0, this.MinimumSize.Height + diff);
                 m_panelScheduledJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                 this.AutoScrollMinSize = new Size(0, this.AutoScrollMinSize.Height + diff);
                 groupBox4.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + diff);

@@ -41,6 +41,7 @@
             this.m_btTriggerNow = new System.Windows.Forms.Button();
             this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_nudRepeatTimes = new iba.Controls.CustomNumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
@@ -92,7 +93,6 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.gbSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
@@ -153,6 +153,12 @@
             this.gbSchedule.Controls.Add(this.label10);
             this.gbSchedule.Name = "gbSchedule";
             this.gbSchedule.TabStop = false;
+            // 
+            // m_cbRepErr
+            // 
+            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
+            this.m_cbRepErr.Name = "m_cbRepErr";
+            this.m_cbRepErr.UseVisualStyleBackColor = true;
             // 
             // m_cbInitialScanEnabled
             // 
@@ -606,12 +612,6 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
-            // m_cbRepErr
-            // 
-            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
-            this.m_cbRepErr.Name = "m_cbRepErr";
-            this.m_cbRepErr.UseVisualStyleBackColor = true;
-            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -619,7 +619,7 @@
             this.Controls.Add(this.gbSchedule);
             this.Controls.Add(this.gbHD);
             this.Controls.Add(this.gbTimeSelection);
-            this.MinimumSize = new System.Drawing.Size(0, 620);
+            this.MinimumSize = new System.Drawing.Size(0, 639);
             this.Name = "PanelScheduledJob";
             this.gbSchedule.ResumeLayout(false);
             this.gbSchedule.PerformLayout();

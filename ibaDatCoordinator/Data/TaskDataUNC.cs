@@ -140,7 +140,6 @@ namespace iba.Data
             return sb.ToString();
         }
 
-
         public string DestinationMapUNC
         {
             get { return m_destinationMapUNC; }

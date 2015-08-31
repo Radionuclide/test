@@ -21,16 +21,13 @@ namespace iba.Controls
             m_plugin = pluginControl as IPluginControl;
             m_regularControl = pluginControl as IPropertyPane;
             InitializeComponent();
-            pluginControl.Width = m_pluginPanel.Width;
-            //m_pluginPanel.Height = pluginControl.Height;
-            //m_pluginPanel.MinimumSize = new Size(m_pluginPanel.MinimumSize.Width, pluginControl.Height);
-            //pluginControl.Size = m_pluginPanel.Size;
             pluginControl.Location = m_pluginPanel.Location;
+            pluginControl.Width = m_pluginPanel.Width;
             m_pluginPanel.Visible = false;
-            pluginControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             this.AutoScrollMinSize = this.Size = new Size(m_pluginPanel.Left + pluginControl.MinimumSize.Width + 5, m_pluginPanel.Top + pluginControl.MinimumSize.Height + 10);
             this.Controls.Add(pluginControl);
             AutoScroll = true;
+            pluginControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             m_ceManager = new CollapsibleElementManager(this);
             groupBox5.Init();
             m_ceManager.AddElement(groupBox5);
@@ -187,10 +184,10 @@ namespace iba.Controls
             return m_data.Index;
         }
 
-        protected override void OnSizeChanged(EventArgs e)
-        {
-            base.OnSizeChanged(e);
-        }
+        //protected override void OnSizeChanged(EventArgs e)
+        //{
+        //    base.OnSizeChanged(e);
+        //}
 
         #endregion
     }

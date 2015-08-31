@@ -60,6 +60,7 @@ namespace iba.Utility
             }
 
         }
+
         private List<Control> VisibleControls;
 
         #region Public Properties
@@ -152,7 +153,7 @@ namespace iba.Utility
 
         #endregion
 
-        #region Implimentation
+        #region Implementation
 
         void DrawGroupBox(Graphics g)
         {
