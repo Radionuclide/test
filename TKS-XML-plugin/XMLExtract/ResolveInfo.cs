@@ -31,7 +31,6 @@ namespace XmlExtract
 
             _missingFields = new List<string>();
             _wrongValueFields = new List<string>();
-            var info = new Info();
 
             //BundNr = reader.QueryInfoByName("$DE_BUNDNR").Trim();
             //Dicke = Single.Parse(reader.QueryInfoByName("$DE_DICKE").Trim());
@@ -41,11 +40,14 @@ namespace XmlExtract
             //Kunde = reader.QueryInfoByName("$DE_KUNDE").Trim();
             //Laenge = Single.Parse(reader.QueryInfoByName("$DE_LAENGE").Trim());
 
+            var info = new Info();
+            var infoFields = reader.InfoFields();
             string infoFieldValue;
+
             // return when tksident (is set && not empty && <> 0)
-            if (reader.InfoFields().TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
+            if (infoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
                 info.TKSIdent = infoFieldValue;
-            else if (reader.InfoFields().TryGetValue(DE_BUNDNR, out infoFieldValue))
+            else if (infoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
                 info.LocalIdent = infoFieldValue;
             else
                 _missingFields.Add(String.Concat(DE_TKSIDENT, "' oder '", DE_BUNDNR));
@@ -53,7 +55,7 @@ namespace XmlExtract
 
             if (st == StandortType.DU)
             {
-                if (reader.InfoFields().TryGetValue(DE_MATERIALART, out infoFieldValue))
+                if (infoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
                 {
                     MaterialArtType mat;
                     if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out mat))
@@ -66,7 +68,7 @@ namespace XmlExtract
             }
 
 
-            if (reader.InfoFields().TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
+            if (infoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
             {
                 var blr = BandlaufrichtungEnum.InWalzRichtung;
                 if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out blr))
@@ -78,13 +80,13 @@ namespace XmlExtract
                 _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
 
-            if (reader.InfoFields().TryGetValue(DE_AGGREGAT, out infoFieldValue))
+            if (infoFields.TryGetValue(DE_AGGREGAT, out infoFieldValue))
                 info.Aggregat = infoFieldValue.Trim();
             else
                 _missingFields.Add(DE_AGGREGAT);
 
 
-            if (reader.InfoFields().TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
+            if (infoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
             {
                 var ep = true;
                 if (TryConvertToBoolean(infoFieldValue.Trim(), out ep))

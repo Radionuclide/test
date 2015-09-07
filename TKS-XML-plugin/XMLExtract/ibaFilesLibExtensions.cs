@@ -20,13 +20,10 @@
 
         }
 
-        private static Dictionary<string, string> _infoFields = new Dictionary<string, string>();
-
         // could be removed when dotnet wrapper is used. 
         public static IDictionary<string, string> InfoFields(this IbaFileReader file)
         {
-            if (_infoFields.Count > 0)
-                return _infoFields;
+            var infoFields = new Dictionary<string, string>();
 
             int cnt = 0;
             string name = string.Empty;
@@ -35,26 +32,11 @@
             file.QueryInfoByIndex(cnt, out name, out value);
             while (!String.IsNullOrEmpty(name))
             {
-                _infoFields.Add(name, value);
+                infoFields.Add(name, value);
                 cnt++;
                 file.QueryInfoByIndex(cnt, out name, out value);
             }
-            return _infoFields;
-        }
-
-        public static IEnumerable<KeyValuePair<string, string>> InfoFields(this IbaChannelReader channel)
-        {
-            int cnt = 0;
-            string name = string.Empty;
-            string value = string.Empty;
-
-            channel.QueryInfoByIndex(cnt, out name, out value);
-            while (!String.IsNullOrEmpty(name))
-            {
-                yield return new KeyValuePair<string, string>(name.Trim(), value.Trim());
-                cnt++;
-                channel.QueryInfoByIndex(cnt, out name, out value);
-            }
+            return infoFields;
         }
 
         public static string Name(this IbaChannelReader channel)
