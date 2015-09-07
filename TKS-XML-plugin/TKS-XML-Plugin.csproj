@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TKS-XMLTask.ico" />
+    <Content Include="versions_tks-xml.htm" />
     <Content Include="XMLExtract\Misc\8515202_de.txt" />
     <Content Include="XMLExtract\Misc\8515202_de_00.txt" />
     <Content Include="XMLExtract\Misc\8515202_de_00.xml" />
