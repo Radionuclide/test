@@ -55,9 +55,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ibaFilesLiteDotNet">
-      <HintPath>..\Dependencies\ibaFilesLiteDotNet.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -93,6 +90,16 @@
     <Compile Include="XMLExtract\ResolveEinheit.cs" />
     <Compile Include="XMLExtract\ResolveGruppe.cs" />
     <Compile Include="XMLExtract\ResolveInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ibaFilesLiteLib">
+      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">

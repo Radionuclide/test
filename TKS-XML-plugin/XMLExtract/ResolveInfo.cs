@@ -8,7 +8,7 @@ namespace XmlExtract
     using System.Globalization;
 
     using iba.TKS_XML_Plugin.Properties;
-    using iba.ibaFilesLiteDotNet;
+    using ibaFilesLiteLib;
 
 
     internal class ResolveInfo
@@ -43,9 +43,9 @@ namespace XmlExtract
 
             string infoFieldValue;
             // return when tksident (is set && not empty && <> 0)
-            if (reader.InfoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
+            if (reader.InfoFields().TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
                 info.TKSIdent = infoFieldValue;
-            else if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
+            else if (reader.InfoFields().TryGetValue(DE_BUNDNR, out infoFieldValue))
                 info.LocalIdent = infoFieldValue;
             else
                 _missingFields.Add(String.Concat(DE_TKSIDENT, "' oder '", DE_BUNDNR));
@@ -53,7 +53,7 @@ namespace XmlExtract
 
             if (st == StandortType.DU)
             {
-                if (reader.InfoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
+                if (reader.InfoFields().TryGetValue(DE_MATERIALART, out infoFieldValue))
                 {
                     MaterialArtType mat;
                     if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out mat))
@@ -66,7 +66,7 @@ namespace XmlExtract
             }
 
 
-            if (reader.InfoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
+            if (reader.InfoFields().TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
             {
                 var blr = BandlaufrichtungEnum.InWalzRichtung;
                 if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out blr))
@@ -78,13 +78,13 @@ namespace XmlExtract
                 _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
 
-            if (reader.InfoFields.TryGetValue(DE_AGGREGAT, out infoFieldValue))
+            if (reader.InfoFields().TryGetValue(DE_AGGREGAT, out infoFieldValue))
                 info.Aggregat = infoFieldValue.Trim();
             else
                 _missingFields.Add(DE_AGGREGAT);
 
 
-            if (reader.InfoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
+            if (reader.InfoFields().TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
             {
                 var ep = true;
                 if (TryConvertToBoolean(infoFieldValue.Trim(), out ep))
@@ -130,23 +130,32 @@ namespace XmlExtract
         {
             string dtValue;
             DateTime dt;
-            if (reader.InfoFields.TryGetValue(DE_MESSZEITPUNKT, out dtValue))
+            if (reader.InfoFields().TryGetValue(DE_MESSZEITPUNKT, out dtValue))
             {
                 if (GetDateTimeParseExact(dtValue, out dt))
                     return dt;
                 else
                     _wrongValueFields.Add(DE_MESSZEITPUNKT);
             }
-            else 
+            else if (reader.InfoFields().TryGetValue(STARTTIME, out dtValue))
             {
-                return reader.StartTime;
+                if (GetDateTimeParseExact(dtValue, out dt))
+                    return dt;
+                else
+                    _wrongValueFields.Add(STARTTIME);
             }
+
             return DateTime.Now;
         }
 
+        static string[] parseFormats = new string[] {
+            "dd.MM.yyyy HH:mm:ss.fff",
+            "dd.MM.yyyy HH:mm:ss.ffffff"
+        };
+
         internal static bool GetDateTimeParseExact(string val, out DateTime date)
         {
-            return DateTime.TryParseExact(val, "dd.MM.yyyy HH:mm:ss.fff", new CultureInfo("de-DE"), DateTimeStyles.None, out date);
+            return DateTime.TryParseExact(val, parseFormats, new CultureInfo("de-DE"), DateTimeStyles.None, out date);
         }
 
         internal static string StripPrefix(string value)

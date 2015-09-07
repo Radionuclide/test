@@ -2,8 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator TKS Xml Plugin Installer"
-!define PRODUCT_VERSION "1.3.0"
-!define PRODUCT_FILE_VERSION "1.3.0.0"
+!define PRODUCT_VERSION "1.3.1"
+!define PRODUCT_FILE_VERSION "1.3.1.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -163,7 +163,6 @@ standalonecopy:
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
   File "..\TKS-XML-plugin\bin\Release\TKS-XML-plugin.dll"
-  File "..\TKS-XML-plugin\bin\Release\ibaFilesLiteDotNet.dll"
   IfErrors standalonecopyError standalonecopyOk
 standalonecopyError:
   MessageBox MB_ICONSTOP $(FAILED_COPY)
@@ -226,7 +225,6 @@ servicecopy:
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
   File "..\TKS-XML-plugin\bin\Release\TKS-XML-plugin.dll"
-  File "..\TKS-XML-plugin\bin\Release\ibaFilesLiteDotNet.dll"
   IfErrors servicecopyError servicecopyOk
 
 servicecopyError:

@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("4817499f-a05d-4759-8c7a-369eee75b251")]
 
 
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.3.1.0")]
+[assembly: AssemblyFileVersion("1.3.1.0")]
 
 [assembly: InternalsVisibleTo("ibaXmlExtract.Tests")]
