@@ -1847,7 +1847,6 @@ namespace iba.Processing
                     {
                         time = null;
                     }
-                    
                 }
                 catch (FileLoadException) //no access
                 {
