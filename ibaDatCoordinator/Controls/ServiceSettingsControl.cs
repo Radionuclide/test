@@ -39,7 +39,9 @@ namespace iba.Controls
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
                     box.Top -= Offset;
                 }
+
             }
+            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
             m_ceManager = new CollapsibleElementManager(this);
             CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { m_gbApp, groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };

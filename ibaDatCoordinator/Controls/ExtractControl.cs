@@ -41,6 +41,7 @@ namespace iba.Controls
             m_groupBoxFileType.Width = m_uncControl.m_subfolderGroupBox.Width;
             m_groupBoxFileType.TabIndex = newtabindex;
             m_uncControl.Dock = DockStyle.Fill;
+            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
         }
 
         private UNCTaskControl m_uncControl;

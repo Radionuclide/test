@@ -2541,7 +2541,7 @@ namespace iba.Processing
                 }
                 catch (Exception ex) //happens when timed out and proc has not released its resources yet
                 {
-                    string error = String.Format("Error writing state in .dat file: {0}}", ex.Message);
+                    string error = String.Format("Error writing state in .dat file: {0}", ex.Message);
                     Log(iba.Logging.Level.Debug, error, InputFile);
                     m_sd.Changed = true;
                     return;
