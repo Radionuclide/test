@@ -44,6 +44,12 @@
             this.m_columnProcessName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_columnVariableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_ospcPassword = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_ospcUsername = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.m_ospcHost = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,16 +66,16 @@
             this.m_columnProcessName,
             this.m_columnVariableName,
             this.m_columnTestValue});
-            this.m_datagvMessages.Location = new System.Drawing.Point(0, 53);
+            this.m_datagvMessages.Location = new System.Drawing.Point(0, 129);
             this.m_datagvMessages.Name = "m_datagvMessages";
-            this.m_datagvMessages.Size = new System.Drawing.Size(565, 304);
+            this.m_datagvMessages.Size = new System.Drawing.Size(565, 185);
             this.m_datagvMessages.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(3, 21);
+            this.label2.Location = new System.Drawing.Point(3, 97);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 13);
             this.label2.TabIndex = 4;
@@ -79,7 +85,7 @@
             // 
             this.m_pdoFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_pdoFileTextBox.Location = new System.Drawing.Point(110, 18);
+            this.m_pdoFileTextBox.Location = new System.Drawing.Point(110, 94);
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
             this.m_pdoFileTextBox.Size = new System.Drawing.Size(357, 20);
             this.m_pdoFileTextBox.TabIndex = 5;
@@ -89,7 +95,7 @@
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browsePDOFileButton.Image = global::AM_OSPC_plugin.Properties.Resources.open;
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browsePDOFileButton.Location = new System.Drawing.Point(473, 7);
+            this.m_browsePDOFileButton.Location = new System.Drawing.Point(473, 83);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.Size = new System.Drawing.Size(40, 40);
             this.m_browsePDOFileButton.TabIndex = 6;
@@ -101,7 +107,7 @@
             // 
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_executeIBAAButton.Location = new System.Drawing.Point(519, 7);
+            this.m_executeIBAAButton.Location = new System.Drawing.Point(519, 83);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.Size = new System.Drawing.Size(40, 40);
             this.m_executeIBAAButton.TabIndex = 7;
@@ -114,7 +120,7 @@
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browseDatFileButton.Image = global::AM_OSPC_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(473, 363);
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(473, 320);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(40, 40);
             this.m_browseDatFileButton.TabIndex = 17;
@@ -127,7 +133,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(3, 377);
+            this.label3.Location = new System.Drawing.Point(3, 334);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 13);
             this.label3.TabIndex = 15;
@@ -137,7 +143,7 @@
             // 
             this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_datFileTextBox.Location = new System.Drawing.Point(110, 374);
+            this.m_datFileTextBox.Location = new System.Drawing.Point(110, 331);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             this.m_datFileTextBox.Size = new System.Drawing.Size(357, 20);
             this.m_datFileTextBox.TabIndex = 16;
@@ -147,7 +153,7 @@
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.m_testButton.Image = global::AM_OSPC_plugin.Properties.Resources.select;
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testButton.Location = new System.Drawing.Point(519, 363);
+            this.m_testButton.Location = new System.Drawing.Point(519, 320);
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.Size = new System.Drawing.Size(40, 40);
             this.m_testButton.TabIndex = 18;
@@ -186,10 +192,67 @@
             this.m_columnTestValue.Name = "m_columnTestValue";
             this.m_columnTestValue.ReadOnly = true;
             // 
+            // m_ospcPassword
+            // 
+            this.m_ospcPassword.Location = new System.Drawing.Point(110, 59);
+            this.m_ospcPassword.Name = "m_ospcPassword";
+            this.m_ospcPassword.Size = new System.Drawing.Size(189, 20);
+            this.m_ospcPassword.TabIndex = 24;
+            this.m_ospcPassword.UseSystemPasswordChar = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(43, 62);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 13);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Password:";
+            // 
+            // m_ospcUsername
+            // 
+            this.m_ospcUsername.Location = new System.Drawing.Point(110, 33);
+            this.m_ospcUsername.Name = "m_ospcUsername";
+            this.m_ospcUsername.Size = new System.Drawing.Size(189, 20);
+            this.m_ospcUsername.TabIndex = 22;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(43, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "Username:";
+            // 
+            // m_ospcHost
+            // 
+            this.m_ospcHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_ospcHost.Location = new System.Drawing.Point(110, 7);
+            this.m_ospcHost.Name = "m_ospcHost";
+            this.m_ospcHost.Size = new System.Drawing.Size(449, 20);
+            this.m_ospcHost.TabIndex = 20;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "OSPC Server Host:";
+            // 
             // OSPCTaskControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_ospcPassword);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.m_ospcUsername);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.m_ospcHost);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.m_browseDatFileButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.m_datFileTextBox);
@@ -200,7 +263,7 @@
             this.Controls.Add(this.m_executeIBAAButton);
             this.Controls.Add(this.m_datagvMessages);
             this.Name = "OSPCTaskControl";
-            this.Size = new System.Drawing.Size(565, 413);
+            this.Size = new System.Drawing.Size(565, 370);
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -224,5 +287,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn m_columnProcessName;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_columnVariableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_columnTestValue;
+        private System.Windows.Forms.TextBox m_ospcPassword;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox m_ospcUsername;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox m_ospcHost;
+        private System.Windows.Forms.Label label1;
     }
 }

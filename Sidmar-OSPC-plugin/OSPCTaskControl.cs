@@ -36,6 +36,10 @@ namespace AM_OSPC_plugin
 
         #region IPluginControl Members
 
+        OSPCTask m_data;
+        ICommonTaskControl m_control;
+        private string ibaAnalyzerExe;
+
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
             try
@@ -48,12 +52,30 @@ namespace AM_OSPC_plugin
             {
                 ibaAnalyzerExe = Properties.Resources.noIbaAnalyser;
             }
+
+            
+            m_data = datasource as OSPCTask; //we'll assume its never null
+            m_control = parentcontrol;
+
+            m_datFileTextBox.Text = m_data.TestDatFile;
+            m_pdoFileTextBox.Text = m_data.AnalysisFile;
+            m_datagvMessages.DataSource = m_data.Records.ToList();
+
+            m_ospcHost.Text = m_data.OspcServerHost;
+            m_ospcUsername.Text = m_ospcHost.Text;
+            m_ospcPassword.Text = m_data.OspcServerPassword;
         }
-        private string ibaAnalyzerExe;
+
         
         public void SaveData()
         {
-            throw new NotImplementedException();
+            m_data.TestDatFile = m_datFileTextBox.Text;
+            m_data.AnalysisFile = m_pdoFileTextBox.Text;
+            m_data.Records = (m_datagvMessages.DataSource as IList<OSPCTask.Record>).ToArray<OSPCTask.Record>();
+
+            m_data.OspcServerHost = m_ospcHost.Text;
+            m_data.OspcServerUser = m_ospcUsername.Text;
+            m_data.OspcServerPassword = m_ospcPassword.Text;
         }
 
         public void LeaveCleanup()
