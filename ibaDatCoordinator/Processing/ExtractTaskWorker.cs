@@ -320,7 +320,7 @@ namespace iba.Processing
             IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             try
             {
-                ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
                 ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
                 string parameters = ibaAnalyzer.GetFileExtractParameters();
                 if (!string.IsNullOrEmpty(parameters))

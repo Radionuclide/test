@@ -194,21 +194,19 @@ namespace iba.Processing
             IbaAnalyzer.IbaAnalyzer analyzer = null;
             try
             {
-                //Log(iba.Logging.Level.Info, "Starting new ibaAnalyzer");
-                //m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
                 switch (ibaAnalyzerServerStatus)
                 {
                     case IbaAnalyzerServerStatus.NONINTERACTIVE:
-                        analyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
+                        analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
                         break;
                     case IbaAnalyzerServerStatus.CLASSIC:
-                        analyzer = new IbaAnalyzer.IbaAnalysisClass();
+                        analyzer = new IbaAnalyzer.IbaAnalysis();
                         break;
                     case IbaAnalyzerServerStatus.UNDETERMINED:
                         try
                         {
                             Log(iba.Logging.Level.Debug, "Trying to create an instance of non interactive ibaAnalyzer",cd);
-                            analyzer = new IbaAnalyzer.IbaAnalysisNonInteractiveClass();
+                            analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
                             Log(iba.Logging.Level.Debug, "Create an instance of non interactive ibaAnalyzer successful",cd);
                             ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.NONINTERACTIVE;
                         }
@@ -216,7 +214,7 @@ namespace iba.Processing
                         {
                             Log(iba.Logging.Level.Debug, "Create an instance of non interactive ibaAnalyzer failed: " + ex1.Message,cd);
                             Log(iba.Logging.Level.Debug, "Trying to create an instance of interactive ibaAnalyzer",cd);
-                            analyzer = new IbaAnalyzer.IbaAnalysisClass();
+                            analyzer = new IbaAnalyzer.IbaAnalysis();
                             Log(iba.Logging.Level.Debug, "Create an instance of interactive ibaAnalyzer successful",cd);
                             ibaAnalyzerServerStatus = IbaAnalyzerServerStatus.CLASSIC;
                         }

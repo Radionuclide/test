@@ -431,7 +431,6 @@ namespace Alunorf_roh_plugin
 
         private void m_datagv_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            base.OnLoad(e);
             DataGridView grid = sender as DataGridView;
             if (grid == null) return;
             //store a string representation of the row number in 'strRowNumber'

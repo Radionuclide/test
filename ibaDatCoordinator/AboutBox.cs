@@ -33,7 +33,7 @@ namespace iba
             }
             try
             {
-                IbaAnalyzer.IbaAnalysisClass MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                IbaAnalyzer.IbaAnalysis MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysis();
                 m_vANAL.Text = "v" + MyIbaAnalyzer.GetVersion().Remove(0, 12);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
             }

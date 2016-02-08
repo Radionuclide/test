@@ -9,36 +9,40 @@ namespace AM_OSPC_plugin
     public class OSPCTaskWorker : IPluginTaskWorker
     {
         private bool m_bStarted;
+        private String m_error;
         public bool OnStart()
         {
-            //throw new Exception("The method or operation is not implemented.");
             m_bStarted = true;
             return true;
         }
 
         public bool OnStop()
         {
-            //throw new Exception("The method or operation is not implemented.");
             m_bStarted = false;
             return true;
         }
 
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            m_dataToApply = newtask as OSPCTask;
             return true;
         }
 
         public bool ExecuteTask(string datFile)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            if(m_dataToApply != null)
+            {
+                m_data = m_dataToApply;
+                m_dataToApply = null;
+            }
+
+            m_error = "";
             return true;
         }
 
         public string GetLastError()
         {
-            //throw new Exception("The method or operation is not implemented.");
-            return "";
+            return m_error;
         }
 
         public PluginTaskWorkerStatus GetWorkerStatus()
@@ -49,6 +53,7 @@ namespace AM_OSPC_plugin
         }
 
         private OSPCTask m_data;
+        private OSPCTask m_dataToApply;
         public OSPCTaskWorker(OSPCTask data)
         {
             m_data = data;

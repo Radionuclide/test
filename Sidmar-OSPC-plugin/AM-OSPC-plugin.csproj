@@ -85,6 +85,17 @@
   <ItemGroup>
     <None Include="Resources\Analyzer_001.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IbaAnalyzer">
+      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"

@@ -71,6 +71,24 @@ namespace AM_OSPC_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not evaluate expression for variable {0}.
+        /// </summary>
+        internal static string BadEvaluate {
+            get {
+                return ResourceManager.GetString("BadEvaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0, 6.7.0 or later is recommended..
+        /// </summary>
+        internal static string ibaAnalyzerVersionError {
+            get {
+                return ResourceManager.GetString("ibaAnalyzerVersionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to no ibaAnalyzer registered.
         /// </summary>
         internal static string noIbaAnalyser {

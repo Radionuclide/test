@@ -2011,7 +2011,7 @@ namespace iba
                     try
                     {
                         sb.Append("ibaAnalyzer Version: ");
-                        IbaAnalyzer.IbaAnalysisClass MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                        IbaAnalyzer.IbaAnalysis MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysis();
                         sb.AppendLine(MyIbaAnalyzer.GetVersion().Remove(0, 12));
                         System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
                     }

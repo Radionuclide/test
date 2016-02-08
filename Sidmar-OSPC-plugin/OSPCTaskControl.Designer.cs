@@ -30,6 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.m_datagvMessages = new System.Windows.Forms.DataGridView();
+            this.m_columnAnalyzerExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnProcessName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnVariableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browsePDOFileButton = new System.Windows.Forms.Button();
@@ -40,10 +44,6 @@
             this.m_testButton = new System.Windows.Forms.Button();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_columnAnalyzerExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnProcessName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnVariableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_ospcPassword = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.m_ospcUsername = new System.Windows.Forms.TextBox();
@@ -70,6 +70,42 @@
             this.m_datagvMessages.Name = "m_datagvMessages";
             this.m_datagvMessages.Size = new System.Drawing.Size(565, 185);
             this.m_datagvMessages.TabIndex = 1;
+            this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
+            // 
+            // m_columnAnalyzerExpression
+            // 
+            this.m_columnAnalyzerExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnAnalyzerExpression.DataPropertyName = "Expression";
+            this.m_columnAnalyzerExpression.FillWeight = 30F;
+            this.m_columnAnalyzerExpression.HeaderText = "ibaAnalyzer Expression";
+            this.m_columnAnalyzerExpression.Name = "m_columnAnalyzerExpression";
+            this.m_columnAnalyzerExpression.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_columnProcessName
+            // 
+            this.m_columnProcessName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnProcessName.DataPropertyName = "ProcessName";
+            this.m_columnProcessName.FillWeight = 20F;
+            this.m_columnProcessName.HeaderText = "OSPC Process Name";
+            this.m_columnProcessName.Name = "m_columnProcessName";
+            this.m_columnProcessName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.m_columnProcessName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_columnVariableName
+            // 
+            this.m_columnVariableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnVariableName.DataPropertyName = "VariableName";
+            this.m_columnVariableName.FillWeight = 20F;
+            this.m_columnVariableName.HeaderText = "OSPC Variable Name";
+            this.m_columnVariableName.Name = "m_columnVariableName";
+            this.m_columnVariableName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_columnTestValue
+            // 
+            this.m_columnTestValue.DataPropertyName = "TestValueString";
+            this.m_columnTestValue.HeaderText = "Test Value";
+            this.m_columnTestValue.Name = "m_columnTestValue";
+            this.m_columnTestValue.ReadOnly = true;
             // 
             // label2
             // 
@@ -89,6 +125,7 @@
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
             this.m_pdoFileTextBox.Size = new System.Drawing.Size(357, 20);
             this.m_pdoFileTextBox.TabIndex = 5;
+            this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
             // m_browsePDOFileButton
             // 
@@ -106,6 +143,7 @@
             // m_executeIBAAButton
             // 
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_executeIBAAButton.Image = global::AM_OSPC_plugin.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_executeIBAAButton.Location = new System.Drawing.Point(519, 83);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
@@ -147,6 +185,7 @@
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             this.m_datFileTextBox.Size = new System.Drawing.Size(357, 20);
             this.m_datFileTextBox.TabIndex = 16;
+            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // m_testButton
             // 
@@ -160,37 +199,6 @@
             this.m_toolTip.SetToolTip(this.m_testButton, "Test by updating values in grid");
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.m_testButton_Click);
-            // 
-            // m_columnAnalyzerExpression
-            // 
-            this.m_columnAnalyzerExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnAnalyzerExpression.FillWeight = 30F;
-            this.m_columnAnalyzerExpression.HeaderText = "ibaAnalyzer Expression";
-            this.m_columnAnalyzerExpression.Name = "m_columnAnalyzerExpression";
-            this.m_columnAnalyzerExpression.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_columnProcessName
-            // 
-            this.m_columnProcessName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnProcessName.FillWeight = 20F;
-            this.m_columnProcessName.HeaderText = "OSPC Process Name";
-            this.m_columnProcessName.Name = "m_columnProcessName";
-            this.m_columnProcessName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.m_columnProcessName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_columnVariableName
-            // 
-            this.m_columnVariableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnVariableName.FillWeight = 20F;
-            this.m_columnVariableName.HeaderText = "OSPC Variable Name";
-            this.m_columnVariableName.Name = "m_columnVariableName";
-            this.m_columnVariableName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_columnTestValue
-            // 
-            this.m_columnTestValue.HeaderText = "Test Value";
-            this.m_columnTestValue.Name = "m_columnTestValue";
-            this.m_columnTestValue.ReadOnly = true;
             // 
             // m_ospcPassword
             // 
@@ -262,6 +270,7 @@
             this.Controls.Add(this.m_browsePDOFileButton);
             this.Controls.Add(this.m_executeIBAAButton);
             this.Controls.Add(this.m_datagvMessages);
+            this.MinimumSize = new System.Drawing.Size(0, 230);
             this.Name = "OSPCTaskControl";
             this.Size = new System.Drawing.Size(565, 370);
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).EndInit();
@@ -283,15 +292,15 @@
         private System.Windows.Forms.Button m_testButton;
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnAnalyzerExpression;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnProcessName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnVariableName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnTestValue;
         private System.Windows.Forms.TextBox m_ospcPassword;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox m_ospcUsername;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox m_ospcHost;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnAnalyzerExpression;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnProcessName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnVariableName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnTestValue;
     }
 }

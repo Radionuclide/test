@@ -146,7 +146,7 @@ namespace iba.Controls
                 //start the com object
                 try
                 {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysisClass();
+                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
                 }
                 catch (Exception ex2)
                 {

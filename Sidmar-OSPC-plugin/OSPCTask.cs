@@ -175,6 +175,12 @@ namespace AM_OSPC_plugin
                 set { m_testValue = value; }
             }
 
+            [XmlIgnore]
+            public string TestValueString
+            {
+                get { return (double.IsNaN(m_testValue) || double.IsInfinity(m_testValue))?"":m_testValue.ToString(); }
+            }
+
             public Record() //no nulls
             {
                 m_processName = "";
