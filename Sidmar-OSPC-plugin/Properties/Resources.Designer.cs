@@ -61,6 +61,15 @@ namespace AM_OSPC_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analysis file not found: .
+        /// </summary>
+        internal static string AnalysisFileNotFound {
+            get {
+                return ResourceManager.GetString("AnalysisFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Analyzer_001 {
@@ -94,6 +103,15 @@ namespace AM_OSPC_plugin.Properties {
         internal static string noIbaAnalyser {
             get {
                 return ResourceManager.GetString("noIbaAnalyser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer version could not be determined.
+        /// </summary>
+        internal static string NoVersion {
+            get {
+                return ResourceManager.GetString("NoVersion", resourceCulture);
             }
         }
         

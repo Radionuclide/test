@@ -412,6 +412,7 @@ namespace iba.Processing
                         //see if a report or extract or if task is present
                         if (t is ExtractData || t is ReportData || t is IfTaskData || 
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
+                            || (c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
                             m_needIbaAnalyzer = true;
 
@@ -2886,6 +2887,7 @@ namespace iba.Processing
 
         private void DoCustomTask(string DatFile, CustomTaskData task)
         {
+            IPluginTaskDataIbaAnalyzer analyzerTask = null;
             try
             {
                 lock (m_licensedTasks)
@@ -2910,7 +2912,18 @@ namespace iba.Processing
                 string message = string.Format(iba.Properties.Resources.logTaskStarted, task.Plugin.NameInfo);
                 Log(Logging.Level.Info, message, DatFile, task);
 
-                bool succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
+
+                bool succes = false;
+                analyzerTask = task.Plugin as IPluginTaskDataIbaAnalyzer;
+                if(analyzerTask != null)
+                {
+                    using(IbaAnalyzerMonitor monitor = new IbaAnalyzerMonitor(m_ibaAnalyzer, analyzerTask.MonitorData))
+                    {
+                        succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
+                    }
+                }
+                else
+                    succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
                 if (succes)
                 {
                     //code on succes
@@ -2933,7 +2946,33 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, task.Plugin.GetWorker().GetLastError(), DatFile, task);
                 }
             }
-            catch (Exception ex)
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, DatFile, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.TIMED_OUT;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(DatFile);
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, DatFile, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(DatFile);
+            }
+            catch(IbaAnalyzerOtherException)
+            {
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), DatFile, task);
+                lock(m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            catch(Exception ex)
             {
                 Log(Logging.Level.Exception, ex.Message, DatFile, task);
                 lock (m_sd.DatFileStates)
@@ -2941,7 +2980,25 @@ namespace iba.Processing
                     m_sd.DatFileStates[DatFile].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
             }
+            finally
+            {
+                if(m_ibaAnalyzer != null && analyzerTask != null && analyzerTask.UsesAnalysis)
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseAnalysis();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
+                        RestartIbaAnalyzer();
+                    }
+                }
+            }
         }
+
+
+
 
         internal string[] m_outPutFilesPrevTask;
 
@@ -4055,6 +4112,7 @@ namespace iba.Processing
             }
         }
 
+        // TODO, adapt for ibaAnalyzer usage ...
         private void DoCustomTaskUNC(string filename, CustomTaskDataUNC task)
         {
             IPluginTaskDataUNC plugin = task.Plugin as IPluginTaskDataUNC;

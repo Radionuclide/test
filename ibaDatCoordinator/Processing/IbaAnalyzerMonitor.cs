@@ -8,7 +8,7 @@ using iba.Utility;
 
 namespace iba.Processing
 {
-    class IbaAnalyzerMonitor : IDisposable
+    class IbaAnalyzerMonitor : iba.Processing.IIbaAnalyzerMonitor, IDisposable
     {
         public IbaAnalyzerMonitor(IbaAnalyzer.IbaAnalyzer analyzer, MonitorData data)
         {
@@ -61,9 +61,6 @@ namespace iba.Processing
         private IbaAnalyzer.IbaAnalyzer m_analyzer;
         private SafeTimer m_timeTimer;
         private SafeTimer m_memoryTimer;
-
-        public delegate void IbaAnalyzerCall();
-
         public void Execute(IbaAnalyzerCall ibaAnalyzerCall)
         {
             //previous execute might already have exceeded limits, check and throw instead of executing
@@ -80,7 +77,9 @@ namespace iba.Processing
             catch
             {
                 if (m_status == MonitorStatus.OK)
-                    throw;
+                {
+                    throw new IbaAnalyzerOtherException();
+                }
                 else if (m_status == MonitorStatus.OUT_OF_MEMORY)
                     throw new IbaAnalyzerExceedingMemoryLimitException();
                 else if (m_status == MonitorStatus.OUT_OF_TIME)
@@ -88,7 +87,6 @@ namespace iba.Processing
             }
         }
 
-        public enum MonitorStatus { OK, OUT_OF_MEMORY, OUT_OF_TIME };
         private MonitorStatus m_status;
         public MonitorStatus Status
         {
@@ -200,4 +198,10 @@ namespace iba.Processing
         {
         }
     }
+
+    public class IbaAnalyzerOtherException : ApplicationException
+    {
+
+    }
+
 }

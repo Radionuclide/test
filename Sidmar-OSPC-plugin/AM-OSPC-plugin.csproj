@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OSPCTask.cs" />
+    <Compile Include="OSPCTaskData.cs" />
     <Compile Include="OSPCTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -59,6 +59,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AM-OSPC-protocol\AM-OSPC-protocol.vcxproj">
+      <Project>{7FDB294F-85C6-43A5-A053-100EC865A77B}</Project>
+      <Name>AM-OSPC-protocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
       <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
       <Name>DatCoordinatorPlugins</Name>
@@ -71,6 +75,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

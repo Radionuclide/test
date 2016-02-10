@@ -37,7 +37,7 @@ namespace AM_OSPC_plugin
 
         #region IPluginControl Members
 
-        OSPCTask m_data;
+        OSPCTaskData m_data;
         ICommonTaskControl m_control;
         private string ibaAnalyzerExe;
 
@@ -53,7 +53,7 @@ namespace AM_OSPC_plugin
             {
                 ibaAnalyzerExe = Properties.Resources.noIbaAnalyser;
             }
-            m_data = datasource as OSPCTask; //we'll assume its never null
+            m_data = datasource as OSPCTaskData; //we'll assume its never null
             m_control = parentcontrol;
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
@@ -62,6 +62,11 @@ namespace AM_OSPC_plugin
             m_ospcUsername.Text = m_data.OspcServerUser;
             m_ospcPassword.Text = m_data.OspcServerPassword;
             UpdateButtons();
+
+            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
+            m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
         }
 
         
@@ -69,11 +74,16 @@ namespace AM_OSPC_plugin
         {
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
-            m_data.Records = (m_datagvMessages.DataSource as IList<OSPCTask.Record>).ToArray<OSPCTask.Record>();
+            m_data.Records = (m_datagvMessages.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
 
             m_data.OspcServerHost = m_ospcHost.Text;
             m_data.OspcServerUser = m_ospcUsername.Text;
             m_data.OspcServerPassword = m_ospcPassword.Text;
+
+            m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
+            m_data.MonitorData.MonitorTime = m_cbTime.Checked;
+            m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
+            m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
         }
 
         public void LeaveCleanup()
@@ -153,30 +163,27 @@ namespace AM_OSPC_plugin
             string[] nrs = version.Substring(startindex, stopindex - startindex).Split('.');
             if(nrs.Length < 3)
             {
-                MessageBox.Show("ibaAnalyzer version could not be determined", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
             int major;
             if(!Int32.TryParse(nrs[0], out major))
             {
-                MessageBox.Show("ibaAnalyzer version could not be determined", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             int minor;
             if(!Int32.TryParse(nrs[1], out minor))
             {
-                MessageBox.Show("ibaAnalyzer version could not be determined", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             int bugfix;
             if(!Int32.TryParse(nrs[2], out bugfix))
             {
-                MessageBox.Show("ibaAnalyzer version could not be determined", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             if(major < 6 || (major == 6 && minor < 5))
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             if(major < 7 || (major == 6 && minor < 7))
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-
-
             bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
             bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
             double f = 0;
@@ -186,8 +193,8 @@ namespace AM_OSPC_plugin
                 {
                     if(bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if(bUseDatFile) ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
-                    OSPCTask.Record[] records = (m_datagvMessages.DataSource as IList<OSPCTask.Record>).ToArray<OSPCTask.Record>();
-                    foreach (OSPCTask.Record record in records)
+                    OSPCTaskData.Record[] records = (m_datagvMessages.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
+                    foreach (OSPCTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.VariableName) && string.IsNullOrEmpty(record.Expression)) continue;
                         try

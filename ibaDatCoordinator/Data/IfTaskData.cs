@@ -36,8 +36,6 @@ namespace iba.Data
             set { m_xtype = value; }
         }
 
-
-
         public IfTaskData(ConfigurationData parent)
             : base(parent)
         {
@@ -68,7 +66,7 @@ namespace iba.Data
             ifd.m_pdoFile = m_pdoFile;
             ifd.m_testDatFile = m_testDatFile;
             ifd.m_expression = m_expression;
-            ifd.m_monitorData = m_monitorData;
+            ifd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return ifd;
         }
 

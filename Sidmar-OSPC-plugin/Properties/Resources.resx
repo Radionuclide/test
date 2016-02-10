@@ -136,7 +136,13 @@
   <data name="BadEvaluate" xml:space="preserve">
     <value>Could not evaluate expression for variable {0}</value>
   </data>
+  <data name="AnalysisFileNotFound" xml:space="preserve">
+    <value>Analysis file not found: </value>
+  </data>
   <data name="ibaAnalyzerVersionError" xml:space="preserve">
     <value>You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0, 6.7.0 or later is recommended.</value>
+  </data>
+  <data name="NoVersion" xml:space="preserve">
+    <value>ibaAnalyzer version could not be determined</value>
   </data>
 </root>

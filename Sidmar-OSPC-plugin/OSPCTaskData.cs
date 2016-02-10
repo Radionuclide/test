@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AM_OSPC_plugin
 {
     [Serializable]
-    public class OSPCTask : IPluginTaskData, IPluginTaskDataIsSame
+    public class OSPCTaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
     {
 
         #region IPluginTaskData Members
@@ -41,7 +41,7 @@ namespace AM_OSPC_plugin
             set { m_nameInfo = value; }
         }
 
-        public OSPCTask()
+        public OSPCTaskData()
         {
             InitData(null, null, null);
         }
@@ -70,19 +70,20 @@ namespace AM_OSPC_plugin
 
         public object Clone()
         {
-            OSPCTask res = new OSPCTask(m_nameInfo, m_datcoHost, m_parentJob);
+            OSPCTaskData res = new OSPCTaskData(m_nameInfo, m_datcoHost, m_parentJob);
             res.m_testDatFile = m_testDatFile;
             res.m_pdoFile = m_pdoFile;
             m_records = Enumerable.Range(0, 20).Select(_ => new Record()).ToArray();
             res.m_ospcServerHost = m_ospcServerHost;
             res.m_ospcServerUser = m_ospcServerUser;
             res.m_ospcServerPass = m_ospcServerPass;
+            res.m_monitorData = (iba.Data.MonitorData) m_monitorData.Clone();
             return res;
         }
 
         #endregion
 
-        public OSPCTask(string name, IDatCoHost host, IJobData parentJob)
+        public OSPCTaskData(string name, IDatCoHost host, IJobData parentJob)
         {
             //try
             //{
@@ -117,11 +118,12 @@ namespace AM_OSPC_plugin
             m_ospcServerHost = "";
             m_ospcServerUser = "";
             m_ospcServerPass = "";
+            m_monitorData = new iba.Data.MonitorData();
         }
 
         public bool IsSame(IPluginTaskDataIsSame data)
         {
-            var other = data as OSPCTask;
+            var other = data as OSPCTaskData;
             if(other == null) return false;
             if(m_testDatFile != other.m_testDatFile) return false;
             if(m_pdoFile != other.m_pdoFile) return false;
@@ -129,6 +131,7 @@ namespace AM_OSPC_plugin
             if(m_ospcServerHost != other.m_ospcServerHost) return false;
             if(m_ospcServerUser != other.m_ospcServerUser) return false;
             if(m_ospcServerPass != other.m_ospcServerPass) return false;
+            if(!m_monitorData.IsSame(other.m_monitorData)) return false;
             return true;
         }
 
@@ -255,6 +258,31 @@ namespace AM_OSPC_plugin
         {
             get { return m_ospcServerHost; }
             set { m_ospcServerHost = value; }
+        }
+
+        #endregion
+
+        #region IPluginTaskDataIbaAnalyzer Members
+
+        public void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor)
+        {
+            if(m_worker == null) m_worker = new OSPCTaskWorker(this);
+            m_worker.SetIbaAnalyzer(Analyzer, Monitor);
+        }
+
+        #endregion
+
+        #region IPluginTaskDataIbaAnalyzer Members
+
+        public bool UsesAnalysis
+        {
+            get { return !string.IsNullOrEmpty(m_pdoFile); }
+        }
+
+        private iba.Data.MonitorData m_monitorData;
+        public iba.Data.MonitorData MonitorData
+        {
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

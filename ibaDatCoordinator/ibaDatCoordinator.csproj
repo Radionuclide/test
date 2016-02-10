@@ -310,7 +310,6 @@
     <Compile Include="Data\ibaDatCoordinatorData.cs" />
     <Compile Include="Data\IfTaskData.cs" />
     <Compile Include="Data\LogData.cs" />
-    <Compile Include="Data\MonitorData.cs" />
     <Compile Include="Data\PauseTaskData.cs" />
     <Compile Include="Data\ReportData.cs" />
     <Compile Include="Data\StatusData.cs" />
@@ -566,6 +565,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="ibaFilesLiteLib">
       <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>

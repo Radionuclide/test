@@ -63,6 +63,8 @@
     <Compile Include="DatcoHost.cs" />
     <Compile Include="DatCoPlugin.cs" />
     <Compile Include="ConfigurationData.cs" />
+    <Compile Include="IIbaAnalyzerMonitor.cs" />
+    <Compile Include="MonitorData.cs" />
     <Compile Include="PluginControl.cs" />
     <Compile Include="PluginTaskData.cs" />
     <Compile Include="PluginTaskInfo.cs" />
@@ -85,6 +87,17 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IbaAnalyzer">
+      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

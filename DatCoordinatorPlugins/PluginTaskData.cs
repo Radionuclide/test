@@ -84,4 +84,28 @@ namespace iba.Plugins
         /// <returns>true if same</returns>
         bool IsSame(IPluginTaskDataIsSame data);
     }
+
+    /// <summary>
+    /// Implement this interface to indicate you require ibaAnalyzer
+    /// </summary>
+    public interface IPluginTaskDataIbaAnalyzer
+    {
+        /// <summary>
+        /// True if task uses an analysis (that needs to be closed on error)
+        /// </summary>
+        bool UsesAnalysis
+        {
+            get;
+        }
+        /// <summary>
+        /// Test contents of two instances for equality
+        /// <param name="data">other instance to compare with</param>
+        /// <returns>true if same</returns>
+        void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor);
+
+        /// <summary>
+        /// Get the parameters specified for the ibaAnalyzer monitor (memory limit, time limit)
+        /// </summary>
+        Data.MonitorData MonitorData { get;  }
+    }
 }

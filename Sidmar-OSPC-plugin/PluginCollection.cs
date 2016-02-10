@@ -36,7 +36,7 @@ namespace AM_OSPC_plugin
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
             if(taskname == "OSPC")
-                return new OSPCTask(taskname, DatCoordinatorHost, parentjob);
+                return new OSPCTaskData(taskname, DatCoordinatorHost, parentjob);
             else return null;
         }
 

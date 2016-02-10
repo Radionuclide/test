@@ -7,7 +7,14 @@
 using namespace System::Runtime::InteropServices;
 namespace AMOSPCprotocol {
 
-OSPCConnector::OSPCConnector(String^ server, String^ _user, String^ _pass)
+OSPCConnector::OSPCConnector() : m_ipDataProcessing(0)
+{
+	List<String^>^ processNames = gcnew List<String^>();
+	List<String^>^ variableNames = gcnew List<String^>();
+	List<double>^ values = gcnew List<double>();
+}
+
+void OSPCConnector::Connect(String^ server, String^ _user, String^ _pass)
 {
 	//int hrsec = CoInitializeSecurity( NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE,
 	//	RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL );
@@ -69,14 +76,16 @@ OSPCConnector::!OSPCConnector()
 }
 
 
-void OSPCConnector::Send()
+void OSPCConnector::Send(DateTime time)
 {
 
 }
 
-void OSPCConnector::AddRecord( DateTime time, String^ processName, String^ variableName, double Value )
+void OSPCConnector::AddRecord(String^ processName, String^ variableName, double Value )
 {
-
+	processNames->Add(processName);
+	variableNames->Add(variableName);
+	values->Add(Value);
 }
 
 }

@@ -11,18 +11,17 @@ namespace AMOSPCprotocol {
 	public ref class OSPCConnector
 	{
 	private:
-		int recordCount;
-		List<DateTime>^ timeStamps;
 		List<String^>^ processNames;
 		List<String^>^ variableNames;
 		List<double>^ values;
 		_com_ptr_t<_COM_SMARTPTR_LEVEL2 <IDataProcessing, &__uuidof(IDataProcessing)> >* m_ipDataProcessing;
 	public:
-		OSPCConnector(String^ server, String^ user, String^ pass);  
+		OSPCConnector();
+		void Connect(String^ server, String^ user, String^ pass);  
 		~OSPCConnector(); 
 
-		void AddRecord(DateTime time, String^ processName, String^ variableName, double Value);
-		void Send();
+		void AddRecord(String^ processName, String^ variableName, double Value);
+		void Send(DateTime time);
 	protected:
 		!OSPCConnector();
 	};
