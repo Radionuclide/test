@@ -182,7 +182,7 @@ namespace AM_OSPC_plugin
             }
             if(major < 6 || (major == 6 && minor < 5))
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            if(major < 7 || (major == 6 && minor < 7))
+            if(major < 6 || (major == 6 && minor < 7))
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
             bool bUseDatFile = File.Exists(m_datFileTextBox.Text);

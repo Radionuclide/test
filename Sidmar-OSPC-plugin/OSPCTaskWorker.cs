@@ -33,13 +33,13 @@ namespace AM_OSPC_plugin
         {
             if(m_dataToApply != null)
             {
-                m_data = m_dataToApply;
-                m_dataToApply = null;
                 if(!CheckIbaAnalyzer())
                 {
                     m_error = Properties.Resources.ibaAnalyzerVersionError;
                     return false;
                 }
+                m_data = m_dataToApply;
+                m_dataToApply = null;
             }
             m_error = "";
             
@@ -59,11 +59,19 @@ namespace AM_OSPC_plugin
                 count = i;
             }
 
+            if(count == 0)
+            {
+                m_error = Properties.Resources.NoValidEntriesSpecified;
+                return false;
+            }
+
             if(!string.IsNullOrEmpty(m_data.AnalysisFile))
             {
-                if (!File.Exists(m_data.AnalysisFile))
+                if(!File.Exists(m_data.AnalysisFile))
+                {
                     m_error = Properties.Resources.AnalysisFileNotFound + m_data.AnalysisFile;
-                return false;
+                    return false;
+                }
                 m_monitor.Execute(delegate() { m_analyzer.OpenAnalysis(m_data.AnalysisFile); });
             }
 

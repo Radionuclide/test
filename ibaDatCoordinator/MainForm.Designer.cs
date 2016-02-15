@@ -77,6 +77,7 @@ namespace iba
             this.startServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -476,12 +477,19 @@ namespace iba
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpMenuItem,
             this.saveInformationToolStripMenuItem,
             this.VersionHistoryToolStripMenuItem,
             this.toolStripSeparator1,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
+            // 
+            // helpMenuItem
+            // 
+            this.helpMenuItem.Name = "helpMenuItem";
+            resources.ApplyResources(this.helpMenuItem, "helpMenuItem");
+            this.helpMenuItem.Click += new System.EventHandler(this.OnHelpClick);
             // 
             // saveInformationToolStripMenuItem
             // 
@@ -599,6 +607,7 @@ namespace iba
         private System.Windows.Forms.RadioButton m_rbErrorsWarnings;
         private System.Windows.Forms.RadioButton m_rbAllLog;
         private System.Windows.Forms.Button m_btnClearLogging;
+        private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
     }
 }
 

@@ -2919,6 +2919,7 @@ namespace iba.Processing
                 {
                     using(IbaAnalyzerMonitor monitor = new IbaAnalyzerMonitor(m_ibaAnalyzer, analyzerTask.MonitorData))
                     {
+                        analyzerTask.SetIbaAnalyzer(m_ibaAnalyzer, monitor);
                         succes = task.Plugin.GetWorker().ExecuteTask(DatFile);
                     }
                 }

@@ -1016,6 +1016,12 @@
   <data name="serviceToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Service</value>
   </data>
+  <data name="helpMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>257, 22</value>
+  </data>
+  <data name="helpMenuItem.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="saveInformationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>257, 22</value>
   </data>
@@ -1580,6 +1586,12 @@
     <value>helpToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;helpMenuItem.Name" xml:space="preserve">
+    <value>helpMenuItem</value>
+  </data>
+  <data name="&gt;&gt;helpMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;saveInformationToolStripMenuItem.Name" xml:space="preserve">

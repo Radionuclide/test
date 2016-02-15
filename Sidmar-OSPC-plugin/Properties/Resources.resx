@@ -145,4 +145,7 @@
   <data name="NoVersion" xml:space="preserve">
     <value>ibaAnalyzer version could not be determined</value>
   </data>
+  <data name="NoValidEntriesSpecified" xml:space="preserve">
+    <value>No valid fields are specified for the OSPC message</value>
+  </data>
 </root>

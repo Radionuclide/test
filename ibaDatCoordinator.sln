@@ -192,6 +192,7 @@ Global
 		{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}.Release|Win32.Build.0 = Release|Any CPU
 		{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}.Release|x86.ActiveCfg = Release|Any CPU
 		{7FDB294F-85C6-43A5-A053-100EC865A77B}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{7FDB294F-85C6-43A5-A053-100EC865A77B}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32

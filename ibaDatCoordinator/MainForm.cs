@@ -502,6 +502,7 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 FormStateSerializer.LoadSettings(this, "MainForm");
             SetRenderer();
+            SetupHelp();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
             if (returnvalue != "not set" && Program.RunsWithService != Program.ServiceEnum.CONNECTED) loadFromFile(returnvalue,true);
@@ -2998,6 +2999,64 @@ namespace iba
         private ToolStripMenuItem m_miExit;
         #endregion
 
+        #region Online Help
+        private HelpProvider helpProvider;
+
+        private void SetupHelp()
+        {
+            string helpFile = "";
+            string culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
+            if(culture.Length >= 2)
+                culture = culture.Substring(0, 2);
+            helpFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "ibaDatCo_" + culture + ".chm");
+            if(!System.IO.File.Exists(helpFile))
+                helpFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "ibaDatCo.chm");
+
+            if(helpProvider != null)
+            {
+                helpProvider.ResetShowHelp(this);
+                helpProvider.Dispose();
+                helpProvider = null;
+            }
+
+            if(System.IO.File.Exists(helpFile))
+            {
+                helpProvider = new HelpProvider();
+                helpProvider.HelpNamespace = helpFile;
+                helpProvider.SetShowHelp(this, true);
+                helpProvider.SetHelpNavigator(this, HelpNavigator.Topic);
+                helpProvider.SetHelpKeyword(this, "14989.htm");
+
+                //helpProvider.SetShowHelp(recorderContainer, true);
+                //helpProvider.SetHelpNavigator(recorderContainer, HelpNavigator.Topic);
+                //helpProvider.SetHelpKeyword(recorderContainer, "605.htm");
+            }
+            else
+            {
+                helpProvider = null;
+            }
+
+            helpMenuItem.Enabled = helpProvider != null;
+        }
+
+
+
+        private void OnHelpClick(object sender, EventArgs e)
+        {
+            using (WaitCursor wait = new WaitCursor())
+            {
+                try
+                {
+                    Help.ShowHelp(this, helpProvider.HelpNamespace, HelpNavigator.Topic, "10180.htm");
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+        
+
+        #endregion
 
     }    
     #endregion

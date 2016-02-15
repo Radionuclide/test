@@ -73,7 +73,8 @@ namespace AM_OSPC_plugin
             OSPCTaskData res = new OSPCTaskData(m_nameInfo, m_datcoHost, m_parentJob);
             res.m_testDatFile = m_testDatFile;
             res.m_pdoFile = m_pdoFile;
-            m_records = Enumerable.Range(0, 20).Select(_ => new Record()).ToArray();
+            for(int i = 0; i < m_records.Length; i++)
+                res.m_records[i] = (Record)m_records[i].Clone();
             res.m_ospcServerHost = m_ospcServerHost;
             res.m_ospcServerUser = m_ospcServerUser;
             res.m_ospcServerPass = m_ospcServerPass;
@@ -151,7 +152,8 @@ namespace AM_OSPC_plugin
             set { m_testDatFile = value; }
         }
 
-        public class Record
+        [Serializable]
+        public class Record : ICloneable
         {
             private string m_expression;
             public string Expression
@@ -191,6 +193,21 @@ namespace AM_OSPC_plugin
                 m_expression = "";
                 m_testValue = Double.NaN;
             }
+
+            #region ICloneable Members
+
+            public object Clone()
+            {
+                Record res = new Record();
+                res.m_processName = m_processName;
+                res.m_variableName = m_variableName;
+                res.m_processName = m_processName;
+                res.m_expression = m_expression;
+                res.m_testValue = m_testValue;
+                return res;
+            }
+
+            #endregion
         }
 
         // Custom comparer for the Record class
@@ -282,7 +299,7 @@ namespace AM_OSPC_plugin
         private iba.Data.MonitorData m_monitorData;
         public iba.Data.MonitorData MonitorData
         {
-            get { throw new NotImplementedException(); }
+            get { return m_monitorData; }
         }
 
         #endregion

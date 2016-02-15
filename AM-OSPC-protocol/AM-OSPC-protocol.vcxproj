@@ -57,6 +57,10 @@
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

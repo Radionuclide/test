@@ -107,6 +107,15 @@ namespace AM_OSPC_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No valid fields are specified for the OSPC message.
+        /// </summary>
+        internal static string NoValidEntriesSpecified {
+            get {
+                return ResourceManager.GetString("NoValidEntriesSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ibaAnalyzer version could not be determined.
         /// </summary>
         internal static string NoVersion {
