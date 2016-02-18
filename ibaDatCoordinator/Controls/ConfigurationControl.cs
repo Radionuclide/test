@@ -223,6 +223,8 @@ namespace iba.Controls
                 m_newTaskToolstrip.Enabled = true;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
+                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                    m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
             else if(TaskManager.Manager.IsJobStarted(m_data.Guid))
             {
@@ -232,6 +234,8 @@ namespace iba.Controls
                 m_stopButton.Enabled = true;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = true;
+                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                    m_panelDatFilesJob.m_browseDatFilesButton.Enabled = true;
             }
             else
             {
@@ -241,6 +245,8 @@ namespace iba.Controls
                 m_stopButton.Enabled = false;
                 if(m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
+                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                    m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
         }
 

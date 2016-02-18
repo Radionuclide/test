@@ -1280,4 +1280,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="RangeTextFormatter" xml:space="preserve">
     <value>Query range: {0} - {1}</value>
   </data>
+  <data name="browseCleanProcessButton" xml:space="preserve">
+    <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
+  </data>
 </root>

@@ -4597,12 +4597,25 @@ namespace iba.Processing
                 Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message, filename);
                 return;
             }
+            ProcessFileDirect(filename);
+        }
+
+        public void ProcessFileDirect(String filename, bool RemoveFromProcessed = false)
+        {
             m_sd.UpdatingFileList = true;
+            if(RemoveFromProcessed)
+            {
+                lock(m_processedFiles)
+                {
+                    if(m_processedFiles.Contains(filename))
+                        m_processedFiles.Remove(filename);
+                }
+            }
             lock(m_processedFiles)
             {
                 lock(m_toProcessFiles)
                 {
-                    bool doit = !m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename);
+                    bool doit = !m_toProcessFiles.Contains(filename) && (RemoveFromProcessed || !m_processedFiles.Contains(filename));
                     if(doit)
                     {
                         m_toProcessFiles.Add(filename);

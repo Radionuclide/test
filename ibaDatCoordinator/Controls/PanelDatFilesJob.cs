@@ -22,13 +22,14 @@ namespace iba.Controls
             InitializeComponent();
             m_oneTimeJob = oneTimeJob;
 
+            m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.standalone.Handle);
+
             if(oneTimeJob) //make this a onetime job dialog
             {
                 this.SuspendLayout();
                 m_startButton.Location = new Point(m_undoChangesBtn.Location.X, 18);
                 m_stopButton.Location = new Point(m_refreshDats.Location.X, 18);
                 //m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.standalone.Handle);
                 foreach(Control c in groupBox3.Controls)
                 {
                     if(c != m_startButton && c != m_stopButton && c != m_enableCheckBox)
@@ -69,17 +70,18 @@ namespace iba.Controls
 
                 this.ResumeLayout();
             }
-            else
-            {
-                m_browseDatFilesButton.Visible = false;
-                int diff = m_refreshDats.Location.X - m_undoChangesBtn.Location.X;
-                m_browseFolderButton.Location = new Point(m_browseFolderButton.Location.X + diff, m_browseFolderButton.Location.Y);
-                m_datDirTextBox.Size = new Size(m_datDirTextBox.Size.Width + diff, m_datDirTextBox.Size.Height);
-            }
+            //else
+            //{
+            //    m_browseDatFilesButton.Visible = false;
+            //    int diff = m_refreshDats.Location.X - m_undoChangesBtn.Location.X;
+            //    m_browseFolderButton.Location = new Point(m_browseFolderButton.Location.X + diff, m_browseFolderButton.Location.Y);
+            //    m_datDirTextBox.Size = new Size(m_datDirTextBox.Size.Width + diff, m_datDirTextBox.Size.Height);
+            //}
 
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
+            m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.browseCleanProcessButton);
 
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
@@ -346,16 +348,40 @@ namespace iba.Controls
             m_selectDatFilesDialog.CheckFileExists = true;
             m_selectDatFilesDialog.FileName = "";
             m_selectDatFilesDialog.Filter = ".dat files (*.dat)|*.dat";
+            bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
+            m_selectDatFilesDialog.Multiselect = oneTime;
+            if(!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text) && Directory.Exists(m_datDirTextBox.Text))
+                m_selectDatFilesDialog.InitialDirectory = m_datDirTextBox.Text;
             if(m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
             {
-                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                StringBuilder sb = new StringBuilder();
-                foreach(string line in lines)
-                    sb.AppendLine(line);
-                foreach(string line in m_selectDatFilesDialog.FileNames)
-                    sb.AppendLine(line);
-                m_datDirTextBox.Text = sb.ToString();
+                if(oneTime)
+                {
+                    string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    StringBuilder sb = new StringBuilder();
+                    foreach(string line in lines)
+                        sb.AppendLine(line);
+                    foreach(string line in m_selectDatFilesDialog.FileNames)
+                        sb.AppendLine(line);
+                    m_datDirTextBox.Text = sb.ToString();
+                }
+                else //DatTriggered, clean and reprocess
+                {
+                    string file = "";
+                    try
+                    {
+                        file = Shares.PathToUnc(m_selectDatFilesDialog.FileName,true);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    if(!string.IsNullOrEmpty(file))
+                    {
+                        TaskManager.Manager.CleanAndProcessFileNow(m_data,file);
+                    }
+                }
             }
         }
+
     }
 }

@@ -2378,7 +2378,7 @@ namespace iba
                 Program.CommunicationObject.SaveConfigurations();
 
             StatusBarLabel.Text = ""; //clear any errors on restart
-            TaskManager.Manager.StartAllEnabledConfigurations();
+            TaskManager.Manager.StartAllEnabledConfigurationsNoOneTime();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
             {
                 (m_rightPane.Controls[0] as ConfigurationControl).LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData,this);

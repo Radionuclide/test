@@ -60,51 +60,62 @@ namespace iba.Processing
             {
                 string filename = files[count];
                 stop = myBar.UpdateProgress(filename,count);
-
-                DateTime time = DateTime.Now;
-                try
-                {
-                    time = File.GetLastWriteTime(filename);
-                    if(filename.EndsWith(".hdq"))
-                    {
-                        IniParser parser = new IniParser(filename);
-                        parser.Read();
-                        parser.Sections["DatCoordinatorData"]["$DATCOOR_status"] = "readyToProcess";
-                        parser.Sections["DatCoordinatorData"]["$DATCOOR_TasksDone"] = "";
-                        parser.Sections["DatCoordinatorData"]["$DATCOOR_times_tried"] = "0";
-                        parser.Sections["DatCoordinatorData"]["$DATCOOR_OutputFiles"] = "";
-                        parser.Write();
-                    }
-                    else
-                    {
-                        ibaDatFile.OpenForUpdate(filename);
-                        ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
-                        ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
-                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
-                    }
-                }
-                catch (Exception ex)//updating didn't work, forget about it
-                {
-                    string message = ex.Message;
-                }
-                finally
-                {
-                    try
-                    {
-                        ibaDatFile.Close();
-                    }
-                    catch (Exception ex)//updating didn't work, forget about it
-                    {
-                        string message = ex.Message;
-                    }
-                }
-                try
-                {
-                    File.SetLastWriteTime(filename, time);
-                }
-                catch { }
+                RemoveMarkingsFromFile(filename, ibaDatFile);
             }
+        }
+
+        public static string RemoveMarkingsFromFile(string filename, IbaFile ibaDatFile = null)
+        {
+            string errMessage = "";
+            if(ibaDatFile == null)
+            {
+                ibaDatFile = new IbaFileClass();
+            }
+
+            DateTime time = DateTime.Now;
+            try
+            {
+                time = File.GetLastWriteTime(filename);
+                if(filename.EndsWith(".hdq"))
+                {
+                    IniParser parser = new IniParser(filename);
+                    parser.Read();
+                    parser.Sections["DatCoordinatorData"]["$DATCOOR_status"] = "readyToProcess";
+                    parser.Sections["DatCoordinatorData"]["$DATCOOR_TasksDone"] = "";
+                    parser.Sections["DatCoordinatorData"]["$DATCOOR_times_tried"] = "0";
+                    parser.Sections["DatCoordinatorData"]["$DATCOOR_OutputFiles"] = "";
+                    parser.Write();
+                }
+                else
+                {
+                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                    ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
+                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
+                }
+            }
+            catch(Exception ex)//updating didn't work, forget about it
+            {
+                errMessage = ex.Message;
+            }
+            finally
+            {
+                try
+                {
+                    ibaDatFile.Close();
+                }
+                catch(Exception ex)//updating didn't work, forget about it
+                {
+                    errMessage = ex.Message;
+                }
+            }
+            try
+            {
+                File.SetLastWriteTime(filename, time);
+            }
+            catch { }
+            return "";
         }
 
         public List<string> FindFiles(bool recursive)

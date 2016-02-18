@@ -150,10 +150,10 @@ namespace iba.Processing
             }
         }
 
-        virtual public void StartAllEnabledConfigurations()
+        virtual public void StartAllEnabledConfigurationsNoOneTime()
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
-                if (kvp.Key.Enabled)
+                if (kvp.Key.Enabled && kvp.Key.JobType != ConfigurationData.JobTypeEnum.OneTime)
                     StartConfiguration(kvp.Key);
         }
 
@@ -645,6 +645,25 @@ namespace iba.Processing
             m_workers[data].ForceTrigger();
         }
 
+        public void CleanAndProcessFileNow(ConfigurationData data, string file)
+        {
+            string errMessage;
+            try
+            {
+                errMessage = FileProcessing.RemoveMarkingsFromFile(file);
+            }
+            catch (System.Exception ex)
+            {
+                errMessage = ex.Message;
+            }
+            if(!string.IsNullOrEmpty(errMessage))
+            {
+                LogData.Data.Logger.Log(iba.Logging.Level.Exception, Properties.Resources.RemoveMarkingsProblem + " " + errMessage, new LogExtraData(file,null,data));
+            }
+
+            m_workers[data].ProcessFileDirect(file);
+        }
+
         public virtual void CopyIbaAnalyzerFiles(string sourcePath)
         {
             string targetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -671,6 +690,8 @@ namespace iba.Processing
             System.Diagnostics.Process regeditProcess = System.Diagnostics.Process.Start("regedit.exe", "/s \"" + outFile + "\"");
             regeditProcess.WaitForExit();
         }
+
+
     }
 
 
@@ -971,11 +992,11 @@ namespace iba.Processing
             }
         }
 
-        public override void StartAllEnabledConfigurations()
+        public override void StartAllEnabledConfigurationsNoOneTime()
         {
             try
             {
-                Program.CommunicationObject.Manager.StartAllEnabledConfigurations();
+                Program.CommunicationObject.Manager.StartAllEnabledConfigurationsNoOneTime();
             }
             catch (SocketException)
             {

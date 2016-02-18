@@ -34,6 +34,7 @@
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_undoChangesBtn = new System.Windows.Forms.Button();
             this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -62,7 +63,6 @@
             this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
             this.m_datDirTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -99,6 +99,12 @@
             this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // m_cbRepErr
+            // 
+            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
+            this.m_cbRepErr.Name = "m_cbRepErr";
+            this.m_cbRepErr.UseVisualStyleBackColor = true;
             // 
             // m_undoChangesBtn
             // 
@@ -334,12 +340,6 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // m_cbRepErr
-            // 
-            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
-            this.m_cbRepErr.Name = "m_cbRepErr";
-            this.m_cbRepErr.UseVisualStyleBackColor = true;
-            // 
             // PanelDatFilesJob
             // 
             resources.ApplyResources(this, "$this");
@@ -380,7 +380,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown m_scanTimeUpDown;
         private iba.Utility.CollapsibleGroupBox groupBox1;
-        private System.Windows.Forms.Button m_browseDatFilesButton;
         private System.Windows.Forms.TextBox m_tbPass;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox m_tbUserName;
@@ -394,5 +393,6 @@
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog1;
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
         private System.Windows.Forms.CheckBox m_cbRepErr;
+        internal System.Windows.Forms.Button m_browseDatFilesButton;
     }
 }

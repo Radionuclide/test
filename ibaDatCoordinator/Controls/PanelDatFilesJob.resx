@@ -169,7 +169,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_undoChangesBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>608, 83</value>
+    <value>608, 78</value>
   </data>
   <data name="m_undoChangesBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -377,7 +377,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_refreshDats.Location" type="System.Drawing.Point, System.Drawing">
-    <value>654, 83</value>
+    <value>654, 78</value>
   </data>
   <data name="m_refreshDats.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -404,7 +404,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>516, 83</value>
+    <value>517, 78</value>
   </data>
   <data name="m_stopButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -431,7 +431,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_applyToRunningBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>562, 83</value>
+    <value>562, 78</value>
   </data>
   <data name="m_applyToRunningBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -462,7 +462,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 83</value>
+    <value>471, 78</value>
   </data>
   <data name="m_startButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -666,7 +666,7 @@
     <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
@@ -969,7 +969,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.22.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
