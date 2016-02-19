@@ -645,7 +645,7 @@ namespace iba.Processing
             m_workers[data].ForceTrigger();
         }
 
-        public void CleanAndProcessFileNow(ConfigurationData data, string file)
+        public virtual void CleanAndProcessFileNow(ConfigurationData data, string file)
         {
             string errMessage;
             try
@@ -690,8 +690,6 @@ namespace iba.Processing
             System.Diagnostics.Process regeditProcess = System.Diagnostics.Process.Start("regedit.exe", "/s \"" + outFile + "\"");
             regeditProcess.WaitForExit();
         }
-
-
     }
 
 
@@ -1470,6 +1468,19 @@ namespace iba.Processing
                 Program.CommunicationObject.HandleBrokenConnection();
             }
         }
+
+        public override void CleanAndProcessFileNow(ConfigurationData data, string file)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.CleanAndProcessFileNow(data,file);
+            }
+            catch(SocketException)
+            {
+                Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
 
         public override void RegisterIbaAnalyzerSettings(string outFile)
         {

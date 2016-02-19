@@ -70,6 +70,10 @@ namespace iba.Controls
 
                 this.ResumeLayout();
             }
+            else
+            {
+                m_toolTip.SetToolTip(m_browseDatFilesButton, iba.Properties.Resources.browseCleanProcessButton);
+            }
             //else
             //{
             //    m_browseDatFilesButton.Visible = false;
