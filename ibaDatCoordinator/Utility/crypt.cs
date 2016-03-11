@@ -12,7 +12,6 @@ namespace iba.Utility
         {
             if (msg == "")
                 return msg;
-
             try
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder("0x");
