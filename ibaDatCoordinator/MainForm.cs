@@ -2381,7 +2381,8 @@ namespace iba
             TaskManager.Manager.StartAllEnabledConfigurationsNoOneTime();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
             {
-                (m_rightPane.Controls[0] as ConfigurationControl).LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData,this);
+                if (m_rightPane.Controls.Count >= 1 && m_rightPane.Controls[0] != null && m_rightPane.Controls[0] is ConfigurationControl)
+                    (m_rightPane.Controls[0] as ConfigurationControl).LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData,this);
             }
             UpdateButtons();
             SwitchToStatusPane();
