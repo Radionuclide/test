@@ -48,7 +48,7 @@ namespace AM_OSPC_plugin
             int microSecPart = 0;
             m_monitor.Execute(delegate() { m_analyzer.GetStartTime(ref startTime, ref microSecPart); }); //can throw
             startTime.AddTicks(microSecPart * 10);
-            
+            startTime = startTime.ToUniversalTime();
             int count = 20;
             for(int i = 19; i >= 0; i--)
             {

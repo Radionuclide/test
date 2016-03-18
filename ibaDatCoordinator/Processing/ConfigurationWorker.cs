@@ -412,7 +412,7 @@ namespace iba.Processing
                         //see if a report or extract or if task is present
                         if (t is ExtractData || t is ReportData || t is IfTaskData || 
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
-                            || (c_new.Plugin is IPluginTaskDataIbaAnalyzer)
+                            || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
                             m_needIbaAnalyzer = true;
 

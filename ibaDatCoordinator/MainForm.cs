@@ -265,16 +265,16 @@ namespace iba
 
         bool bHandleResize = false;
 
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            if(bHandleResize && WindowState == FormWindowState.Minimized)
-            {
-                FormStateSerializer.SaveSettings(this, "MainForm");
-                ShowInTaskbar = false;
-                Hide();
-            }
-        }
+        //protected override void OnResize(EventArgs e)
+        //{
+        //    base.OnResize(e);
+        //    if(bHandleResize && WindowState == FormWindowState.Minimized)
+        //    {
+        //        FormStateSerializer.SaveSettings(this, "MainForm");
+        //        ShowInTaskbar = false;
+        //        Hide();
+        //    }
+        //}
 
         public void fromStatusToConfiguration()
         {

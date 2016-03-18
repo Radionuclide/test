@@ -75,6 +75,7 @@
             this.m_columnProcessName,
             this.m_columnVariableName,
             this.m_columnTestValue});
+            this.m_datagvMessages.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.m_datagvMessages.Name = "m_datagvMessages";
             this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
             // 
