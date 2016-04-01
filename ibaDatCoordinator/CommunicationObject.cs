@@ -317,7 +317,7 @@ namespace iba
                 m_com.TestConnection();
                 return true;
             }
-            catch (SocketException) //Do Nothing
+            catch (Exception) //Do Nothing
             {
                 return false;
             }
@@ -329,7 +329,7 @@ namespace iba
             {
                 m_com.SaveConfigurations();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -343,7 +343,7 @@ namespace iba
                 {
                     return m_com.LoggerMaxRows;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                     return LogData.Data.MaxRows;
@@ -355,7 +355,7 @@ namespace iba
                 {
                     m_com.LoggerMaxRows = value;
                 }
-                catch (SocketException)
+                catch(Exception)
                 {
                     HandleBrokenConnection();
                 }
@@ -370,7 +370,7 @@ namespace iba
                 {
                     return m_com.LoggerLogLevel;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                     return LogData.Data.LogLevel;
@@ -382,7 +382,7 @@ namespace iba
                 {
                     m_com.LoggerLogLevel = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                 }
@@ -395,7 +395,7 @@ namespace iba
             {
                 m_com.LoggerClearGrid();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
                 LogData.Data.ClearGrid();
@@ -410,7 +410,7 @@ namespace iba
                 {
                     return m_com.Manager;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                     return TaskManager.Manager;
@@ -422,7 +422,7 @@ namespace iba
                 {
                     m_com.Manager = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                 }
@@ -437,7 +437,7 @@ namespace iba
                 {
                     return m_com.ForwardEvents;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                     return false;
@@ -449,7 +449,7 @@ namespace iba
                 {
                     m_com.ForwardEvents = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                 }
@@ -464,7 +464,7 @@ namespace iba
                 {
                     return m_com.Logging_fileName;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     HandleBrokenConnection();
                     return null;
@@ -478,7 +478,7 @@ namespace iba
             {
                 m_com.Logging_Log(message);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
                 LogData.Data.Log(Logging.Level.Info, message);
@@ -491,7 +491,7 @@ namespace iba
             {
                 m_com.Logging_setEventForwarder(ev);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -530,7 +530,7 @@ namespace iba
             {
                 m_com.TestScript(scriptfile,arguments, scripObject);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -542,7 +542,7 @@ namespace iba
             {
                 m_com.KillScript();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -554,7 +554,7 @@ namespace iba
             {
                 return m_com.TestDbTaskConnection(udt);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
                 return null;
@@ -567,7 +567,7 @@ namespace iba
             {
                 m_com.TestNotifier(m_data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -579,7 +579,7 @@ namespace iba
             {
                 m_com.RemoveMarkings(path, username, pass, recursive,myBar);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -591,7 +591,7 @@ namespace iba
             {
                 m_com.DeleteFiles(path,  username,  pass, files, myBar);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -603,7 +603,7 @@ namespace iba
             {
                 m_com.RemoveMarkings(path,  username,  pass, files, myBar);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }
@@ -615,7 +615,7 @@ namespace iba
             {
                 return m_com.GetIbaAnalyzerRegKey();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
                 return "";
@@ -628,7 +628,7 @@ namespace iba
             {
                 m_com.DeleteFile(outFile);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 HandleBrokenConnection();
             }

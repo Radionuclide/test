@@ -702,7 +702,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AddConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfiguration(data);
@@ -715,7 +715,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AddConfigurations(datas);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfigurations(datas);
@@ -728,7 +728,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ClearConfigurations();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ClearConfigurations();
@@ -743,7 +743,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Configurations;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Configurations;
@@ -755,7 +755,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.Configurations = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.Configurations = value;
@@ -771,7 +771,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.WatchDogData;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.WatchDogData;
@@ -785,7 +785,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetWatchdogStatus();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetWatchdogStatus();
@@ -800,7 +800,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Count;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Count;
@@ -815,7 +815,7 @@ namespace iba.Processing
         //        //if remote, get a copy instead of the status itself
         //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
         //    }
-        //    catch (SocketException)
+        //    catch (Exception)
         //    {
         //        Program.CommunicationObject.HandleBrokenConnection();
         //        return Manager.GetStatus(guid);
@@ -828,7 +828,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.IsJobStarted(guid);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.IsJobStarted(guid);
@@ -841,7 +841,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetConfigurationFromWorker(guid);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetConfigurationFromWorker(guid);
@@ -854,7 +854,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetMinimalStatus(guid, permanentError);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetMinimalStatus(guid, permanentError);
@@ -867,7 +867,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetStatusPlugin(guid, taskindex);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatusPlugin(guid, taskindex);
@@ -880,7 +880,7 @@ namespace iba.Processing
         //    {
         //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
         //    }
-        //    catch (SocketException)
+        //    catch (Exception)
         //    {
         //        Program.CommunicationObject.HandleBrokenConnection();
         //        return Manager.GetStatusCopy(guid);
@@ -893,7 +893,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AlterPermanentFileErrorList(todo, guid, files);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -905,7 +905,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.RemoveConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.RemoveConfiguration(data);
@@ -918,7 +918,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfiguration(data);
@@ -931,7 +931,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceConfigurations(datas);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfigurations(datas);
@@ -944,7 +944,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.UpdateConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.UpdateConfiguration(data);
@@ -957,7 +957,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceWatchdogData(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceWatchdogData(data);
@@ -970,7 +970,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceGlobalCleanupData(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceGlobalCleanupData(data);
@@ -983,7 +983,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.CompareConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 return false;
@@ -996,7 +996,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartAllEnabledConfigurationsNoOneTime();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1008,7 +1008,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1020,7 +1020,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAllConfigurations();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1032,7 +1032,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForAllConfigurations();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1044,7 +1044,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1056,7 +1056,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForConfiguration(guid);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1068,7 +1068,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopConfiguration(data);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1080,7 +1080,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopConfiguration(guid);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1092,7 +1092,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.UpdateTreePosition(guid, pos);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1104,7 +1104,7 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
@@ -1120,7 +1120,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.DoPostponeProcessing;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.DoPostponeProcessing;
@@ -1132,7 +1132,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.DoPostponeProcessing = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.DoPostponeProcessing = value;
@@ -1148,7 +1148,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.PostponeMinutes;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.PostponeMinutes;
@@ -1160,7 +1160,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.PostponeMinutes = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.PostponeMinutes = value;
@@ -1176,7 +1176,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxResourceIntensiveTasks;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxResourceIntensiveTasks;
@@ -1188,7 +1188,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxResourceIntensiveTasks = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxResourceIntensiveTasks = value;
@@ -1204,7 +1204,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxSimultaneousIbaAnalyzers;
@@ -1216,7 +1216,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxSimultaneousIbaAnalyzers = value;
@@ -1232,7 +1232,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxIbaAnalyzerCalls;
@@ -1244,7 +1244,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxIbaAnalyzerCalls = value;
@@ -1260,7 +1260,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.IsIbaAnalyzerCallsLimited;
@@ -1272,7 +1272,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.IsIbaAnalyzerCallsLimited = value;
@@ -1288,7 +1288,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.ProcessPriority;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.ProcessPriority;
@@ -1300,7 +1300,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.ProcessPriority = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.ProcessPriority = value;
@@ -1314,7 +1314,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AdditionalFileNames(myList);
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 myList.Clear();
                 Program.CommunicationObject.HandleBrokenConnection();
@@ -1330,7 +1330,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Password;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return "";
@@ -1342,7 +1342,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.Password = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                 }
@@ -1357,7 +1357,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.RememberPassTime;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return TimeSpan.MinValue;
@@ -1369,7 +1369,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.RememberPassTime = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                 }
@@ -1384,7 +1384,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.RememberPassEnabled;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return false;
@@ -1396,7 +1396,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.RememberPassEnabled = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                 }
@@ -1410,7 +1410,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartAllEnabledGlobalCleanups();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1422,7 +1422,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAllGlobalCleanups();
             }
-            catch (SocketException)
+            catch (Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1436,7 +1436,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.GlobalCleanupDataList;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.GlobalCleanupDataList;
@@ -1448,7 +1448,7 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.GlobalCleanupDataList = value;
                 }
-                catch (SocketException)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     Manager.GlobalCleanupDataList = value;
@@ -1463,7 +1463,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ForceTrigger(data);
             }
-            catch(SocketException)
+            catch(Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1475,7 +1475,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.CleanAndProcessFileNow(data,file);
             }
-            catch(SocketException)
+            catch(Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1488,7 +1488,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.RegisterIbaAnalyzerSettings(outFile);
             }
-            catch(SocketException)
+            catch(Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }
@@ -1500,7 +1500,7 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.CopyIbaAnalyzerFiles(folder);
             }
-            catch(SocketException)
+            catch(Exception)
             {
                 Program.CommunicationObject.HandleBrokenConnection();
             }

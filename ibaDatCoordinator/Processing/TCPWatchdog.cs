@@ -151,7 +151,7 @@ namespace iba.Processing
                     m_waitEvent.Set();
                 }
             }
-            catch (SocketException ex)
+            catch (Exception ex)
             {
                 LogData.Data.Log(Logging.Level.Exception, string.Format(iba.Properties.Resources.wdErrorAccept,ex.Message));
                 if (m_serverSocket == lSocket)

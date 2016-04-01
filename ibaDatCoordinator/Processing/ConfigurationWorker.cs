@@ -36,8 +36,8 @@ namespace iba.Processing
         public bool Stop
         {
             get 
-            { 
-                return m_stop; 
+            {
+                return m_stop;
             }
 
             set 
@@ -87,8 +87,6 @@ namespace iba.Processing
                 m_thread = new Thread(new ThreadStart(RunOneTimeJob));
             else
                 m_thread = new Thread(new ThreadStart(Run));
-
-
             m_thread.SetApartmentState(ApartmentState.STA);
             m_thread.IsBackground = true;
             m_thread.Name = "workerthread for: " + m_cd.Name;
@@ -447,7 +445,7 @@ namespace iba.Processing
             m_fswtLock = new Object();
             m_udtWorkers = new SortedDictionary<Guid,UpdateDataTaskWorker>();
             m_onNewDatFileOrRenameFileLastCalled = DateTime.MinValue;
-            m_licensedTasks = new Dictionary<TaskData, bool>();
+            m_licensedTasks = new Dictionary<int, bool>();
         }       
                 
         FileSetWithTimeStamps m_processedFiles;
@@ -456,7 +454,7 @@ namespace iba.Processing
         List<string> m_newFiles;
         List<string> m_directoryFiles;
         SortedDictionary<Guid, UpdateDataTaskWorker> m_udtWorkers;
-        Dictionary<TaskData, bool> m_licensedTasks;
+        Dictionary<int, bool> m_licensedTasks;
 
         internal void Log(Logging.Level level, string message)
         {
@@ -1051,57 +1049,31 @@ namespace iba.Processing
             foreach (TaskData task in m_cd.Tasks)
             {
                 ICustomTaskData cust = task as ICustomTaskData;
-                if (cust != null)
+                UpdateDataTaskData ut = task as UpdateDataTaskData;
+                if (cust != null || ut != null)
                 {
+                    int pos = ut!=null?2:(cust.Plugin.DongleBitPos);
                     lock (m_licensedTasks)
                     {
-                        if (m_licensedTasks.ContainsKey(task))
-                            m_licensedTasks[task] = true;
+                        if (m_licensedTasks.ContainsKey(pos))
+                            m_licensedTasks[pos] = true;
                         else
-                            m_licensedTasks.Add(task, true);
+                            m_licensedTasks.Add(pos, true);
                     }
-                    if(cust.Plugin.DongleBitPos < 0) continue;
+                    if(pos < 0) continue;
                     if (info == null)
                     {
                         info = CDongleInfo.ReadDongle();
                         if (info.DongleFound) dongleFound = true;
                     }
-                    if (!info.IsPluginLicensed(cust.Plugin.DongleBitPos))
+                    if (!info.IsPluginLicensed(pos))
                     {
                         ok = false;
                         lock (m_licensedTasks)
                         {
-                            m_licensedTasks[task] = false;
+                            m_licensedTasks[pos] = false;
                         }
                         //Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
-                    }
-                }
-                else
-                {
-                    UpdateDataTaskData ut = task as UpdateDataTaskData;
-                    if (ut != null)
-                    {
-                        lock (m_licensedTasks)
-                        {
-                            if (m_licensedTasks.ContainsKey(task))
-                                m_licensedTasks[task] = true;
-                            else
-                                m_licensedTasks.Add(task, true);
-                        }
-                        if (info == null)
-                        {
-                            info = CDongleInfo.ReadDongle();
-                            if (info.DongleFound) dongleFound = true;
-                        }
-                        if (!info.IsPluginLicensed(2))
-                        {
-                            ok = false;
-                            lock (m_licensedTasks)
-                            {
-                                m_licensedTasks[task] = false;
-                            }
-                            //Log(Logging.Level.Exception, String.Format(iba.Properties.Resources.logCustomTaskNotLicensed, task.Name));
-                        }
                     }
                 }
             }
@@ -2893,7 +2865,7 @@ namespace iba.Processing
                 lock (m_licensedTasks)
                 {
                     bool licensed = false;
-                    m_licensedTasks.TryGetValue(task,out licensed);
+                    m_licensedTasks.TryGetValue(task.Plugin.DongleBitPos,out licensed);
                     if (!licensed)
                     {
                         lock (m_sd.DatFileStates)
@@ -4132,7 +4104,7 @@ namespace iba.Processing
             lock (m_licensedTasks)
             {
                 bool licensed = false;
-                m_licensedTasks.TryGetValue(task, out licensed);
+                m_licensedTasks.TryGetValue(task.Plugin.DongleBitPos, out licensed);
                 if (!licensed)
                 {
                     lock (m_sd.DatFileStates)
@@ -4262,7 +4234,7 @@ namespace iba.Processing
             lock (m_licensedTasks)
             {
                 bool licensed = false;
-                m_licensedTasks.TryGetValue(task, out licensed);
+                m_licensedTasks.TryGetValue(2, out licensed);
                 if (!licensed)
                 {
                     lock (m_sd.DatFileStates)

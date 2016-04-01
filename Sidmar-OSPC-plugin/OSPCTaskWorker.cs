@@ -77,6 +77,7 @@ namespace AM_OSPC_plugin
 
             using (AMOSPCprotocol.OSPCConnector connector = new AMOSPCprotocol.OSPCConnector())
             {
+                int validCount = 0;
                 for(int i = 0; i < count; i++)
                 {
                     OSPCTaskData.Record record = m_data.Records[i];
@@ -88,7 +89,16 @@ namespace AM_OSPC_plugin
                         else
                             m_monitor.Execute(delegate() { f = (double)m_analyzer.Evaluate(record.Expression, 0); }); 
                     }
+                    if(!Double.IsNaN(f) && !Double.IsInfinity(f))
+                    {
+                        validCount++;
+                    }
                     connector.AddRecord(record.ProcessName, record.VariableName, f);
+                }
+                if ( validCount == 0)
+                {
+                    m_error = Properties.Resources.NoValidEntriesSpecified;
+                    return false;
                 }
                 connector.Connect(m_data.OspcServerHost, m_data.OspcServerUser, m_data.OspcServerPassword);
                 connector.Send(startTime);
