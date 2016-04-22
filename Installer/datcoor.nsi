@@ -53,6 +53,8 @@
 !include WordFunc.nsh
 !insertmacro VersionCompare
 
+!addplugindir .
+
 !ifdef UNINSTALLER_ONLY
 SetCompress off
 !else

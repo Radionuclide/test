@@ -157,10 +157,6 @@ namespace iba.Processing
                 if (m_serverSocket == lSocket)
                     m_serverSocket = null;
             }
-            catch(Exception)
-            {
-                //Comes here if listenSocket is closed
-            }
         }
 
         Byte[] CreateWatchdogMessage()
