@@ -64,7 +64,7 @@ namespace iba.Controls
             m_rbFile.Checked = m_data.Output == ReportData.OutputChoice.FILE;
             m_rbPrint.Checked = m_data.Output == ReportData.OutputChoice.PRINT;
             m_extensionComboBox.SelectedIndex = m_extensionComboBox.FindString(m_data.Extension);
-
+            m_cbImageSubDirs.Checked = m_data.CreateSubFolderForImageTypes;
 
             try
             {
@@ -107,6 +107,7 @@ namespace iba.Controls
             if (m_rbPrint.Checked) m_data.Output = ReportData.OutputChoice.PRINT;
             else if (m_rbFile.Checked) m_data.Output = ReportData.OutputChoice.FILE;
             m_data.Extension = (string) m_extensionComboBox.SelectedItem;
+            m_data.CreateSubFolderForImageTypes = m_cbImageSubDirs.Checked;
 
             m_uncControl.SaveData();
             m_data.UpdateUNC();
@@ -162,5 +163,10 @@ namespace iba.Controls
             m_panelFile.Enabled = m_rbFile.Checked;
         }
 
+        private void m_extensionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string ext = (string) m_extensionComboBox.SelectedItem;
+            m_cbImageSubDirs.Enabled = String.IsNullOrEmpty(ext) || ReportData.ImageExtensions.Contains(ext);
+        }
     }
 }

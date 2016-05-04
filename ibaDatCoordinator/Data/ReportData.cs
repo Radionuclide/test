@@ -32,6 +32,14 @@ namespace iba.Data
                 "bmp",
                 "xml"});
 
+        static public List<string> ImageExtensions = new List<string>(new string[] {        
+                "tif",
+                "tiff",
+                "emf",
+                "jpg",
+                "jpeg",
+                "bmp"});
+        
         private string m_extension;
         public override string Extension
         {
@@ -39,11 +47,21 @@ namespace iba.Data
             set { if (m_allowedExtensions.Contains(value)) m_extension = value;}
         }
 
+        private bool m_createSubFolderForImageTypes;
+
+        public bool CreateSubFolderForImageTypes
+        {
+            get { return m_createSubFolderForImageTypes; }
+            set { m_createSubFolderForImageTypes = value; }
+        }
+
+
         public ReportData(ConfigurationData parent) : base(parent)
         {
             m_name = iba.Properties.Resources.reportTitle;
             m_outputChoice = OutputChoice.FILE;
             m_extension = "pdf";
+            m_createSubFolderForImageTypes = false;
             m_monitorData = new MonitorData();
         }
 
@@ -65,6 +83,7 @@ namespace iba.Data
             rd.m_outputChoice = m_outputChoice;
             CopyUNCData(rd);
             rd.m_extension = m_extension;
+            rd.m_createSubFolderForImageTypes = m_createSubFolderForImageTypes;
             rd.m_monitorData = (MonitorData) m_monitorData.Clone();
             return rd;
         }
@@ -102,6 +121,7 @@ namespace iba.Data
             other.m_pdoFile == m_pdoFile &&
             other.m_outputChoice == m_outputChoice &&
             other.m_extension == m_extension &&
+            other.m_createSubFolderForImageTypes == m_createSubFolderForImageTypes &&
             other.m_monitorData.IsSame(m_monitorData);
         }
     }

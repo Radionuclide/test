@@ -121,17 +121,44 @@
   <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbImageSubDirs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbImageSubDirs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>463, 20</value>
+  </data>
+  <data name="m_cbImageSubDirs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 17</value>
+  </data>
+  <data name="m_cbImageSubDirs.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_cbImageSubDirs.Text" xml:space="preserve">
+    <value>Create subdirectories for image files</value>
+  </data>
+  <data name="&gt;&gt;m_cbImageSubDirs.Name" xml:space="preserve">
+    <value>m_cbImageSubDirs</value>
+  </data>
+  <data name="&gt;&gt;m_cbImageSubDirs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbImageSubDirs.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;m_cbImageSubDirs.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_panelFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_panelFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 43</value>
   </data>
   <data name="m_panelFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>644, 475</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_panelFile.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
@@ -145,7 +172,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;m_panelFile.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_extensionComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>327, 15</value>
@@ -166,7 +193,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;m_extensionComboBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbPrint.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -193,7 +220,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;m_rbPrint.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_rbFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -220,7 +247,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;m_rbFile.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 77</value>
@@ -238,7 +265,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -340,13 +367,13 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -535,13 +562,13 @@
     <value>m_monitorGroup</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.3.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

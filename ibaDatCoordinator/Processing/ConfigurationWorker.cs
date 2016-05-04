@@ -3161,7 +3161,7 @@ namespace iba.Processing
         private void Report(string filename, ReportData task)
         {
             string arg = "";
-            string htmloutputdir = "";
+            string htmlOrImageOutputdir = "";
             string htmlext = "";
             lock (m_sd.DatFileStates)
             {
@@ -3187,6 +3187,7 @@ namespace iba.Processing
                 {
                 }
 
+                bool doImageDir = task.CreateSubFolderForImageTypes && ReportData.ImageExtensions.Contains(task.Extension);
                 string actualFileName = GetOutputFileName(task,filename);
                 string dir = task.DestinationMapUNC;
                 try
@@ -3255,19 +3256,20 @@ namespace iba.Processing
 
 
 
-                if (task.Extension == "html" || task.Extension == "htm")
+                if (task.Extension == "html" || task.Extension == "htm" || doImageDir)
                 {
-                    htmloutputdir = Path.Combine(dir, actualFileName);
+                    htmlOrImageOutputdir = Path.Combine(dir, actualFileName);
                     if (!task.OverwriteFiles)
                     {
-                        for (int index = 0; Directory.Exists(htmloutputdir); index++)
+                        for (int index = 0; Directory.Exists(htmlOrImageOutputdir); index++)
                         {
                             string indexstr = index.ToString("d2");
-                            htmloutputdir = Path.Combine(dir, actualFileName + '_' + indexstr);
+                            htmlOrImageOutputdir = Path.Combine(dir, actualFileName + '_' + indexstr);
                         }
                     }
-                    dir = htmloutputdir;
+                    dir = htmlOrImageOutputdir;
                 }
+
 
                 if (!Directory.Exists(dir))
                 {
@@ -3321,9 +3323,16 @@ namespace iba.Processing
                     }
                     task.DoDirCleanupNow = false;
                 }
-                arg = Path.Combine(dir, actualFileName + ext);
-                if (!task.OverwriteFiles)
-                    arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+                if (doImageDir)
+                {
+                    arg = Path.Combine(dir, "00000001." + ext);
+                }
+                else
+                {
+                    arg = Path.Combine(dir, actualFileName + ext);
+                    if (!task.OverwriteFiles)
+                        arg = DatCoordinatorHostImpl.Host.FindSuitableFileName(arg);
+                }
             }
 
             if (!File.Exists(task.AnalysisFile))
@@ -3349,8 +3358,24 @@ namespace iba.Processing
                         {
                             if (task.Extension == "html" || task.Extension == "htm")
                             {
-                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmloutputdir,"*" + htmlext);
+                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmlOrImageOutputdir,"*" + htmlext);
                                 foreach(string file in files)
+                                {
+                                    try
+                                    {
+                                        m_quotaCleanups[task.Guid].RemoveFile(file);
+                                        File.Delete(file);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
+                            else if (task.CreateSubFolderForImageTypes && ReportData.ImageExtensions.Contains(task.Extension))
+                            {
+                                var files = Directory.GetFiles(htmlOrImageOutputdir, "*." + task.Extension);
+                                foreach (string file in files)
                                 {
                                     try
                                     {
@@ -3372,8 +3397,16 @@ namespace iba.Processing
                         {
                             if (task.Extension == "html" || task.Extension == "htm")
                             {
-                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmloutputdir, "*" + htmlext);
+                                List<string> files = PathUtil.GetFilesMultipleExtensions(htmlOrImageOutputdir, "*" + htmlext);
                                 foreach(string file in files)
+                                {
+                                    m_quotaCleanups[task.Guid].AddFile(file);
+                                }
+                            }
+                            else if (task.CreateSubFolderForImageTypes && ReportData.ImageExtensions.Contains(task.Extension))
+                            {
+                                var files = Directory.GetFiles(htmlOrImageOutputdir, "*." + task.Extension);
+                                foreach (string file in files)
                                 {
                                     m_quotaCleanups[task.Guid].AddFile(file);
                                 }

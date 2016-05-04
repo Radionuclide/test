@@ -46,6 +46,7 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_cbImageSubDirs = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.m_monitorGroup.SuspendLayout();
@@ -56,6 +57,7 @@ namespace iba.Controls
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.m_cbImageSubDirs);
             this.groupBox2.Controls.Add(this.m_panelFile);
             this.groupBox2.Controls.Add(this.m_extensionComboBox);
             this.groupBox2.Controls.Add(this.m_rbPrint);
@@ -73,6 +75,7 @@ namespace iba.Controls
             this.m_extensionComboBox.FormattingEnabled = true;
             resources.ApplyResources(this.m_extensionComboBox, "m_extensionComboBox");
             this.m_extensionComboBox.Name = "m_extensionComboBox";
+            this.m_extensionComboBox.SelectedIndexChanged += new System.EventHandler(this.m_extensionComboBox_SelectedIndexChanged);
             // 
             // m_rbPrint
             // 
@@ -194,6 +197,12 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // m_cbImageSubDirs
+            // 
+            resources.ApplyResources(this.m_cbImageSubDirs, "m_cbImageSubDirs");
+            this.m_cbImageSubDirs.Name = "m_cbImageSubDirs";
+            this.m_cbImageSubDirs.UseVisualStyleBackColor = true;
+            // 
             // ReportControl
             // 
             resources.ApplyResources(this, "$this");
@@ -234,6 +243,7 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
+        private System.Windows.Forms.CheckBox m_cbImageSubDirs;
 
     }
 }

@@ -265,7 +265,7 @@ namespace Alunorf_sinec_h1_plugin
                 ReceiveState state = new ReceiveState(readBuffer[index],m_dataSockets[index],index);
                 m_dataSockets[index].BeginReceive(state.recvBuffer, state.recvOffset, state.recvBuffer.Length - state.recvOffset, SocketFlags.None, new AsyncCallback(OnReceivedMessage), state);
             }
-            catch (Exception ex) //error on accept
+            catch (SocketException ex) //error on accept
             {
                 if (m_bStop)
                     return;
