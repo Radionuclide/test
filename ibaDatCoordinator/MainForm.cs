@@ -2037,7 +2037,8 @@ namespace iba
                        GetDongleInfo(sb);
                     }
                     catch
-                    {}
+                    {
+                    }
 
                     try
                     {
@@ -2101,6 +2102,7 @@ namespace iba
                     catch 
                     {
                     }
+
                     try
                     {
                         //logfiles, server
@@ -2361,9 +2363,11 @@ namespace iba
             {
                 waiter.ShowDialog(this);
             }
-            if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
+            if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData && m_rightPane.Controls.Count>0)
             {
-                (m_rightPane.Controls[0] as ConfigurationControl).LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData, this);
+                ConfigurationControl ctrl = (m_rightPane.Controls[0] as ConfigurationControl);
+                if (ctrl != null)
+                    ctrl.LoadData((m_configTreeView.SelectedNode.Tag as ConfigurationTreeItemData).ConfigurationData, this);
             }
             UpdateButtons();
         }
