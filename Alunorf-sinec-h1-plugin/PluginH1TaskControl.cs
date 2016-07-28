@@ -35,7 +35,7 @@ namespace Alunorf_sinec_h1_plugin
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.signal);
             telegramImageList.Images.Add(Alunorf_sinec_h1_plugin.Properties.Resources.telegram_new);
             m_tvMessages.ImageList = telegramImageList;
-
+            
             m_tcpipParams = new TCPIPConnectionParams();
             m_sinecH1Params = new SinecH1ConnectionParams();
             m_sinecH1Params.Location = m_tcpipParams.Location = m_connectParametersPanel.Location;
@@ -453,6 +453,7 @@ namespace Alunorf_sinec_h1_plugin
                 m_datagvMessages.AllowUserToAddRows = false;
                 m_datagvMessages.AllowUserToDeleteRows = false;
                 m_datagvMessages.RowCount = 0;
+                m_columnSampleCount.Visible = false;
                 m_telegram = null;
             }
             else if (node.ImageIndex == TELEGRAM_NEW_INDEX)
@@ -473,6 +474,7 @@ namespace Alunorf_sinec_h1_plugin
                 SaveTelegram();
                 m_telegram = m_data.Telegrams[node.Index];
                 m_telegramPart = TelegramPart.QDT_TYPE;
+                m_columnSampleCount.Visible = false;
                 m_datagvMessages.AllowUserToAddRows = false;
                 m_datagvMessages.AllowUserToDeleteRows = false;
                 m_datagvMessages.RowCount = 2;
@@ -495,6 +497,7 @@ namespace Alunorf_sinec_h1_plugin
                 m_datagvMessages.AllowUserToDeleteRows = true;
                 m_columnFieldname.ReadOnly = false;
                 m_columnDataType.ReadOnly = false;
+                m_columnSampleCount.Visible = false;
                 int count = m_telegram.DataInfo.Count;
                 m_datagvMessages.RowCount = count + 1;
                 for (int i = 0; i < count; i++)
@@ -518,6 +521,7 @@ namespace Alunorf_sinec_h1_plugin
                 m_datagvMessages.AllowUserToDeleteRows = true;
                 m_columnFieldname.ReadOnly = false;
                 m_columnDataType.ReadOnly = false;
+                m_columnSampleCount.Visible = true;
                 int count = m_telegram.DataSignal.Count;
                 m_datagvMessages.RowCount = count + 1;
                 for (int i = 0; i < count; i++)
@@ -526,11 +530,13 @@ namespace Alunorf_sinec_h1_plugin
                     m_datagvMessages.Rows[i].Cells[1].Value = m_telegram.DataSignal[i].DataType;
                     m_datagvMessages.Rows[i].Cells[2].Value = m_telegram.DataSignal[i].Comment;
                     m_datagvMessages.Rows[i].Cells[2].ToolTipText = null;
+                    m_datagvMessages.Rows[i].Cells[3].Value = new Decimal(m_telegram.DataSignal[i].SampleCount);
                 }
                 m_datagvMessages.Rows[count].Cells[0].Value = null;
                 m_datagvMessages.Rows[count].Cells[1].Value = null;
                 m_datagvMessages.Rows[count].Cells[2].Value = null;
                 m_datagvMessages.Rows[count].Cells[2].ToolTipText = null;
+                m_datagvMessages.Rows[count].Cells[3].Value = null;
             }
         }
 
@@ -570,7 +576,15 @@ namespace Alunorf_sinec_h1_plugin
                         line.Name = m_datagvMessages.Rows[i].Cells[0].Value as string;
                         line.DataType = m_datagvMessages.Rows[i].Cells[1].Value as string;
                         line.Comment = m_datagvMessages.Rows[i].Cells[2].Value as string;
-                        if (String.IsNullOrEmpty(line.DataType) || String.IsNullOrEmpty(line.Name)) continue;
+                        string vstr=  m_datagvMessages.Rows[i].Cells[3].Value as string;
+                        try
+                        {
+                            line.SampleCount = (int)System.Convert.ToDecimal(m_datagvMessages.Rows[i].Cells[3].Value);
+                        }
+                        catch (Exception)
+                        {
+                            line.SampleCount = 400;
+                        }
                         m_telegram.DataSignal.Add(line);
                     }
                     break;
@@ -760,6 +774,12 @@ namespace Alunorf_sinec_h1_plugin
             bool sinech1 = m_rbSinecH1.Checked;
             m_tcpipParams.Visible = !sinech1;
             m_sinecH1Params.Visible = sinech1;
+        }
+
+        private void m_datagvMessages_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            if (e.Row.Cells[3].Visible)
+                e.Row.Cells[3].Value = new Decimal(400);
         }
     }
 }

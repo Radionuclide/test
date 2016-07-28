@@ -10,11 +10,16 @@ namespace Alunorf_sinec_h1_plugin
     public class PluginH1Task : IPluginTaskData
     {
         [Serializable]
-        public struct TelegramRecord
+        public class TelegramRecord
         {
             public string Name;
             public string DataType;
             public string Comment;
+            public int SampleCount;
+            public TelegramRecord()
+            {
+                SampleCount = 400;
+            }
         }
 
         [Serializable]

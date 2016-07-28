@@ -401,7 +401,7 @@ namespace Alunorf_sinec_h1_plugin
                     errInInfo = false;
                     return;
                 }
-                m_size += 3200; //2*4*400
+                m_size += 4 * rec.SampleCount;
             }
         }
 
@@ -673,16 +673,19 @@ namespace Alunorf_sinec_h1_plugin
                         reader.QueryTimebasedData(out lengthBase, out offset, out data);
                     }
 
-                    float[] values = data as float[]; 
-                    for (int i = 0; i < 400; i++)
+                    float[] values = data as float[];
+                    int cnt = rec.SampleCount;
+                    if (cnt <= 0) cnt = 400; //perhaps old style.
+                    for (int i = 0; i < cnt; i++)
                     {
                         if (i >= values.Length)
                             m_stream.WriteFloat32(float.NaN);
                         else
                             m_stream.WriteFloat32(values[i]);
                     }
-                    for (int i = 0; i < 400; i++)
-                        m_stream.WriteFloat32(offset + i * lengthBase);
+                    //28-7-2016: Lengths not needed.
+                    //for (int i = 0; i < 400; i++)
+                   //     m_stream.WriteFloat32(offset + i * lengthBase);
                 }
                 catch
                 {

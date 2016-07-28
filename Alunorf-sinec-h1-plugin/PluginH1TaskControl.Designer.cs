@@ -30,14 +30,13 @@ namespace Alunorf_sinec_h1_plugin
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginH1TaskControl));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.m_splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_tvMessages = new System.Windows.Forms.TreeView();
             this.m_contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_datagvMessages = new System.Windows.Forms.DataGridView();
-            this.m_columnFieldname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewTextBoxComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.m_saveXML = new System.Windows.Forms.Button();
             this.m_openXML = new System.Windows.Forms.Button();
@@ -67,6 +66,14 @@ namespace Alunorf_sinec_h1_plugin
             this.m_tabControl = new System.Windows.Forms.TabControl();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.m_columnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewNumericUpDownColumn1 = new DataGridViewNumericUpDownElements.DataGridViewNumericUpDownColumn();
+            this.m_columnFieldname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnSampleCount = new DataGridViewNumericUpDownElements.DataGridViewNumericUpDownColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.m_splitContainer2)).BeginInit();
             this.m_splitContainer2.Panel1.SuspendLayout();
             this.m_splitContainer2.Panel2.SuspendLayout();
             this.m_splitContainer2.SuspendLayout();
@@ -75,6 +82,7 @@ namespace Alunorf_sinec_h1_plugin
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_splitContainer3)).BeginInit();
             this.m_splitContainer3.Panel1.SuspendLayout();
             this.m_splitContainer3.Panel2.SuspendLayout();
             this.m_splitContainer3.SuspendLayout();
@@ -106,12 +114,12 @@ namespace Alunorf_sinec_h1_plugin
             resources.ApplyResources(this.m_tvMessages, "m_tvMessages");
             this.m_tvMessages.HideSelection = false;
             this.m_tvMessages.Name = "m_tvMessages";
-            this.m_tvMessages.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragDrop);
-            this.m_tvMessages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_tvMessages_AfterSelect);
-            this.m_tvMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_tvMessages_MouseDown);
-            this.m_tvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_tvMessages_KeyDown);
             this.m_tvMessages.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_tvMessages_ItemDrag);
+            this.m_tvMessages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_tvMessages_AfterSelect);
+            this.m_tvMessages.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragDrop);
             this.m_tvMessages.DragOver += new System.Windows.Forms.DragEventHandler(this.m_tvMessages_DragOver);
+            this.m_tvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_tvMessages_KeyDown);
+            this.m_tvMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_tvMessages_MouseDown);
             // 
             // m_contextMenu
             // 
@@ -133,84 +141,14 @@ namespace Alunorf_sinec_h1_plugin
             this.m_datagvMessages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.m_columnFieldname,
             this.m_columnDataType,
-            this.dataGridViewTextBoxComment});
+            this.dataGridViewTextBoxComment,
+            this.m_columnSampleCount});
             resources.ApplyResources(this.m_datagvMessages, "m_datagvMessages");
             this.m_datagvMessages.Name = "m_datagvMessages";
             this.m_datagvMessages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_datagvMessages_CellValueChanged);
+            this.m_datagvMessages.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.m_datagvMessages_DefaultValuesNeeded);
             this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
             this.m_datagvMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_datagvMessages_KeyDown);
-            // 
-            // m_columnFieldname
-            // 
-            this.m_columnFieldname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnFieldname.FillWeight = 30F;
-            resources.ApplyResources(this.m_columnFieldname, "m_columnFieldname");
-            this.m_columnFieldname.Name = "m_columnFieldname";
-            this.m_columnFieldname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_columnDataType
-            // 
-            this.m_columnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnDataType.FillWeight = 20F;
-            resources.ApplyResources(this.m_columnDataType, "m_columnDataType");
-            this.m_columnDataType.Items.AddRange(new object[] {
-            "int1",
-            "int2",
-            "int4",
-            "u. int1",
-            "u. int2",
-            "u. int4",
-            "float4",
-            "char1",
-            "char2",
-            "char3",
-            "char4",
-            "char5",
-            "char6",
-            "char7",
-            "char8",
-            "char9",
-            "char10",
-            "char11",
-            "char12",
-            "char13",
-            "char14",
-            "char15",
-            "char16",
-            "char17",
-            "char18",
-            "char19",
-            "char20",
-            "char21",
-            "char22",
-            "char23",
-            "char24",
-            "char25",
-            "char26",
-            "char27",
-            "char28",
-            "char29",
-            "char30",
-            "char31",
-            "char32",
-            "char33",
-            "char34",
-            "char35",
-            "char36",
-            "char37",
-            "char38",
-            "char39",
-            "char40"});
-            this.m_columnDataType.MaxDropDownItems = 10;
-            this.m_columnDataType.Name = "m_columnDataType";
-            // 
-            // dataGridViewTextBoxComment
-            // 
-            this.dataGridViewTextBoxComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxComment.FillWeight = 40F;
-            resources.ApplyResources(this.dataGridViewTextBoxComment, "dataGridViewTextBoxComment");
-            this.dataGridViewTextBoxComment.Name = "dataGridViewTextBoxComment";
-            this.dataGridViewTextBoxComment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // m_refreshTimer
             // 
@@ -447,6 +385,134 @@ namespace Alunorf_sinec_h1_plugin
             this.m_tabControl.Name = "m_tabControl";
             this.m_tabControl.SelectedIndex = 0;
             // 
+            // m_columnDataType
+            // 
+            this.m_columnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnDataType.FillWeight = 20F;
+            resources.ApplyResources(this.m_columnDataType, "m_columnDataType");
+            this.m_columnDataType.Items.AddRange(new object[] {
+            "int1",
+            "int2",
+            "int4",
+            "u. int1",
+            "u. int2",
+            "u. int4",
+            "float4",
+            "char1",
+            "char2",
+            "char3",
+            "char4",
+            "char5",
+            "char6",
+            "char7",
+            "char8",
+            "char9",
+            "char10",
+            "char11",
+            "char12",
+            "char13",
+            "char14",
+            "char15",
+            "char16",
+            "char17",
+            "char18",
+            "char19",
+            "char20",
+            "char21",
+            "char22",
+            "char23",
+            "char24",
+            "char25",
+            "char26",
+            "char27",
+            "char28",
+            "char29",
+            "char30",
+            "char31",
+            "char32",
+            "char33",
+            "char34",
+            "char35",
+            "char36",
+            "char37",
+            "char38",
+            "char39",
+            "char40"});
+            this.m_columnDataType.MaxDropDownItems = 10;
+            this.m_columnDataType.Name = "m_columnDataType";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.FillWeight = 30F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn1, "dataGridViewTextBoxColumn1");
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.FillWeight = 40F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn2, "dataGridViewTextBoxColumn2");
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewNumericUpDownColumn1
+            // 
+            this.dataGridViewNumericUpDownColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.Format = "N0";
+            this.dataGridViewNumericUpDownColumn1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewNumericUpDownColumn1.FillWeight = 20F;
+            resources.ApplyResources(this.dataGridViewNumericUpDownColumn1, "dataGridViewNumericUpDownColumn1");
+            this.dataGridViewNumericUpDownColumn1.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dataGridViewNumericUpDownColumn1.Name = "dataGridViewNumericUpDownColumn1";
+            this.dataGridViewNumericUpDownColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // m_columnFieldname
+            // 
+            this.m_columnFieldname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnFieldname.FillWeight = 30F;
+            resources.ApplyResources(this.m_columnFieldname, "m_columnFieldname");
+            this.m_columnFieldname.Name = "m_columnFieldname";
+            this.m_columnFieldname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxComment
+            // 
+            this.dataGridViewTextBoxComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxComment.FillWeight = 40F;
+            resources.ApplyResources(this.dataGridViewTextBoxComment, "dataGridViewTextBoxComment");
+            this.dataGridViewTextBoxComment.Name = "dataGridViewTextBoxComment";
+            this.dataGridViewTextBoxComment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_columnSampleCount
+            // 
+            this.m_columnSampleCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle1.Format = "N0";
+            this.m_columnSampleCount.DefaultCellStyle = dataGridViewCellStyle1;
+            this.m_columnSampleCount.FillWeight = 20F;
+            resources.ApplyResources(this.m_columnSampleCount, "m_columnSampleCount");
+            this.m_columnSampleCount.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_columnSampleCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_columnSampleCount.Name = "m_columnSampleCount";
+            this.m_columnSampleCount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
             // PluginH1TaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -456,6 +522,7 @@ namespace Alunorf_sinec_h1_plugin
             this.Name = "PluginH1TaskControl";
             this.m_splitContainer2.Panel1.ResumeLayout(false);
             this.m_splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_splitContainer2)).EndInit();
             this.m_splitContainer2.ResumeLayout(false);
             this.m_contextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).EndInit();
@@ -466,6 +533,7 @@ namespace Alunorf_sinec_h1_plugin
             this.m_splitContainer3.Panel1.PerformLayout();
             this.m_splitContainer3.Panel2.ResumeLayout(false);
             this.m_splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_splitContainer3)).EndInit();
             this.m_splitContainer3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -493,9 +561,6 @@ namespace Alunorf_sinec_h1_plugin
         private System.Windows.Forms.SplitContainer m_splitContainer2;
         private System.Windows.Forms.TreeView m_tvMessages;
         private System.Windows.Forms.DataGridView m_datagvMessages;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnFieldname;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_columnDataType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxComment;
         private System.Windows.Forms.Button m_btOpen;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -517,5 +582,12 @@ namespace Alunorf_sinec_h1_plugin
         private System.Windows.Forms.RadioButton m_rbSinecH1;
         private System.Windows.Forms.RadioButton m_rbTCPIP;
         private System.Windows.Forms.Panel m_connectParametersPanel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnFieldname;
+        private System.Windows.Forms.DataGridViewComboBoxColumn m_columnDataType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxComment;
+        private DataGridViewNumericUpDownElements.DataGridViewNumericUpDownColumn m_columnSampleCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewNumericUpDownElements.DataGridViewNumericUpDownColumn dataGridViewNumericUpDownColumn1;
     }
 }

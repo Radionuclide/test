@@ -353,6 +353,7 @@ namespace iba {
 								TheVector[0]->QueryTimebasedData(timebase,offset,obj);
 							else
 								TheVector[0]->QueryLengthbasedData(timebase,offset,obj);
+							if (obj == nullptr) throw gcnew Exception("failed to query");
 						}
 						catch (Exception^) //not succesfull in obtaining data
 						{
@@ -381,6 +382,7 @@ namespace iba {
 									it->second->QueryTimebasedData(timebase,offset,obj);
 								else
 									it->second->QueryLengthbasedData(timebase,offset,obj);
+								if (obj == nullptr) throw gcnew Exception("failed to query");
 							}
 							catch (Exception^)
 							{
@@ -408,6 +410,7 @@ namespace iba {
 								channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
 							else
 								channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							if (obj == nullptr) throw gcnew Exception("failed to query");
 						}
 						catch (Exception^)
 						{
