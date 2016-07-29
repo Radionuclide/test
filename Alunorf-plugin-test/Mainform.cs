@@ -754,26 +754,27 @@ namespace Alunorf_plugin_test
             foreach (PluginH1Task.TelegramRecord rec in qdt.TelegramData.DataSignal)
             {
                 count++;
+                int samplecount = rec.SampleCount;
                 try
                 {
-                    float[] vals = new float[400];
-                    for (int i = 0; i < 400; i++)
+                    float[] vals = new float[samplecount];
+                    for (int i = 0; i < samplecount; i++)
                     {
                         qdt.Stream.ReadFloat32(ref v_float);
                         vals[i] = v_float;
                     }
                     float offset = 0;
-                    float lengthbase = 0;
-                    for (int i = 0; i < 400; i++)
-                    {
-                        qdt.Stream.ReadFloat32(ref v_float);
-                        if (i == 0) offset = v_float;
-                        if (i == 1) lengthbase = v_float - offset;
-                    }
+                    float lengthbase = 11.0f;
+                    //for (int i = 0; i < samplecount; i++)
+                    //{
+                    //    qdt.Stream.ReadFloat32(ref v_float);
+                    //    if (i == 0) offset = v_float;
+                    //    if (i == 1) lengthbase = v_float - offset;
+                    //}
                     IbaChannelWriter channelwriter = filewriter.CreateAnalogChannel(0, count, rec.Name, lengthbase) as IbaChannelWriter;
                     channelwriter.LengthBased = 1;
                     channelwriter.xOffset = offset;
-                    for (int i = 0; i < 400; i++) channelwriter.WriteData(vals[i]);
+                    for (int i = 0; i < samplecount; i++) channelwriter.WriteData(vals[i]);
                 }
                 catch (Exception inner)
                 {

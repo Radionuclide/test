@@ -536,7 +536,7 @@ namespace Alunorf_sinec_h1_plugin
                 m_datagvMessages.Rows[count].Cells[1].Value = null;
                 m_datagvMessages.Rows[count].Cells[2].Value = null;
                 m_datagvMessages.Rows[count].Cells[2].ToolTipText = null;
-                m_datagvMessages.Rows[count].Cells[3].Value = null;
+                m_datagvMessages.Rows[count].Cells[3].Value = new Decimal(400);           
             }
         }
 

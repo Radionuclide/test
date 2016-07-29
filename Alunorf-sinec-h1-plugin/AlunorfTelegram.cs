@@ -369,8 +369,6 @@ namespace Alunorf_sinec_h1_plugin
             set { errInInfo = value; }
         }
 
-
-
         private void CalcSize()
         {
             errPos = -1;
@@ -547,21 +545,22 @@ namespace Alunorf_sinec_h1_plugin
                 {
                     b.Append(rec.Name);
                     b.Append(": ");
-                    for (int i = 0; i < 400; i++)
+                    int cnt = rec.SampleCount;
+                    for (int i = 0; i < cnt; i++)
                     {
                         m_stream.ReadFloat32(ref v_float);
                         b.Append(v_float);
                         b.Append(" ");
                     }
                     b.Append(Environment.NewLine);
-                    b.Append("length: ");
-                    for (int i = 0; i < 400; i++)
-                    {
-                        m_stream.ReadFloat32(ref v_float);
-                        b.Append(v_float);
-                        b.Append(" ");
-                    }
-                    b.Append(Environment.NewLine);
+                    //b.Append("length: ");
+                    //for (int i = 0; i < 400; i++)
+                    //{
+                    //    m_stream.ReadFloat32(ref v_float);
+                    //    b.Append(v_float);
+                    //    b.Append(" ");
+                    //}
+                    //b.Append(Environment.NewLine);
                 }
                 catch
                 {

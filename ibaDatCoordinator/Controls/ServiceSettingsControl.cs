@@ -39,7 +39,6 @@ namespace iba.Controls
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
                     box.Top -= Offset;
                 }
-
             }
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
