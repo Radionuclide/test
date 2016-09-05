@@ -590,8 +590,20 @@ namespace Alunorf_roh_plugin
                     case 8:
                         errormessage = string.Format(Properties.Resources.ErrorRohUnexpected, rw.errorMessage);
                         break;
+                    case 9:
+                        errormessage = string.Format(Properties.Resources.KanalDataCouldNotBeLoaded, rw.errorChannelLineInput.ibaName, PluginRohTask.FindChannelLine(m_data.RohInput.Kanalen, rw.errorChannelLineInput));
+                        break;                  
                     case 10:
                         errormessage = string.Format(Properties.Resources.ErrorRohFileCreate, rw.errorMessage);
+                        break;
+                    case 11:
+                        errormessage = string.Format(Properties.Resources.StichDataNotRead, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.StichDaten, rw.errorDataLineInput));
+                        break;
+                    case 12:
+                        errormessage = string.Format(Properties.Resources.KopfDataNotRead, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.KopfDaten, rw.errorDataLineInput));
+                        break;
+                    case 13:
+                        errormessage = string.Format(Properties.Resources.SchlussDataNotRead, rw.errorDataLineInput.ibaName, PluginRohTask.FindDataLine(m_data.RohInput.SchlussDaten, rw.errorDataLineInput));
                         break;
                     default:
                         errormessage = string.Format(Properties.Resources.ErrorUnexpected, rw.errorMessage);

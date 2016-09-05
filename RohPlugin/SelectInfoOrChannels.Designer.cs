@@ -37,6 +37,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_btRemove = new System.Windows.Forms.Button();
             this.m_btAdd = new System.Windows.Forms.Button();
+            this.m_cbMultiValuedFields = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.m_lbIba.Location = new System.Drawing.Point(3, 3);
             this.m_lbIba.Name = "m_lbIba";
             this.m_lbIba.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.m_lbIba.Size = new System.Drawing.Size(171, 238);
+            this.m_lbIba.Size = new System.Drawing.Size(171, 244);
             this.m_lbIba.Sorted = true;
             this.m_lbIba.TabIndex = 0;
             // 
@@ -59,7 +60,7 @@
             this.m_lbRoh.Location = new System.Drawing.Point(230, 3);
             this.m_lbRoh.Name = "m_lbRoh";
             this.m_lbRoh.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.m_lbRoh.Size = new System.Drawing.Size(171, 238);
+            this.m_lbRoh.Size = new System.Drawing.Size(171, 244);
             this.m_lbRoh.TabIndex = 1;
             // 
             // button1
@@ -88,16 +89,16 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_lbIba, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_lbRoh, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_lbIba, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -140,12 +141,24 @@
             this.m_btAdd.UseVisualStyleBackColor = true;
             this.m_btAdd.Click += new System.EventHandler(this.m_btAdd_Click);
             // 
+            // m_cbMultiValuedFields
+            // 
+            this.m_cbMultiValuedFields.AutoSize = true;
+            this.m_cbMultiValuedFields.Location = new System.Drawing.Point(12, 272);
+            this.m_cbMultiValuedFields.Name = "m_cbMultiValuedFields";
+            this.m_cbMultiValuedFields.Size = new System.Drawing.Size(242, 17);
+            this.m_cbMultiValuedFields.TabIndex = 5;
+            this.m_cbMultiValuedFields.Text = "Mehrfachauswahl zulassen (Kanäle anzeigen)";
+            this.m_cbMultiValuedFields.UseVisualStyleBackColor = true;
+            this.m_cbMultiValuedFields.CheckedChanged += new System.EventHandler(this.m_cbMultiValuedFields_CheckedChanged);
+            // 
             // SelectInfoOrChannels
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(428, 303);
+            this.Controls.Add(this.m_cbMultiValuedFields);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -156,6 +169,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -169,5 +183,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button m_btRemove;
         private System.Windows.Forms.Button m_btAdd;
+        private System.Windows.Forms.CheckBox m_cbMultiValuedFields;
     }
 }

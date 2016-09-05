@@ -111,6 +111,8 @@ namespace iba {
 			void WriteChannelData(array<float>^ data, int size, DataTypeEnum dataType);
 			void WriteMultiChannelData(array<array<float>^>^ data, int size, DataTypeEnum dataType);
 			void WriteValueInBuffer(unsigned char* buffer,float value,DataTypeEnum dataType);
+			void WriteMultiDataLine(RohWriterDataLineInput^ line, array<float>^ values, msclr::interop::marshal_context% context);
+
 		public:
 			int Write(RohWriterInput^ input, String^ datfile, String^ Rohfile);
 			// return value:

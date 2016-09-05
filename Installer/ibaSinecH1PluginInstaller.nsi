@@ -2,8 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Sinec-H1 Plugin Installer"
-!define PRODUCT_VERSION "2.1.0"
-!define PRODUCT_FILE_VERSION "2.1.0.0"
+!define PRODUCT_VERSION "2.2.0"
+!define PRODUCT_FILE_VERSION "2.2.0.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
@@ -35,6 +35,8 @@ Var ibaDatCoordinatorPath
 !include "LogicLib.nsh"
 !include "StrFunc.nsh"
 !include "FileFunc.nsh"
+
+!addplugindir .
 
 SetCompressor /SOLID lzma
 

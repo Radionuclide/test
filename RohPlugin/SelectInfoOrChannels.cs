@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Linq;
 using ibaFilesLiteLib;
 
 namespace Alunorf_roh_plugin
@@ -16,6 +16,7 @@ namespace Alunorf_roh_plugin
         {
             InitializeComponent();
             AdditionalInfos = new SortedDictionary<string, ExtraData>();
+            m_channelsForMulti = new List<string>();
         }
 
         private bool m_selectChannels;
@@ -35,7 +36,8 @@ namespace Alunorf_roh_plugin
         }
 
         public SortedDictionary<string, ExtraData> AdditionalInfos;
-
+        private static bool m_bChannelsShown;
+        private List<String> m_channelsForMulti;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -47,6 +49,7 @@ namespace Alunorf_roh_plugin
 
                 if (m_selectChannels)
                 {
+                    m_cbMultiValuedFields.Visible = false;
                     for (int i = 0; true; i++) //get the vectors
                     {
                         String name;
@@ -136,6 +139,7 @@ namespace Alunorf_roh_plugin
                 }
                 else
                 {
+                    m_cbMultiValuedFields.Visible = true;
                     for (int i = 0; true; i++)
 			        {
 				        String name;
@@ -174,8 +178,50 @@ namespace Alunorf_roh_plugin
                             ed.dt = "C";
                         AdditionalInfos.Add(name,ed);
 			        }
+
+                     //iterate over channels
+                    IbaEnumChannelReader enumerator = ibaFile.EnumChannels() as IbaEnumChannelReader;
+			        while (enumerator.IsAtEnd()==0)
+			        {
+				        IbaChannelReader reader = enumerator.Next() as IbaChannelReader;
+                        string name = reader.QueryInfoByName("name");
+                        string vector = reader.QueryInfoByName("vector");
+                        if (!String.IsNullOrEmpty(vector)) continue;
+                        else if (reader.QueryInfoByName("hidden")!="1")
+                        {
+                            if (String.IsNullOrEmpty(name)) continue;
+                            if (AdditionalInfos.ContainsKey(name)) //no warning this time just ignore
+                            {
+                                //String err = String.Format(Properties.Resources.ChannelalreadyPresent, name);
+                                //MessageBox.Show(err, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                continue;
+                            }
+                            ExtraData ed = new ExtraData();
+                            ed.unit = reader.QueryInfoByName("unit");
+                            ed.dt = "F";
+                            string description = reader.QueryInfoByName("$PDA_comment1");
+                            if (!string.IsNullOrEmpty(description))
+                                ed.description = description.Length > 30 ? description.Substring(0, 30) : description;
+                            else if (String.IsNullOrEmpty(name)) continue;
+                            else
+                                ed.description = name.Length > 30 ? name.Substring(0, 30) : name;
+                            string kurz = reader.QueryInfoByName("$PDA_comment2");
+                            if (!string.IsNullOrEmpty(kurz))
+                            {
+                                ed.kurz = kurz.Length > 8 ? kurz.Substring(0, 8) : kurz;
+                            }
+                            else if (String.IsNullOrEmpty(name)) continue;
+                            else
+                                ed.kurz = name.Length > 8 ? name.Substring(0, 8) : name;
+                            ed.kurz = ed.kurz.Replace(' ', '_');
+                            AdditionalInfos.Add(name, ed);
+                            m_channelsForMulti.Add(name);
+                        }
+                    }
                 }
                 ibaFile.Close();
+                m_cbMultiValuedFields.Checked = m_bChannelsShown;
+                m_cbMultiValuedFields_CheckedChanged(null, null);
             }
             catch
             {
@@ -213,6 +259,22 @@ namespace Alunorf_roh_plugin
             while (m_lbRoh.SelectedItems.Count > 0)
             {
                 m_lbRoh.Items.Remove(m_lbRoh.SelectedItem);
+            }
+        }
+
+        private void m_cbMultiValuedFields_CheckedChanged(object sender, EventArgs e)
+        {
+            //if (m_bChannelsShown == m_cbMultiValuedFields.Checked) return;
+            m_bChannelsShown = m_cbMultiValuedFields.Checked;
+            if (m_bChannelsShown)
+            {
+                m_channelsForMulti.Where(x => !m_lbIba.Items.Contains(x)).ToList().ForEach(y => m_lbIba.Items.Add(y));
+                m_channelsForMulti.Where(x => !m_lbRoh.Items.Contains(x)).ToList().ForEach(y => m_lbRoh.Items.Add(y));
+            }
+            else
+            {
+                m_channelsForMulti.Where(x => m_lbIba.Items.Contains(x)).ToList().ForEach(y => m_lbIba.Items.Remove(y));
+                m_channelsForMulti.Where(x => m_lbRoh.Items.Contains(x)).ToList().ForEach(y => m_lbRoh.Items.Remove(y));
             }
         }
     }

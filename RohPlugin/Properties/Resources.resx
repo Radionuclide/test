@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DatFileCouldNotBeOpened" xml:space="preserve">
     <value>Die .dat Datei {0} konnte nicht gelesen werden</value>
@@ -147,7 +147,7 @@
   <data name="KopfDataNotFound" xml:space="preserve">
     <value>Fehler: Kopfdaten Tabellenzeile {1}: Infofeld '{0}' nicht in der .dat Datei gefunden</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="left" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\left.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -206,6 +206,15 @@
     <value>Warning, info field with duplicate name found in .dat file: '{0}'</value>
   </data>
   <data name="KanalDataCouldNotBeLoaded" xml:space="preserve">
-    <value>Fehler: Kanalbeschreibung Tabellenzeile {1}: Daten aus Kanal '{0}' konnten nicht geladen werden.</value>
+    <value>Fehler: Kanalbeschreibung Tabellenzeile {1}: Daten aus Kanal '{0}' konnten nicht geladen werden</value>
+  </data>
+  <data name="KopfDataNotRead" xml:space="preserve">
+    <value>Fehler: Kopfdaten Tabellenzeile {1}:  Daten aus Kanal '{0}' konnten nicht geladen werden</value>
+  </data>
+  <data name="SchlussDataNotRead" xml:space="preserve">
+    <value>Fehler: Schlussdaten Tabellenzeile {1}:  Daten aus Kanal '{0}' konnten nicht geladen werden</value>
+  </data>
+  <data name="StichDataNotRead" xml:space="preserve">
+    <value>Fehler: Stichdaten Tabellenzeile {1}:  Daten aus Kanal '{0}' konnten nicht geladen werden</value>
   </data>
 </root>

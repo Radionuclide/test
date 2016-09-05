@@ -110,39 +110,11 @@ namespace iba {
 				return 5;
 			}		
 
-
-			if (!requiredInfoFields.empty()) //report error if an infofield is missing
-			{
-				for each (RohWriterDataLineInput^ dateLine in input->StichDaten)
-				{
-					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
-					{	
-						errorDataLineInput = dateLine;
-						return 1;
-					}
-				}
-				for each (RohWriterDataLineInput^ dateLine in input->KopfDaten)
-				{
-					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
-					{	
-						errorDataLineInput = dateLine;
-						return 2;
-					}
-				}
-				for each (RohWriterDataLineInput^ dateLine in input->SchlussDaten)
-				{
-					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
-					{	
-						errorDataLineInput = dateLine;
-						return 3;
-					}
-				}
-			}
-
 			//assemble required channels
 			cliext::set<String^> requiredChannels;
 			cliext::set<int> requiredVectors;
 			cliext::map<String^,IbaChannelReader^> channelsCopy; //copy of the required channels so we do not need to iterate through the channels again later
+			cliext::map<String^,IbaChannelReader^> channelsForInfo; //info fields ...
 			cliext::map<int,cliext::map<int,IbaChannelReader^>^ > vectorChannelsCopy; //likewise for vectors in twodim map (vector index, index in vector)
 
 			for each (RohWriterChannelLineInput^ channel in input->Kanalen)
@@ -168,6 +140,13 @@ namespace iba {
 						{
 							requiredChannels.erase(it);
 							channelsCopy.insert(cliext::pair<String^, IbaChannelReader^>(name,reader));
+						}
+
+						it = requiredInfoFields.find(name);
+						if (it != requiredInfoFields.end())
+						{
+							requiredInfoFields.erase(it);
+							channelsForInfo.insert(cliext::pair<String^, IbaChannelReader^>(name,reader));
 						}
 					}
 					String^ vecInfo = reader->QueryInfoByName("vector");
@@ -195,6 +174,34 @@ namespace iba {
 			for (cliext::map<int,cliext::map<int,IbaChannelReader^>^ >::iterator it = vectorChannelsCopy.begin(); it != vectorChannelsCopy.end(); it++)
 			{
 				if (it->second->size() == it->second->rbegin()->first+1) requiredVectors.erase(it->first);
+			}
+
+			if (!requiredInfoFields.empty()) //report error if an infofield (infochannel) is missing
+			{
+				for each (RohWriterDataLineInput^ dateLine in input->StichDaten)
+				{
+					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
+					{	
+						errorDataLineInput = dateLine;
+						return 1;
+					}
+				}
+				for each (RohWriterDataLineInput^ dateLine in input->KopfDaten)
+				{
+					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
+					{	
+						errorDataLineInput = dateLine;
+						return 2;
+					}
+				}
+				for each (RohWriterDataLineInput^ dateLine in input->SchlussDaten)
+				{
+					if (requiredInfoFields.find(dateLine->ibaName) != requiredInfoFields.end())
+					{	
+						errorDataLineInput = dateLine;
+						return 3;
+					}
+				}
 			}
 
 			if (!requiredChannels.empty() || !requiredVectors.empty())
@@ -262,7 +269,35 @@ namespace iba {
 				DWORD p1 = GetPosition();
 				for each (RohWriterDataLineInput^ line in input->StichDaten)
 				{
-					WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					if (infoFieldsCopy.find(line->ibaName) != infoFieldsCopy.end())
+						WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					else
+					{
+						try
+						{
+							float timebase, offset;
+							Object^ obj;
+							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
+								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
+							else
+								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							if (obj == nullptr) throw gcnew Exception("failed to query");
+							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
+						}
+						catch (Exception^)
+						{
+							try
+							{
+								CloseHandle (hFile);
+								hFile = INVALID_HANDLE_VALUE;
+							}
+							catch (...)
+							{
+							}
+							errorDataLineInput = line;
+							return 11;
+						}
+					}
 				}
 				DWORD p2 = GetPosition();
 				CompleteHeaderLine(StichDatenOffsetHeaderPos,p0,p2-p1);
@@ -281,7 +316,35 @@ namespace iba {
 				p1 = GetPosition();
 				for each (RohWriterDataLineInput^ line in input->KopfDaten)
 				{
-					WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					if (infoFieldsCopy.find(line->ibaName) != infoFieldsCopy.end())
+						WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					else
+					{
+						try
+						{
+							float timebase, offset;
+							Object^ obj;
+							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
+								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
+							else
+								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							if (obj == nullptr) throw gcnew Exception("failed to query");
+							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
+						}
+						catch (Exception^)
+						{
+							try
+							{
+								CloseHandle (hFile);
+								hFile = INVALID_HANDLE_VALUE;
+							}
+							catch (...)
+							{
+							}
+							errorDataLineInput = line;
+							return 12;
+						}
+					}
 				}
 				p2 = GetPosition();	
 				CompleteHeaderLine(KopfDatenOffsetHeaderPos,p0,p2-p1);
@@ -292,7 +355,35 @@ namespace iba {
 				p1 = GetPosition();
 				for each (RohWriterDataLineInput^ line in input->SchlussDaten)
 				{
-					WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					if (infoFieldsCopy.find(line->ibaName) != infoFieldsCopy.end())
+						WriteDataLine(line,infoFieldsCopy[line->ibaName],context);
+					else
+					{
+						try
+						{
+							float timebase, offset;
+							Object^ obj;
+							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
+								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
+							else
+								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							if (obj == nullptr) throw gcnew Exception("failed to query");
+							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
+						}
+						catch (Exception^)
+						{
+							try
+							{
+								CloseHandle (hFile);
+								hFile = INVALID_HANDLE_VALUE;
+							}
+							catch (...)
+							{
+							}
+							errorDataLineInput = line;
+							return 13;
+						}
+					}
 				}
 				p2 = GetPosition();	
 				CompleteHeaderLine(SchlussDatenOffsetHeaderPos,p0,p2-p1);
@@ -486,6 +577,8 @@ namespace iba {
 		return 0;
 	}
 
+
+
 	void RohWriter::SetErrorMessageFromHResult(HRESULT hr)
 	{
 		char err[256];
@@ -632,7 +725,7 @@ namespace iba {
 			case DataTypeEnum::I4: strncpy(buf+46,"I4    ",6); break;
 		}
 		for (int i = 52; i < 62; i++) buf[i] = ' ';
-		int valStrSize = min(100,strlen(valStr));
+		int valStrSize = min(100,strlen(valStr)); //should be 12
 		WriteASCIIIntInBuffer(buf+52,valStrSize);
 		WriteASCIIIntInBuffer(buf+57,1);
 		strncpy(buf+62,valStr,valStrSize);
@@ -640,6 +733,89 @@ namespace iba {
 		buf[63+valStrSize] = '\n';
 		Write(buf,valStrSize+64);
 	}
+
+	void RohWriter::WriteMultiDataLine(RohWriterDataLineInput^ line, array<float>^ values, marshal_context% context)
+	{
+		if (values->Length > 150)
+			 Array::Resize(values, 150);
+
+		String^ concatted = String::Empty;
+
+		for each(float tval in values)
+		{
+			String^ valStrTemp;
+
+			switch (line->dataType)
+			{
+			case DataTypeEnum::C: //what else to do?
+			case DataTypeEnum::T:
+			case DataTypeEnum::F:
+			case DataTypeEnum::F4:
+				valStrTemp = ((float) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
+				break;
+			case DataTypeEnum::F8:
+				valStrTemp = tval.ToString(System::Globalization::CultureInfo::InvariantCulture);
+				break;
+			case DataTypeEnum::I:
+			case DataTypeEnum::I4:
+				valStrTemp = ((Int32) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
+				break;
+			case DataTypeEnum::I2:
+				valStrTemp = ((Int16) tval).ToString(System::Globalization::CultureInfo::InvariantCulture);
+				break;
+			}
+			if (valStrTemp->Length < 12)
+			{
+				valStrTemp = valStrTemp + gcnew String(' ',12-valStrTemp->Length);
+			}
+			concatted += valStrTemp;
+		}
+
+		char buf[2048];
+		String^ tmp = line->Bezeichnung;
+		const char* varName = context.marshal_as<const char*>(tmp);
+		int nameSize = min(strlen(varName),30);
+		strncpy(buf,varName,nameSize);
+		for (int i = nameSize; i < 30; i++) buf[i] = ' ';
+		tmp = line->KurzBezeichnung;
+		const char* shortName = context.marshal_as<const char*>(tmp);
+		nameSize = min(strlen(shortName),8);
+		strncpy(buf+30,shortName,nameSize);
+		for (int i = 30+nameSize; i < 38; i++) buf[i] = ' ';
+		if (String::IsNullOrEmpty(line->Einheit))
+			strncpy(buf+38,"NULL    ",8);
+		else
+		{
+			tmp = line->Einheit;
+			const char* unit = context.marshal_as<const char*>(tmp);
+			nameSize = min(8,strlen(unit));
+			strncpy(buf+38,unit,nameSize);
+			for (int i = 38+nameSize; i < 46; i++) buf[i] = ' ';
+		}
+		switch (line->dataType)
+		{
+		case DataTypeEnum::T:
+		case DataTypeEnum::C: strncpy(buf+46,"C     ",6); break;
+		case DataTypeEnum::F: strncpy(buf+46,"F     ",6); break;
+		case DataTypeEnum::F4: strncpy(buf+46,"F4    ",6); break;
+		case DataTypeEnum::F8: strncpy(buf+46,"F8    ",6); break;
+		case DataTypeEnum::I: strncpy(buf+46,"I     ",6); break;
+		case DataTypeEnum::I2: strncpy(buf+46,"I2    ",6); break;
+		case DataTypeEnum::I4: strncpy(buf+46,"I4    ",6); break;
+		}
+		for (int i = 52; i < 62; i++) buf[i] = ' ';
+		int valStrSize = 12; //FORCED to 12
+		WriteASCIIIntInBuffer(buf+52,valStrSize);
+		valStrSize = concatted->Length;
+		WriteASCIIIntInBuffer(buf+57,values->Length);
+		const char* valStr;
+		valStr = context.marshal_as<const char*>(concatted);
+		strncpy(buf+62,valStr,valStrSize);
+		buf[62+valStrSize] = ' ';
+		buf[63+valStrSize] = '\n';
+		Write(buf,valStrSize+64);
+	}
+
 
 	void RohWriter::WriteTextBlock(String^ block, marshal_context% context)
 	{ //filter '/r/n' to '/n'
