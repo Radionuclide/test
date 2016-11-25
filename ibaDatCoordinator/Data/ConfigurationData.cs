@@ -517,6 +517,7 @@ namespace iba.Data
                         if(samples < 1.0e9)
                         {
                             tb = TimeSpan.FromTicks(tBase);
+                            break;
                         }
                     }
                     sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
