@@ -6,7 +6,7 @@ using namespace System;
 
 namespace iba {
 
-	public enum class DataTypeEnum {F,F4,F8,I,I2,I4,C,T};
+	public enum class DataTypeEnum {F,F4,F8,I,I2,I4,C,T,C2};
 
 	[Serializable]
 	public ref class RohWriterDataLineInput

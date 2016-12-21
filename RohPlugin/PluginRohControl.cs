@@ -97,6 +97,9 @@ namespace Alunorf_roh_plugin
                         case iba.DataTypeEnum.T:
                             grid.Rows[i].Cells[4].Value = "T";
                             break;
+                        case iba.DataTypeEnum.C2:
+                            grid.Rows[i].Cells[4].Value = "C2";
+                            break;
                     }
                 }
                 grid.Rows[count].Cells[0].Value = null;
@@ -140,6 +143,9 @@ namespace Alunorf_roh_plugin
                         break;
                     case iba.DataTypeEnum.T:
                         grid.Rows[i].Cells[4].Value = "T";
+                        break;
+                    case iba.DataTypeEnum.C2:
+                        grid.Rows[i].Cells[4].Value = "C2";
                         break;
                 }
                 grid.Rows[i].Cells[5].Value = dataset2[i].Faktor.ToString();
@@ -210,6 +216,8 @@ namespace Alunorf_roh_plugin
                         line.dataType = iba.DataTypeEnum.I4;
                     else if (datatyp == "T")
                         line.dataType = iba.DataTypeEnum.T;
+                    else if (datatyp == "C2")
+                        line.dataType = iba.DataTypeEnum.C2;
                     dataset[count2++] = line;
                 }
                 Array.Resize(ref dataset, count2);
@@ -259,6 +267,8 @@ namespace Alunorf_roh_plugin
                     line.dataType = iba.DataTypeEnum.I4;
                 else if (datatyp == "T")
                     line.dataType = iba.DataTypeEnum.T;
+                else if (datatyp == "C2")
+                    line.dataType = iba.DataTypeEnum.C2;
                 string factorstr = grid.Rows[i].Cells[5].Value as string;
                 if (factorstr == null || !Double.TryParse(factorstr.Trim(), out line.Faktor))
                     line.Faktor = 1.0;

@@ -198,7 +198,8 @@
             "I2",
             "I4",
             "C",
-            "T"});
+            "T",
+            "C2"});
             this.m_stichColumnDataType.MaxDropDownItems = 10;
             this.m_stichColumnDataType.Name = "m_stichColumnDataType";
             // 
@@ -299,7 +300,8 @@
             "I2",
             "I4",
             "C",
-            "T"});
+            "T",
+            "C2"});
             this.m_kopfColumnDataType.MaxDropDownItems = 10;
             this.m_kopfColumnDataType.Name = "m_kopfColumnDataType";
             // 
@@ -379,7 +381,8 @@
             "I2",
             "I4",
             "C",
-            "T"});
+            "T",
+            "C2"});
             this.m_schlussColumnDataType.MaxDropDownItems = 10;
             this.m_schlussColumnDataType.Name = "m_schlussColumnDataType";
             // 
@@ -506,7 +509,8 @@
             "I2",
             "I4",
             "C",
-            "T"});
+            "T",
+            "C2"});
             this.m_kanalColumnDataType.MaxDropDownItems = 10;
             this.m_kanalColumnDataType.Name = "m_kanalColumnDataType";
             // 

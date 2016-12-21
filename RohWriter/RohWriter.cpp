@@ -534,8 +534,9 @@ namespace iba {
 					Seek(p2);
 				}
 				p2 = GetPosition();
-				Seek(KanalbeschreibungOffsetHeaderPos+44);
-				WriteASCIIUIntInFile(maxSamples);
+				//been informed that maxSamples does not need to be written
+				//Seek(KanalbeschreibungOffsetHeaderPos+44);
+				//WriteASCIIUIntInFile(maxSamples);
 				CloseHandle (hFile);
 				hFile = INVALID_HANDLE_VALUE;
 			}
@@ -616,14 +617,14 @@ namespace iba {
 	DWORD RohWriter::WritePartialHeaderLine(const char* headerName, int nrElements)
 	{ //writes the headerline but without offset and blocksize //filled in later
 		DWORD offset = GetPosition();
-		char buf[51];
+		char buf[50];
 		int nameSize = strlen(headerName);
 		strncpy(buf,headerName,nameSize);
-		for (int i = nameSize; i < 49; i++) buf[i] = ' ';
+		for (int i = nameSize; i < 48; i++) buf[i] = ' ';
 		WriteASCIIIntInBuffer(buf+44,nrElements);
-		buf[49] = ';';
-		buf[50] = '\n';
-		Write(buf,51);
+		buf[48] = ';';
+		buf[49] = '\n';
+		Write(buf,50);
 		return offset;
 	}
 	
@@ -657,11 +658,20 @@ namespace iba {
 	void RohWriter::WriteDataLine(RohWriterDataLineInput^ line, String^ infostr, marshal_context% context)
 	{
 		const char* valStr;
-		if (line->dataType == DataTypeEnum::C || line->dataType == DataTypeEnum::T)
+		int nullCount = 0;
+		if (line->dataType == DataTypeEnum::C || line->dataType == DataTypeEnum::T || line->dataType == DataTypeEnum::C2)
 		{
 			String^ valStrTemp = infostr;
 			if (line->dataType == DataTypeEnum::T && valStrTemp->Length < 20)
 				valStrTemp = valStrTemp + gcnew String(' ',20-valStrTemp->Length);
+			else if  (line->dataType == DataTypeEnum::C2) 
+			{
+				while (!String::IsNullOrEmpty(valStrTemp) && valStrTemp->StartsWith("0"));
+				{
+					valStrTemp = valStrTemp->Substring(1);
+					nullCount++;
+				}
+			}
 			valStr = context.marshal_as<const char*>(valStrTemp);
 		}
 		else
@@ -716,6 +726,7 @@ namespace iba {
 		switch (line->dataType)
 		{
 			case DataTypeEnum::T:
+			case DataTypeEnum::C2:
 			case DataTypeEnum::C: strncpy(buf+46,"C     ",6); break;
 			case DataTypeEnum::F: strncpy(buf+46,"F     ",6); break;
 			case DataTypeEnum::F4: strncpy(buf+46,"F4    ",6); break;
@@ -725,10 +736,11 @@ namespace iba {
 			case DataTypeEnum::I4: strncpy(buf+46,"I4    ",6); break;
 		}
 		for (int i = 52; i < 62; i++) buf[i] = ' ';
-		int valStrSize = min(100,strlen(valStr)); //should be 12
+		int valStrSize = min(100,strlen(valStr))+nullCount; //should be 12
 		WriteASCIIIntInBuffer(buf+52,valStrSize);
 		WriteASCIIIntInBuffer(buf+57,1);
-		strncpy(buf+62,valStr,valStrSize);
+		strncpy(buf+62,valStr,valStrSize-nullCount);
+		if (nullCount) memset(buf+62+valStrSize-nullCount,0,nullCount);
 		buf[62+valStrSize] = ' ';
 		buf[63+valStrSize] = '\n';
 		Write(buf,valStrSize+64);
@@ -748,6 +760,7 @@ namespace iba {
 			switch (line->dataType)
 			{
 			case DataTypeEnum::C: //what else to do?
+			case DataTypeEnum::C2: //what else to do?
 			case DataTypeEnum::T:
 			case DataTypeEnum::F:
 			case DataTypeEnum::F4:
@@ -795,6 +808,7 @@ namespace iba {
 		switch (line->dataType)
 		{
 		case DataTypeEnum::T:
+		case DataTypeEnum::C2:
 		case DataTypeEnum::C: strncpy(buf+46,"C     ",6); break;
 		case DataTypeEnum::F: strncpy(buf+46,"F     ",6); break;
 		case DataTypeEnum::F4: strncpy(buf+46,"F4    ",6); break;
@@ -856,6 +870,7 @@ namespace iba {
 		switch (line->dataType)
 		{
 			case DataTypeEnum::T:  
+			case DataTypeEnum::C2: 
 			case DataTypeEnum::C: strncpy(buf+46,"C     ",6); dataSize = 1; break;
 			case DataTypeEnum::F: strncpy(buf+46,"F     ",6); dataSize = 4;break;
 			case DataTypeEnum::F4: strncpy(buf+46,"F4    ",6);dataSize = 4; break;
@@ -936,6 +951,7 @@ namespace iba {
 		{
 			case DataTypeEnum::T: return;
 			case DataTypeEnum::I2: //treat as byte
+			case DataTypeEnum::C2: 
 			case DataTypeEnum::C: 
 				*buffer = (char) value;
 				break;
@@ -968,6 +984,7 @@ namespace iba {
 				WriteMultiChannelData(nullptr,size,dataType);
 				return;
 			}
+			case DataTypeEnum::C2:
 			case DataTypeEnum::C: dataSize = 1; break;
 			case DataTypeEnum::F: dataSize = 4;break;
 			case DataTypeEnum::F4: dataSize = 4; break;
@@ -1013,6 +1030,8 @@ namespace iba {
 			int dataSize;
 			switch (dataType)
 			{
+				case DataTypeEnum::T:
+				case DataTypeEnum::C2:
 				case DataTypeEnum::C: dataSize = 1; break;
 				case DataTypeEnum::F: dataSize = 4;break;
 				case DataTypeEnum::F4: dataSize = 4; break;
