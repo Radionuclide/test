@@ -666,7 +666,7 @@ namespace iba {
 				valStrTemp = valStrTemp + gcnew String(' ',20-valStrTemp->Length);
 			else if  (line->dataType == DataTypeEnum::C2) 
 			{
-				while (!String::IsNullOrEmpty(valStrTemp) && valStrTemp->StartsWith("0"));
+				while (!String::IsNullOrEmpty(valStrTemp) && valStrTemp->StartsWith("0"))
 				{
 					valStrTemp = valStrTemp->Substring(1);
 					nullCount++;

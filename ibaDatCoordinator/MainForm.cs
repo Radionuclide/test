@@ -2596,6 +2596,7 @@ namespace iba
 
             // Retrieve the node that was dragged.
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+            if (draggedNode == null) return;
             if(targetNode == null)
             {
                 if(!(draggedNode.Tag is ConfigurationTreeItemData))
