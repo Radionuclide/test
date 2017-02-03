@@ -421,6 +421,47 @@ namespace iba
     }
     #endregion
 
+    #region SplitterTaskTreeItemData
+    public class SplitterTaskTreeItemData : TreeItemData
+    {
+        public SplitterTaskTreeItemData(IPropertyPaneManager propManager, SplitterTaskData pt)
+            : base(propManager)
+        {
+            m_st = pt;
+        }
+
+        public override string What
+        {
+            get { return "SplitterTask"; }
+        }
+
+        protected SplitterTaskData m_st;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_st;
+            }
+            set
+            {
+                m_st = value as SplitterTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["SplitterTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new SplitterTaskControl());
+                manager.PropertyPanes["SplitterTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region CleanupTaskTreeItemData
     public class CleanupTaskTreeItemData : TreeItemData
     {

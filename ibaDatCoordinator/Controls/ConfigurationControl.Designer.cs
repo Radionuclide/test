@@ -64,10 +64,11 @@ namespace iba.Controls
             this.m_newIfTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newUpdateDataTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newCleanupTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newSplitterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
-            this.m_newCleanupTaskButton = new System.Windows.Forms.ToolStripButton();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudNotifyTime)).BeginInit();
@@ -275,7 +276,8 @@ namespace iba.Controls
             this.m_newIfTaskButton,
             this.m_newUpdateDataTaskButton,
             this.m_newPauseTaskButton,
-            this.m_newCleanupTaskButton});
+            this.m_newCleanupTaskButton,
+            this.m_newSplitterTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -328,6 +330,20 @@ namespace iba.Controls
             this.m_newPauseTaskButton.Name = "m_newPauseTaskButton";
             this.m_newPauseTaskButton.Click += new System.EventHandler(this.m_newPauseTaskButton_Click);
             // 
+            // m_newCleanupTaskButton
+            // 
+            resources.ApplyResources(this.m_newCleanupTaskButton, "m_newCleanupTaskButton");
+            this.m_newCleanupTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newCleanupTaskButton.Name = "m_newCleanupTaskButton";
+            this.m_newCleanupTaskButton.Click += new System.EventHandler(this.m_newCleanupTaskButton_Click);
+            // 
+            // m_newSplitterTaskButton
+            // 
+            resources.ApplyResources(this.m_newSplitterTaskButton, "m_newSplitterTaskButton");
+            this.m_newSplitterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newSplitterTaskButton.Name = "m_newSplitterTaskButton";
+            this.m_newSplitterTaskButton.Click += new System.EventHandler(this.m_newSplitterTaskButton_Click);
+            // 
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
@@ -346,13 +362,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_nameTextBox, "m_nameTextBox");
             this.m_nameTextBox.Name = "m_nameTextBox";
             this.m_nameTextBox.TextChanged += new System.EventHandler(this.m_nameTextBox_TextChanged);
-            // 
-            // m_newCleanupTaskButton
-            // 
-            resources.ApplyResources(this.m_newCleanupTaskButton, "m_newCleanupTaskButton");
-            this.m_newCleanupTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.m_newCleanupTaskButton.Name = "m_newCleanupTaskButton";
-            this.m_newCleanupTaskButton.Click += new System.EventHandler(this.m_newCleanupTaskButton_Click);
             // 
             // ConfigurationControl
             // 
@@ -420,5 +429,6 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbSender;
         private System.Windows.Forms.Panel m_sourcePanel;
         private System.Windows.Forms.ToolStripButton m_newCleanupTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newSplitterTaskButton;
     }
 }

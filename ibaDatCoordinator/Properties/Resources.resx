@@ -1283,4 +1283,19 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="browseCleanProcessButton" xml:space="preserve">
     <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
   </data>
+  <data name="splitterTaskTitle" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="deleteSplitterTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Splitter options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewSplitterTaskTitle" xml:space="preserve">
+    <value>Add Splitter Task</value>
+  </data>
+  <data name="SplitDat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SplitDat.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splittertaskButton" xml:space="preserve">
+    <value>add new splitter task</value>
+  </data>
 </root>

@@ -149,6 +149,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SplitterTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SplitterTaskControl.Designer.cs">
+      <DependentUpon>SplitterTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomUNCTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -164,6 +170,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Data\SplitterTaskData.cs" />
     <Compile Include="Utility\CueProvider.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
     <Compile Include="Utility\TaskControl.cs" />
@@ -402,6 +409,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
+      <DependentUpon>SplitterTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\MonthlyTriggerSettingsControl.resx">
       <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -579,6 +590,7 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\SplitDat.ico" />
     <None Include="Resources\plus.bmp" />
     <None Include="Resources\minus.bmp" />
     <None Include="Resources\scheduled_configuration.ico" />

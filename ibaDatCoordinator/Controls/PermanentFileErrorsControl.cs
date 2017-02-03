@@ -38,7 +38,7 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons;
+        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons, m_splitIcons;
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
@@ -129,6 +129,16 @@ namespace iba.Controls
             m_pauseIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.pausetask));
             m_pauseIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.pausetask));
             m_pauseIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.pausetask));
+
+            m_splitIcons.Add(DatFileStatus.State.NOT_STARTED, blankBitmap);
+            m_splitIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle));
+            m_splitIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+            m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
 
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
@@ -315,6 +325,8 @@ namespace iba.Controls
                             bitmap = m_updateIcons[value];
                         else if (task is PauseTaskData)
                             bitmap = m_pauseIcons[value];
+                        else if (task is SplitterTaskData)
+                            bitmap = m_splitIcons[value];
                         else if (task is ICustomTaskData)
                         {
                             ICustomTaskData cust = (ICustomTaskData)task;

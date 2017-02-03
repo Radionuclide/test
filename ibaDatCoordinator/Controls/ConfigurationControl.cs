@@ -72,6 +72,7 @@ namespace iba.Controls
             m_newUpdateDataTaskButton.Image = iba.Properties.Resources.updatedatatask;
             m_newPauseTaskButton.Image = iba.Properties.Resources.pausetask;
             m_newCleanupTaskButton.Image = iba.Properties.Resources.broom;
+            m_newSplitterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -81,6 +82,7 @@ namespace iba.Controls
             m_newUpdateDataTaskButton.ToolTipText = iba.Properties.Resources.updatedatataskButton;
             m_newPauseTaskButton.ToolTipText = iba.Properties.Resources.pausetaskButton;
             m_newCleanupTaskButton.ToolTipText = iba.Properties.Resources.cleanuptaskButton;
+            m_newSplitterTaskButton.ToolTipText = iba.Properties.Resources.splittertaskButton;
 
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
@@ -461,18 +463,33 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
         }
-        
+
         private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
         {
             CleanupTaskData cleanup = new CleanupTaskData(m_data);
             new SetNextName(cleanup);
             m_data.Tasks.Add(cleanup);
-            if(m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(cleanup.Name, MainForm.CLEANUPTASK_INDEX, MainForm.CLEANUPTASK_INDEX);
             newNode.Tag = new CleanupTaskTreeItemData(m_manager, cleanup);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
-            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+        }
+
+        private void m_newSplitterTaskButton_Click(object sender, EventArgs e)
+        {
+            SplitterTaskData Splitter = new SplitterTaskData(m_data);
+            new SetNextName(Splitter);
+            m_data.Tasks.Add(Splitter);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(Splitter.Name, MainForm.SPLITTERTASK_INDEX, MainForm.SPLITTERTASK_INDEX);
+            newNode.Tag = new SplitterTaskTreeItemData(m_manager, Splitter);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             m_manager.LeftTree.SelectedNode = newNode;
         }
@@ -506,7 +523,6 @@ namespace iba.Controls
             new SetNextName(cust);
             m_data.Tasks.Add(cust);
  
-
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
             int index = PluginManager.Manager.PluginInfos.FindIndex(i => i.Name == info.Name);
