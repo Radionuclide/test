@@ -2969,6 +2969,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The evaluated expression did not have any rising edges, hence the .datfile can&apos;t be split..
+        /// </summary>
+        internal static string splitterWarningNoResults {
+            get {
+                return ResourceManager.GetString("splitterWarningNoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon standalone {

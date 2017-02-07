@@ -117,18 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_gbTarget.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="panelOut.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panelOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 14</value>
+  </data>
+  <data name="panelOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>644, 468</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panelOut.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Name" xml:space="preserve">
+    <value>panelOut</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Parent" xml:space="preserve">
+    <value>m_gbTarget</value>
+  </data>
+  <data name="&gt;&gt;panelOut.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_gbTarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 214</value>
+  </data>
+  <data name="m_gbTarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>666, 488</value>
+  </data>
+  <data name="m_gbTarget.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gbTarget.Text" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="&gt;&gt;m_gbTarget.Name" xml:space="preserve">
+    <value>m_gbTarget</value>
+  </data>
+  <data name="&gt;&gt;m_gbTarget.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.24.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gbTarget.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 95</value>
   </data>
@@ -367,7 +421,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -505,11 +559,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
-  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -682,7 +733,7 @@
     <value>5</value>
   </data>
   <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 708</value>
+    <value>0, 708</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 73</value>
@@ -704,57 +755,6 @@
   </data>
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="m_gbTarget.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="panelOut.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="panelOut.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 14</value>
-  </data>
-  <data name="panelOut.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 468</value>
-  </data>
-  <data name="panelOut.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;panelOut.Name" xml:space="preserve">
-    <value>panelOut</value>
-  </data>
-  <data name="&gt;&gt;panelOut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelOut.Parent" xml:space="preserve">
-    <value>m_gbTarget</value>
-  </data>
-  <data name="&gt;&gt;panelOut.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_gbTarget.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 214</value>
-  </data>
-  <data name="m_gbTarget.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 488</value>
-  </data>
-  <data name="m_gbTarget.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_gbTarget.Text" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="&gt;&gt;m_gbTarget.Name" xml:space="preserve">
-    <value>m_gbTarget</value>
-  </data>
-  <data name="&gt;&gt;m_gbTarget.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.24.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_gbTarget.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -29,6 +29,9 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplitterTaskControl));
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
+            this.panelOut = new System.Windows.Forms.Panel();
             this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.m_splitTypeCBox = new System.Windows.Forms.ComboBox();
@@ -43,7 +46,6 @@ namespace iba.Controls
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browseDatFileButton = new System.Windows.Forms.Button();
-            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -51,15 +53,25 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
-            this.panelOut = new System.Windows.Forms.Panel();
+            this.m_gbTarget.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
-            this.m_gbTarget.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // m_gbTarget
+            // 
+            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
+            this.m_gbTarget.Controls.Add(this.panelOut);
+            this.m_gbTarget.Name = "m_gbTarget";
+            this.m_gbTarget.TabStop = false;
+            // 
+            // panelOut
+            // 
+            resources.ApplyResources(this.panelOut, "panelOut");
+            this.panelOut.Name = "panelOut";
             // 
             // groupBox2
             // 
@@ -83,6 +95,7 @@ namespace iba.Controls
             // m_splitTypeCBox
             // 
             resources.ApplyResources(this.m_splitTypeCBox, "m_splitTypeCBox");
+            this.m_splitTypeCBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_splitTypeCBox.FormattingEnabled = true;
             this.m_splitTypeCBox.Items.AddRange(new object[] {
             resources.GetString("m_splitTypeCBox.Items"),
@@ -236,28 +249,17 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
-            // m_gbTarget
-            // 
-            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
-            this.m_gbTarget.Controls.Add(this.panelOut);
-            this.m_gbTarget.Name = "m_gbTarget";
-            this.m_gbTarget.TabStop = false;
-            // 
-            // panelOut
-            // 
-            resources.ApplyResources(this.panelOut, "panelOut");
-            this.panelOut.Name = "panelOut";
-            // 
             // SplitterTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_gbTarget);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.m_gbTarget);
             this.Controls.Add(this.m_monitorGroup);
-            this.MinimumSize = new System.Drawing.Size(0, 296);
+            this.MinimumSize = new System.Drawing.Size(0, 784);
             this.Name = "SplitterTaskControl";
+            this.m_gbTarget.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -266,7 +268,6 @@ namespace iba.Controls
             this.m_monitorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).EndInit();
-            this.m_gbTarget.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

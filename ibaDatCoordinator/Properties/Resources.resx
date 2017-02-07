@@ -1298,4 +1298,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="splittertaskButton" xml:space="preserve">
     <value>add new splitter task</value>
   </data>
+  <data name="splitterWarningNoResults" xml:space="preserve">
+    <value>The evaluated expression did not have any rising edges, hence the .datfile can't be split.</value>
+  </data>
 </root>

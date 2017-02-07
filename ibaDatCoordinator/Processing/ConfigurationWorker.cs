@@ -2970,9 +2970,6 @@ namespace iba.Processing
             }
         }
 
-
-
-
         internal string[] m_outPutFilesPrevTask;
 
         void Extract(string filename, ExtractData task)
