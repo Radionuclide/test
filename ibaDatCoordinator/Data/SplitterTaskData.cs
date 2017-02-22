@@ -33,7 +33,7 @@ namespace iba.Data
         {
             m_name = iba.Properties.Resources.splitterTaskTitle;
             m_monitorData = new MonitorData();
-            m_triggerType = TriggerTypeEnum.RISINGTORISING;
+            m_edgeConditionType = EdgeConditionTypeEnum.RISINGTORISING;
             m_testDatFile = m_expression = String.Empty;
         }
 
@@ -41,12 +41,12 @@ namespace iba.Data
         {
         }
 
-        public enum TriggerTypeEnum { RISINGTORISING, RISINGTOFALLING }
-        private TriggerTypeEnum m_triggerType;
-        public TriggerTypeEnum TriggerType
+        public enum EdgeConditionTypeEnum { RISINGTORISING, RISINGTOFALLING }
+        private EdgeConditionTypeEnum m_edgeConditionType;
+        public EdgeConditionTypeEnum EdgeConditionType
         {
-            get { return m_triggerType; }
-            set { m_triggerType = value; }
+            get { return m_edgeConditionType; }
+            set { m_edgeConditionType = value; }
         }
 
         public override TaskData CloneInternal()
@@ -56,7 +56,7 @@ namespace iba.Data
             std.m_testDatFile = m_testDatFile;
             std.m_expression = m_expression;
             std.m_monitorData = (MonitorData) m_monitorData.Clone();
-            std.m_triggerType = m_triggerType;
+            std.m_edgeConditionType = m_edgeConditionType;
             return std;
         }
 
@@ -69,7 +69,7 @@ namespace iba.Data
                 other.m_pdoFile == m_pdoFile &&
                 other.m_testDatFile == m_testDatFile &&
                 other.m_expression == m_expression &&
-                other.m_triggerType == m_triggerType &&
+                other.m_edgeConditionType == m_edgeConditionType &&
                 other.m_monitorData.IsSame(m_monitorData);
         }
     }

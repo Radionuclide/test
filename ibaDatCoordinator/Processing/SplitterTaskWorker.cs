@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using iba.Data;
+using ibaFilesLiteLib;
+using System.IO;
 
 namespace iba.Processing
 {
-    class SplitterTaskWorker
+    interface SplitterTaskProgress
+    {
+        void Update(string message, int progress);
+        bool Aborted
+        {
+            get;
+        }
+    }
+
+
+    public class SplitterTaskWorker
     {
         public SplitterTaskWorker(SplitterTaskData data)
         {
@@ -26,7 +38,7 @@ namespace iba.Processing
         private SplitterTaskData m_task;
         private StatusData m_sd;
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
-
+        private List<double> points;
 
         private void LogError(Logging.Level level, string message, string filename)
         {
@@ -40,9 +52,89 @@ namespace iba.Processing
             }
         }
 
+        private DateTime? m_startTime;
 
-        public List<double> GetPoints(string filename)
+        public DateTime GetStartTime()
         {
+            bool deleteIt = false;
+            if (!m_startTime.HasValue)
+            {
+                try
+                {
+                    if (m_ibaAnalyzer == null)
+                    {
+                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                        deleteIt = true;
+                    }
+                    DateTime dt = new DateTime();
+                    int microsec = 0;
+                    using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_task.MonitorData))
+                    {
+                        m_ibaAnalyzer.GetStartTime(ref dt, ref microsec);
+                        dt.AddTicks(microsec * 10);
+                    }
+                    m_startTime = dt;
+                }
+                finally
+                {
+                    if (deleteIt)
+                    {
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                        m_ibaAnalyzer = null;
+                    }
+                }
+            }
+            return m_startTime.Value;
+        }
+
+        private List<string> generatedFiles;
+        public List<string> GeneratedFiles
+        {
+            get { return generatedFiles; }
+            set { generatedFiles = value; }
+        }
+
+        public void Split(string fileName = null, string outputFolder = null, SplitterTaskProgress progress =null)
+        {
+            if (string.IsNullOrEmpty(fileName)) fileName = m_task.TestDatFile;
+            if (string.IsNullOrEmpty(outputFolder)) outputFolder = m_task.DestinationMapUNC;
+            if (points == null)
+                GetPoints(fileName);
+            if (points == null) return; //failed and logged
+            generatedFiles = new List<String>();
+            IbaFileSplitter splitter = null;
+            try
+            {
+                string fileNameWithoutPath = Path.GetFileName(fileName);
+                splitter = new IbaFileSplitterClass();
+                splitter.Open(fileName);
+                int size = points.Count / 2;
+                for (int i = 0; i < size; i++)
+                {
+                    string newFile = Path.Combine(outputFolder,GetName(i, fileNameWithoutPath));
+                    if (progress != null)
+                    {
+                        if (progress.Aborted) break;
+                        progress.Update(newFile, (int)(100.0 * i / size));
+                    }
+                    splitter.Split(newFile, points[2 * i], points[2 * i + 1]);
+                    generatedFiles.Add(newFile);
+                }
+                splitter.Close();
+            }
+            catch (Exception ex)
+            {
+                LogError(Logging.Level.Exception, ex.Message, fileName);
+            }
+            finally
+            {
+                if (splitter != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(splitter);
+            }
+        }
+
+        public List<double> GetPoints(string filename = null)
+        {
+            if (filename==null) filename = m_task.TestDatFile;
             try
             {
                 List<double> result = new List<double>();
@@ -52,20 +144,31 @@ namespace iba.Processing
                 }
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_task.MonitorData))
                 {
-                    if (m_task.AnalysisFile != null)
+                    m_ibaAnalyzer.OpenDataFile(0, filename);
+                    GetStartTime();
+                    if (!string.IsNullOrEmpty(m_task.AnalysisFile))
                         mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
-
+                    if (m_task.EdgeConditionType == SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING)
+                        result.Add(0.0);
                     for (int i = 0; true;i++)
                     {
                         String expression;
-                        if (m_task.TriggerType == SplitterTaskData.TriggerTypeEnum.RISINGTORISING)
+                        if (m_task.EdgeConditionType == SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING)
                         {
                             expression = string.Format("XFirst({0},{1})", m_task.Expression, i);
                             double res = double.NaN;
                             mon.Execute(delegate() { res = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
                             if (double.IsNaN(res) || res < 0 || res > 1.0e35)
+                            {
+                                expression = string.Format("XSize({0})", m_task.Expression);
+                                res = double.NaN;
+                                mon.Execute(delegate() { res = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
+                                result.Add(res);
                                 break;
+                            }
+                            else if (res == 0.0f) continue; //is initial point
                             result.Add(res);
+                            result.Add(res); //twice
                         }
                         else
                         {
@@ -90,40 +193,66 @@ namespace iba.Processing
                             }
                             else break;
                         }
-
                     }
+                    m_ibaAnalyzer.CloseAnalysis();
+                    m_ibaAnalyzer.CloseDataFile(0);
                 }
-                if (result.Count == 0)
+                if (result.Count < 2)
                 {
                     LogError(Logging.Level.Warning,iba.Properties.Resources.splitterWarningNoResults,filename);
                     return null;
                 }
-                return result;
+                return points=result;
             }
             catch (IbaAnalyzerExceedingTimeLimitException te)
             {
                 LogError(Logging.Level.Exception, te.Message, filename);
-                lock (m_sd.DatFileStates)
+                if (m_sd != null)
                 {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.TIMED_OUT;
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.TIMED_OUT;
+                    }
                 }
                 if (m_confWorker != null) m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
                 LogError(Logging.Level.Exception, me.Message, filename);
-                lock (m_sd.DatFileStates)
+                if (m_sd != null)
                 {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                    }
                 }
-                m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
+                if (m_confWorker != null) m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (Exception ex)
             {
-                LogError(Logging.Level.Exception, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage(), filename);
-                lock (m_sd.DatFileStates)
+                if (m_confWorker != null)
                 {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    LogError(Logging.Level.Exception, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage(), filename);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                }
+                else
+                {
+                    string error = iba.Properties.Resources.IbaAnalyzerUndeterminedError;
+                    if (m_ibaAnalyzer != null)
+                    {
+                        try
+                        {
+                            error = m_ibaAnalyzer.GetLastError();
+                        }
+                        catch
+                        {
+                            error = iba.Properties.Resources.IbaAnalyzerUndeterminedError;
+                        }
+                    }
+                    LogError(Logging.Level.Exception, ex.Message + "   " + error, filename);
                 }
             }
             finally
@@ -150,9 +279,14 @@ namespace iba.Processing
                     {
                     }
                 }
+                m_ibaAnalyzer = null;
             }
             return null;
         }
 
+        public string GetName(int i, string p)
+        {
+            return p.Replace(".", "_" + i.ToString() + ".");
+        }
     }
 }

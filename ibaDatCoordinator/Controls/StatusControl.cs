@@ -141,7 +141,6 @@ namespace iba.Controls
             m_splitIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
             m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
 
-
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
                 IntPtr handle = PluginManager.Manager.PluginInfos[i].Icon.Handle;
@@ -154,7 +153,6 @@ namespace iba.Controls
                 m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(handle)));
                 m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(handle)));
             }
-
 
             m_taskTexts.Add(DatFileStatus.State.NOT_STARTED, String.Empty);
             m_taskTexts.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.Running);

@@ -76,6 +76,9 @@ namespace iba.Controls
             {
                 m_monitorGroup.Enabled = false;
             }
+
+            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+            File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         public void SaveData()

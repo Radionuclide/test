@@ -11,6 +11,7 @@ using System.Diagnostics;
 using iba.Utility;
 using iba.Data;
 using iba.Processing;
+using iba.Dialogs;
 using Microsoft.Win32;
 
 namespace iba.Controls
@@ -42,7 +43,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as SplitterTaskData;
             m_expressionTextBox.Text = m_data.Expression;
-            m_splitTypeCBox.SelectedIndex = (int)m_data.TriggerType;
+            m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
@@ -66,6 +67,9 @@ namespace iba.Controls
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
+
+            m_uncControl.SetData(m_data);
+
             try
             {
                 m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
@@ -74,6 +78,9 @@ namespace iba.Controls
             {
                 m_monitorGroup.Enabled = false;
             }
+
+            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         public void SaveData()
@@ -81,12 +88,17 @@ namespace iba.Controls
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.Expression = m_expressionTextBox.Text;
-            m_data.TriggerType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.TriggerTypeEnum.RISINGTOFALLING : SplitterTaskData.TriggerTypeEnum.RISINGTORISING;
+            m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
+            
+            m_uncControl.SaveData();
+            m_data.UpdateUNC();
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
             m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
+
+
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
@@ -137,53 +149,9 @@ namespace iba.Controls
 
         private void m_testButton_Click(object sender, EventArgs e)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
-            //register this
-            using (new Utility.WaitCursor())
-            {
-                //start the com object
-                try
-                {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
-                }
-                catch (Exception ex2)
-                {
-                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
-            float f = 0;
-            try
-            {
-                using (new Utility.WaitCursor())
-                {
-                    if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
-                    ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
-                    f = ibaAnalyzer.Evaluate(m_expressionTextBox.Text, m_splitTypeCBox.SelectedIndex);
-                    this.ParentForm.Activate();
-                }
-            }
-            catch (Exception ex3)
-            {
-                MessageBox.Show(ex3.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (ibaAnalyzer != null && bUseAnalysis)
-                {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
-                }
-            }
-            if (float.IsNaN(f) || float.IsInfinity(f))
-                MessageBox.Show(iba.Properties.Resources.IfTestBadEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else if (f >= 0.5)
-                MessageBox.Show(iba.Properties.Resources.IfTestPositiveEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            else
-                MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SaveData();
+            TestSplitterTaskDialog dlg = new TestSplitterTaskDialog(m_data);
+            dlg.ShowDialog();
         }
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)

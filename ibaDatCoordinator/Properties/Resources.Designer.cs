@@ -247,6 +247,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string CancelStr {
+            get {
+                return ResourceManager.GetString("CancelStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         internal static string ChangeStr {
@@ -2947,6 +2956,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("SplitDat", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate split .dat files....
+        /// </summary>
+        internal static string SplitDialogTestButtonTooltipText {
+            get {
+                return ResourceManager.GetString("SplitDialogTestButtonTooltipText", resourceCulture);
             }
         }
         

@@ -164,6 +164,12 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
+      <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processing\GlobalCleanupManager.cs" />
     <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -433,6 +439,9 @@
     <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
+      <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

@@ -1301,4 +1301,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="splitterWarningNoResults" xml:space="preserve">
     <value>The evaluated expression did not have any rising edges, hence the .datfile can't be split.</value>
   </data>
+  <data name="CancelStr" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SplitDialogTestButtonTooltipText" xml:space="preserve">
+    <value>Generate split .dat files...</value>
+  </data>
 </root>
