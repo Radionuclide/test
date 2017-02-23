@@ -8,7 +8,7 @@ using System.IO;
 
 namespace iba.Processing
 {
-    interface SplitterTaskProgress
+    public interface SplitterTaskProgress
     {
         void Update(string message, int progress);
         bool Aborted
@@ -26,7 +26,7 @@ namespace iba.Processing
             //rest zero
         }
 
-        public SplitterTaskWorker(ConfigurationWorker worker, SplitterTaskData task)
+        SplitterTaskWorker(ConfigurationWorker worker, SplitterTaskData task)
         {
             m_confWorker = worker;
             m_task = task;

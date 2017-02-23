@@ -356,8 +356,7 @@ namespace iba.Processing
                                         }
                                         else
                                         {
-                                            UpdateDataTaskData ud = task as UpdateDataTaskData;
-                                            if (ud != null)
+                                            if (task is UpdateDataTaskData || task is SplitterTaskData)
                                             {
                                                 pair.Value.ResetTask(task, ".dat");
                                             }
@@ -408,7 +407,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || 
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
@@ -2676,6 +2675,11 @@ namespace iba.Processing
                 IfTask(DatFile, task as IfTaskData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
             }
+            else if (task is SplitterTaskData)
+            {
+                SplitTask(DatFile, task as SplitterTaskData);
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+            }
             else if (task is UpdateDataTaskData)
             {
                 UpdateDataTask(DatFile, task as UpdateDataTaskData);
@@ -2758,6 +2762,8 @@ namespace iba.Processing
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;
         }
+
+
 
         internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)
         {
@@ -3468,6 +3474,12 @@ namespace iba.Processing
                     }
                 }
             }
+        }
+
+        private void SplitTask(string DatFile, SplitterTaskData splitTaskData)
+        {
+            //DO implementation here !
+            throw new NotImplementedException();
         }
 
         internal void CleanupDirsMultipleOutputFiles(string filename, TaskDataUNC task, string extension)
@@ -4459,7 +4471,7 @@ namespace iba.Processing
                             ext = new FileInfo(DatFile).Extension;
                     }
                 }
-                else if (task is UpdateDataTaskData)
+                else if (task is UpdateDataTaskData || task is SplitterTaskData)
                 {
                     ext = ".dat";
                 }

@@ -101,6 +101,8 @@ namespace iba.Dialogs
             m_toolTip.SetToolTip(m_btPerform, Properties.Resources.CancelStr);
             m_browseFolderButton.Enabled = false;
             m_targetFolderTextBox.Enabled = false;
+            m_lblProgress.Visible = true;
+            m_progressBar.Visible = true;
             backgroundWorker1.RunWorkerAsync();
         }
 
@@ -129,6 +131,7 @@ namespace iba.Dialogs
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             m_stw.Split(null, m_targetFolderTextBox.Text,this);
+            System.Threading.Thread.Sleep(1000);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
