@@ -63,8 +63,6 @@ namespace iba.Dialogs
         }
 
         private Image m_btPerformImage;
-        private string m_performString;
-        private string m_cancelString;
 
         private void m_btOK_Click(object sender, EventArgs e)
         {

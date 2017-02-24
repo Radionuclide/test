@@ -54,6 +54,7 @@ namespace iba.Controls
             m_conditionIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_updateIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_splitIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
 

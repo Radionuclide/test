@@ -3476,10 +3476,96 @@ namespace iba.Processing
             }
         }
 
-        private void SplitTask(string DatFile, SplitterTaskData splitTaskData)
+        private void SplitTask(string filename, SplitterTaskData task)
         {
-            //DO implementation here !
-            throw new NotImplementedException();
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+            if (task.UsesQuota)
+            {
+                CleanupWithQuota(filename, task, ".dat"); 
+            }
+
+            string dir = task.DestinationMapUNC;
+            try
+            {
+                dir = GetOutputDirectoryName(filename, task);
+                if (dir == null) return;
+                if (!Directory.Exists(dir))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    catch
+                    {
+                        bool failed = true;
+                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        {
+                            failed = false;
+                            if (!Directory.Exists(dir))
+                            {
+                                try
+                                {
+                                    Directory.CreateDirectory(dir);
+                                }
+                                catch
+                                {
+                                    failed = true;
+                                }
+                            }
+                        }
+                        if (failed)
+                        {
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+                    }
+                    //new directory created, do directory cleanup if that is the setting
+                    if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                        task.DoDirCleanupNow = true;
+                }
+                if (task.DoDirCleanupNow)
+                {
+                    try
+                    {
+                        CleanupDirs(filename, task, ".dat");
+                    }
+                    catch
+                    {
+                    }
+                    task.DoDirCleanupNow = false;
+                }
+            }
+            catch (Exception ex) //sort of unexpected error;
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(task.AnalysisFile) && !File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            SplitterTaskWorker worker = new SplitterTaskWorker(this, task);
+            List<double> points = worker.GetPoints(filename);
+            if (points != null) worker.Split(filename, dir);
         }
 
         internal void CleanupDirsMultipleOutputFiles(string filename, TaskDataUNC task, string extension)

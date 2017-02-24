@@ -18,7 +18,7 @@ namespace iba.Processing
     }
 
 
-    public class SplitterTaskWorker
+    class SplitterTaskWorker
     {
         public SplitterTaskWorker(SplitterTaskData data)
         {
@@ -26,7 +26,7 @@ namespace iba.Processing
             //rest zero
         }
 
-        SplitterTaskWorker(ConfigurationWorker worker, SplitterTaskData task)
+        public SplitterTaskWorker(ConfigurationWorker worker, SplitterTaskData task)
         {
             m_confWorker = worker;
             m_task = task;
