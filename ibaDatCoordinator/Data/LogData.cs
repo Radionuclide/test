@@ -619,14 +619,18 @@ namespace iba.Data
                 }
                 VersionLine = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + " " + logWhat;
                 fileLogger.DailyString = VersionLine + "\r\n";
-                WindowsEventLogger eventLogger = Logger.CreateWindowsEventLogger("ibaDatCoordinator");
-                eventLogger.EventFormatter = new iba.Logging.EventFormatters.PatternEventFormatter("{msg}\t{data}");
-                eventLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
-                eventLogger.IsBufferingEnabled = false;
-                eventLogger.IsContextEnabled = true;
-                eventLogger.Level = Level.Info;
-
-                m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger, eventLogger);
+                if(Utility.DataPath.IsAdmin)
+                {
+                    WindowsEventLogger eventLogger = Logger.CreateWindowsEventLogger("ibaDatCoordinator");
+                    eventLogger.EventFormatter = new iba.Logging.EventFormatters.PatternEventFormatter("{msg}\t{data}");
+                    eventLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
+                    eventLogger.IsBufferingEnabled = false;
+                    eventLogger.IsContextEnabled = true;
+                    eventLogger.Level = Level.Info;
+                    m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger, eventLogger);
+                }
+                else //no admin, no event logger
+                    m_data.Logger = Logger.CreateCompositeLogger(gvLogger, fileLogger);
             }
             else
             {
