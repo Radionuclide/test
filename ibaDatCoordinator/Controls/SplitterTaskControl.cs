@@ -151,7 +151,8 @@ namespace iba.Controls
         {
             SaveData();
             TestSplitterTaskDialog dlg = new TestSplitterTaskDialog(m_data);
-            dlg.ShowDialog();
+            if (!dlg.IsDisposed)
+                dlg.ShowDialog();
         }
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)

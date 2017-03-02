@@ -163,7 +163,7 @@ namespace iba.Processing
                                 expression = string.Format("XSize({0})", m_task.Expression);
                                 res = double.NaN;
                                 mon.Execute(delegate() { res = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
-                                result.Add(res);
+                                if (!double.IsNaN(res))result.Add(res);
                                 break;
                             }
                             else if (res == 0.0f) continue; //is initial point

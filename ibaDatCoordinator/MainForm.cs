@@ -995,6 +995,7 @@ namespace iba
                 m_configTreeView.Nodes.Remove(node);
                 m_configTreeView.SelectedNode = nextNode;
                 UpdateTreePositions();
+                UpdateButtons();
             }
             else if (node.Tag is NewConfigurationTreeItemDataBase)
             {
