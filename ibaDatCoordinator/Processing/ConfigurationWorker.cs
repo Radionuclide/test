@@ -3221,7 +3221,7 @@ namespace iba.Processing
                                     }
                                 }
                             }
-                            if(failed)
+                            if (failed)
                             {
                                 Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
                                 lock(m_sd.DatFileStates)
@@ -3387,7 +3387,6 @@ namespace iba.Processing
                                     }
                                     catch
                                     {
-
                                     }
                                 }
                             }
@@ -4353,7 +4352,6 @@ namespace iba.Processing
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
             }
-
         }
 
 

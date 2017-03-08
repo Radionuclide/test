@@ -123,7 +123,7 @@ namespace iba.Dialogs
 
         public bool Aborted
         {
-            get { return m_bAborted;  }
+            get { return m_bAborted; }
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
