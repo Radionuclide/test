@@ -28,12 +28,12 @@ namespace iba.Processing
                 string [] nrs = version.Substring(startindex, stopindex-startindex).Split('.');
                 if (nrs.Length < 3) return;
                 int major;
-                if (!Int32.TryParse(nrs[0],out major)) return;
+                if (!Int32.TryParse(nrs[0], out major)) return;
                 int minor;
-                if (!Int32.TryParse(nrs[1],out minor)) return;
+                if (!Int32.TryParse(nrs[1], out minor)) return;
                 int bugfix;
-                if (!Int32.TryParse(nrs[2],out bugfix)) return;
-                if (major < 5 || (major==5&&minor<8) || (major==5&&minor==8 && bugfix < 1)) return;
+                if (!Int32.TryParse(nrs[2], out bugfix)) return;
+                if (major < 5 || (major==5 && minor<8) || (major==5 && minor==8 && bugfix < 1)) return;
 
                 m_process = Process.GetProcessById(analyzer.GetProcessID());
                 if (m_process == null) return;

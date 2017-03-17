@@ -1730,6 +1730,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Splitter task started.
+        /// </summary>
+        internal static string logSplitStarted {
+            get {
+                return ResourceManager.GetString("logSplitStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splitter task succesfully compled.
+        /// </summary>
+        internal static string logSplitSuccess {
+            get {
+                return ResourceManager.GetString("logSplitSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No license found for this task. Contact iba for licensing information..
         /// </summary>
         internal static string logTaskNotLicensed {

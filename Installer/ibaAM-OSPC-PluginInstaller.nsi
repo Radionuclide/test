@@ -65,7 +65,7 @@ ${StrLoc}
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "ibaAM-OPSPC-PluginInstaller_v${PRODUCT_VERSION}.exe"
+OutFile "ibaAM-OSPC-PluginInstaller_v${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator\plugins"
 ShowInstDetails show
 BrandingText "iba AG"

@@ -1307,6 +1307,12 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="SplitDialogTestButtonTooltipText" xml:space="preserve">
     <value>Generate split .dat files...</value>
   </data>
+  <data name="logSplitStarted" xml:space="preserve">
+    <value>Splitter task started</value>
+  </data>
+  <data name="logSplitSuccess" xml:space="preserve">
+    <value>Splitter task succesfully compled</value>
+  </data>
   <data name="logCleanupSkippedNonIbaDatFile" xml:space="preserve">
     <value>File cleanup: Skipped non iba .dat file  '{0}'</value>
   </data>
