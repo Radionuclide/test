@@ -1135,6 +1135,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File cleanup: Skipped non iba .dat file  &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCleanupSkippedNonIbaDatFile {
+            get {
+                return ResourceManager.GetString("logCleanupSkippedNonIbaDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File cleanup: Succesfully removed empty directory &apos;{0}&apos;.
         /// </summary>
         internal static string logCleanupSuccessRemoveEmptyDirectory {

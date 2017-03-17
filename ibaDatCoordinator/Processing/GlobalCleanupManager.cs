@@ -140,15 +140,14 @@ namespace iba.Processing
             taskData.QuotaFree = (uint)((drive.TotalSize / 1024 / 1024) * (data.PercentageFree / 100.0));
             taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
 
-            var quota = new FileQuotaCleanup(taskData, ".dat", ct);
-            quota.FastSearch = true;
+            var globalQuota = new FileQuotaGlobalCleanup(taskData, ".dat", ct);
 
             bool cancelled = ct.IsCancellationRequested;
             while (!cancelled)
             {
                 var sw = Stopwatch.StartNew();
                 Log(Logging.Level.Info, Resources.logGlobalCleanupStartCleanup, taskData.DestinationMapUNC, taskData);
-                quota.Init();
+                globalQuota.Init();
                 sw.Stop();
                 Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupDetermineSizeFinished, sw.ElapsedMilliseconds / 1000.0), taskData.DestinationMapUNC, taskData);
 
@@ -156,7 +155,7 @@ namespace iba.Processing
                     return;
 
                 sw.Restart();
-                quota.Clean("Cleanup");
+                globalQuota.Clean("Cleanup");
                 sw.Stop();
                 Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupFinished, sw.ElapsedMilliseconds / 1000.0), taskData.DestinationMapUNC, taskData);
 

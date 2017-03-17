@@ -170,6 +170,7 @@
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
     <Compile Include="Processing\GlobalCleanupManager.cs" />
     <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
