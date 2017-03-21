@@ -2193,6 +2193,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        internal static string NotConnected {
+            get {
+                return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ibaDatCoordinator notification.
         /// </summary>
         internal static string NotificationEmailSubject {
@@ -2830,6 +2839,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Second.
         /// </summary>
         internal static string Second {
@@ -3153,6 +3171,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string StopStr {
+            get {
+                return ResourceManager.GetString("StopStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to successfully completed.
         /// </summary>
         internal static string Success {
@@ -3253,6 +3280,16 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("tomanytimestried", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Toolbars16 {
+            get {
+                object obj = ResourceManager.GetObject("Toolbars16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -617,7 +617,7 @@ namespace iba.Data
                     case ApplicationState.CLIENTSTANDALONE: logWhat = "(standalone)"; break;
                     case ApplicationState.SERVICE: logWhat = "(service)"; break;
                 }
-                VersionLine = "ibaDatCoordinator v" + DatCoVersion.GetClientVersion() + " " + logWhat;
+                VersionLine = "ibaDatCoordinator v" + DatCoVersion.GetVersion() + " " + logWhat;
                 fileLogger.DailyString = VersionLine + "\r\n";
                 if(Utility.DataPath.IsAdmin)
                 {

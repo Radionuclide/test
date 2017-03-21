@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -36,11 +37,18 @@ namespace iba
 {
     public class DatCoVersion
     {
-        public static string GetClientVersion()
+        //this build, version of the client should be same as the service (update ibaDatCoordinatorServer.AssemblyInfo
+        public static string GetVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
             ver = ver + " BETA2";
             return ver;
+        }
+
+        public static int MinimumClientVersion()
+        {
+            Version v = typeof(iba.MainForm).Assembly.GetName().Version;
+            return ((v.Major * 1000) + v.Minor) * 1000 + v.Revision;
         }
     }
 }

@@ -146,6 +146,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GradientWaitingBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ImageComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SplitterTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,6 +166,9 @@
     </Compile>
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ServerSelectionForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
       <SubType>Form</SubType>
@@ -176,7 +185,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Data\SplitterTaskData.cs" />
+    <Compile Include="Utility\ControlExtensions.cs" />
     <Compile Include="Utility\CueProvider.cs" />
+    <Compile Include="Utility\DatcoServerDefaults.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
@@ -414,6 +425,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -437,6 +449,9 @@
     <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ServerSelectionForm.resx">
+      <DependentUpon>ServerSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
@@ -473,6 +488,7 @@
     <Compile Include="Utility\TextBoxEllipsis.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utility\UdpRendezVous.cs" />
     <Compile Include="Utility\VersionCheck.cs" />
     <Compile Include="Utility\WindowsAPI.cs" />
     <Compile Include="TreeItemData.cs" />
@@ -600,6 +616,7 @@
     <Content Include="DevExpress.XtraGrid.v16.1.dll" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\Toolbars16.bmp" />
     <None Include="Resources\SplitDat.ico" />
     <None Include="Resources\plus.bmp" />
     <None Include="Resources\minus.bmp" />
