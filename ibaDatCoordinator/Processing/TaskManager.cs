@@ -800,7 +800,7 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Count;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Count;

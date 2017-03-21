@@ -43,7 +43,7 @@ namespace iba.Controls
             m_hdStorePicker.SelectedServer = "localhost";
             m_hdStorePicker.SelectedStore = "";
             m_hdStorePicker.SelectedStores = new string[0];
-            m_hdStorePicker.AllowedStoreType = HdStoreType.Time /*| HdStoreType.Length*/;
+            m_hdStorePicker.StoreTypeFilter = HdStoreType.Time /*| HdStoreType.Length*/;
             m_hdStorePicker.HideConfigureButton();
             m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
 
