@@ -50,6 +50,7 @@
 !include "sections.nsh"
 !include "StrFunc.nsh"
 !include "Include\InstallHistory.nsh"
+!include "Include\installcrt.nsh"
 
 !include WordFunc.nsh
 !insertmacro VersionCompare
@@ -227,7 +228,6 @@ FunctionEnd
 ;          don't support translated error messages
 
 Function PreInstall
-  !insertmacro WriteToInstallHistory "Installing ${PRODUCT_NAME} v${PRODUCT_VERSION} (Command line: $CMDLINE)"
   Call CheckRequirements
   Call CheckPreviousVersions
 
@@ -237,7 +237,7 @@ Function PreInstall
   ${Else}
     StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
   ${EndIf}
-      
+
 FunctionEnd
 
 Function InstalltypeSelect
@@ -363,11 +363,17 @@ FunctionEnd
 ; Uninstall previous version section
 
 Section -PreInstall
+  !insertmacro WriteToInstallHistory "Installing ${PRODUCT_NAME} v${PRODUCT_VERSION} (Command line: $CMDLINE)"
+
   ${If} $PrevUninstall != ""
     ;Uninstall previous version
     DetailPrint $(TEXT_PREV_UNINSTALLING)
     nsExec::Exec $PrevUninstall
   ${EndIf}
+  
+  ;Install VC++ 2015 runtime
+  !insertmacro InstallCRT14_x86
+  
 SectionEnd
 
 Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
@@ -391,10 +397,12 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
-  File "..\Dependencies\DevExpress.XtraEditors.v6.3.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v6.3.dll"
-  File "..\Dependencies\DevExpress.Data.v6.3.dll"
-  File "..\Dependencies\DevExpress.Utils.v6.3.dll"
+  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
+  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
+  File "..\Dependencies\DevExpress.Data.v16.1.dll"
+  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
+  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
+  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
@@ -456,10 +464,12 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
-  File "..\Dependencies\DevExpress.XtraEditors.v6.3.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v6.3.dll"
-  File "..\Dependencies\DevExpress.Data.v6.3.dll"
-  File "..\Dependencies\DevExpress.Utils.v6.3.dll"
+  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
+  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
+  File "..\Dependencies\DevExpress.Data.v16.1.dll"
+  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
+  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
+  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
@@ -613,10 +623,13 @@ Function un.UninstallTasks
   Delete "$INSTDIR\hdClient.dll"
   Delete "$INSTDIR\hdClientInterfaces.dll"
   Delete "$INSTDIR\hdCommon.dll"
-  Delete "$INSTDIR\DevExpress.XtraEditors.v6.3.dll"
-  Delete "$INSTDIR\DevExpress.XtraGrid.v6.3.dll"
-  Delete "$INSTDIR\DevExpress.Data.v6.3.dll"
-  Delete "$INSTDIR\DevExpress.Utils.v6.3.dll"
+  
+  Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
+  Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
+  Delete "$INSTDIR\DevExpress.Data.v16.1.dll"
+  Delete "$INSTDIR\DevExpress.Utils.v16.1.dll"
+  Delete "$INSTDIR\DevExpress.Sparkline.v16.1.Core.dll"
+  Delete "$INSTDIR\DevExpress.Printing.v16.1.Core.dll"
   
   Delete "$INSTDIR\Interop.ibaFilesLiteLib.dll"
   Delete "$INSTDIR\ICSharpCode.TextEditor.dll"
