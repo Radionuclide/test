@@ -3561,10 +3561,14 @@ namespace iba.Processing
                 }
                 return;
             }
-
+            Log(Logging.Level.Info, iba.Properties.Resources.logSplitStarted, filename, task);
             SplitterTaskWorker worker = new SplitterTaskWorker(this, task);
             List<double> points = worker.GetPoints(filename);
-            if (points != null) worker.Split(filename, dir);
+            if (points != null)
+            {
+               if (worker.Split(filename, dir))
+                   Log(Logging.Level.Info, iba.Properties.Resources.logSplitSuccess, filename, task);
+            }
         }
 
         internal void CleanupDirsMultipleOutputFiles(string filename, TaskDataUNC task, string extension)

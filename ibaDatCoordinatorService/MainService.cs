@@ -77,7 +77,7 @@ namespace iba.Services
                 BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
                 IDictionary props = new Hashtable();
                 props["port"] = Program.ServicePortNr;
-                props["machineName"] = "localhost";
+                //props["machineName"] = "localhost";
                 TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(localChannel, false);
                 RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));

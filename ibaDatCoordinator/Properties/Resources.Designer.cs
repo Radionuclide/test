@@ -1135,6 +1135,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File cleanup: Skipped non iba .dat file  &apos;{0}&apos;.
+        /// </summary>
+        internal static string logCleanupSkippedNonIbaDatFile {
+            get {
+                return ResourceManager.GetString("logCleanupSkippedNonIbaDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File cleanup: Succesfully removed empty directory &apos;{0}&apos;.
         /// </summary>
         internal static string logCleanupSuccessRemoveEmptyDirectory {
@@ -1717,6 +1726,24 @@ namespace iba.Properties {
         internal static string logServiceStopped {
             get {
                 return ResourceManager.GetString("logServiceStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splitter task started.
+        /// </summary>
+        internal static string logSplitStarted {
+            get {
+                return ResourceManager.GetString("logSplitStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splitter task succesfully compled.
+        /// </summary>
+        internal static string logSplitSuccess {
+            get {
+                return ResourceManager.GetString("logSplitSuccess", resourceCulture);
             }
         }
         

@@ -52,6 +52,7 @@ namespace iba.Data
         public override TaskData CloneInternal()
         {
             SplitterTaskData std = new SplitterTaskData(null);
+            CopyUNCData(std);
             std.m_pdoFile = m_pdoFile;
             std.m_testDatFile = m_testDatFile;
             std.m_expression = m_expression;

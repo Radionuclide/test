@@ -98,8 +98,6 @@ namespace iba.Controls
             m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
 
-
-
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }

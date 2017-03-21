@@ -1,814 +1,1092 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>                                                                                                               
-<style type="text/css">                                                                                            
-   body			{background-color: white; font-family: Tahoma, Helvetica, Arial; font-size: 13px}
-  .title		{color: navy; font-size: 26px; font-weight: bold}
-  .header1		{color: white; background-color: #315BA9; font-size: 16px; font-weight: bold; margin: 0px; padding: 2px}
-  .header2		{color: black; font-size: 14px; font-weight: bold}
-  .warning      {color: red; font-size: 14px; font-weight: bold}
-  .btn_selected	{cursor: pointer; cursor: hand; color: white; background-color: #00AA00; font-size: 20px; font-weight: bold; padding: 4px}
-  .btn_normal	{cursor: pointer; cursor: hand; color: white; background-color: #006600; font-size: 20px; font-weight: bold; padding: 4px}
-  .btn_over		{cursor: pointer; cursor: hand; color: white; background-color: #008800; font-size: 20px; font-weight: bold; padding: 4px}
-  .box			{border-style:solid; border-width: 1; border-color: black; margin-bottom: 20px; padding: 5px}
-  #comp th		{background-color: #5082BE; color: white; font-size: 16px}
-  #comp th.head	{background-color: #315BA9}
-  #comp td		{background-color: #DCF0F0; font-size: 13px}
-  #comp td.empty{background-color: white; height:4px}
-  #comp td.sep  {background-color: white; height:20px}                                                  
-  li.highlight {color: red; font-size: 14px; font-weight: bold}                                                       
-</style>                                                                                                             
-<TITLE>ibaDatCoordinator Version History</TITLE>                                                                           
+	<TITLE>ibaDatCoordinator Version History</TITLE>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<style type="text/css">
+		 body				{background-color: white; font-family: Tahoma, Helvetica, Arial; font-size: 13px}
+		 table      {width: 100%}
+		 .title			{color: navy; font-size: 26px; font-weight: bold}
+		.header1		{color: white; background-color: #315BA9; font-size: 16px; font-weight: bold; margin: 0px; padding: 2px}
+		.header2		{color: black; font-size: 14px; font-weight: bold}
+		.warning      {color: red; font-size: 14px; font-weight: bold}
+		.btn_selected	{cursor: pointer; cursor: pointer; color: white; background-color: #00AA00; font-size: 20px; font-weight: bold; padding: 4px}
+		.btn_normal	{cursor: pointer; cursor: pointer; color: white; background-color: #006600; font-size: 20px; font-weight: bold; padding: 4px}
+		.btn_over		{cursor: pointer; cursor: pointer; color: white; background-color: #008800; font-size: 20px; font-weight: bold; padding: 4px}
+		.box				{border-style:solid; border-width: 1px; border-color: black; margin-bottom: 20px; padding: 5px}
+		#comp	table {padding: 1px;  margin: 1px; }
+		#comp th		{background-color: #5082BE; color: white; font-size: 16px}
+		#comp th.head	{background-color: #315BA9}
+		#comp td		{background-color: #DCF0F0; font-size: 13px}
+		#comp td.empty{background-color: white; height:4px}
+		#comp td.sep	{background-color: white; height:20px}
+	</style>                                                                         
 </HEAD>    
 
-<body>
-<P class="title">ibaDatCoordinator</P>
-<p>&nbsp; </p>
-<P class="btn_selected">Files</P>
-<OL>
-  <LI>ibaDatCoordinatorInstall_v1.24.0.exe : installation program (Setup Wizard) for the ibaDatCoordinator</LI>
-  <LI>versions_dat.htm: this file</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="btn_selected">Installation</P>
-<p>Have ibaAnalyzer installed and registered as a COM-component, the version of ibaAnalyzer should be at least 5.0 
-To enable conditional tasks, the ibaAnalyzer version should be at least 5.4. 
-To enable monitoring ibaAnalyzer for memory use and duration, the ibaAnalyzer version should be at least 5.8.2 <BR>
-Significantly less resources will be used if the ibaAnalyzer version is at least 6.3.1 or later.<BR>
-Execute ibaDatCoordinatorInstall_v1.24.0.exe and follow instructions.</p>
-<p>&nbsp; </p>
-<P class="btn_selected">Version history</P>
-<p>&nbsp; </p>
-<P class="header1">Version 1.24.0 - 20/10/2016</P>
-<p class="warning">Windows XP and Windows 2003 Server are no longer supported</p>
-<P class="header2">Bugfixes (B)</P>
-<OL>
-	<LI>Under certain circumstances, pressing the start or stop button caused an unhandled exception if no job was selected in the job tree.</LI>
-	<LI>Crashed after certain updates of the .NET framework were installed.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.23.3 - 15/02/2016</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Windows 10 supported.</LI>
-	<LI>Help file available.</LI>
-	<LI>Ability to browse for a single .dat file, clean the 'already processed' marking from it if necessary and process or reprocess the .dat file.</LI>
-	<LI>ibaDongleViewer v1.5.5</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.23.2 - 07/12/2015</P>
-<P class="header2">Bugfixes (B)</P>
-<OL>
-	<LI>Added ibaDongleViewer v1.5.3 to setup to avoid false positives from antivirus packages</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.23.1 - 04/09/2015</P>
-<P class="header2">Bugfixes (B)</P>
-<OL>
-	<LI>Layout problems with the batchfile task.</LI>
-	<LI>Layout problems with the ROH plugin.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.23.0 - 24/07/2015</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>For the scheduled jobs, the trigger range can now be specified relative to the last trigger. 
-	This allows for example querying for a month, that was previously not possible because months can have a variable number of days.</LI>
-	<LI>New cleanup task.</LI>
-	<LI>The error rescan can be disabled.</LI>
-	<li>ibaDongleViewer is part of the installer.</li>
-</OL>
-<P class="header2">Bugfixes (B)</P>
-<OL>
-	<LI>Updated dongle library to prevent incorrect missing dongle errors when multiple iba products try to access the dongle at once.</LI>
-	<LI>Scheduled jobs, the one time option was not working, even if the date was in the future. The job was stopped before any tasks were performed.</LI>
+<body onload="SetVisible('btn_hist')">
+	<div class="box">
+		<table>
+			<tr><th colspan="2"><div class="title" onclick="ShowRedmineLinks()">ibaDatCoordinator</div></th></tr>
+			<tr><td height="20px" /></tr>
+			<tr>
+				<th width="50%"><div id="btn_hist" class="btn_normal" onmouseover="SetMouseOver('btn_hist')" onmouseout="SetMouseOut('btn_hist')" onclick="SetVisible('btn_hist')">Version history</div></th>
+				<th width="50%"><div id="btn_comp" class="btn_normal" onmouseover="SetMouseOver('btn_comp')" onmouseout="SetMouseOut('btn_comp')" onclick="SetVisible('btn_comp')">Version compatibility</div></th>
+			</tr>
+		</table>
+	</div>
 
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.22.3 - 19/03/2015</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Ability to transfer ibaAnalyzer settings (preferences, macros, filters) to the service account.</LI>
-	<LI>In the ibaDatCoodinator client, it is possible to set a different TCP port number to communicate with the service. This is useful in the case the standard port number (8800) is already in use.</LI>
-</OL>
-<P class="header2">Improvements (I)</P>
-<OL>
-	<LI>Update data task modified so processed entries are ignored entirely rather than giving an error, this allows for .dat files with the same file name</LI>
-	<LI>Copy task working on the output of a previous task will now also copy the ".cfg"-file of an extract task performing an extract to the COMTRADE file format.</LI>
-	<LI>In the scheduled job configuration pane, weekdays are now shown in the order as determined by the current UI culture.</LI>
-	<LI>When clearing "permanently failed" files, ibaDatCoordinator will now immediately reprocess them rather than waiting until the next rescan cycle.</LI>
-	<LI>Windows Distributed File System network shares are now supported.</LI>
-</OL>
-<P class="header2">Bugfixes (B)</P>
-<OL>
-	<LI>The option to scan subfolders for .dat files was partially hidden underneath other controls when running ibaDatCoordinator in French.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.22.2 - 15/10/2014</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Option to create output folders from the start time in the .dat file, requires ibaAnalyzer 6.5.0</LI>
+	<div id="comp">
+		<div class="box">
+			<table>
+				<tr><th class="head" colspan="3">Current version</th></tr>
+				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-</OL>
-<P class="header2">Bug fixes (B)</P>
+				<tr><th rowspan="10">v1.25.0</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.6 is supported also</td></tr>
+				<tr><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64)</td><td></td></tr>
+				<tr><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
 
-<OL>
-	<LI>Creating the support file caused ibaDatCoordinator to hang on Windows 2003 when done for a second time.</LI>
-	<LI>For small error scan cycles and disk scan cycles, it might happen than a .dat file for which a task failed did not get reprocessed.</LI>
-	<LI>Cleanup for output producing tasks did not work anymore if the output directory was a network share.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.22.1 - 19/09/2014</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI>ibaDatCoordinator did not scan or rescan for .dat files if it was selected to ignore subfolders.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.22.0 - 26/08/2014</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Switched to version 4.0 of the .NET framework</LI>
-	<LI>Scheduled jobs</LI>
-	<LI>More options for output folders (recursive, full date format)</LI>
-	<LI>Global cleanup</LI>
-	<LI>Installer: option to select a different user than the system account.</LI>
-</OL>
+				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
+				<tr><td>ibaSinecH1 v1.0</td><td></td></tr>
+				<tr><td>ibaRoh v1.5</td><td></td></tr>
+				<tr><td>ibaAM-OSPC v1.0</td><td></td></tr>
+				<tr><td>ibaDatmanagerDBSync v1.0.3</td><td></td></tr>
+				<tr><td>ibaDatawyzer-ICC v1.17.1</td><td></td></tr>
+				<tr><td>ibaTksXml v1.3.2</td><td></td></tr>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.21.2 - 11/06/2014</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI>No sanity checks were performed when using infofields for subdirectories or output file names, illegal characters are now replaced by underscores.</LI>
-	<LI>Watchdog did not work on Windows 7 or later</LI>
-	<LI>License checking, timer to recheck was unreasonably long.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.21.1 - 18/02/2014</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Installer adapted to allow windows 8.1 or windows server 2012 as operating system</LI>
-	<LI>When licensed tasks are encountered for which temporarily there is no license, ibaDatCoordinator resumes when the license is available again rather than halting the job.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.21.0 - 04/12/2013</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Ability to limit the number of instances of ibaAnalyzer that are started. The jobs wait for an ibaAnalyzer to become available.</LI>
-	<LI>Button to optimize the windows registry settings for use with ibaDatCoordinator.</LI>
-	<LI>Logging is now also written to the windows event log.</LI>
-</OL>
-<P class="header2">Improvement (I)</P>
-<OL>
-	<LI>The ibaAnalyzer instances are now shared between jobs. As a consequence any ibaAnalyzer settings are now moved from the 'job' pane to the 'settings' pane.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.20.0 - 03/10/2013</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Ability to indicate that a task is resource intensive and the ability to limit the number of resource intensive tasks that are ran simultaneously.</LI>
-	<LI>Runs ibaAnalyzer (version 6.3.1 or later) in a mode that requires less resources.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.5 - 17/06/2013</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Windows 8 and Windows Server 2012 supported.</LI>
-	<LI>Installer modified so silent install is supported.</LI>
-</OL>
+				<tr><td class="sep" /></tr>
+				<tr><th class="head" colspan="3">History</th></tr>
+				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.4 - 23/05/2013</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>When checking paths with the 'thumbs up' button, it is now additionally tested if there is write access in the folder.</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI>Bug fixes (B) to the plugin interface extensions.</LI>
-	<LI>Readme.htm was misplaced in the case of standalone install.</LI>
-	<LI>Some files were not erased on uninstall in the case of standalone install.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.3 - 25/03/2013</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI>Plugin interfaces extended.</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>Restoring network access to the source directory might under some circumstances not work if one only has the cyclic rescan and not the immediate file scan option on.</LI>
-    <LI>Error messages when creating a network share connection that are to long were replaced by 'unknown error'.</LI>
-    <LI>The functionality that ibaDatCoordinator ignores files with the 'offline' attribute (set by ibaPDA to indicate he is still busy writing) was broken.</LI>
-    <LI>In the French localisation of ibaDatCoordinator the login textboxes overlapped the 'check subdirectories' checkbox.</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.2 - 09/11/2012</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>Makes use of new licensing library.
-    </LI>
-    <LI>Makes use of ibaFiles 6.0.1
-    </LI>
-    <LI>.dat files kept unaccessible by for instance keeping them open in ibaAnalyzer are reported every hour in the logging.
-    </LI>
-</OL>
+				<tr><th rowspan="1">v1.24.0</th><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64) and Windows 2012 Server R2 (x64)</td><td>Windows XP (x86) and Windows 2003 Server (x86) are no longer supported</td></tr>
+				<tr><td class="empty" /></tr>
 
+				<tr><th rowspan="4">v1.23.0 <br />and before</th><td>Windows XP (x86), Windows 2003 Server (x86), Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64) and Windows 2012 Server R2 (x64)</td><td>64 bit versions only supported on Windows 7 and above</td></tr>
+				<tr><td>ibaAnalyzer v5.8.2</td><td>Required for monitoring ibaAnalyzer for memory use and duration</td></tr>
+				<tr><td>ibaAnalyzer v5.4</td><td>Required for conditional tasks</td></tr>
+				<tr><td>ibaAnalyzer v5.0</td><td></td></tr>
+			</table>
+		</div>
+	</div>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.1 - 21/09/2012</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI>Ability to filter blanks from infofield values used for subdirectory or output file name.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> ibaDatCoordinator could not process QDR I files.
-    </LI>
-    <LI> The standalone version of the ibaDatCoordinator refused to run when multiple users where logged in to the system.
-    </LI>
-    <LI> If the target directory of an output producing task was not available at job start, ibaDatCoordinator did not recover when the target directory eventually became available.
-    </LI>
-    <LI> Typo in the German translation	for the "Use infofield for subdirectory" feature.
-    </LI>
-    <LI> Notifications did not work on succesful move or delete task.
-    </LI>
-    <LI> Link to the logging folder in the startup menu was incorrect under XP for standalone install.
-    </LI>
-    <LI> Cleanup strategies based on a quota failed when the target network folders were unavailable while tallying the files, ibaDatCoordinator did not recover when the target directory eventually became available.
-    </LI>
-    <LI> When a task that requires ibaAnalyzer was halted because it exceeded a specified time or memory limit, subsequent tasks failed as well because ibaAnalyzer was not correctly reset.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.19.0 - 13/07/2012</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI> Subdirectories are created when using an extract task to iba .dat file with external videos (ibaAnalyzer 5.22.7 feature)
-    </LI>
-    <LI> A time interval can now be specified for which the user will not be asked to reconfirm his password if the password hasn't changed.
-    </LI>
-    <LI> A sender e-mail adress can now be specified for notification e-mails.
-    </LI>
-    <LI> When using ibaAnalyzer 5.22.7 or more recent, a warning will be generated in the logging for an extract task that has a different target file type than the target file type specified in the analysis.
-    </LI>
-    <LI> For extract, report and copy tasks, it is possible to specify an infofield that will be used to generate the target subdirectory.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> Having the Copy-task work on the output of the previous task did not work anymore.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.18.1 - 22/03/2012</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Ability to test a script on client side. This is useful for debugging the script since interaction with desktop is possible.
-    </LI>
-    <LI> When testing scripts they do not longer block the GUI thread.
-    </LI>
-    <LI> When testing scripts, ability to abort the execution of the script.
-    </LI>
-    <LI> When stopping jobs, any running script tasks will be aborted.
-    </LI>
-    <LI> Logging messages in the Logging pane can be filtered, either only errors, errors and warnings or all messages can be shown.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.18.0 - 24/02/2012</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI> For extract, report and copy tasks, it is possible to specify an infofield that will be used to generate the name of the output file.
-    </LI>
-    <LI> 'Undo changes button' in the job. If the changes haven't been applied yet, pressing this button will undo all changes to the job and its tasks.
-    </LI>
-</OL>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Deleting jobs requires providing the password when a password is set.
-    </LI>
-    <LI> Before changing or clearing the password, the old password needs to be provided again.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.6 - 07/02/2012</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> Password wasn't communicated to the service correctly, hence it was lost when the client was closed.
-    </LI>
-    <LI> Setting wether or not the service should autostart on boot wasn't possible when run under windows 7 with UAC enabled.
-    </LI>
-	<LI> On windows 7 a crash occured when trying to manipulate the buttons in the navigator pane.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.5 - 02/02/2012</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Included version 5.0.0 of ibaFilesLite.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> Possibility to alter the modification date of output files didn't work.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.4 - 27/01/2012</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI> Password protection.
-    </LI>
-    <LI> Save files for iba support option.
-    </LI>
-    <LI> Support for TDMS extract, i.e. provide correct cleanup.
-    </LI>
-    <LI> Possibility to alter the modification date of output files (e.g. extract to file task, the extracted file) to match the date of the source .dat files.
-    </LI>
-</OL>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Enabled starting and stopping the service when run under windows 7 with UAC enabled.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> Issue with reconnecting to the source directory.
-    </LI>
-    <LI> When running standalone or as a service under a non administrator account under windows 7, ibaDatCoordinator tried to place the logfiles were it did not have access to.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.3 - 07/10/2011</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> Timing issues fixed.
-    </LI>
-    <LI> Scrolling issues fixed, some tasks did not show their scroll bar soon enough, making the lower part of the control not accessable.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.2 - 18/05/2011</P>
-<P class="header2">Enhancement</P>
-<OL>
-    <LI> The ASCII watchdog message is now sent with a separator character (ASCII 0) at the end.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.1 - 11/05/2011</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> The 'one time job' had difficulty with readonly files and folders.
-    </LI>
-    <LI> The 'one time job' did not properly close the .dat files after checking with ibaFiles if they were ready to be processed.
-    </LI>
-	<LI> IbaDatCoordinator did not work anymore with .NET 2.0 without service packs.
-    </LI>
-</OL>
+	<div id="hist">
+		<div class="box">
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.17.0 - 22/04/2011</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI> Addition of the 'one time job', a simplified version of the regular job to process .dat files one time only.
-    </LI>
-    <LI> New cleanup strategy option added to all output generating tasks. Select 'Minimal free disk space' to keep a minimum amount of space free on the disk by removing older files.
-	If the task is conditional to the execution of the previous task, the cleanup will be performed whether or not the task itself is executed.
-    </LI>
-    <LI> Possibility to specify multiple recipients in the E-mail notifications, you can specify the multiple recipients in the same recipient field by separating them by a semi-column (';').
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.16.0 - 19/11/2010</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> For a report task where the output type is 'html' or 'htm', ibaDatCoordinator wil create an additional subdirectory in the output directory and place the report there.
-	This is necessary because otherwise the images in the generated html (.jpg files) get overwritten by subsequent reports.
-	The additional directory will have the same name as the .dat file without its extention.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.15.0 - 12/10/2010</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  You now get a warning when trying to refresh or delete .dat files, you then have the option to cancel the operation.
-    </LI>
-    <LI>  You are no longer allowed to specify the ibaAnalyzer that will be used for the extract, conditional and report tasks, the default registered ibaAnalyzer is used. 
-	As a convenience you do have however the option to browse for an ibaAnalyzer and register it in the settings tab.
-    </LI>
-	<LI>  When the .dat directory that a job is supposed to monitor is missing, this no longer causes the job to stop. 
-	Instead the job will periodically check if the directory is created in the mean time and recommence processing .dat files as soon as the directory is created and .dat files start to arrive.
-    </LI>
-	<LI>  A couple of typos in the German dialogs fixed.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  Certain types of invalid paths caused ibaDatCoordinator to throw an uncatched exception when pressing the "Test Path" button.
-    </LI>
-    <LI>  Deleting and refreshing .dat files was done on the client side instead of the server side. This caused problems if the system user and client user didn't have the same privileges.
-    </LI>
-    <LI>  Occasionally when processing a large amount of files arriving very fast, the ibaDatCoordinator service crashed.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.10 - 5/08/2010</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  ibaDatCoorditator is modified to not process files that have the 'offline' attribute. This attribute is set by ibaPDA to indicate that it is still busy with the .dat file.
-    </LI>
-	<LI>  Installer adapted so ibaDatCoordinator installs under windows 7
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  Spurious debug log message removed.
-    </LI>
-    <LI>  When logging in simultaneously as a different user (for example through remote login) a new client was started causing all sorts of problems.
-    </LI>
-	<LI>  "New"-button in the batch file editing control did not work anymore
-    </LI>
-</OL>
+			<P class="header1">Version 1.25.0 - 21/03/2017</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>New splitter task. Splits a .dat files in several smaller .dat files prescribed by a digital expression and optional analysis.</LI>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>GlobalCleanup will delete only iba .dat files. #10528</LI>
+			</OL>
+			<p>&nbsp; </p>
+			
+			<P class="header1">Version 1.24.0 - 20/10/2016</P>
+			<p class="warning">Windows XP and Windows 2003 Server are no longer supported</p>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<LI>Under certain circumstances, pressing the start or stop button caused an unhandled exception if no job was selected in the job tree.</LI>
+				<LI>Crashed after certain updates of the .NET framework were installed.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			
+			<P class="header1">Version 1.23.3 - 15/02/2016</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Windows 10 supported.</LI>
+				<LI>Help file available.</LI>
+				<LI>Ability to browse for a single .dat file, clean the 'already processed' marking from it if necessary and process or reprocess the .dat file.</LI>
+				<LI>ibaDongleViewer v1.5.5</LI>
+			</OL>
+			<p>&nbsp; </p>
+			
+			<P class="header1">Version 1.23.2 - 07/12/2015</P>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<LI>Added ibaDongleViewer v1.5.3 to setup to avoid false positives from antivirus packages</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.23.1 - 04/09/2015</P>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<LI>Layout problems with the batchfile task.</LI>
+				<LI>Layout problems with the ROH plugin.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.23.0 - 24/07/2015</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					For the scheduled jobs, the trigger range can now be specified relative to the last trigger.
+					This allows for example querying for a month, that was previously not possible because months can have a variable number of days.
+				</LI>
+				<LI>New cleanup task.</LI>
+				<LI>The error rescan can be disabled.</LI>
+				<li>ibaDongleViewer is part of the installer.</li>
+			</OL>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<LI>Updated dongle library to prevent incorrect missing dongle errors when multiple iba products try to access the dongle at once.</LI>
+				<LI>Scheduled jobs, the one time option was not working, even if the date was in the future. The job was stopped before any tasks were performed.</LI>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.9 - 18/03/2010</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  The job or status tree has been made resizable.
-    </LI>
-    <LI>  Limit of the copy task increased to 10 Terra bytes.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  Variety of problems when selecting for directory structure to keep the original structure and the original source directory was a root folder.
-    </LI>
-    <LI>  When browsing for the ibaAnalyzer executable, the nonsensical text "OpenFileDialog1" was suggested for the filename.
-    </LI>
-    <LI>  Under certain circumstances, the "permanent errors" tab gave an exception when shown.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.8 - 28/01/2010</P>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  Modified check if the .dat file is still being processed by ibaPDA.
-    </LI>
-    <LI>  Updated to new version of ibaFiles (4.0.8), the previous version had a bug with OpenFileForUpdate function.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.6 - 27/01/2010</P>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  Slightly modified logging and error handling.
-    </LI>
-</OL>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.22.3 - 19/03/2015</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Ability to transfer ibaAnalyzer settings (preferences, macros, filters) to the service account.</LI>
+				<LI>In the ibaDatCoodinator client, it is possible to set a different TCP port number to communicate with the service. This is useful in the case the standard port number (8800) is already in use.</LI>
+			</OL>
+			<P class="header2">Improvements (I)</P>
+			<OL>
+				<LI>Update data task modified so processed entries are ignored entirely rather than giving an error, this allows for .dat files with the same file name</LI>
+				<LI>Copy task working on the output of a previous task will now also copy the ".cfg"-file of an extract task performing an extract to the COMTRADE file format.</LI>
+				<LI>In the scheduled job configuration pane, weekdays are now shown in the order as determined by the current UI culture.</LI>
+				<LI>When clearing "permanently failed" files, ibaDatCoordinator will now immediately reprocess them rather than waiting until the next rescan cycle.</LI>
+				<LI>Windows Distributed File System network shares are now supported.</LI>
+			</OL>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<LI>The option to scan subfolders for .dat files was partially hidden underneath other controls when running ibaDatCoordinator in French.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.22.2 - 15/10/2014</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Option to create output folders from the start time in the .dat file, requires ibaAnalyzer 6.5.0</LI>
+
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+
+			<OL>
+				<LI>Creating the support file caused ibaDatCoordinator to hang on Windows 2003 when done for a second time.</LI>
+				<LI>For small error scan cycles and disk scan cycles, it might happen than a .dat file for which a task failed did not get reprocessed.</LI>
+				<LI>Cleanup for output producing tasks did not work anymore if the output directory was a network share.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.22.1 - 19/09/2014</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>ibaDatCoordinator did not scan or rescan for .dat files if it was selected to ignore subfolders.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.22.0 - 26/08/2014</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Switched to version 4.0 of the .NET framework</LI>
+				<LI>Scheduled jobs</LI>
+				<LI>More options for output folders (recursive, full date format)</LI>
+				<LI>Global cleanup</LI>
+				<LI>Installer: option to select a different user than the system account.</LI>
+			</OL>
+
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.21.2 - 11/06/2014</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>No sanity checks were performed when using infofields for subdirectories or output file names, illegal characters are now replaced by underscores.</LI>
+				<LI>Watchdog did not work on Windows 7 or later</LI>
+				<LI>License checking, timer to recheck was unreasonably long.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.21.1 - 18/02/2014</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Installer adapted to allow windows 8.1 or windows server 2012 as operating system</LI>
+				<LI>When licensed tasks are encountered for which temporarily there is no license, ibaDatCoordinator resumes when the license is available again rather than halting the job.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.21.0 - 04/12/2013</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Ability to limit the number of instances of ibaAnalyzer that are started. The jobs wait for an ibaAnalyzer to become available.</LI>
+				<LI>Button to optimize the windows registry settings for use with ibaDatCoordinator.</LI>
+				<LI>Logging is now also written to the windows event log.</LI>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>The ibaAnalyzer instances are now shared between jobs. As a consequence any ibaAnalyzer settings are now moved from the 'job' pane to the 'settings' pane.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.20.0 - 03/10/2013</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Ability to indicate that a task is resource intensive and the ability to limit the number of resource intensive tasks that are ran simultaneously.</LI>
+				<LI>Runs ibaAnalyzer (version 6.3.1 or later) in a mode that requires less resources.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.5 - 17/06/2013</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Windows 8 and Windows Server 2012 supported.</LI>
+				<LI>Installer modified so silent install is supported.</LI>
+			</OL>
+
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.4 - 23/05/2013</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>When checking paths with the 'thumbs up' button, it is now additionally tested if there is write access in the folder.</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>Bug fixes (B) to the plugin interface extensions.</LI>
+				<LI>Readme.htm was misplaced in the case of standalone install.</LI>
+				<LI>Some files were not erased on uninstall in the case of standalone install.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.3 - 25/03/2013</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>Plugin interfaces extended.</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>Restoring network access to the source directory might under some circumstances not work if one only has the cyclic rescan and not the immediate file scan option on.</LI>
+				<LI>Error messages when creating a network share connection that are to long were replaced by 'unknown error'.</LI>
+				<LI>The functionality that ibaDatCoordinator ignores files with the 'offline' attribute (set by ibaPDA to indicate he is still busy writing) was broken.</LI>
+				<LI>In the French localisation of ibaDatCoordinator the login textboxes overlapped the 'check subdirectories' checkbox.</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.2 - 09/11/2012</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Makes use of new licensing library.
+				</LI>
+				<LI>
+					Makes use of ibaFiles 6.0.1
+				</LI>
+				<LI>
+					.dat files kept unaccessible by for instance keeping them open in ibaAnalyzer are reported every hour in the logging.
+				</LI>
+			</OL>
 
 
-<P class="header1">Version 1.14.5 - 8/12/2009</P>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  Quota limitation for copy task, report task and update data task was not working
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.4 - 1/12/2009</P>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  Copy pasting text from input fields in plugin tasks caused task or job nodes to be copied and pasted instead.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.3 - 25/11/2009</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  Unexpected errors while processing the .dat file caused the job to halt, this is altered so the job properly stops now instead.
-    </LI>
-    <LI>  When the disk is full, updating the .dat file status in the file itself caused an unexpected error.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.2 - 4/11/2009</P>
-<P class="header2">New feature</P>
-<OL>
-    <LI>  Output producing tasks, you can now select to have the directories created on the time of the original .dat file instead of the creation time of the output.
-    </LI>
-</OL>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  Updated the ibaFiles ibaDatCoordinator was using so it works with files generated by ibaScope
-    </LI>
-</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.1 - 21/09/2012</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Ability to filter blanks from infofield values used for subdirectory or output file name.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					ibaDatCoordinator could not process QDR I files.
+				</LI>
+				<LI>
+					The standalone version of the ibaDatCoordinator refused to run when multiple users where logged in to the system.
+				</LI>
+				<LI>
+					If the target directory of an output producing task was not available at job start, ibaDatCoordinator did not recover when the target directory eventually became available.
+				</LI>
+				<LI>
+					Typo in the German translation	for the "Use infofield for subdirectory" feature.
+				</LI>
+				<LI>
+					Notifications did not work on succesful move or delete task.
+				</LI>
+				<LI>
+					Link to the logging folder in the startup menu was incorrect under XP for standalone install.
+				</LI>
+				<LI>
+					Cleanup strategies based on a quota failed when the target network folders were unavailable while tallying the files, ibaDatCoordinator did not recover when the target directory eventually became available.
+				</LI>
+				<LI>
+					When a task that requires ibaAnalyzer was halted because it exceeded a specified time or memory limit, subsequent tasks failed as well because ibaAnalyzer was not correctly reset.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.19.0 - 13/07/2012</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Subdirectories are created when using an extract task to iba .dat file with external videos (ibaAnalyzer 5.22.7 feature)
+				</LI>
+				<LI>
+					A time interval can now be specified for which the user will not be asked to reconfirm his password if the password hasn't changed.
+				</LI>
+				<LI>
+					A sender e-mail adress can now be specified for notification e-mails.
+				</LI>
+				<LI>
+					When using ibaAnalyzer 5.22.7 or more recent, a warning will be generated in the logging for an extract task that has a different target file type than the target file type specified in the analysis.
+				</LI>
+				<LI>
+					For extract, report and copy tasks, it is possible to specify an infofield that will be used to generate the target subdirectory.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Having the Copy-task work on the output of the previous task did not work anymore.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.18.1 - 22/03/2012</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Ability to test a script on client side. This is useful for debugging the script since interaction with desktop is possible.
+				</LI>
+				<LI>
+					When testing scripts they do not longer block the GUI thread.
+				</LI>
+				<LI>
+					When testing scripts, ability to abort the execution of the script.
+				</LI>
+				<LI>
+					When stopping jobs, any running script tasks will be aborted.
+				</LI>
+				<LI>
+					Logging messages in the Logging pane can be filtered, either only errors, errors and warnings or all messages can be shown.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.18.0 - 24/02/2012</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					For extract, report and copy tasks, it is possible to specify an infofield that will be used to generate the name of the output file.
+				</LI>
+				<LI>
+					'Undo changes button' in the job. If the changes haven't been applied yet, pressing this button will undo all changes to the job and its tasks.
+				</LI>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Deleting jobs requires providing the password when a password is set.
+				</LI>
+				<LI>
+					Before changing or clearing the password, the old password needs to be provided again.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.6 - 07/02/2012</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Password wasn't communicated to the service correctly, hence it was lost when the client was closed.
+				</LI>
+				<LI>
+					Setting wether or not the service should autostart on boot wasn't possible when run under windows 7 with UAC enabled.
+				</LI>
+				<LI>
+					On windows 7 a crash occured when trying to manipulate the buttons in the navigator pane.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.5 - 02/02/2012</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Included version 5.0.0 of ibaFilesLite.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Possibility to alter the modification date of output files didn't work.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.4 - 27/01/2012</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Password protection.
+				</LI>
+				<LI>
+					Save files for iba support option.
+				</LI>
+				<LI>
+					Support for TDMS extract, i.e. provide correct cleanup.
+				</LI>
+				<LI>
+					Possibility to alter the modification date of output files (e.g. extract to file task, the extracted file) to match the date of the source .dat files.
+				</LI>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Enabled starting and stopping the service when run under windows 7 with UAC enabled.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Issue with reconnecting to the source directory.
+				</LI>
+				<LI>
+					When running standalone or as a service under a non administrator account under windows 7, ibaDatCoordinator tried to place the logfiles were it did not have access to.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.3 - 07/10/2011</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Timing issues fixed.
+				</LI>
+				<LI>
+					Scrolling issues fixed, some tasks did not show their scroll bar soon enough, making the lower part of the control not accessable.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.2 - 18/05/2011</P>
+			<P class="header2">Enhancement</P>
+			<OL>
+				<LI>
+					The ASCII watchdog message is now sent with a separator character (ASCII 0) at the end.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.1 - 11/05/2011</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					The 'one time job' had difficulty with readonly files and folders.
+				</LI>
+				<LI>
+					The 'one time job' did not properly close the .dat files after checking with ibaFiles if they were ready to be processed.
+				</LI>
+				<LI>
+					IbaDatCoordinator did not work anymore with .NET 2.0 without service packs.
+				</LI>
+			</OL>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.1 - 21/09/2009</P>
-<P class="header2">BugFix</P>
-<OL>
-    <LI>  IbaDatCoordinator 1.14.0 corrupted the .dat files it was working on
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.14.0 - 31/08/2009</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  Logging: order of the messages in the grid has changed, the most recent message is shown first instead of last.
-    </LI>
-</OL>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI>  Pause task: pauses execution for a specified amount of time, possibly relative to the time the .dat file was last modified.
-    </LI>
-    <LI>  Update data task: Updates and renames the .dat file according to data found in a database.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  Script controls didn't update properly the script content.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.13.0 - 4/08/2009</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Makes use of IbaFilesLite 4.0.1 instead of ibaFiles 3.4.0.
-    </LI>
-    <LI> Cleanup with the "Limit directories option" is altered to run only when new directories are created, it was to resource intensive otherwise.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>Installer did not correctly install ibaFiles.
-    </LI>
-    <LI>Global ibaDatCoordinator settings were stored wrongly in the user registry settings, they are now stored in the XML file.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.12.1 - 23/06/2009</P>
-<P class="header2">Bugfix</P>
-<OL>
-    <LI> Concurrency issue fixed.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.12.0 - 17/06/2009</P>
-<P class="header2">Bugfix</P>
-<OL>
-    <LI> Some problems with the logging were fixed.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.11.0 - 11/06/2009</P>
-<P class="header2">Bugfix</P>
-<OL>
-    <LI> Some inconsistencies with plugin licensing were fixed.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.10.0 - 28/04/2009</P>
-<P class="header2">Enhancement</P>
-<OL>
-    <LI> Rescan times can now be entered with one decimal, allowing a minimum of 0.1 minutes (6 seconds) instead of one minute.
-    </LI>
-</OL>
-<P class="header2">Bugfix</P>
-<OL>
-    <LI> ibaDatCoordinator client did not run under a limited user account.
-    </LI>
-</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.17.0 - 22/04/2011</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Addition of the 'one time job', a simplified version of the regular job to process .dat files one time only.
+				</LI>
+				<LI>
+					New cleanup strategy option added to all output generating tasks. Select 'Minimal free disk space' to keep a minimum amount of space free on the disk by removing older files.
+					If the task is conditional to the execution of the previous task, the cleanup will be performed whether or not the task itself is executed.
+				</LI>
+				<LI>
+					Possibility to specify multiple recipients in the E-mail notifications, you can specify the multiple recipients in the same recipient field by separating them by a semi-column (';').
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.16.0 - 19/11/2010</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					For a report task where the output type is 'html' or 'htm', ibaDatCoordinator wil create an additional subdirectory in the output directory and place the report there.
+					This is necessary because otherwise the images in the generated html (.jpg files) get overwritten by subsequent reports.
+					The additional directory will have the same name as the .dat file without its extention.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.15.0 - 12/10/2010</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					You now get a warning when trying to refresh or delete .dat files, you then have the option to cancel the operation.
+				</LI>
+				<LI>
+					You are no longer allowed to specify the ibaAnalyzer that will be used for the extract, conditional and report tasks, the default registered ibaAnalyzer is used.
+					As a convenience you do have however the option to browse for an ibaAnalyzer and register it in the settings tab.
+				</LI>
+				<LI>
+					When the .dat directory that a job is supposed to monitor is missing, this no longer causes the job to stop.
+					Instead the job will periodically check if the directory is created in the mean time and recommence processing .dat files as soon as the directory is created and .dat files start to arrive.
+				</LI>
+				<LI>
+					A couple of typos in the German dialogs fixed.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Certain types of invalid paths caused ibaDatCoordinator to throw an uncatched exception when pressing the "Test Path" button.
+				</LI>
+				<LI>
+					Deleting and refreshing .dat files was done on the client side instead of the server side. This caused problems if the system user and client user didn't have the same privileges.
+				</LI>
+				<LI>
+					Occasionally when processing a large amount of files arriving very fast, the ibaDatCoordinator service crashed.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.10 - 5/08/2010</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					ibaDatCoorditator is modified to not process files that have the 'offline' attribute. This attribute is set by ibaPDA to indicate that it is still busy with the .dat file.
+				</LI>
+				<LI>
+					Installer adapted so ibaDatCoordinator installs under windows 7
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Spurious debug log message removed.
+				</LI>
+				<LI>
+					When logging in simultaneously as a different user (for example through remote login) a new client was started causing all sorts of problems.
+				</LI>
+				<LI>
+					"New"-button in the batch file editing control did not work anymore
+				</LI>
+			</OL>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.9 - 9/04/2009</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> File quotas could not be reduced without restarting ibaDatCoordinator.
-    </LI>
-    <LI> With automatic filedetection disabled, ibaDatCoordinator did not automatically reconnect to shared network folders anymore.
-    </LI>
-</OL>
-
-<P class="header1">Version 1.9.8 - 17/03/2009</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI>  The ability to disable instantaneous file processing (and only do periodic file processing)
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> No connections to shares for directories specified in disabled tasks are made anymore.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.7 - 12/03/2009</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Fixed installer and build options so ibaDatCoordinator can be installed and runs on Windows 2008 64 bit server .
-    </LI>
-    <LI> Uses the new ibaFiles with the new ibaFiles installer.
-    </LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> When the service was stopped, a watchdog could be started, resulting in two watchdogs when the service restarted.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.6 - 22/10/2008</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI> On occasion the client crashed when applying the changes to a job configuration.
-    </LI>
-    <LI> If less than 10 old .dat files were available for processing, processing didn't start immediately after the job was started.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.5 - 25/09/2008</P>
-<p>Test version with more logging to test the cleanup strategy</p>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.9 - 18/03/2010</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					The job or status tree has been made resizable.
+				</LI>
+				<LI>
+					Limit of the copy task increased to 10 Terra bytes.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Variety of problems when selecting for directory structure to keep the original structure and the original source directory was a root folder.
+				</LI>
+				<LI>
+					When browsing for the ibaAnalyzer executable, the nonsensical text "OpenFileDialog1" was suggested for the filename.
+				</LI>
+				<LI>
+					Under certain circumstances, the "permanent errors" tab gave an exception when shown.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.8 - 28/01/2010</P>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					Modified check if the .dat file is still being processed by ibaPDA.
+				</LI>
+				<LI>
+					Updated to new version of ibaFiles (4.0.8), the previous version had a bug with OpenFileForUpdate function.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.6 - 27/01/2010</P>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					Slightly modified logging and error handling.
+				</LI>
+			</OL>
 
 
-<P class="header1">Version 1.9.4 - 19/06/2008</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> The client program is made more economic on memory
-    </LI>
-    <LI> Option to have the report, extract and copy/move tasks to simply overwrite target files if already existant instead of adding an index to the filename.
-    </LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.3 - 16/06/2008</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> When cyclic rescanning for unprocessed .dat files is enabled, the number of files that can be added to the list of .dat files to process is now limited to 10000.
-	</LI>
-	<LI> The algorithm to cleanup files when a filesize quota is set (for tasks generating files as output) has been improved in performance.
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> The algorithm to cleanup files failed when the output directory was the disks root directory.
-	</LI>
-	<LI> A crash occasionally happened when updating a running job.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.2 - 16/04/2008</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI> Extended the logging for the Copy/Move task.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.1 - 9/04/2008</P>
-<P class="header2">New features (N)</P>
-<OL>
-    <LI>  Copy/Move task extended to a Copy/Move/Delete task.
-	</LI>
-    <LI>  Watchdog extended so that you can select to have a binary message (with data at fixed offsets) instead of a text message. The text message itself is extended
-    to provide information whether or not the job is started and the number of files which ibaDatCoordinator has tried to process the set maximum number of times without success.
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  The current file the DatCoordinator was processing was sometimes not visible in status view.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.9.0 - 7/04/2008</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  Initial scans and cyclic scans for unprocessed .dat files are now run on a separate thread so that the execution of tasks is not halted.
-	</LI>
-    <LI>  No instances of ibaAnalyzer are started anymore when there are no tasks defined requiring ibaAnalyzer.
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  You could delete tasks when the job was running. This should have been disabled.
-	</LI>
-    <LI>  Cleanup strategy of file output producing tasks was faulty when limiting the used diskspace to an amount over 2 GByte.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.10 - 12/02/2008</P>
-<P class="header2">Improvement (I)</P>
-<OL>
-    <LI>  You can select to have IbaDatCoordinator restarting ibaAnalyzer after a certain number of times ibaAnalyzer has done a report or extraction or evaluated an expression. 
-    This is to free any memory leaked by ibaAnalyzer or one of its components.
-	</LI>
-    <LI>  You can select to have IbaDatCoordinator closing ibaAnalyzer if there are currently no files left to process. This way there is only an ibaAnalyzer process in memory when there are files to process.
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  There was a problem with testing a script in the script configuration control.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.7 - 30/11/2007</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-    <LI>  New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters) not only to be read, but also to be written.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.6 - 30/11/2007</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> Selecting the .dat directory, the folder dialog wasn't initialised to the previous path.
-	</LI>
-</OL>
+			<P class="header1">Version 1.14.5 - 8/12/2009</P>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					Quota limitation for copy task, report task and update data task was not working
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.4 - 1/12/2009</P>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					Copy pasting text from input fields in plugin tasks caused task or job nodes to be copied and pasted instead.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.3 - 25/11/2009</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Unexpected errors while processing the .dat file caused the job to halt, this is altered so the job properly stops now instead.
+				</LI>
+				<LI>
+					When the disk is full, updating the .dat file status in the file itself caused an unexpected error.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.2 - 4/11/2009</P>
+			<P class="header2">New feature</P>
+			<OL>
+				<LI>
+					Output producing tasks, you can now select to have the directories created on the time of the original .dat file instead of the creation time of the output.
+				</LI>
+			</OL>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					Updated the ibaFiles ibaDatCoordinator was using so it works with files generated by ibaScope
+				</LI>
+			</OL>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.5 - 29/11/2007</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> In the ibaAnalyzer task control panes, there was a problem opening ibaAnalyzer if the analyzer path contained spaces.
-	</LI>
-    <LI> New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters).
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.4 - 23/10/2007</P>
-<P class="header2">New features (N)</P>
-<OL>
-<li>When generating files with the report task or extract task and with the copy task, you can select
-to clean up older generated output files according to a quota instead of limiting the number of generated directories.</li>
-</OL>
-<P class="header2">Improvement (I)</P>
-<OL>
-	<LI> The periodic notifications are altered so that the first notification is sent immediately if there
-	hasn't been a notification before it in the selected time interval, in previous versions the notification was only
-	sent after the selected time interval was passed.
-	</LI>
-	<LI> The option to skip the first initial scan for unprocessed .dat files is moved from the service settings to
-	the job level.
-	</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> After stopping the service, mimimizing the client and then restarting the service, the client would not
-	reconnect to the service.
-	</LI>
-    <LI> In the status pane, when viewing permanently failed .dat files, trying to go to the job configuration panel through the link
-    caused an unhandled exception.
-	</LI>
-</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.1 - 21/09/2009</P>
+			<P class="header2">BugFix</P>
+			<OL>
+				<LI>
+					IbaDatCoordinator 1.14.0 corrupted the .dat files it was working on
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.14.0 - 31/08/2009</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Logging: order of the messages in the grid has changed, the most recent message is shown first instead of last.
+				</LI>
+			</OL>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Pause task: pauses execution for a specified amount of time, possibly relative to the time the .dat file was last modified.
+				</LI>
+				<LI>
+					Update data task: Updates and renames the .dat file according to data found in a database.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Script controls didn't update properly the script content.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.13.0 - 4/08/2009</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Makes use of IbaFilesLite 4.0.1 instead of ibaFiles 3.4.0.
+				</LI>
+				<LI>
+					Cleanup with the "Limit directories option" is altered to run only when new directories are created, it was to resource intensive otherwise.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Installer did not correctly install ibaFiles.
+				</LI>
+				<LI>
+					Global ibaDatCoordinator settings were stored wrongly in the user registry settings, they are now stored in the XML file.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.12.1 - 23/06/2009</P>
+			<P class="header2">Bugfix</P>
+			<OL>
+				<LI>
+					Concurrency issue fixed.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.12.0 - 17/06/2009</P>
+			<P class="header2">Bugfix</P>
+			<OL>
+				<LI>
+					Some problems with the logging were fixed.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.11.0 - 11/06/2009</P>
+			<P class="header2">Bugfix</P>
+			<OL>
+				<LI>
+					Some inconsistencies with plugin licensing were fixed.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.10.0 - 28/04/2009</P>
+			<P class="header2">Enhancement</P>
+			<OL>
+				<LI>
+					Rescan times can now be entered with one decimal, allowing a minimum of 0.1 minutes (6 seconds) instead of one minute.
+				</LI>
+			</OL>
+			<P class="header2">Bugfix</P>
+			<OL>
+				<LI>
+					ibaDatCoordinator client did not run under a limited user account.
+				</LI>
+			</OL>
 
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.3 - 11/09/2007</P>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> Shortcut to logfiles fixed in the start menu.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.2 - 18/07/2007</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>Scripts, the batchfile task is now a general script task. Syntax highlighting is
-	available for Visual Basic Script and JavaScript.</LI>
-	<LI>Input parameters for the scripts are similar to postprocessing arguments in ibaPDA (%f,%g,%h).</LI>
-	<LI>The copy task and script task can now work on the result of a previous task (e.g. generated report) instead of the original .dat file.</LI>
-	<LI>A test button is added to the notification options of a job.</LI>
-</OL>
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI> If datFiles had the exact same timestamp, one of them was not visible in the statusview.
-	</LI>
-</OL>
-<p>&nbsp; </p>
-<P class="header1">Version 1.8.1 - 10/07/2007</P>
-<P class="header2">New features (N)</P>
-<OL>
-	<LI>The number of times the DatCoordinator attempts to process a .dat file can be limited. After this limit is exceeded, 
-	such .dat files are put in a seperate list which the user can clean by selecting to either delete the .dat files or 
-	reset the info fields from the .dat files so the DatCoordinator treats them as newly generated files.</LI>
-	<LI>For a report, extract or conditional task it can be selected to have ibaAnalyzer monitored for memory consumption 
-	and duration of the task. When the time limit or memory limit is exceeded, the task will be terminated.</LI>
-	<LI>A new settings tab is added where the user can select a couple of options</LI>
-	<OL>
-		<LI>You can select whether or not the DatCoordinator service is automatically started when windows starts.</LI>
-		<LI>A time interval can be specified to wait after windows startup before starting to process the .dat files.</LI>
-		<LI>The process priority of the service or application can be specified.</LI>
-		<LI>You can select to skip the initial scan for .dat files already existing before a DatCoordinator job was running.<BR> 
-		In this case only .dat files created while the job is running will be considered for processing.</LI> 
-	</OL>
-</OL>
-<P class="header2">Improvement (I)</P>
-<OL>
-	<LI>The DatCoordinator now tries to connect periodically to the service instead of going permanently in offline mode.</LI>
-	<LI>The location of the logfiles is now fixed, i.e. it can no longer be set by the user, after installation a shortcut 
-	to the logfile directory is put under the iba DatCoordinator folder in the windows menu.</LI>
-</OL>	
-<P class="header2">Bug fixes (B)</P>
-<OL>
-	<LI>For extracting to files, report generation and the copy task, when selecting to have subfolders in de destination
-	directory that are the same as in the source .dat directory, the DatCoordinator could accidentely delete subfolders
-	from the parent directory of the destination directory instead of cleaning up subfolders of the destination directory.
-	This could only happen if there where .dat files in the source .dat directory that weren't in subfolders.
-	If the destination directory was a shared network map, it caused a crash instead of actual deletion of folders.
-	</LI>
-</OL>
-</BODY>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.9 - 9/04/2009</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					File quotas could not be reduced without restarting ibaDatCoordinator.
+				</LI>
+				<LI>
+					With automatic filedetection disabled, ibaDatCoordinator did not automatically reconnect to shared network folders anymore.
+				</LI>
+			</OL>
+
+			<P class="header1">Version 1.9.8 - 17/03/2009</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					The ability to disable instantaneous file processing (and only do periodic file processing)
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					No connections to shares for directories specified in disabled tasks are made anymore.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.7 - 12/03/2009</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Fixed installer and build options so ibaDatCoordinator can be installed and runs on Windows 2008 64 bit server .
+				</LI>
+				<LI>
+					Uses the new ibaFiles with the new ibaFiles installer.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					When the service was stopped, a watchdog could be started, resulting in two watchdogs when the service restarted.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.6 - 22/10/2008</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					On occasion the client crashed when applying the changes to a job configuration.
+				</LI>
+				<LI>
+					If less than 10 old .dat files were available for processing, processing didn't start immediately after the job was started.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.5 - 25/09/2008</P>
+			<p>Test version with more logging to test the cleanup strategy</p>
+
+
+			<P class="header1">Version 1.9.4 - 19/06/2008</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					The client program is made more economic on memory
+				</LI>
+				<LI>
+					Option to have the report, extract and copy/move tasks to simply overwrite target files if already existant instead of adding an index to the filename.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.3 - 16/06/2008</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					When cyclic rescanning for unprocessed .dat files is enabled, the number of files that can be added to the list of .dat files to process is now limited to 10000.
+				</LI>
+				<LI>
+					The algorithm to cleanup files when a filesize quota is set (for tasks generating files as output) has been improved in performance.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					The algorithm to cleanup files failed when the output directory was the disks root directory.
+				</LI>
+				<LI>
+					A crash occasionally happened when updating a running job.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.2 - 16/04/2008</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Extended the logging for the Copy/Move task.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.1 - 9/04/2008</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Copy/Move task extended to a Copy/Move/Delete task.
+				</LI>
+				<LI>
+					Watchdog extended so that you can select to have a binary message (with data at fixed offsets) instead of a text message. The text message itself is extended
+					to provide information whether or not the job is started and the number of files which ibaDatCoordinator has tried to process the set maximum number of times without success.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					The current file the DatCoordinator was processing was sometimes not visible in status view.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.9.0 - 7/04/2008</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					Initial scans and cyclic scans for unprocessed .dat files are now run on a separate thread so that the execution of tasks is not halted.
+				</LI>
+				<LI>
+					No instances of ibaAnalyzer are started anymore when there are no tasks defined requiring ibaAnalyzer.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					You could delete tasks when the job was running. This should have been disabled.
+				</LI>
+				<LI>
+					Cleanup strategy of file output producing tasks was faulty when limiting the used diskspace to an amount over 2 GByte.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.10 - 12/02/2008</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					You can select to have IbaDatCoordinator restarting ibaAnalyzer after a certain number of times ibaAnalyzer has done a report or extraction or evaluated an expression.
+					This is to free any memory leaked by ibaAnalyzer or one of its components.
+				</LI>
+				<LI>
+					You can select to have IbaDatCoordinator closing ibaAnalyzer if there are currently no files left to process. This way there is only an ibaAnalyzer process in memory when there are files to process.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					There was a problem with testing a script in the script configuration control.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.7 - 30/11/2007</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters) not only to be read, but also to be written.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.6 - 30/11/2007</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Selecting the .dat directory, the folder dialog wasn't initialised to the previous path.
+				</LI>
+			</OL>
+
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.5 - 29/11/2007</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					In the ibaAnalyzer task control panes, there was a problem opening ibaAnalyzer if the analyzer path contained spaces.
+				</LI>
+				<LI>
+					New version of ibaFiles included, which allows longer technostrings/infofields (up to 10000 charachters).
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.4 - 23/10/2007</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<li>
+					When generating files with the report task or extract task and with the copy task, you can select
+					to clean up older generated output files according to a quota instead of limiting the number of generated directories.
+				</li>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>
+					The periodic notifications are altered so that the first notification is sent immediately if there
+					hasn't been a notification before it in the selected time interval, in previous versions the notification was only
+					sent after the selected time interval was passed.
+				</LI>
+				<LI>
+					The option to skip the first initial scan for unprocessed .dat files is moved from the service settings to
+					the job level.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					After stopping the service, mimimizing the client and then restarting the service, the client would not
+					reconnect to the service.
+				</LI>
+				<LI>
+					In the status pane, when viewing permanently failed .dat files, trying to go to the job configuration panel through the link
+					caused an unhandled exception.
+				</LI>
+			</OL>
+
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.3 - 11/09/2007</P>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					Shortcut to logfiles fixed in the start menu.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.2 - 18/07/2007</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					Scripts, the batchfile task is now a general script task. Syntax highlighting is
+					available for Visual Basic Script and JavaScript.
+				</LI>
+				<LI>Input parameters for the scripts are similar to postprocessing arguments in ibaPDA (%f,%g,%h).</LI>
+				<LI>The copy task and script task can now work on the result of a previous task (e.g. generated report) instead of the original .dat file.</LI>
+				<LI>A test button is added to the notification options of a job.</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					If datFiles had the exact same timestamp, one of them was not visible in the statusview.
+				</LI>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 1.8.1 - 10/07/2007</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<LI>
+					The number of times the DatCoordinator attempts to process a .dat file can be limited. After this limit is exceeded,
+					such .dat files are put in a seperate list which the user can clean by selecting to either delete the .dat files or
+					reset the info fields from the .dat files so the DatCoordinator treats them as newly generated files.
+				</LI>
+				<LI>
+					For a report, extract or conditional task it can be selected to have ibaAnalyzer monitored for memory consumption
+					and duration of the task. When the time limit or memory limit is exceeded, the task will be terminated.
+				</LI>
+				<LI>
+					A new settings tab is added where the user can select a couple of options
+					<OL>
+						<LI>You can select whether or not the DatCoordinator service is automatically started when windows starts.</LI>
+						<LI>A time interval can be specified to wait after windows startup before starting to process the .dat files.</LI>
+						<LI>The process priority of the service or application can be specified.</LI>
+						<LI>
+							You can select to skip the initial scan for .dat files already existing before a DatCoordinator job was running.<BR>
+							In this case only .dat files created while the job is running will be considered for processing.
+						</LI>
+					</OL>
+				</LI>
+			</OL>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<LI>The DatCoordinator now tries to connect periodically to the service instead of going permanently in offline mode.</LI>
+				<LI>
+					The location of the logfiles is now fixed, i.e. it can no longer be set by the user, after installation a shortcut
+					to the logfile directory is put under the iba DatCoordinator folder in the windows menu.
+				</LI>
+			</OL>
+			<P class="header2">Bug fixes (B)</P>
+			<OL>
+				<LI>
+					For extracting to files, report generation and the copy task, when selecting to have subfolders in de destination
+					directory that are the same as in the source .dat directory, the DatCoordinator could accidentely delete subfolders
+					from the parent directory of the destination directory instead of cleaning up subfolders of the destination directory.
+					This could only happen if there where .dat files in the source .dat directory that weren't in subfolders.
+					If the destination directory was a shared network map, it caused a crash instead of actual deletion of folders.
+				</LI>
+			</OL>
+
+		</div>
+	</div>
+
+	<script language="javascript" type="text/javascript">
+		function SetVisible(btn) {
+			if (btn === "btn_hist") {
+				document.getElementById('btn_hist').className = 'btn_selected';
+				document.getElementById('btn_comp').className = 'btn_normal';
+				document.getElementById('hist').style.display = 'inline';
+				document.getElementById('comp').style.display = 'none';
+			}
+			else {
+				document.getElementById('btn_comp').className = 'btn_selected';
+				document.getElementById('btn_hist').className = 'btn_normal';
+				document.getElementById('comp').style.display = 'inline';
+				document.getElementById('hist').style.display = 'none';
+			}
+		}
+
+		function SetMouseOver(btn) {
+			var e = document.getElementById(btn);
+			if (e.className === 'btn_normal')
+				e.className = 'btn_over';
+		}
+		function SetMouseOut(btn) {
+			var e = document.getElementById(btn);
+			if (e.className === 'btn_over')
+				e.className = 'btn_normal';
+		}
+		function ShowRedmineLinks() {
+			redmineLinksVisibile = !redmineLinksVisibile;
+			redmineLinks.forEach(function (link) {
+				link.setAttribute('style', redmineLinksVisibile ? '' : 'display: none');
+			});
+		}
+
+		function redmineLinkifyTextNode(element) {
+			var regex = /#(\d{4,6})/g;
+			var text = element.wholeText;
+			var result = regex.exec(text);
+			if (!result) return;
+			if (result.index >= 0) {
+				var before = text.substring(0, result.index);
+				var after = text.substring(result.index + result[0].length);
+				var issue = result[1];
+
+				var beforeNode = document.createTextNode(before);
+				var link = document.createElement('a');
+				link.setAttribute('style', 'display: none');
+				link.setAttribute('href', "http://redmine.iba-ag.local/issues/" + issue);
+				link.innerHTML = '#' + issue;
+				redmineLinks.push(link);
+				var afterNode = document.createTextNode(after);
+
+				var span = document.createElement('span');
+				span.appendChild(beforeNode);
+				span.appendChild(link);
+				span.appendChild(afterNode);
+
+				element.parentNode.replaceChild(span, element);
+				redmineLinkifyTextNode(afterNode);
+			}
+		}
+
+		function redmineLinkify(element) {
+			if (element.nodeType === 3) {
+				redmineLinkifyTextNode(element);
+			} else {
+				var childNodes = element.childNodes;
+				for (var i = 0; i < childNodes.length; i++) {
+					redmineLinkify(childNodes[i]);
+				}
+			}
+		}
+
+		document.addEventListener('DOMContentLoaded',
+				function () {
+					var elements = document.getElementsByTagName('li');
+					for (var i = 0; i < elements.length; i++) {
+						redmineLinkify(elements[i]);
+					}
+				});
+
+		var redmineLinks = [];
+		var redmineLinksVisibile = false;
+
+	</script>
+
+
+</body>
 </HTML>
