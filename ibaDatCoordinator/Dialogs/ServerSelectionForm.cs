@@ -18,7 +18,7 @@ using iba.Logging;
 //using DevExpress.XtraGrid.Columns;
 //using DevExpress.XtraGrid.Views;
 
-namespace iba.Client
+namespace iba.Dialogs
 {
 	/// <summary>
 	/// Summary description for ServerSelectionForm.

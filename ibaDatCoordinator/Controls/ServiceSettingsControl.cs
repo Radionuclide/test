@@ -24,8 +24,8 @@ namespace iba.Controls
             {
                 m_gbApp.Text = iba.Properties.Resources.Application;
                 m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
-                Control[]ToHide = new Control[] {m_cbAutoStart,
-                    m_btTransferAnalyzerSettings,m_btnStart,m_btnStop, 
+                Control[] ToHide = new Control[] {m_cbAutoStart,
+                    m_btTransferAnalyzerSettings,m_btnStart,m_btnStop,
                     m_udPort, m_lblServiceStatus, m_lbServStatus, m_lbServPort};
                 foreach (var ctrl in ToHide)
                 {
@@ -34,12 +34,14 @@ namespace iba.Controls
                 int Offset = m_gbApp.Height - m_lblServiceStatus.Top;
                 m_gbApp.Height -= Offset;
                 CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
-                foreach(var box in gboxesLower)
+                foreach (var box in gboxesLower)
                 {
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
                     box.Top -= Offset;
                 }
             }
+            Offset = groupBox1.Top - m_gbApp.Top;
+            ServiceSettingsShown = true;
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
             m_ceManager = new CollapsibleElementManager(this);
@@ -51,13 +53,29 @@ namespace iba.Controls
             }
         }
 
+        private int Offset;
+        private bool ServiceSettingsShown;
+
+        private void ShowHideServiceSettings(bool show)
+        {
+            if (ServiceSettingsShown == show) return;
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) return;
+            m_gbApp.IsCollapsed = false;
+            CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
+            foreach (var box in gboxesLower)
+            {
+                box.Top += show ? Offset:-Offset;
+            }
+            m_gbApp.Visible = show;
+        }
+
         private CollapsibleElementManager m_ceManager;
 
         #region IPropertyPane Members
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && Program.ServiceIsLocal)
             {
                 ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
                 try
@@ -81,6 +99,11 @@ namespace iba.Controls
                 UpdateServiceControls();
             }
 
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
+            {
+                ShowHideServiceSettings(Program.ServiceIsLocal);
+            }
+
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = TaskManager.Manager.MaxIbaAnalyzerCalls;
             m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
@@ -89,42 +112,63 @@ namespace iba.Controls
             m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
 
-            int iPc = TaskManager.Manager.ProcessPriority;
-            m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
-            System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass)iPc;
-            switch (pc)
+
+            Control[] ToHide = new Control[] {label5,
+                    m_btTransferAnalyzerSettings,
+                    m_tbAnalyzerExe,
+                    m_browseIbaAnalyzerButton, m_executeIBAAButton, m_registerButton
+                    };
+
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
             {
-                case System.Diagnostics.ProcessPriorityClass.Idle:
-                    m_comboPriority.SelectedIndex = 0;
-                    break;
-                case System.Diagnostics.ProcessPriorityClass.BelowNormal:
-                    m_comboPriority.SelectedIndex = 1;
-                    break;
-                case System.Diagnostics.ProcessPriorityClass.Normal:
-                    m_comboPriority.SelectedIndex = 2;
-                    break;
-                case System.Diagnostics.ProcessPriorityClass.AboveNormal:
-                    m_comboPriority.SelectedIndex = 3;
-                    break;
-                case System.Diagnostics.ProcessPriorityClass.High:
-                    m_comboPriority.SelectedIndex = 4;
-                    break;
-                case System.Diagnostics.ProcessPriorityClass.RealTime:
-                    m_comboPriority.SelectedIndex = 5;
-                    break;
+                foreach (var ctrl in ToHide)
+                {
+                    ctrl.Visible = false;
+                }
             }
-            try
+            else
             {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
+                foreach (var ctrl in ToHide)
+                {
+                    ctrl.Visible = true;
+                }
+                int iPc = TaskManager.Manager.ProcessPriority;
+                m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
+                System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass)iPc;
+                switch (pc)
+                {
+                    case System.Diagnostics.ProcessPriorityClass.Idle:
+                        m_comboPriority.SelectedIndex = 0;
+                        break;
+                    case System.Diagnostics.ProcessPriorityClass.BelowNormal:
+                        m_comboPriority.SelectedIndex = 1;
+                        break;
+                    case System.Diagnostics.ProcessPriorityClass.Normal:
+                        m_comboPriority.SelectedIndex = 2;
+                        break;
+                    case System.Diagnostics.ProcessPriorityClass.AboveNormal:
+                        m_comboPriority.SelectedIndex = 3;
+                        break;
+                    case System.Diagnostics.ProcessPriorityClass.High:
+                        m_comboPriority.SelectedIndex = 4;
+                        break;
+                    case System.Diagnostics.ProcessPriorityClass.RealTime:
+                        m_comboPriority.SelectedIndex = 5;
+                        break;
+                }
+                try
+                {
+                    RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                    object o = key.GetValue("");
+                    m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
+                }
+                catch
+                {
+                    m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
+                }
+                m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+                m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             }
-            catch
-            {
-                m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
-            }
-            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
 
             m_pass = "";
             try
@@ -464,7 +508,6 @@ namespace iba.Controls
                 RegistryOptimizer.DoWork();
             }
         }
-
 
         private void InitGlobalCleanup()
         {

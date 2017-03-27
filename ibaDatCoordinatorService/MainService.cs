@@ -27,6 +27,8 @@ namespace iba.Services
 
         private CommunicationObject m_communicationObject;
 
+        private ServicePublisher m_servicePublisher;
+
         protected override void OnStart(string[] args)
         {
             try
@@ -81,6 +83,15 @@ namespace iba.Services
                 TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(localChannel, false);
                 RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
+
+                Hashtable serviceProps = new Hashtable();
+                serviceProps.Add("HostName", Environment.MachineName);
+                serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
+                serviceProps.Add("Version", DatCoVersion.GetVersion());
+                serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
+
+                m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
+                m_servicePublisher.PublishServiceEndpoint(serviceProps);
             }
             catch (Exception ex)
             {
@@ -120,6 +131,20 @@ namespace iba.Services
             m_communicationObject.SaveConfigurations();
 
             m_communicationObject.ForwardEvents = false;
+
+            //Stop publishing service
+            if (m_servicePublisher != null)
+            {
+                try
+                {
+                    m_servicePublisher.StopPublishing();
+                }
+                catch (Exception)
+                {
+                }
+            }
+            m_servicePublisher = null;
+
             LogData.StopLogger();
         }
 

@@ -205,12 +205,6 @@ namespace iba
             SaveRightPaneControl();
             if (!m_actualClose && Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
-                //if (m_tryConnectTimer != null)
-                //{
-                //    m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-                //    m_tryConnectTimer.Dispose();
-                //    m_tryConnectTimer = null;
-                //}
                 if (WindowState != FormWindowState.Minimized)
                 {
                     WindowState = FormWindowState.Minimized;
@@ -2793,10 +2787,31 @@ namespace iba
             //Program.CommunicationObject.StoppingService = false;
         }
 
+
+        private void OnConnectService()
+        {
+            SaveRightPaneControl();
+            int port = Program.ServicePortNr;
+            string server = Program.ServiceHost;
+            ServerConfiguration cf = new ServerConfiguration();
+            using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
+            {
+                DialogResult r = ssf.ShowDialog();
+                if (r == DialogResult.OK && (port != cf.PortNr || server != cf.Address))
+                {
+                    Program.ServicePortNr = cf.PortNr;
+                    Program.ServiceHost = cf.Address;
+                    Program.CommunicationObject.HandleBrokenConnection();
+                }
+            }
+        }
+
         public delegate void IbaAnalyzerCall();
 
 
         private bool m_firstConnectToService;
+
+        private bool m_forcedReconnect;
 
         public void TryToConnect(object ignoreMe)
         {
@@ -2805,7 +2820,7 @@ namespace iba
             try
             {
 
-                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED || m_forcedReconnect)
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
@@ -2985,6 +3000,12 @@ namespace iba
             OnStopService();
         }
 
+        private void miConnectServiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnConnectService();
+        }
+
+
         private void iconEx_DoubleClick(object sender, System.EventArgs e)
         {
             miRestore_Click(null, null);
@@ -3102,13 +3123,14 @@ namespace iba
                 }
             }
         }
-        
+
 
         #endregion
 
-    }    
-    #endregion
 
+    }
+
+    #endregion
 
     #region ImageList
     internal class MyImageList

@@ -29,7 +29,7 @@ namespace iba
         {
             get
             {
-                return String.Format("tcp://localhost:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr);
+                return String.Format("tcp://{1}:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr, ServiceHost);
                 //return String.Format("tcp://NOTE-ELEWOUT:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr);
             }
         }
@@ -178,25 +178,26 @@ namespace iba
 
 
         static int m_servicePortNr = -1;
+        static string m_serverHost = "";
 
         public static int ServicePortNr
         {
             get
             {
-                if(m_servicePortNr < 0)
+                if (m_servicePortNr < 0)
                 {
                     var key =
                     Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
-                    if(key == null)
+                    if (key == null)
                         m_servicePortNr = 8800;
                     else
                         m_servicePortNr = (int)key.GetValue("PortNr", 8800);
                 }
-               return m_servicePortNr;
+                return m_servicePortNr;
             }
             set
             {
-                if(m_servicePortNr != value)
+                if (m_servicePortNr != value)
                 {
                     m_servicePortNr = value;
                     var key =
@@ -208,6 +209,47 @@ namespace iba
                         key.Close();
                     }
                 }
+            }
+        }
+
+        public static string ServiceHost
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_serverHost))
+                {
+                    var key =
+                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    if (key == null)
+                        m_serverHost = "localhost";
+                    else
+                        m_serverHost = (string)key.GetValue("ServerHost", "localhost");
+                }
+                return m_serverHost;
+            }
+            set
+            {
+                if (m_serverHost != value)
+                {
+                    m_serverHost = value;
+                    var key =
+                    Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+                    "iba", "ibaDatCoordinator"));
+                    if (key != null)
+                    {
+                        key.SetValue("ServerHost", m_serverHost);
+                        key.Close();
+                    }
+                }
+            }
+        }
+
+        public static bool ServiceIsLocal
+        {
+            get
+            {
+                string serviceHost = ServiceHost;
+                return serviceHost == "localhost" || serviceHost == System.Net.Dns.GetHostName();
             }
         }
     }

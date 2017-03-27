@@ -85,6 +85,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.connectServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -457,7 +458,8 @@ namespace iba
             // 
             this.serviceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startServiceToolStripMenuItem,
-            this.stopServiceToolStripMenuItem});
+            this.stopServiceToolStripMenuItem,
+            this.connectServiceToolStripMenuItem});
             this.serviceToolStripMenuItem.Name = "serviceToolStripMenuItem";
             resources.ApplyResources(this.serviceToolStripMenuItem, "serviceToolStripMenuItem");
             this.serviceToolStripMenuItem.DropDownOpening += new System.EventHandler(this.serviceToolStripMenuItem_DropDownOpening);
@@ -517,6 +519,12 @@ namespace iba
             // m_openFileDialog
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
+            // 
+            // connectServiceToolStripMenuItem
+            // 
+            this.connectServiceToolStripMenuItem.Name = "connectServiceToolStripMenuItem";
+            resources.ApplyResources(this.connectServiceToolStripMenuItem, "connectServiceToolStripMenuItem");
+            this.connectServiceToolStripMenuItem.Click += new System.EventHandler(this.miConnectServiceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -608,6 +616,7 @@ namespace iba
         private System.Windows.Forms.RadioButton m_rbAllLog;
         private System.Windows.Forms.Button m_btnClearLogging;
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectServiceToolStripMenuItem;
     }
 }
 
