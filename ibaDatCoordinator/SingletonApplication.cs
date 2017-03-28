@@ -11,11 +11,12 @@ namespace iba
 	{
 		static System.Threading.Mutex m_Mutex;
 
-		public static bool CheckIfRunning(bool standalone)
+		public static bool CheckIfRunning()
 		{
-            if (standalone)
+            bool standAlone = Program.RunsWithService == Program.ServiceEnum.NOSERVICE;
+            if (standAlone)
             {
-                IntPtr handle = FindWindow(null, "ibaDatCoordinatorStatusCloseForm");
+                IntPtr handle = FindWindow(null, Program.CloseFormCaption);
                 if (handle.ToInt32() != 0)
                 {
                     iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
@@ -32,7 +33,7 @@ namespace iba
 			else
 			{
 				//Activate app that is already running
-                IntPtr handle = FindWindow(null, "ibaDatCoordinatorStatusCloseForm");
+                IntPtr handle = FindWindow(null, Program.CloseFormCaption);
                 if (handle.ToInt32() != 0)
                     iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
                 else
@@ -45,7 +46,8 @@ namespace iba
 		{
             try
             {
-                m_Mutex = new System.Threading.Mutex(false, "Global\\ibaDatCoordinatorServerStatus Mutex");
+
+                m_Mutex = new System.Threading.Mutex(false, Program.RunsWithService == Program.ServiceEnum.STATUS ?"ibaDatCoordinatorServerStatus Mutex": "ibaDatCoordinatorServerClient Mutex");
                 bool owned = false;
                 owned = m_Mutex.WaitOne(TimeSpan.Zero, false);
                 return owned;
@@ -89,7 +91,7 @@ namespace iba
 
         public override void CreateHandle(CreateParams cp)
         {
-            cp.Caption = "ibaDatCoordinatorStatusCloseForm";
+            cp.Caption = Program.CloseFormCaption;
             cp.Style = 0;
             base.CreateHandle(cp);
         }

@@ -15,7 +15,8 @@ namespace iba
     static class Program
     {
         static public MainForm MainForm;
-        public enum ServiceEnum {CONNECTED, DISCONNECTED, NOSERVICE}
+        static public StatusForm StatusForm;
+        public enum ServiceEnum {CONNECTED, DISCONNECTED, NOSERVICE, STATUS}
 
         static public ServiceEnum RunsWithService;
         static private CommunicationObjectWrapper m_comWrapper;
@@ -32,6 +33,18 @@ namespace iba
                 return String.Format("tcp://{1}:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr, ServiceHost);
                 //return String.Format("tcp://NOTE-ELEWOUT:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr);
             }
+        }
+
+        static public string CloseFormCaption
+        {
+            get
+            {
+                if (RunsWithService == ServiceEnum.STATUS)
+                    return "ibaDatCoordinatorStatusCloseForm";
+                else
+                    return "ibaDatCoordinatorClientCloseForm";
+            }
+
         }
 
         //IsServer means that we are part of a service;
@@ -100,6 +113,18 @@ namespace iba
                 RegistryOptimizer.DoWork();
                 return;
             }
+            else if (args.Length > 0 && args[0].Contains("/setportnumber:") )
+            {
+                try
+                {
+                    int portNumber = int.Parse(args[0].Substring(args[0].IndexOf("/setportnumber:") + 15));
+                    Program.ServicePortNr = portNumber;
+                }
+                catch
+                {
+                }
+                return;
+            }
 
             IsServer = false;
             SetupLanguage(args);
@@ -109,10 +134,14 @@ namespace iba
             {
                 RunsWithService = ServiceEnum.DISCONNECTED;
             }
+            else if (args.Length > 0 && String.Compare(args[0], "/status", true) == 0)
+            {
+                RunsWithService = ServiceEnum.STATUS;
+            }
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
 
-            if (SingletonApp.CheckIfRunning(RunsWithService == ServiceEnum.NOSERVICE))
+            if (SingletonApp.CheckIfRunning())
                 return;      
 
             Application.EnableVisualStyles();

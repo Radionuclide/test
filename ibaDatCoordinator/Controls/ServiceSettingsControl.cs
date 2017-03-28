@@ -332,7 +332,7 @@ namespace iba.Controls
             }
             else if(Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //disconnected, don't care then.
             {
-                Program.ServicePortNr = (int) m_udPort.Value;
+                SetPortNumber((int)m_udPort.Value);
             }
         }
 
@@ -351,7 +351,7 @@ namespace iba.Controls
                 {
                     if(res == DialogResult.Yes)
                     {
-                        Program.ServicePortNr = newNr;
+                        SetPortNumber(newNr);
                         btStop_Click(this, EventArgs.Empty);
                         btStart_Click(this, EventArgs.Empty);
                     }
@@ -375,6 +375,41 @@ namespace iba.Controls
                 }
             }
         }
+
+        void SetPortNumber(int number)
+        {
+            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            {
+                if (System.Environment.OSVersion.Version.Major < 6)
+                {
+                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                procInfo.UseShellExecute = true;
+                procInfo.ErrorDialog = true;
+
+                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                procInfo.FileName = Application.ExecutablePath;
+
+                procInfo.Arguments = "/setportnumber:" + number.ToString();
+                procInfo.Verb = "runas";
+
+                try
+                {
+                    System.Diagnostics.Process.Start(procInfo);
+                }
+                catch
+                {
+                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                Program.ServicePortNr = number;
+            }
+        }
+
         #endregion
 
         private void m_browseIbaAnalyzerButton_Click(object sender, EventArgs e)

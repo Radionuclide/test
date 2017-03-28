@@ -93,10 +93,10 @@ Function OnEnd
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $0 == "1"
     Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
-    FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+    FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
     ${While} $0 == 0
       Sleep 500
-      FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+      FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
     ${EndWhile}
     SendMessage $0 0x8141 0 0
   ${Else}
