@@ -147,32 +147,42 @@ namespace iba
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             System.Threading.Thread.CurrentThread.Name = "GUI thread";
-            MainForm = new MainForm();
-            if (RunsWithService == ServiceEnum.DISCONNECTED)
-            {   
-                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-                Hashtable props = new Hashtable();
-                props["port"] = 0;
-                //props["machineName"] = "NOTE-ELEWOUT";
-                // Pass the properties for the port setting and the server provider in the server chain argument. (Client remains null here.)
-                TcpChannel channel = new TcpChannel(props, clientProvider, serverProvider);
-                ChannelServices.RegisterChannel(channel,false);
-                MainForm.TryToConnect(null);    
-            }
-
-            if (RunsWithService != ServiceEnum.NOSERVICE)
+            if (RunsWithService == ServiceEnum.STATUS)
             {
-                MainForm.WindowState = FormWindowState.Minimized;
+                StatusForm = new StatusForm();
+                StatusForm.WindowState = FormWindowState.Minimized;
                 MainForm.ShowInTaskbar = false;
+                Application.Run(StatusForm);
             }
             else
             {
-                MainForm.WindowState = FormWindowState.Normal;
-                MainForm.ShowInTaskbar = true;
+                MainForm = new MainForm();
+                if (RunsWithService == ServiceEnum.DISCONNECTED)
+                {
+                    BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+                    BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+                    serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+                    Hashtable props = new Hashtable();
+                    props["port"] = 0;
+                    //props["machineName"] = "NOTE-ELEWOUT";
+                    // Pass the properties for the port setting and the server provider in the server chain argument. (Client remains null here.)
+                    TcpChannel channel = new TcpChannel(props, clientProvider, serverProvider);
+                    ChannelServices.RegisterChannel(channel, false);
+                    MainForm.TryToConnect(null);
+                }
+
+                //if (RunsWithService != ServiceEnum.NOSERVICE)
+                //{
+                //    MainForm.WindowState = FormWindowState.Minimized;
+                //    MainForm.ShowInTaskbar = false;
+                //}
+                //else
+                //{
+                    MainForm.WindowState = FormWindowState.Normal;
+                    MainForm.ShowInTaskbar = true;
+                //}
+                Application.Run(MainForm);
             }
-            Application.Run(MainForm);
         }
 
         static void SetupLanguage(string[] args)

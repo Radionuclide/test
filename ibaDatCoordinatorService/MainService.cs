@@ -15,6 +15,8 @@ using System.IO;
 using iba.Processing;
 using iba.Data;
 using iba.Utility;
+using System.IO.Pipes;
+using System.Linq;
 
 namespace iba.Services
 {
@@ -152,6 +154,76 @@ namespace iba.Services
         {
             OnStop();
             base.OnShutdown();
+        }
+
+        NamedPipeClientStream m_pipe;
+
+        protected override void OnCustomCommand(int command)
+        {
+            switch (command)
+            {
+                case 128:
+                    try
+                    {
+                        m_pipe = new NamedPipeClientStream(".", "DatcoServiceStatusPipe", PipeDirection.In);
+                    }
+                    catch
+                    {
+
+                    }
+                    return;
+                case 129:
+                    try
+                    {
+                        using (StreamReader sr = new StreamReader(m_pipe))
+                        {
+                            string sourcePath = sr.ReadLine();
+                            CopyIbaAnalyzerFiles(sourcePath);
+                            string regFile = sr.ReadLine();
+                            RegisterIbaAnalyzerSettings(regFile);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        if (m_pipe != null)
+                        {
+                            m_pipe.Dispose();
+                            m_pipe = null;
+                        }
+                    }
+                    return;
+            }
+        }
+
+        public virtual void CopyIbaAnalyzerFiles(string sourcePath)
+        {
+            string targetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            targetPath = Path.Combine(targetPath, "iba", "ibaAnalyzer");
+            if (!Directory.Exists(targetPath))
+                Directory.CreateDirectory(targetPath);
+            var extensions = new[] { ".mcr", ".fil", ".xml" };
+            var files = (from file in Directory.EnumerateFiles(sourcePath)
+                         where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase) // comment this out if you don't want to filter extensions
+                         select new
+                         {
+                             Source = file,
+                             Destination = Path.Combine(targetPath, Path.GetFileName(file))
+                         });
+
+            foreach (var file in files)
+            {
+                File.Copy(file.Source, file.Destination, true);
+            }
+        }
+
+        public virtual void RegisterIbaAnalyzerSettings(string outFile)
+        {
+            System.Diagnostics.Process regeditProcess = System.Diagnostics.Process.Start("regedit.exe", "/s \"" + outFile + "\"");
+            regeditProcess.WaitForExit();
         }
     }
 }

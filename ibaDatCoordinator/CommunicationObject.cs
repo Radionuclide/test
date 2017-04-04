@@ -504,8 +504,8 @@ namespace iba
             //if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             Program.MainForm.ReplaceManagerFromTree(TaskManager.Manager);
             Program.MainForm.Icon = iba.Properties.Resources.disconnectedIcon;
-            Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
-            Program.MainForm.NotifyIcon.Text = iba.Properties.Resources.niDisconnected;
+            //Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
+            //Program.MainForm.NotifyIcon.Text = iba.Properties.Resources.niDisconnected;
             Program.MainForm.StartButton.Enabled = false;
             Program.MainForm.StopButton.Enabled = false;
             Program.MainForm.SetRenderer();

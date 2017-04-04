@@ -28,19 +28,220 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusForm));
+            this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
+            this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
+            this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
+            this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
+            this.m_registerButton = new System.Windows.Forms.Button();
+            this.m_executeIBAAButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.m_gbApp = new iba.Utility.CollapsibleGroupBox();
+            this.m_lblServiceStatus = new System.Windows.Forms.Label();
+            this.m_udPort = new System.Windows.Forms.NumericUpDown();
+            this.m_btnStop = new System.Windows.Forms.Button();
+            this.m_btnStart = new System.Windows.Forms.Button();
+            this.m_lbServPort = new System.Windows.Forms.Label();
+            this.m_lbServStatus = new System.Windows.Forms.Label();
+            this.m_btnOptimize = new System.Windows.Forms.Button();
+            this.m_comboPriority = new System.Windows.Forms.ComboBox();
+            this.m_lblPriority = new System.Windows.Forms.Label();
+            this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox5.SuspendLayout();
+            this.m_gbApp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).BeginInit();
             this.SuspendLayout();
+            // 
+            // groupBox5
+            // 
+            resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.m_btTransferAnalyzerSettings);
+            this.groupBox5.Controls.Add(this.m_tbAnalyzerExe);
+            this.groupBox5.Controls.Add(this.m_browseIbaAnalyzerButton);
+            this.groupBox5.Controls.Add(this.m_registerButton);
+            this.groupBox5.Controls.Add(this.m_executeIBAAButton);
+            this.groupBox5.Controls.Add(this.label5);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.TabStop = false;
+            // 
+            // m_btTransferAnalyzerSettings
+            // 
+            resources.ApplyResources(this.m_btTransferAnalyzerSettings, "m_btTransferAnalyzerSettings");
+            this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
+            this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
+            this.m_btTransferAnalyzerSettings.Click += new System.EventHandler(this.m_btTransferAnalyzerSettings_Click);
+            // 
+            // m_tbAnalyzerExe
+            // 
+            resources.ApplyResources(this.m_tbAnalyzerExe, "m_tbAnalyzerExe");
+            this.m_tbAnalyzerExe.Name = "m_tbAnalyzerExe";
+            // 
+            // m_browseIbaAnalyzerButton
+            // 
+            resources.ApplyResources(this.m_browseIbaAnalyzerButton, "m_browseIbaAnalyzerButton");
+            this.m_browseIbaAnalyzerButton.Image = global::iba.Properties.Resources.open;
+            this.m_browseIbaAnalyzerButton.Name = "m_browseIbaAnalyzerButton";
+            this.m_browseIbaAnalyzerButton.UseVisualStyleBackColor = true;
+            // 
+            // m_registerButton
+            // 
+            resources.ApplyResources(this.m_registerButton, "m_registerButton");
+            this.m_registerButton.Image = global::iba.Properties.Resources.Register;
+            this.m_registerButton.Name = "m_registerButton";
+            this.m_registerButton.UseVisualStyleBackColor = true;
+            // 
+            // m_executeIBAAButton
+            // 
+            resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
+            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.Analyzer_001;
+            this.m_executeIBAAButton.Name = "m_executeIBAAButton";
+            this.m_executeIBAAButton.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // m_gbApp
+            // 
+            resources.ApplyResources(this.m_gbApp, "m_gbApp");
+            this.m_gbApp.Controls.Add(this.m_lblServiceStatus);
+            this.m_gbApp.Controls.Add(this.m_udPort);
+            this.m_gbApp.Controls.Add(this.m_btnStop);
+            this.m_gbApp.Controls.Add(this.m_btnStart);
+            this.m_gbApp.Controls.Add(this.m_lbServPort);
+            this.m_gbApp.Controls.Add(this.m_lbServStatus);
+            this.m_gbApp.Controls.Add(this.m_btnOptimize);
+            this.m_gbApp.Controls.Add(this.m_comboPriority);
+            this.m_gbApp.Controls.Add(this.m_lblPriority);
+            this.m_gbApp.Controls.Add(this.m_cbAutoStart);
+            this.m_gbApp.Name = "m_gbApp";
+            this.m_gbApp.TabStop = false;
+            // 
+            // m_lblServiceStatus
+            // 
+            this.m_lblServiceStatus.BackColor = System.Drawing.Color.Red;
+            this.m_lblServiceStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.m_lblServiceStatus, "m_lblServiceStatus");
+            this.m_lblServiceStatus.Name = "m_lblServiceStatus";
+            // 
+            // m_udPort
+            // 
+            resources.ApplyResources(this.m_udPort, "m_udPort");
+            this.m_udPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.m_udPort.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_udPort.Name = "m_udPort";
+            this.m_udPort.Value = new decimal(new int[] {
+            8800,
+            0,
+            0,
+            0});
+            // 
+            // m_btnStop
+            // 
+            resources.ApplyResources(this.m_btnStop, "m_btnStop");
+            this.m_btnStop.Name = "m_btnStop";
+            this.m_btnStop.UseVisualStyleBackColor = true;
+            this.m_btnStop.Click += new System.EventHandler(this.m_btnStop_Click);
+            // 
+            // m_btnStart
+            // 
+            resources.ApplyResources(this.m_btnStart, "m_btnStart");
+            this.m_btnStart.Name = "m_btnStart";
+            this.m_btnStart.UseVisualStyleBackColor = true;
+            this.m_btnStart.Click += new System.EventHandler(this.m_btnStart_Click);
+            // 
+            // m_lbServPort
+            // 
+            resources.ApplyResources(this.m_lbServPort, "m_lbServPort");
+            this.m_lbServPort.Name = "m_lbServPort";
+            // 
+            // m_lbServStatus
+            // 
+            resources.ApplyResources(this.m_lbServStatus, "m_lbServStatus");
+            this.m_lbServStatus.Name = "m_lbServStatus";
+            // 
+            // m_btnOptimize
+            // 
+            resources.ApplyResources(this.m_btnOptimize, "m_btnOptimize");
+            this.m_btnOptimize.Name = "m_btnOptimize";
+            this.m_btnOptimize.UseVisualStyleBackColor = true;
+            // 
+            // m_comboPriority
+            // 
+            this.m_comboPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_comboPriority.FormattingEnabled = true;
+            this.m_comboPriority.Items.AddRange(new object[] {
+            resources.GetString("m_comboPriority.Items"),
+            resources.GetString("m_comboPriority.Items1"),
+            resources.GetString("m_comboPriority.Items2"),
+            resources.GetString("m_comboPriority.Items3"),
+            resources.GetString("m_comboPriority.Items4"),
+            resources.GetString("m_comboPriority.Items5")});
+            resources.ApplyResources(this.m_comboPriority, "m_comboPriority");
+            this.m_comboPriority.Name = "m_comboPriority";
+            // 
+            // m_lblPriority
+            // 
+            resources.ApplyResources(this.m_lblPriority, "m_lblPriority");
+            this.m_lblPriority.Name = "m_lblPriority";
+            // 
+            // m_cbAutoStart
+            // 
+            resources.ApplyResources(this.m_cbAutoStart, "m_cbAutoStart");
+            this.m_cbAutoStart.Name = "m_cbAutoStart";
+            this.m_cbAutoStart.UseVisualStyleBackColor = true;
             // 
             // StatusForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 212);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.m_gbApp);
             this.Name = "StatusForm";
-            this.Text = "StatusForm";
+            this.ShowInTaskbar = false;
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.m_gbApp.ResumeLayout(false);
+            this.m_gbApp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private Utility.CollapsibleGroupBox groupBox5;
+        private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
+        private System.Windows.Forms.TextBox m_tbAnalyzerExe;
+        private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
+        private System.Windows.Forms.Button m_registerButton;
+        private System.Windows.Forms.Button m_executeIBAAButton;
+        private System.Windows.Forms.Label label5;
+        private Utility.CollapsibleGroupBox m_gbApp;
+        private System.Windows.Forms.Label m_lblServiceStatus;
+        private System.Windows.Forms.NumericUpDown m_udPort;
+        private System.Windows.Forms.Button m_btnStop;
+        private System.Windows.Forms.Button m_btnStart;
+        private System.Windows.Forms.Label m_lbServPort;
+        private System.Windows.Forms.Label m_lbServStatus;
+        private System.Windows.Forms.Button m_btnOptimize;
+        private System.Windows.Forms.ComboBox m_comboPriority;
+        private System.Windows.Forms.Label m_lblPriority;
+        private System.Windows.Forms.CheckBox m_cbAutoStart;
+        private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.OpenFileDialog m_openFileDialog;
     }
 }

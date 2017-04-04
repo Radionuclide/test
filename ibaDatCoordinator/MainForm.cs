@@ -117,85 +117,15 @@ namespace iba
             statImageList.Images.Add(iba.Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
 
-            m_quitForm = new QuitForm(this);
-            m_quitForm.CreateHandle(new CreateParams());
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-            {
-                WindowState = FormWindowState.Minimized;
-                m_miRestoreCoordinator = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemRestore, null, miRestore_Click);
-                m_miRestoreCoordinator.Font = new Font(m_miRestoreCoordinator.Font,FontStyle.Bold);
-                m_miStartService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, null, miStartService_Click);
-                m_miStopService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, null, miStopService_Click);
-                if (!Utility.DataPath.IsAdmin)
-                {
-                    m_miStartService.Image  = iba.Properties.Resources.shield;
-                    m_miStopService.Image  = iba.Properties.Resources.shield;
-                    startServiceToolStripMenuItem.Image = iba.Properties.Resources.shield;
-                    stopServiceToolStripMenuItem.Image = iba.Properties.Resources.shield;
-                }
-
-
-                m_miExit = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemExit, null, miExit_Click);
-                ToolStripItem seperator = new ToolStripSeparator();
-                ToolStripItem seperator2 = new ToolStripSeparator();
-                m_iconMenu = new ContextMenuStrip();
-                m_iconMenu.Items.AddRange(new ToolStripItem[] 
-                    { 
-                        m_miRestoreCoordinator, 
-                        seperator, 
-                        m_miStartService, 
-                        m_miStopService, 
-                        seperator2, 
-                        m_miExit 
-                    });
-                m_iconMenu.RightToLeft = System.Windows.Forms.RightToLeft.No;
-                m_iconMenu.Opening += new CancelEventHandler(m_iconMenu_Opening);
-                
-                m_iconEx = new NotifyIcon();
-                m_iconEx.ContextMenuStrip = m_iconMenu;
-                m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
-                m_iconEx.Visible = false;
-            }
-            else
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
                 WindowState = FormWindowState.Normal;
                 m_menuStrip.Items.Remove(serviceToolStripMenuItem);
-                m_iconEx = null;
-                m_iconMenu = null;
-                m_miRestoreCoordinator = null;
-                m_miStartService = null;
-                m_miStopService = null;
-                m_miExit = null;
                 this.Icon = iba.Properties.Resources.standalone;
             }
             m_navBar.SelectedPane = m_configPane;
         }
 
-        void m_iconMenu_Opening(object sender, CancelEventArgs e)
-        {
-            ServiceController service = new ServiceController("IbaDatCoordinatorService");
-            try
-            {
-                if (service.Status == ServiceControllerStatus.Stopped)
-                {
-                    m_miStartService.Enabled = true;
-                    m_miStopService.Enabled = false;
-                }
-                else
-                {
-                    m_miStartService.Enabled = false;
-                    m_miStopService.Enabled = true;
-                }
-            }
-            catch (Exception)
-            {
-                m_miStartService.Enabled = false;
-                m_miStopService.Enabled = false;
-            }
-            service.Close();
-        }
-
-        private bool m_actualClose = false;
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -203,17 +133,7 @@ namespace iba
                 FormStateSerializer.SaveSettings(this, "MainForm");
 
             SaveRightPaneControl();
-            if (!m_actualClose && Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-            {
-                if (WindowState != FormWindowState.Minimized)
-                {
-                    WindowState = FormWindowState.Minimized;
-                    ShowInTaskbar = false;
-                    e.Cancel = true;
-                }
-                return;
-            }
-            
+           
             string s = String.IsNullOrEmpty(m_filename) ? "not set" : m_filename;
             Profiler.ProfileString(false, "LastState", "LastSavedFile", ref s, "not set");
 
@@ -511,8 +431,6 @@ namespace iba
                 Hide();
                 bHandleResize = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
             }
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-                m_iconEx.Visible = true;
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
@@ -2438,8 +2356,6 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
                 m_startButton.Enabled = m_stopButton.Enabled = false;
-                m_iconEx.Icon = this.Icon = iba.Properties.Resources.disconnectedIcon;
-                m_iconEx.Text = iba.Properties.Resources.niDisconnected;
                 return;
             }
             bool allEnabledStarted = true;
@@ -2456,20 +2372,6 @@ namespace iba
             }
             m_startButton.Enabled = !allEnabledStarted;
             m_stopButton.Enabled = !allStopped;
-
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                if (!allStopped)
-                {
-                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.runningIcon;
-                    m_iconEx.Text = iba.Properties.Resources.niRunning;
-                }
-                else
-                {
-                    m_iconEx.Icon = this.Icon = iba.Properties.Resources.connectedIcon;
-                    m_iconEx.Text = iba.Properties.Resources.niConnected;
-                }
-            }
         }
 
         public void SetRenderer()
@@ -2501,7 +2403,7 @@ namespace iba
             ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
             if(pane != null)
             {
-                pane.UpdateServiceControls();
+               // pane.UpdateServiceControls();
             }
         }
 
@@ -2733,60 +2635,15 @@ namespace iba
             }
         }
 
-        #region Service related methods
-        public void OnStartService()
-        {
-            SaveRightPaneControl();
-            m_firstConnectToService = false; //user starts service manually, do not automatically load user stuff
-            //startservice dialog
-            using (StartServiceDialog ssd = new StartServiceDialog())
-            {
-                if (WindowState == FormWindowState.Minimized)
-                {
-                    ssd.StartPosition = FormStartPosition.CenterScreen;
-                    ssd.ShowDialog();
-                }
-                else
-                {
-                    ssd.StartPosition = FormStartPosition.CenterParent;
-                    ssd.ShowDialog(this);
-                }
-            }
-        }
 
-        public void OnStopService()
-        {
-            //stopService dialog
-            SaveRightPaneControl();
-            //Program.CommunicationObject.StoppingService = true;
-            bool result = false;
-            using (StopServiceDialog ssd = new StopServiceDialog())
-            {
-                if (WindowState == FormWindowState.Minimized)
-                {
-                    ssd.StartPosition = FormStartPosition.CenterScreen;
-                    ssd.ShowDialog();
-                    result = ssd.Result;
-                }
-                else
-                {
-                    ssd.StartPosition = FormStartPosition.CenterParent;
-                    ssd.ShowDialog(this);
-                    result = ssd.Result;
-                }
-            }
-            if (result)
-            {
-                Program.CommunicationObject.HandleBrokenConnection();
-                LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
-                if (m_navBar.SelectedPane == m_statusPane)
-                    loadStatuses();
-                else if (m_navBar.SelectedPane == m_configPane)
-                    loadConfigurations();
-            }
-            //Program.CommunicationObject.StoppingService = false;
-        }
 
+
+        public delegate void IbaAnalyzerCall();
+
+        private void miConnectServiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnConnectService();
+        }
 
         private void OnConnectService()
         {
@@ -2806,12 +2663,7 @@ namespace iba
             }
         }
 
-        public delegate void IbaAnalyzerCall();
-
-
         private bool m_firstConnectToService;
-
-        private bool m_forcedReconnect;
 
         public void TryToConnect(object ignoreMe)
         {
@@ -2820,7 +2672,7 @@ namespace iba
             try
             {
 
-                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED || m_forcedReconnect)
+                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
@@ -2969,66 +2821,6 @@ namespace iba
             TaskManager.Manager.ReplaceConfigurations(toReplace);
         }
 
-        public void OnExternalActivate()
-        {
-            Show();
-            Activate();
-            WindowState = FormWindowState.Normal;
-            FormStateSerializer.LoadSettings(this, "MainForm", true);
-            ShowInTaskbar = true;
-        }
-
-        private void miRestore_Click(object sender, System.EventArgs e)
-        {
-            OnExternalActivate();
-        }
-
-        private void miExit_Click(object sender, System.EventArgs e)
-        {
-            OnExternalClose();
-        }
-
-        private void miStartService_Click(object sender, System.EventArgs e)
-        {
-            if (!Utility.Crypt.CheckPassword(this)) return;
-            OnStartService();
-        }
-
-        private void miStopService_Click(object sender, System.EventArgs e)
-        {
-            if (!Utility.Crypt.CheckPassword(this)) return;
-            OnStopService();
-        }
-
-        private void miConnectServiceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OnConnectService();
-        }
-
-
-        private void iconEx_DoubleClick(object sender, System.EventArgs e)
-        {
-            miRestore_Click(null, null);
-        }
-
-        public void OnExternalClose()
-        {
-            m_actualClose = true;
-            if (m_iconEx != null)
-                m_iconEx.Dispose();
-            Close();
-        }
-
-        protected override void WndProc(ref System.Windows.Forms.Message m)
-        {
-            const int WM_QUERYENDSESSION = 0x011;
-            if (m.Msg == WM_QUERYENDSESSION)
-            {
-                m_actualClose = true;
-            }
-            base.WndProc(ref m);
-
-        } //WndProc 
 
         private void serviceToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
@@ -3054,18 +2846,7 @@ namespace iba
             service.Close();
         }
 
-        private QuitForm m_quitForm;
-        private NotifyIcon m_iconEx;
-        public NotifyIcon NotifyIcon
-        {
-            get { return m_iconEx; }
-        }
 
-        private ContextMenuStrip m_iconMenu;
-        private ToolStripMenuItem m_miRestoreCoordinator;
-        private ToolStripMenuItem m_miStartService;
-        private ToolStripMenuItem m_miStopService;
-        private ToolStripMenuItem m_miExit;
         #endregion
 
         #region Online Help
@@ -3124,13 +2905,26 @@ namespace iba
             }
         }
 
+        public void OnExternalActivate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnExternalClose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnStartService()
+        {
+            throw new NotImplementedException();
+        }
+
 
         #endregion
 
 
     }
-
-    #endregion
 
     #region ImageList
     internal class MyImageList

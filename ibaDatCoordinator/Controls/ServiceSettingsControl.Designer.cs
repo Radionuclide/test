@@ -97,7 +97,6 @@ namespace iba.Controls
             this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
             this.m_toolTip.SetToolTip(this.m_btTransferAnalyzerSettings, resources.GetString("m_btTransferAnalyzerSettings.ToolTip"));
             this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
-            this.m_btTransferAnalyzerSettings.Click += new System.EventHandler(this.btnTransfer_Click);
             // 
             // m_btnOptimize
             // 
@@ -432,22 +431,18 @@ namespace iba.Controls
             0,
             0,
             0});
-            this.m_udPort.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_udPort_KeyUp);
-            this.m_udPort.Validated += new System.EventHandler(this.m_udPort_Validated);
             // 
             // m_btnStop
             // 
             resources.ApplyResources(this.m_btnStop, "m_btnStop");
             this.m_btnStop.Name = "m_btnStop";
             this.m_btnStop.UseVisualStyleBackColor = true;
-            this.m_btnStop.Click += new System.EventHandler(this.btStop_Click);
             // 
             // m_btnStart
             // 
             resources.ApplyResources(this.m_btnStart, "m_btnStart");
             this.m_btnStart.Name = "m_btnStart";
             this.m_btnStart.UseVisualStyleBackColor = true;
-            this.m_btnStart.Click += new System.EventHandler(this.btStart_Click);
             // 
             // m_lbServPort
             // 
@@ -493,7 +488,6 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_gbApp);
-            this.MinimumSize = new System.Drawing.Size(720, 250);
             this.Name = "ServiceSettingsControl";
             this.gb_GlobalCleanup.ResumeLayout(false);
             this.gb_GlobalCleanup.PerformLayout();

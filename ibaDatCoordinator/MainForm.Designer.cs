@@ -457,24 +457,10 @@ namespace iba
             // serviceToolStripMenuItem
             // 
             this.serviceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startServiceToolStripMenuItem,
-            this.stopServiceToolStripMenuItem,
             this.connectServiceToolStripMenuItem});
             this.serviceToolStripMenuItem.Name = "serviceToolStripMenuItem";
             resources.ApplyResources(this.serviceToolStripMenuItem, "serviceToolStripMenuItem");
             this.serviceToolStripMenuItem.DropDownOpening += new System.EventHandler(this.serviceToolStripMenuItem_DropDownOpening);
-            // 
-            // startServiceToolStripMenuItem
-            // 
-            this.startServiceToolStripMenuItem.Name = "startServiceToolStripMenuItem";
-            resources.ApplyResources(this.startServiceToolStripMenuItem, "startServiceToolStripMenuItem");
-            this.startServiceToolStripMenuItem.Click += new System.EventHandler(this.miStartService_Click);
-            // 
-            // stopServiceToolStripMenuItem
-            // 
-            this.stopServiceToolStripMenuItem.Name = "stopServiceToolStripMenuItem";
-            resources.ApplyResources(this.stopServiceToolStripMenuItem, "stopServiceToolStripMenuItem");
-            this.stopServiceToolStripMenuItem.Click += new System.EventHandler(this.miStopService_Click);
             // 
             // helpToolStripMenuItem
             // 

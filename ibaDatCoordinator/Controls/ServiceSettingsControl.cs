@@ -12,6 +12,7 @@ using iba.Processing;
 using iba.Data;
 using System.IO;
 using System.Diagnostics;
+using System.IO.Pipes;
 
 namespace iba.Controls
 {
@@ -75,30 +76,6 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && Program.ServiceIsLocal)
-            {
-                ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
-                try
-                {
-                    m_cbAutoStart.Checked = service.ServiceStart == ServiceStart.Automatic;
-                }
-                catch (Exception ex)
-                {
-                    string msg = ex.Message;
-                    if (ex.InnerException != null)
-                        msg += "\r\n" + ex.InnerException.Message;
-
-                    MessageBox.Show(this, msg, "ibaDatCoordinator", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-                service.Close();
-
-                m_udPort.Validated -= new EventHandler(m_udPort_Validated);
-                m_udPort.Value = Program.ServicePortNr;
-                m_udPort.Validated += new EventHandler(m_udPort_Validated);
-                UpdateServiceControls();
-            }
-
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
             {
                 ShowHideServiceSettings(Program.ServiceIsLocal);
@@ -328,51 +305,11 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
             {
-                PortNrValidate();
+                //PortNrValidate();
             }
             else if(Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //disconnected, don't care then.
             {
                 SetPortNumber((int)m_udPort.Value);
-            }
-        }
-
-        private void PortNrValidate()
-        {
-            int prevNr = Program.ServicePortNr;
-            int newNr = (int)m_udPort.Value;
-            if(prevNr != newNr)
-            {
-                string text = iba.Properties.Resources.RestartServerQuestion;
-                DialogResult res = DialogResult.No;
-                res = MessageBox.Show(this, text, ParentForm.Text,
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
-                    MessageBoxDefaultButton.Button1);
-                try
-                {
-                    if(res == DialogResult.Yes)
-                    {
-                        SetPortNumber(newNr);
-                        btStop_Click(this, EventArgs.Empty);
-                        btStart_Click(this, EventArgs.Empty);
-                    }
-                    else if(res == DialogResult.No)
-                    {
-                        Program.ServicePortNr = newNr; //not in effect until manually restart
-                    }
-                    else
-                    {
-                        m_udPort.Value = prevNr;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    string msg = ex.Message;
-                    if(ex.InnerException != null)
-                        msg += "\r\n" + ex.InnerException.Message;
-
-                    MessageBox.Show(this, msg, "", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
             }
         }
 
@@ -789,37 +726,6 @@ namespace iba.Controls
             }
         }
 
-        private void btnTransfer_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //copy mcr and other files
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                path = Path.Combine(path, "iba", "ibaAnalyzer");
-                TaskManager.Manager.CopyIbaAnalyzerFiles(path);
-                string tempDir = System.IO.Path.GetTempPath();
-                string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
-                Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
-                TaskManager.Manager.RegisterIbaAnalyzerSettings(outFile);
-                File.Delete(outFile);
-                MessageBox.Show(this, Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btStart_Click(object sender, EventArgs e)
-        {
-            Program.MainForm.OnStartService();
-        }
-
-        private void btStop_Click(object sender, EventArgs e)
-        {
-            Program.MainForm.OnStopService();
-        }
-
         public void UpdateServiceControls()
         {
             if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -836,17 +742,6 @@ namespace iba.Controls
                 m_btnStart.Enabled = true;
                 m_btnStop.Enabled = false;
             }
-        }
-
-        private void m_udPort_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Enter)
-                PortNrValidate();
-        }
-
-        private void m_udPort_Validated(object sender, EventArgs e)
-        {
-            PortNrValidate();
         }
     }
 

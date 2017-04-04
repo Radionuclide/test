@@ -3134,6 +3134,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to server status.
+        /// </summary>
+        internal static string StatusProgram {
+            get {
+                return ResourceManager.GetString("StatusProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Stop {
