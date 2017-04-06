@@ -20,54 +20,43 @@ namespace iba.Controls
     {
         public ServiceSettingsControl()
         {
-            InitializeComponent();
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
-                m_gbApp.Text = iba.Properties.Resources.Application;
-                m_lblPriority.Text = iba.Properties.Resources.PriorityApp;
-                Control[] ToHide = new Control[] {m_cbAutoStart,
-                    m_btTransferAnalyzerSettings,m_btnStart,m_btnStop,
-                    m_udPort, m_lblServiceStatus, m_lbServStatus, m_lbServPort};
+                Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_browseIbaAnalyzerButton, m_executeIBAAButton, m_registerButton,
+                    m_btTransferAnalyzerSettings};
+
                 foreach (var ctrl in ToHide)
                 {
                     ctrl.Visible = false;
                 }
-                int Offset = m_gbApp.Height - m_lblServiceStatus.Top;
-                m_gbApp.Height -= Offset;
-                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
+                int Offset = 30;
+                gb_IbaAnalyzer.Height -= Offset;
+                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { gb_Password, gb_GlobalCleanup };
                 foreach (var box in gboxesLower)
                 {
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
                     box.Top -= Offset;
                 }
+                m_ceManager = new CollapsibleElementManager(this);
+                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
+                foreach (var box in gboxes)
+                {
+                    box.Init();
+                    m_ceManager.AddElement(box);
+                }
             }
-            Offset = groupBox1.Top - m_gbApp.Top;
-            ServiceSettingsShown = true;
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
-            m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
-            m_ceManager = new CollapsibleElementManager(this);
-            CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { m_gbApp, groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
-            foreach (var box in gboxes)
+            else
             {
-                box.Init();
-                m_ceManager.AddElement(box);
+                ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
+                m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
+                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
+                foreach (var box in gboxes)
+                {
+                    box.Init();
+                    m_ceManager.AddElement(box);
+                }
             }
-        }
 
-        private int Offset;
-        private bool ServiceSettingsShown;
-
-        private void ShowHideServiceSettings(bool show)
-        {
-            if (ServiceSettingsShown == show) return;
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) return;
-            m_gbApp.IsCollapsed = false;
-            CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { groupBox1, groupBox5, groupBox2, gb_GlobalCleanup };
-            foreach (var box in gboxesLower)
-            {
-                box.Top += show ? Offset:-Offset;
-            }
-            m_gbApp.Visible = show;
         }
 
         private CollapsibleElementManager m_ceManager;
@@ -76,11 +65,6 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-            {
-                ShowHideServiceSettings(Program.ServiceIsLocal);
-            }
-
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = TaskManager.Manager.MaxIbaAnalyzerCalls;
             m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
@@ -90,49 +74,9 @@ namespace iba.Controls
             m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
 
 
-            Control[] ToHide = new Control[] {label5,
-                    m_btTransferAnalyzerSettings,
-                    m_tbAnalyzerExe,
-                    m_browseIbaAnalyzerButton, m_executeIBAAButton, m_registerButton
-                    };
 
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
-                foreach (var ctrl in ToHide)
-                {
-                    ctrl.Visible = false;
-                }
-            }
-            else
-            {
-                foreach (var ctrl in ToHide)
-                {
-                    ctrl.Visible = true;
-                }
-                int iPc = TaskManager.Manager.ProcessPriority;
-                m_nudResourceCritical.Value = (decimal)TaskManager.Manager.MaxResourceIntensiveTasks;
-                System.Diagnostics.ProcessPriorityClass pc = (System.Diagnostics.ProcessPriorityClass)iPc;
-                switch (pc)
-                {
-                    case System.Diagnostics.ProcessPriorityClass.Idle:
-                        m_comboPriority.SelectedIndex = 0;
-                        break;
-                    case System.Diagnostics.ProcessPriorityClass.BelowNormal:
-                        m_comboPriority.SelectedIndex = 1;
-                        break;
-                    case System.Diagnostics.ProcessPriorityClass.Normal:
-                        m_comboPriority.SelectedIndex = 2;
-                        break;
-                    case System.Diagnostics.ProcessPriorityClass.AboveNormal:
-                        m_comboPriority.SelectedIndex = 3;
-                        break;
-                    case System.Diagnostics.ProcessPriorityClass.High:
-                        m_comboPriority.SelectedIndex = 4;
-                        break;
-                    case System.Diagnostics.ProcessPriorityClass.RealTime:
-                        m_comboPriority.SelectedIndex = 5;
-                        break;
-                }
                 try
                 {
                     RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
@@ -196,91 +140,6 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-            {
-                ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
-                try
-                {
-                    if (m_cbAutoStart.Checked && service.ServiceStart != ServiceStart.Automatic)
-                    {
-                        if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
-                        {
-                            if (System.Environment.OSVersion.Version.Major < 6)
-                            {
-                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                service.Close();
-                                return;
-                            }
-                            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                            procInfo.UseShellExecute = true;
-                            procInfo.ErrorDialog = true;
-
-                            procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                            procInfo.FileName = Application.ExecutablePath;
-
-                            procInfo.Arguments = "/setautomaticservicestart";
-                            procInfo.Verb = "runas";
-
-                            try
-                            {
-                                System.Diagnostics.Process.Start(procInfo);
-                            }
-                            catch
-                            {
-                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                        else
-                        {
-                            service.ServiceStart = ServiceStart.Automatic;
-                        }
-                    }
-                    else if (!m_cbAutoStart.Checked && service.ServiceStart == ServiceStart.Automatic)
-                    {
-                        if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
-                        {
-                            if (System.Environment.OSVersion.Version.Major < 6)
-                            {
-                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                service.Close();
-                                return;
-                            }
-                            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                            procInfo.UseShellExecute = true;
-                            procInfo.ErrorDialog = true;
-
-                            procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                            procInfo.FileName = Application.ExecutablePath;
-
-                            procInfo.Arguments = "/setmanualservicestart";
-                            procInfo.Verb = "runas";
-
-                            try
-                            {
-                                System.Diagnostics.Process.Start(procInfo);
-                            }
-                            catch
-                            {
-                                MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                        else
-                        {
-                            service.ServiceStart = ServiceStart.Manual;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string msg = ex.Message;
-                    if (ex.InnerException != null)
-                        msg += "\r\n" + ex.InnerException.Message;
-
-                    MessageBox.Show(this, msg, "ibaDatCoordinator", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-                service.Close();
-            }
             TaskManager.Manager.DoPostponeProcessing = m_cbPostpone.Checked;
             TaskManager.Manager.PostponeMinutes = (int)m_nudPostponeTime.Value;
             TaskManager.Manager.MaxIbaAnalyzerCalls = (int)m_nudRestartIbaAnalyzer.Value;
@@ -288,63 +147,8 @@ namespace iba.Controls
             TaskManager.Manager.MaxSimultaneousIbaAnalyzers = (int)m_nudMaxIbaAnalyzers.Value;
             TaskManager.Manager.RememberPassEnabled = m_cbRememberPassword.Checked;
             TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
-
             TaskManager.Manager.MaxResourceIntensiveTasks = (int)m_nudResourceCritical.Value;
-            int iPc = 2;
-            switch (m_comboPriority.SelectedIndex)
-            {
-                case 0: iPc = (int)System.Diagnostics.ProcessPriorityClass.Idle; break;
-                case 1: iPc = (int)System.Diagnostics.ProcessPriorityClass.BelowNormal; break;
-                case 2: iPc = (int)System.Diagnostics.ProcessPriorityClass.Normal; break;
-                case 3: iPc = (int)System.Diagnostics.ProcessPriorityClass.AboveNormal; break;
-                case 4: iPc = (int)System.Diagnostics.ProcessPriorityClass.High; break;
-                case 5: iPc = (int)System.Diagnostics.ProcessPriorityClass.RealTime; break;
-            }
-            TaskManager.Manager.ProcessPriority = iPc;
             TaskManager.Manager.GlobalCleanupDataList = m_globalCleanupData;
-
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                //PortNrValidate();
-            }
-            else if(Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //disconnected, don't care then.
-            {
-                SetPortNumber((int)m_udPort.Value);
-            }
-        }
-
-        void SetPortNumber(int number)
-        {
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
-            {
-                if (System.Environment.OSVersion.Version.Major < 6)
-                {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                procInfo.UseShellExecute = true;
-                procInfo.ErrorDialog = true;
-
-                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                procInfo.FileName = Application.ExecutablePath;
-
-                procInfo.Arguments = "/setportnumber:" + number.ToString();
-                procInfo.Verb = "runas";
-
-                try
-                {
-                    System.Diagnostics.Process.Start(procInfo);
-                }
-                catch
-                {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                Program.ServicePortNr = number;
-            }
         }
 
         #endregion
@@ -444,41 +248,6 @@ namespace iba.Controls
         private void m_cbRememberPassword_CheckedChanged(object sender, EventArgs e)
         {
             m_nudRememberTime.Enabled = m_cbRememberPassword.Checked;
-        }
-
-        private void m_btnOptimize_Click(object sender, EventArgs e)
-        {
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
-            {
-                if (System.Environment.OSVersion.Version.Major < 6)
-                {
-                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                procInfo.UseShellExecute = true;
-                procInfo.ErrorDialog = true;
-
-                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                procInfo.FileName = Application.ExecutablePath;
-
-                procInfo.Arguments = "/optimizeregistry";
-                procInfo.Verb = "runas";
-
-                try
-                {
-                    System.Diagnostics.Process.Start(procInfo);
-                }
-                catch
-                {
-                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                RegistryOptimizer.DoWork();
-            }
         }
 
         private void InitGlobalCleanup()
@@ -725,66 +494,7 @@ namespace iba.Controls
                 ctl.Enabled = enabled;
             }
         }
-
-        public void UpdateServiceControls()
-        {
-            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatRunning;
-                m_lblServiceStatus.BackColor = Color.LimeGreen;
-                m_btnStart.Enabled = false;
-                m_btnStop.Enabled = true;
-            }
-            else if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-            {
-                m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatStopped;
-                m_lblServiceStatus.BackColor = Color.Red;
-                m_btnStart.Enabled = true;
-                m_btnStop.Enabled = false;
-            }
-        }
     }
 
-    internal enum ServiceStart
-    {
-        Boot = 0,
-        System = 1,
-        Automatic = 2,
-        Manual = 3,
-        Disabled = 4
-    }
 
-    internal class ServiceControllerEx : System.ServiceProcess.ServiceController
-    {
-        public ServiceControllerEx() : base() { }
-        public ServiceControllerEx(string serviceName) : base(serviceName) { }
-        public ServiceControllerEx(string serviceName, string machineName) : base(serviceName, machineName) { }
-
-        public ServiceStart ServiceStart
-        {
-            get
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(
-                    "SYSTEM\\CurrentControlSet\\Services\\" + this.ServiceName);
-                if (key == null)
-                    return ServiceStart.Automatic;
-
-                ServiceStart start = (ServiceStart)key.GetValue("Start");
-                key.Close();
-                key = null;
-                return (start);
-            }
-            set
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(
-                    "SYSTEM\\CurrentControlSet\\Services\\" + this.ServiceName, true);
-                if (key == null)
-                    return;
-
-                key.SetValue("Start", (int)value);
-                key.Close();
-                key = null;
-            }
-        }
-    }
 }

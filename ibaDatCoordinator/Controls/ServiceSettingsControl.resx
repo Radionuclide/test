@@ -154,40 +154,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_btnOptimize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnOptimize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 44</value>
-  </data>
-  <data name="m_btnOptimize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 23</value>
-  </data>
-  <data name="m_btnOptimize.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_btnOptimize.Text" xml:space="preserve">
-    <value>Optimize system resources</value>
-  </data>
-  <data name="m_btnOptimize.ToolTip" xml:space="preserve">
-    <value>Verify Windows registry settings and if necessary increase system resources for ibaDatCoordinator</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Name" xml:space="preserve">
-    <value>m_btnOptimize</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <metadata name="m_folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>456, 17</value>
@@ -195,11 +165,152 @@
   <data name="gb_GlobalCleanup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Name" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Parent" xml:space="preserve">
+    <value>gb_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbl_GlobalCleanup.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="gb_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 294</value>
+  </data>
+  <data name="gb_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 240</value>
+  </data>
+  <data name="gb_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="gb_GlobalCleanup.Text" xml:space="preserve">
+    <value>Global cleanup</value>
+  </data>
+  <data name="&gt;&gt;gb_GlobalCleanup.Name" xml:space="preserve">
+    <value>gb_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;gb_GlobalCleanup.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gb_GlobalCleanup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gb_GlobalCleanup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="tbl_GlobalCleanup.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="tbl_GlobalCleanup.ColumnCount" type="System.Int32, mscorlib">
     <value>6</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
+  </data>
+  <data name="&gt;&gt;label9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tbl_GlobalCleanup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="tbl_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="tbl_GlobalCleanup.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tbl_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>604, 221</value>
+  </data>
+  <data name="tbl_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Name" xml:space="preserve">
+    <value>tbl_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.Parent" xml:space="preserve">
+    <value>gb_GlobalCleanup</value>
+  </data>
+  <data name="&gt;&gt;tbl_GlobalCleanup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbl_GlobalCleanup.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -411,62 +522,104 @@
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tbl_GlobalCleanup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
+  <data name="gb_Password.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="tbl_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
   </data>
-  <data name="tbl_GlobalCleanup.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tbl_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 221</value>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>gb_Password</value>
   </data>
-  <data name="tbl_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbl_GlobalCleanup.Name" xml:space="preserve">
-    <value>tbl_GlobalCleanup</value>
-  </data>
-  <data name="&gt;&gt;tbl_GlobalCleanup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbl_GlobalCleanup.Parent" xml:space="preserve">
-    <value>gb_GlobalCleanup</value>
-  </data>
-  <data name="&gt;&gt;tbl_GlobalCleanup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tbl_GlobalCleanup.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;m_ClearPassBtn.Name" xml:space="preserve">
+    <value>m_ClearPassBtn</value>
   </data>
-  <data name="gb_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 437</value>
+  <data name="&gt;&gt;m_ClearPassBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="gb_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 240</value>
+  <data name="&gt;&gt;m_ClearPassBtn.Parent" xml:space="preserve">
+    <value>gb_Password</value>
   </data>
-  <data name="gb_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;m_ClearPassBtn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudRememberTime.Name" xml:space="preserve">
+    <value>m_nudRememberTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudRememberTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudRememberTime.Parent" xml:space="preserve">
+    <value>gb_Password</value>
+  </data>
+  <data name="&gt;&gt;m_nudRememberTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_SetChangePassBtn.Name" xml:space="preserve">
+    <value>m_SetChangePassBtn</value>
+  </data>
+  <data name="&gt;&gt;m_SetChangePassBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_SetChangePassBtn.Parent" xml:space="preserve">
+    <value>gb_Password</value>
+  </data>
+  <data name="&gt;&gt;m_SetChangePassBtn.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbRememberPassword.Name" xml:space="preserve">
+    <value>m_cbRememberPassword</value>
+  </data>
+  <data name="&gt;&gt;m_cbRememberPassword.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRememberPassword.Parent" xml:space="preserve">
+    <value>gb_Password</value>
+  </data>
+  <data name="&gt;&gt;m_cbRememberPassword.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="gb_GlobalCleanup.Text" xml:space="preserve">
-    <value>Global cleanup</value>
+  <data name="&gt;&gt;m_passwordStatusLabel.Name" xml:space="preserve">
+    <value>m_passwordStatusLabel</value>
   </data>
-  <data name="&gt;&gt;gb_GlobalCleanup.Name" xml:space="preserve">
-    <value>gb_GlobalCleanup</value>
+  <data name="&gt;&gt;m_passwordStatusLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gb_GlobalCleanup.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_passwordStatusLabel.Parent" xml:space="preserve">
+    <value>gb_Password</value>
+  </data>
+  <data name="&gt;&gt;m_passwordStatusLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="gb_Password.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 204</value>
+  </data>
+  <data name="gb_Password.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 84</value>
+  </data>
+  <data name="gb_Password.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="gb_Password.Text" xml:space="preserve">
+    <value>Password protection</value>
+  </data>
+  <data name="&gt;&gt;gb_Password.Name" xml:space="preserve">
+    <value>gb_Password</value>
+  </data>
+  <data name="&gt;&gt;gb_Password.Type" xml:space="preserve">
     <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;gb_GlobalCleanup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gb_Password.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gb_GlobalCleanup.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;gb_Password.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -493,7 +646,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -520,7 +673,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_ClearPassBtn.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;m_ClearPassBtn.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -541,7 +694,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudRememberTime.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;m_nudRememberTime.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -568,7 +721,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_SetChangePassBtn.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;m_SetChangePassBtn.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -601,7 +754,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRememberPassword.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;m_cbRememberPassword.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -631,37 +784,160 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_passwordStatusLabel.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+    <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;m_passwordStatusLabel.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 347</value>
+  <data name="gb_IbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 84</value>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
   </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Password protection</value>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Name" xml:space="preserve">
+    <value>m_nudRestartIbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Name" xml:space="preserve">
+    <value>m_nudMaxIbaAnalyzers</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Name" xml:space="preserve">
+    <value>m_cbRestartIbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Name" xml:space="preserve">
+    <value>m_tbAnalyzerExe</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Name" xml:space="preserve">
+    <value>m_browseIbaAnalyzerButton</value>
+  </data>
+  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_browseIbaAnalyzerButton.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_registerButton.Name" xml:space="preserve">
+    <value>m_registerButton</value>
+  </data>
+  <data name="&gt;&gt;m_registerButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_registerButton.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_registerButton.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 84</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 114</value>
+  </data>
+  <data name="gb_IbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Text" xml:space="preserve">
+    <value>ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Name" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -688,10 +964,13 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -718,10 +997,13 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_nudRestartIbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_nudRestartIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
     <value>223, 81</value>
@@ -739,10 +1021,13 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_nudRestartIbaAnalyzer.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_nudMaxIbaAnalyzers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_nudMaxIbaAnalyzers.Location" type="System.Drawing.Point, System.Drawing">
     <value>432, 57</value>
@@ -760,13 +1045,13 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_nudMaxIbaAnalyzers.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Bottom, Left</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -793,7 +1078,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_cbRestartIbaAnalyzer.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -817,7 +1102,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbAnalyzerExe.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -844,7 +1129,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_browseIbaAnalyzerButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_browseIbaAnalyzerButton.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -871,7 +1156,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_registerButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_registerButton.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -898,7 +1183,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -931,36 +1216,12 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+    <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 227</value>
-  </data>
-  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 114</value>
-  </data>
-  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="gb_Processing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
@@ -988,7 +1249,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1009,7 +1270,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudResourceCritical.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;m_nudResourceCritical.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1039,7 +1300,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -1060,7 +1321,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudPostponeTime.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;m_nudPostponeTime.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -1093,349 +1354,34 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbPostpone.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;m_cbPostpone.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 148</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 73</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Processing</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lblServiceStatus.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_lblServiceStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblServiceStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 74</value>
-  </data>
-  <data name="m_lblServiceStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 23</value>
-  </data>
-  <data name="m_lblServiceStatus.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_lblServiceStatus.Text" xml:space="preserve">
-    <value>Stopped</value>
-  </data>
-  <data name="m_lblServiceStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Name" xml:space="preserve">
-    <value>m_lblServiceStatus</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_udPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 103</value>
-  </data>
-  <data name="m_udPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 20</value>
-  </data>
-  <data name="m_udPort.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_udPort.Name" xml:space="preserve">
-    <value>m_udPort</value>
-  </data>
-  <data name="&gt;&gt;m_udPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_udPort.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_udPort.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnStop.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_btnStop.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_btnStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>579, 73</value>
-  </data>
-  <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_btnStop.Text" xml:space="preserve">
-    <value>Stop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
-    <value>m_btnStop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_btnStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnStart.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_btnStart.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_btnStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>473, 73</value>
-  </data>
-  <data name="m_btnStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="m_btnStart.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_btnStart.Text" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Name" xml:space="preserve">
-    <value>m_btnStart</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_lbServPort.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbServPort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbServPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 105</value>
-  </data>
-  <data name="m_lbServPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="m_lbServPort.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lbServPort.Text" xml:space="preserve">
-    <value>Port:</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Name" xml:space="preserve">
-    <value>m_lbServPort</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_lbServStatus.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbServStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbServStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 79</value>
-  </data>
-  <data name="m_lbServStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 13</value>
-  </data>
-  <data name="m_lbServStatus.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_lbServStatus.Text" xml:space="preserve">
-    <value>Status:</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Name" xml:space="preserve">
-    <value>m_lbServStatus</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_comboPriority.Items" xml:space="preserve">
-    <value>Low</value>
-  </data>
-  <data name="m_comboPriority.Items1" xml:space="preserve">
-    <value>Below normal</value>
-  </data>
-  <data name="m_comboPriority.Items2" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="m_comboPriority.Items3" xml:space="preserve">
-    <value>Above normal</value>
-  </data>
-  <data name="m_comboPriority.Items4" xml:space="preserve">
-    <value>High</value>
-  </data>
-  <data name="m_comboPriority.Items5" xml:space="preserve">
-    <value>Realtime</value>
-  </data>
-  <data name="m_comboPriority.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 17</value>
-  </data>
-  <data name="m_comboPriority.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 21</value>
-  </data>
-  <data name="m_comboPriority.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Name" xml:space="preserve">
-    <value>m_comboPriority</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_lblPriority.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPriority.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblPriority.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 20</value>
-  </data>
-  <data name="m_lblPriority.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
-  </data>
-  <data name="m_lblPriority.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblPriority.Text" xml:space="preserve">
-    <value>Priority of service:</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Name" xml:space="preserve">
-    <value>m_lblPriority</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_cbAutoStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cbAutoStart.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbAutoStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbAutoStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>325, 19</value>
-  </data>
-  <data name="m_cbAutoStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 17</value>
-  </data>
-  <data name="m_cbAutoStart.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_cbAutoStart.Text" xml:space="preserve">
-    <value>Automatically start service when windows starts</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Name" xml:space="preserve">
-    <value>m_cbAutoStart</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="gb_Processing.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 5</value>
   </data>
-  <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 137</value>
+  <data name="gb_Processing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 73</value>
   </data>
-  <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="gb_Processing.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_gbApp.Text" xml:space="preserve">
-    <value>Service</value>
+  <data name="gb_Processing.Text" xml:space="preserve">
+    <value>Processing</value>
   </data>
-  <data name="&gt;&gt;m_gbApp.Name" xml:space="preserve">
-    <value>m_gbApp</value>
+  <data name="&gt;&gt;gb_Processing.Name" xml:space="preserve">
+    <value>gb_Processing</value>
   </data>
-  <data name="&gt;&gt;m_gbApp.Type" xml:space="preserve">
+  <data name="&gt;&gt;gb_Processing.Type" xml:space="preserve">
     <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;m_gbApp.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gb_Processing.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;gb_Processing.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1447,13 +1393,13 @@
     <value>True</value>
   </data>
   <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 740</value>
+    <value>0, 550</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>720, 250</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 740</value>
+    <value>720, 553</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
     <value>m_openFileDialog</value>

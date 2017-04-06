@@ -86,8 +86,8 @@ namespace iba
             {
                 try
                 {
-                    iba.Controls.ServiceControllerEx myController = new iba.Controls.ServiceControllerEx("IbaDatCoordinatorService");
-                    myController.ServiceStart = iba.Controls.ServiceStart.Automatic;
+                    ServiceControllerEx myController = new ServiceControllerEx("IbaDatCoordinatorService");
+                    myController.ServiceStart = ServiceStart.Automatic;
                     myController.Close();
                 }
                 catch 
@@ -99,8 +99,8 @@ namespace iba
             {
                 try
                 {
-                    iba.Controls.ServiceControllerEx myController = new iba.Controls.ServiceControllerEx("IbaDatCoordinatorService");
-                    myController.ServiceStart = iba.Controls.ServiceStart.Manual;
+                    ServiceControllerEx myController = new ServiceControllerEx("IbaDatCoordinatorService");
+                    myController.ServiceStart = ServiceStart.Manual;
                     myController.Close();
                 }
                 catch
@@ -119,6 +119,18 @@ namespace iba
                 {
                     int portNumber = int.Parse(args[0].Substring(args[0].IndexOf("/setportnumber:") + 15));
                     Program.ServicePortNr = portNumber;
+                }
+                catch
+                {
+                }
+                return;
+            }
+            else if (args.Length > 0 && args[0].Contains("/setServicePriority:"))
+            {
+                try
+                {
+                    int number = int.Parse(args[0].Substring(args[0].IndexOf("/setServicePriority:") + 20));
+                    StatusForm.SetServicePriority(number);
                 }
                 catch
                 {

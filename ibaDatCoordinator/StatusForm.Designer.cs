@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusForm));
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
             this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
@@ -38,6 +40,7 @@
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_gbApp = new iba.Utility.CollapsibleGroupBox();
+            this.m_btnRestart = new System.Windows.Forms.Button();
             this.m_lblServiceStatus = new System.Windows.Forms.Label();
             this.m_udPort = new System.Windows.Forms.NumericUpDown();
             this.m_btnStop = new System.Windows.Forms.Button();
@@ -48,8 +51,7 @@
             this.m_comboPriority = new System.Windows.Forms.ComboBox();
             this.m_lblPriority = new System.Windows.Forms.Label();
             this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.m_timer = new System.Windows.Forms.Timer(this.components);
             this.groupBox5.SuspendLayout();
             this.m_gbApp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).BeginInit();
@@ -78,6 +80,7 @@
             // 
             resources.ApplyResources(this.m_tbAnalyzerExe, "m_tbAnalyzerExe");
             this.m_tbAnalyzerExe.Name = "m_tbAnalyzerExe";
+            this.m_tbAnalyzerExe.TextChanged += new System.EventHandler(this.m_tbAnalyzerExe_TextChanged);
             // 
             // m_browseIbaAnalyzerButton
             // 
@@ -85,6 +88,7 @@
             this.m_browseIbaAnalyzerButton.Image = global::iba.Properties.Resources.open;
             this.m_browseIbaAnalyzerButton.Name = "m_browseIbaAnalyzerButton";
             this.m_browseIbaAnalyzerButton.UseVisualStyleBackColor = true;
+            this.m_browseIbaAnalyzerButton.Click += new System.EventHandler(this.m_browseIbaAnalyzerButton_Click);
             // 
             // m_registerButton
             // 
@@ -92,6 +96,7 @@
             this.m_registerButton.Image = global::iba.Properties.Resources.Register;
             this.m_registerButton.Name = "m_registerButton";
             this.m_registerButton.UseVisualStyleBackColor = true;
+            this.m_registerButton.Click += new System.EventHandler(this.m_registerButton_Click);
             // 
             // m_executeIBAAButton
             // 
@@ -99,6 +104,7 @@
             this.m_executeIBAAButton.Image = global::iba.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
+            this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
             // 
             // label5
             // 
@@ -108,6 +114,7 @@
             // m_gbApp
             // 
             resources.ApplyResources(this.m_gbApp, "m_gbApp");
+            this.m_gbApp.Controls.Add(this.m_btnRestart);
             this.m_gbApp.Controls.Add(this.m_lblServiceStatus);
             this.m_gbApp.Controls.Add(this.m_udPort);
             this.m_gbApp.Controls.Add(this.m_btnStop);
@@ -120,6 +127,13 @@
             this.m_gbApp.Controls.Add(this.m_cbAutoStart);
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
+            // 
+            // m_btnRestart
+            // 
+            resources.ApplyResources(this.m_btnRestart, "m_btnRestart");
+            this.m_btnRestart.Name = "m_btnRestart";
+            this.m_btnRestart.UseVisualStyleBackColor = true;
+            this.m_btnRestart.Click += new System.EventHandler(this.m_btnRestart_Click);
             // 
             // m_lblServiceStatus
             // 
@@ -147,6 +161,8 @@
             0,
             0,
             0});
+            this.m_udPort.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_udPort_KeyUp);
+            this.m_udPort.Validated += new System.EventHandler(this.m_udPort_Validated);
             // 
             // m_btnStop
             // 
@@ -177,6 +193,7 @@
             resources.ApplyResources(this.m_btnOptimize, "m_btnOptimize");
             this.m_btnOptimize.Name = "m_btnOptimize";
             this.m_btnOptimize.UseVisualStyleBackColor = true;
+            this.m_btnOptimize.Click += new System.EventHandler(this.m_btnOptimize_Click);
             // 
             // m_comboPriority
             // 
@@ -191,6 +208,7 @@
             resources.GetString("m_comboPriority.Items5")});
             resources.ApplyResources(this.m_comboPriority, "m_comboPriority");
             this.m_comboPriority.Name = "m_comboPriority";
+            this.m_comboPriority.SelectedIndexChanged += new System.EventHandler(this.m_comboPriority_SelectedIndexChanged);
             // 
             // m_lblPriority
             // 
@@ -202,6 +220,12 @@
             resources.ApplyResources(this.m_cbAutoStart, "m_cbAutoStart");
             this.m_cbAutoStart.Name = "m_cbAutoStart";
             this.m_cbAutoStart.UseVisualStyleBackColor = true;
+            this.m_cbAutoStart.CheckedChanged += new System.EventHandler(this.m_cbAutoStart_CheckedChanged);
+            // 
+            // m_timer
+            // 
+            this.m_timer.Interval = 1000;
+            this.m_timer.Tick += new System.EventHandler(this.m_timer_Tick);
             // 
             // StatusForm
             // 
@@ -243,5 +267,7 @@
         private System.Windows.Forms.CheckBox m_cbAutoStart;
         private System.Windows.Forms.ToolTip m_toolTip;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
+        private System.Windows.Forms.Button m_btnRestart;
+        private System.Windows.Forms.Timer m_timer;
     }
 }

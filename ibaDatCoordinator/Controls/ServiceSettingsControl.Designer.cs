@@ -33,7 +33,6 @@ namespace iba.Controls
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
-            this.m_btnOptimize = new System.Windows.Forms.Button();
             this.m_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gb_GlobalCleanup = new iba.Utility.CollapsibleGroupBox();
             this.tbl_GlobalCleanup = new System.Windows.Forms.TableLayoutPanel();
@@ -43,14 +42,14 @@ namespace iba.Controls
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
+            this.gb_Password = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_ClearPassBtn = new System.Windows.Forms.Button();
             this.m_nudRememberTime = new System.Windows.Forms.NumericUpDown();
             this.m_SetChangePassBtn = new System.Windows.Forms.Button();
             this.m_cbRememberPassword = new System.Windows.Forms.CheckBox();
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
-            this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
+            this.gb_IbaAnalyzer = new iba.Utility.CollapsibleGroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
@@ -61,34 +60,22 @@ namespace iba.Controls
             this.m_registerButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
+            this.gb_Processing = new iba.Utility.CollapsibleGroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_nudResourceCritical = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.m_nudPostponeTime = new System.Windows.Forms.NumericUpDown();
             this.m_cbPostpone = new System.Windows.Forms.CheckBox();
-            this.m_gbApp = new iba.Utility.CollapsibleGroupBox();
-            this.m_lblServiceStatus = new System.Windows.Forms.Label();
-            this.m_udPort = new System.Windows.Forms.NumericUpDown();
-            this.m_btnStop = new System.Windows.Forms.Button();
-            this.m_btnStart = new System.Windows.Forms.Button();
-            this.m_lbServPort = new System.Windows.Forms.Label();
-            this.m_lbServStatus = new System.Windows.Forms.Label();
-            this.m_comboPriority = new System.Windows.Forms.ComboBox();
-            this.m_lblPriority = new System.Windows.Forms.Label();
-            this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
             this.gb_GlobalCleanup.SuspendLayout();
             this.tbl_GlobalCleanup.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gb_Password.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).BeginInit();
-            this.groupBox5.SuspendLayout();
+            this.gb_IbaAnalyzer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxIbaAnalyzers)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.gb_Processing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
-            this.m_gbApp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).BeginInit();
             this.SuspendLayout();
             // 
             // m_btTransferAnalyzerSettings
@@ -97,14 +84,6 @@ namespace iba.Controls
             this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
             this.m_toolTip.SetToolTip(this.m_btTransferAnalyzerSettings, resources.GetString("m_btTransferAnalyzerSettings.ToolTip"));
             this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
-            // 
-            // m_btnOptimize
-            // 
-            resources.ApplyResources(this.m_btnOptimize, "m_btnOptimize");
-            this.m_btnOptimize.Name = "m_btnOptimize";
-            this.m_toolTip.SetToolTip(this.m_btnOptimize, resources.GetString("m_btnOptimize.ToolTip"));
-            this.m_btnOptimize.UseVisualStyleBackColor = true;
-            this.m_btnOptimize.Click += new System.EventHandler(this.m_btnOptimize_Click);
             // 
             // gb_GlobalCleanup
             // 
@@ -154,17 +133,17 @@ namespace iba.Controls
             resources.ApplyResources(this.label12, "label12");
             this.label12.Name = "label12";
             // 
-            // groupBox2
+            // gb_Password
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.m_ClearPassBtn);
-            this.groupBox2.Controls.Add(this.m_nudRememberTime);
-            this.groupBox2.Controls.Add(this.m_SetChangePassBtn);
-            this.groupBox2.Controls.Add(this.m_cbRememberPassword);
-            this.groupBox2.Controls.Add(this.m_passwordStatusLabel);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
+            resources.ApplyResources(this.gb_Password, "gb_Password");
+            this.gb_Password.Controls.Add(this.label1);
+            this.gb_Password.Controls.Add(this.m_ClearPassBtn);
+            this.gb_Password.Controls.Add(this.m_nudRememberTime);
+            this.gb_Password.Controls.Add(this.m_SetChangePassBtn);
+            this.gb_Password.Controls.Add(this.m_cbRememberPassword);
+            this.gb_Password.Controls.Add(this.m_passwordStatusLabel);
+            this.gb_Password.Name = "gb_Password";
+            this.gb_Password.TabStop = false;
             // 
             // label1
             // 
@@ -212,22 +191,22 @@ namespace iba.Controls
             resources.ApplyResources(this.m_passwordStatusLabel, "m_passwordStatusLabel");
             this.m_passwordStatusLabel.Name = "m_passwordStatusLabel";
             // 
-            // groupBox5
+            // gb_IbaAnalyzer
             // 
-            resources.ApplyResources(this.groupBox5, "groupBox5");
-            this.groupBox5.Controls.Add(this.m_btTransferAnalyzerSettings);
-            this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Controls.Add(this.label4);
-            this.groupBox5.Controls.Add(this.m_nudRestartIbaAnalyzer);
-            this.groupBox5.Controls.Add(this.m_nudMaxIbaAnalyzers);
-            this.groupBox5.Controls.Add(this.m_cbRestartIbaAnalyzer);
-            this.groupBox5.Controls.Add(this.m_tbAnalyzerExe);
-            this.groupBox5.Controls.Add(this.m_browseIbaAnalyzerButton);
-            this.groupBox5.Controls.Add(this.m_registerButton);
-            this.groupBox5.Controls.Add(this.m_executeIBAAButton);
-            this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.TabStop = false;
+            resources.ApplyResources(this.gb_IbaAnalyzer, "gb_IbaAnalyzer");
+            this.gb_IbaAnalyzer.Controls.Add(this.m_btTransferAnalyzerSettings);
+            this.gb_IbaAnalyzer.Controls.Add(this.label6);
+            this.gb_IbaAnalyzer.Controls.Add(this.label4);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_nudRestartIbaAnalyzer);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_nudMaxIbaAnalyzers);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_cbRestartIbaAnalyzer);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_tbAnalyzerExe);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_browseIbaAnalyzerButton);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_registerButton);
+            this.gb_IbaAnalyzer.Controls.Add(this.m_executeIBAAButton);
+            this.gb_IbaAnalyzer.Controls.Add(this.label5);
+            this.gb_IbaAnalyzer.Name = "gb_IbaAnalyzer";
+            this.gb_IbaAnalyzer.TabStop = false;
             // 
             // label6
             // 
@@ -321,16 +300,16 @@ namespace iba.Controls
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // groupBox1
+            // gb_Processing
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.m_nudResourceCritical);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.m_nudPostponeTime);
-            this.groupBox1.Controls.Add(this.m_cbPostpone);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
+            resources.ApplyResources(this.gb_Processing, "gb_Processing");
+            this.gb_Processing.Controls.Add(this.label3);
+            this.gb_Processing.Controls.Add(this.m_nudResourceCritical);
+            this.gb_Processing.Controls.Add(this.label2);
+            this.gb_Processing.Controls.Add(this.m_nudPostponeTime);
+            this.gb_Processing.Controls.Add(this.m_cbPostpone);
+            this.gb_Processing.Name = "gb_Processing";
+            this.gb_Processing.TabStop = false;
             // 
             // label3
             // 
@@ -389,139 +368,40 @@ namespace iba.Controls
             this.m_cbPostpone.UseVisualStyleBackColor = true;
             this.m_cbPostpone.CheckedChanged += new System.EventHandler(this.m_cbPostpone_CheckedChanged);
             // 
-            // m_gbApp
-            // 
-            resources.ApplyResources(this.m_gbApp, "m_gbApp");
-            this.m_gbApp.Controls.Add(this.m_lblServiceStatus);
-            this.m_gbApp.Controls.Add(this.m_udPort);
-            this.m_gbApp.Controls.Add(this.m_btnStop);
-            this.m_gbApp.Controls.Add(this.m_btnStart);
-            this.m_gbApp.Controls.Add(this.m_lbServPort);
-            this.m_gbApp.Controls.Add(this.m_lbServStatus);
-            this.m_gbApp.Controls.Add(this.m_btnOptimize);
-            this.m_gbApp.Controls.Add(this.m_comboPriority);
-            this.m_gbApp.Controls.Add(this.m_lblPriority);
-            this.m_gbApp.Controls.Add(this.m_cbAutoStart);
-            this.m_gbApp.Name = "m_gbApp";
-            this.m_gbApp.TabStop = false;
-            // 
-            // m_lblServiceStatus
-            // 
-            this.m_lblServiceStatus.BackColor = System.Drawing.Color.Red;
-            this.m_lblServiceStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.m_lblServiceStatus, "m_lblServiceStatus");
-            this.m_lblServiceStatus.Name = "m_lblServiceStatus";
-            // 
-            // m_udPort
-            // 
-            resources.ApplyResources(this.m_udPort, "m_udPort");
-            this.m_udPort.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.m_udPort.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_udPort.Name = "m_udPort";
-            this.m_udPort.Value = new decimal(new int[] {
-            8800,
-            0,
-            0,
-            0});
-            // 
-            // m_btnStop
-            // 
-            resources.ApplyResources(this.m_btnStop, "m_btnStop");
-            this.m_btnStop.Name = "m_btnStop";
-            this.m_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // m_btnStart
-            // 
-            resources.ApplyResources(this.m_btnStart, "m_btnStart");
-            this.m_btnStart.Name = "m_btnStart";
-            this.m_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // m_lbServPort
-            // 
-            resources.ApplyResources(this.m_lbServPort, "m_lbServPort");
-            this.m_lbServPort.Name = "m_lbServPort";
-            // 
-            // m_lbServStatus
-            // 
-            resources.ApplyResources(this.m_lbServStatus, "m_lbServStatus");
-            this.m_lbServStatus.Name = "m_lbServStatus";
-            // 
-            // m_comboPriority
-            // 
-            this.m_comboPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_comboPriority.FormattingEnabled = true;
-            this.m_comboPriority.Items.AddRange(new object[] {
-            resources.GetString("m_comboPriority.Items"),
-            resources.GetString("m_comboPriority.Items1"),
-            resources.GetString("m_comboPriority.Items2"),
-            resources.GetString("m_comboPriority.Items3"),
-            resources.GetString("m_comboPriority.Items4"),
-            resources.GetString("m_comboPriority.Items5")});
-            resources.ApplyResources(this.m_comboPriority, "m_comboPriority");
-            this.m_comboPriority.Name = "m_comboPriority";
-            // 
-            // m_lblPriority
-            // 
-            resources.ApplyResources(this.m_lblPriority, "m_lblPriority");
-            this.m_lblPriority.Name = "m_lblPriority";
-            // 
-            // m_cbAutoStart
-            // 
-            resources.ApplyResources(this.m_cbAutoStart, "m_cbAutoStart");
-            this.m_cbAutoStart.Name = "m_cbAutoStart";
-            this.m_cbAutoStart.UseVisualStyleBackColor = true;
-            // 
             // ServiceSettingsControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gb_GlobalCleanup);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.m_gbApp);
+            this.Controls.Add(this.gb_Password);
+            this.Controls.Add(this.gb_IbaAnalyzer);
+            this.Controls.Add(this.gb_Processing);
             this.Name = "ServiceSettingsControl";
             this.gb_GlobalCleanup.ResumeLayout(false);
             this.gb_GlobalCleanup.PerformLayout();
             this.tbl_GlobalCleanup.ResumeLayout(false);
             this.tbl_GlobalCleanup.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gb_Password.ResumeLayout(false);
+            this.gb_Password.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRememberTime)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.gb_IbaAnalyzer.ResumeLayout(false);
+            this.gb_IbaAnalyzer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRestartIbaAnalyzer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMaxIbaAnalyzers)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gb_Processing.ResumeLayout(false);
+            this.gb_Processing.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudResourceCritical)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).EndInit();
-            this.m_gbApp.ResumeLayout(false);
-            this.m_gbApp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private iba.Utility.CollapsibleGroupBox m_gbApp;
-        private System.Windows.Forms.CheckBox m_cbAutoStart;
-        private System.Windows.Forms.Label m_lblPriority;
-        private System.Windows.Forms.ComboBox m_comboPriority;
-        private iba.Utility.CollapsibleGroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox gb_Processing;
         private System.Windows.Forms.CheckBox m_cbPostpone;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown m_nudPostponeTime;
-        private iba.Utility.CollapsibleGroupBox groupBox5;
+        private iba.Utility.CollapsibleGroupBox gb_IbaAnalyzer;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
@@ -529,7 +409,7 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private iba.Utility.CollapsibleGroupBox groupBox2;
+        private iba.Utility.CollapsibleGroupBox gb_Password;
         private System.Windows.Forms.Label m_passwordStatusLabel;
         private System.Windows.Forms.Button m_ClearPassBtn;
         private System.Windows.Forms.Button m_SetChangePassBtn;
@@ -543,7 +423,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown m_nudRestartIbaAnalyzer;
         private System.Windows.Forms.CheckBox m_cbRestartIbaAnalyzer;
-        private System.Windows.Forms.Button m_btnOptimize;
         private iba.Utility.CollapsibleGroupBox gb_GlobalCleanup;
         private System.Windows.Forms.TableLayoutPanel tbl_GlobalCleanup;
         private System.Windows.Forms.Label label7;
@@ -554,12 +433,5 @@ namespace iba.Controls
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.FolderBrowserDialog m_folderBrowserDialog;
         private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
-        private System.Windows.Forms.Label m_lblServiceStatus;
-        private System.Windows.Forms.NumericUpDown m_udPort;
-        private System.Windows.Forms.Button m_btnStop;
-        private System.Windows.Forms.Button m_btnStart;
-        private System.Windows.Forms.Label m_lbServPort;
-        private System.Windows.Forms.Label m_lbServStatus;
-
     }
 }

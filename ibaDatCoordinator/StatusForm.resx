@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>397, 17</value>
+  </metadata>
+  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>503, 17</value>
+  </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -318,6 +324,42 @@
   <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_btnRestart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnRestart.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_btnRestart.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnRestart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>578, 67</value>
+  </data>
+  <data name="m_btnRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_btnRestart.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btnRestart.Text" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Name" xml:space="preserve">
+    <value>m_btnRestart</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_lblServiceStatus.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -349,7 +391,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_lblServiceStatus.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_udPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 103</value>
@@ -370,7 +412,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_udPort.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -385,7 +427,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>579, 73</value>
+    <value>472, 67</value>
   </data>
   <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
@@ -406,7 +448,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -421,7 +463,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>473, 73</value>
+    <value>366, 67</value>
   </data>
   <data name="m_btnStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
@@ -442,7 +484,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_btnStart.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_lbServPort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -472,7 +514,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_lbServPort.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lbServStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -502,7 +544,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_lbServStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_btnOptimize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -529,7 +571,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_btnOptimize.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_comboPriority.Items" xml:space="preserve">
     <value>Low</value>
@@ -568,7 +610,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_comboPriority.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_lblPriority.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -598,7 +640,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_cbAutoStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -631,7 +673,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 5</value>
@@ -657,11 +699,8 @@
   <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>397, 17</value>
-  </metadata>
-  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>503, 17</value>
+  <metadata name="m_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>652, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -671,6 +710,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>724, 243</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>StatusForm</value>
@@ -686,6 +728,12 @@
   </data>
   <data name="&gt;&gt;m_openFileDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_timer.Name" xml:space="preserve">
+    <value>m_timer</value>
+  </data>
+  <data name="&gt;&gt;m_timer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>StatusForm</value>
