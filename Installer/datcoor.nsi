@@ -241,26 +241,36 @@ Function PreInstall
 FunctionEnd
 
 Function InstalltypeSelect
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSERVICE)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSTANDALONE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSTANDALONE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
   !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $0 == "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
-  ${Else}
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
+  ${ElseIf} $0 == "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "1"
   ${EndIf}
   
   
   
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
-  ${If} $0 != "1"
+  !insertmacro MUI_INSTALLOPTIONS_READ $1 "serviceorstandalone.ini" "Field 2" "State"
+  ${If} $0 == "1"
     SetCurInstType 0
-  ${Else}
+  ${ElseIf} $1 == "1"
     SetCurInstType 1
+  ${Else}
+    SetCurInstType 2
   ${EndIf}
 FunctionEnd
 
@@ -298,9 +308,9 @@ Function CheckRequirements
   Pop $1
 
   ;Check if .NET framework 4.0 full is installed
-  ${VersionCompare} $0 "4.0.1" $2
+  ${VersionCompare} $0 "4.5.2" $2
   ${If} $2 == 2
-    ;Framework 4.0 not found --> stop installer
+    ;Framework 4.5.2 not found --> stop installer
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_FRAMEWORK_MISSING)
     Quit
   ${EndIf}  
@@ -535,7 +545,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Service Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
   ;Start service
@@ -743,20 +754,14 @@ Function GetDotNETVersion
   ;in x64
   ;ReadRegDWORD $0 HKLM "SOFTWARE\Wow6432node\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
   
-  ;Check if v4.0 full is installed
+  ;Check if v4.5.2 or higher is installed
   ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
-  StrCmp $2 "1" +1 +3
-  StrCpy $0 "4.0.1"  ;full version
-  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Version"
-  Goto checkCLR2
-  
-  ;Check if v4.0 client is installed
-  ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Install"
-  StrCmp $2 "1" +1 +3
-  StrCpy $0 "4.0.0"  ;client version
-  Goto checkCLR2
-  
-  checkCLR2:
+  ${If} $2 = 1
+    ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
+    ${If} $2 >= 379893
+      StrCpy $0 "4.5.2"  ;4.5.2 or higher
+    ${EndIf}
+  ${EndIf}
   
   ;Check if v3.5 is installed
   ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
@@ -996,10 +1001,11 @@ FunctionEnd
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_ENGLISH} "Select user account"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_ENGLISH} "Select the user account the ibaDatCoordinator service should use."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_ENGLISH} "ibaDatCoordinator"
-LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Service"
+LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Server/Client"
+LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Client"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "This operating system is not supported."
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_ENGLISH} "You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.0 is not installed. Please install this before running the ibaDatCoordinator installer. The .NET framework can be found on the distribution cd (dotnetfx.exe) or it can be downloaded from http://www.microsoft.com"
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.5.2 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
 LangString TEXT_UNINSTALL                 ${LANG_ENGLISH} "Uninstall ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_ENGLISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} is already installed. Do you wish to reinstall?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_ENGLISH} "An older version of ${PRODUCT_NAME} is installed. Do you wish to upgrade to version ${PRODUCT_VERSION}?"
@@ -1019,19 +1025,21 @@ LangString TEXT_SERVICE_INSTALL           ${LANG_ENGLISH} "Installing service"
 LangString TEXT_SERVICE_STOP              ${LANG_ENGLISH} "Stopping service"
 LangString TEXT_SERVICE_REMOVE            ${LANG_ENGLISH} "Deleting service"
 LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_ENGLISH} "Choose whether or not ibaDatCoordinator is installed as a service"
-LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordinator as a service"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_ENGLISH} "Choose ibaDatCoordinator installation type"
+LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordinator server and client"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordinator as stand alone executable"
+LangString TEXT_INSTALLCLIENT         ${LANG_ENGLISH} "Install ibaDatCoordinator client only"
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
-LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Dienst"
+LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Server/Client"
+LangString DESC_DATCOOR_CLIENT           ${LANG_GERMAN} "ibaDatCoordinator Client"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN} "Das Betriebssystem ist nicht unterstützt."
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_GERMAN} "Sie besitzen keine ausreichenden Berechtigungen, um diese Installation für alle Benutzer dieses Computers auszuführen. Melden Sie sich als Administrator an, und wiederholen Sie diese Installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN} "Das .NET Framework, Version 4.0, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaDatCoordinator beginnen. Das .NET Framework finden Sie auf der Programm-CD (dotnetfx.exe) oder als Download via http://www.microsoft.com."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.5.2, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
 LangString TEXT_UNINSTALL                 ${LANG_GERMAN} "${PRODUCT_NAME} deinstallieren"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_GERMAN} "${PRODUCT_NAME} v${PRODUCT_VERSION} ist bereits installiert. Wollen Sie die Neuinstallation trotzdem durchführen?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_GERMAN} "Eine ältere Version von ${PRODUCT_NAME} ist bereits installiert. Wollen Sie ein upgrade auf die neuere Version ${PRODUCT_VERSION} durchführen?"
@@ -1050,20 +1058,22 @@ LangString DESC_INSTALLING                ${LANG_GERMAN} "wird installiert"
 LangString TEXT_SERVICE_INSTALL           ${LANG_GERMAN} "Dienst wird installiert"
 LangString TEXT_SERVICE_STOP              ${LANG_GERMAN} "Dienst wird angehalten"
 LangString TEXT_SERVICE_REMOVE            ${LANG_GERMAN} "Dienst wird gelöscht"
-LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_GERMAN} "Wählen Sie die Installationsart"
-LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie ob der ibaDatCoordinator als Dienst installiert werden soll"
-LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator als Dienst installieren"
-LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
+LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_GERMAN} "Installationsart auswählen"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie die Installationsart für ibaDatCoordinator aus"
+LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator Server und Client installieren"
+LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "Nur ibaDatCoordinator Client installieren"
+LangString TEXT_INSTALLCLIENT         	  ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
-LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "Service ibaDatCoordinator"
+LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Serveur/Client"
+LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Client"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH} "Le .NET framework, version 4.0, n'est pas install? Installez-le avant de commencer l'installation d'ibaDatCoordinator. Le .NET framework est sur le CD programme (dotnetfx.exe) ou vous pouvez le télécharger via http://www.microsoft.com."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.5.2 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
 LangString TEXT_UNINSTALL                 ${LANG_FRENCH} "Désinstaller ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_FRENCH} "${PRODUCT_NAME} v${PRODUCT_VERSION} est déj?install? Souhaitez-vous procéder ?une réinstallation?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_FRENCH} "Une ancienne version de ${PRODUCT_NAME} est déj?installée. Souhaitez-vous une mise ?niveau ?la nouvelle version ${PRODUCT_VERSION}?"
@@ -1082,9 +1092,10 @@ LangString DESC_INSTALLING                ${LANG_FRENCH} "Installation"
 LangString TEXT_SERVICE_INSTALL           ${LANG_FRENCH} "Installation du service"
 LangString TEXT_SERVICE_STOP              ${LANG_FRENCH} "Arrêt du service"
 LangString TEXT_SERVICE_REMOVE            ${LANG_FRENCH} "Suppression du service"
-LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_FRENCH} "Choisir Type d'Installlation"
-LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_FRENCH} "Choisir si l'ibaDatCoordinator est install?comme service"
-LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme service"
+LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_FRENCH} "Choisir Type d'Installation"
+LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_FRENCH} "Choisir le type d'installation d'ibaDatCoordinator"
+LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme serveur et client"
 LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoordinator comme exécutable autonome"
+LangString TEXT_INSTALLCLIENT          ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme client seulement"
 LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"
