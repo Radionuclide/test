@@ -44,7 +44,6 @@ namespace iba
                 else
                     return "ibaDatCoordinatorClientCloseForm";
             }
-
         }
 
         //IsServer means that we are part of a service;
