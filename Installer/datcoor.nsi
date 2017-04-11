@@ -446,13 +446,13 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
   
-    ;plugins
-  SetOutPath "$INSTDIR\plugins"
-  File "..\Dependencies\hd_plugin.dll"
-  SetOutPath "$INSTDIR\plugins\de"
-  File "..\Dependencies\de\hd_plugin.resources.dll"
-  SetOutPath "$INSTDIR\plugins\fr"
-  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  ;;plugins
+  ;SetOutPath "$INSTDIR\plugins"
+  ;File "..\Dependencies\hd_plugin.dll"
+  ;SetOutPath "$INSTDIR\plugins\de"
+  ;File "..\Dependencies\de\hd_plugin.resources.dll"
+  ;SetOutPath "$INSTDIR\plugins\fr"
+  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
@@ -529,13 +529,13 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
   
-  ;plugins
-  SetOutPath "$INSTDIR\plugins"
-  File "..\Dependencies\hd_plugin.dll"
-  SetOutPath "$INSTDIR\plugins\de"
-  File "..\Dependencies\de\hd_plugin.resources.dll"
-  SetOutPath "$INSTDIR\plugins\fr"
-  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  ;;plugins
+  ;SetOutPath "$INSTDIR\plugins"
+  ;File "..\Dependencies\hd_plugin.dll"
+  ;SetOutPath "$INSTDIR\plugins\de"
+  ;File "..\Dependencies\de\hd_plugin.resources.dll"
+  ;SetOutPath "$INSTDIR\plugins\fr"
+  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
