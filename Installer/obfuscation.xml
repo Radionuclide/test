@@ -11,6 +11,17 @@
         <option>library</option>
         <file dir="${configdir}\..\InstallFiles" name="hdClient.dll" />
       </inputassembly>
+      <inputassembly refid="bf6b5922-268c-486f-ae5a-58bd459bf975">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <file dir="${configdir}\..\InstallFiles" name="hdClientFiles.dll" />
+      </inputassembly>
+	  <inputassembly refid="c7df5874-8a30-4387-a2c9-7ee4260f8490">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <file dir="${configdir}\..\InstallFiles" name="hdCore.dll" />
+      </inputassembly>
     </asmlist>
   </input>
   <output>

@@ -90,11 +90,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
     </Reference>
-    <Reference Include="hdClient">
-      <HintPath>..\Dependencies\hdClient.dll</HintPath>
+    <Reference Include="hdClient, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ibaHD\hdClient.dll</HintPath>
     </Reference>
-    <Reference Include="hdCommon">
-      <HintPath>..\Dependencies\hdCommon.dll</HintPath>
+    <Reference Include="hdCommon, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ibaHD\hdCommon.dll</HintPath>
     </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -692,6 +694,11 @@
     <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(SolutionDir)Dependencies\\hd*.dll $(TargetDir)
+copy $(SolutionDir)Dependencies\ibaFilesLiteDotNet.dll $(TargetDir)
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

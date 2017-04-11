@@ -41,8 +41,8 @@ namespace iba.Controls
             this.gbHD.Controls.Add(this.m_hdStorePicker);
             m_hdStorePicker.SelectedPort = 9180;
             m_hdStorePicker.SelectedServer = "localhost";
-            m_hdStorePicker.SelectedStore = "";
-            m_hdStorePicker.SelectedStores = new string[0];
+            m_hdStorePicker.SelectedStoreName = "";
+            m_hdStorePicker.SelectedStoreNames = new string[0];
             m_hdStorePicker.StoreTypeFilter = HdStoreType.Time /*| HdStoreType.Length*/;
             m_hdStorePicker.HideConfigureButton();
             m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
@@ -115,7 +115,7 @@ namespace iba.Controls
             //hdStore
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
-            m_hdStorePicker.SelectedStore = m_scheduleData.HDStores.Length>0?m_scheduleData.HDStores[0]:"";
+            m_hdStorePicker.SelectedStoreName = m_scheduleData.HDStores.Length>0?m_scheduleData.HDStores[0]:"";
             //timeSelection
             m_scheduleData.UsePreviousTriggerAsStart = m_cbUseTriggerAsStart.Checked; //must come first, otherwise eventhandlers caused by assignments below don't work
             Start = m_scheduleData.StartRangeFromTrigger;
@@ -157,7 +157,7 @@ namespace iba.Controls
             //hdStore
             m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
             m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
-            m_scheduleData.HDStores = new string[]{m_hdStorePicker.SelectedStore};
+            m_scheduleData.HDStores = new string[]{m_hdStorePicker.SelectedStoreName};
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
             m_scheduleData.StopRangeFromTrigger = Stop;

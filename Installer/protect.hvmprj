@@ -13,6 +13,9 @@
 		<assembly>
             <path>.\hdClient.dll</path>
         </assembly>
+		<assembly>
+            <path>.\hdCore.dll</path>
+        </assembly>
     </Assemblies>
     <Output>
         <path>.\Output</path>

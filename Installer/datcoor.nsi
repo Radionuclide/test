@@ -397,16 +397,20 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic2005.DLL"
   File "..\Dependencies\DotNetMagic.DLL"
-  File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"  
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"  
-;HD-stuff
+  File "..\Dependencies\msvcp100.dll"
+  File "..\Dependencies\PowerCollections.dll"
+  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  ;HD-stuff
+  File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
-  File "..\Dependencies\hdClientInterfaces.dll"
+  File "..\InstallFiles\Obfuscated\hdClientFiles.dll"
   File "..\Dependencies\hdCommon.dll"
+  File "..\Dependencies\hdProtoBuf.dll"
+  File "..\Dependencies\hdClientInterfaces.dll"
+  
   File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
   File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
   File "..\Dependencies\DevExpress.Data.v16.1.dll"
@@ -436,10 +440,20 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
+  File "..\Dependencies\de\hdCommon.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
-
+  File "..\Dependencies\fr\hdCommon.resources.dll"
+  
+    ;plugins
+  SetOutPath "$INSTDIR\plugins"
+  File "..\Dependencies\hd_plugin.dll"
+  SetOutPath "$INSTDIR\plugins\de"
+  File "..\Dependencies\de\hd_plugin.resources.dll"
+  SetOutPath "$INSTDIR\plugins\fr"
+  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
@@ -469,11 +483,17 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"  
-;HD-stuff
+  File "..\Dependencies\msvcp100.dll"
+  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  File "..\Dependencies\PowerCollections.dll"
+  ;HD-stuff
+  File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
-  File "..\Dependencies\hdClientInterfaces.dll"
+  File "..\InstallFiles\Obfuscated\hdClientFiles.dll"
   File "..\Dependencies\hdCommon.dll"
+  File "..\Dependencies\hdProtoBuf.dll"
+  File "..\Dependencies\hdClientInterfaces.dll"
+
   File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
   File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
   File "..\Dependencies\DevExpress.Data.v16.1.dll"
@@ -499,15 +519,24 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   Delete "$INSTDIR\ibaDongleViewerSetup.exe"
   ;help files
   File "..\iDatCo_HTML_Help\*.chm"
-;localisation
+  ;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
+  File "..\Dependencies\de\hdCommon.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
-
-
+  File "..\Dependencies\fr\hdCommon.resources.dll"
+  
+  ;plugins
+  SetOutPath "$INSTDIR\plugins"
+  File "..\Dependencies\hd_plugin.dll"
+  SetOutPath "$INSTDIR\plugins\de"
+  File "..\Dependencies\de\hd_plugin.resources.dll"
+  SetOutPath "$INSTDIR\plugins\fr"
+  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
   nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
@@ -631,10 +660,17 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
+  Delete "$INSTDIR\ibaFilesLiteDotNet.dll"
+  
+  Delete "$INSTDIR\hdCore.dll"
   Delete "$INSTDIR\hdClient.dll"
+  Delete "$INSTDIR\hdClientFiles.dll"
   Delete "$INSTDIR\hdClientInterfaces.dll"
   Delete "$INSTDIR\hdCommon.dll"
-  
+  Delete "$INSTDIR\hdProtoBuf.dll"
+  Delete "$INSTDIR\hd_plugin.dll"
+  Delete "$INSTDIR\PowerCollections.dll"
+
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
   Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
   Delete "$INSTDIR\DevExpress.Data.v16.1.dll"
@@ -658,9 +694,13 @@ Function un.UninstallTasks
   ;resources
   Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
   Delete "$INSTDIR\de\hdClient.resources.dll"
+  Delete "$INSTDIR\de\hdCommon.resources.dll"
+  Delete "$INSTDIR\de\hd_plugin.resources.dll"
   RMDir "$INSTDIR\de"
   Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
   Delete "$INSTDIR\fr\hdClient.resources.dll"
+    Delete "$INSTDIR\fr\hdCommon.resources.dll"
+  Delete "$INSTDIR\fr\hd_plugin.resources.dll"
   RMDir "$INSTDIR\fr"
   ;Remove install dir
   RMDir "$INSTDIR"
