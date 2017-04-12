@@ -441,18 +441,15 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   File "..\Dependencies\de\hdCommon.resources.dll"
+  ;File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
-  
+  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   ;;plugins
   ;SetOutPath "$INSTDIR\plugins"
   ;File "..\Dependencies\hd_plugin.dll"
-  ;SetOutPath "$INSTDIR\plugins\de"
-  ;File "..\Dependencies\de\hd_plugin.resources.dll"
-  ;SetOutPath "$INSTDIR\plugins\fr"
-  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
@@ -524,18 +521,15 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   File "..\Dependencies\de\hdCommon.resources.dll"
+  ;File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
-  
+  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   ;;plugins
   ;SetOutPath "$INSTDIR\plugins"
   ;File "..\Dependencies\hd_plugin.dll"
-  ;SetOutPath "$INSTDIR\plugins\de"
-  ;File "..\Dependencies\de\hd_plugin.resources.dll"
-  ;SetOutPath "$INSTDIR\plugins\fr"
-  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
@@ -668,7 +662,6 @@ Function un.UninstallTasks
   Delete "$INSTDIR\hdClientInterfaces.dll"
   Delete "$INSTDIR\hdCommon.dll"
   Delete "$INSTDIR\hdProtoBuf.dll"
-  Delete "$INSTDIR\hd_plugin.dll"
   Delete "$INSTDIR\PowerCollections.dll"
 
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
@@ -688,7 +681,6 @@ Function un.UninstallTasks
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
-
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
   ;resources
@@ -699,9 +691,12 @@ Function un.UninstallTasks
   RMDir "$INSTDIR\de"
   Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
   Delete "$INSTDIR\fr\hdClient.resources.dll"
-    Delete "$INSTDIR\fr\hdCommon.resources.dll"
+  Delete "$INSTDIR\fr\hdCommon.resources.dll"
   Delete "$INSTDIR\fr\hd_plugin.resources.dll"
   RMDir "$INSTDIR\fr"
+  ;plugins
+  Delete "$INSTDIR\plugins\hd_plugin.dll"
+  RMDir "$INSTDIR\plugins"
   ;Remove install dir
   RMDir "$INSTDIR"
 FunctionEnd
