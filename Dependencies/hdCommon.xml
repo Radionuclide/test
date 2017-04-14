@@ -250,6 +250,11 @@
               Looks up a localized string similar to Text.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeVector">
+            <summary>
+              Looks up a localized string similar to Vector.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.Months">
             <summary>
               Looks up a localized string similar to months.

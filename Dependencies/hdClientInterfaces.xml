@@ -611,6 +611,11 @@
             Show asterisk nodes or not
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowVectors">
+            <summary>
+            Show vector nodes or not
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.SelectedSignalId">
             <summary>
             Gets or sets the selected signal id
@@ -671,6 +676,11 @@
             <param name="text">Tree node text</param>
             <param name="image">Tree node image</param>
             <returns>Tree node id</returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.ClearCustomNodes">
+            <summary>
+            Remove all custom nodes from the signal tree
+            </summary>
         </member>
         <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.SignalSelected">
             <summary>
