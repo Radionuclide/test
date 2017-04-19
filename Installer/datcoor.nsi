@@ -577,6 +577,76 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
    !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
+Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
+  SectionIn 3
+  SetOverwrite on
+  
+  ;Copy server files
+  SetOutPath "$INSTDIR"
+  File "..\Dependencies\ibaFilesLiteInstall.exe"
+  File "..\Dependencies\ibaLogger.dll"
+  File "..\Dependencies\Eyefinder.dll"
+  File "..\Dependencies\DotNetMagic2005.DLL"
+  File "..\Dependencies\DotNetMagic.DLL"
+  File "..\Dependencies\msvcr100.dll"
+  File "..\Dependencies\msvcp100.dll"  
+  File "..\Dependencies\ICSharpCode.TextEditor.dll"
+  File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
+  File "..\Dependencies\msvcr100.dll"
+  File "..\Dependencies\msvcp100.dll"  
+;HD-stuff
+  File "..\InstallFiles\Protected\hdClient.dll"
+  File "..\Dependencies\hdClientInterfaces.dll"
+  File "..\Dependencies\hdCommon.dll"
+  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
+  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
+  File "..\Dependencies\DevExpress.Data.v16.1.dll"
+  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
+  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
+  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
+  
+  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
+  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+
+  File "..\InstallFiles\Protected\DatCoUtil.dll"
+  File "..\ibaDatCoordinator\Resources\default.ico"
+  File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
+  File "versions_dat.htm"
+  
+  ; runtime
+  File "..\InstallFiles\Protected\ibaRuntime.dll"
+  
+  ; dongle viewer
+  SetOutPath "$INSTDIR"
+  File "..\Dependencies\ibaDongleViewerSetup.exe"
+  nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
+  Delete "$INSTDIR\ibaDongleViewerSetup.exe"
+  ;help files
+  File "..\iDatCo_HTML_Help\*.chm"
+  ;localisation
+  SetOutPath "$INSTDIR\de"
+  File "..\Passolo\de\ibaDatCoordinator.resources.dll"
+  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
+  SetOutPath "$INSTDIR\fr"
+  File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
+  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
+
+  ;Install ibaFiles
+  DetailPrint $(TEXT_IBAFILES_INSTALL)
+  nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
+
+  SetOutPath "$INSTDIR"
+  ;Create uninstall shortcut
+
+  
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe /service" "" "$INSTDIR\default.ico"
+  CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "3"
+  !insertmacro WriteToInstallHistory "Finished installing stand alone version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+SectionEnd
+
 Section -Post
 
 !ifdef DO_UNINSTALLER_SIGNING

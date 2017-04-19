@@ -90,13 +90,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
     </Reference>
-    <Reference Include="hdClient, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="hdClient, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ibaHD\hdClient.dll</HintPath>
+      <HintPath>..\Dependencies\hdClient.dll</HintPath>
     </Reference>
-    <Reference Include="hdCommon, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="hdClientInterfaces">
+      <HintPath>..\Dependencies\hdClientInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="hdCommon, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ibaHD\hdCommon.dll</HintPath>
+      <HintPath>..\Dependencies\hdCommon.dll</HintPath>
     </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
