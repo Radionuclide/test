@@ -44,9 +44,9 @@ namespace iba.Processing
             }
         }
 
-        private const int prefixLength = 4;
-        private static readonly char[] _prefix = "PDA2".ToCharArray() ; // "PDA2" { 0x50, 0x44, 0x41, 0x32 }
-        private readonly char[] _buffer = new char[prefixLength];
+        private const int _prefixLength = 3;
+        private static readonly char[] _prefix = "PDA".ToCharArray() ; // usually "PDA2" where 2 defines the version  { 0x50, 0x44, 0x41, 0x32 }
+        private readonly char[] _buffer = new char[_prefixLength];
 
         protected override bool IsIbaDatfile(string file)
         {
@@ -54,14 +54,14 @@ namespace iba.Processing
             int numChars = 0;
             using (var reader = new StreamReader(file))
             {
-                numChars = reader.Read(_buffer, 0, prefixLength);
+                numChars = reader.Read(_buffer, 0, _prefixLength);
                 reader.Close();
             }
 
-            if (numChars != prefixLength)
+            if (numChars != _prefixLength)
                 return false;
 
-            for (int i = 0; i < prefixLength; i++)
+            for (int i = 0; i < _prefixLength; i++)
             {
                 if (_buffer[i] != _prefix[i])
                     return false;
