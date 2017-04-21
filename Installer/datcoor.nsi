@@ -6,6 +6,11 @@
 ;!define DO_UNINSTALLER_SIGNING use this to generate and use a signed uninstaller. This also requires SIGN_TOOL, SIGN_CERT, SIGN_PASS and optional SIGN_TIMESTAMP_URL
 ;!define UNINSTALLER_ONLY use this to generate the uninstaller
 
+!ifndef PRODUCT_VERSION
+!define PRODUCT_VERSION "2.0.0 TEST"
+!define PRODUCT_FILE_VERSION "2.0.0.0"
+!endif
+
 !ifdef DO_UNINSTALLER_SIGNING
 ;Section to generate uninstaller and sign it.
 ;This actually calls the same script again with the UNINSTALLER_ONLY define set.
@@ -50,7 +55,10 @@
 !include "sections.nsh"
 !include "StrFunc.nsh"
 !include "Include\InstallHistory.nsh"
-!include "Include\installcrt.nsh"
+
+;!ifndef UNINSTALLER_ONLY
+!include "Include\InstallCrt.nsh"
+;!endif
 
 !include WordFunc.nsh
 !insertmacro VersionCompare
@@ -92,6 +100,7 @@ SetCompressor /SOLID lzma
 Function OnEnd
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $0 == "1"
+  ${OrIf} $0 == "2"
     Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
     FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
     ${While} $0 == 0
@@ -208,11 +217,10 @@ Function .onInit
   ;!insertmacro MUI_INSTALLOPTIONS_EXTRACT "welcome.ini"
   ;Display language selection dialog
   ;!insertmacro MUI_LANGDLL_DISPLAY
-    ;In case of a silent install call the PreInstall function directly
-  IfSilent +1 +3
+
+  ;In case of a silent install call the PreInstall function directly
+  IfSilent +1 +2
     Call PreInstall
-	SetCurInstType 1
-	
 !endif
 FunctionEnd
 
@@ -240,39 +248,6 @@ Function PreInstall
 
 FunctionEnd
 
-Function InstalltypeSelect
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSTANDALONE)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
-  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
-  !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
-  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
-  ${If} $0 == "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
-  ${ElseIf} $0 == "1"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
-  ${Else}
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "1"
-  ${EndIf}
-  
-  
-  
-  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
-  !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
-  !insertmacro MUI_INSTALLOPTIONS_READ $1 "serviceorstandalone.ini" "Field 2" "State"
-  ${If} $0 == "1"
-    SetCurInstType 0
-  ${ElseIf} $1 == "1"
-    SetCurInstType 1
-  ${Else}
-    SetCurInstType 2
-  ${EndIf}
-FunctionEnd
 
 ;--------------------------------
 ; Requirements check
@@ -387,9 +362,8 @@ Section -PreInstall
 SectionEnd
 
 Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
-  SectionIn 1
   SetOverwrite on
-  
+  ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\Dependencies\ibaFilesLiteInstall.exe"
@@ -463,13 +437,17 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
+  
+  ;MessageBox MB_OK "Debug Writing 0"
+  
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "0"
   !insertmacro WriteToInstallHistory "Finished installing stand alone version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
-  SectionIn 2
   SetOverwrite on
+  
+  ;MessageBox MB_OK "Debug in DATCOOR_SERVICE (2)"
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\Dependencies\ibaFilesLiteInstall.exe"
@@ -550,6 +528,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
     Pop $R0
     MessageBox MB_OK|MB_ICONSTOP "Error installing service, error code $R0" 
   ${EndIf}
+  
+  ;MessageBox MB_OK "Debug Writing 1"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "1"
   ;Save username and password
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service1" $ServiceUserName
@@ -578,9 +558,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 SectionEnd
 
 Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
-  SectionIn 3
   SetOverwrite on
-  
+  ;MessageBox MB_OK "Debug in DATCOOR_CLIENT(3)"
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\Dependencies\ibaFilesLiteInstall.exe"
@@ -643,7 +622,9 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe /service" "" "$INSTDIR\default.ico"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "3"
+  
+  ;MessageBox MB_OK "Debug writing 2"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "2"
   !insertmacro WriteToInstallHistory "Finished installing stand alone version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
@@ -709,6 +690,67 @@ Section Uninstall
 
   
 SectionEnd
+
+Function InstalltypeSelect
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSTANDALONE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
+  !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
+  !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
+  StrCpy $0 "1"
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  
+  ;MessageBox MB_OK $0
+  
+  ${If} $0 == "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
+  ${ElseIf} $0 == "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
+	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "1"
+  ${EndIf}
+  
+  
+  
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
+  !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
+  !insertmacro MUI_INSTALLOPTIONS_READ $1 "serviceorstandalone.ini" "Field 2" "State"
+	
+ 
+  SectionGetFlags ${DATCOOR_NOSERVICE} $R0
+  ${If} $0 == "1"
+    IntOp $R1 $R0 | ${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_NOSERVICE} $R1
+  ${Else}
+    IntOp $R1 $R0 & ~${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_NOSERVICE} $R1
+  ${EndIf}
+  
+  SectionGetFlags ${DATCOOR_SERVICE} $R0
+  ${If} $1 == "1"
+    IntOp $R1 $R0 | ${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_SERVICE} $R1
+  ${Else}
+    IntOp $R1 $R0 & ~${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_SERVICE} $R1
+  ${EndIf}
+  
+  SectionGetFlags ${DATCOOR_CLIENT} $R0
+  ${If} $0 == "0"
+  ${AndIf} $1 == "0"
+    IntOp $R1 $R0 | ${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_CLIENT} $R1
+  ${Else}
+    IntOp $R1 $R0 & ~${SF_SELECTED}
+    SectionSetFlags ${DATCOOR_CLIENT} $R1
+  ${EndIf}
+ 
+FunctionEnd
 
 
 Function un.UninstallTasks
@@ -1174,8 +1216,8 @@ LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird install
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
-LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Serveur/Client"
-LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Client"
+LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH}} "ibaDatCoordinator Serveur/Client"
+LangString DESC_DATCOOR_CLIENT           ${LANG_FRENCH} "ibaDatCoordinator Client"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
 LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.5.2 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
