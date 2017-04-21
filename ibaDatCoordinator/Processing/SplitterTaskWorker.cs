@@ -163,7 +163,7 @@ namespace iba.Processing
             String expression;
             if (m_task.EdgeConditionType == SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING)
             {
-                expression = string.Format("XFirst({0},{1})", splitExpression, i);
+                expression = string.Format("XFirst({0},{1},1)", splitExpression, i);
                 double res = double.NaN;
                 m_mon.Execute(delegate() { res = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
                 if (double.IsNaN(res) || res < 0 || res > 1.0e35)
@@ -173,6 +173,8 @@ namespace iba.Processing
                     m_mon.Execute(delegate() { res = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
                     if (!double.IsNaN(res))
                     {
+                        if (i == 0)
+                            result.Add(0.0);
                         result.Add(res);
                         m_currentPoints.start = result[2 * i];
                         m_currentPoints.stop = result[2 * i+1];
@@ -187,6 +189,9 @@ namespace iba.Processing
                 }
                 else if (res != 0.0f)
                 {
+                    System.Diagnostics.Debug.WriteLine(res);
+                    if (i == 0)
+                        result.Add(0.0);
                     result.Add(res);
                     result.Add(res); //twice, is second startpoint
                     m_currentPoints.start = result[2 * i];
@@ -200,7 +205,10 @@ namespace iba.Processing
                 double res1 = double.NaN;
                 m_mon.Execute(delegate() { res1 = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
                 if (double.IsNaN(res1) || res1 < 0 || res1 > 1.0e35)
+                {
+                    m_currentPoints.valid = false;
                     return false;
+                }
                 expression = string.Format("XFirst(NOT({0}),{1},1)", splitExpression, i);
                 double res2 = double.NaN;
                 m_mon.Execute(delegate() { res2 = m_ibaAnalyzer.EvaluateDouble(expression, 0); });
@@ -256,7 +264,7 @@ namespace iba.Processing
                     for (int i = 0; progress == null || !progress.Aborted; i++)
                     {
                         bool res = AddPairPoints(i, ref result);
-                        if (progress != null)
+                        if (progress != null && CurrentPoints.valid)
                             progress.Update(GetName(i, filename), i);
                         if (!res) break;
                     }
@@ -356,8 +364,6 @@ namespace iba.Processing
             GetStartTime();
             if (!string.IsNullOrEmpty(m_task.AnalysisFile))
                 m_mon.Execute(delegate() { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
-            if (m_task.EdgeConditionType == SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING)
-                result.Add(0.0);
         }
 
         public string GetName(int i, string p)

@@ -97,10 +97,6 @@ namespace iba.Plugins
         {
             get;
         }
-        /// <summary>
-        /// Test contents of two instances for equality
-        /// <param name="data">other instance to compare with</param>
-        /// <returns>true if same</returns>
         void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor);
 
         /// <summary>

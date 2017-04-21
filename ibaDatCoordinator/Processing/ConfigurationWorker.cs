@@ -677,7 +677,7 @@ namespace iba.Processing
                                 IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
                             }
                         }
-                        //clean up any updatetaskworkers //closes database connections and ibaFiles instances
+                        //clean up any update task workers //closes database connections and ibaFiles instances
                         foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
                         {
                             udt.Dispose();
