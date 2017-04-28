@@ -15,11 +15,14 @@ using iba.Controls;
 using iba.Data;
 using iba.Dialogs;
 using iba.Utility;
+using Microsoft.Win32;
 
 namespace iba
 {
     public partial class StatusForm : Form, IExternalCommand
     {
+        private static Icon ServiceRunningIcon = iba.Properties.Resources.runningIcon;
+        private static Icon ServiceStoppedIcon = iba.Properties.Resources.connectedIcon;
         public StatusForm()
         {
             InitializeComponent();
@@ -70,8 +73,22 @@ namespace iba
             base.OnLoad(e);
             UpdateServerStatus(true);
             m_timer.Enabled = true;
+            m_iconEx.Visible = true;
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                object o = key.GetValue("");
+                m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
+            }
+            catch
+            {
+                m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
+            }
+            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
         }
 
+        private bool firstFailure = true;
         private bool bRunning = false;
         private void UpdateServerStatus(bool bForce)
         {
@@ -82,14 +99,19 @@ namespace iba
             bool bServiceError = false;
             ServiceControllerStatus status;
 
-            ServiceControllerEx sc = new ServiceControllerEx();
+            ServiceControllerEx sc = new ServiceControllerEx("ibaDatCoordinatorService");
             try
             {
                 status = sc.Status;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 status = ServiceControllerStatus.Stopped;
+                if (firstFailure)
+                {
+                    if(LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, "Failure getting service info: " + ex.Message);
+                    firstFailure = false;
+                }
                 bServiceError = true;
             }
 
@@ -98,36 +120,21 @@ namespace iba
             {
                 try
                 {
-                    Process[] localByName = Process.GetProcessesByName("ibaDatCoordinatorService");
-                    if (localByName != null && localByName.Length >= 1)
-                    {
-                        m_comboPriority.SelectedIndexChanged -= new System.EventHandler(this.m_comboPriority_SelectedIndexChanged);
-                        switch (localByName[0].PriorityClass)
-                        {
-                            case System.Diagnostics.ProcessPriorityClass.Idle:
-                                m_comboPriority.SelectedIndex = 0;
-                                break;
-                            case System.Diagnostics.ProcessPriorityClass.BelowNormal:
-                                m_comboPriority.SelectedIndex = 1;
-                                break;
-                            case System.Diagnostics.ProcessPriorityClass.Normal:
-                                m_comboPriority.SelectedIndex = 2;
-                                break;
-                            case System.Diagnostics.ProcessPriorityClass.AboveNormal:
-                                m_comboPriority.SelectedIndex = 3;
-                                break;
-                            case System.Diagnostics.ProcessPriorityClass.High:
-                                m_comboPriority.SelectedIndex = 4;
-                                break;
-                            case System.Diagnostics.ProcessPriorityClass.RealTime:
-                                m_comboPriority.SelectedIndex = 5;
-                                break;
-                        }
-                        m_comboPriority.SelectedIndexChanged += new System.EventHandler(this.m_comboPriority_SelectedIndexChanged);
-                    }
+                    m_comboPriority.SelectedIndexChanged -= new System.EventHandler(this.m_comboPriority_SelectedIndexChanged);
+                    int number = 2;
+                    var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    if (key == null)
+                        number = 2;
+                    else
+                        number = (int)key.GetValue("Priority", 2);
+                    m_comboPriority.SelectedIndex = number;
                 }
                 catch
                 {
+                }
+                finally
+                {
+                    m_comboPriority.SelectedIndexChanged += new System.EventHandler(this.m_comboPriority_SelectedIndexChanged);
                 }
             }
 
@@ -152,9 +159,10 @@ namespace iba
                     m_btnStart.Enabled = false;
                     m_btnStop.Enabled = true;
                     m_btnRestart.Enabled = true;
+                    m_iconEx.Icon = this.Icon = ServiceRunningIcon;
                 }
             }
-            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            else
             {
                 if (bForce || bRunning)
                 {
@@ -164,29 +172,27 @@ namespace iba
                     m_btnStart.Enabled = true;
                     m_btnStop.Enabled = false;
                     m_btnRestart.Enabled = false;
+                    m_iconEx.Icon = this.Icon = ServiceStoppedIcon;
                 }
             }
         }
 
         static public void SetServicePriority(int number)
-        {
+        { //requires admin ...
             try
             {
-                Process[] localByName = Process.GetProcessesByName("ibaDatCoordinatorService");
-                if (localByName != null && localByName.Length >= 1 && number >= 0 && number < 6)
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+                "iba", "ibaDatCoordinator"));
+                if (key != null)
                 {
-                    ProcessPriorityClass[] prios = new ProcessPriorityClass[] 
-                    {
-                        System.Diagnostics.ProcessPriorityClass.Idle,
-                        System.Diagnostics.ProcessPriorityClass.BelowNormal,
-                        System.Diagnostics.ProcessPriorityClass.Normal,
-                        System.Diagnostics.ProcessPriorityClass.AboveNormal,
-                        System.Diagnostics.ProcessPriorityClass.High,
-                        System.Diagnostics.ProcessPriorityClass.RealTime
-                    };
-                    ProcessPriorityClass prio = prios[number];
-                    localByName[0].PriorityClass = prio;
+                    key.SetValue("Priority", number);
+                    key.Close();
                 }
+
+                System.ServiceProcess.ServiceController myController =
+                    new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                myController.ExecuteCommand(130);
+                myController.Close();
             }
             catch
             {
@@ -210,7 +216,7 @@ namespace iba
                 return;
             }
 
-            LogData.Data.Logger.Close();
+            if (LogData.Data.Logger != null) LogData.Data.Logger.Close();
             base.OnClosing(e);
         }
 
@@ -322,8 +328,8 @@ namespace iba
             }
             if (result)
             {
-                //Program.CommunicationObject.HandleBrokenConnection();
-                LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
+                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
 
             }
             UpdateServerStatus(true);
@@ -335,18 +341,27 @@ namespace iba
             bool bTimerEnabled = m_timer.Enabled;
             m_timer.Enabled = false;
             //startservice dialog
+            bool result = false;
             using (StartServiceDialog ssd = new StartServiceDialog())
             {
                 if (WindowState == FormWindowState.Minimized)
                 {
                     ssd.StartPosition = FormStartPosition.CenterScreen;
                     ssd.ShowDialog();
+                    result = ssd.Result; 
                 }
                 else
                 {
                     ssd.StartPosition = FormStartPosition.CenterParent;
                     ssd.ShowDialog(this);
+                    result = ssd.Result;
                 }
+            }
+            if (result)
+            {
+                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStarted);
+
             }
             UpdateServerStatus(true);
             m_timer.Enabled = bTimerEnabled;
@@ -438,7 +453,7 @@ namespace iba
         }
 
 
-        private void OnTransferSettings()
+        public static void OnTransferSettings()
         {
             try
             {
@@ -451,23 +466,22 @@ namespace iba
                 string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
                 Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
 
-                using (NamedPipeServerStream pipeServer =
-                    new NamedPipeServerStream("DatcoServiceStatusPipe", PipeDirection.Out))
+                using (NamedPipeClientStream pipeServer =
+                    new NamedPipeClientStream("DatcoServiceStatusPipe"))
                 {
                     //instruct service to connnect
                     myController.ExecuteCommand(128);//instruct service to connect to the named pipe
-                    pipeServer.WaitForConnection();
+                    pipeServer.Connect();
                     using (StreamWriter sw = new StreamWriter(pipeServer))
                     {
                         sw.AutoFlush = true;
                         sw.WriteLine(IbaAnalyzerPath);
                         sw.WriteLine(outFile);
                     }
-                    myController.ExecuteCommand(129);//instruct service to copy files and register the outfile
                 }
                 myController.Close();
                 File.Delete(outFile);
-                MessageBox.Show(this, Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (System.Exception ex)
             {
@@ -493,7 +507,7 @@ namespace iba
             {
                 string text = iba.Properties.Resources.RestartServerQuestion;
                 DialogResult res = DialogResult.No;
-                res = MessageBox.Show(this, text, ParentForm.Text,
+                res = MessageBox.Show(this, text, this.Text,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
                     MessageBoxDefaultButton.Button1);
                 try
@@ -577,7 +591,7 @@ namespace iba
                 procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                 procInfo.FileName = Application.ExecutablePath;
 
-                procInfo.Arguments = "/setmanualservicestart";
+                procInfo.Arguments = "/toggleservicestart";
                 procInfo.Verb = "runas";
 
                 try

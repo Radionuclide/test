@@ -44,7 +44,7 @@ namespace iba
         }
     }
 
-    public class CommunicationObject: MarshalByRefObject
+    public class CommunicationObject: MarshalByRefObject, ISponsor
     {
         private TaskManager m_manager;
         public TaskManager Manager
@@ -118,7 +118,26 @@ namespace iba
 
         public override object InitializeLifetimeService()
         {
-            return null;
+            if (Program.IsServer)
+                return null;
+
+            ILease lease = (ILease)base.InitializeLifetimeService();
+            if (lease.CurrentState == LeaseState.Initial)
+            {
+                lease.InitialLeaseTime = TimeSpan.FromMinutes(5);
+                //lease.SponsorshipTimeout = TimeSpan.FromMinutes(2);
+                lease.RenewOnCallTime = TimeSpan.FromMinutes(1);
+                lease.Register(this);
+            }
+            return lease;
+        }
+
+        public TimeSpan Renewal(ILease lease)
+        {
+            if (Program.CommunicationObject.IsStillValid(this))
+                return TimeSpan.FromMinutes(1);
+            else
+                return TimeSpan.Zero;
         }
 
         public bool ForwardEvents
@@ -308,6 +327,11 @@ namespace iba
         public CommunicationObjectWrapper(CommunicationObject com)
         {
             m_com = com;
+        }
+
+        internal bool IsStillValid(CommunicationObject obj)
+        {
+            return m_com == obj;
         }
 
         public bool TestConnection()

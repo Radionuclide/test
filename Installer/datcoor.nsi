@@ -29,7 +29,7 @@
 !echo "Signing uninstaller"
 !ifdef SIGN_TIMESTAMP_URL
 !system '"${SIGN_TOOL}" sign /f "${SIGN_CERT}" /p ${SIGN_PASS} /t ${SIGN_TIMESTAMP_URL} ..\InstallFiles\uninst.exe' = 0
-!else
+!elseB
 !system '"${SIGN_TOOL}" sign /f "${SIGN_CERT}" /p ${SIGN_PASS} ..\InstallFiles\uninst.exe' = 0
 !endif
 
@@ -102,12 +102,6 @@ Function OnEnd
   ${If} $0 == "1"
   ${OrIf} $0 == "2"
     Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
-    FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
-    ${While} $0 == 0
-      Sleep 500
-      FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
-    ${EndWhile}
-    SendMessage $0 0x8141 0 0
   ${Else}
     Exec '"$INSTDIR\ibaDatCoordinator.exe"'
   ${EndIf}
@@ -536,7 +530,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service2" $ServicePassword
 
   ;Add serverstatus to autorun
-  WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinator.exe /service"
+  WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinator.exe /status"
 
   ;printer stuff
   SetOutPath "$INSTDIR"
@@ -548,12 +542,14 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/status" "$INSTDIR\running.ico"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
   ;Start service
    nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
+  ;Start service status
+   Exec '"$INSTDIR\ibaDatCoordinator.exe" /status'
    !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
@@ -655,42 +651,6 @@ Section -Post
 
 SectionEnd
 
-
-!ifndef DO_UNINSTALLER_SIGNING
-;--------------------------------
-; Uninstall section
-
-Section Uninstall
-
-  SetShellVarContext all
-  !insertmacro WriteToInstallHistory "Uninstalling ${PRODUCT_NAME} v${PRODUCT_VERSION} (Command line: $CMDLINE)"
-  
-  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
-  ${If} $0 == "1"
-    Call un.UninstallService
-	  ;Log installation
-	!insertmacro WriteToInstallHistory "Finished uninstalling service component for ${PRODUCT_NAME} v${PRODUCT_VERSION}"
-  ${EndIf}
-
-  Call un.UninstallTasks
-  !insertmacro WriteToInstallHistory "Finished uninstalling client component for ${PRODUCT_NAME} v${PRODUCT_VERSION}"
-
-  ;Delete uninstaller
-  Delete "$INSTDIR\uninst.exe"
-
-  ;Delete shortcuts
-  RMDir /r "$SMPROGRAMS\ibaDatCoordinator"
-  RMDir /r "$SMPROGRAMS\iba\ibaDatCoordinator"
-  RMDir "$SMPROGRAMS\iba" ;it will only be removed when it is empty
-
-  ;Delete "Add/Remove programs" registry keys
-  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
-  SetAutoClose true
-  
-
-  
-SectionEnd
-
 Function InstalltypeSelect
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSTANDALONE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
@@ -751,6 +711,42 @@ Function InstalltypeSelect
   ${EndIf}
  
 FunctionEnd
+
+
+!ifndef DO_UNINSTALLER_SIGNING
+;--------------------------------
+; Uninstall section
+
+Section Uninstall
+
+  SetShellVarContext all
+  !insertmacro WriteToInstallHistory "Uninstalling ${PRODUCT_NAME} v${PRODUCT_VERSION} (Command line: $CMDLINE)"
+  
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  ${If} $0 == "1"
+    Call un.UninstallService
+	  ;Log installation
+	!insertmacro WriteToInstallHistory "Finished uninstalling service component for ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+  ${EndIf}
+
+  Call un.UninstallTasks
+  !insertmacro WriteToInstallHistory "Finished uninstalling client component for ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+
+  ;Delete uninstaller
+  Delete "$INSTDIR\uninst.exe"
+
+  ;Delete shortcuts
+  RMDir /r "$SMPROGRAMS\ibaDatCoordinator"
+  RMDir /r "$SMPROGRAMS\iba\ibaDatCoordinator"
+  RMDir "$SMPROGRAMS\iba" ;it will only be removed when it is empty
+
+  ;Delete "Add/Remove programs" registry keys
+  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
+  SetAutoClose true
+  
+
+  
+SectionEnd
 
 
 Function un.UninstallTasks

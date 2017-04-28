@@ -91,8 +91,11 @@ namespace iba.Dialogs
                 m_result = false;
                 return;
             }
-            CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
-            Program.CommunicationObject = new CommunicationObjectWrapper(com);
+            if (Program.RunsWithService != Program.ServiceEnum.STATUS)
+            {
+                CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
+                Program.CommunicationObject = new CommunicationObjectWrapper(com);
+            }
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

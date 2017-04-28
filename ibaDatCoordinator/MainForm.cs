@@ -45,12 +45,17 @@ namespace iba
         public static readonly int NEW_ONETIME_CONF_INDEX = 13;
         public static readonly int NEW_SCHEDULED_CONF_INDEX = 14;
         public static readonly int CUSTOMTASK_INDEX = 15;
-        public static readonly int NR_TASKS = 9; 
+        public static readonly int NR_TASKS = 9;
+
+        private QuitForm m_quitForm;
 
         public MainForm()
         {
             m_firstConnectToService = true;
             InitializeComponent();
+
+            m_quitForm = new QuitForm(this);
+            m_quitForm.CreateHandle(new CreateParams());
 
             //Setup default toolbar and menu looks
             ToolStripManager.VisualStylesEnabled = true;
@@ -2355,6 +2360,7 @@ namespace iba
         {
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
+                this.Icon = iba.Properties.Resources.disconnectedIcon;
                 m_startButton.Enabled = m_stopButton.Enabled = false;
                 return;
             }
@@ -2372,6 +2378,18 @@ namespace iba
             }
             m_startButton.Enabled = !allEnabledStarted;
             m_stopButton.Enabled = !allStopped;
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                if (!allStopped)
+                {
+                    this.Icon = iba.Properties.Resources.runningIcon;
+                }
+                else
+                {
+                    this.Icon = iba.Properties.Resources.connectedIcon;
+                }
+            }
         }
 
         public void SetRenderer()
@@ -2658,7 +2676,8 @@ namespace iba
                 {
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    Program.CommunicationObject = null; //will kill it
+                    TryToConnect(null);
                 }
             }
         }
@@ -2730,7 +2749,7 @@ namespace iba
                             Program.CommunicationObject = wrapper;
                         }
                         LogData.Data.Logger.Close();
-                        GridViewLogger gv = null; ;
+                        GridViewLogger gv = null;
                         if(LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
                             gv = LogData.Data.Logger.Children[0] as GridViewLogger;
                         else
@@ -2754,7 +2773,7 @@ namespace iba
                         {
                             MethodInvoker m2 = delegate()
                             {
-                                Program.CommunicationObject.HandleBrokenConnection();
+                                    if (Program.CommunicationObject != null) if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                             };
                             Invoke(m2);
                         }
@@ -2907,17 +2926,20 @@ namespace iba
 
         public void OnExternalActivate()
         {
-            throw new NotImplementedException();
+            Show();
+            Activate();
+            WindowState = FormWindowState.Normal;
+            FormStateSerializer.LoadSettings(this, "StatusForm", true);
         }
 
         public void OnExternalClose()
         {
-            throw new NotImplementedException();
+            Close();
         }
 
         public void OnStartService()
         {
-            throw new NotImplementedException();
+//throw new NotImplementedException();
         }
 
 

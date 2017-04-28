@@ -22,6 +22,7 @@ namespace iba.Controls
         {
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
+                InitializeComponent();
                 Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_browseIbaAnalyzerButton, m_executeIBAAButton, m_registerButton,
                     m_btTransferAnalyzerSettings};
 
@@ -38,7 +39,7 @@ namespace iba.Controls
                     box.Top -= Offset;
                 }
                 m_ceManager = new CollapsibleElementManager(this);
-                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
+                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
                 foreach (var box in gboxes)
                 {
                     box.Init();

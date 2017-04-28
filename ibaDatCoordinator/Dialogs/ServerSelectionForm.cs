@@ -458,8 +458,8 @@ namespace iba.Dialogs
                 btSearch.Text = iba.Properties.Resources.StopStr;
                 try
                 {
-                    ar = ServiceLocator.StartLocateService(PdaMulticastGroupSettings.ServerGuid, 
-                        PdaMulticastGroupSettings.GroupAddress, PdaMulticastGroupSettings.ServerPort, this, false, false);
+                    ar = ServiceLocator.StartLocateService(DatcoServerDefaults.ServerGuid,
+                        DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort, this, false, true);
                     stopTimer.Enabled = true;
                 }
                 catch(Exception ex)

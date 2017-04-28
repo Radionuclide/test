@@ -32,14 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusForm));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox5 = new iba.Utility.CollapsibleGroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
             this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
             this.m_registerButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.m_gbApp = new iba.Utility.CollapsibleGroupBox();
+            this.m_gbApp = new System.Windows.Forms.GroupBox();
             this.m_btnRestart = new System.Windows.Forms.Button();
             this.m_lblServiceStatus = new System.Windows.Forms.Label();
             this.m_udPort = new System.Windows.Forms.NumericUpDown();
@@ -247,14 +247,14 @@
 
         #endregion
 
-        private Utility.CollapsibleGroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
         private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
         private System.Windows.Forms.Button m_registerButton;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
-        private Utility.CollapsibleGroupBox m_gbApp;
+        private System.Windows.Forms.GroupBox m_gbApp;
         private System.Windows.Forms.Label m_lblServiceStatus;
         private System.Windows.Forms.NumericUpDown m_udPort;
         private System.Windows.Forms.Button m_btnStop;

@@ -679,7 +679,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfiguration(data);
             }
         }
@@ -692,7 +692,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AddConfigurations(datas);
             }
         }
@@ -705,7 +705,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ClearConfigurations();
             }
         }
@@ -720,7 +720,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Configurations;
                 }
             }
@@ -732,7 +732,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.Configurations = value;
                 }
             }
@@ -748,7 +748,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.WatchDogData;
                 }
             }
@@ -762,7 +762,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetWatchdogStatus();
             }
         }
@@ -777,7 +777,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.Count;
                 }
             }
@@ -792,7 +792,7 @@ namespace iba.Processing
         //    }
         //    catch (Exception)
         //    {
-        //        Program.CommunicationObject.HandleBrokenConnection();
+        //        if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
         //        return Manager.GetStatus(guid);
         //    }
         //}
@@ -805,7 +805,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.IsJobStarted(guid);
             }
         }
@@ -818,7 +818,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetConfigurationFromWorker(guid);
             }
         }
@@ -831,7 +831,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetMinimalStatus(guid, permanentError);
             }
         }
@@ -844,7 +844,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return Manager.GetStatusPlugin(guid, taskindex);
             }
         }
@@ -857,7 +857,7 @@ namespace iba.Processing
         //    }
         //    catch (Exception)
         //    {
-        //        Program.CommunicationObject.HandleBrokenConnection();
+        //        if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
         //        return Manager.GetStatusCopy(guid);
         //    }
         //}
@@ -870,7 +870,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -882,7 +882,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.RemoveConfiguration(data);
             }
         }
@@ -895,7 +895,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfiguration(data);
             }
         }
@@ -908,7 +908,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceConfigurations(datas);
             }
         }
@@ -921,7 +921,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.UpdateConfiguration(data);
             }
         }
@@ -934,7 +934,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceWatchdogData(data);
             }
         }
@@ -947,7 +947,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.ReplaceGlobalCleanupData(data);
             }
         }
@@ -960,7 +960,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 return false;
             }
         }
@@ -973,7 +973,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -985,7 +985,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -997,7 +997,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1009,7 +1009,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1021,7 +1021,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1033,7 +1033,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1045,7 +1045,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1057,7 +1057,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1069,7 +1069,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1081,7 +1081,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
                 return false;
             }
@@ -1097,7 +1097,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.DoPostponeProcessing;
                 }
             }
@@ -1109,7 +1109,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.DoPostponeProcessing = value;
                 }
             }
@@ -1125,7 +1125,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.PostponeMinutes;
                 }
             }
@@ -1137,7 +1137,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.PostponeMinutes = value;
                 }
             }
@@ -1153,7 +1153,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxResourceIntensiveTasks;
                 }
             }
@@ -1165,7 +1165,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxResourceIntensiveTasks = value;
                 }
             }
@@ -1181,7 +1181,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxSimultaneousIbaAnalyzers;
                 }
             }
@@ -1193,7 +1193,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxSimultaneousIbaAnalyzers = value;
                 }
             }
@@ -1209,7 +1209,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.MaxIbaAnalyzerCalls;
                 }
             }
@@ -1221,7 +1221,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.MaxIbaAnalyzerCalls = value;
                 }
             }
@@ -1237,7 +1237,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.IsIbaAnalyzerCallsLimited;
                 }
             }
@@ -1249,7 +1249,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.IsIbaAnalyzerCallsLimited = value;
                 }
             }
@@ -1265,7 +1265,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.ProcessPriority;
                 }
             }
@@ -1277,7 +1277,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.ProcessPriority = value;
                 }
             }
@@ -1292,7 +1292,7 @@ namespace iba.Processing
             catch (Exception)
             {
                 myList.Clear();
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 Manager.AdditionalFileNames(myList);
             }
         }
@@ -1307,7 +1307,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return "";
                 }
             }
@@ -1319,7 +1319,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 }
             }
         }
@@ -1334,7 +1334,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return TimeSpan.MinValue;
                 }
             }
@@ -1346,7 +1346,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 }
             }
         }
@@ -1361,7 +1361,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return false;
                 }
             }
@@ -1373,7 +1373,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                 }
             }
         }
@@ -1387,7 +1387,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1399,7 +1399,7 @@ namespace iba.Processing
             }
             catch (Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1413,7 +1413,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     return Manager.GlobalCleanupDataList;
                 }
             }
@@ -1425,7 +1425,7 @@ namespace iba.Processing
                 }
                 catch (Exception)
                 {
-                    Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                     Manager.GlobalCleanupDataList = value;
                 }
             }
@@ -1440,7 +1440,7 @@ namespace iba.Processing
             }
             catch(Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
 
@@ -1452,7 +1452,7 @@ namespace iba.Processing
             }
             catch(Exception)
             {
-                Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
             }
         }
     }

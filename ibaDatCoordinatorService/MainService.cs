@@ -44,6 +44,8 @@ namespace iba.Services
                 string filename = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved.xml");
                 m_communicationObject.FileName = filename;
 
+                SetServicePriority();
+
                 //if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
                 //return;
                 try
@@ -55,7 +57,7 @@ namespace iba.Services
                         using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
                             ibaDatCoordinatorData dat = null;
-                                dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                            dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
                             confs = dat.ApplyToManager(m_communicationObject.Manager);
                         }
                         foreach (ConfigurationData dat in confs)
@@ -102,9 +104,9 @@ namespace iba.Services
                     LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
                 }
                 catch
-                { 
+                {
                 }
-                
+
                 string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
                 using (StreamWriter sw = new StreamWriter(file))
                 {
@@ -156,8 +158,8 @@ namespace iba.Services
             base.OnShutdown();
         }
 
-        NamedPipeClientStream m_pipe;
-
+        NamedPipeServerStream m_pipe;
+        IAsyncResult ar;
         protected override void OnCustomCommand(int command)
         {
             switch (command)
@@ -165,37 +167,75 @@ namespace iba.Services
                 case 128:
                     try
                     {
-                        m_pipe = new NamedPipeClientStream(".", "DatcoServiceStatusPipe", PipeDirection.In);
+                        m_pipe = new NamedPipeServerStream("DatcoServiceStatusPipe",PipeDirection.Out);
+                        ar = m_pipe.BeginWaitForConnection(PipeConnected, m_pipe);
                     }
                     catch
                     {
 
                     }
                     return;
-                case 129:
-                    try
-                    {
-                        using (StreamReader sr = new StreamReader(m_pipe))
-                        {
-                            string sourcePath = sr.ReadLine();
-                            CopyIbaAnalyzerFiles(sourcePath);
-                            string regFile = sr.ReadLine();
-                            RegisterIbaAnalyzerSettings(regFile);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                    finally
-                    {
-                        if (m_pipe != null)
-                        {
-                            m_pipe.Dispose();
-                            m_pipe = null;
-                        }
-                    }
+                case 130:
+                    SetServicePriority();
                     return;
+            }
+        }
+
+        private void PipeConnected(IAsyncResult ar)
+        {
+            try
+            {
+                m_pipe.EndWaitForConnection(ar);
+                using (StreamReader sr = new StreamReader(m_pipe))
+                {
+                    string sourcePath = sr.ReadLine();
+                    CopyIbaAnalyzerFiles(sourcePath);
+                    string regFile = sr.ReadLine();
+                    RegisterIbaAnalyzerSettings(regFile);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                if (m_pipe != null)
+                {
+                    m_pipe.Dispose();
+                    m_pipe = null;
+                }
+            }
+            return;
+        }
+
+        private void SetServicePriority()
+        {
+            try
+            {
+                int number = 2;
+                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                if (key == null)
+                    number = 2;
+                else
+                    number = (int)key.GetValue("Priority", 2);
+                if (number >= 0 && number < 6)
+                {
+                    ProcessPriorityClass[] prios = new ProcessPriorityClass[]
+                    {
+                        System.Diagnostics.ProcessPriorityClass.Idle,
+                        System.Diagnostics.ProcessPriorityClass.BelowNormal,
+                        System.Diagnostics.ProcessPriorityClass.Normal,
+                        System.Diagnostics.ProcessPriorityClass.AboveNormal,
+                        System.Diagnostics.ProcessPriorityClass.High,
+                        System.Diagnostics.ProcessPriorityClass.RealTime
+                    };
+                    ProcessPriorityClass prio = prios[number];
+                    System.Diagnostics.Process.GetCurrentProcess().PriorityClass = prio;
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -217,6 +257,7 @@ namespace iba.Services
             foreach (var file in files)
             {
                 File.Copy(file.Source, file.Destination, true);
+                if (LogData.Data.Logger != null) LogData.Data.Logger.Log("copied ", file.Source, file.Destination);
             }
         }
 

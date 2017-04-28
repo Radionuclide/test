@@ -67,7 +67,9 @@ namespace iba.Dialogs
                 }
                 else
                 {
-                    myController.Start(new string[] { "/immediate" });
+                    myController.Stop();
+                    myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
+                    myController.Start();
                 }
 
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, TimeSpan.FromHours(1.0));

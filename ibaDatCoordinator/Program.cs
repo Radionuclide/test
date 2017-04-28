@@ -9,6 +9,7 @@ using IbaAnalyzer;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
+using Microsoft.Win32;
 
 namespace iba
 {
@@ -81,6 +82,21 @@ namespace iba
                 }
                 return;
             }
+            if (args.Length > 0 && String.Compare(args[0], "/restartservice", true) == 0)
+            {
+                try
+                {
+                    System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                    myController.Stop();
+                    myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
+                    myController.Start();
+                    myController.Close();
+                }
+                catch
+                {
+                }
+                return;
+            }
             else if (args.Length > 0 && String.Compare(args[0], "/setautomaticservicestart", true) == 0)
             {
                 try
@@ -94,12 +110,15 @@ namespace iba
                 }
                 return;
             }
-            else if (args.Length > 0 && String.Compare(args[0], "/setmanualservicestart", true) == 0)
+            else if (args.Length > 0 && String.Compare(args[0], "/toggleservicestart", true) == 0)
             {
                 try
                 {
                     ServiceControllerEx myController = new ServiceControllerEx("IbaDatCoordinatorService");
-                    myController.ServiceStart = ServiceStart.Manual;
+                    if (myController.ServiceStart != ServiceStart.Manual)
+                        myController.ServiceStart = ServiceStart.Manual;
+                    else
+                        myController.ServiceStart = ServiceStart.Automatic;
                     myController.Close();
                 }
                 catch
@@ -136,6 +155,10 @@ namespace iba
                 }
                 return;
             }
+            else if (args.Length > 0 && args[0].Contains("/transfersettings"))
+            {
+                StatusForm.OnTransferSettings();
+            }
 
             IsServer = false;
             SetupLanguage(args);
@@ -162,7 +185,7 @@ namespace iba
             {
                 StatusForm = new StatusForm();
                 StatusForm.WindowState = FormWindowState.Minimized;
-                MainForm.ShowInTaskbar = false;
+                StatusForm.ShowInTaskbar = false;
                 Application.Run(StatusForm);
             }
             else
@@ -182,16 +205,8 @@ namespace iba
                     MainForm.TryToConnect(null);
                 }
 
-                //if (RunsWithService != ServiceEnum.NOSERVICE)
-                //{
-                //    MainForm.WindowState = FormWindowState.Minimized;
-                //    MainForm.ShowInTaskbar = false;
-                //}
-                //else
-                //{
-                    MainForm.WindowState = FormWindowState.Normal;
-                    MainForm.ShowInTaskbar = true;
-                //}
+                MainForm.WindowState = FormWindowState.Normal;
+                MainForm.ShowInTaskbar = true;
                 Application.Run(MainForm);
             }
         }
@@ -236,8 +251,11 @@ namespace iba
             {
                 if (m_servicePortNr < 0)
                 {
-                    var key =
-                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    RegistryKey key = null;
+                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED)
+                        key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "IBA", "DATCoordinator"));
+                    else
+                        key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
                     if (key == null)
                         m_servicePortNr = 8800;
                     else
@@ -250,8 +268,12 @@ namespace iba
                 if (m_servicePortNr != value)
                 {
                     m_servicePortNr = value;
-                    var key =
-                    Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+                    RegistryKey key = null;
+                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED)
+                        key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+                    "IBA", "DATCoordinator"));
+                    else
+                        key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
                     "iba", "ibaDatCoordinator"));
                     if (key != null)
                     {
@@ -262,29 +284,33 @@ namespace iba
             }
         }
 
-        public static string ServiceHost
+        public static string ServiceHost //should only be set or gotten by client
         {
             get
             {
-                if (string.IsNullOrEmpty(m_serverHost))
+                System.Diagnostics.Debug.Assert(Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED);
+               if (string.IsNullOrEmpty(m_serverHost))
                 {
                     var key =
-                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    Microsoft.Win32.Registry.CurrentUser.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "IBA", "DATCoordinator"));
                     if (key == null)
                         m_serverHost = "localhost";
                     else
                         m_serverHost = (string)key.GetValue("ServerHost", "localhost");
+                    if (string.IsNullOrEmpty(m_serverHost))
+                        m_serverHost = "localhost";
                 }
                 return m_serverHost;
             }
             set
             {
+                System.Diagnostics.Debug.Assert(Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED);
                 if (m_serverHost != value)
                 {
                     m_serverHost = value;
                     var key =
-                    Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
-                    "iba", "ibaDatCoordinator"));
+                    Microsoft.Win32.Registry.CurrentUser.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
+                    "IBA", "DATCoordinator"));
                     if (key != null)
                     {
                         key.SetValue("ServerHost", m_serverHost);
