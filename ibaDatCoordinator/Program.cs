@@ -155,9 +155,10 @@ namespace iba
                 }
                 return;
             }
-            else if (args.Length > 0 && args[0].Contains("/transfersettings"))
+            else if (args.Length > 2 && args[0].Contains("/transfersettings"))
             {
-                StatusForm.OnTransferSettings();
+                StatusForm.OnTransferSettings(args[1], args[2]);
+                return;
             }
 
             IsServer = false;

@@ -23,6 +23,7 @@ namespace iba
     {
         private static Icon ServiceRunningIcon = iba.Properties.Resources.runningIcon;
         private static Icon ServiceStoppedIcon = iba.Properties.Resources.connectedIcon;
+        private static Icon ServiceDisconnectedIcon = iba.Properties.Resources.disconnectedIcon;
         public StatusForm()
         {
             InitializeComponent();
@@ -159,6 +160,8 @@ namespace iba
                     m_btnStart.Enabled = false;
                     m_btnStop.Enabled = true;
                     m_btnRestart.Enabled = true;
+                    m_btnOptimize.Enabled = true;
+                    m_btTransferAnalyzerSettings.Enabled = true;
                     m_iconEx.Icon = this.Icon = ServiceRunningIcon;
                 }
             }
@@ -172,7 +175,9 @@ namespace iba
                     m_btnStart.Enabled = true;
                     m_btnStop.Enabled = false;
                     m_btnRestart.Enabled = false;
-                    m_iconEx.Icon = this.Icon = ServiceStoppedIcon;
+                    m_btnOptimize.Enabled = false;
+                    m_btTransferAnalyzerSettings.Enabled = false;
+                    m_iconEx.Icon = this.Icon = bServiceError?ServiceDisconnectedIcon:ServiceStoppedIcon;
                 }
             }
         }
@@ -419,8 +424,9 @@ namespace iba
 
         private void m_btTransferAnalyzerSettings_Click(object sender, EventArgs e)
         {
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
-            {
+            Pair<String, String> res = GetFilesForTransfer();
+            //if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            //{
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
                     MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -434,7 +440,7 @@ namespace iba
                 procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                 procInfo.FileName = Application.ExecutablePath;
 
-                procInfo.Arguments = "/transfersettings";
+                procInfo.Arguments = string.Format("/transfersettings: \"{0}\" \"{1}\"",res.First,res.Second);
                 procInfo.Verb = "runas";
 
                 try
@@ -446,41 +452,40 @@ namespace iba
                     MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-            }
-            else
-                OnTransferSettings();
-
+            //}
+            //else
+              //  OnTransferSettings(res.First, res.Second);
         }
 
+        private Pair<string, string> GetFilesForTransfer()
+        {
+            string IbaAnalyzerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            IbaAnalyzerPath = Path.Combine(IbaAnalyzerPath, "iba", "ibaAnalyzer");
+            string tempDir = System.IO.Path.GetTempPath();
+            string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
+            Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
+            return new Pair<string, string>(IbaAnalyzerPath, outFile);
+        }
 
-        public static void OnTransferSettings()
+        public static void OnTransferSettings(string AnalyzerFolder, string regFile)
         {
             try
             {
+                var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                if (key != null)
+                {
+                    key.SetValue("RegFile", regFile);
+                    key.SetValue("AnalyzerFolder", AnalyzerFolder);
+                    key.Close();
+                }
+                else
+                    return;
                 System.ServiceProcess.ServiceController myController =
                     new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                //copy mcr and other files
-                string IbaAnalyzerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                IbaAnalyzerPath = Path.Combine(IbaAnalyzerPath, "iba", "ibaAnalyzer");
-                string tempDir = System.IO.Path.GetTempPath();
-                string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
-                Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
-
-                using (NamedPipeClientStream pipeServer =
-                    new NamedPipeClientStream("DatcoServiceStatusPipe"))
-                {
-                    //instruct service to connnect
-                    myController.ExecuteCommand(128);//instruct service to connect to the named pipe
-                    pipeServer.Connect();
-                    using (StreamWriter sw = new StreamWriter(pipeServer))
-                    {
-                        sw.AutoFlush = true;
-                        sw.WriteLine(IbaAnalyzerPath);
-                        sw.WriteLine(outFile);
-                    }
-                }
+                //instruct service to register
+                myController.ExecuteCommand(128);//instruct service to connect to the named pipe
                 myController.Close();
-                File.Delete(outFile);
+                File.Delete(regFile);
                 MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (System.Exception ex)
