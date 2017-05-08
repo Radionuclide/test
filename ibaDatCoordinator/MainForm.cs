@@ -2668,12 +2668,15 @@ namespace iba
             SaveRightPaneControl();
             int port = Program.ServicePortNr;
             string server = Program.ServiceHost;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                AskToSaveConnection();
             ServerConfiguration cf = new ServerConfiguration();
             using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
             {
                 DialogResult r = ssf.ShowDialog();
-                if (r == DialogResult.OK && (port != cf.PortNr || server != cf.Address))
+                if (r == DialogResult.OK /*&& (port != cf.PortNr || server != cf.Address)*/)
                 {
+                    m_suppresUpload = true;
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
                     Program.CommunicationObject = null; //will kill it
@@ -2682,6 +2685,34 @@ namespace iba
             }
         }
 
+        private void AskToSaveConnection()
+        {
+            if (IsServerClientDifference() &&
+                MessageBox.Show(this,
+                    iba.Properties.Resources.AskToUploadToCurrentServer, 
+                    "ibaDatCoordinator", 
+                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, 
+                     MessageBoxDefaultButton.Button1)
+                     ==DialogResult.Yes)
+            {
+                for (int index = 0; index < 3; index++)
+                {
+                    foreach (TreeNode t in m_configTreeView.Nodes[index].Nodes)
+                    {
+                        if (t.Tag is ConfigurationTreeItemData)
+                        {
+                            ConfigurationData data = (t.Tag as ConfigurationTreeItemData).ConfigurationData;
+                            if (!TaskManager.Manager.CompareConfiguration(data))
+                            {
+                                TaskManager.Manager.UpdateConfiguration(data);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool m_suppresUpload = false;
         private bool m_firstConnectToService;
 
         public void TryToConnect(object ignoreMe)
@@ -2690,7 +2721,6 @@ namespace iba
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             try
             {
-
                 if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
@@ -2793,9 +2823,34 @@ namespace iba
 
         private bool NeedUploadToServer()
         {
+            if (m_suppresUpload)
+            {
+                m_suppresUpload = false; //reset the flag
+                return false;
+            }
             if (TaskManager.Manager.Count == 0) return true; //nothing on server side, upload the minimum configuration of one
             if (m_firstConnectToService) return false;
             //test if there's a difference between the client and server configurations
+            if (IsServerClientDifference())
+            {
+                UploadOrDownloadConfigurationsDialog uodDiag = new UploadOrDownloadConfigurationsDialog();
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    uodDiag.StartPosition = FormStartPosition.CenterScreen;
+                    uodDiag.ShowDialog();
+                }
+                else
+                {
+                    uodDiag.StartPosition = FormStartPosition.CenterParent;
+                    uodDiag.ShowDialog(this);
+                }
+                return uodDiag.Upload;
+            }
+            return false;
+        }
+
+        private bool IsServerClientDifference()
+        {
             for (int index = 0; index < 3; index++)
             {
                 foreach (TreeNode t in m_configTreeView.Nodes[index].Nodes)
@@ -2805,18 +2860,7 @@ namespace iba
                         ConfigurationData data = (t.Tag as ConfigurationTreeItemData).ConfigurationData;
                         if (!TaskManager.Manager.CompareConfiguration(data))
                         {
-                            UploadOrDownloadConfigurationsDialog uodDiag = new UploadOrDownloadConfigurationsDialog();
-                            if (WindowState == FormWindowState.Minimized)
-                            {
-                                uodDiag.StartPosition = FormStartPosition.CenterScreen;
-                                uodDiag.ShowDialog();
-                            }
-                            else
-                            {
-                                uodDiag.StartPosition = FormStartPosition.CenterParent;
-                                uodDiag.ShowDialog(this);
-                            }
-                            return uodDiag.Upload;
+                            return true;
                         }
                     }
                 }

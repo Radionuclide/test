@@ -1331,4 +1331,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="StatusProgram" xml:space="preserve">
     <value>server status</value>
   </data>
+  <data name="AskToUploadToCurrentServer" xml:space="preserve">
+    <value>Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?</value>
+  </data>
 </root>

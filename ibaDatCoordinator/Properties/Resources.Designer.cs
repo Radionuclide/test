@@ -153,6 +153,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?.
+        /// </summary>
+        internal static string AskToUploadToCurrentServer {
+            get {
+                return ResourceManager.GetString("AskToUploadToCurrentServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nr of attempts exceeded!.
         /// </summary>
         internal static string AttemptsExceeded {

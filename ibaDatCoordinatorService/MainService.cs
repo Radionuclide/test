@@ -158,22 +158,12 @@ namespace iba.Services
             base.OnShutdown();
         }
 
-        NamedPipeServerStream m_pipe;
-        IAsyncResult ar;
         protected override void OnCustomCommand(int command)
         {
             switch (command)
             {
                 case 128:
-                    try
-                    {
-                        m_pipe = new NamedPipeServerStream("DatcoServiceStatusPipe",PipeDirection.Out);
-                        ar = m_pipe.BeginWaitForConnection(PipeConnected, m_pipe);
-                    }
-                    catch
-                    {
-
-                    }
+                    TransferSettings();
                     return;
                 case 130:
                     SetServicePriority();
@@ -181,30 +171,20 @@ namespace iba.Services
             }
         }
 
-        private void PipeConnected(IAsyncResult ar)
+        private void TransferSettings()
         {
             try
             {
-                m_pipe.EndWaitForConnection(ar);
-                using (StreamReader sr = new StreamReader(m_pipe))
-                {
-                    string sourcePath = sr.ReadLine();
-                    CopyIbaAnalyzerFiles(sourcePath);
-                    string regFile = sr.ReadLine();
-                    RegisterIbaAnalyzerSettings(regFile);
-                }
+                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                if (key == null) return;
+                string sourcePath  = (string)key.GetValue("AnalyzerFolder", "");
+                string regFile = (string)key.GetValue("RegFile", "");
+                key.Close();
+                CopyIbaAnalyzerFiles(sourcePath);
+                RegisterIbaAnalyzerSettings(regFile);
             }
             catch
             {
-
-            }
-            finally
-            {
-                if (m_pipe != null)
-                {
-                    m_pipe.Dispose();
-                    m_pipe = null;
-                }
             }
             return;
         }
@@ -218,7 +198,10 @@ namespace iba.Services
                 if (key == null)
                     number = 2;
                 else
+                { 
                     number = (int)key.GetValue("Priority", 2);
+                    key.Close();
+                }
                 if (number >= 0 && number < 6)
                 {
                     ProcessPriorityClass[] prios = new ProcessPriorityClass[]
