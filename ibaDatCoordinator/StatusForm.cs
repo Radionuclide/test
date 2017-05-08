@@ -62,6 +62,7 @@ namespace iba
             m_iconEx.ContextMenuStrip = m_iconMenu;
             m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
             m_iconEx.Visible = false;
+            m_iconEx.Text = this.Text;
 
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
