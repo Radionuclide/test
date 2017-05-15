@@ -62,6 +62,7 @@ namespace iba.Controls
 
         private CollapsibleElementManager m_ceManager;
 
+
         #region IPropertyPane Members
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
@@ -74,20 +75,10 @@ namespace iba.Controls
             m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
 
-
-
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
-                try
-                {
-                    RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                    object o = key.GetValue("");
-                    m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
-                }
-                catch
-                {
-                    m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
-                }
+                string output = PathUtil.FindAnalyzerPath();
+                m_tbAnalyzerExe.Text = output;
                 m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
                 m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             }
@@ -100,7 +91,9 @@ namespace iba.Controls
                 m_nudRememberTime.Value = (decimal)TaskManager.Manager.RememberPassTime.TotalMinutes;
                 m_nudRememberTime.Enabled = m_cbRememberPassword.Checked;
             }
-            catch { }
+            catch
+            {
+            }
             UpdatePassControls();
 
             m_globalCleanupData = TaskManager.Manager.GlobalCleanupDataList;
@@ -496,6 +489,4 @@ namespace iba.Controls
             }
         }
     }
-
-
 }

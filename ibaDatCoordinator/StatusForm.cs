@@ -21,9 +21,9 @@ namespace iba
 {
     public partial class StatusForm : Form, IExternalCommand
     {
-        private static Icon ServiceRunningIcon = iba.Properties.Resources.runningIcon;
-        private static Icon ServiceStoppedIcon = iba.Properties.Resources.connectedIcon;
-        private static Icon ServiceDisconnectedIcon = iba.Properties.Resources.disconnectedIcon;
+        private static Icon ServiceRunningIcon = iba.Properties.Resources.StatusIconRunning;
+        private static Icon ServiceStoppedIcon = iba.Properties.Resources.StatusIconStopped;
+        private static Icon ServiceDisconnectedIcon = iba.Properties.Resources.StatusIconDisconnected;
         public StatusForm()
         {
             InitializeComponent();
@@ -62,7 +62,6 @@ namespace iba
             m_iconEx.ContextMenuStrip = m_iconMenu;
             m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
             m_iconEx.Visible = false;
-            m_iconEx.Text = this.Text;
 
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
@@ -76,16 +75,8 @@ namespace iba
             UpdateServerStatus(true);
             m_timer.Enabled = true;
             m_iconEx.Visible = true;
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                m_tbAnalyzerExe.Text = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                m_tbAnalyzerExe.Text = iba.Properties.Resources.noIbaAnalyser;
-            }
+            string output = PathUtil.FindAnalyzerPath();
+            m_tbAnalyzerExe.Text = output;
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
         }
@@ -164,6 +155,7 @@ namespace iba
                     m_btnOptimize.Enabled = true;
                     m_btTransferAnalyzerSettings.Enabled = true;
                     m_iconEx.Icon = this.Icon = ServiceRunningIcon;
+                    m_iconEx.Text = iba.Properties.Resources.ServiceStatusTooltipRunning;
                 }
             }
             else
@@ -179,6 +171,7 @@ namespace iba
                     m_btnOptimize.Enabled = false;
                     m_btTransferAnalyzerSettings.Enabled = false;
                     m_iconEx.Icon = this.Icon = bServiceError?ServiceDisconnectedIcon:ServiceStoppedIcon;
+                    m_iconEx.Text = bServiceError ? iba.Properties.Resources.ServiceStatusTooltipError : iba.Properties.Resources.ServiceStatusTooltipStopped;
                 }
             }
         }

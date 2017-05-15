@@ -474,6 +474,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\running.ico"
+  File "..\ibaDatCoordinator\Resources\DatCo_SrvStat_Icon_pure.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "versions_dat.htm"
@@ -542,7 +543,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/status" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/status" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
@@ -786,6 +787,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
   Delete "$INSTDIR\default.ico"
+  Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
@@ -833,7 +835,7 @@ Function un.UninstallService
     Call un.waitAndDelete
 
   Delete "$INSTDIR\running.ico"
-
+  Delete "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
   ;Remove server status from autorun
   DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status"
 FunctionEnd

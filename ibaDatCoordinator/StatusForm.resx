@@ -313,7 +313,7 @@
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
     <value>$this</value>
@@ -367,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblServiceStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 74</value>
+    <value>124, 74</value>
   </data>
   <data name="m_lblServiceStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
@@ -394,7 +394,7 @@
     <value>1</value>
   </data>
   <data name="m_udPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 103</value>
+    <value>124, 103</value>
   </data>
   <data name="m_udPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 20</value>
@@ -691,7 +691,7 @@
     <value>m_gbApp</value>
   </data>
   <data name="&gt;&gt;m_gbApp.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_gbApp.Parent" xml:space="preserve">
     <value>$this</value>
@@ -710,9 +710,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>724, 243</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>StatusForm</value>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using Microsoft.Win32;
 
 namespace iba.Utility
 {
@@ -170,6 +171,49 @@ namespace iba.Utility
             string result = String.Copy(str);
             System.Windows.Forms.TextRenderer.MeasureText(result, font, new Size(width, 0), formatFlags | System.Windows.Forms.TextFormatFlags.ModifyString);
             return result;
+        }
+
+        public static string FindAnalyzerPath()
+        {
+            string output;
+            try
+            {
+                RegistryKey key = null;
+                string keyName = @"CLSID\{C4B00861-0324-11D3-A677-000000000001}\LocalServer32";
+                if (IbaAnalyzerIs64Bit())
+                    key = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot,RegistryView.Registry64).OpenSubKey(keyName, false);
+                else
+                    key = Registry.ClassesRoot.OpenSubKey(keyName, false);
+
+                //HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{ C4B00861 - 0324 - 11D3 - A677 - 000000000001}\LocalServer32
+                string t = key.GetValue("").ToString();
+                int quoteFirst = t.IndexOf('\"');
+                int quoteLast = t.LastIndexOf('\"');
+                t = t.Substring(quoteFirst + 1, quoteLast - quoteFirst-1);
+                output = Path.GetFullPath(t);
+            }
+            catch
+            {
+                output = iba.Properties.Resources.noIbaAnalyser;
+            }
+            return output;
+        }
+
+        public static bool IbaAnalyzerIs64Bit()
+        {
+            bool res = false;
+            try
+            {
+                IbaAnalyzer.IbaAnalysis MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                string ver = MyIbaAnalyzer.GetVersion();
+                if (ver.Contains("x64"))
+                    res = true;
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
+            }
+            catch
+            {
+            }
+            return res;
         }
     }    
 }

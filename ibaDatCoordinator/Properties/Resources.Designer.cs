@@ -2956,6 +2956,33 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator Service is not available.
+        /// </summary>
+        internal static string ServiceStatusTooltipError {
+            get {
+                return ResourceManager.GetString("ServiceStatusTooltipError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator Service is running.
+        /// </summary>
+        internal static string ServiceStatusTooltipRunning {
+            get {
+                return ResourceManager.GetString("ServiceStatusTooltipRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator Service is stopped.
+        /// </summary>
+        internal static string ServiceStatusTooltipStopped {
+            get {
+                return ResourceManager.GetString("ServiceStatusTooltipStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable.
         /// </summary>
         internal static string SetStr {
@@ -3139,6 +3166,46 @@ namespace iba.Properties {
         internal static string StatusBarError {
             get {
                 return ResourceManager.GetString("StatusBarError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon StatusIconDisconnected {
+            get {
+                object obj = ResourceManager.GetObject("StatusIconDisconnected", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon StatusIconNeutral {
+            get {
+                object obj = ResourceManager.GetObject("StatusIconNeutral", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon StatusIconRunning {
+            get {
+                object obj = ResourceManager.GetObject("StatusIconRunning", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon StatusIconStopped {
+            get {
+                object obj = ResourceManager.GetObject("StatusIconStopped", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

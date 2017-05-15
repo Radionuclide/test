@@ -1334,4 +1334,25 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="AskToUploadToCurrentServer" xml:space="preserve">
     <value>Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?</value>
   </data>
+  <data name="ServiceStatusTooltipError" xml:space="preserve">
+    <value>ibaDatCoordinator Service is not available</value>
+  </data>
+  <data name="ServiceStatusTooltipRunning" xml:space="preserve">
+    <value>ibaDatCoordinator Service is running</value>
+  </data>
+  <data name="ServiceStatusTooltipStopped" xml:space="preserve">
+    <value>ibaDatCoordinator Service is stopped</value>
+  </data>
+  <data name="StatusIconDisconnected" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatCo_SrvStat_Icon_disconn.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StatusIconNeutral" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatCo_SrvStat_Icon_pure.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StatusIconRunning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatCo_SrvStat_Icon_run.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StatusIconStopped" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatCo_SrvStat_Icon_stopped.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
