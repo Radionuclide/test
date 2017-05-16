@@ -166,7 +166,7 @@
     <value>78, 27</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>463, 20</value>
+    <value>554, 20</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -183,60 +183,6 @@
   <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_browseIbaAnalyzerButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>547, 17</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Name" xml:space="preserve">
-    <value>m_browseIbaAnalyzerButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_registerButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_registerButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_registerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>639, 17</value>
-  </data>
-  <data name="m_registerButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_registerButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Name" xml:space="preserve">
-    <value>m_registerButton</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Parent" xml:space="preserve">
-    <value>groupBox5</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -244,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>593, 17</value>
+    <value>638, 16</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -262,7 +208,7 @@
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -295,7 +241,7 @@
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 148</value>

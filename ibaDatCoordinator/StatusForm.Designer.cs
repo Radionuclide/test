@@ -35,8 +35,6 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
-            this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
-            this.m_registerButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_gbApp = new System.Windows.Forms.GroupBox();
@@ -62,8 +60,6 @@
             resources.ApplyResources(this.groupBox5, "groupBox5");
             this.groupBox5.Controls.Add(this.m_btTransferAnalyzerSettings);
             this.groupBox5.Controls.Add(this.m_tbAnalyzerExe);
-            this.groupBox5.Controls.Add(this.m_browseIbaAnalyzerButton);
-            this.groupBox5.Controls.Add(this.m_registerButton);
             this.groupBox5.Controls.Add(this.m_executeIBAAButton);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Name = "groupBox5";
@@ -80,23 +76,7 @@
             // 
             resources.ApplyResources(this.m_tbAnalyzerExe, "m_tbAnalyzerExe");
             this.m_tbAnalyzerExe.Name = "m_tbAnalyzerExe";
-            this.m_tbAnalyzerExe.TextChanged += new System.EventHandler(this.m_tbAnalyzerExe_TextChanged);
-            // 
-            // m_browseIbaAnalyzerButton
-            // 
-            resources.ApplyResources(this.m_browseIbaAnalyzerButton, "m_browseIbaAnalyzerButton");
-            this.m_browseIbaAnalyzerButton.Image = global::iba.Properties.Resources.open;
-            this.m_browseIbaAnalyzerButton.Name = "m_browseIbaAnalyzerButton";
-            this.m_browseIbaAnalyzerButton.UseVisualStyleBackColor = true;
-            this.m_browseIbaAnalyzerButton.Click += new System.EventHandler(this.m_browseIbaAnalyzerButton_Click);
-            // 
-            // m_registerButton
-            // 
-            resources.ApplyResources(this.m_registerButton, "m_registerButton");
-            this.m_registerButton.Image = global::iba.Properties.Resources.Register;
-            this.m_registerButton.Name = "m_registerButton";
-            this.m_registerButton.UseVisualStyleBackColor = true;
-            this.m_registerButton.Click += new System.EventHandler(this.m_registerButton_Click);
+            this.m_tbAnalyzerExe.ReadOnly = true;
             // 
             // m_executeIBAAButton
             // 
@@ -250,8 +230,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
-        private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
-        private System.Windows.Forms.Button m_registerButton;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox m_gbApp;

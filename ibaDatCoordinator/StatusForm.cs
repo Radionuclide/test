@@ -64,7 +64,7 @@ namespace iba
             m_iconEx.Visible = false;
 
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
-            m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
+            //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
             Text = typeof(Program).Assembly.GetName().Name + " " + iba.Properties.Resources.StatusProgram +  " " + DatCoVersion.GetVersion();
         }
@@ -78,7 +78,7 @@ namespace iba
             string output = PathUtil.FindAnalyzerPath();
             m_tbAnalyzerExe.Text = output;
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+            //m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
         }
 
         private bool firstFailure = true;
@@ -669,10 +669,10 @@ namespace iba
                 m_tbAnalyzerExe.Text = m_openFileDialog.FileName;
         }
 
-        private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
-        {
-            m_registerButton.Enabled = m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-        }
+        //private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
+        //{
+        //    m_registerButton.Enabled = m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+        //}
 
         private void m_btnOptimize_Click(object sender, EventArgs e)
         {

@@ -196,7 +196,7 @@
     <value>gb_GlobalCleanup</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -613,7 +613,7 @@
     <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;gb_Password.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_Password.Parent" xml:space="preserve">
     <value>$this</value>
@@ -792,150 +792,6 @@
   <data name="gb_IbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Name" xml:space="preserve">
-    <value>m_nudRestartIbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_nudRestartIbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Name" xml:space="preserve">
-    <value>m_nudMaxIbaAnalyzers</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxIbaAnalyzers.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Name" xml:space="preserve">
-    <value>m_cbRestartIbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestartIbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_tbAnalyzerExe.Name" xml:space="preserve">
-    <value>m_tbAnalyzerExe</value>
-  </data>
-  <data name="&gt;&gt;m_tbAnalyzerExe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbAnalyzerExe.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Name" xml:space="preserve">
-    <value>m_browseIbaAnalyzerButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Name" xml:space="preserve">
-    <value>m_registerButton</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="gb_IbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 84</value>
-  </data>
-  <data name="gb_IbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 114</value>
-  </data>
-  <data name="gb_IbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="gb_IbaAnalyzer.Text" xml:space="preserve">
-    <value>ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;gb_IbaAnalyzer.Name" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;gb_IbaAnalyzer.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gb_IbaAnalyzer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gb_IbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -1090,7 +946,7 @@
     <value>78, 27</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>463, 20</value>
+    <value>555, 20</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1107,60 +963,6 @@
   <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_browseIbaAnalyzerButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>547, 17</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_browseIbaAnalyzerButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Name" xml:space="preserve">
-    <value>m_browseIbaAnalyzerButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_browseIbaAnalyzerButton.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_registerButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_registerButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_registerButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>639, 17</value>
-  </data>
-  <data name="m_registerButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_registerButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Name" xml:space="preserve">
-    <value>m_registerButton</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_registerButton.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1168,7 +970,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>593, 17</value>
+    <value>639, 19</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1186,7 +988,7 @@
     <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -1219,10 +1021,118 @@
     <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 84</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 114</value>
+  </data>
+  <data name="gb_IbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Text" xml:space="preserve">
+    <value>ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Name" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gb_IbaAnalyzer.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="gb_Processing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_nudResourceCritical.Name" xml:space="preserve">
+    <value>m_nudResourceCritical</value>
+  </data>
+  <data name="&gt;&gt;m_nudResourceCritical.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudResourceCritical.Parent" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;m_nudResourceCritical.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudPostponeTime.Name" xml:space="preserve">
+    <value>m_nudPostponeTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudPostponeTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudPostponeTime.Parent" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;m_nudPostponeTime.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbPostpone.Name" xml:space="preserve">
+    <value>m_cbPostpone</value>
+  </data>
+  <data name="&gt;&gt;m_cbPostpone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbPostpone.Parent" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;m_cbPostpone.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="gb_Processing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 5</value>
+  </data>
+  <data name="gb_Processing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 73</value>
+  </data>
+  <data name="gb_Processing.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gb_Processing.Text" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="&gt;&gt;gb_Processing.Name" xml:space="preserve">
+    <value>gb_Processing</value>
+  </data>
+  <data name="&gt;&gt;gb_Processing.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gb_Processing.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gb_Processing.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1358,30 +1268,6 @@
   </data>
   <data name="&gt;&gt;m_cbPostpone.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="gb_Processing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 5</value>
-  </data>
-  <data name="gb_Processing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 73</value>
-  </data>
-  <data name="gb_Processing.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gb_Processing.Text" xml:space="preserve">
-    <value>Processing</value>
-  </data>
-  <data name="&gt;&gt;gb_Processing.Name" xml:space="preserve">
-    <value>gb_Processing</value>
-  </data>
-  <data name="&gt;&gt;gb_Processing.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.25.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gb_Processing.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gb_Processing.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

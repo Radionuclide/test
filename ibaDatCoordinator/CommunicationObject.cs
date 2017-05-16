@@ -134,7 +134,7 @@ namespace iba
 
         public TimeSpan Renewal(ILease lease)
         {
-            if (Program.CommunicationObject.IsStillValid(this))
+            if (Program.CommunicationObject != null && Program.CommunicationObject.IsStillValid(this))
                 return TimeSpan.FromMinutes(1);
             else
                 return TimeSpan.Zero;
@@ -339,10 +339,12 @@ namespace iba
             try
             {
                 m_com.TestConnection();
+                //MessageBox.Show("OK");
                 return true;
             }
-            catch (Exception) //Do Nothing
+            catch (Exception ex) //Do Nothing
             {
+                //MessageBox.Show(ex.Message);
                 return false;
             }
         }

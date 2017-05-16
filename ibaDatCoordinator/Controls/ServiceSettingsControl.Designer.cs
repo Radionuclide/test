@@ -56,8 +56,6 @@ namespace iba.Controls
             this.m_nudMaxIbaAnalyzers = new System.Windows.Forms.NumericUpDown();
             this.m_cbRestartIbaAnalyzer = new System.Windows.Forms.CheckBox();
             this.m_tbAnalyzerExe = new System.Windows.Forms.TextBox();
-            this.m_browseIbaAnalyzerButton = new System.Windows.Forms.Button();
-            this.m_registerButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.gb_Processing = new iba.Utility.CollapsibleGroupBox();
@@ -201,8 +199,6 @@ namespace iba.Controls
             this.gb_IbaAnalyzer.Controls.Add(this.m_nudMaxIbaAnalyzers);
             this.gb_IbaAnalyzer.Controls.Add(this.m_cbRestartIbaAnalyzer);
             this.gb_IbaAnalyzer.Controls.Add(this.m_tbAnalyzerExe);
-            this.gb_IbaAnalyzer.Controls.Add(this.m_browseIbaAnalyzerButton);
-            this.gb_IbaAnalyzer.Controls.Add(this.m_registerButton);
             this.gb_IbaAnalyzer.Controls.Add(this.m_executeIBAAButton);
             this.gb_IbaAnalyzer.Controls.Add(this.label5);
             this.gb_IbaAnalyzer.Name = "gb_IbaAnalyzer";
@@ -269,23 +265,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_tbAnalyzerExe, "m_tbAnalyzerExe");
             this.m_tbAnalyzerExe.Name = "m_tbAnalyzerExe";
-            this.m_tbAnalyzerExe.TextChanged += new System.EventHandler(this.m_tbAnalyzerExe_TextChanged);
-            // 
-            // m_browseIbaAnalyzerButton
-            // 
-            resources.ApplyResources(this.m_browseIbaAnalyzerButton, "m_browseIbaAnalyzerButton");
-            this.m_browseIbaAnalyzerButton.Image = global::iba.Properties.Resources.open;
-            this.m_browseIbaAnalyzerButton.Name = "m_browseIbaAnalyzerButton";
-            this.m_browseIbaAnalyzerButton.UseVisualStyleBackColor = true;
-            this.m_browseIbaAnalyzerButton.Click += new System.EventHandler(this.m_browseIbaAnalyzerButton_Click);
-            // 
-            // m_registerButton
-            // 
-            resources.ApplyResources(this.m_registerButton, "m_registerButton");
-            this.m_registerButton.Image = global::iba.Properties.Resources.Register;
-            this.m_registerButton.Name = "m_registerButton";
-            this.m_registerButton.UseVisualStyleBackColor = true;
-            this.m_registerButton.Click += new System.EventHandler(this.m_registerButton_Click);
+            this.m_tbAnalyzerExe.ReadOnly = true;
             // 
             // m_executeIBAAButton
             // 
@@ -404,8 +384,6 @@ namespace iba.Controls
         private iba.Utility.CollapsibleGroupBox gb_IbaAnalyzer;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button m_browseIbaAnalyzerButton;
-        private System.Windows.Forms.Button m_registerButton;
         private System.Windows.Forms.TextBox m_tbAnalyzerExe;
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.ToolTip m_toolTip;

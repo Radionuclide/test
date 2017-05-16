@@ -616,7 +616,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
 
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe /service" "" "$INSTDIR\default.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\default.ico"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
@@ -1206,15 +1206,15 @@ LangString TEXT_SERVICE_REMOVE            ${LANG_GERMAN} "Dienst wird gelöscht"
 LangString TEXT_SERVICEORSTANDALONE_TITLE ${LANG_GERMAN} "Installationsart auswählen"
 LangString TEXT_SERVICEORSTANDALONE_SUBTITLE ${LANG_GERMAN} "Wählen Sie die Installationsart für ibaDatCoordinator aus"
 LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator Server und Client installieren"
-LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "Nur ibaDatCoordinator Client installieren"
-LangString TEXT_INSTALLCLIENT         	  ${LANG_GERMAN} "ibaDatCoordinator nur als Programm zu installieren"
+LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm installieren"
+LangString TEXT_INSTALLCLIENT         	  ${LANG_GERMAN} "Nur ibaDatCoordinator Client installieren"
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
-LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH}} "ibaDatCoordinator Serveur/Client"
+LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "ibaDatCoordinator Serveur/Client"
 LangString DESC_DATCOOR_CLIENT           ${LANG_FRENCH} "ibaDatCoordinator Client"
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."

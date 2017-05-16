@@ -142,7 +142,7 @@ namespace iba
             string s = String.IsNullOrEmpty(m_filename) ? "not set" : m_filename;
             Profiler.ProfileString(false, "LastState", "LastSavedFile", ref s, "not set");
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
                 Program.CommunicationObject.Logging_Log("Gui Stopped");
                 Program.CommunicationObject.ForwardEvents = false;
@@ -2671,6 +2671,9 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 AskToSaveConnection();
             ServerConfiguration cf = new ServerConfiguration();
+            cf.Address = server;
+            cf.PortNr = port;
+            cf.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED;
             using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
             {
                 DialogResult r = ssf.ShowDialog();
@@ -2679,8 +2682,15 @@ namespace iba
                     m_suppresUpload = true;
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
+                    CommunicationObjectWrapper old = Program.CommunicationObject;
                     Program.CommunicationObject = null; //will kill it
+                    Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
                     TryToConnect(null);
+                    if (Program.CommunicationObject == null) //connect failed
+                    {
+                        old.HandleBrokenConnection();
+                        Program.CommunicationObject = old;
+                    }
                 }
             }
         }
@@ -2803,7 +2813,7 @@ namespace iba
                         {
                             MethodInvoker m2 = delegate()
                             {
-                                    if (Program.CommunicationObject != null) if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                             };
                             Invoke(m2);
                         }

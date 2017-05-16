@@ -23,7 +23,7 @@ namespace iba.Controls
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
                 InitializeComponent();
-                Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_browseIbaAnalyzerButton, m_executeIBAAButton, m_registerButton,
+                Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_executeIBAAButton,
                     m_btTransferAnalyzerSettings};
 
                 foreach (var ctrl in ToHide)
@@ -49,7 +49,7 @@ namespace iba.Controls
             else
             {
                 ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
-                m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
+                //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
                 CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
                 foreach (var box in gboxes)
                 {
@@ -80,7 +80,7 @@ namespace iba.Controls
                 string output = PathUtil.FindAnalyzerPath();
                 m_tbAnalyzerExe.Text = output;
                 m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-                m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+                //m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             }
 
             m_pass = "";
@@ -202,11 +202,11 @@ namespace iba.Controls
             }
         }
 
-        private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
-        {
-            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-            m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-        }
+        //private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
+        //{
+        //    m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+        //    m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+        //}
 
         private void m_SetChangePassBtn_Click(object sender, EventArgs e)
         {
