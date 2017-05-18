@@ -918,6 +918,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon iconPaneSnmp {
+            get {
+                object obj = ResourceManager.GetObject("iconPaneSnmp", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://www.icsharpcode.net/OpenSource/SD.
         /// </summary>
         internal static string ICSharpTextEditorUrl {

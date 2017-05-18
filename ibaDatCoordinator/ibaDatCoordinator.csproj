@@ -600,6 +600,7 @@
     <Content Include="DevExpress.XtraGrid.v16.1.dll" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\paneSnmpIcon.ico" />
     <None Include="Resources\SplitDat.ico" />
     <None Include="Resources\plus.bmp" />
     <None Include="Resources\minus.bmp" />
