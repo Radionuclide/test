@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
+using System.Diagnostics;
 using System.Net.Sockets;
-using System.Text;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Processing;
+using iba.Properties;
 using IbaSnmpLib;
+
+
+// all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
+// usual strings (e.g. "General") should be localized later.
 
 namespace iba.Controls
 {
     public partial class SnmpControl : UserControl, IPropertyPane
     {
-
         #region Construction, Destruction, Init
 
         public SnmpControl()
@@ -23,6 +23,9 @@ namespace iba.Controls
             InitializeComponent();
             _tmp___instCounter++;
         }
+
+        private const int ImageIndexFolder = 0;
+        private const int ImageIndexLeaf = 1;
 
         private void SnmpControl_Load(object sender, EventArgs e)
         {
@@ -36,6 +39,15 @@ namespace iba.Controls
             {
                 snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
             }
+
+            // image list for objects TreeView
+            ImageList tvObjectsImageList = new ImageList();
+            // folder
+            tvObjectsImageList.Images.Add(Resources.copydat_running); // todo use another one
+            // leaf
+            tvObjectsImageList.Images.Add(Resources.batchfile_running); // todo use another one
+            tvObjects.ImageList = tvObjectsImageList;
+            tvObjects.ImageIndex = ImageIndexFolder;
 
             // todo
             // fill combo boxes not by hand but from enums 
@@ -51,7 +63,7 @@ namespace iba.Controls
 
         #region Debug
 
-        private static int _tmp___instCounter = 0;
+        private static int _tmp___instCounter;
         private int _tmp___cnt1;
         private int _tmp___cnt2;
         private int _tmp___cnt3;
@@ -291,6 +303,7 @@ namespace iba.Controls
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
+            // todo localize
             if (MessageBox.Show(this,
                     "Are you sure you want to reset configuration to default?",
                     "Reset configuration?",
@@ -416,194 +429,295 @@ namespace iba.Controls
 
         #region Objects
 
+
         public void InitializeObjectsTree()
         {
-            TreeNodeCollection nodes = tvObjects.Nodes;
-            nodes.Clear();
+            // first of all, clear the tree
+            tvObjects.Nodes.Clear();
 
+            // now add the new contents
             var worker = TaskManager.Manager?.SnmpWorker;
-            if (worker == null)
+            IbaSnmp ibaSnmp = worker?.IbaSnmp;
+            if (ibaSnmp == null)
             {
                 return;
             }
 
-            // todo get copy and work with copy
             lock (worker.LockObject)
             {
-                var od = worker?.ObjectsData;
-                IbaSnmp ibaSnmp = worker?.IbaSnmp;
-                if (od == null || ibaSnmp == null) return;
-
-                var nodeRoot = nodes.Add(ibaSnmp.OidIbaRoot.ToString());
-
-                // root.0=Library
-                var nodeLib = nodeRoot.Nodes.Add($"0. Library");
-                //IbaSnmpOid oidLib = ibaSnmp.OidIbaSnmpLibInfo;
-
-                nodeLib.Nodes.Add("1. Name");
-                nodeLib.Nodes.Add("2. Version");
-                nodeLib.Nodes.Add("3. Host name");
-                nodeLib.Nodes.Add("4. System time");
-
-                // root.2=DatCo
-                var nodeCoord = nodeRoot.Nodes.Add($"{(int)IbaSnmpProductId.IbaDatCoordinator}. ibaDatCoordinator");
-
-                // root.2=DatCo.0=General
-                var nodeGen = nodeCoord.Nodes.Add("0. General");
-                nodeGen.Nodes.Add("1. Title");
-                nodeGen.Nodes.Add("2. Version");
-                var nodeLic = nodeGen.Nodes.Add("3. Licensing");
-                // todo lic
-
-
-                // root.2=DatCo.1=Product
-                var nodeProduct = nodeCoord.Nodes.Add("1. Product");
-
-                // root.2=DatCo.1=Product.1=Cleanup
-                var nodeGlobalCleanup = nodeProduct.Nodes.Add("1. GlobalCleanup");
-                for (int i = 0; i < od.GlobalCleanup.Count; i++)
+                var allObjs = ibaSnmp.GetListOfAllOids();
+                foreach (IbaSnmpOid oid in allObjs)
                 {
-                    var cleanupInfo = od.GlobalCleanup[i];
-                    var driveNode = nodeGlobalCleanup.Nodes.Add($"{i+1}. Drive {cleanupInfo.DriveName}");
+                    if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+                    {
+                        // ignore everything what is outside iba root area
+                        // (e.g. UpTime or whataver)
+                        continue;
+                    }
 
-                    driveNode.Nodes.Add("0. DriveName: " + cleanupInfo.DriveName);
-                    driveNode.Nodes.Add("1. Active: " + cleanupInfo.Active);
-                    driveNode.Nodes.Add("2. Size: " + cleanupInfo.Size);
-                    driveNode.Nodes.Add("3. CurrentFreeSpace: " + cleanupInfo.CurrentFreeSpace);
-                    driveNode.Nodes.Add("4. MinFreeSpace: " + cleanupInfo.MinFreeSpace);
-                    driveNode.Nodes.Add("5. RescanTime: " + cleanupInfo.RescanTime);
+                    // find or create a parent (folder) node
+                    var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
+
+                    string caption = $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}";
+
+                    var node = parentNode.Nodes.Add(oid.ToString(), caption, ImageIndexLeaf, ImageIndexLeaf);
+                    node.Tag = oid;
                 }
 
-                // root.2=DatCo.1=Product.2=StandardJobs
-                var nodeStdJobs = nodeProduct.Nodes.Add($"2. Standard Jobs (total {od.StandardJobs.Count})");
-                for (int i = 0; i < od.StandardJobs.Count; i++)
-                {
-                    var jobInfo = od.StandardJobs[i];
-                    var jobNode = nodeStdJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
-
-                    var jobGenNode = jobNode.Nodes.Add("0. General");
-                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
-                    jobGenNode.Nodes.Add("1. Status: " + jobInfo.Status);
-                    jobGenNode.Nodes.Add("2. Todo #:" + jobInfo.TodoCount);
-                    jobGenNode.Nodes.Add("3. Done #:" + jobInfo.DoneCount);
-
-                    jobGenNode.Nodes.Add("4. Failed #:" + jobInfo.FailedCount);
-                    jobGenNode.Nodes.Add("5. Perm.Failed #:" + jobInfo.PermFailedCount);
-
-                    jobGenNode.Nodes.Add("6. Perm.Failed #:" + jobInfo.TimestampJobStarted);
-                    jobGenNode.Nodes.Add("7. Perm.Failed #:" + jobInfo.LastCycleScanningTime);
-
-                    jobGenNode.Nodes.Add("8.0. LastProcessingLastDatFileProcessed:" + jobInfo.LastProcessingLastDatFileProcessed);
-                    jobGenNode.Nodes.Add("8.1. LastProcessingStartTimeStamp:" + jobInfo.LastProcessingStartTimeStamp);
-                    jobGenNode.Nodes.Add("8.2. LastProcessingFinishTimeStamp:" + jobInfo.LastProcessingFinishTimeStamp);
-
-                    AddTasksToTree(jobNode, jobInfo.Tasks);
-                }
-
-                // root.2=DatCo.1=Product.3=ScheduledJobs
-                var nodeSchJobs = nodeProduct.Nodes.Add($"3. Scheduled Jobs (total {od.ScheduledJobs.Count})");
-                for (int i = 0; i < od.ScheduledJobs.Count; i++)
-                {
-                    var jobInfo = od.ScheduledJobs[i];
-                    var jobNode = nodeSchJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
-
-                    var jobGenNode = jobNode.Nodes.Add("0. General");
-                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
-
-                    AddTasksToTree(jobNode, jobInfo.Tasks);
-                }
-
-                // root.2=DatCo.1=Product.4=OneTimeJobs
-                var nodeOtJobs = nodeProduct.Nodes.Add($"4. One Time Jobs (total {od.OneTimeJobs.Count}):");
-                for (int i = 0; i < od.OneTimeJobs.Count; i++)
-                {
-                    var jobInfo = od.OneTimeJobs[i];
-                    var jobNode = nodeOtJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
-
-                    var jobGenNode = jobNode.Nodes.Add("0. General");
-                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
-
-                    AddTasksToTree(jobNode, jobInfo.Tasks);
-                }
-
-                nodeRoot.Expand();
-                nodeCoord.Expand();
-                nodeProduct.Expand();
-                nodeGlobalCleanup.Expand();
-                nodeStdJobs.Expand();
-                nodeSchJobs.Expand();
-                nodeOtJobs.Expand();
-                //tvObjects.ExpandAll();
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProduct)?.Expand();
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific)?.Expand();
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 2)?.Expand(); // std job
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 3)?.Expand(); // sch job
+                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 4)?.Expand(); // one t job
             }
         }
 
-        private void AddTasksToTree(TreeNode parent, List<SnmpObjectsData.TaskInfo> tasks)
+        private TreeNode FindSingleNodeByOid(SnmpWorker worker, IbaSnmpOid oid)
         {
-            var jobTasksNode = parent.Nodes.Add($"1. Tasks (total {tasks?.Count})");
-
-            if (tasks == null)
+            if (worker == null)
             {
-                return;
+                // should not happen
+                throw new ArgumentNullException(nameof(worker));
             }
 
-            for (int i = 0; i < tasks.Count; i++)
+            if (oid == null)
             {
-                SnmpObjectsData.TaskInfo taskInfo = tasks[i];
-                AddTaskToTree(i + 1, jobTasksNode, taskInfo);
+                // should not happen
+                throw new ArgumentNullException(nameof(oid));
             }
+
+            IbaSnmp ibaSnmp = worker.IbaSnmp;
+
+            if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+            {
+                // should not happen
+                throw new ArgumentOutOfRangeException();
+            }
+
+            // check if exists
+            TreeNode[] nodes = tvObjects.Nodes.Find(oid.ToString(), true);
+
+            if (nodes.Length == 1)
+            {
+                // ok, found exactly one match
+                return nodes[0];
+            }
+            if (nodes.Length > 1)
+            {
+                // Length > 1
+                // should not happen
+                // inconsisnensy?
+                throw new Exception($@"Found more than one match for {oid}");
+            }
+            return null; // not found
         }
 
-        private void AddTaskToTree(int index, TreeNode parent, SnmpObjectsData.TaskInfo taskInfo)
+        private TreeNode FindOrCreateFolderNode(SnmpWorker worker, IbaSnmpOid oid)
         {
-            TreeNode taskNode = parent.Nodes.Add($"{index}. {taskInfo.TaskName}");
-            taskNode.Nodes.Add("0. TaskName: " + taskInfo.TaskName);
-            taskNode.Nodes.Add("1. Tasktype : " + taskInfo.TaskType);
-            taskNode.Nodes.Add("2. Success: " + taskInfo.Success);
-            taskNode.Nodes.Add("3. DurationOfLastExecution: " + taskInfo.DurationOfLastExecution);
-            taskNode.Nodes.Add("4. CurMemoryUsed: " + taskInfo.CurrentMemoryUsed);
-
-            var ci = taskInfo.CleanupInfo;
-            if (ci == null)
+            if (worker == null)
             {
-                return;
+                // should not happen
+                throw new ArgumentNullException(nameof(worker));
             }
 
-            TreeNode cleanupNode = taskNode.Nodes.Add("5. Cleanup");
-            cleanupNode.Nodes.Add("0. LimitChoice:" + ci.LimitChoice);
-            cleanupNode.Nodes.Add("1. Subdirectories:" + ci.Subdirectories);
-            cleanupNode.Nodes.Add("2. FreeDiskSpace:" + ci.FreeDiskSpace);
-            cleanupNode.Nodes.Add("3. UsedDiskSpace:" + ci.UsedDiskSpace);
+            if (oid == null)
+            {
+                // should not happen
+                throw new ArgumentNullException(nameof(oid));
+            }
+
+            IbaSnmp ibaSnmp = worker.IbaSnmp;
+
+            if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+            {
+                // should not happen
+                throw new ArgumentOutOfRangeException();
+            }
+
+            // check if exists
+            TreeNode node = FindSingleNodeByOid(worker, oid);
+
+            if (node != null)
+            {
+                return node;
+            }
+
+            // not found, then create it
+
+            // if this is a root node (recursion stop point)
+            if (oid == ibaSnmp.OidIbaRoot)
+            {
+                // then add it to the top of the tree
+                node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
+            }
+            else
+            {
+                // first, find/create the parent node recursively
+                var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
+                // add the node to the parent node
+                node = parentNode.Nodes.Add(oid.ToString(), $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}");
+            }
+
+            node.Tag = oid;
+            return node;
+        }
+
+        private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
+        {
+            lock (worker.LockObject)
+            {
+                SnmpWorker.OidMetadata metadata;
+                if (!worker.OidMetadataDict.TryGetValue(oid, out metadata))
+                {
+                    return @"???";
+                }
+                return metadata.GuiCaption;
+            }
         }
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            tbObjValue.Text = tbObjOid.Text = e.Node.Text;
-            return;
-            // todo add oid to tag
+            tbObjOid.Text = "";
+            tbObjValue.Text = "";
+            tbObjMibName.Text = "";
+            tbObjType.Text = "";
+
+            // get library  
             var worker = TaskManager.Manager?.SnmpWorker;
             if (worker == null)
             {
                 return;
             }
-            var od = worker?.ObjectsData;
-            IbaSnmp ibaSnmp = worker?.IbaSnmp;
-            if (od == null || ibaSnmp == null) return;
 
+            var od = worker.ObjectsData;
+            IbaSnmp ibaSnmp = worker.IbaSnmp;
+            if (od == null || ibaSnmp == null)
+            {
+                return;
+            }
+
+            // get OID from node's tag
             IbaSnmpOid oid = e.Node.Tag as IbaSnmpOid;
-
-            tbObjOid.Text = "";
-            tbObjValue.Text = "";
-
-            if (oid == null) return;
+            if (oid == null)
+            {
+                return;
+            }
 
             tbObjOid.Text = oid.ToString();
-            var val = ibaSnmp.GetUserValue(oid, false);
-            tbObjValue.Text = val?.ToString();
+
+            var objInfo = ibaSnmp.GetObjectInfo(oid, true);
+
+            if (objInfo != null)
+            {
+                tbObjValue.Text = objInfo.Value.ToString();
+                tbObjMibName.Text = objInfo.MibName;
+                
+                // todo remove after testing of MIB descriptions
+                tbObjMibName.Text = objInfo.MibName + @"; " + objInfo.MibDescription; 
+
+                tbObjType.Text = objInfo.MibDataType;
+            }
+            else
+            {
+                // todo remove this block after testing of MIB descriptions
+                {
+                    // probabaly this is a folder, that has no corresponding snmp object 
+                    // try to get it's description from the worker.
+                    SnmpWorker.OidMetadata metadata;
+                    lock (worker.LockObject)
+                    {
+                        if (worker.OidMetadataDict.TryGetValue(oid, out metadata) != true)
+                        {
+                            return;
+                        }
+                    }
+
+                    tbObjMibName.Text = (metadata.MibName ?? "") + @"; " + (metadata.MibDescription ?? "");
+                }
+            }
         }
 
         private void buttonObjectsRefresh_Click(object sender, EventArgs e)
         {
             InitializeObjectsTree();
+        }
+
+        private void buttonCreateMibFiles_Click(object sender, EventArgs e)
+        {
+            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
+            var ibaSnmp = snmpWorker?.IbaSnmp;
+            if (ibaSnmp == null)
+            {
+                return;
+            }
+
+            if (folderBrowserDialog.ShowDialog()
+                != DialogResult.OK)
+            {
+                return;
+            }
+
+            try
+            {
+                string dir = folderBrowserDialog.SelectedPath;
+
+                IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(ibaSnmp);
+
+                gen.DescriptionRequested += MibGenerator_OnDescriptionRequested;
+                gen.Generate();
+                gen.SaveToFile(dir);
+
+                string fullFileName1 = $@"{dir}\{gen.GeneralMibFilename}";
+                string fullFileName2 = $@"{dir}\{gen.ProductMibFilename}";
+
+                // todo localize
+                if (MessageBox.Show(this, 
+                    "Successfully created the following MIB files:" +
+                    $"\r\n{fullFileName1}\r\n{fullFileName2}"+
+                    "\r\n\r\nDo you wish to navigate to these files?",
+                    "Create MIB files", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+                    == DialogResult.Yes)
+                {
+                    // open folder and show files
+                    Process.Start(@"explorer.exe", $"/select, \"{fullFileName2}\"");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private static void MibGenerator_OnDescriptionRequested(object sender, IbaSnmpMibDescrRequestedEventArgs eventArgs)
+        {
+            var worker = TaskManager.Manager?.SnmpWorker;
+
+            if (worker == null)
+            {
+                return;
+            }
+
+            SnmpWorker.OidMetadata metadata;
+            lock (worker.LockObject)
+            {
+                if (worker.OidMetadataDict.TryGetValue(eventArgs.Oid, out metadata) != true)
+                {
+                    return;
+                }
+            }
+
+            if (metadata.MibName != null)
+            {
+                eventArgs.Name = metadata.MibName;
+            }
+            if (metadata.MibDescription != null)
+            {
+                eventArgs.Name = metadata.MibDescription;
+            }
         }
 
         #endregion

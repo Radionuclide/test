@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using IbaSnmpLib;
 
 namespace iba.Data
 {
@@ -20,7 +21,7 @@ namespace iba.Data
         {
             Reset();
         }
-
+        
         public void Reset()
         {
             // contained data is not valid
@@ -35,6 +36,7 @@ namespace iba.Data
             // todo remove
             _tmp_reset_cnt++;
         }
+
         /// <summary> PrSpecific.1 </summary>
         public List<GlobalCleanupDriveInfo> GlobalCleanup = new List<GlobalCleanupDriveInfo>();
         /// <summary> PrSpecific.2 </summary>
@@ -68,16 +70,16 @@ namespace iba.Data
             public bool Active;
 
             /// <summary> Oid 2 </summary>
-            public int Size;
+            public uint Size;
 
             /// <summary> Oid 3 </summary>
-            public int CurrentFreeSpace;
+            public uint CurrentFreeSpace;
 
             /// <summary> Oid 4 </summary>
-            public int MinFreeSpace;
+            public uint MinFreeSpace;
 
             /// <summary> Oid 5 </summary>
-            public int RescanTime;
+            public uint RescanTime;
         }
 
         internal class LocalCleanupInfo
@@ -110,10 +112,10 @@ namespace iba.Data
             public bool Success;
 
             /// <summary> Oid 3 </summary>
-            public int DurationOfLastExecution;
+            public uint DurationOfLastExecution;
 
             /// <summary> Oid 4 </summary>
-            public int CurrentMemoryUsed;
+            public uint CurrentMemoryUsed;
 
             /// <summary> Oid 5, OPTIONAL, can be null for tasks that have no cleanup options </summary>
             public LocalCleanupInfo CleanupInfo;
@@ -130,13 +132,13 @@ namespace iba.Data
             public JobStatus Status; 
 
             /// <summary> Oid 0.2 </summary>
-            public int TodoCount;
+            public uint TodoCount;
 
             /// <summary> Oid 0.3 </summary>
-            public int DoneCount;
+            public uint DoneCount;
 
             /// <summary> Oid 0.4 </summary>
-            public int FailedCount;
+            public uint FailedCount;
 
             // Oids 0.5 ... 0.8 vary depending on a Job type: Standard / Scheduled / One-time / Event-based
             // these oids are defined in derived classes
@@ -148,7 +150,7 @@ namespace iba.Data
         internal class StandardJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public int PermFailedCount;
+            public uint PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
             public string TimestampJobStarted;
@@ -169,7 +171,7 @@ namespace iba.Data
         internal class ScheduledJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public int PermFailedCount;
+            public uint PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
             public string TimestampLastExecution;
@@ -188,7 +190,7 @@ namespace iba.Data
         internal class EventBasedJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.??? </summary>
-            public string EventDescription = "This is a description of the event";
+            public string EventDescription = @"This is a description of the event";
         }
 
         #endregion

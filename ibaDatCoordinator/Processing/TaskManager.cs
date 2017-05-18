@@ -343,8 +343,8 @@ namespace iba.Processing
 
                             //di.CurrentFreeSpace = gcData.PercentageFree;//3
                             // todo not%
-                            di.MinFreeSpace = gcData.PercentageFree; //gcData.;//4
-                            di.RescanTime = gcData.RescanTime; //5
+                            di.MinFreeSpace = (uint)gcData.PercentageFree; //gcData.;//4
+                            di.RescanTime = (uint)gcData.RescanTime; //5
 
                             od.GlobalCleanup.Add(di);
                         }
@@ -371,7 +371,7 @@ namespace iba.Processing
                             case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
                                 var stdJi = new SnmpObjectsData.StandardJobInfo();
                                 SnmpFillBaseJobFields(stdJi, s);
-                                stdJi.PermFailedCount = s.PermanentErrorFiles.Count;
+                                stdJi.PermFailedCount = (uint)s.PermanentErrorFiles.Count;
 
                                 //stdJi.TimestampJobStarted = cfg.; //6
                                 //stdJi.LastCycleScanningTime;//7
@@ -385,7 +385,7 @@ namespace iba.Processing
                             case ConfigurationData.JobTypeEnum.Scheduled: 
                                 var schJi = new SnmpObjectsData.ScheduledJobInfo();
                                 SnmpFillBaseJobFields(schJi, s); // 0-4
-                                schJi.PermFailedCount = s.PermanentErrorFiles.Count; //5
+                                schJi.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
 
                                 //schJi.TimestampLastExecution =;//6
                                 schJi.TimestampNextExecution = worker.NextTrigger.ToString(CultureInfo.InvariantCulture); //7
@@ -430,9 +430,9 @@ namespace iba.Processing
                     SnmpObjectsData.JobStatus.Started :
                     SnmpObjectsData.JobStatus.Stopped);
 
-            ji.TodoCount = s.ReadFiles.Count;
-            ji.DoneCount = s.ProcessedFiles.Count;
-            ji.FailedCount = s.CountErrors();
+            ji.TodoCount = (uint)s.ReadFiles.Count;
+            ji.DoneCount = (uint)s.ProcessedFiles.Count;
+            ji.FailedCount = (uint)s.CountErrors();
 
             ji.Tasks = new List<SnmpObjectsData.TaskInfo>();
             foreach (TaskData taskData in cfg.Tasks)

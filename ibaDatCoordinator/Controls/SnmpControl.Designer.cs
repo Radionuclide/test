@@ -78,9 +78,10 @@
             this.tbObjType = new System.Windows.Forms.TextBox();
             this.tbObjMibName = new System.Windows.Forms.TextBox();
             this.buttonObjectsRefresh = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonCreateMibFiles = new System.Windows.Forms.Button();
             this.buttonObjectsApply = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
@@ -481,7 +482,7 @@
             // 
             this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
             this.gbObjects.Controls.Add(this.buttonObjectsRefresh);
-            this.gbObjects.Controls.Add(this.button5);
+            this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
             this.gbObjects.Controls.Add(this.buttonObjectsApply);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
@@ -595,33 +596,36 @@
             // buttonObjectsRefresh
             // 
             this.buttonObjectsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonObjectsRefresh.BackColor = System.Drawing.Color.LavenderBlush;
             this.buttonObjectsRefresh.Location = new System.Drawing.Point(240, 19);
             this.buttonObjectsRefresh.Name = "buttonObjectsRefresh";
             this.buttonObjectsRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonObjectsRefresh.TabIndex = 7;
             this.buttonObjectsRefresh.Text = "Refresh";
-            this.buttonObjectsRefresh.UseVisualStyleBackColor = true;
+            this.buttonObjectsRefresh.UseVisualStyleBackColor = false;
             this.buttonObjectsRefresh.Click += new System.EventHandler(this.buttonObjectsRefresh_Click);
             // 
-            // button5
+            // buttonCreateMibFiles
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(487, 19);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(210, 23);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "Create MIB files";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonCreateMibFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCreateMibFiles.Location = new System.Drawing.Point(539, 19);
+            this.buttonCreateMibFiles.Name = "buttonCreateMibFiles";
+            this.buttonCreateMibFiles.Size = new System.Drawing.Size(158, 23);
+            this.buttonCreateMibFiles.TabIndex = 2;
+            this.buttonCreateMibFiles.Text = "Create MIB files";
+            this.buttonCreateMibFiles.UseVisualStyleBackColor = true;
+            this.buttonCreateMibFiles.Click += new System.EventHandler(this.buttonCreateMibFiles_Click);
             // 
             // buttonObjectsApply
             // 
             this.buttonObjectsApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsApply.Location = new System.Drawing.Point(387, 19);
+            this.buttonObjectsApply.BackColor = System.Drawing.Color.LavenderBlush;
+            this.buttonObjectsApply.Location = new System.Drawing.Point(321, 19);
             this.buttonObjectsApply.Name = "buttonObjectsApply";
             this.buttonObjectsApply.Size = new System.Drawing.Size(75, 23);
             this.buttonObjectsApply.TabIndex = 7;
             this.buttonObjectsApply.Text = "Apply";
-            this.buttonObjectsApply.UseVisualStyleBackColor = true;
+            this.buttonObjectsApply.UseVisualStyleBackColor = false;
             // 
             // tvObjects
             // 
@@ -708,7 +712,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button buttonObjectsRefresh;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button buttonCreateMibFiles;
         private System.Windows.Forms.TreeView tvObjects;
         private System.Windows.Forms.Button buttonConfigurationReset;
         private System.Windows.Forms.Button buttonDebugRefresh;
@@ -722,5 +726,6 @@
         private System.Windows.Forms.TextBox tbObjMibName;
         private System.Windows.Forms.TextBox tbObjType;
         private System.Windows.Forms.Button buttonObjectsApply;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }
