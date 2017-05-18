@@ -581,9 +581,6 @@ namespace iba.Processing
                             $"Dir={stdJi.LastCycleScanningTime_TimestampLastDirectoryScan}, Err={stdJi.LastCycleScanningTime_TimestampLastReprocessErrorsScan}"
                             );
                         IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
-
-                        var x = IbaSnmp.GetUserValue(oidJobGen + "8.0");
-
                         IbaSnmp.SetUserValue(oidJobGen + "8.1", ConvertDateTimeToString(stdJi.LastProcessingStartTimeStamp));
                         IbaSnmp.SetUserValue(oidJobGen + "8.2", ConvertDateTimeToString(stdJi.LastProcessingFinishTimeStamp));
                     }

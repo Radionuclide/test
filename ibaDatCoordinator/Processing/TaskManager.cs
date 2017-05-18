@@ -553,7 +553,7 @@ namespace iba.Processing
             SnmpRefreshJobInfoBase(jobInfo, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-            jobInfo.TimestampLastExecution = DateTime.MaxValue; // 6
+            jobInfo.TimestampLastExecution = worker.LastSuccessfulFileStartProcessingTimeStamp; // 6
             jobInfo.TimestampNextExecution = worker.NextTrigger; // 7
 
             jobInfo.PutTimeStamp();
@@ -569,7 +569,7 @@ namespace iba.Processing
 
             SnmpRefreshJobInfoBase(jobInfo, s);
 
-            jobInfo.TimestampLastExecution = DateTime.MaxValue;//5
+            jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
 
             jobInfo.PutTimeStamp();
             SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
