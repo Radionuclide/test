@@ -118,7 +118,7 @@ namespace iba.Processing
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
-                if(pair.Key.Guid == data.Guid)
+                if (pair.Key.Guid == data.Guid)
                     return data.IsSame(pair.Key);
             }
             return false;
@@ -319,7 +319,7 @@ namespace iba.Processing
             m_watchdog.Settings = data;
         }
 
-        
+
         #region Snmp Data - added by Kolesnik
 
         public event EventHandler<EventArgs> SnmpConfigurationChanged;
@@ -332,6 +332,48 @@ namespace iba.Processing
         {
             get { return SnmpWorker.SnmpData; }
             set { SnmpWorker.SnmpData = value; }
+        }
+
+        internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
+        {
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+
+                // this feature is not licensed,
+                // so do not need any condition to be true here
+                licenseInfo.IsValid = true;
+
+                if (info == null || info.DongleFound == false)
+                {
+                    licenseInfo.Sn = @"(???)";
+                    licenseInfo.HwId = @"(???)";
+                    licenseInfo.DongleType = @"(???)";
+                    licenseInfo.Customer = @"(???)";
+                    licenseInfo.TimeLimit = 0;
+                    licenseInfo.DemoTimeLimit = 0;
+                }
+                else
+                {
+                    licenseInfo.Sn = info.SerialNr;
+
+                    // todo
+                    licenseInfo.HwId = @"(???)";
+                    licenseInfo.DongleType = @"(???)";
+
+                    licenseInfo.Customer = info.Customer;
+                    licenseInfo.TimeLimit = 0;
+                    licenseInfo.DemoTimeLimit = 0;
+                }
+
+                licenseInfo.PutTimeStamp();
+            }
+            catch
+            {
+                //
+            }
+
+            return true;
         }
 
         internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
@@ -377,7 +419,7 @@ namespace iba.Processing
             driveInfo.Active = gcData.Active; //1
             driveInfo.Size = 0; // gcData. ;//2
 
-            //di.CurrentFreeSpace = gcData.PercentageFree;//3
+            driveInfo.CurrentFreeSpace = 99999;// gcData.PercentageFree;//3
             // todo not%
             driveInfo.MinFreeSpace = (uint)gcData.PercentageFree; //gcData.;//4
             driveInfo.RescanTime = (uint)gcData.RescanTime; //5
@@ -400,7 +442,7 @@ namespace iba.Processing
                     // get copy of configurations
                     List<ConfigurationData> confs = Configurations;
                     
-                    // no need to sort
+                    // no need to sort here
                     //confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
 
                     foreach (ConfigurationData cfg in confs)
@@ -431,7 +473,8 @@ namespace iba.Processing
                                 throw new ArgumentOutOfRangeException();
                         }
 
-                        break;
+                        // updated successfully
+                        return true;
                     }
                 }
                 catch
@@ -442,7 +485,10 @@ namespace iba.Processing
                     // todo check for lock protection of GlobalCleanupDataList 
                 }
             }
-            return true;
+
+            // job with given GUID not found
+            // failed to update
+            return false;
         }
 
         private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
@@ -660,6 +706,7 @@ namespace iba.Processing
                 // todo
             }
         }
+
         internal bool SnmpRebuildObjectsData(SnmpObjectsData od)
         {
             try
@@ -671,6 +718,12 @@ namespace iba.Processing
 
                 lock (m_workers)
                 {
+                    // PrGen.3. License
+                    {
+                        // nothing to create there
+                        // just refresh data
+                        SnmpRefreshLicenseInfo(od.License);
+                    }
 
                     // 1. GlobalCleanup;
                     {

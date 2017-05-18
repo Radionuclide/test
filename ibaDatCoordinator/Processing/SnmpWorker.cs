@@ -327,31 +327,31 @@ namespace iba.Processing
 
                     // ibaRoot.DatCoord.General.Licensing.1 - IsValid
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingIsValid] = new OidMetadata(@"Is Valid");
-                    IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingIsValidRequested;
+                    IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.2 - Serial number
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingSn] = new OidMetadata(@"Serial number");
-                    IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingSnRequested;
+                    IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingHwId] = new OidMetadata(@"Hardware ID");
-                    IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingHwIdRequested;
+                    IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingType] = new OidMetadata(@"Dongle type");
-                    IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingTypeRequested;
+                    IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.5 - Customer
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingCustomer] = new OidMetadata(@"Customer");
-                    IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingCustomerRequested;
+                    IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.6 - Time limit
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingTimeLimit] = new OidMetadata(@"Time limit");
-                    IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingTimeLimitRequested;
+                    IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
                     OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit] = new OidMetadata(@"Demo time limit");
-                    IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingDemoTimeLimitRequested;
+                    IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
                 }
             }
         }
@@ -361,64 +361,13 @@ namespace iba.Processing
             // todo override?
         }
 
-        private void IbaSnmp_LicensingCustomerRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
-        {
-            try
-            {
-                CDongleInfo info = CDongleInfo.ReadDongle();
-                e.Value = info.DongleFound ? info.Customer : @"(???)";
-            }
-            catch
-            {
-                /**/
-            }
-        }
 
-        private void IbaSnmp_LicensingDemoTimeLimitRequested(object sender, IbaSnmpValueRequestedEventArgs<int> e)
+        private void IbaSnmp_LicensingValueRequested<T>(object sender, IbaSnmpValueRequestedEventArgs<T> args)
         {
-            // todo
-        }
-
-        private void IbaSnmp_LicensingHwIdRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
-        {
-            // todo
-        }
-
-        private void IbaSnmp_LicensingIsValidRequested(object sender, IbaSnmpValueRequestedEventArgs<bool> e)
-        {
-            try
-            {
-                CDongleInfo info = CDongleInfo.ReadDongle();
-                // todo is it reaaly this?
-                e.Value = info.DongleFound;
-            }
-            catch
-            {
-                /**/
-            }
-        }
-
-        private void IbaSnmp_LicensingSnRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
-        {
-            try
-            {
-                CDongleInfo info = CDongleInfo.ReadDongle();
-                e.Value = info.DongleFound ? info.SerialNr : @"(???)";
-            }
-            catch
-            {
-                /**/
-            }
-        }
-
-        private void IbaSnmp_LicensingTimeLimitRequested(object sender, IbaSnmpValueRequestedEventArgs<int> e)
-        {
-            // todo
-        }
-
-        private void IbaSnmp_LicensingTypeRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
-        {
-            // todo
+            // refresh data if it is too old 
+            RefreshLicenseInfo();
+            // re-read the value and send it back via args
+            args.Value = (T)args.IbaSnmp.GetValue(args.Oid);
         }
 
         #endregion
@@ -443,11 +392,54 @@ namespace iba.Processing
                 return true; // tree structure has changed
             }
         }
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="driveInfo"></param>
         /// <returns>sdadf</returns>
+        private bool RefreshLicenseInfo()
+        {
+            lock (LockObject)
+            {
+                if (ObjectsData.License.IsUpToDate())
+                {
+                    // data fresh, no need to change something
+                    return false; // was not updated
+                }
+
+                var man = TaskManager.Manager;
+                if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
+                {
+                    // should not happen
+                    // failed to update data
+                    // don't rebuild the tree, just return false
+                    return false; // was not updated
+                }
+
+                // TaskManager has updated info successfully 
+                // copy it to snmp tree
+
+                IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
+                IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
+                IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
+                IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
+                IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
+                IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
+                IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
+
+                TmpLogLine("SnmpWrkr. Refreshed License");
+            }
+
+            return true; // data was updated
+        }
+        
+        /// <summary>
+                 /// 
+                 /// </summary>
+                 /// <param name="driveInfo"></param>
+                 /// <returns>sdadf</returns>
         private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
             lock (LockObject)
@@ -863,19 +855,19 @@ namespace iba.Processing
                         CreateUserValue(oidJobGen + 5, jobInfo.PermFailedCount,
                             @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
                             null,
-                            JobInfoItemRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.SchJobs.Job.6 - TimestampLastExecution
                         CreateUserValue(oidJobGen + 6, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             null,
-                            JobInfoItemRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.SchJobs.Job.7 - TimestampNextExecution
                         CreateUserValue(oidJobGen + 7, jobInfo.TimestampNextExecution,
                             @"Timestamp next execution", mibNameJobGen + @"TimestampNextExecution",
                             null,
-                            JobInfoItemRequested);
+                            JobInfoItemRequested, jobInfo);
                     }
                 }
                 catch
@@ -918,7 +910,7 @@ namespace iba.Processing
                         CreateUserValue(oidJobGen + 5, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             null,
-                            JobInfoItemRequested);
+                            JobInfoItemRequested, jobInfo);
                     }
                 }
                 catch
@@ -1162,16 +1154,9 @@ namespace iba.Processing
             }
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            if (!RefreshGlobalCleanupDriveInfo(driveInfo))
-            {
-                // data was not changed, no need to do something else
-                return;
-            }
+            RefreshGlobalCleanupDriveInfo(driveInfo);
 
-            // data was updated
             // re-read the value and send it back via args
-            // (Such an update will be performed only with the first item if there is a big set of SNMP GETs is coming
-            // all the rest are already updated and they will not need to override args.Value)
             args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
@@ -1182,27 +1167,16 @@ namespace iba.Processing
 
             if (jobInfo == null)
             {
-                args.Value = null;
                 // should not happen
+                args.Value = null;
                 return;
             }
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            if (!RefreshJobInfo(jobInfo))
-            {
-                // data was not changed, no need to do something else
-                return;
-            }
+            RefreshJobInfo(jobInfo);
 
-            // data was updated
             // re-read the value and send it back via args
-            // (Such an update will be performed only with the first item if there is a big set of SNMP GETs is coming
-            // all the rest are already updated and they will not need to override args.Value)
-
-            var val = args.IbaSnmp.GetValue(args.Oid);
-            args.Value = val;//args.IbaSnmp.GetValue(args.Oid);
-
-            //args.Value = args.IbaSnmp.GetValue(args.Oid);
+            args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
         #endregion

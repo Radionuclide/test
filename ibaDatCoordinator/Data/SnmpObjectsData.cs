@@ -46,10 +46,6 @@ namespace iba.Data
     {
         public bool IsStructureValid { get; set; }
 
-        public SnmpObjectsData()
-        {
-            Reset();
-        }
         
         public void Reset()
         {
@@ -59,10 +55,11 @@ namespace iba.Data
             OneTimeJobs.Clear();
             EventBasedJobs.Clear();
 
-            // todo remove
             SnmpWorker.TmpLogLine("SnmpObjectsData.Reset()");
         }
 
+        /// <summary> PrGeneral.3 </summary>
+        public LicenseInfo License = new LicenseInfo();
         /// <summary> PrSpecific.1 </summary>
         public List<GlobalCleanupDriveInfo> GlobalCleanup = new List<GlobalCleanupDriveInfo>();
         /// <summary> PrSpecific.2 </summary>
@@ -76,9 +73,30 @@ namespace iba.Data
 
 
         #region subclasses
-        // todo find existing enums
-        // job status, task type
-        // internal enum 
+
+        internal class LicenseInfo : SnmpObjectWithATimeStamp
+        {
+            /// <summary> Oid 1 </summary>
+            public bool IsValid;
+
+            /// <summary> Oid 2 </summary>
+            public string Sn;
+
+            /// <summary> Oid 3 </summary>
+            public string HwId;
+
+            /// <summary> Oid 4 </summary>
+            public string DongleType;
+
+            /// <summary> Oid 5 </summary>
+            public string Customer;
+
+            /// <summary> Oid 6 </summary>
+            public int TimeLimit;
+
+            /// <summary> Oid 7 </summary>
+            public int DemoTimeLimit;
+        }
 
         internal enum JobStatus
         {
