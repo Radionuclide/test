@@ -68,13 +68,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbStatus.Location = new System.Drawing.Point(3, 59);
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(224, 20);
+            this.tbStatus.Size = new System.Drawing.Size(289, 20);
             this.tbStatus.TabIndex = 4;
             // 
             // timerStatus
             // 
             this.timerStatus.Enabled = true;
-            this.timerStatus.Interval = 1000;
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
             // label14
@@ -93,7 +92,7 @@
             this.tbGeneralInfo.Location = new System.Drawing.Point(3, 85);
             this.tbGeneralInfo.Multiline = true;
             this.tbGeneralInfo.Name = "tbGeneralInfo";
-            this.tbGeneralInfo.Size = new System.Drawing.Size(224, 153);
+            this.tbGeneralInfo.Size = new System.Drawing.Size(289, 153);
             this.tbGeneralInfo.TabIndex = 4;
             // 
             // buttonCleanLog
@@ -115,7 +114,7 @@
             this.tbLog.Multiline = true;
             this.tbLog.Name = "tbLog";
             this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbLog.Size = new System.Drawing.Size(212, 424);
+            this.tbLog.Size = new System.Drawing.Size(286, 424);
             this.tbLog.TabIndex = 7;
             this.tbLog.Text = "Log";
             // 
@@ -132,7 +131,7 @@
             this.Controls.Add(this.tbStatus);
             this.Controls.Add(this.buttonShowDebug);
             this.Name = "SnmpLeftPanelControl";
-            this.Size = new System.Drawing.Size(230, 737);
+            this.Size = new System.Drawing.Size(295, 737);
             this.Load += new System.EventHandler(this.SnmpLeftPanelControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

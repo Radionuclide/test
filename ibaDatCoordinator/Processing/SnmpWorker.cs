@@ -58,7 +58,7 @@ namespace iba.Processing
 
         #region tmpLog
 
-        public  static string _tmpLog = "";
+        public static string _tmpLog = "";
 
         public static void TmpLog(string str)
         {
@@ -105,8 +105,20 @@ namespace iba.Processing
             IbaSnmp.DosProtectionExternal.Enabled = false;
             RestartAgent();
 
+            TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
+            SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+
             RegisterGeneralObjectHandlers();
             RegisterProductObjects();
+        }
+
+        private void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
+        {
+            TmpLogLine("TaskManager_SnmpConfigurationChanged");
+            lock (LockObject)
+            {
+                ObjectsData.IsStructureValid = false;
+            }
         }
 
         #endregion
@@ -217,6 +229,11 @@ namespace iba.Processing
         }
 
         #region Objects
+
+        private IbaSnmpOid _oidSectionGlobalCleanup = "1";
+        private IbaSnmpOid _oidSectionStandardJobs = "2";
+        private IbaSnmpOid _oidSectionScheduledJobs = "3";
+        private IbaSnmpOid _oidSectionOneTimeJobs = "4";
 
         internal struct OidMetadata
         {
@@ -391,19 +408,57 @@ namespace iba.Processing
 
         #region Dat coordinator specific objects
 
-        public void RefreshObjectData()
+        public void CheckSnmpTreeStructure()
         {
             lock (LockObject)
             {
-                if (!IsObjectsDataUpToDate())
+                if (!ObjectsData.IsStructureValid)
                 {
                     RebuildTreeCompletely();
                 }
             }
         }
 
+        private void RefreshGlobalCleanup(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        {
+            lock (LockObject)
+            {
+                CheckSnmpTreeStructure();
+
+                if (driveInfo.IsUpToDate())
+                {
+                    return;
+                }
+
+                var man = TaskManager.Manager;
+                if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
+                {
+                    // failed to update data
+                    // try to rebuild the tree
+                    RebuildTreeCompletely();
+                    return;
+                }
+
+                // TaskManager has updated driveInfo successfully 
+                // copy it to snmp tree
+
+                IbaSnmpOid oidDrive = _oidSectionGlobalCleanup + driveInfo.Id;
+
+                IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveNameId0);
+                IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.ActiveId1);
+                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.SizeId2);
+                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceId3);
+                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceId4);
+                IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTimeId5);
+
+                TmpLogLine($"SnmpWk. Refreshed Drive {driveInfo.DriveNameId0}");
+            }
+        }
+
         private void RebuildTreeCompletely()
         {
+            SnmpWorker.TmpLogLine("TaskManager.RebuildTreeCompletely");
+
             var man = TaskManager.Manager;
             IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
             if (ibaSnmp == null)
@@ -411,8 +466,7 @@ namespace iba.Processing
 
             lock (LockObject)
             {
-                // todo probabaly not fully recreate but refresh ?
-                man.SnmpGetStatus(ObjectsData);
+                man.SnmpRebuildObjectsData(ObjectsData);
 
                 // todo this is a probabale dead lock?
                 // todo needa look where from does this call comes? 
@@ -425,74 +479,77 @@ namespace iba.Processing
                 OidMetadataDict[IbaSnmp.OidIbaProductSpecific] = new OidMetadata(@"Product");
 
                 // ibaRoot.DatCoord.Product.1 - Global cleanup
-                BuildSectionGlobalCleanup("1");
+                BuildSectionGlobalCleanup();
 
                 // ibaRoot.DatCoord.Product.2 - Standard jobs
-                BuildSectionStandardJobs("2");
+                BuildSectionStandardJobs();
 
                 // ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                BuildSectionScheduledJobs("3");
+                BuildSectionScheduledJobs();
 
                 // ibaRoot.DatCoord.Product.4 - One time jobs
-                BuildSectionOneTimeJobs("4");
+                BuildSectionOneTimeJobs();
             }
         }
 
 
         #region Building of tree Sections 1...4 (from 'GlobalCleanup' to 'OneTimeJobs')
 
-        private void BuildSectionGlobalCleanup(IbaSnmpOid oidSection)
+        private void BuildSectionGlobalCleanup()
         {
+            var oidSection = _oidSectionGlobalCleanup;
+
             AddMetadataForOidSuffix(oidSection, @"Global cleanup", @"globalCleanup");
 
             for (int i = 0; i < ObjectsData.GlobalCleanup.Count; i++)
             {
                 try
                 {
-                    var cleanupInfo = ObjectsData.GlobalCleanup[i];
-
+                    var driveInfo = ObjectsData.GlobalCleanup[i];
+                    driveInfo.Id = (uint)i + 1; 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive
-                    IbaSnmpOid oidDrive = oidSection + (uint)(i + 1);
+                    IbaSnmpOid oidDrive = oidSection + driveInfo.Id;
+
                     string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastId()}";
-                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{cleanupInfo.DriveName}'", mibNameDrive);
+                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveNameId0}'", mibNameDrive);
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.0 - DriveName
-                        CreateUserValue(oidDrive + 0, cleanupInfo.DriveName,
+                        CreateUserValue(oidDrive + 0, driveInfo.DriveNameId0,
                             @"Drive Name", mibNameDrive + @"Name",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.1 - Active
-                        CreateUserValue(oidDrive + 1, cleanupInfo.Active,
+                        CreateUserValue(oidDrive + 1, driveInfo.ActiveId1,
                             @"Active", mibNameDrive + @"Active",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.2 - Size
-                        CreateUserValue(oidDrive + 2, cleanupInfo.Size,
+                        CreateUserValue(oidDrive + 2, driveInfo.SizeId2,
                             @"Size", mibNameDrive + @"Size",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.3 - Curr. free space
-                        CreateUserValue(oidDrive + 3, cleanupInfo.CurrentFreeSpace,
+                        CreateUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceId3,
                             @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.4 - Min free space
-                        CreateUserValue(oidDrive + 4, cleanupInfo.MinFreeSpace,
+                        CreateUserValue(oidDrive + 4, driveInfo.MinFreeSpaceId4,
                             @"Min free space", mibNameDrive + @"MinFreeSpace",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.5 - Rescan time
-                        CreateUserValue(oidDrive + 5, cleanupInfo.RescanTime,
+                        CreateUserValue(oidDrive + 5, driveInfo.RescanTimeId5,
                             @"Rescan time", mibNameDrive + @"RescanTime",
                             null,
-                            UserValueRequested);
+                            UserValueCleanupInfoRequested, driveInfo);
                     }
                 }
                 catch
@@ -505,8 +562,10 @@ namespace iba.Processing
             }
         }
 
-        private void BuildSectionStandardJobs(IbaSnmpOid oidSection)
+        private void BuildSectionStandardJobs()
         {
+            var oidSection = _oidSectionStandardJobs;
+
             AddMetadataForOidSuffix(oidSection, @"Standard jobs", @"standardJobs");
 
             for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
@@ -585,8 +644,10 @@ namespace iba.Processing
             }
         }
 
-        private void BuildSectionScheduledJobs(IbaSnmpOid oidSection)
+        private void BuildSectionScheduledJobs()
         {
+            var oidSection = _oidSectionScheduledJobs;
+
             AddMetadataForOidSuffix(oidSection, @"Scheduled jobs", @"scheduledJobs");
 
             for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
@@ -642,8 +703,9 @@ namespace iba.Processing
             }
         }
 
-        private void BuildSectionOneTimeJobs(IbaSnmpOid oidSection)
+        private void BuildSectionOneTimeJobs()
         {
+            var oidSection = _oidSectionOneTimeJobs;
             AddMetadataForOidSuffix(oidSection, @"One time jobs", @"oneTimeJobs");
 
             for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
@@ -896,28 +958,35 @@ namespace iba.Processing
 
         #endregion
 
-
-        private bool IsObjectsDataUpToDate()
+        private void UserValueCleanupInfoRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
-            if (ObjectsData.Stamp == DateTime.MinValue)
-            {
-                return false;
-            }
-            TimeSpan age = DateTime.Now - ObjectsData.Stamp;
-            // if data is not too old, then it is okay
-            return age < SnmpObjectsDataValidTimePeriod;
-        }
+            var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
 
+            if (driveInfo == null)
+            {
+                return;
+            }
+
+            // refresh data if it is too old, and rebuild all the objects if necessary
+            RefreshGlobalCleanup(driveInfo);
+        }
         private void UserValueRequested(object sender, IbaSnmpObjectValueRequestedEventArgs ibaSnmpObjectValueRequestedEventArgs)
         {
             // refresh data if it is too old, and rebuild all the objects if necessary
-            RefreshObjectData();
+            CheckSnmpTreeStructure();
+
+            // todo this will be removed if all the specialized handlers appear
+            if (!ObjectsData.IsUpToDate())
+            {
+                RebuildTreeCompletely();
+            }
         }
 
         private void RegisterProductObjects()
         {
             // todo should be done differently
-            RefreshObjectData();
+            CheckSnmpTreeStructure();
+
         }
         
 

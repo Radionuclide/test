@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using iba.Processing;
 using IbaSnmpLib;
 
 namespace iba.Data
@@ -30,14 +31,14 @@ namespace iba.Data
     }
 
     /// <summary>
-    /// Is used for transferring the information about all SNMP-exposable objects between
+    /// Is used for transferring the information about all SNMP-visible objects between
     /// the TaskManager and SnmpWorker.
     /// </summary>
-    internal class SnmpObjectsData
+    internal class SnmpObjectsData 
+        // todo remove inheritance when all included stamps will be used properly
+        : SnmpObjectWithATimeStamp
     {
-        /// <summary> Time stamp when this information was refreshed.
-        /// Used Not for SNMP exposure, just for internal purposes. </summary>
-        public DateTime Stamp;
+        public bool IsStructureValid { get; set; }
 
         public int _tmp_reset_cnt { get; private set; }
         public int _tmp_updated_cnt { get; set; }
@@ -49,8 +50,6 @@ namespace iba.Data
         
         public void Reset()
         {
-            // contained data is not valid
-            Stamp = DateTime.MinValue;
             GlobalCleanup.Clear();
             StandardJobs.Clear();
             ScheduledJobs.Clear();
@@ -60,6 +59,7 @@ namespace iba.Data
             // tmp
             // todo remove
             _tmp_reset_cnt++;
+            SnmpWorker.TmpLogLine("SnmpObjectsData.Reset()");
         }
 
         /// <summary> PrSpecific.1 </summary>
@@ -86,25 +86,28 @@ namespace iba.Data
             Stopped = 2
         }
 
-        internal class GlobalCleanupDriveInfo
+        internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
+            /// <summary> least id in the snmp oid of this item </summary>
+            public uint Id;
+
             /// <summary> Oid 0 </summary>
-            public string DriveName;
+            public string DriveNameId0;
 
             /// <summary> Oid 1 </summary>
-            public bool Active;
+            public bool ActiveId1;
 
             /// <summary> Oid 2 </summary>
-            public uint Size;
+            public uint SizeId2;
 
             /// <summary> Oid 3 </summary>
-            public uint CurrentFreeSpace;
+            public uint CurrentFreeSpaceId3;
 
             /// <summary> Oid 4 </summary>
-            public uint MinFreeSpace;
+            public uint MinFreeSpaceId4;
 
             /// <summary> Oid 5 </summary>
-            public uint RescanTime;
+            public uint RescanTimeId5;
         }
 
         internal class LocalCleanupInfo
@@ -124,7 +127,7 @@ namespace iba.Data
         }
 
         /// <summary> OID 1...n - one struct per for each task </summary>
-        internal class TaskInfo
+        internal class TaskInfo : SnmpObjectWithATimeStamp
         {
             /// <summary> Oid 0 </summary>
             public string TaskName;
@@ -147,8 +150,11 @@ namespace iba.Data
         }
 
         /// <summary> OID ...2 Standard Jobs </summary>
-        internal abstract class JobInfoBase
+        internal abstract class JobInfoBase : SnmpObjectWithATimeStamp
         {
+            /// <summary> key of the job list </summary>
+            public Guid Guid;
+
             // general section - Oid 0
             /// <summary> Oid 0.0 </summary>
             public string JobName;

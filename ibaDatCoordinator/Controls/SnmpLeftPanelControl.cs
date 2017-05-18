@@ -58,7 +58,7 @@ namespace iba.Controls
                 if (od != null)
                 {
                     str += $"Reset: {od._tmp_reset_cnt}\r\n";
-                    str += $"LastUpdated: {od.Stamp.ToLongTimeString()}\r\n";
+                    str += $"LastUpdated: {od.TimeStamp.ToLongTimeString()}\r\n";
                     str += "\r\n";
                     str += $"Cleanup: {od.GlobalCleanup.Count}\r\n";
                     str += $"StandardJobs: {od.StandardJobs.Count}\r\n";

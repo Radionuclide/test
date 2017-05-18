@@ -311,6 +311,8 @@ namespace iba.Processing
         
         #region Snmp Data - added by Kolesnik
 
+        public event EventHandler<EventArgs> SnmpConfigurationChanged;
+
         public SnmpWorker SnmpWorker { get; } = new SnmpWorker();
 
         /// <summary> Gets/sets data of SnmpWorker. 
@@ -321,7 +323,175 @@ namespace iba.Processing
             set { SnmpWorker.SnmpData = value; }
         }
 
-        internal bool SnmpGetStatus(SnmpObjectsData od)
+        internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        {
+            if (String.IsNullOrEmpty(driveInfo?.DriveNameId0))
+            {
+                return false;
+            }
+
+            lock (m_workers)
+            {
+                try
+                {
+                    foreach (GlobalCleanupData gcData in GlobalCleanupDataList)
+                    {
+                        // find appropriate configuration by drive name
+                        if (gcData.DriveName != driveInfo.DriveNameId0)
+                        {
+                            continue;
+                        }
+
+                        // set current values
+                        SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+                        return true; // data was refreshed
+                    }
+                    return false;
+
+                }
+                catch
+                {
+                    // suppress
+                    // for the case of change of GlobalCleanupDataList 
+                    // within forach loop by another thread
+                    // todo check for lock protection of GlobalCleanupDataList 
+                }
+            }
+            return false; // failed to update
+        }
+
+        private void SnmpRefreshGlobalCleanupDriveInfo(
+            SnmpObjectsData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
+        {
+            driveInfo.ActiveId1 = gcData.Active; //1
+            driveInfo.SizeId2 = 0; // gcData. ;//2
+
+            //di.CurrentFreeSpace = gcData.PercentageFree;//3
+            // todo not%
+            driveInfo.MinFreeSpaceId4 = (uint)gcData.PercentageFree; //gcData.;//4
+            driveInfo.RescanTimeId5 = (uint)gcData.RescanTime; //5
+
+            driveInfo.PutTimeStamp();
+            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Drive {driveInfo.DriveNameId0}");
+        }
+
+
+        internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        {
+            if (jobInfo == null || jobInfo.Guid == Guid.Empty)
+            {
+                return false;
+            }
+
+            lock (m_workers)
+            {
+                try
+                {
+                    // get copy of configurations
+                    List<ConfigurationData> confs = Configurations;
+                    
+                    // no need to sort
+                    //confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+
+                    foreach (ConfigurationData cfg in confs)
+                    {
+                        if (cfg.Guid != jobInfo.Guid)
+                        {
+                            continue;
+                        }
+
+                        // ok, found needed configuration
+                        // copy values from configuration to snmp jobInfo
+                        switch (cfg.JobType)
+                        {
+                            case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+                                var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
+                                if (stdJi == null)
+                                {
+                                    return false; // Wrong job type;
+                                }
+                                SnmpRefreshStandardJobInfo(stdJi, cfg);
+                                break;
+
+                            case ConfigurationData.JobTypeEnum.Scheduled:
+                                var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
+                                if (schJi == null)
+                                {
+                                    return false; // Wrong job type;
+                                }
+                                SnmpRefreshScheduledJobInfo(schJi, cfg);
+                                break;
+
+                            case ConfigurationData.JobTypeEnum.OneTime:
+                                var otJi = jobInfo as SnmpObjectsData.OneTimeJobInfo;
+                                if (otJi == null)
+                                {
+                                    return false; // Wrong job type;
+                                }
+                                SnmpRefreshOneTimeJobInfo(otJi, cfg);
+                                break;
+                                
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
+                catch
+                {
+                    // suppress
+                    // for the case of change of GlobalCleanupDataList 
+                    // within forach loop by another thread
+                    // todo check for lock protection of GlobalCleanupDataList 
+                }
+            }
+            return true;
+        }
+
+        internal bool SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
+        {
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+            SnmpFillBaseJobFields(jobInfo, s);
+            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count;
+
+            jobInfo.TimestampJobStarted = "?????"; //6
+            jobInfo.LastCycleScanningTime = "?????";//7
+            jobInfo.LastProcessingFinishTimeStamp = "?????"; //82
+            jobInfo.LastProcessingLastDatFileProcessed = "?????"; // 80
+            jobInfo.LastProcessingStartTimeStamp = "?????"; //81
+
+            jobInfo.PutTimeStamp();
+            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
+            return true;
+        }
+        internal bool SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
+        {
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+            SnmpFillBaseJobFields(jobInfo, s);
+
+            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+            jobInfo.TimestampLastExecution = "?????";//6
+            jobInfo.TimestampNextExecution = worker.NextTrigger.ToString(CultureInfo.InvariantCulture); //7
+
+            jobInfo.PutTimeStamp();
+            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
+            return true;
+        }
+        internal bool SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
+        {
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+            SnmpFillBaseJobFields(jobInfo, s);
+
+            jobInfo.TimestampLastExecution = "?????";//5
+
+            jobInfo.PutTimeStamp();
+            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
+            return true;
+        }
+
+        internal bool SnmpRebuildObjectsData(SnmpObjectsData od)
         {
             try
             {
@@ -336,17 +506,15 @@ namespace iba.Processing
                     {
                         foreach (var gcData in GlobalCleanupDataList)
                         {
-                            SnmpObjectsData.GlobalCleanupDriveInfo di = new SnmpObjectsData.GlobalCleanupDriveInfo();
-                            di.DriveName = gcData.DriveName; //0
-                            di.Active = gcData.Active; //1
-                            di.Size = 0; // gcData. ;//2
+                            // create entry
+                            var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo
+                            {
+                                DriveNameId0 = gcData.DriveName
+                            };
+                            od.GlobalCleanup.Add(driveInfo);
 
-                            //di.CurrentFreeSpace = gcData.PercentageFree;//3
-                            // todo not%
-                            di.MinFreeSpace = (uint)gcData.PercentageFree; //gcData.;//4
-                            di.RescanTime = (uint)gcData.RescanTime; //5
-
-                            od.GlobalCleanup.Add(di);
+                            // set current values
+                            SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData); 
                         }
                     }
                     catch
@@ -357,66 +525,54 @@ namespace iba.Processing
                         // todo check for lock protection of GlobalCleanupDataList 
                     }
 
-                    // 2. standard jobs
+                    // 2...4. - Jobs
+
+                    // get copy of configurations
                     List<ConfigurationData> confs = Configurations;
                     confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-                    for (int i = 0; i < confs.Count; i++)
-                    {
-                        ConfigurationData cfg = confs[i];
-                        ConfigurationWorker worker = m_workers[cfg];
-                        StatusData s = worker.Status;
 
+                    foreach (ConfigurationData cfg in confs)
+                    {
                         switch (cfg.JobType)
                         {
                             case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
-                                var stdJi = new SnmpObjectsData.StandardJobInfo();
-                                SnmpFillBaseJobFields(stdJi, s);
-                                stdJi.PermFailedCount = (uint)s.PermanentErrorFiles.Count;
-
-                                //stdJi.TimestampJobStarted = cfg.; //6
-                                //stdJi.LastCycleScanningTime;//7
-                                //stdJi.LastProcessingFinishTimeStamp; //82
-                                //stdJi.LastProcessingLastDatFileProcessed; // 80
-                                //stdJi.LastProcessingStartTimeStamp; //81
-
-                                od.StandardJobs.Add(stdJi);
+                                var stdJobInfo = new SnmpObjectsData.StandardJobInfo {Guid = cfg.Guid};
+                                od.StandardJobs.Add(stdJobInfo);
+                                // fill the data
+                                SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
                                 break;
 
-                            case ConfigurationData.JobTypeEnum.Scheduled: 
-                                var schJi = new SnmpObjectsData.ScheduledJobInfo();
-                                SnmpFillBaseJobFields(schJi, s); // 0-4
-                                schJi.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-
-                                //schJi.TimestampLastExecution =;//6
-                                schJi.TimestampNextExecution = worker.NextTrigger.ToString(CultureInfo.InvariantCulture); //7
-                                od.ScheduledJobs.Add(schJi);
+                            case ConfigurationData.JobTypeEnum.Scheduled:
+                                var schJobInfo = new SnmpObjectsData.ScheduledJobInfo {Guid = cfg.Guid};
+                                od.ScheduledJobs.Add(schJobInfo);
+                                // fill the data
+                                SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
                                 break;
 
                             case ConfigurationData.JobTypeEnum.OneTime:
-                                var otJi = new SnmpObjectsData.OneTimeJobInfo();
-                                SnmpFillBaseJobFields(otJi, s);
-
-                                //otJi.TimestampLastExecution =;//5
-                                od.OneTimeJobs.Add(otJi);
+                                var otJobInfo = new SnmpObjectsData.OneTimeJobInfo {Guid = cfg.Guid};
+                                od.OneTimeJobs.Add(otJobInfo);
+                                // fill the data
+                                SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
                                 break;
 
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
-                        
-
                     }
-
                 }
+                
+                // snmp structure is valid until datcoordinator configuration is cahnged
+                od.IsStructureValid = true;
+                od.PutTimeStamp();
 
-                // timestamp of SnmpObjectsData
-                od.Stamp = DateTime.Now;
+                SnmpWorker.TmpLogLine("TskMgr. ----------------------");
+                SnmpWorker.TmpLogLine("TskMgr. SnmpRebuildObjectsData");
                 return true; // success
             }
             catch
             {
                 return false; // error
-                // besides flase return value, then timestamp is not set to any valid value
             }
         }
 
@@ -549,11 +705,14 @@ namespace iba.Processing
                     };
                     //taskInfo.CleanupInfo = cleanupInfo;
                 }
-                //ti.Success = taskData.Enabled;//2
 
-                //ti.DurationOfLastExecution =taskData.;//3
-                //ti.CurrentMemoryUsed =;//4
-                //ti.CleanupInfo =;//5
+                //taskInfo.Success = taskData.Enabled;//2
+
+                // todo
+                taskInfo.DurationOfLastExecution = 99999;//taskData.;//3 
+                // todo
+                taskInfo.CurrentMemoryUsed = 99999;//4
+                // todo
 
                 ji.Tasks.Add(taskInfo);
             }

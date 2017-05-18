@@ -210,7 +210,7 @@ namespace iba.Controls
             var man = TaskManager.Manager;
             SnmpWorker snmpWorker = man?.SnmpWorker;
 
-            snmpWorker?.RefreshObjectData();
+            snmpWorker?.CheckSnmpTreeStructure();
         }
 
         private void buttonCleanLog_Click(object sender, EventArgs e)
