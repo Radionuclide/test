@@ -39,7 +39,7 @@ namespace iba.Data
         {
             Enabled = false;
 
-            Port = IbaSnmpLib.IbaSnmp.DefaultLocalPortBase - 1 + (int)IbaSnmpProductId.IbaDatCoordinator;
+            Port = IbaSnmp.DefaultLocalPortBase - 1 + (int)IbaSnmpProductId.IbaDatCoordinator;
 
             V1V2Security = "public";
             V3Security = new IbaSnmpUserAccount(

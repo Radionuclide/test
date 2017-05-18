@@ -157,6 +157,12 @@ namespace iba.Processing
 
         private void RegisterGeneralObjectHandlers()
         {
+            // static
+            IbaSnmp.ValueIbaProductGeneralTitle = "ibaDatCoordinator";
+            var ver = GetType().Assembly.GetName().Version;
+            IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build, null);
+
+            // dynamic
             IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
             IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingCustomerRequested;
             IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingDemoTimeLimitRequested;
