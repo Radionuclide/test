@@ -527,7 +527,7 @@ namespace iba.Processing
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, s);
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
             jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
@@ -550,7 +550,7 @@ namespace iba.Processing
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, s);
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
             jobInfo.TimestampLastExecution = worker.LastSuccessfulFileStartProcessingTimeStamp; // 6
@@ -567,7 +567,7 @@ namespace iba.Processing
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, s);
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
             jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
 
@@ -575,7 +575,7 @@ namespace iba.Processing
             SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
         }
 
-        private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, StatusData s)
+        private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
         {
             var cfg = s.CorrConfigurationData;
             ji.JobName = cfg.Name;
@@ -589,12 +589,12 @@ namespace iba.Processing
             ji.DoneCount = (uint)s.ProcessedFiles.Count;
             ji.FailedCount = (uint)s.CountErrors();
 
-            SnmpRefreshTasks(ji,s);
+            SnmpRefreshTasks(ji, worker, s);
         }
 
-        private void SnmpRefreshTasks(SnmpObjectsData.JobInfoBase ji, StatusData s)
+        private void SnmpRefreshTasks(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData statusData)
         {
-            var cfg = s.CorrConfigurationData;
+            var cfg = statusData.CorrConfigurationData;
 
             // on first call for the job create a list first
             if (ji.Tasks == null)
@@ -623,6 +623,15 @@ namespace iba.Processing
                 taskInfo.Reset();
 
                 taskInfo.TaskName = taskData.Name;
+
+                // lask execution - success, duration, memory
+                ConfigurationWorker.TaskLastExecutionData lastExec;
+                if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+                {
+                    taskInfo.Success = lastExec.Success;
+                    taskInfo.DurationOfLastExecution = lastExec.Duration;
+                    taskInfo.CurrentMemoryUsed = lastExec.MemoryUsed; //4
+                }
 
                 // default is just a type name
                 string taskTypeStr = taskData.GetType().Name;
@@ -730,14 +739,6 @@ namespace iba.Processing
                 {
                     taskInfo.CleanupInfo = null;
                 }
-
-                //taskInfo.Success = taskData.Enabled;//2
-
-                // todo
-                taskInfo.DurationOfLastExecution = 99999; //taskData.;//3 
-                // todo
-                taskInfo.CurrentMemoryUsed = 99999; //4
-                // todo
             }
         }
 

@@ -2340,6 +2340,16 @@ namespace iba.Processing
         public DateTime LastSuccessfulFileStartProcessingTimeStamp { get; private set; } = DateTime.MinValue;
         public DateTime LastSuccessfulFileFinishProcessingTimeStamp { get; private set; } = DateTime.MinValue;
         public string LastSuccessfulFileName { get; private set; } = "";
+
+        internal class TaskLastExecutionData
+        {
+            public bool Success { get; set; }
+            public uint Duration { get; set; }
+            public uint MemoryUsed { get; set; }
+        }
+
+        public SortedDictionary<TaskData, TaskLastExecutionData> TaskLastExecutionDict =
+            new SortedDictionary<TaskData, TaskLastExecutionData>();
         // added by kolesnik - end
 
         private void ProcessDatfile(string InputFile) 
@@ -2703,6 +2713,10 @@ namespace iba.Processing
 
         private bool ProcessTask(string DatFile, TaskData task, ref bool failedOnce)
         {
+            // added by kolesnik - begin
+            DateTime processingStarted = DateTime.Now;
+            // added by kolesnik - end
+
             lock (m_sd.DatFileStates)
             {
                 failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
@@ -2814,6 +2828,38 @@ namespace iba.Processing
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
             }
+            // added by kolesnik - begin
+            DateTime processingFinished = DateTime.Now;
+
+            uint executionDuration = (uint)((processingFinished - processingStarted).TotalMilliseconds);
+            if (executionDuration > 500)
+            {
+                ;
+            }
+            TaskLastExecutionData lastExec = new TaskLastExecutionData();
+            //if (!TaskLastExecutionDict.ContainsKey(task))
+            //{
+            //    lastExec = ;
+            //}
+            //else
+            //{
+            //    lastExec = TaskLastExecutionDict[task];
+            //}
+
+            lastExec.Duration = executionDuration;
+            lock (m_sd.DatFileStates)
+            {
+                lastExec.Success = false;
+                if (m_sd.DatFileStates.ContainsKey(DatFile)
+                    && m_sd.DatFileStates[DatFile].States.ContainsKey(task))
+                {
+                    DatFileStatus.State state = m_sd.DatFileStates[DatFile].States[task];
+                    lastExec.Success = state == DatFileStatus.State.COMPLETED_TRUE || state == DatFileStatus.State.COMPLETED_SUCCESFULY;
+                }
+            }
+            TaskLastExecutionDict[task] = lastExec;
+            // added by kolesnik - end
+
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;
         }
