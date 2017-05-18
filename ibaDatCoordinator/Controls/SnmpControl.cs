@@ -29,7 +29,6 @@ namespace iba.Controls
 
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            gbDebug.Init();
             gbConfiguration.Init();
             gbDiagnostics.Init();
             gbObjects.Init();
@@ -68,152 +67,6 @@ namespace iba.Controls
         private int _tmpCndDataSaved;
         private int _tmpCntTimerTicks;
 
-        private void buttonStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-                ibaSnmp?.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void buttonStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-                ibaSnmp?.Stop();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Get list of endpoints and configured traps. This function is not effective and can be use in debug-time only
-        /// </summary>
-        /// <returns></returns>
-        public string _tmp___GetLibraryDescriptionString(IbaSnmp _lib)
-        {
-            if (_lib == null)
-            {
-                return "";
-            }
-
-            var str = "";
-
-            // general
-            str += $"Is started: {_lib.IsStarted}; ";
-            str += $"Want to start: {_lib.WantToStart}; ";
-            str += $"Product: {_lib.IbaProductId}\r\n";
-
-            //            if (cbShowEndpoints.Checked)
-            {
-                str += $"\r\nEndpoints: {_lib.ActiveEndPoints.Count}\r\n";
-                foreach (var endPoint in _lib.ActiveEndPoints)
-                {
-                    var af = "???";
-                    if (endPoint.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        af = "IPv4";
-                    }
-                    if (endPoint.AddressFamily == AddressFamily.InterNetworkV6)
-                    {
-                        af = "IPv6";
-                    }
-
-                    str += $"{af,-5} {endPoint.Address,-28} :{endPoint.Port}\r\n";
-                }
-            }
-
-            //if (cbShowTrapInform.Checked)
-            //{
-            //    str += $"\r\nTrap/Inform: {_lib.NotificationList.Count}\r\n";
-            //    for (var i = 0; i < _lib.NotificationList.Count; i++)
-            //    {
-            //        var ntfBase = _lib.NotificationList[i];
-
-            //        str += $"Trap[{i}] ep: {ntfBase.DestinationEndpoint}\r\n";
-            //        str += $"Trap[{i}] v: {ntfBase.ProtocolVersion}\r\n";
-            //        str += $"Trap[{i}] community: {ntfBase.CommunityString}\r\n";
-            //        str +=
-            //            $"Trap[{i}] user: {ntfBase.User.Username} {ntfBase.User.Password} {ntfBase.User.EncryptionKey} {ntfBase.User.AuthAlgorithm} {ntfBase.User.EncrAlgorithm}\r\n";
-            //    }
-            //}
-
-            //if (cbShowVariables.Checked)
-            {
-                var oids = _lib.GetListOfAllOids();
-                str += $"\r\nTotal objects: {oids.Count}";
-
-                try
-                {
-                    foreach (var oid in oids)
-                    {
-                        string oidString = $"{oid}";
-                        string eventString = "";
-                        try
-                        {
-                            IbaSnmpOid suff = _lib.GetOidSuffixForFullOid(oid);
-                            if (suff != null)
-                            {
-                                oidString += $" (suff {suff})";
-                                if (_lib.IsEventHandlerRegistered(suff))
-                                {
-                                    eventString = " [Has EVENT handler]";
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            //
-                        }
-
-                        IbaSnmpValueType type;
-                        object val = _lib.GetValue(oid, out type);
-                        string valString = val?.ToString() ?? "<null>";
-
-                        string typeString = $"{type}";
-
-                        if (IbaSnmp.IsInEnumRegion(type) && _lib.IsEnumDataTypeRegistered(type))
-                        {
-                            string typeName = _lib.GetEnumDataTypeName(type);
-                            typeString = $"{(int)type}={typeName}";
-
-                            if (val is int)
-                            {
-                                string enumValueString = _lib.GetEnumValueName(type, (int)val) ?? "<???>";
-                                valString += $" ({enumValueString})";
-                            }
-                        }
-
-                        str += $"\r\n{oidString} = ({typeString}) {valString}{eventString}";
-                    }
-
-                }
-                catch
-                {
-                    str += " [Ex]";
-                }
-            }
-
-            return str;
-        }
-
-        private void buttonDebugRefresh_Click(object sender, EventArgs e)
-        {
-            var man = TaskManager.Manager;
-            SnmpWorker snmpWorker = man?.SnmpWorker;
-
-            snmpWorker?.RebuildTreeIfItIsInvalid();
-        }
-
-       
         #endregion
 
 
@@ -257,10 +110,7 @@ namespace iba.Controls
                 MessageBox.Show(ex.ToString());
             }
 
-            timerStatus.Enabled = true;
-
             _tmpCntDataLoaded++;
-            label1.Text = $@"Data Loaded {_tmpCntDataLoaded}";
             SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Loaded { _tmpCntDataLoaded}");
         }
 
@@ -270,24 +120,12 @@ namespace iba.Controls
 
             // todo ask Michael. Save = Load * 2. why?
             _tmpCndDataSaved++;
-            label3.Text = $@"Data Saved {_tmpCndDataSaved}";
             SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Saved { _tmpCndDataSaved}");
         }
 
         public void LeaveCleanup()
         {
-            // let the manager know that GUI is not visible
-            // so GUI-specific things can be suspended
-            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            if (snmpWorker == null)
-            {
-                return;
-            }
-            //snmpWorker.IsGuiVisible = false;
-            timerStatus.Enabled = false;
-
             _tmpCntDataCleaned++;
-            label2.Text = $@"Data cleaned {_tmpCntDataCleaned}";
             SnmpWorker.TmpLogLine($@"SnmpCtrl. Data cleaned { _tmpCntDataCleaned}");
         }
 
@@ -405,22 +243,6 @@ namespace iba.Controls
 
         #region Diagnostics
 
-        private void timerStatus_Tick(object sender, EventArgs e)
-        {
-            _tmpCntTimerTicks++;
-
-            label4.Text = (_tmpCntTimerTicks % 2 == 0 ? "|" : "-");
-
-            IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-
-            string str = "";
-            str += ibaSnmp == null
-                ? @"ibaSnmp == null"
-                : _tmp___GetLibraryDescriptionString(ibaSnmp);
-
-            tbDebug.Text = str;
-        }
-        
         private void SnmpWorker_StatusChanged(object sender, SnmpWorkerStatusChangedEventArgs e)
         {
             if (tbStatus.InvokeRequired)

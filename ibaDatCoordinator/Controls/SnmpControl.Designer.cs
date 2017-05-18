@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
-            this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
@@ -58,15 +56,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.gbDebug = new iba.Utility.CollapsibleGroupBox();
-            this.buttonDebugRefresh = new System.Windows.Forms.Button();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.tbDebug = new System.Windows.Forms.TextBox();
-            this.buttonStart = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
             this.tbObjOid = new System.Windows.Forms.TextBox();
@@ -83,19 +72,12 @@
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
-            this.gbDebug.SuspendLayout();
             this.gbObjects.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // timerStatus
-            // 
-            this.timerStatus.Enabled = true;
-            this.timerStatus.Interval = 450;
-            this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
             // gbConfiguration
             // 
@@ -121,7 +103,7 @@
             this.gbConfiguration.Controls.Add(this.label13);
             this.gbConfiguration.Controls.Add(this.numPort);
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbConfiguration.Location = new System.Drawing.Point(0, 1070);
+            this.gbConfiguration.Location = new System.Drawing.Point(0, 0);
             this.gbConfiguration.Name = "gbConfiguration";
             this.gbConfiguration.Size = new System.Drawing.Size(703, 214);
             this.gbConfiguration.TabIndex = 9;
@@ -333,7 +315,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
             this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDiagnostics.Location = new System.Drawing.Point(0, 949);
+            this.gbDiagnostics.Location = new System.Drawing.Point(0, 760);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Size = new System.Drawing.Size(703, 121);
             this.gbDiagnostics.TabIndex = 10;
@@ -378,111 +360,13 @@
             this.label15.TabIndex = 1;
             this.label15.Text = "Connected SNMP clients:";
             // 
-            // gbDebug
-            // 
-            this.gbDebug.BackColor = System.Drawing.Color.LavenderBlush;
-            this.gbDebug.Controls.Add(this.buttonDebugRefresh);
-            this.gbDebug.Controls.Add(this.buttonStop);
-            this.gbDebug.Controls.Add(this.tbDebug);
-            this.gbDebug.Controls.Add(this.buttonStart);
-            this.gbDebug.Controls.Add(this.label1);
-            this.gbDebug.Controls.Add(this.label4);
-            this.gbDebug.Controls.Add(this.label2);
-            this.gbDebug.Controls.Add(this.label3);
-            this.gbDebug.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDebug.Location = new System.Drawing.Point(0, 546);
-            this.gbDebug.Name = "gbDebug";
-            this.gbDebug.Size = new System.Drawing.Size(703, 403);
-            this.gbDebug.TabIndex = 8;
-            this.gbDebug.TabStop = false;
-            this.gbDebug.Text = "Debug";
-            // 
-            // buttonDebugRefresh
-            // 
-            this.buttonDebugRefresh.Location = new System.Drawing.Point(9, 162);
-            this.buttonDebugRefresh.Name = "buttonDebugRefresh";
-            this.buttonDebugRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonDebugRefresh.TabIndex = 3;
-            this.buttonDebugRefresh.Text = "Refresh";
-            this.buttonDebugRefresh.UseVisualStyleBackColor = true;
-            this.buttonDebugRefresh.Click += new System.EventHandler(this.buttonDebugRefresh_Click);
-            // 
-            // buttonStop
-            // 
-            this.buttonStop.Location = new System.Drawing.Point(9, 87);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(75, 23);
-            this.buttonStop.TabIndex = 0;
-            this.buttonStop.Text = "Stop";
-            this.buttonStop.UseVisualStyleBackColor = true;
-            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
-            // 
-            // tbDebug
-            // 
-            this.tbDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDebug.Location = new System.Drawing.Point(116, 19);
-            this.tbDebug.Multiline = true;
-            this.tbDebug.Name = "tbDebug";
-            this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbDebug.Size = new System.Drawing.Size(581, 378);
-            this.tbDebug.TabIndex = 2;
-            this.tbDebug.Text = "tbDebug";
-            // 
-            // buttonStart
-            // 
-            this.buttonStart.Location = new System.Drawing.Point(9, 58);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 0;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.UseVisualStyleBackColor = true;
-            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "SNMP";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 122);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "label4";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 29);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "SNMP";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 42);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "SNMP";
-            // 
             // gbObjects
             // 
             this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
             this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbObjects.Location = new System.Drawing.Point(0, 0);
+            this.gbObjects.Location = new System.Drawing.Point(0, 214);
             this.gbObjects.Name = "gbObjects";
             this.gbObjects.Size = new System.Drawing.Size(703, 546);
             this.gbObjects.TabIndex = 11;
@@ -621,10 +505,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.gbConfiguration);
             this.Controls.Add(this.gbDiagnostics);
-            this.Controls.Add(this.gbDebug);
             this.Controls.Add(this.gbObjects);
+            this.Controls.Add(this.gbConfiguration);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "SnmpControl";
             this.Size = new System.Drawing.Size(703, 760);
@@ -634,8 +517,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
-            this.gbDebug.ResumeLayout(false);
-            this.gbDebug.PerformLayout();
             this.gbObjects.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
@@ -648,16 +529,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbDebug;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Timer timerStatus;
-        private System.Windows.Forms.Button buttonStop;
-        private System.Windows.Forms.Button buttonStart;
-        private Utility.CollapsibleGroupBox gbDebug;
         private Utility.CollapsibleGroupBox gbConfiguration;
         private Utility.CollapsibleGroupBox gbDiagnostics;
         private Utility.CollapsibleGroupBox gbObjects;
@@ -688,7 +559,6 @@
         private System.Windows.Forms.Button buttonCreateMibFiles;
         private System.Windows.Forms.TreeView tvObjects;
         private System.Windows.Forms.Button buttonConfigurationReset;
-        private System.Windows.Forms.Button buttonDebugRefresh;
         private System.Windows.Forms.Label labelObjValue;
         private System.Windows.Forms.Label labelObjOid;
         private System.Windows.Forms.TextBox tbObjOid;
