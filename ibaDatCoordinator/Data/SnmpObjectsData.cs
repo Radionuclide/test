@@ -53,6 +53,13 @@ namespace iba.Data
         // job status, task type
         // internal enum 
 
+        internal enum JobStatus
+        {
+            Disabled = 0,
+            Started = 1,
+            Stopped = 2
+        }
+
         internal class GlobalCleanupDriveInfo
         {
             /// <summary> Oid 0 </summary>
