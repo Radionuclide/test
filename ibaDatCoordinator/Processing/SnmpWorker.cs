@@ -11,6 +11,8 @@ using IbaSnmpLib;
 
 namespace iba.Processing
 {
+    #region Helper classes
+
     public enum SnmpWorkerStatus
     {
         Started,
@@ -18,12 +20,12 @@ namespace iba.Processing
         Errored,
     }
 
-    public class StatusChangedEventArgs : EventArgs
+    public class SnmpWorkerStatusChangedEventArgs : EventArgs
     {
         public SnmpWorkerStatus Status { get; }
         public Color Color { get; }
         public string Message { get; }
-        public StatusChangedEventArgs(SnmpWorkerStatus status, Color color, string message)
+        public SnmpWorkerStatusChangedEventArgs(SnmpWorkerStatus status, Color color, string message)
         {
             Status = status;
             Color = color;
@@ -31,9 +33,14 @@ namespace iba.Processing
         }
     }
 
+    #endregion
+
 
     public class SnmpWorker
     {
+        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
+        public readonly object LockObject = new object();
+        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
 
         #region Construction, Destruction, Init
 
@@ -55,7 +62,7 @@ namespace iba.Processing
                 // todo move to reeource?
                 StatusString = $"Waiting for delayed initialisation, {i} second(s)...";
                 StatusChanged?.Invoke(this,
-                    new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
+                    new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
             }
 
             IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
@@ -71,7 +78,7 @@ namespace iba.Processing
 
         public IbaSnmp IbaSnmp { get; private set; }
 
-        public event EventHandler<StatusChangedEventArgs> StatusChanged;
+        public event EventHandler<SnmpWorkerStatusChangedEventArgs> StatusChanged;
 
         private SnmpData _snmpData;
         public SnmpData SnmpData
@@ -147,7 +154,7 @@ namespace iba.Processing
 
             // trigger status event
             StatusChanged?.Invoke(this,
-                new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
+                new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
 
         }
 
@@ -257,11 +264,6 @@ namespace iba.Processing
         #region Dat coordinator specific objects
 
         internal SnmpObjectsData ObjectsData { get; private set; } = new SnmpObjectsData();
-
-        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
-        public readonly object LockObject = new object();
-
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
         public void RefreshObjectData()
         {

@@ -398,11 +398,11 @@ namespace iba.Controls
             tbDebug.Text = str;
         }
         
-        private void SnmpWorker_StatusChanged(object sender, StatusChangedEventArgs e)
+        private void SnmpWorker_StatusChanged(object sender, SnmpWorkerStatusChangedEventArgs e)
         {
             if (tbStatus.InvokeRequired)
             {
-                Invoke(new EventHandler<StatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
+                Invoke(new EventHandler<SnmpWorkerStatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
             }
             else
             {
