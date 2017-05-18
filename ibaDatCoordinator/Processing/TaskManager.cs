@@ -374,6 +374,8 @@ namespace iba.Processing
 
         internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
         {
+            licenseInfo.Reset();
+
             try
             {
                 CDongleInfo info = CDongleInfo.ReadDongle();

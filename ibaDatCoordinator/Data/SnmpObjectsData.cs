@@ -11,17 +11,6 @@ namespace iba.Data
     /// </summary>
     internal class SnmpObjectsData 
     {        
-        public void Reset()
-        {
-            GlobalCleanup.Clear();
-            StandardJobs.Clear();
-            ScheduledJobs.Clear();
-            OneTimeJobs.Clear();
-            EventBasedJobs.Clear();
-
-            SnmpWorker.TmpLogLine("SnmpObjectsData.Reset()");
-        }
-
         /// <summary> PrGeneral.3 </summary>
         public LicenseInfo License = new LicenseInfo();
         /// <summary> PrSpecific.1 </summary>
@@ -35,8 +24,19 @@ namespace iba.Data
         /// <summary> PrSpecific.5 </summary>
         public List<EventBasedJobInfo> EventBasedJobs = new List<EventBasedJobInfo>();
 
+        public void Reset()
+        {
+            License.Reset();
 
-        #region subclasses
+            GlobalCleanup.Clear();
+
+            StandardJobs.Clear();
+            ScheduledJobs.Clear();
+            OneTimeJobs.Clear();
+            EventBasedJobs.Clear();
+        }
+
+        #region Common
 
         internal abstract class SnmpObjectWithATimeStamp
         {
@@ -68,6 +68,11 @@ namespace iba.Data
             }
         }
 
+        #endregion
+
+
+        #region License
+
         internal class LicenseInfo : SnmpObjectWithATimeStamp
         {
             /// <summary> Oid 1 </summary>
@@ -90,14 +95,24 @@ namespace iba.Data
 
             /// <summary> Oid 7 </summary>
             public int DemoTimeLimit;
+
+            /// <summary> Resets all the fields to default values </summary>
+            public void Reset()
+            {
+                IsValid = false;
+                Sn = "";
+                HwId = "";
+                DongleType = "";
+                Customer = "";
+                TimeLimit = 0;
+                DemoTimeLimit = 0;
+            }
         }
 
-        internal enum JobStatus
-        {
-            Disabled = 0,
-            Started = 1,
-            Stopped = 2
-        }
+        #endregion
+
+
+        #region Global Cleanup
 
         internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
@@ -138,6 +153,18 @@ namespace iba.Data
             {
                 return $@"{DriveName} [A:{Active}, {CurrentFreeSpaceInMb}/{SizeInMb}";
             }
+        }
+
+        #endregion
+
+
+        #region Jobs and tasks
+
+        internal enum JobStatus
+        {
+            Disabled = 0,
+            Started = 1,
+            Stopped = 2
         }
 
         /// <summary> OID 1...n - one struct per for each task </summary>
@@ -316,5 +343,6 @@ namespace iba.Data
         }
 
         #endregion
+        
     }
 }
