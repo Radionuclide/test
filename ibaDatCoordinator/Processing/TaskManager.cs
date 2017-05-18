@@ -530,7 +530,7 @@ namespace iba.Processing
             SnmpRefreshJobInfoBase(jobInfo, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
-            jobInfo.TimestampJobStarted = DateTime.MaxValue; //6
+            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
             jobInfo.LastCycleScanningTime = 999999; //7
 
             var prFiles = s.ProcessedFiles;

@@ -73,6 +73,10 @@ namespace iba.Processing
                 return true;
         }
 
+        // added by kolesnik - begin
+        public DateTime TimestampJobStarted { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         public void Start()
         {
             if (m_sd.Started) return;
@@ -92,6 +96,9 @@ namespace iba.Processing
             m_thread.Name = "workerthread for: " + m_cd.Name;
             m_thread.Start();
             m_sd.Started = true;
+            // added by kolesnik - begin
+            TimestampJobStarted = DateTime.Now;
+            // added by kolesnik - end
         }
 
         private ConfigurationData m_toUpdate = null;
