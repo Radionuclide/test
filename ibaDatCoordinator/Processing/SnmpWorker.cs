@@ -31,6 +31,17 @@ namespace iba.Processing
 
     public class SnmpWorker
     {
+
+        #region Construction, Destruction, Init
+
+        public SnmpWorker()
+        {
+            // todo probabaly delay?
+            RegisterObjectHandlers();
+        }
+
+        #endregion
+
         public IbaSnmp IbaSnmp { get; } =
             new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
 
@@ -106,7 +117,7 @@ namespace iba.Processing
             }
 
             // trigger status event
-            StatusChanged?.Invoke(this, 
+            StatusChanged?.Invoke(this,
                 new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
 
         }
@@ -133,5 +144,110 @@ namespace iba.Processing
             // todo apply objects
             //SnmpData.
         }
+
+        #region Objects
+
+        private void RegisterObjectHandlers()
+        {
+            RegisterGeneralObjectHandlers();
+            Register111();
+        }
+
+        #region General objects
+
+        private void RegisterGeneralObjectHandlers()
+        {
+            IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
+            IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingCustomerRequested;
+            IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingDemoTimeLimitRequested;
+            IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingHwIdRequested;
+            IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingIsValidRequested;
+            IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingSnRequested;
+            IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingTimeLimitRequested;
+            IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingTypeRequested;
+        }
+
+        private void IbaSnmp_UpTimeRequested(object sender, IbaSnmpValueRequestedEventArgs<uint> e)
+        {
+            // todo override?
+        }
+
+        private void IbaSnmp_LicensingCustomerRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
+        {
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+                e.Value = info.DongleFound ? info.Customer : "";
+            }
+            catch { /**/ }
+        }
+        private void IbaSnmp_LicensingDemoTimeLimitRequested(object sender, IbaSnmpValueRequestedEventArgs<int> e)
+        {
+            // todo
+        }
+
+        private void IbaSnmp_LicensingHwIdRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
+        {
+            // todo
+        }
+
+        private void IbaSnmp_LicensingIsValidRequested(object sender, IbaSnmpValueRequestedEventArgs<bool> e)
+        {
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+                // todo is it reaaly this?
+                e.Value = info.DongleFound;
+            }
+            catch { /**/ }
+        }
+
+        private void IbaSnmp_LicensingSnRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
+        {
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+                e.Value = info.DongleFound ? info.SerialNr : "";
+            }
+            catch { /**/ }
+        }
+
+        private void IbaSnmp_LicensingTimeLimitRequested(object sender, IbaSnmpValueRequestedEventArgs<int> e)
+        {
+            // todo
+        }
+
+        private void IbaSnmp_LicensingTypeRequested(object sender, IbaSnmpValueRequestedEventArgs<string> e)
+        {
+            // todo
+        }
+
+
+        #endregion
+
+        #region Dat coordinator specific objects
+
+        private void Register111()
+        {
+            IbaSnmp.CreateUserValue("55.1", "", "mib_55_1", "mib 55.1", Val_551_Requested);
+            IbaSnmp.CreateUserValue("55.2", 500, "mib_55_2", "mib 55.2", Val_552_Requested);
+        }
+
+        private int _cnt551 = 0;
+        private void Val_551_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        {
+            e.Value = $"({e.ValueType})55.1 + {_cnt551++}";
+        }
+        private int _cnt552 = 1000;
+        private void Val_552_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        {
+//            e.Value = $"({e.ValueType})55.2 + {_cnt552 += 10}";
+            e.Value = _cnt552 += 10;
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }

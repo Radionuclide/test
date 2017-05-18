@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.buttonObjectsRefresh = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -82,7 +81,7 @@
             // timerStatus
             // 
             this.timerStatus.Enabled = true;
-            this.timerStatus.Interval = 500;
+            this.timerStatus.Interval = 1000;
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
             // gbObjects
@@ -92,9 +91,9 @@
             this.gbObjects.Controls.Add(this.buttonObjectsApply);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbObjects.Location = new System.Drawing.Point(0, 530);
+            this.gbObjects.Location = new System.Drawing.Point(0, 738);
             this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(720, 143);
+            this.gbObjects.Size = new System.Drawing.Size(703, 143);
             this.gbObjects.TabIndex = 11;
             this.gbObjects.TabStop = false;
             this.gbObjects.Text = "Objects";
@@ -102,7 +101,7 @@
             // buttonObjectsRefresh
             // 
             this.buttonObjectsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsRefresh.Location = new System.Drawing.Point(558, 114);
+            this.buttonObjectsRefresh.Location = new System.Drawing.Point(541, 114);
             this.buttonObjectsRefresh.Name = "buttonObjectsRefresh";
             this.buttonObjectsRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonObjectsRefresh.TabIndex = 7;
@@ -113,7 +112,7 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(525, 19);
+            this.button5.Location = new System.Drawing.Point(508, 19);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(189, 23);
             this.button5.TabIndex = 2;
@@ -123,7 +122,7 @@
             // buttonObjectsApply
             // 
             this.buttonObjectsApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsApply.Location = new System.Drawing.Point(639, 114);
+            this.buttonObjectsApply.Location = new System.Drawing.Point(622, 114);
             this.buttonObjectsApply.Name = "buttonObjectsApply";
             this.buttonObjectsApply.Size = new System.Drawing.Size(75, 23);
             this.buttonObjectsApply.TabIndex = 7;
@@ -151,9 +150,9 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
             this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDiagnostics.Location = new System.Drawing.Point(0, 409);
+            this.gbDiagnostics.Location = new System.Drawing.Point(0, 617);
             this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.Size = new System.Drawing.Size(720, 121);
+            this.gbDiagnostics.Size = new System.Drawing.Size(703, 121);
             this.gbDiagnostics.TabIndex = 10;
             this.gbDiagnostics.TabStop = false;
             this.gbDiagnostics.Text = "Diagnostics";
@@ -164,13 +163,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbStatus.Location = new System.Drawing.Point(76, 13);
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(638, 20);
+            this.tbStatus.Size = new System.Drawing.Size(621, 20);
             this.tbStatus.TabIndex = 3;
             // 
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(525, 39);
+            this.button4.Location = new System.Drawing.Point(508, 39);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(189, 23);
             this.button4.TabIndex = 2;
@@ -219,9 +218,9 @@
             this.gbConfiguration.Controls.Add(this.label13);
             this.gbConfiguration.Controls.Add(this.numPort);
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbConfiguration.Location = new System.Drawing.Point(0, 195);
+            this.gbConfiguration.Location = new System.Drawing.Point(0, 403);
             this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.Size = new System.Drawing.Size(720, 214);
+            this.gbConfiguration.Size = new System.Drawing.Size(703, 214);
             this.gbConfiguration.TabIndex = 9;
             this.gbConfiguration.TabStop = false;
             this.gbConfiguration.Text = "Configuration";
@@ -241,7 +240,7 @@
             // buttonConfigurationReset
             // 
             this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(558, 185);
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(541, 185);
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationReset.TabIndex = 6;
@@ -252,7 +251,7 @@
             // buttonConfigurationApply
             // 
             this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(639, 185);
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(622, 185);
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationApply.TabIndex = 6;
@@ -437,7 +436,7 @@
             this.gbDebug.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbDebug.Location = new System.Drawing.Point(0, 0);
             this.gbDebug.Name = "gbDebug";
-            this.gbDebug.Size = new System.Drawing.Size(720, 195);
+            this.gbDebug.Size = new System.Drawing.Size(703, 403);
             this.gbDebug.TabIndex = 8;
             this.gbDebug.TabStop = false;
             this.gbDebug.Text = "Debug";
@@ -460,7 +459,8 @@
             this.tbDebug.Location = new System.Drawing.Point(116, 19);
             this.tbDebug.Multiline = true;
             this.tbDebug.Name = "tbDebug";
-            this.tbDebug.Size = new System.Drawing.Size(598, 170);
+            this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbDebug.Size = new System.Drawing.Size(581, 378);
             this.tbDebug.TabIndex = 2;
             this.tbDebug.Text = "tbDebug";
             // 
@@ -521,7 +521,7 @@
             this.Controls.Add(this.gbDebug);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "SnmpControl";
-            this.Size = new System.Drawing.Size(720, 812);
+            this.Size = new System.Drawing.Size(703, 760);
             this.Load += new System.EventHandler(this.SnmpControl_Load);
             this.gbObjects.ResumeLayout(false);
             this.gbDiagnostics.ResumeLayout(false);
@@ -545,7 +545,6 @@
         private System.Windows.Forms.Timer timerStatus;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonStart;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Utility.CollapsibleGroupBox gbDebug;
         private Utility.CollapsibleGroupBox gbConfiguration;
         private Utility.CollapsibleGroupBox gbDiagnostics;
