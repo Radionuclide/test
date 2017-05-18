@@ -278,18 +278,19 @@ namespace iba.Data
             /// <summary> Oid 0.6 </summary>
             public DateTime TimestampJobStarted;
 
-            // todo
             /// <summary> Oid 0.7 </summary>
-            public DateTime LastCycleScanningTime_TimestampLastDirectoryScan;
-            public DateTime LastCycleScanningTime_TimestampLastReprocessErrorsScan;
+            public DateTime TimestampLastDirectoryScan;
             
-            /// <summary> Oid 0.8.0 </summary>
+            /// <summary> Oid 0.8 </summary>
+            public DateTime TimestampLastReprocessErrorsScan;
+            
+            /// <summary> Oid 0.9.0 </summary>
             public string LastProcessingLastDatFileProcessed;
 
-            /// <summary> Oid 0.8.1 </summary>
+            /// <summary> Oid 0.9.1 </summary>
             public DateTime LastProcessingStartTimeStamp;
 
-            /// <summary> Oid 0.8.2 </summary>
+            /// <summary> Oid 0.9.2 </summary>
             public DateTime LastProcessingFinishTimeStamp;
 
             public override void Reset()
@@ -298,8 +299,8 @@ namespace iba.Data
 
                 PermFailedCount = 0;
                 TimestampJobStarted = DateTime.MinValue;
-                LastCycleScanningTime_TimestampLastDirectoryScan = DateTime.MinValue;
-                LastCycleScanningTime_TimestampLastReprocessErrorsScan = DateTime.MinValue;
+                TimestampLastDirectoryScan = DateTime.MinValue;
+                TimestampLastReprocessErrorsScan = DateTime.MinValue;
                 LastProcessingLastDatFileProcessed = "";
                 LastProcessingStartTimeStamp = DateTime.MinValue;
                 LastProcessingFinishTimeStamp = DateTime.MinValue;

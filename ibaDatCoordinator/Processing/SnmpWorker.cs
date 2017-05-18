@@ -576,13 +576,12 @@ namespace iba.Processing
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, stdJi.PermFailedCount);
                         IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(stdJi.TimestampJobStarted));
-                        // todo
-                        IbaSnmp.SetUserValue(oidJobGen + 7,
-                            $"Dir={stdJi.LastCycleScanningTime_TimestampLastDirectoryScan}, Err={stdJi.LastCycleScanningTime_TimestampLastReprocessErrorsScan}"
-                            );
-                        IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
-                        IbaSnmp.SetUserValue(oidJobGen + "8.1", ConvertDateTimeToString(stdJi.LastProcessingStartTimeStamp));
-                        IbaSnmp.SetUserValue(oidJobGen + "8.2", ConvertDateTimeToString(stdJi.LastProcessingFinishTimeStamp));
+                        IbaSnmp.SetUserValue(oidJobGen + 7, ConvertDateTimeToString(stdJi.TimestampLastDirectoryScan));
+                        IbaSnmp.SetUserValue(oidJobGen + 8, ConvertDateTimeToString(stdJi.TimestampLastReprocessErrorsScan));
+                        IbaSnmpOid oidJobGenLastproc = oidJobGen + 9;
+                        IbaSnmp.SetUserValue(oidJobGenLastproc + 0, stdJi.LastProcessingLastDatFileProcessed);
+                        IbaSnmp.SetUserValue(oidJobGenLastproc + 1, ConvertDateTimeToString(stdJi.LastProcessingStartTimeStamp));
+                        IbaSnmp.SetUserValue(oidJobGenLastproc + 2, ConvertDateTimeToString(stdJi.LastProcessingFinishTimeStamp));
                     }
                     else if (schJi != null)
                     {
@@ -831,16 +830,20 @@ namespace iba.Processing
                             null,
                             JobInfoItemRequested, jobInfo);
 
-                        // todo
-                        // ibaRoot.DatCoord.Product.StdJobs.Job.7 - Last cycle scanning time
-                        CreateUserValue(oidJobGen + 7,
-                            $"Dir={jobInfo.LastCycleScanningTime_TimestampLastDirectoryScan}, Err={jobInfo.LastCycleScanningTime_TimestampLastReprocessErrorsScan}",
-                            @"Last cycle scanning time", mibNameJobGen + @"LastCycleScanningTime",
+                        // ibaRoot.DatCoord.Product.StdJobs.Job.7 - Timestamp Last Directory Scan
+                        CreateUserValue(oidJobGen + 7, ConvertDateTimeToString(jobInfo.TimestampLastDirectoryScan),
+                            @"Timestamp last directory scan", mibNameJobGen + @"TimestampLastDirectoryScan",
                             null,
                             JobInfoItemRequested, jobInfo);
 
-                        // ibaRoot.DatCoord.Product.StdJobs.Job.8 - LastProcessing [Folder]
-                        IbaSnmpOid oidLastProc = oidJobGen + 8;
+                        // ibaRoot.DatCoord.Product.StdJobs.Job.8 - Timestamp Last Reprocess ErrorsScan
+                        CreateUserValue(oidJobGen + 8, ConvertDateTimeToString(jobInfo.TimestampLastReprocessErrorsScan),
+                            @"Timestamp last reprocess errors scan", mibNameJobGen + @"TimestampLastReprocessErrorsScan",
+                            null,
+                            JobInfoItemRequested, jobInfo);
+
+                        // ibaRoot.DatCoord.Product.StdJobs.Job.9 - LastProcessing [Folder]
+                        IbaSnmpOid oidLastProc = oidJobGen + 9;
                         AddMetadataForOidSuffix(oidLastProc, @"LastProcessing", mibNameJobGen + @"LastProcessing");
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.8.0 - Last dat-File processed
