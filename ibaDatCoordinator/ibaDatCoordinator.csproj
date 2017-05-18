@@ -149,6 +149,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SnmpControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SnmpControl.Designer.cs">
+      <DependentUpon>SnmpControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SplitterTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -417,6 +423,9 @@
     <EmbeddedResource Include="Controls\ConfigurationControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SnmpControl.resx">
+      <DependentUpon>SnmpControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>

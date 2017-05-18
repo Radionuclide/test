@@ -22,6 +22,7 @@ using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
+// ReSharper disable RedundantNameQualifier
 
 namespace iba
 {
@@ -451,9 +452,11 @@ namespace iba
                 Control ctrl = propertyPanes["snmpControl"] as Control;
                 if (ctrl == null)
                 {
-                    ctrl = new WatchdogControl();
+                    ctrl = new SnmpControl();
                     propertyPanes["snmpControl"] = ctrl;
                 }
+
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle, null);
 
                 EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
