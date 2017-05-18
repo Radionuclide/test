@@ -19,6 +19,12 @@ namespace iba.Controls
         {
             InitializeComponent();
             _tmp___instCounter++;
+
+            gbDebug.Init();
+            gbConfiguration.Init();
+            gbDiagnostics.Init();
+            gbObjects.Init();
+            
         }
 
         private static int _tmp___instCounter = 0;
@@ -226,6 +232,9 @@ namespace iba.Controls
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
         }
     }
 }
