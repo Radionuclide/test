@@ -60,6 +60,7 @@ namespace iba.Processing
 
             IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
             IbaSnmp.DosProtectionInternal.Enabled = false;
+            IbaSnmp.DosProtectionExternal.Enabled = false;
             RestartAgent();
 
             RegisterGeneralObjectHandlers();
