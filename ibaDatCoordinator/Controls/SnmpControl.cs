@@ -249,7 +249,7 @@ namespace iba.Controls
             try
             {
                 ConfigurationFromDataToControls();
-                InitializeObjectsTree();
+                RebuildObjectsTree();
                 snmpWorker.ApplyStatusToTextBox(tbStatus);
             }
             catch (Exception ex)
@@ -441,7 +441,7 @@ namespace iba.Controls
         #region Objects
 
 
-        public void InitializeObjectsTree()
+        public void RebuildObjectsTree()
         {
             // first of all, clear the tree
             tvObjects.Nodes.Clear();
@@ -455,7 +455,7 @@ namespace iba.Controls
                 return;
             }
 
-            // uppdate tree if necessary
+            // update worker's tree if necessary
             worker.RebuildTreeIfItIsInvalid();
 
             lock (worker.LockObject)
@@ -606,7 +606,20 @@ namespace iba.Controls
                 return;
             }
 
-            worker.RebuildTreeIfItIsInvalid();
+            if (worker.RebuildTreeIfItIsInvalid())
+            {
+                // should not happen 
+                // because cfg theoretically should not change while we are on the snmp page
+                // but nevertheles...
+                // todo log warning here
+
+                SnmpWorker.TmpLogLine("WARNING! tvObjects_AfterSelect() RebuildTreeIfItIsInvalid=ture");
+                // rebuild our tree according to worker's tree
+                RebuildObjectsTree();
+                // do nothing else
+                // let the user select another item in a new tree later
+                return;
+            }
 
             var od = worker.ObjectsData;
             IbaSnmp ibaSnmp = worker.IbaSnmp;
@@ -658,7 +671,7 @@ namespace iba.Controls
 
         private void buttonObjectsRefresh_Click(object sender, EventArgs e)
         {
-            InitializeObjectsTree();
+            RebuildObjectsTree();
         }
 
         private void buttonCreateMibFiles_Click(object sender, EventArgs e)
@@ -738,8 +751,7 @@ namespace iba.Controls
         }
 
 
+
         #endregion
-
-
     }
 }

@@ -77,32 +77,26 @@ namespace iba.Processing
 
         public SnmpWorker()
         {
-            Status = SnmpWorkerStatus.Stopped;
+            Status = SnmpWorkerStatus.Errored;
             // todo localize
-            StatusString = "Waiting for delayed initialisation...";
-
-            new Task(DelayedInit).Start();
-        }
-
-        private void DelayedInit()
-        {
-            for (int i = InitialisationDelayInSeconds - 1; i >= 0; i--)
-            {
-                Thread.Sleep(1000);
-                // todo localize
-                StatusString = $"Waiting for delayed initialisation, {i} second(s)...";
-                StatusChanged?.Invoke(this,
-                    new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
-            }
-
-            Init();
+            StatusString = "SNMP server is not initialized.";
         }
 
         public void Init()
         {
-            IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+            lock (LockObject)
+            {
+                if (IbaSnmp != null)
+                {
+                    // disable double initialisation
+                    return;
+                }
+
+                IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+            }
+
             IbaSnmp.DosProtectionInternal.Enabled = false;
-            IbaSnmp.DosProtectionExternal.Enabled = false;
+            IbaSnmp.DosProtectionExternal.Config(5000, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
             RestartAgent();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
@@ -182,9 +176,6 @@ namespace iba.Processing
                     ? Color.LightGray // stopped
                     : Color.Red); // error
         }
-
-        /// <summary> Whether Snmp Control is currently displayed in the main form window </summary>
-        //public bool IsGuiVisible { get; set; }
 
         public void RestartAgent()
         {
@@ -643,7 +634,9 @@ namespace iba.Processing
             var man = TaskManager.Manager;
             IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
             if (ibaSnmp == null)
+            {
                 return;
+            }
 
             lock (LockObject)
             {
@@ -1102,7 +1095,7 @@ namespace iba.Processing
             OidMetadataDict[IbaSnmp.OidIbaProductSpecific + oidSuffix] = new OidMetadata(guiCaption, mibName, mibDescription);
         }
 
-        public void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
+        private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
@@ -1111,7 +1104,7 @@ namespace iba.Processing
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
 
-        public void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
+        private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
@@ -1120,7 +1113,7 @@ namespace iba.Processing
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
 
-        public void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
+        private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
@@ -1129,7 +1122,7 @@ namespace iba.Processing
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
 
-        public void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
+        private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)

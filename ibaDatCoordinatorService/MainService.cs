@@ -81,6 +81,9 @@ namespace iba.Services
                 TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(localChannel, false);
                 RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
+                // added by kolesnik - begin
+                m_communicationObject.Manager.SnmpWorker.Init();
+                // added by kolesnik - end
             }
             catch (Exception ex)
             {

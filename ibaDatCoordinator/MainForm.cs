@@ -564,6 +564,12 @@ namespace iba
             }
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
                 m_iconEx.Visible = true;
+            // added by kolesnik - begin
+            else
+            {
+                TaskManager.Manager.SnmpWorker.Init();
+            }
+            // added by kolesnik - end
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
