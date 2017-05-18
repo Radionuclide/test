@@ -43,26 +43,26 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.cbEnabled = new System.Windows.Forms.CheckBox();
+            this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cmbEncryption = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbAuthentication = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbEncryptionKey = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbUserName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbCommunity = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numPort = new System.Windows.Forms.NumericUpDown();
             this.gbDebug = new iba.Utility.CollapsibleGroupBox();
             this.buttonStop = new System.Windows.Forms.Button();
             this.tbDebug = new System.Windows.Forms.TextBox();
@@ -74,7 +74,7 @@
             this.gbObjects.SuspendLayout();
             this.gbDiagnostics.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDebug.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -196,26 +196,26 @@
             // 
             // gbConfiguration
             // 
-            this.gbConfiguration.Controls.Add(this.checkBox1);
-            this.gbConfiguration.Controls.Add(this.button3);
+            this.gbConfiguration.Controls.Add(this.cbEnabled);
+            this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
             this.gbConfiguration.Controls.Add(this.label5);
             this.gbConfiguration.Controls.Add(this.button2);
             this.gbConfiguration.Controls.Add(this.label6);
             this.gbConfiguration.Controls.Add(this.button1);
             this.gbConfiguration.Controls.Add(this.label7);
-            this.gbConfiguration.Controls.Add(this.comboBox2);
+            this.gbConfiguration.Controls.Add(this.cmbEncryption);
             this.gbConfiguration.Controls.Add(this.label8);
-            this.gbConfiguration.Controls.Add(this.comboBox1);
+            this.gbConfiguration.Controls.Add(this.cmbAuthentication);
             this.gbConfiguration.Controls.Add(this.label9);
-            this.gbConfiguration.Controls.Add(this.textBox4);
+            this.gbConfiguration.Controls.Add(this.tbPassword);
             this.gbConfiguration.Controls.Add(this.label10);
-            this.gbConfiguration.Controls.Add(this.textBox3);
+            this.gbConfiguration.Controls.Add(this.tbEncryptionKey);
             this.gbConfiguration.Controls.Add(this.label11);
-            this.gbConfiguration.Controls.Add(this.textBox2);
+            this.gbConfiguration.Controls.Add(this.tbUserName);
             this.gbConfiguration.Controls.Add(this.label12);
-            this.gbConfiguration.Controls.Add(this.textBox1);
+            this.gbConfiguration.Controls.Add(this.tbCommunity);
             this.gbConfiguration.Controls.Add(this.label13);
-            this.gbConfiguration.Controls.Add(this.numericUpDown1);
+            this.gbConfiguration.Controls.Add(this.numPort);
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbConfiguration.Location = new System.Drawing.Point(0, 195);
             this.gbConfiguration.Name = "gbConfiguration";
@@ -224,27 +224,28 @@
             this.gbConfiguration.TabStop = false;
             this.gbConfiguration.Text = "Configuration";
             // 
-            // checkBox1
+            // cbEnabled
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(9, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(65, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "Enabled";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbEnabled.AutoSize = true;
+            this.cbEnabled.Checked = true;
+            this.cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbEnabled.Location = new System.Drawing.Point(9, 19);
+            this.cbEnabled.Name = "cbEnabled";
+            this.cbEnabled.Size = new System.Drawing.Size(65, 17);
+            this.cbEnabled.TabIndex = 1;
+            this.cbEnabled.Text = "Enabled";
+            this.cbEnabled.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // buttonConfigurationApply
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(639, 185);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Apply";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(639, 185);
+            this.buttonConfigurationApply.Name = "buttonConfigurationApply";
+            this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
+            this.buttonConfigurationApply.TabIndex = 6;
+            this.buttonConfigurationApply.Text = "Apply";
+            this.buttonConfigurationApply.UseVisualStyleBackColor = true;
+            this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
             // label5
             // 
@@ -257,6 +258,7 @@
             // 
             // button2
             // 
+            this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(645, 128);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(43, 23);
@@ -275,6 +277,7 @@
             // 
             // button1
             // 
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(468, 154);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(43, 23);
@@ -291,17 +294,17 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Community string:";
             // 
-            // comboBox2
+            // cmbEncryption
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.cmbEncryption.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEncryption.Items.AddRange(new object[] {
             "None",
             "DES",
             "AES"});
-            this.comboBox2.Location = new System.Drawing.Point(141, 156);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(67, 21);
-            this.comboBox2.TabIndex = 4;
+            this.cmbEncryption.Location = new System.Drawing.Point(141, 156);
+            this.cmbEncryption.Name = "cmbEncryption";
+            this.cmbEncryption.Size = new System.Drawing.Size(67, 21);
+            this.cmbEncryption.TabIndex = 4;
             // 
             // label8
             // 
@@ -312,16 +315,16 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "SNMP V3 security";
             // 
-            // comboBox1
+            // cmbAuthentication
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cmbAuthentication.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAuthentication.Items.AddRange(new object[] {
             "MD5",
             "SHA"});
-            this.comboBox1.Location = new System.Drawing.Point(141, 130);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(67, 21);
-            this.comboBox1.TabIndex = 4;
+            this.cmbAuthentication.Location = new System.Drawing.Point(141, 130);
+            this.cmbAuthentication.Name = "cmbAuthentication";
+            this.cmbAuthentication.Size = new System.Drawing.Size(67, 21);
+            this.cmbAuthentication.TabIndex = 4;
             // 
             // label9
             // 
@@ -332,13 +335,12 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "Authentication:";
             // 
-            // textBox4
+            // tbPassword
             // 
-            this.textBox4.Location = new System.Drawing.Point(539, 130);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 3;
-            this.textBox4.Text = "12345678";
+            this.tbPassword.Location = new System.Drawing.Point(539, 130);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(100, 20);
+            this.tbPassword.TabIndex = 3;
             // 
             // label10
             // 
@@ -349,13 +351,12 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Encryption:";
             // 
-            // textBox3
+            // tbEncryptionKey
             // 
-            this.textBox3.Location = new System.Drawing.Point(362, 156);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 3;
-            this.textBox3.Text = "12345678";
+            this.tbEncryptionKey.Location = new System.Drawing.Point(362, 156);
+            this.tbEncryptionKey.Name = "tbEncryptionKey";
+            this.tbEncryptionKey.Size = new System.Drawing.Size(100, 20);
+            this.tbEncryptionKey.TabIndex = 3;
             // 
             // label11
             // 
@@ -366,13 +367,12 @@
             this.label11.TabIndex = 0;
             this.label11.Text = "User name:";
             // 
-            // textBox2
+            // tbUserName
             // 
-            this.textBox2.Location = new System.Drawing.Point(362, 130);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "public";
+            this.tbUserName.Location = new System.Drawing.Point(362, 130);
+            this.tbUserName.Name = "tbUserName";
+            this.tbUserName.Size = new System.Drawing.Size(100, 20);
+            this.tbUserName.TabIndex = 3;
             // 
             // label12
             // 
@@ -383,13 +383,12 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Encryption key:";
             // 
-            // textBox1
+            // tbCommunity
             // 
-            this.textBox1.Location = new System.Drawing.Point(141, 78);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(498, 20);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.Text = "public";
+            this.tbCommunity.Location = new System.Drawing.Point(141, 78);
+            this.tbCommunity.Name = "tbCommunity";
+            this.tbCommunity.Size = new System.Drawing.Size(498, 20);
+            this.tbCommunity.TabIndex = 3;
             // 
             // label13
             // 
@@ -400,22 +399,17 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "Password:";
             // 
-            // numericUpDown1
+            // numPort
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(173, 18);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.numPort.Location = new System.Drawing.Point(173, 18);
+            this.numPort.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(69, 20);
-            this.numericUpDown1.TabIndex = 2;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            1612,
-            0,
-            0,
-            0});
+            this.numPort.Name = "numPort";
+            this.numPort.Size = new System.Drawing.Size(69, 20);
+            this.numPort.TabIndex = 2;
             // 
             // gbDebug
             // 
@@ -520,7 +514,7 @@
             this.gbDiagnostics.PerformLayout();
             this.gbConfiguration.ResumeLayout(false);
             this.gbConfiguration.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.gbDebug.ResumeLayout(false);
             this.gbDebug.PerformLayout();
             this.ResumeLayout(false);
@@ -542,26 +536,26 @@
         private Utility.CollapsibleGroupBox gbConfiguration;
         private Utility.CollapsibleGroupBox gbDiagnostics;
         private Utility.CollapsibleGroupBox gbObjects;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox cbEnabled;
+        private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cmbEncryption;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbAuthentication;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tbEncryptionKey;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbCommunity;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numPort;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label14;

@@ -315,11 +315,19 @@ namespace iba.Processing
             new IbaSnmpLib.IbaSnmp(IbaSnmpLib.IbaSnmpProductId.IbaDatCoordinator);
         private SnmpData m_SnmpData;
         public virtual IbaSnmpLib.IbaSnmp IbaSnmp => m_IbaSnmp;
-        public virtual SnmpData SnmpData => m_SnmpData;
-        public virtual void ReplaceSnmpData(SnmpData data)
+
+        public virtual SnmpData SnmpData
         {
-            m_SnmpData = data;
+            get { return m_SnmpData; }
+            set
+            {
+                m_SnmpData = value;
+                // we have only one existing instance of IbaSnmp
+                // every copy of SnmpData should reference it
+                m_SnmpData.IbaSnmp = m_IbaSnmp;
+            }
         }
+
         #endregion
 
 

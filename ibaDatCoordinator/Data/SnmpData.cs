@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using IbaSnmpLib;
 
 namespace iba.Data
@@ -9,33 +10,50 @@ namespace iba.Data
     [Serializable]
     public class SnmpData : ICloneable
     {
-        private IbaSnmp _ibaSnmp = null;
-        /// <summary> reference to the SNMP agent engine </summary>
-        public IbaSnmp IbaSnmp
-        {
-            get { return _ibaSnmp; }
-            set { _ibaSnmp = value; }
-        }
-
-        private bool _restartByDefault = false;
-        public bool RestartByDefault
-        {
-            get { return _restartByDefault; }
-            set { _restartByDefault = value; }
-        }
-
-
         public SnmpData()
         {
+            ResetToDefaults();
         }
 
-        /// <summary> reference to the SNMP agent engine </summary>
-        
+        [XmlIgnore]
+        /// <summary> reference to the SNMP agent </summary>
+        public IbaSnmp IbaSnmp { get; set; }
+
+        public bool Enabled { get; set; }
+
+        #region Connection settings
+
+        public int Port { get; set; }
+        public string V1V2Security { get; set; }
+        public IbaSnmpUserAccount V3Security { get; set; } = new IbaSnmpUserAccount();
+
+        #endregion
+
         public object Clone()
         {
-            //todo check
+            //todo check V3Security?
             object newobj = MemberwiseClone();
             return newobj;
+        }
+
+        public static SnmpData GetDefaults()
+        {
+            SnmpData snmpd = new SnmpData();
+            snmpd.ResetToDefaults();
+            return snmpd;
+        }
+
+        public void ResetToDefaults()
+        {
+            IbaSnmp = null;
+            Enabled = false;
+
+            Port = IbaSnmpLib.IbaSnmp.DefaultLocalPortBase - 1 + (int)IbaSnmpProductId.IbaDatCoordinator;
+
+            V1V2Security = "public";
+            V3Security = new IbaSnmpUserAccount(
+                "public", "12345678", IbaSnmpAuthenticationAlgorithm.Md5,
+                "12345678", IbaSnmpEncryptionAlgorithm.None);
         }
     }
 }

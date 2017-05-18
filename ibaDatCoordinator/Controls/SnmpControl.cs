@@ -15,6 +15,9 @@ namespace iba.Controls
 {
     public partial class SnmpControl : UserControl, IPropertyPane
     {
+
+        #region Construction, Destruction, Init
+
         public SnmpControl()
         {
             InitializeComponent();
@@ -24,8 +27,20 @@ namespace iba.Controls
             gbConfiguration.Init();
             gbDiagnostics.Init();
             gbObjects.Init();
-            
+
+            // todo
+            // fill combo boxes not by hand but from enums 
+            // to ensure reliability
+            //for (int i = (int)IbaSnmpAuthenticationAlgorithm.Md5; i < (int)IbaSnmpAuthenticationAlgorithm.Sha; i++)
+            //{
+            //    cmbAuthentication.Items;
+            //}
         }
+        
+        #endregion
+
+
+        #region Debug
 
         private static int _tmp___instCounter = 0;
         private int _tmp___cnt1;
@@ -33,95 +48,35 @@ namespace iba.Controls
         private int _tmp___cnt3;
         private int _tmp___cntTimer;
 
-        #region IPropertyPane Members
-
-        private SnmpData _data;
-        private IbaSnmp _ibaSnmp;
-
-        public void LoadData(object datasource, IPropertyPaneManager manager)
+        private void buttonStart_Click(object sender, EventArgs e)
         {
-            _data = datasource as SnmpData;
-            _ibaSnmp = _data?.IbaSnmp;
-
-            // todo
-            label1.Text = $"Data loaded {_tmp___cnt1++}";
-
-            InitializeObjectsTree();
-            UpdateStatusText();
-            timerStatus.Enabled = true;
-
-
-
-            //m_rbActiveNode.Checked = m_data.ActiveNode;
-            //m_rbPassiveNode.Checked = !m_data.ActiveNode;
-            //m_rbBinary.Checked = m_data.Binary;
-            //m_rbText.Checked = !m_data.Binary;
-            //m_tbStatus.Text = "";
-            //m_timerStatus.Enabled = m_enableCheckBox.Checked = m_data.Enabled;
-            //m_cycleUpDown.Value = m_data.CycleTime;
-            //m_tbHost.Text = m_data.Address;
-            //m_tbPort.Text = m_data.PortNr.ToString();
-            //m_ApplyButton.Enabled = Program.RunsWithService != Program.ServiceEnum.DISCONNECTED;
-        }
-
-        public void SaveData()
-        {
-            // todo
-            label3.Text = $"Data Saved {_tmp___cnt3++}";
-
-            //_data.Address = m_tbHost.Text;
-            //try
-            //{
-            //    _data.PortNr = int.Parse(m_tbPort.Text);
-            //}
-            //catch (Exception) { }
-            //_data.CycleTime = (int)m_cycleUpDown.Value;
-            //_data.ActiveNode = m_rbActiveNode.Checked;
-            //_data.Enabled = m_enableCheckBox.Checked;
-            //_data.Binary = m_rbBinary.Checked;
-
-            //todo
-
-            // do this only once, do not call subcontrol's SaveData();
-            TaskManager.Manager.ReplaceSnmpData(_data.Clone() as SnmpData);
-            timerStatus.Enabled = false;
-        }
-
-        public void LeaveCleanup()
-        {
-            // todo
-            label2.Text = $"Data cleaned {_tmp___cnt2++}";
-
-            timerStatus.Enabled = false;
-        }
-
-        #endregion
-
-
-        private void timerStatus_Tick(object sender, EventArgs e)
-        {
-            _tmp___cntTimer++;
-
-            label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
-
-
-            IbaSnmp ibaSnmp = _data.IbaSnmp;
-            if (ibaSnmp == null)
+            try
             {
-                tbDebug.Text = "ibaSnmp == null";
-                return;
+                _data.IbaSnmp.Start();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
 
-            tbDebug.Text = GetLibraryDescriptionString(ibaSnmp);
-
-            UpdateStatusText();
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _data.IbaSnmp.Stop();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         /// <summary>
         /// Get list of endpoints and configured traps. This function is not effective and can be use in debug-time only
         /// </summary>
         /// <returns></returns>
-        public string GetLibraryDescriptionString(IbaSnmp _lib)
+        public string _tmp___GetLibraryDescriptionString(IbaSnmp _lib)
         {
             var str = "";
 
@@ -130,7 +85,7 @@ namespace iba.Controls
             str += $"Want to start: {_lib.WantToStart}; ";
             str += $"Product: {_lib.IbaProductId}\r\n";
 
-//            if (cbShowEndpoints.Checked)
+            //            if (cbShowEndpoints.Checked)
             {
                 str += $"\r\nEndpoints: {_lib.ActiveEndPoints.Count}\r\n";
                 foreach (var endPoint in _lib.ActiveEndPoints)
@@ -201,11 +156,11 @@ namespace iba.Controls
                         if (IbaSnmp.IsInEnumRegion(type) && _lib.IsEnumDataTypeRegistered(type))
                         {
                             string typeName = _lib.GetEnumDataTypeName(type);
-                            typeString = $"{(int) type}={typeName}";
+                            typeString = $"{(int)type}={typeName}";
 
                             if (val is int)
                             {
-                                string enumValueString = _lib.GetEnumValueName(type, (int) val) ?? "<???>";
+                                string enumValueString = _lib.GetEnumValueName(type, (int)val) ?? "<???>";
                                 valString += $" ({enumValueString})";
                             }
                         }
@@ -223,58 +178,193 @@ namespace iba.Controls
             return str;
         }
 
-        private void buttonStart_Click(object sender, EventArgs e)
+        #endregion
+
+
+        #region IPropertyPane Members
+
+        private SnmpData _data;
+        private IbaSnmp _ibaSnmp;
+        private bool _isUserModeActive;
+
+        public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            _data = datasource as SnmpData;
+            _ibaSnmp = _data?.IbaSnmp;
+
+            if (_data == null || _ibaSnmp == null)
+            {
+                return;
+            }
+
+            // todo
+            label1.Text = $"Data loaded {_tmp___cnt1++}";
+
+            _isUserModeActive = false;
+
+            // read from data to controls
             try
             {
-                _data.IbaSnmp.Start();
+                ConfigurationFromDataToControls();
+                InitializeObjectsTree();
+                UpdateStatusText();
             }
             catch (Exception ex)
             {
+                // todo details
+                MessageBox.Show(ex.ToString());
+            }
+
+            timerStatus.Enabled = true;
+
+            _isUserModeActive = true;
+        }
+
+        public void SaveData()
+        {
+            label3.Text = $"Data Saved {_tmp___cnt3++}";
+
+            TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+        }
+
+        public void LeaveCleanup()
+        {
+            label2.Text = $"Data cleaned {_tmp___cnt2++}";
+
+            timerStatus.Enabled = false;
+        }
+
+        #endregion
+
+
+        #region Configuration
+
+
+        private void buttonConfigurationApply_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ConfigurationFromControlsToData();
+                ConfigurationApplyToIbaSnmp();
+            }
+            catch (Exception ex)
+            {
+                // todo details
                 MessageBox.Show(ex.ToString());
             }
         }
 
-        private void buttonStop_Click(object sender, EventArgs e)
+        private void ConfigurationFromControlsToData()
         {
-            try
+            // general
+            _data.Enabled = cbEnabled.Checked;
+            _data.Port = (int)numPort.Value;
+            // security v1 v2
+            _data.V1V2Security = tbCommunity.Text;
+            // security v3
+            IbaSnmpUserAccount v3S = new IbaSnmpUserAccount();
+
+            int indAuth = cmbAuthentication.SelectedIndex;
+            v3S.AuthAlgorithm = indAuth == -1
+                ? IbaSnmpAuthenticationAlgorithm.Md5 // default
+                : (IbaSnmpAuthenticationAlgorithm)indAuth; // just cast position in the list to enum
+
+            int indEncr = cmbEncryption.SelectedIndex;
+            v3S.EncrAlgorithm = indEncr == -1
+                ? IbaSnmpEncryptionAlgorithm.None // default
+                : (IbaSnmpEncryptionAlgorithm)indEncr; // just cast position in the list to enum
+
+            v3S.Username = tbUserName.Text;
+            v3S.Password = tbPassword.Text;
+            v3S.EncryptionKey = tbEncryptionKey.Text;
+
+            _data.V3Security = v3S;
+        }
+        private void ConfigurationFromDataToControls()
+        {
+            // general
+            cbEnabled.Checked = _data.Enabled;
+            numPort.Value = _data.Port;
+            // security v1 v2
+            tbCommunity.Text = _data?.V1V2Security;
+            // security v3
+            var v3S = _data.V3Security;
+            tbUserName.Text = v3S.Username;
+            tbPassword.Text = v3S.Password;
+            tbEncryptionKey.Text = v3S.EncryptionKey;
+            cmbAuthentication.SelectedIndex = (int)v3S.AuthAlgorithm;
+            cmbEncryption.SelectedIndex = (int)v3S.EncrAlgorithm;
+        }
+
+        private void ConfigurationApplyToIbaSnmp()
+        {
+            var x = _ibaSnmp;
+
+        }
+
+        #endregion
+
+
+        #region Diagnostics
+
+        private void timerStatus_Tick(object sender, EventArgs e)
+        {
+            _tmp___cntTimer++;
+
+            label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
+
+
+            IbaSnmp ibaSnmp = _data.IbaSnmp;
+            if (_data == null || _ibaSnmp == null)
             {
-                _data.IbaSnmp.Stop();
+                tbDebug.Text = @"ibaSnmp == null";
+                return;
             }
-            catch (Exception ex)
+
+            tbDebug.Text = _tmp___GetLibraryDescriptionString(ibaSnmp);
+
+            UpdateStatusText();
+        }
+        
+        private void UpdateStatusText()
+        {
+            if (_data == null || _ibaSnmp == null)
             {
-                MessageBox.Show(ex.ToString());
+                return;
             }
+
+            // todo use resource text
+            // todo add errored status
+            tbStatus.Text = _ibaSnmp.IsStarted ? "Started" : "Stopped";
+            tbStatus.BackColor = _ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
         }
 
 
+        #endregion
+
+
+        #region Objects
+        
         public void InitializeObjectsTree()
         {
             TreeNodeCollection nodes = tvObjects.Nodes;
             nodes.Clear();
 
-            if (_data == null) return;
-            if (_ibaSnmp == null) return;
+            if (_data == null || _ibaSnmp == null)
+            {
+                return;
+            }
 
             var nodeRoot = nodes.Add("1.3.6.1.4.1.45120");
 
             tvObjects.ExpandAll();
-        }
-        private void UpdateStatusText()
-        {
-            IbaSnmpLib.IbaSnmp ibaSnmp = _data?.IbaSnmp;
-
-            if (ibaSnmp == null) return;
-
-            // todo use resource text
-            // todo add errored status
-            tbStatus.Text = ibaSnmp.IsStarted ? "Started" : "Stopped";
-            tbStatus.BackColor = ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             InitializeObjectsTree();
         }
+
+        #endregion
     }
 }

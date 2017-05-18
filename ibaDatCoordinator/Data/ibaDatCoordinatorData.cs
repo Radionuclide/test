@@ -22,6 +22,11 @@ namespace iba.Data
             get { return m_wd; }
             set { m_wd = value; }
         }
+
+        // added by kolesnik - begin
+        public SnmpData SnmpData { get; set; } 
+        // added by kolesnik - end
+
         private List<ConfigurationData> m_confs;
         public List<ConfigurationData> Configurations
         {
@@ -126,6 +131,9 @@ namespace iba.Data
             answer.m_confs = manager.Configurations;
             answer.m_logItemCount = LogData.Data.MaxRows;
             answer.m_wd = manager.WatchDogData;
+            // added by kolesnik - begin
+            answer.SnmpData = manager.SnmpData;
+            // added by kolesnik - end
             answer.m_doPostPoning = manager.DoPostponeProcessing;
             answer.m_maxResourceIntensiveTasks = manager.MaxResourceIntensiveTasks;
             answer.m_PostponingMinutes = manager.PostponeMinutes;
@@ -143,6 +151,9 @@ namespace iba.Data
         public List<ConfigurationData> ApplyToManager(TaskManager manager) //returns confs instead of applying them to manager immediately because they might need special treatment before
         {
             manager.ReplaceWatchdogData(WatchDogData);
+            // added by kolesnik - begin
+            manager.SnmpData = SnmpData;
+            // added by kolesnik - end
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
@@ -166,6 +177,9 @@ namespace iba.Data
             //defaults
             m_version = 5;
             m_wd = null;
+            // added by kolesnik - begin
+            SnmpData = null;
+            // added by kolesnik - end
             m_confs = null;
             m_logItemCount = 50;
             m_doPostPoning = true;
