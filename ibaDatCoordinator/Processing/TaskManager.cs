@@ -538,16 +538,16 @@ namespace iba.Processing
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count;
 
-            jobInfo.TimestampJobStarted = "?????"; //6
-            jobInfo.LastCycleScanningTime = "?????";//7
+            jobInfo.TimestampJobStarted = DateTime.MaxValue; //6
+            jobInfo.LastCycleScanningTime = 999999;//7
 
             var prFiles = s.ProcessedFiles;
 
             string lastFilename = prFiles.Count > 0 ? prFiles[prFiles.Count - 1] : "";
 
             jobInfo.LastProcessingLastDatFileProcessed = lastFilename; // 80
-            jobInfo.LastProcessingStartTimeStamp = "?????"; //81
-            jobInfo.LastProcessingFinishTimeStamp = "?????"; //82
+            jobInfo.LastProcessingStartTimeStamp = DateTime.MaxValue; //81
+            jobInfo.LastProcessingFinishTimeStamp = DateTime.MaxValue; //82
 
             jobInfo.PutTimeStamp();
 
@@ -561,8 +561,8 @@ namespace iba.Processing
             SnmpRefreshJobInfoBase(jobInfo, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-            jobInfo.TimestampLastExecution = "?????";//6
-            jobInfo.TimestampNextExecution = worker.NextTrigger.ToString(CultureInfo.InvariantCulture); //7
+            jobInfo.TimestampLastExecution = DateTime.MaxValue; //6
+            jobInfo.TimestampNextExecution = worker.NextTrigger; //7
 
             jobInfo.PutTimeStamp();
             SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
@@ -574,7 +574,7 @@ namespace iba.Processing
             StatusData s = worker.Status;
             SnmpRefreshJobInfoBase(jobInfo, s);
 
-            jobInfo.TimestampLastExecution = "?????";//5
+            jobInfo.TimestampLastExecution = DateTime.MaxValue;//5
 
             jobInfo.PutTimeStamp();
             SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");

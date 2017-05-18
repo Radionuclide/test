@@ -58,7 +58,7 @@ namespace iba.Data
                 }
                 TimeSpan age = DateTime.Now - TimeStamp;
 
-                // if data younger than Threshold, then it is treated as fresh
+                // if data is younger than Threshold, then it is treated as fresh
                 return age < AgeThreshold;
             }
 
@@ -213,19 +213,19 @@ namespace iba.Data
             public uint PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
-            public string TimestampJobStarted;
+            public DateTime TimestampJobStarted;
 
             /// <summary> Oid 0.7 </summary>
-            public string LastCycleScanningTime;
+            public uint LastCycleScanningTime;
 
             /// <summary> Oid 0.8.0 </summary>
             public string LastProcessingLastDatFileProcessed;
 
             /// <summary> Oid 0.8.1 </summary>
-            public string LastProcessingStartTimeStamp;
+            public DateTime LastProcessingStartTimeStamp;
 
             /// <summary> Oid 0.8.2 </summary>
-            public string LastProcessingFinishTimeStamp;
+            public DateTime LastProcessingFinishTimeStamp;
         }
 
         internal class ScheduledJobInfo : JobInfoBase
@@ -234,16 +234,16 @@ namespace iba.Data
             public uint PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
-            public string TimestampLastExecution;
+            public DateTime TimestampLastExecution;
 
             /// <summary> Oid 0.7 </summary>
-            public string TimestampNextExecution;
+            public DateTime TimestampNextExecution;
         }
 
         internal class OneTimeJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public string TimestampLastExecution;
+            public DateTime TimestampLastExecution;
         }
 
         /// <summary> reserved for future </summary> 

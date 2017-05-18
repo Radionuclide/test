@@ -575,24 +575,24 @@ namespace iba.Processing
                     if (stdJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, stdJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + 6, stdJi.TimestampJobStarted);
+                        IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(stdJi.TimestampJobStarted));
                         IbaSnmp.SetUserValue(oidJobGen + 7, stdJi.LastCycleScanningTime);
                         IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
 
                         var x = IbaSnmp.GetUserValue(oidJobGen + "8.0");
 
-                        IbaSnmp.SetUserValue(oidJobGen + "8.1", stdJi.LastProcessingStartTimeStamp);
-                        IbaSnmp.SetUserValue(oidJobGen + "8.2", stdJi.LastProcessingFinishTimeStamp);
+                        IbaSnmp.SetUserValue(oidJobGen + "8.1", ConvertDateTimeToString(stdJi.LastProcessingStartTimeStamp));
+                        IbaSnmp.SetUserValue(oidJobGen + "8.2", ConvertDateTimeToString(stdJi.LastProcessingFinishTimeStamp));
                     }
                     else if (schJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, schJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + 6, schJi.TimestampLastExecution);
-                        IbaSnmp.SetUserValue(oidJobGen + 7, schJi.TimestampNextExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(schJi.TimestampLastExecution));
+                        IbaSnmp.SetUserValue(oidJobGen + 7, ConvertDateTimeToString(schJi.TimestampNextExecution));
                     }
                     else if (otJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + 5, otJi.TimestampLastExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 5, ConvertDateTimeToString(otJi.TimestampLastExecution));
                     }
                     else
                     {
@@ -1183,6 +1183,15 @@ namespace iba.Processing
             AddMetadataForOidSuffix(oidSuffix, caption);
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
+        private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
+            string caption, string mibName = null, string mibDescription = null,
+            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            object tag = null)
+        {
+            AddMetadataForOidSuffix(oidSuffix, caption);
+            IbaSnmp.CreateUserValue(oidSuffix, ConvertDateTimeToString(initialValue), mibName, mibDescription, handler, tag);
+        }
+
         private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
