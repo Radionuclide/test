@@ -405,6 +405,7 @@ namespace iba.Processing
 
                     foreach (ConfigurationData cfg in confs)
                     {
+                        // find configuration by guid
                         if (cfg.Guid != jobInfo.Guid)
                         {
                             continue;
@@ -429,6 +430,8 @@ namespace iba.Processing
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
+
+                        break;
                     }
                 }
                 catch
@@ -458,7 +461,7 @@ namespace iba.Processing
 
             string lastFilename = prFiles.Count > 0 ? prFiles[prFiles.Count - 1] : "";
 
-            jobInfo.LastProcessingLastDatFileProcessed = lastFilename; ; // 80
+            jobInfo.LastProcessingLastDatFileProcessed = lastFilename; // 80
             jobInfo.LastProcessingStartTimeStamp = "?????"; //81
             jobInfo.LastProcessingFinishTimeStamp = "?????"; //82
 

@@ -425,35 +425,57 @@ namespace iba.Processing
 
         #region Dat coordinator specific objects
 
-        public void CheckSnmpTreeStructure()
+        /// <summary>
+        /// Rebuilds a tree completely if its <code>IsStructureValid</code> flag is set to true. 
+        /// Use returned value to know whether tree has been rebuilt.
+        /// </summary>
+        /// <returns> <value>true</value> if tree was rebuilt, 
+        /// <value>false</value> if it is valid and has not been modified by this call.</returns>
+        public bool RebuildTreeIfItIsInvalid()
         {
             lock (LockObject)
             {
-                if (!ObjectsData.IsStructureValid)
+                if (ObjectsData.IsStructureValid)
                 {
-                    RebuildTreeCompletely();
+                    return false; // tree structure has not changed
                 }
+                RebuildTreeCompletely();
+                return true; // tree structure has changed
             }
         }
-
-        private void RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="driveInfo"></param>
+        /// <returns>sdadf</returns>
+        private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
             lock (LockObject)
             {
-                CheckSnmpTreeStructure();
+                if (RebuildTreeIfItIsInvalid())
+                {
+                    // tree was rebuilt completely
+                    // no need to update some parts of it
+                    // just return right now
+                    return true; // data was updated
+                }
 
                 if (driveInfo.IsUpToDate())
                 {
-                    return;
+                    // data fresh, no need to change something
+                    return false; // was not updated
                 }
 
                 var man = TaskManager.Manager;
                 if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
                 {
+                    // should not happen
                     // failed to update data
-                    // try to rebuild the tree
+                    // rebuild the tree
+                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    TmpLogLine("Error RefreshGlobalCleanupDriveInfo()");
                     RebuildTreeCompletely();
-                    return;
+                    return true; // data was updated
                 }
 
                 // TaskManager has updated driveInfo successfully 
@@ -470,26 +492,38 @@ namespace iba.Processing
 
                 TmpLogLine($"SnmpWrkr. Refreshed Drive {driveInfo.DriveName}");
             }
+
+            return true; // data was updated
         }
 
-        private void RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
         {
             lock (LockObject)
             {
-                CheckSnmpTreeStructure();
+                if (RebuildTreeIfItIsInvalid())
+                {
+                    // tree was rebuilt completely
+                    // no need to update some parts of it
+                    // just return right now
+                    return true; // data was updated
+                }
 
                 if (jobInfo.IsUpToDate())
                 {
-                    return;
+                    // data fresh, no need to change something
+                    return false; // data was NOT updated
                 }
 
                 var man = TaskManager.Manager;
                 if (!man.SnmpRefreshJobInfo(jobInfo))
                 {
+                    // should not happen
                     // failed to update data
-                    // try to rebuild the tree
+                    // rebuild the tree
+                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    TmpLogLine("Error RefreshJobInfo()");
                     RebuildTreeCompletely();
-                    return;
+                    return true; // data was updated
                 }
 
                 // TaskManager has updated info successfully 
@@ -514,6 +548,9 @@ namespace iba.Processing
                         IbaSnmp.SetUserValue(oidJobGen + 6, stdJi.TimestampJobStarted);
                         IbaSnmp.SetUserValue(oidJobGen + 7, stdJi.LastCycleScanningTime);
                         IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
+
+                        var x = IbaSnmp.GetUserValue(oidJobGen + "8.0");
+
                         IbaSnmp.SetUserValue(oidJobGen + "8.1", stdJi.LastProcessingStartTimeStamp);
                         IbaSnmp.SetUserValue(oidJobGen + "8.2", stdJi.LastProcessingFinishTimeStamp);
                     }
@@ -563,6 +600,7 @@ namespace iba.Processing
 
                 TmpLogLine($"SnmpWrkr. Refreshed Job {jobInfo.JobName}");
             }
+            return true; // was updated
         }
 
 
@@ -1123,8 +1161,18 @@ namespace iba.Processing
                 return;
             }
 
-            // refresh data if it is too old, and rebuild all the objects if necessary
-            RefreshGlobalCleanupDriveInfo(driveInfo);
+            // refresh data if it is too old (or rebuild the whole tree if necessary)
+            if (!RefreshGlobalCleanupDriveInfo(driveInfo))
+            {
+                // data was not changed, no need to do something else
+                return;
+            }
+
+            // data was updated
+            // re-read the value and send it back via args
+            // (Such an update will be performed only with the first item if there is a big set of SNMP GETs is coming
+            // all the rest are already updated and they will not need to override args.Value)
+            args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
 
@@ -1139,43 +1187,23 @@ namespace iba.Processing
                 return;
             }
 
-            // refresh data if it is too old, and rebuild all the objects if necessary
-            RefreshJobInfo(jobInfo);
+            // refresh data if it is too old (or rebuild the whole tree if necessary)
+            if (!RefreshJobInfo(jobInfo))
+            {
+                // data was not changed, no need to do something else
+                return;
+            }
+
+            // data was updated
+            // re-read the value and send it back via args
+            // (Such an update will be performed only with the first item if there is a big set of SNMP GETs is coming
+            // all the rest are already updated and they will not need to override args.Value)
+
+            var val = args.IbaSnmp.GetValue(args.Oid);
+            args.Value = val;//args.IbaSnmp.GetValue(args.Oid);
+
+            //args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
-        //private void TaskInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
-        //{
-        //    var taskInfo = args.Tag as SnmpObjectsData.TaskInfo;
-
-        //    if (taskInfo == null)
-        //    {
-        //        // should not happen
-        //        args.Value = null;
-        //        return;
-        //    }
-
-        //    // refresh data if it is too old, and rebuild all the objects if necessary
-        //    RefreshTaskInfo(taskInfo);
-        //}
-
-        //private void UserValueRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
-        //{
-        //    // refresh data if it is too old, and rebuild all the objects if necessary
-        //    CheckSnmpTreeStructure();
-
-        //    var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
-        //    var stdJobInfo = args.Tag as SnmpObjectsData.StandardJobInfo;
-        //    if (stdJobInfo != null)
-        //    {
-        //        var done = stdJobInfo.DoneCount;
-        //        done = done;
-        //    }
-
-        //    // todo this will be removed if all the specialized handlers appear
-        //    if (!ObjectsData.IsUpToDate())
-        //    {
-        //        RebuildTreeCompletely();
-        //    }
-        //}
 
         #endregion
 

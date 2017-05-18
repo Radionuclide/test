@@ -210,7 +210,7 @@ namespace iba.Controls
             var man = TaskManager.Manager;
             SnmpWorker snmpWorker = man?.SnmpWorker;
 
-            snmpWorker?.CheckSnmpTreeStructure();
+            snmpWorker?.RebuildTreeIfItIsInvalid();
         }
 
         private void buttonImitateCfgInvalidated_Click(object sender, EventArgs e)
@@ -456,7 +456,7 @@ namespace iba.Controls
             }
 
             // uppdate tree if necessary
-            worker.CheckSnmpTreeStructure();
+            worker.RebuildTreeIfItIsInvalid();
 
             lock (worker.LockObject)
             {
@@ -606,7 +606,7 @@ namespace iba.Controls
                 return;
             }
 
-            worker.CheckSnmpTreeStructure();
+            worker.RebuildTreeIfItIsInvalid();
 
             var od = worker.ObjectsData;
             IbaSnmp ibaSnmp = worker.IbaSnmp;
