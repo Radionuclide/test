@@ -469,15 +469,8 @@ namespace iba.Controls
 
         private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
         {
-            lock (worker.LockObject)
-            {
-                SnmpWorker.OidMetadata metadata;
-                if (!worker.OidMetadataDict.TryGetValue(oid, out metadata))
-                {
-                    return @"???";
-                }
-                return metadata.GuiCaption;
-            }
+            OidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
+            return metadata?.GuiCaption ?? "???";
         }
 
         /// <summary> The last Oid that was selected by the user </summary>
@@ -558,17 +551,9 @@ namespace iba.Controls
             {
                 // probabaly this is a folder, that has no corresponding snmp object 
                 // try to get it's description from the worker.
-                SnmpWorker.OidMetadata metadata;
-                lock (worker.LockObject)
-                {
-                    if (worker.OidMetadataDict.TryGetValue(oid, out metadata) != true)
-                    {
-                        return;
-                    }
-                }
-
+                OidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
                 // todo remove MibDescription after testing of MIB descriptions
-                tbObjMibName.Text = (metadata.MibName ?? "") + @"; " + (metadata.MibDescription ?? "");
+                tbObjMibName.Text = (metadata?.MibName ?? "") + @"; " + (metadata?.MibDescription ?? "");
             }
         }
 
@@ -596,7 +581,6 @@ namespace iba.Controls
 
                 IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(ibaSnmp);
 
-                gen.DescriptionRequested += MibGenerator_OnDescriptionRequested;
                 gen.Generate();
                 gen.SaveToFile(dir);
 
@@ -623,33 +607,6 @@ namespace iba.Controls
             }
         }
 
-        private static void MibGenerator_OnDescriptionRequested(object sender, IbaSnmpMibDescrRequestedEventArgs eventArgs)
-        {
-            var worker = TaskManager.Manager?.SnmpWorker;
-
-            if (worker == null)
-            {
-                return;
-            }
-
-            SnmpWorker.OidMetadata metadata;
-            lock (worker.LockObject)
-            {
-                if (worker.OidMetadataDict.TryGetValue(eventArgs.Oid, out metadata) != true)
-                {
-                    return;
-                }
-            }
-
-            if (metadata.MibName != null)
-            {
-                eventArgs.Name = metadata.MibName;
-            }
-            if (metadata.MibDescription != null)
-            {
-                eventArgs.Name = metadata.MibDescription;
-            }
-        }
 
 
         #endregion

@@ -295,25 +295,8 @@ namespace iba.Processing
         private IbaSnmpOid _oidSectionScheduledJobs = "3";
         private IbaSnmpOid _oidSectionOneTimeJobs = "4";
 
-        internal struct OidMetadata
-        {
-            public string GuiCaption { get; set; }
-            public string MibName { get; set; }
-            public string MibDescription { get; set; }
 
-            public OidMetadata(string guiCaption, string mibName = null, string mibDescription = null)
-            {
-                GuiCaption = guiCaption;
-                MibName = mibName;
-                MibDescription = mibDescription;
-            }
-        }
 
-        /// <summary> 
-        /// Is filled by SnmpWorker during creation of the object tree. 
-        /// Is read by SnmpControl for displaying the captions of folder-nodes
-        /// </summary>
-        internal Dictionary<IbaSnmpOid, OidMetadata> OidMetadataDict { get; } = new Dictionary<IbaSnmpOid, OidMetadata>();
 
         internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData();
 
@@ -340,83 +323,77 @@ namespace iba.Processing
             }
         }
 
-        private void PrepareOidDescriptions()
-        {
-            lock (LockObject)
-            {
-                OidMetadataDict.Clear();
-
-                // ibaRoot
-                OidMetadataDict[IbaSnmp.OidIbaRoot] = new OidMetadata(IbaSnmp.OidIbaRoot.ToString()); // caption here is just an oid
-                {
-                    // ibaRoot.0 - Library
-                    OidMetadataDict[IbaSnmp.OidIbaSnmpLibInfo] = new OidMetadata(@"Library");
-                    {
-                        // ibaRoot.Library.1 - Name
-                        OidMetadataDict[IbaSnmp.OidIbaSnmpLibName] = new OidMetadata(@"Name");
-                        // ibaRoot.Library.2 - Version
-                        OidMetadataDict[IbaSnmp.OidIbaSnmpLibVersion] = new OidMetadata(@"Version");
-                        // ibaRoot.Library.3 - Hostname
-                        OidMetadataDict[IbaSnmp.OidIbaSnmpHostname] = new OidMetadata(@"Hostname");
-                        // ibaRoot.Library.4 - SystemTime
-                        OidMetadataDict[IbaSnmp.OidIbaSnmpSystemTime] = new OidMetadata(@"System time");
-                    }
-                    // ibaRoot.2 - DatCoordinator
-                    OidMetadataDict[IbaSnmp.OidIbaProduct] = new OidMetadata(@"ibaDatCoordinator");
-                }
-            }
-        }
 
         #region General objects
 
         private void RegisterGeneralObjectHandlers()
         {
-            PrepareOidDescriptions();
+            IbaSnmp.ClearOidMetadata();
+
+            // ibaRoot
+            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaRoot, null, null, IbaSnmp.OidIbaRoot.ToString()); // caption here is just an oid
+
+            {
+                // ibaRoot.0 - Library
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibInfo, null, null, @"Library");
+                {
+                    // ibaRoot.Library.1 - Name
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibName, null, null, @"Name");
+                    // ibaRoot.Library.2 - Version
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibVersion, null, null, @"Version");
+                    // ibaRoot.Library.3 - Hostname
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpHostname, null, null, @"Hostname");
+                    // ibaRoot.Library.4 - SystemTime
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpSystemTime, null, null, @"System time");
+                }
+                // ibaRoot.2 - DatCoordinator
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, null, null, @"ibaDatCoordinator");
+            }
 
             // ibaRoot.DatCoord.0 - General
-            OidMetadataDict[IbaSnmp.OidIbaProductGeneral] = new OidMetadata(@"General");
+            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneral, null, null, @"General");
             {
                 // ibaRoot.DatCoord.General.1 - Title
-                OidMetadataDict[IbaSnmp.OidIbaProductGeneralTitle] = new OidMetadata(@"Title");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, null, null, @"Title");
                 IbaSnmp.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
 
                 // ibaRoot.DatCoord.General.2 - Version
-                OidMetadataDict[IbaSnmp.OidIbaProductGeneralVersion] = new OidMetadata(@"Version");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralVersion, null, null, @"Version");
                 var ver = GetType().Assembly.GetName().Version;
-                IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build, null);
+                IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
 
                 // ibaRoot.DatCoord.General.3 - Licensing
-                OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensing] = new OidMetadata(@"Licensing");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensing, null, null, @"Licensing");
                 {
                     // will not be displayed in the tree; so, no caption
                     IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.1 - IsValid
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingIsValid] = new OidMetadata(@"Is Valid");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingIsValid, null, null, @"Is Valid");
                     IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.2 - Serial number
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingSn] = new OidMetadata(@"Serial number");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingSn, null, null, @"Serial number");
                     IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingHwId] = new OidMetadata(@"Hardware ID");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingHwId, null, null, @"Hardware ID");
                     IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingType] = new OidMetadata(@"Dongle type");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingType, null, null, @"Dongle type");
                     IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.5 - Customer
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingCustomer] = new OidMetadata(@"Customer");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer, null, null, @"Customer");
                     IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.6 - Time limit
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingTimeLimit] = new OidMetadata(@"Time limit");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingTimeLimit, null, null, @"Time limit");
                     IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
-                    OidMetadataDict[IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit] = new OidMetadata(@"Demo time limit");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit, null, null, @"Demo time limit");
                     IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
                 }
             }
@@ -696,8 +673,7 @@ namespace iba.Processing
             SnmpWorker.TmpLogLine("SnmpWrkr. RebuildTreeCompletely");
 
             var man = TaskManager.Manager;
-            IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
-            if (ibaSnmp == null)
+            if (man == null || IbaSnmp == null)
             {
                 return false; // rebuild failed
             }
@@ -712,7 +688,7 @@ namespace iba.Processing
                 // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
                 IsStructureValid = true;
 
-                ibaSnmp.DeleteAllUserValues();
+                IbaSnmp.DeleteAllUserValues();
 
                 if (!man.SnmpRebuildObjectsData(ObjectsData))
                 {
@@ -724,7 +700,7 @@ namespace iba.Processing
                 // todo Clean OidCaptions for all product-specific OIDs
 
                 // ibaRoot.DatCoord.1 - Product-Specific
-                OidMetadataDict[IbaSnmp.OidIbaProductSpecific] = new OidMetadata(@"Product");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, null, null, @"Product");
 
                 // ibaRoot.DatCoord.Product.1 - Global cleanup
                 BuildSectionGlobalCleanup();
@@ -739,7 +715,7 @@ namespace iba.Processing
                 BuildSectionOneTimeJobs();
             }
 
-            SnmpWorker.TmpLogLine("*****************************");
+            TmpLogLine("*****************************");
             return true; // rebuilt successfully
         }
 
@@ -966,7 +942,7 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.OtJobs.(index) - Job
                     IbaSnmpOid oidJob = oidSection + (uint)(i + 1);
                     string mibNameJob = $@"oneTimeJob{oidJob.GetLeastId()}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob);
+                    AddMetadataForOidSuffix(oidJob,  $@"Job '{jobInfo.JobName}'", mibNameJob);
 
                     // create objects that are common for all the job types
                     IbaSnmpOid oidJobGen;
@@ -1016,7 +992,7 @@ namespace iba.Processing
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.0 - General [Folder]
             oidJobGen = oidJob + 0;
             mibNameJobGen = mibNameJob + @"General";
-            AddMetadataForOidSuffix(oidJobGen, @"General", mibNameJobGen);
+            AddMetadataForOidSuffix(oidJobGen,@"General", mibNameJobGen);
 
             {
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.0 - Job name
@@ -1170,9 +1146,10 @@ namespace iba.Processing
 
 
         #region Oid metadata and CreateUserValue() overloads
+
         private void AddMetadataForOidSuffix(IbaSnmpOid oidSuffix, string guiCaption, string mibName = null, string mibDescription = null)
         {
-            OidMetadataDict[IbaSnmp.OidIbaProductSpecific + oidSuffix] = new OidMetadata(guiCaption, mibName, mibDescription);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
         }
 
         private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
