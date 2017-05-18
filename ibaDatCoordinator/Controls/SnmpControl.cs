@@ -36,15 +36,22 @@ namespace iba.Controls
         #region IPropertyPane Members
 
         private SnmpData _data;
+        private IbaSnmp _ibaSnmp;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            _data = datasource as SnmpData;
+            _ibaSnmp = _data?.IbaSnmp;
+
             // todo
             label1.Text = $"Data loaded {_tmp___cnt1++}";
 
+            InitializeObjectsTree();
+            UpdateStatusText();
             timerStatus.Enabled = true;
 
-            _data = datasource as SnmpData;
+
+
             //m_rbActiveNode.Checked = m_data.ActiveNode;
             //m_rbPassiveNode.Checked = !m_data.ActiveNode;
             //m_rbBinary.Checked = m_data.Binary;
@@ -74,6 +81,8 @@ namespace iba.Controls
             //_data.Binary = m_rbBinary.Checked;
 
             //todo
+
+            // do this only once, do not call subcontrol's SaveData();
             TaskManager.Manager.ReplaceSnmpData(_data.Clone() as SnmpData);
             timerStatus.Enabled = false;
         }
@@ -82,6 +91,8 @@ namespace iba.Controls
         {
             // todo
             label2.Text = $"Data cleaned {_tmp___cnt2++}";
+
+            timerStatus.Enabled = false;
         }
 
         #endregion
@@ -102,6 +113,8 @@ namespace iba.Controls
             }
 
             tbDebug.Text = GetLibraryDescriptionString(ibaSnmp);
+
+            UpdateStatusText();
         }
 
         /// <summary>
@@ -233,8 +246,35 @@ namespace iba.Controls
                 MessageBox.Show(ex.ToString());
             }
         }
+
+
+        public void InitializeObjectsTree()
+        {
+            TreeNodeCollection nodes = tvObjects.Nodes;
+            nodes.Clear();
+
+            if (_data == null) return;
+            if (_ibaSnmp == null) return;
+
+            var nodeRoot = nodes.Add("1.3.6.1.4.1.45120");
+
+            tvObjects.ExpandAll();
+        }
+        private void UpdateStatusText()
+        {
+            IbaSnmpLib.IbaSnmp ibaSnmp = _data?.IbaSnmp;
+
+            if (ibaSnmp == null) return;
+
+            // todo use resource text
+            // todo add errored status
+            tbStatus.Text = ibaSnmp.IsStarted ? "Started" : "Stopped";
+            tbStatus.BackColor = ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
+        }
+
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
+            InitializeObjectsTree();
         }
     }
 }
