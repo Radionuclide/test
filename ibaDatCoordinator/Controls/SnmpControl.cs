@@ -18,6 +18,16 @@ namespace iba.Controls
 {
     public partial class SnmpControl : UserControl, IPropertyPane
     {
+        // todo remove
+        #region Debug
+
+        private int _tmpCntDataLoaded;
+        private int _tmpCntDataCleaned;
+        private int _tmpCndDataSaved;
+
+        #endregion
+
+
         #region Construction, Destruction, Init
 
         public SnmpControl()
@@ -49,15 +59,6 @@ namespace iba.Controls
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
         }
-
-        #endregion
-
-
-        #region Debug
-
-        private int _tmpCntDataLoaded;
-        private int _tmpCntDataCleaned;
-        private int _tmpCndDataSaved;
 
         #endregion
 
@@ -108,16 +109,6 @@ namespace iba.Controls
         public void SaveData()
         {
             buttonConfigurationApply.PerformClick();
-            //try
-            //{
-            //    ConfigurationFromControlsToData();
-            //    // set data to manager and restart snmp agent if necessary
-            //    TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.SaveData() exception: " + ex.Message);
-            //}
 
             // todo ask Michael. Save = Load * 2. why?
             _tmpCndDataSaved++;
@@ -240,6 +231,47 @@ namespace iba.Controls
                 tbStatus.BackColor = e.Color;
                 tbStatus.Text = e.Message;
             }
+        }
+
+        private void refreshClientsTable()
+        {
+            // get library  
+            IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
+            if (ibaSnmp == null)
+            {
+                return;
+            }
+
+            // clear list
+            dgvClients.Rows.Clear();
+
+            // show new data
+            List<IbaSnmpDiagClient> clients = ibaSnmp.GetClients();
+            foreach (var client in clients)
+            {
+                dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
+            }
+        }
+
+        private void timerRefreshClients_Tick(object sender, EventArgs e)
+        {
+            refreshClientsTable();
+        }
+
+        private void buttonClearClients_Click(object sender, EventArgs e)
+        {
+            // get library  
+            IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
+            if (ibaSnmp == null)
+            {
+                return;
+            }
+
+            // reset monitoring list
+            ibaSnmp.ClearClients();
+
+            // refresh
+            refreshClientsTable();
         }
 
         #endregion

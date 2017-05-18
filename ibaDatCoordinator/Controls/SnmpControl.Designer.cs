@@ -28,7 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.timerRefreshClients = new System.Windows.Forms.Timer(this.components);
+            this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
+            this.dgvClients = new System.Windows.Forms.DataGridView();
+            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColMsgCounter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbStatus = new System.Windows.Forms.TextBox();
+            this.buttonClearClients = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
+            this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
+            this.tbObjOid = new System.Windows.Forms.TextBox();
+            this.labelObjOid = new System.Windows.Forms.Label();
+            this.labelObjValue = new System.Windows.Forms.Label();
+            this.tbObjValue = new System.Windows.Forms.TextBox();
+            this.labelObjMibName = new System.Windows.Forms.Label();
+            this.labelObjType = new System.Windows.Forms.Label();
+            this.tbObjType = new System.Windows.Forms.TextBox();
+            this.tbObjMibName = new System.Windows.Forms.TextBox();
+            this.buttonCreateMibFiles = new System.Windows.Forms.Button();
+            this.tvObjects = new System.Windows.Forms.TreeView();
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
@@ -51,33 +76,271 @@
             this.tbCommunity = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.numPort = new System.Windows.Forms.NumericUpDown();
-            this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
-            this.tbStatus = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
-            this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
-            this.tbObjOid = new System.Windows.Forms.TextBox();
-            this.labelObjOid = new System.Windows.Forms.Label();
-            this.labelObjValue = new System.Windows.Forms.Label();
-            this.tbObjValue = new System.Windows.Forms.TextBox();
-            this.labelObjMibName = new System.Windows.Forms.Label();
-            this.labelObjType = new System.Windows.Forms.Label();
-            this.tbObjType = new System.Windows.Forms.TextBox();
-            this.tbObjMibName = new System.Windows.Forms.TextBox();
-            this.buttonCreateMibFiles = new System.Windows.Forms.Button();
-            this.tvObjects = new System.Windows.Forms.TreeView();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.gbConfiguration.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             this.gbObjects.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
+            this.gbConfiguration.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.SuspendLayout();
+            // 
+            // timerRefreshClients
+            // 
+            this.timerRefreshClients.Enabled = true;
+            this.timerRefreshClients.Interval = 1000;
+            this.timerRefreshClients.Tick += new System.EventHandler(this.timerRefreshClients_Tick);
+            // 
+            // gbDiagnostics
+            // 
+            this.gbDiagnostics.Controls.Add(this.dgvClients);
+            this.gbDiagnostics.Controls.Add(this.tbStatus);
+            this.gbDiagnostics.Controls.Add(this.buttonClearClients);
+            this.gbDiagnostics.Controls.Add(this.label14);
+            this.gbDiagnostics.Controls.Add(this.label15);
+            this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbDiagnostics.Location = new System.Drawing.Point(0, 760);
+            this.gbDiagnostics.Name = "gbDiagnostics";
+            this.gbDiagnostics.Size = new System.Drawing.Size(720, 188);
+            this.gbDiagnostics.TabIndex = 10;
+            this.gbDiagnostics.TabStop = false;
+            this.gbDiagnostics.Text = "Diagnostics";
+            // 
+            // dgvClients
+            // 
+            this.dgvClients.AllowUserToAddRows = false;
+            this.dgvClients.AllowUserToDeleteRows = false;
+            this.dgvClients.AllowUserToResizeRows = false;
+            this.dgvClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColAddress,
+            this.ColProtocol,
+            this.ColMsgCounter,
+            this.ColLastMsg});
+            this.dgvClients.Location = new System.Drawing.Point(9, 68);
+            this.dgvClients.Name = "dgvClients";
+            this.dgvClients.ReadOnly = true;
+            this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
+            this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvClients.Size = new System.Drawing.Size(705, 114);
+            this.dgvClients.StandardTab = true;
+            this.dgvClients.TabIndex = 12;
+            // 
+            // ColAddress
+            // 
+            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColAddress.HeaderText = "Address";
+            this.ColAddress.MinimumWidth = 50;
+            this.ColAddress.Name = "ColAddress";
+            this.ColAddress.ReadOnly = true;
+            // 
+            // ColProtocol
+            // 
+            this.ColProtocol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColProtocol.HeaderText = "Protocol";
+            this.ColProtocol.MinimumWidth = 50;
+            this.ColProtocol.Name = "ColProtocol";
+            this.ColProtocol.ReadOnly = true;
+            // 
+            // ColMsgCounter
+            // 
+            this.ColMsgCounter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColMsgCounter.HeaderText = "Message counter";
+            this.ColMsgCounter.MinimumWidth = 50;
+            this.ColMsgCounter.Name = "ColMsgCounter";
+            this.ColMsgCounter.ReadOnly = true;
+            // 
+            // ColLastMsg
+            // 
+            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColLastMsg.HeaderText = "Last message";
+            this.ColLastMsg.MinimumWidth = 50;
+            this.ColLastMsg.Name = "ColLastMsg";
+            this.ColLastMsg.ReadOnly = true;
+            // 
+            // tbStatus
+            // 
+            this.tbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbStatus.Location = new System.Drawing.Point(76, 13);
+            this.tbStatus.Name = "tbStatus";
+            this.tbStatus.ReadOnly = true;
+            this.tbStatus.Size = new System.Drawing.Size(638, 20);
+            this.tbStatus.TabIndex = 3;
+            // 
+            // buttonClearClients
+            // 
+            this.buttonClearClients.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClearClients.Location = new System.Drawing.Point(525, 39);
+            this.buttonClearClients.Name = "buttonClearClients";
+            this.buttonClearClients.Size = new System.Drawing.Size(189, 23);
+            this.buttonClearClients.TabIndex = 2;
+            this.buttonClearClients.Text = "Clear client list";
+            this.buttonClearClients.UseVisualStyleBackColor = true;
+            this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 16);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(40, 13);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "Status:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 44);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(129, 13);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "Connected SNMP clients:";
+            // 
+            // gbObjects
+            // 
+            this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
+            this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
+            this.gbObjects.Controls.Add(this.tvObjects);
+            this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbObjects.Location = new System.Drawing.Point(0, 214);
+            this.gbObjects.Name = "gbObjects";
+            this.gbObjects.Size = new System.Drawing.Size(720, 546);
+            this.gbObjects.TabIndex = 11;
+            this.gbObjects.TabStop = false;
+            this.gbObjects.Text = "Objects";
+            // 
+            // splitContainerObjectsFooter
+            // 
+            this.splitContainerObjectsFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitContainerObjectsFooter.IsSplitterFixed = true;
+            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(3, 486);
+            this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
+            // 
+            // splitContainerObjectsFooter.Panel1
+            // 
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjOid);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjOid);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
+            // 
+            // splitContainerObjectsFooter.Panel2
+            // 
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjMibName);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjType);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjType);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjMibName);
+            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(714, 57);
+            this.splitContainerObjectsFooter.SplitterDistance = 353;
+            this.splitContainerObjectsFooter.TabIndex = 10;
+            // 
+            // tbObjOid
+            // 
+            this.tbObjOid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjOid.Location = new System.Drawing.Point(87, 3);
+            this.tbObjOid.Name = "tbObjOid";
+            this.tbObjOid.ReadOnly = true;
+            this.tbObjOid.Size = new System.Drawing.Size(263, 20);
+            this.tbObjOid.TabIndex = 8;
+            // 
+            // labelObjOid
+            // 
+            this.labelObjOid.AutoSize = true;
+            this.labelObjOid.Location = new System.Drawing.Point(3, 6);
+            this.labelObjOid.Name = "labelObjOid";
+            this.labelObjOid.Size = new System.Drawing.Size(26, 13);
+            this.labelObjOid.TabIndex = 9;
+            this.labelObjOid.Text = "OID";
+            // 
+            // labelObjValue
+            // 
+            this.labelObjValue.AutoSize = true;
+            this.labelObjValue.Location = new System.Drawing.Point(3, 32);
+            this.labelObjValue.Name = "labelObjValue";
+            this.labelObjValue.Size = new System.Drawing.Size(34, 13);
+            this.labelObjValue.TabIndex = 9;
+            this.labelObjValue.Text = "Value";
+            // 
+            // tbObjValue
+            // 
+            this.tbObjValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjValue.Location = new System.Drawing.Point(87, 29);
+            this.tbObjValue.Name = "tbObjValue";
+            this.tbObjValue.ReadOnly = true;
+            this.tbObjValue.Size = new System.Drawing.Size(263, 20);
+            this.tbObjValue.TabIndex = 8;
+            // 
+            // labelObjMibName
+            // 
+            this.labelObjMibName.AutoSize = true;
+            this.labelObjMibName.Location = new System.Drawing.Point(3, 6);
+            this.labelObjMibName.Name = "labelObjMibName";
+            this.labelObjMibName.Size = new System.Drawing.Size(57, 13);
+            this.labelObjMibName.TabIndex = 9;
+            this.labelObjMibName.Text = "MIB Name";
+            // 
+            // labelObjType
+            // 
+            this.labelObjType.AutoSize = true;
+            this.labelObjType.Location = new System.Drawing.Point(3, 32);
+            this.labelObjType.Name = "labelObjType";
+            this.labelObjType.Size = new System.Drawing.Size(31, 13);
+            this.labelObjType.TabIndex = 9;
+            this.labelObjType.Text = "Type";
+            // 
+            // tbObjType
+            // 
+            this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjType.Location = new System.Drawing.Point(87, 29);
+            this.tbObjType.Name = "tbObjType";
+            this.tbObjType.ReadOnly = true;
+            this.tbObjType.Size = new System.Drawing.Size(267, 20);
+            this.tbObjType.TabIndex = 8;
+            // 
+            // tbObjMibName
+            // 
+            this.tbObjMibName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjMibName.Location = new System.Drawing.Point(87, 3);
+            this.tbObjMibName.Name = "tbObjMibName";
+            this.tbObjMibName.ReadOnly = true;
+            this.tbObjMibName.Size = new System.Drawing.Size(267, 20);
+            this.tbObjMibName.TabIndex = 8;
+            // 
+            // buttonCreateMibFiles
+            // 
+            this.buttonCreateMibFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCreateMibFiles.Location = new System.Drawing.Point(556, 19);
+            this.buttonCreateMibFiles.Name = "buttonCreateMibFiles";
+            this.buttonCreateMibFiles.Size = new System.Drawing.Size(158, 23);
+            this.buttonCreateMibFiles.TabIndex = 2;
+            this.buttonCreateMibFiles.Text = "Create MIB files";
+            this.buttonCreateMibFiles.UseVisualStyleBackColor = true;
+            this.buttonCreateMibFiles.Click += new System.EventHandler(this.buttonCreateMibFiles_Click);
+            // 
+            // tvObjects
+            // 
+            this.tvObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvObjects.HideSelection = false;
+            this.tvObjects.Location = new System.Drawing.Point(6, 46);
+            this.tvObjects.Name = "tvObjects";
+            treeNode2.Name = "NodeRoot";
+            treeNode2.Text = "Root";
+            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            this.tvObjects.Size = new System.Drawing.Size(708, 434);
+            this.tvObjects.TabIndex = 0;
+            this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
             // gbConfiguration
             // 
@@ -105,7 +368,7 @@
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbConfiguration.Location = new System.Drawing.Point(0, 0);
             this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.Size = new System.Drawing.Size(703, 214);
+            this.gbConfiguration.Size = new System.Drawing.Size(720, 214);
             this.gbConfiguration.TabIndex = 9;
             this.gbConfiguration.TabStop = false;
             this.gbConfiguration.Text = "Configuration";
@@ -125,7 +388,7 @@
             // buttonConfigurationReset
             // 
             this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(541, 185);
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(558, 185);
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationReset.TabIndex = 6;
@@ -136,7 +399,7 @@
             // buttonConfigurationApply
             // 
             this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(622, 185);
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(639, 185);
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationApply.TabIndex = 6;
@@ -308,198 +571,6 @@
             this.numPort.Size = new System.Drawing.Size(69, 20);
             this.numPort.TabIndex = 2;
             // 
-            // gbDiagnostics
-            // 
-            this.gbDiagnostics.Controls.Add(this.tbStatus);
-            this.gbDiagnostics.Controls.Add(this.button4);
-            this.gbDiagnostics.Controls.Add(this.label14);
-            this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDiagnostics.Location = new System.Drawing.Point(0, 760);
-            this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.Size = new System.Drawing.Size(703, 121);
-            this.gbDiagnostics.TabIndex = 10;
-            this.gbDiagnostics.TabStop = false;
-            this.gbDiagnostics.Text = "Diagnostics";
-            // 
-            // tbStatus
-            // 
-            this.tbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbStatus.Location = new System.Drawing.Point(76, 13);
-            this.tbStatus.Name = "tbStatus";
-            this.tbStatus.ReadOnly = true;
-            this.tbStatus.Size = new System.Drawing.Size(621, 20);
-            this.tbStatus.TabIndex = 3;
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(508, 39);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(189, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Clear client list";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 16);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(40, 13);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "Status:";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 44);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(129, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "Connected SNMP clients:";
-            // 
-            // gbObjects
-            // 
-            this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
-            this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
-            this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbObjects.Location = new System.Drawing.Point(0, 214);
-            this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(703, 546);
-            this.gbObjects.TabIndex = 11;
-            this.gbObjects.TabStop = false;
-            this.gbObjects.Text = "Objects";
-            // 
-            // splitContainerObjectsFooter
-            // 
-            this.splitContainerObjectsFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitContainerObjectsFooter.IsSplitterFixed = true;
-            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(3, 486);
-            this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
-            // 
-            // splitContainerObjectsFooter.Panel1
-            // 
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjOid);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjOid);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
-            // 
-            // splitContainerObjectsFooter.Panel2
-            // 
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjMibName);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjType);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjType);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjMibName);
-            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(697, 57);
-            this.splitContainerObjectsFooter.SplitterDistance = 346;
-            this.splitContainerObjectsFooter.TabIndex = 10;
-            // 
-            // tbObjOid
-            // 
-            this.tbObjOid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjOid.Location = new System.Drawing.Point(87, 3);
-            this.tbObjOid.Name = "tbObjOid";
-            this.tbObjOid.ReadOnly = true;
-            this.tbObjOid.Size = new System.Drawing.Size(256, 20);
-            this.tbObjOid.TabIndex = 8;
-            // 
-            // labelObjOid
-            // 
-            this.labelObjOid.AutoSize = true;
-            this.labelObjOid.Location = new System.Drawing.Point(3, 6);
-            this.labelObjOid.Name = "labelObjOid";
-            this.labelObjOid.Size = new System.Drawing.Size(26, 13);
-            this.labelObjOid.TabIndex = 9;
-            this.labelObjOid.Text = "OID";
-            // 
-            // labelObjValue
-            // 
-            this.labelObjValue.AutoSize = true;
-            this.labelObjValue.Location = new System.Drawing.Point(3, 32);
-            this.labelObjValue.Name = "labelObjValue";
-            this.labelObjValue.Size = new System.Drawing.Size(34, 13);
-            this.labelObjValue.TabIndex = 9;
-            this.labelObjValue.Text = "Value";
-            // 
-            // tbObjValue
-            // 
-            this.tbObjValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjValue.Location = new System.Drawing.Point(87, 29);
-            this.tbObjValue.Name = "tbObjValue";
-            this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.Size = new System.Drawing.Size(256, 20);
-            this.tbObjValue.TabIndex = 8;
-            // 
-            // labelObjMibName
-            // 
-            this.labelObjMibName.AutoSize = true;
-            this.labelObjMibName.Location = new System.Drawing.Point(3, 6);
-            this.labelObjMibName.Name = "labelObjMibName";
-            this.labelObjMibName.Size = new System.Drawing.Size(57, 13);
-            this.labelObjMibName.TabIndex = 9;
-            this.labelObjMibName.Text = "MIB Name";
-            // 
-            // labelObjType
-            // 
-            this.labelObjType.AutoSize = true;
-            this.labelObjType.Location = new System.Drawing.Point(3, 32);
-            this.labelObjType.Name = "labelObjType";
-            this.labelObjType.Size = new System.Drawing.Size(31, 13);
-            this.labelObjType.TabIndex = 9;
-            this.labelObjType.Text = "Type";
-            // 
-            // tbObjType
-            // 
-            this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjType.Location = new System.Drawing.Point(87, 29);
-            this.tbObjType.Name = "tbObjType";
-            this.tbObjType.ReadOnly = true;
-            this.tbObjType.Size = new System.Drawing.Size(257, 20);
-            this.tbObjType.TabIndex = 8;
-            // 
-            // tbObjMibName
-            // 
-            this.tbObjMibName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjMibName.Location = new System.Drawing.Point(87, 3);
-            this.tbObjMibName.Name = "tbObjMibName";
-            this.tbObjMibName.ReadOnly = true;
-            this.tbObjMibName.Size = new System.Drawing.Size(257, 20);
-            this.tbObjMibName.TabIndex = 8;
-            // 
-            // buttonCreateMibFiles
-            // 
-            this.buttonCreateMibFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCreateMibFiles.Location = new System.Drawing.Point(539, 19);
-            this.buttonCreateMibFiles.Name = "buttonCreateMibFiles";
-            this.buttonCreateMibFiles.Size = new System.Drawing.Size(158, 23);
-            this.buttonCreateMibFiles.TabIndex = 2;
-            this.buttonCreateMibFiles.Text = "Create MIB files";
-            this.buttonCreateMibFiles.UseVisualStyleBackColor = true;
-            this.buttonCreateMibFiles.Click += new System.EventHandler(this.buttonCreateMibFiles_Click);
-            // 
-            // tvObjects
-            // 
-            this.tvObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvObjects.HideSelection = false;
-            this.tvObjects.Location = new System.Drawing.Point(6, 46);
-            this.tvObjects.Name = "tvObjects";
-            treeNode2.Name = "NodeRoot";
-            treeNode2.Text = "Root";
-            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
-            this.tvObjects.Size = new System.Drawing.Size(691, 434);
-            this.tvObjects.TabIndex = 0;
-            this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
-            // 
             // SnmpControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -510,13 +581,11 @@
             this.Controls.Add(this.gbConfiguration);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "SnmpControl";
-            this.Size = new System.Drawing.Size(703, 760);
+            this.Size = new System.Drawing.Size(720, 1066);
             this.Load += new System.EventHandler(this.SnmpControl_Load);
-            this.gbConfiguration.ResumeLayout(false);
-            this.gbConfiguration.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
             this.gbObjects.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
@@ -524,6 +593,9 @@
             this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
+            this.gbConfiguration.ResumeLayout(false);
+            this.gbConfiguration.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -553,7 +625,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numPort;
         private System.Windows.Forms.TextBox tbStatus;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonClearClients;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button buttonCreateMibFiles;
@@ -569,5 +641,11 @@
         private System.Windows.Forms.TextBox tbObjMibName;
         private System.Windows.Forms.TextBox tbObjType;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.Timer timerRefreshClients;
+        private System.Windows.Forms.DataGridView dgvClients;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColAddress;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColProtocol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColMsgCounter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
     }
 }
