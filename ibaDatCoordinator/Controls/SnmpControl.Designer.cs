@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.buttonObjectsRefresh = new System.Windows.Forms.Button();
@@ -64,6 +64,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.numPort = new System.Windows.Forms.NumericUpDown();
             this.gbDebug = new iba.Utility.CollapsibleGroupBox();
+            this.buttonDebugRefresh = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.tbDebug = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
@@ -81,7 +82,7 @@
             // timerStatus
             // 
             this.timerStatus.Enabled = true;
-            this.timerStatus.Interval = 1000;
+            this.timerStatus.Interval = 450;
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
             // gbObjects
@@ -136,10 +137,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tvObjects.Location = new System.Drawing.Point(22, 46);
             this.tvObjects.Name = "tvObjects";
-            treeNode2.Name = "root";
-            treeNode2.Text = "Root";
+            treeNode1.Name = "NodeRoot";
+            treeNode1.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvObjects.Size = new System.Drawing.Size(692, 62);
             this.tvObjects.TabIndex = 0;
             // 
@@ -426,6 +427,7 @@
             // gbDebug
             // 
             this.gbDebug.BackColor = System.Drawing.Color.LavenderBlush;
+            this.gbDebug.Controls.Add(this.buttonDebugRefresh);
             this.gbDebug.Controls.Add(this.buttonStop);
             this.gbDebug.Controls.Add(this.tbDebug);
             this.gbDebug.Controls.Add(this.buttonStart);
@@ -440,6 +442,16 @@
             this.gbDebug.TabIndex = 8;
             this.gbDebug.TabStop = false;
             this.gbDebug.Text = "Debug";
+            // 
+            // buttonDebugRefresh
+            // 
+            this.buttonDebugRefresh.Location = new System.Drawing.Point(9, 162);
+            this.buttonDebugRefresh.Name = "buttonDebugRefresh";
+            this.buttonDebugRefresh.Size = new System.Drawing.Size(75, 23);
+            this.buttonDebugRefresh.TabIndex = 3;
+            this.buttonDebugRefresh.Text = "Refresh";
+            this.buttonDebugRefresh.UseVisualStyleBackColor = true;
+            this.buttonDebugRefresh.Click += new System.EventHandler(this.buttonDebugRefresh_Click);
             // 
             // buttonStop
             // 
@@ -578,5 +590,6 @@
         private System.Windows.Forms.Button buttonObjectsApply;
         private System.Windows.Forms.TreeView tvObjects;
         private System.Windows.Forms.Button buttonConfigurationReset;
+        private System.Windows.Forms.Button buttonDebugRefresh;
     }
 }

@@ -389,15 +389,27 @@ namespace iba.Controls
             label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
 
             IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-            tbDebug.Text = ibaSnmp == null
+
+            string str = "";
+            //str += $"wd1: {_wd1} \r\n";
+            str += ibaSnmp == null
                 ? @"ibaSnmp == null"
                 : _tmp___GetLibraryDescriptionString(ibaSnmp);
+
+            tbDebug.Text = str;
         }
         
         private void SnmpWorker_StatusChanged(object sender, StatusChangedEventArgs e)
         {
-            tbStatus.BackColor = e.Color;
-            tbStatus.Text = e.Message;
+            if (tbStatus.InvokeRequired)
+            {
+                Invoke(new EventHandler<StatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
+            }
+            else
+            {
+                tbStatus.BackColor = e.Color;
+                tbStatus.Text = e.Message;
+            }
         }
 
         #endregion
@@ -426,6 +438,15 @@ namespace iba.Controls
         }
 
         #endregion
+
+
+        private void buttonDebugRefresh_Click(object sender, EventArgs e)
+        {
+            var man = TaskManager.Manager;
+            SnmpWorker snmpWorker = man?.SnmpWorker;
+
+            snmpWorker?.RefreshObjectData();
+        }
 
     }
 }

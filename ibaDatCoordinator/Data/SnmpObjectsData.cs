@@ -13,6 +13,29 @@ namespace iba.Data
         /// Used Not for SNMP exposure, just for internal purposes. </summary>
         public DateTime Stamp;
 
+        public int _tmp_reset_cnt { get; private set; }
+        public int _tmp_updated_cnt { get; set; }
+
+        public static DateTime InvalidTimeStamp { get; } = DateTime.MinValue;
+        public SnmpObjectsData()
+        {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            // contained data is not valid
+            Stamp = InvalidTimeStamp;
+            GlobalCleanup.Clear();
+            StandardJobs.Clear();
+            ScheduledJobs.Clear();
+            OneTimeJobs.Clear();
+            EventBasedJobs.Clear();
+
+            // tmp
+            // todo remove
+            _tmp_reset_cnt++;
+        }
         /// <summary> PrSpecific.1 </summary>
         public List<GlobalCleanupDriveInfo> GlobalCleanup = new List<GlobalCleanupDriveInfo>();
         /// <summary> PrSpecific.2 </summary>

@@ -28,9 +28,16 @@ namespace iba.Controls
 
         private void SnmpWorker_StatusChanged(object sender, StatusChangedEventArgs e)
         {
-            tbStatus.BackColor = e.Color;
-            tbStatus.Text = e.Message;
-            cbEnabled.Checked = e.Status != SnmpWorkerStatus.Stopped;
+            if (tbStatus.InvokeRequired)
+            {
+                Invoke(new EventHandler<StatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
+            }
+            else
+            {
+                tbStatus.BackColor = e.Color;
+                tbStatus.Text = e.Message;
+                cbEnabled.Checked = e.Status != SnmpWorkerStatus.Stopped;
+            }
         }
 
         private void buttonShowDebug_Click(object sender, EventArgs e)

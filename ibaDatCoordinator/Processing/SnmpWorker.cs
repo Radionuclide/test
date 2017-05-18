@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
 using IbaSnmpLib;
@@ -36,14 +39,34 @@ namespace iba.Processing
 
         public SnmpWorker()
         {
-            // todo probabaly delay?
-            RegisterObjectHandlers();
+            Status = SnmpWorkerStatus.Stopped;
+            StatusString = "Waiting for delayed initialisation...";
+
+            new Task(DelayedInitialisation).Start();
+        }
+
+        private void DelayedInitialisation()
+        {
+            int delay = 6;
+            for (int i = delay - 1; i >= 0; i--)
+            {
+                Thread.Sleep(1000);
+                StatusString = $"Waiting for delayed initialisation, {i} second(s)...";
+                StatusChanged?.Invoke(this,
+                    new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
+            }
+
+            IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+            IbaSnmp.DosProtectionInternal.Enabled = false;
+            RestartAgent();
+
+            RegisterGeneralObjectHandlers();
+            RegisterProductObjects();
         }
 
         #endregion
 
-        public IbaSnmp IbaSnmp { get; } =
-            new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+        public IbaSnmp IbaSnmp { get; private set; }
 
         public event EventHandler<StatusChangedEventArgs> StatusChanged;
 
@@ -60,16 +83,19 @@ namespace iba.Processing
                     return;
                 }
                 _snmpData = value;
-                RestartAgent();
+
+                if (IbaSnmp != null)
+                {
+                    RestartAgent();
+                }
             }
         }
 
-        public SnmpWorkerStatus Status { get; private set; } = SnmpWorkerStatus.Stopped;
+        public SnmpWorkerStatus Status { get; private set; }
         public string StatusString { get; private set; }
 
         public void ApplyStatusToTextBox(TextBox tb)
         {
-            // todo remove
             tb.Text = StatusString;
             tb.BackColor = StatusToColor(Status);
         }
@@ -146,12 +172,6 @@ namespace iba.Processing
         }
 
         #region Objects
-
-        private void RegisterObjectHandlers()
-        {
-            RegisterGeneralObjectHandlers();
-            Register111();
-        }
 
         #region General objects
 
@@ -233,22 +253,104 @@ namespace iba.Processing
 
         #region Dat coordinator specific objects
 
-        private void Register111()
+        internal SnmpObjectsData ObjectsData { get; private set; } = new SnmpObjectsData();
+
+        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
+        public readonly object LockObject = new object();
+
+        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
+
+        public void RefreshObjectData()
         {
-            IbaSnmp.CreateUserValue("55.1", "", "mib_55_1", "mib 55.1", Val_551_Requested);
-            IbaSnmp.CreateUserValue("55.2", 500, "mib_55_2", "mib 55.2", Val_552_Requested);
+            lock (LockObject)
+            {
+                if (!IsObjectsDataUpToDate())
+                {
+                    RebuildTreeCompletely();
+                }
+            }
+        }
+        private void RebuildTreeCompletely()
+        {
+            var man = TaskManager.Manager;
+            IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
+            if (ibaSnmp == null)
+                return;
+
+            lock (LockObject)
+            {
+                // todo probabaly not fully recreate but refresh ?
+                man.GetStatusForSnmp(ObjectsData);
+
+                // todo this is a probabale dead lock?
+                // todo needa look where from does this call comes? 
+                // todo wheter we are in lock of ibaSnmp.Dict...
+                ibaSnmp.DeleteAllUserValues();
+
+                IbaSnmpOid oidStdJobs = "2";
+
+                for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
+                {
+                    IbaSnmpOid oidJob = oidStdJobs + (uint)(i + 1);
+                    SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
+
+                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.Done, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.Failed, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.LastCycleScanningTime, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailed, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 6, jobInfo.TimestampJobStarted, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.Todo, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + "8.0", jobInfo.LastProcessingLastDatFileProcessed, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + "8.2", jobInfo.LastProcessingFinishTimeStamp, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + "8.1", jobInfo.LastProcessingStartTimeStamp, null, null, UserValueRequested);
+                }
+
+                ibaSnmp.CreateUserValue("0.1", "Stamp=" + ObjectsData.Stamp.ToString(CultureInfo.InvariantCulture),
+                    null,null,  Val_Stamp_Requested);
+                ibaSnmp.CreateUserValue("0.2", "Reset=" + ObjectsData._tmp_updated_cnt,
+                    null, null, Val_Reset_Requested);
+                ibaSnmp.CreateUserValue("0.3", "Updated=" + ObjectsData._tmp_updated_cnt,
+                    null, null, Val_Updated_Requested);
+
+            }
         }
 
-        private int _cnt551 = 0;
-        private void Val_551_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        private bool IsObjectsDataUpToDate()
         {
-            e.Value = $"({e.ValueType})55.1 + {_cnt551++}";
+            if (ObjectsData.Stamp == SnmpObjectsData.InvalidTimeStamp)
+            {
+                return false;
+            }
+            TimeSpan age = DateTime.Now - ObjectsData.Stamp;
+            // if data is not too old, then it is okay
+            return age < SnmpObjectsDataValidTimePeriod;
         }
-        private int _cnt552 = 1000;
-        private void Val_552_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+
+        private void UserValueRequested(object sender, IbaSnmpObjectValueRequestedEventArgs ibaSnmpObjectValueRequestedEventArgs)
         {
-//            e.Value = $"({e.ValueType})55.2 + {_cnt552 += 10}";
-            e.Value = _cnt552 += 10;
+            // refresh data if it is too old, and rebuild all the objects if necessary
+            RefreshObjectData();
+        }
+
+        private void RegisterProductObjects()
+        {
+            // todo should be done differently
+            RefreshObjectData();
+        }
+
+        private void Val_Stamp_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        {
+            e.Value = "Stamp=" + ObjectsData.Stamp.ToString(CultureInfo.InvariantCulture);
+        }
+        private void Val_Reset_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        {
+            e.Value = "Reset=" + ObjectsData._tmp_updated_cnt;
+        }
+        private void Val_Updated_Requested(object sender, IbaSnmpObjectValueRequestedEventArgs e)
+        {
+            e.Value = "Updated=" + ObjectsData._tmp_updated_cnt;
         }
 
         #endregion

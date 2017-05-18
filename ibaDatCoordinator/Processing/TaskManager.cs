@@ -320,6 +320,49 @@ namespace iba.Processing
             set { SnmpWorker.SnmpData = value; }
         }
 
+        internal bool GetStatusForSnmp(SnmpObjectsData od)
+        {
+            try
+            {
+                od.Reset();
+                od._tmp_updated_cnt++;
+
+                lock (m_workers)
+                {
+                    //od.GlobalCleanup;
+
+                    // standard jobs
+                    List<ConfigurationData> confs = Configurations;
+                    confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                    for (int i = 0; i < Math.Min(16, confs.Count); i++)
+                    {
+                        StatusData s = m_workers[confs[i]].Status;
+
+                        var ji = new SnmpObjectsData.StandardJobInfo
+                        {
+                            JobName = s.CorrConfigurationData.Name,
+                            Status = s.Started.ToString(),
+                            Todo = s.ReadFiles.Count,
+                            Done = s.ProcessedFiles.Count,
+                            Failed = s.CountErrors(),
+                            PermFailed = s.PermanentErrorFiles.Count
+                        };
+
+                        od.StandardJobs.Add(ji);
+                    }
+
+                }
+
+                // timestamp of SnmpObjectsData
+                od.Stamp = DateTime.Now;
+                return true; // success
+            }
+            catch
+            {
+                return false; // error
+                // besides flase return value, then timestamp is not set to any valid value
+            }
+        }
         #endregion
 
 
