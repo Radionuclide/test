@@ -239,7 +239,7 @@ namespace iba.Controls
             }
         }
 
-        private void refreshClientsTable()
+        private void RefreshClientsTable()
         {
             // get library  
             IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
@@ -261,7 +261,7 @@ namespace iba.Controls
 
         private void timerRefreshClients_Tick(object sender, EventArgs e)
         {
-            refreshClientsTable();
+            RefreshClientsTable();
         }
 
         private void buttonClearClients_Click(object sender, EventArgs e)
@@ -277,7 +277,7 @@ namespace iba.Controls
             ibaSnmp.ClearClients();
 
             // refresh
-            refreshClientsTable();
+            RefreshClientsTable();
         }
 
         #endregion
@@ -533,7 +533,7 @@ namespace iba.Controls
             {
                 // probabaly this is a folder, that has no corresponding snmp object 
                 // try to get it's description from the worker.
-                OidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
+                OidMetadata metadata = worker.IbaSnmp?.GetOidMetadata(oid);
                 // todo remove MibDescription after testing of MIB descriptions
                 tbObjMibName.Text = (metadata?.MibName ?? "") + @"; " + (metadata?.MibDescription ?? "");
             }

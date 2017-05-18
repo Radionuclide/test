@@ -654,8 +654,11 @@ namespace iba.Processing
                 }
 
                 // todo check more thoroughly probabale dead lock
+                // i do not see a danger, but to be confident probabaly 
+                // add timeouts to some locks
 
-                // todo Clean OidCaptions for all product-specific OIDs
+                //todo test
+                IbaSnmp.ClearUserOidMetadata();
 
                 // ibaRoot.DatCoord.1 - Product-Specific
                 IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, null, null, @"Product");

@@ -504,7 +504,6 @@ namespace iba.Processing
                 // suppress
                 // for the case of change of GlobalCleanupDataList 
                 // within forach loop by another thread
-                // todo check for lock protection of GlobalCleanupDataList 
             }
 
             // error
@@ -522,12 +521,12 @@ namespace iba.Processing
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
             jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
-            jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;  // todo 7a
-            jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; // todo 7b
+            jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan; 
+            jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; 
 
-            jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName; // 80
-            jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp; // 81
-            jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; // 82
+            jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName; 
+            jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp; 
+            jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; 
 
             jobInfo.PutTimeStamp();
         }
