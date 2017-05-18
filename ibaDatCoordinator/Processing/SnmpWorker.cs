@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
-using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
@@ -142,13 +140,18 @@ namespace iba.Processing
 
         public event EventHandler<SnmpWorkerStatusChangedEventArgs> StatusChanged;
 
-        private SnmpData _snmpData;
+        private SnmpData _snmpData = new SnmpData();
 
         public SnmpData SnmpData
         {
             get { return _snmpData; }
             set
             {
+                if (value == null)
+                {
+                    // do not allow to set null data here
+                    return;
+                }
                 if (_snmpData != null && _snmpData.Equals(value))
                 {
                     // Configuration has not changed
@@ -323,14 +326,14 @@ namespace iba.Processing
                 _isStructureValid = value;
 
                 // stop current cycle
-                _treeValidatorTimer.Stop();
+                _treeValidatorTimer?.Stop();
 
                 // if sturcture is marked ivalid
                 if (!value)
                 {
                     // schedule a delayed tree rebuild, 
                     // if it will not happen earlier
-                    _treeValidatorTimer.Start();
+                    _treeValidatorTimer?.Start();
                 }
             }
         }
