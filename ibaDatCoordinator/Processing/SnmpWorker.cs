@@ -56,6 +56,23 @@ namespace iba.Processing
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
         private const int InitialisationDelayInSeconds = 1;
 
+        #region tmpLog
+
+        public  static string _tmpLog = "";
+
+        public static void TmpLog(string str)
+        {
+            _tmpLog += " " + str;
+        }
+
+        public static void TmpLogLine(string str)
+        {
+            _tmpLog += $"\r\n{DateTime.Now.ToLongTimeString()} {str}";
+        }
+
+        #endregion
+
+
         #region Construction, Destruction, Init
 
         public SnmpWorker()

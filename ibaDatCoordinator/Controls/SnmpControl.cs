@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Windows.Forms;
@@ -21,7 +22,6 @@ namespace iba.Controls
         public SnmpControl()
         {
             InitializeComponent();
-            _tmp___instCounter++;
         }
 
         private const int ImageIndexFolder = 0;
@@ -63,11 +63,10 @@ namespace iba.Controls
 
         #region Debug
 
-        private static int _tmp___instCounter;
-        private int _tmp___cnt1;
-        private int _tmp___cnt2;
-        private int _tmp___cnt3;
-        private int _tmp___cntTimer;
+        private int _tmpCntDataLoaded;
+        private int _tmpCntDataCleaned;
+        private int _tmpCndDataSaved;
+        private int _tmpCntTimerTicks;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -206,14 +205,24 @@ namespace iba.Controls
             return str;
         }
 
+        private void buttonDebugRefresh_Click(object sender, EventArgs e)
+        {
+            var man = TaskManager.Manager;
+            SnmpWorker snmpWorker = man?.SnmpWorker;
+
+            snmpWorker?.RefreshObjectData();
+        }
+
+        private void buttonCleanLog_Click(object sender, EventArgs e)
+        {
+        }
+
         #endregion
 
 
         #region IPropertyPane Members
 
         private SnmpData _data;
-
-        private bool _isUserModeActive;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -226,7 +235,6 @@ namespace iba.Controls
                 return;
             }
 
-
             // let the manager know that GUI is visible
             // so GUI-specific things can be started suspended
             SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
@@ -234,12 +242,6 @@ namespace iba.Controls
             {
                 return;
             }
-            //snmpWorker.IsGuiVisible = true;
-
-            // todo
-            label1.Text = $@"Data loaded {_tmp___cnt1++}";
-
-            _isUserModeActive = false;
 
             // read from data to controls
             try
@@ -255,21 +257,24 @@ namespace iba.Controls
             }
 
             timerStatus.Enabled = true;
-            _isUserModeActive = true;
+
+            _tmpCntDataLoaded++;
+            label1.Text = $@"Data Loaded {_tmpCntDataLoaded}";
+            SnmpWorker.TmpLogLine($@"Data Loaded { _tmpCntDataLoaded}");
         }
 
         public void SaveData()
         {
-            // todo ask Michael. Save = Load * 2. why?
-            label3.Text = $@"Data Saved {_tmp___cnt3++}";
-
             TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+
+            // todo ask Michael. Save = Load * 2. why?
+            _tmpCndDataSaved++;
+            label3.Text = $@"Data Saved {_tmpCndDataSaved}";
+            SnmpWorker.TmpLogLine($@"Data Saved { _tmpCndDataSaved}");
         }
 
         public void LeaveCleanup()
         {
-            label2.Text = $@"Data cleaned {_tmp___cnt2++}";
-
             // let the manager know that GUI is not visible
             // so GUI-specific things can be suspended
             SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
@@ -279,13 +284,17 @@ namespace iba.Controls
             }
             //snmpWorker.IsGuiVisible = false;
             timerStatus.Enabled = false;
+
+            _tmpCntDataCleaned++;
+            label2.Text = $@"Data cleaned {_tmpCntDataCleaned}";
+            SnmpWorker.TmpLogLine($@"Data cleaned { _tmpCntDataCleaned}");
         }
 
         #endregion
 
 
         #region Configuration
-        
+
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
             try
@@ -397,9 +406,9 @@ namespace iba.Controls
 
         private void timerStatus_Tick(object sender, EventArgs e)
         {
-            _tmp___cntTimer++;
+            _tmpCntTimerTicks++;
 
-            label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer % 2 == 0 ? "|" : "-");
+            label4.Text = (_tmpCntTimerTicks % 2 == 0 ? "|" : "-");
 
             IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
 
@@ -721,15 +730,6 @@ namespace iba.Controls
         }
 
         #endregion
-
-
-        private void buttonDebugRefresh_Click(object sender, EventArgs e)
-        {
-            var man = TaskManager.Manager;
-            SnmpWorker snmpWorker = man?.SnmpWorker;
-
-            snmpWorker?.RefreshObjectData();
-        }
 
 
     }

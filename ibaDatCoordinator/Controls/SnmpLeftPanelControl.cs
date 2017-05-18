@@ -70,6 +70,13 @@ namespace iba.Controls
 
                 tbGeneralInfo.Text = str;
             }
+
+            tbLog.Text = SnmpWorker._tmpLog;
+        }
+
+        private void buttonCleanLog_Click(object sender, EventArgs e)
+        {
+            SnmpWorker._tmpLog = "";
         }
     }
 }

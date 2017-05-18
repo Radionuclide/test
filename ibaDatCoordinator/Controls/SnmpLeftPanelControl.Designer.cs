@@ -35,6 +35,8 @@
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.label14 = new System.Windows.Forms.Label();
             this.tbGeneralInfo = new System.Windows.Forms.TextBox();
+            this.buttonCleanLog = new System.Windows.Forms.Button();
+            this.tbLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // buttonShowDebug
@@ -94,18 +96,43 @@
             this.tbGeneralInfo.Size = new System.Drawing.Size(224, 153);
             this.tbGeneralInfo.TabIndex = 4;
             // 
+            // buttonCleanLog
+            // 
+            this.buttonCleanLog.Location = new System.Drawing.Point(115, 244);
+            this.buttonCleanLog.Name = "buttonCleanLog";
+            this.buttonCleanLog.Size = new System.Drawing.Size(76, 23);
+            this.buttonCleanLog.TabIndex = 6;
+            this.buttonCleanLog.Text = "C";
+            this.buttonCleanLog.UseVisualStyleBackColor = true;
+            this.buttonCleanLog.Click += new System.EventHandler(this.buttonCleanLog_Click);
+            // 
+            // tbLog
+            // 
+            this.tbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbLog.Location = new System.Drawing.Point(6, 273);
+            this.tbLog.Multiline = true;
+            this.tbLog.Name = "tbLog";
+            this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbLog.Size = new System.Drawing.Size(212, 424);
+            this.tbLog.TabIndex = 7;
+            this.tbLog.Text = "Log";
+            // 
             // SnmpLeftPanelControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.buttonCleanLog);
+            this.Controls.Add(this.tbLog);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.cbEnabled);
             this.Controls.Add(this.tbGeneralInfo);
             this.Controls.Add(this.tbStatus);
             this.Controls.Add(this.buttonShowDebug);
             this.Name = "SnmpLeftPanelControl";
-            this.Size = new System.Drawing.Size(230, 291);
+            this.Size = new System.Drawing.Size(230, 737);
             this.Load += new System.EventHandler(this.SnmpLeftPanelControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -119,5 +146,7 @@
         private System.Windows.Forms.Timer timerStatus;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox tbGeneralInfo;
+        private System.Windows.Forms.Button buttonCleanLog;
+        private System.Windows.Forms.TextBox tbLog;
     }
 }
