@@ -105,8 +105,8 @@ namespace iba.Processing
             _treeValidatorTimer = new System.Timers.Timer
             {
                 Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
-                AutoReset = false            // do not repeat
-                                             // it will be re-activated only if data was invalidated
+                AutoReset = false // do not repeat
+                // it will be re-activated only if data was invalidated
             };
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
@@ -119,6 +119,7 @@ namespace iba.Processing
                 //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
             };
 
+            RegisterEnums();
             RegisterGeneralObjectHandlers();
             RebuildTreeCompletely();
         }
@@ -233,14 +234,41 @@ namespace iba.Processing
             IbaSnmp.EndPointsToListen = eps;
 
             // security
-            IbaSnmp.SetSecurityForV1AndV2(new List<string> {SnmpData.V1V2Security});
-            IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> {SnmpData.V3Security});
+            IbaSnmp.SetSecurityForV1AndV2(new List<string> { SnmpData.V1V2Security });
+            IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> { SnmpData.V3Security });
 
             // todo apply objects
             //SnmpData.
         }
 
         #region Objects
+
+        private IbaSnmpValueType _enumJobStatus;
+        private IbaSnmpValueType _enumCleanupType;
+
+        private void RegisterEnums()
+        {
+            _enumJobStatus = IbaSnmp.RegisterEnumDataType(
+                "JobStatus", "Current status of the job (started, stopped or disabled)",
+                new Dictionary<int, string>
+                {
+                        { (int)SnmpObjectsData.JobStatus.Disabled, "disabled"},
+                        { (int)SnmpObjectsData.JobStatus.Started, "started"},
+                        { (int)SnmpObjectsData.JobStatus.Stopped, "stopped"},
+                }
+            );
+
+            _enumCleanupType = IbaSnmp.RegisterEnumDataType(
+                "LocalCleanupType", "Type of limitation of disk space usage",
+                new Dictionary<int, string>
+                {
+                        { (int)CleanupTaskData.OutputLimitChoiceEnum.None, "none"},
+                        { (int)CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
+                        { (int)CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
+                        { (int)CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
+                }
+            );
+        }
 
         private System.Timers.Timer _treeValidatorTimer;
 
@@ -280,7 +308,7 @@ namespace iba.Processing
                 // this implementation works properly if called from different threads
                 // lock of the timer is not needed here
                 _isStructureValid = value;
-                
+
                 // stop current cycle
                 _treeValidatorTimer.Stop();
 
@@ -393,7 +421,7 @@ namespace iba.Processing
         #endregion
 
         #region Dat coordinator specific objects
-       
+
         /// <summary>
         /// Rebuilds a tree completely if its <code>IsStructureValid</code> flag is set to true. 
         /// Use returned value to know whether tree has been rebuilt.
@@ -536,7 +564,7 @@ namespace iba.Processing
                 try
                 {
                     IbaSnmp.SetUserValue(oidJobGen + 0, jobInfo.JobName);
-                    IbaSnmp.SetUserValue(oidJobGen + 1, jobInfo.Status.ToString());
+                    IbaSnmp.SetUserValue(oidJobGen + 1, (int)jobInfo.Status);
                     IbaSnmp.SetUserValue(oidJobGen + 2, jobInfo.TodoCount);
                     IbaSnmp.SetUserValue(oidJobGen + 3, jobInfo.DoneCount);
                     IbaSnmp.SetUserValue(oidJobGen + 4, jobInfo.FailedCount);
@@ -623,7 +651,7 @@ namespace iba.Processing
                 {
                     IbaSnmpOid oidCleanup = oidTask + 5;
 
-                    IbaSnmp.SetUserValue(oidCleanup + 0, ci.LimitChoice.ToString());
+                    IbaSnmp.SetUserValue(oidCleanup + 0, (int)ci.LimitChoice);
                     IbaSnmp.SetUserValue(oidCleanup + 1, ci.Subdirectories);
                     IbaSnmp.SetUserValue(oidCleanup + 2, ci.FreeDiskSpace);
                     IbaSnmp.SetUserValue(oidCleanup + 3, ci.UsedDiskSpace);
@@ -709,9 +737,9 @@ namespace iba.Processing
                 {
                     var driveInfo = ObjectsData.GlobalCleanup[i];
                     // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive
-                    IbaSnmpOid oidDrive = oidSection + (uint)(i+1);
+                    IbaSnmpOid oidDrive = oidSection + (uint)(i + 1);
                     driveInfo.Oid = oidDrive;
-                    
+
                     string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastId()}";
                     AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive);
 
@@ -945,7 +973,7 @@ namespace iba.Processing
 
 
         #region helper functions for building the tree - Common Subsections, Tasks, CreateUserValue overloads
-        
+
         #region Common for all the jobs
 
         /// <summary> Build the part that is common for all the Jobs 
@@ -972,7 +1000,7 @@ namespace iba.Processing
 
                 // todo add enum
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.1 - Status
-                CreateUserValue(oidJobGen + 1, jobInfo.Status.ToString(),
+                CreateEnumUserValue(oidJobGen + 1, _enumJobStatus, (int)jobInfo.Status,
                     @"Status", mibNameJobGen + @"Status",
                     null,
                     JobInfoItemRequested, jobInfo);
@@ -1087,7 +1115,7 @@ namespace iba.Processing
 
             // todo to enum
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.5.0 - LimitChoice 
-            CreateUserValue(oidCleanup + 0, ci.LimitChoice.ToString(),
+            CreateEnumUserValue(oidCleanup + 0, _enumCleanupType, (int)ci.LimitChoice,
                 @"Limit choice", mibNameCleanup + @"LimitChoice",
                 null,
                 JobInfoItemRequested, parentJob);
@@ -1155,6 +1183,14 @@ namespace iba.Processing
             AddMetadataForOidSuffix(oidSuffix, caption);
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
+        private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
+            string caption, string mibName = null, string mibDescription = null,
+            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            object tag = null)
+        {
+            AddMetadataForOidSuffix(oidSuffix, caption);
+            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, mibName, mibDescription, handler, tag);
+        }
 
         #endregion
 
@@ -1205,7 +1241,7 @@ namespace iba.Processing
         {
             // todo move this function to ibaSnmp
             string date = $"{dt.Year}-{dt.Month}-{dt.Day}";
-            string time = $"{dt.Hour}:{dt.Minute}:{dt.Second}.{dt.Millisecond/100}";
+            string time = $"{dt.Hour}:{dt.Minute}:{dt.Second}.{dt.Millisecond / 100}";
             return $"{date}, {time}";
         }
     }

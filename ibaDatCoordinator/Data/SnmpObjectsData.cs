@@ -125,13 +125,8 @@ namespace iba.Data
             }
         }
 
-        //internal enum TaskType
-        //{
-        //    // todo
-        //}
-
         /// <summary> OID 1...n - one struct per for each task </summary>
-        internal class TaskInfo //: SnmpObjectWithATimeStamp
+        internal class TaskInfo
         {
             public IbaSnmpOid Oid;
             
@@ -141,7 +136,6 @@ namespace iba.Data
             /// <summary> Oid 0 </summary>
             public string TaskName;
 
-            // todo convert to enum
             /// <summary> Oid 1 </summary>
             public string TaskType;
 
@@ -255,8 +249,8 @@ namespace iba.Data
         /// <summary> reserved for future </summary> 
         internal class EventBasedJobInfo : JobInfoBase
         {
-            /// <summary> Oid 0.??? </summary>
-            public string EventDescription = @"This is a description of the event";
+            ///// <summary> Oid 0.??? </summary>
+            //public string EventDescription = @"This is a description of the event";
         }
 
         #endregion

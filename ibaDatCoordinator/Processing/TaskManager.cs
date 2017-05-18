@@ -643,47 +643,46 @@ namespace iba.Processing
                 {
                     if (taskData is CopyMoveTaskData)
                     {
-                        taskTypeStr = "CopyMoveDelete";
                         var typedData = taskData as CopyMoveTaskData;
 
-                        taskTypeStr += typedData.ActionDelete
-                            ? "_Delete"
+                        taskTypeStr = typedData.ActionDelete
+                            ? "Delete"
                             : typedData.RemoveSource
-                                ? "_Move"
-                                : "_Copy";
+                                ? "Move"
+                                : "Copy";
                     }
                     if (taskData is CustomTaskDataUNC)
                     {
-                        taskTypeStr = "CustomTaskDataUNC";
                         var typedData = taskData as CustomTaskDataUNC;
+                        
+                        // todo for Michael. Please check the following name:
+                        taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     if (taskData is ExtractData)
                     {
                         taskTypeStr = "Extract";
-                        var typedData = taskData as ExtractData;
+                        //var typedData = taskData as ExtractData;
                     }
                     else if (taskData is GlobalCleanupTaskData)
                     {
-                        // todo - why is this not present in GUI control? 
                         taskTypeStr = "GlobalCleanup";
-                        var typedData = taskData as GlobalCleanupTaskData;
+                        //var typedData = taskData as GlobalCleanupTaskData;
                     }
                     if (taskData is ReportData)
                     {
                         taskTypeStr = "Report";
-                        var typedData = taskData as ReportData;
-                        var monitorData = typedData.MonitorData;
-                        //ReportData.MonitorData
+                        //var typedData = taskData as ReportData;
+                        //var monitorData = typedData.MonitorData;
                     }
                     if (taskData is SplitterTaskData)
                     {
                         taskTypeStr = "Splitter";
-                        var typedData = taskData as SplitterTaskData;
+                        //var typedData = taskData as SplitterTaskData;
                     }
                     if (taskData is UpdateDataTaskData)
                     {
                         taskTypeStr = "UpdateData";
-                        var typedData = taskData as UpdateDataTaskData;
+                        //var typedData = taskData as UpdateDataTaskData;
                     }
                 }
                 else
@@ -697,27 +696,28 @@ namespace iba.Processing
                     if (taskData is BatchFileData)
                     {
                         taskTypeStr = "Script";
-                        var typedData = taskData as BatchFileData;
+                        //var typedData = taskData as BatchFileData;
                     }
                     else if (taskData is CleanupTaskData)
                     {
                         taskTypeStr = "Cleanup";
-                        var typedData = taskData as CleanupTaskData;
+                        //var typedData = taskData as CleanupTaskData;
                     }
                     else if (taskData is CustomTaskData)
                     {
-                        taskTypeStr = "Custom";
                         var typedData = taskData as CustomTaskData;
+                        // todo for Michael. Please check the following name:
+                        taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     else if (taskData is IfTaskData)
                     {
                         taskTypeStr = "Condition";
-                        var typedData = taskData as IfTaskData;
+                        //var typedData = taskData as IfTaskData;
                     }
                     else if (taskData is PauseTaskData)
                     {
                         taskTypeStr = "Pause";
-                        var typedData = taskData as PauseTaskData;
+                        //var typedData = taskData as PauseTaskData;
                     }
                 }
 
