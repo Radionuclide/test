@@ -1201,5 +1201,12 @@ namespace iba.Processing
 
         #endregion
 
+        public static string ConvertDateTimeToString(DateTime dt)
+        {
+            // todo move this function to ibaSnmp
+            string date = $"{dt.Year}-{dt.Month}-{dt.Day}";
+            string time = $"{dt.Hour}:{dt.Minute}:{dt.Second}.{dt.Millisecond/100}";
+            return $"{date}, {time}";
+        }
     }
 }
