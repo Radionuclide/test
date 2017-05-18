@@ -292,6 +292,21 @@ namespace iba.Processing
                 // todo wheter we are in lock of ibaSnmp.Dict...
                 ibaSnmp.DeleteAllUserValues();
 
+                IbaSnmpOid oidGlobalCleanup = "1";
+
+                for (int i = 0; i < ObjectsData.GlobalCleanup.Count; i++)
+                {
+                    var cleanupInfo = ObjectsData.GlobalCleanup[i];
+                    var oidDrive = oidGlobalCleanup + (uint) (i + 1);
+
+                    ibaSnmp.CreateUserValue(oidDrive + 0, cleanupInfo.DriveName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidDrive + 1, cleanupInfo.Active, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidDrive + 2, cleanupInfo.Size, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidDrive + 3, cleanupInfo.CurrentFreeSpace, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidDrive + 4, cleanupInfo.MinFreeSpace, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidDrive + 5, cleanupInfo.RescanTime, null, null, UserValueRequested);
+                }
+
                 IbaSnmpOid oidStdJobs = "2";
 
                 for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)

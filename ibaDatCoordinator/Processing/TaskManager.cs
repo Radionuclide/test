@@ -331,7 +331,7 @@ namespace iba.Processing
                 lock (m_workers)
                 {
 
-                    //GlobalCleanup;
+                    // 1. GlobalCleanup;
                     try
                     {
                         foreach (var gcData in GlobalCleanupDataList)
@@ -339,17 +339,25 @@ namespace iba.Processing
                             SnmpObjectsData.GlobalCleanupDriveInfo di = new SnmpObjectsData.GlobalCleanupDriveInfo();
                             di.DriveName = gcData.DriveName; //0
                             di.Active = gcData.Active; //1
-                            di.Size = 0;// gcData. ;//2
+                            di.Size = 0; // gcData. ;//2
+
                             //di.CurrentFreeSpace = gcData.PercentageFree;//3
-                            //di.MinFreeSpace = 0;//gcData.;//4
+                            // todo not%
+                            di.MinFreeSpace = gcData.PercentageFree; //gcData.;//4
                             di.RescanTime = gcData.RescanTime; //5
 
                             od.GlobalCleanup.Add(di);
                         }
                     }
-                    catch { /**/ }
+                    catch
+                    {
+                        // suppress
+                        // for the case of change of GlobalCleanupDataList 
+                        // within forach loop by another thread
+                        // todo check for lock protection of GlobalCleanupDataList 
+                    }
 
-                    // standard jobs
+                    // 2. standard jobs
                     List<ConfigurationData> confs = Configurations;
                     confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
                     for (int i = 0; i < confs.Count; i++)

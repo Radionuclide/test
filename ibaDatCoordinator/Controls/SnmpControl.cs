@@ -460,12 +460,17 @@ namespace iba.Controls
 
                 // root.2=DatCo.1=Product.1=Cleanup
                 var nodeGlobalCleanup = nodeProduct.Nodes.Add("1. GlobalCleanup");
-                foreach (var cleanupInfo in od.GlobalCleanup)
+                for (int i = 0; i < od.GlobalCleanup.Count; i++)
                 {
-                    var driveNode = nodeGlobalCleanup.Nodes.Add("1. Drive 1");
+                    var cleanupInfo = od.GlobalCleanup[i];
+                    var driveNode = nodeGlobalCleanup.Nodes.Add($"{i+1}. Drive {cleanupInfo.DriveName}");
 
-                    driveNode.Nodes.Add("info1...");
-                    driveNode.Nodes.Add("info2...");
+                    driveNode.Nodes.Add("0. DriveName: " + cleanupInfo.DriveName);
+                    driveNode.Nodes.Add("1. Active: " + cleanupInfo.Active);
+                    driveNode.Nodes.Add("2. DriveName: " + cleanupInfo.Size);
+                    driveNode.Nodes.Add("3. CurrentFreeSpace: " + cleanupInfo.CurrentFreeSpace);
+                    driveNode.Nodes.Add("4. MinFreeSpace: " + cleanupInfo.MinFreeSpace);
+                    driveNode.Nodes.Add("5. RescanTime: " + cleanupInfo.RescanTime);
                 }
 
                 // root.2=DatCo.1=Product.2=StandardJobs
