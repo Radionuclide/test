@@ -2977,7 +2977,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SNMP agent data.
+        ///   Looks up a localized string similar to SNMP server.
         /// </summary>
         internal static string snmpTitle {
             get {

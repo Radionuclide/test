@@ -1320,6 +1320,6 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>..\Resources\paneSnmpIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="snmpTitle" xml:space="preserve">
-    <value>SNMP agent data</value>
+    <value>SNMP server</value>
   </data>
 </root>
