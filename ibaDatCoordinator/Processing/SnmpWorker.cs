@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using DevExpress.Accessibility;
+using System.Windows.Forms;
 using iba.Data;
 using IbaSnmpLib;
 
@@ -17,10 +15,26 @@ namespace iba.Processing
         Errored,
     }
 
+    public class StatusChangedEventArgs : EventArgs
+    {
+        public SnmpWorkerStatus Status { get; }
+        public Color Color { get; }
+        public string Message { get; }
+        public StatusChangedEventArgs(SnmpWorkerStatus status, Color color, string message)
+        {
+            Status = status;
+            Color = color;
+            Message = message;
+        }
+    }
+
+
     public class SnmpWorker
     {
         public IbaSnmp IbaSnmp { get; } =
             new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+
+        public event EventHandler<StatusChangedEventArgs> StatusChanged;
 
         private SnmpData _snmpData;
         public SnmpData SnmpData
@@ -41,6 +55,25 @@ namespace iba.Processing
 
         public SnmpWorkerStatus Status { get; private set; } = SnmpWorkerStatus.Stopped;
         public string StatusString { get; private set; }
+
+        public void ApplyStatusToTextBox(TextBox tb)
+        {
+            // todo remove
+            tb.Text = StatusString;
+            tb.BackColor = StatusToColor(Status);
+        }
+
+        public static Color StatusToColor(SnmpWorkerStatus status)
+        {
+            return status == SnmpWorkerStatus.Started
+                ? Color.LimeGreen // running
+                : (status == SnmpWorkerStatus.Stopped
+                    ? Color.LightGray // stopped
+                    : Color.Red); // error
+        }
+
+        /// <summary> Whether Snmp Control is currently displayed in the main form window </summary>
+        //public bool IsGuiVisible { get; set; }
 
         public void RestartAgent()
         {
@@ -71,6 +104,11 @@ namespace iba.Processing
                 // todo to resource
                 StatusString = $"Starting the SNMP server failed with error: {ex.Message}";
             }
+
+            // trigger status event
+            StatusChanged?.Invoke(this, 
+                new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
+
         }
 
         private void ApplyConfigurationToIbaSnmp()
@@ -95,7 +133,5 @@ namespace iba.Processing
             // todo apply objects
             //SnmpData.
         }
-
     }
-
 }
