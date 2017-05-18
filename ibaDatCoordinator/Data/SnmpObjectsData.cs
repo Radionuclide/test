@@ -4,6 +4,31 @@ using IbaSnmpLib;
 
 namespace iba.Data
 {
+
+    // todo move inside SnmpObjectsData
+    internal abstract class SnmpObjectWithATimeStamp
+    {
+        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(5);
+
+        public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
+
+        public bool IsUpToDate()
+        {
+            if (TimeStamp == DateTime.MinValue)
+            {
+                return false;
+            }
+            TimeSpan age = DateTime.Now - TimeStamp;
+            // if data is not too old, then it is okay
+            return age < AgeThreshold;
+        }
+
+        public void PutTimeStamp()
+        {
+            TimeStamp = DateTime.Now;
+        }
+    }
+
     /// <summary>
     /// Is used for transferring the information about all SNMP-exposable objects between
     /// the TaskManager and SnmpWorker.
