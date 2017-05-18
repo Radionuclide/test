@@ -74,7 +74,15 @@ namespace iba.Processing
         }
 
         // added by kolesnik - begin
+
+        /// <summary> When Job is started. This happens if user clicks 'start' or when
+        /// job is is started on launch of application 
+        /// (if 'automatically start on load' is selected) </summary>
         public DateTime TimestampJobStarted { get; private set; } = DateTime.MinValue;
+
+        /// <summary> When job's last execution has started. 
+        /// This is used for Scheduled jobs only to show it via SNMP. </summary>
+        public DateTime TimestampJobLastExecution { get; private set; } = DateTime.MinValue;
         // added by kolesnik - end
 
         public void Start()
@@ -4751,6 +4759,9 @@ namespace iba.Processing
             NextEventTimer.Change(Timeout.Infinite, Timeout.Infinite);
             if((DateTime.Now - m_nextTrigger).Ticks >= TimeSpan.FromMilliseconds(10).Ticks)
             { //FIRE
+                // added by kolesnik - begin
+                TimestampJobLastExecution = DateTime.Now;
+                // added by kolesnik - end
                 String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),m_nextTrigger));
                 try
                 {
@@ -4817,6 +4828,9 @@ namespace iba.Processing
         public void ForceTrigger()
         {
             DateTime nextTrigger = DateTime.Now;
+            // added by kolesnik - begin
+            TimestampJobLastExecution = nextTrigger;
+            // added by kolesnik - end
             String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), nextTrigger));
             try
             {
