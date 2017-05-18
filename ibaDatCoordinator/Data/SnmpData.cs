@@ -13,6 +13,9 @@ namespace iba.Data
 
         public bool Enabled { get; set; }
 
+        public bool UseSnmpV2TcForStrings { get; set; }
+
+
         #region Connection settings
 
         public int Port { get; set; }
@@ -23,21 +26,15 @@ namespace iba.Data
 
         public object Clone()
         {
-            //todo check V3Security?
             object newobj = MemberwiseClone();
             return newobj;
-        }
-
-        public static SnmpData GetDefaults()
-        {
-            SnmpData snmpd = new SnmpData();
-            snmpd.ResetToDefaults();
-            return snmpd;
         }
 
         public void ResetToDefaults()
         {
             Enabled = false;
+
+            UseSnmpV2TcForStrings = true;
 
             Port = IbaSnmp.DefaultLocalPortBase - 1 + (int)IbaSnmpProductId.IbaDatCoordinator;
 
@@ -50,18 +47,24 @@ namespace iba.Data
         public override bool Equals(object obj)
         {
             var other = obj as SnmpData;
-            if (other == null) return false;
+            if (other == null)
+            {
+                return false;
+            }
 
             return
                 Enabled == other.Enabled &&
+                UseSnmpV2TcForStrings == other.UseSnmpV2TcForStrings &&
                 Port == other.Port &&
                 V1V2Security == other.V1V2Security &&
+                V3Security == other.V3Security;
+        }
 
-                V3Security.AuthAlgorithm == other.V3Security.AuthAlgorithm &&
-                V3Security.EncrAlgorithm == other.V3Security.EncrAlgorithm &&
-                V3Security.EncryptionKey == other.V3Security.EncryptionKey &&
-                V3Security.Password == other.V3Security.Password &&
-                V3Security.Username == other.V3Security.Username;
+        public override int GetHashCode()
+        {
+            // we do not need a special hash here
+            // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+            return base.GetHashCode();
         }
     }
 }

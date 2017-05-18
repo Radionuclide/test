@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.timerRefreshClients = new System.Windows.Forms.Timer(this.components);
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
@@ -55,6 +55,8 @@
             this.buttonCreateMibFiles = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
+            this.rbDateTimeStr = new System.Windows.Forms.RadioButton();
+            this.rbDateTimeTc = new System.Windows.Forms.RadioButton();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
@@ -68,6 +70,7 @@
             this.cmbAuthentication = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tbEncryptionKey = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -101,7 +104,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
             this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDiagnostics.Location = new System.Drawing.Point(0, 760);
+            this.gbDiagnostics.Location = new System.Drawing.Point(0, 780);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Size = new System.Drawing.Size(720, 188);
             this.gbDiagnostics.TabIndex = 10;
@@ -208,7 +211,7 @@
             this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbObjects.Location = new System.Drawing.Point(0, 214);
+            this.gbObjects.Location = new System.Drawing.Point(0, 234);
             this.gbObjects.Name = "gbObjects";
             this.gbObjects.Size = new System.Drawing.Size(720, 546);
             this.gbObjects.TabIndex = 11;
@@ -334,16 +337,18 @@
             this.tvObjects.HideSelection = false;
             this.tvObjects.Location = new System.Drawing.Point(6, 46);
             this.tvObjects.Name = "tvObjects";
-            treeNode2.Name = "NodeRoot";
-            treeNode2.Text = "Root";
+            treeNode1.Name = "NodeRoot";
+            treeNode1.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvObjects.Size = new System.Drawing.Size(708, 434);
             this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
             // gbConfiguration
             // 
+            this.gbConfiguration.Controls.Add(this.rbDateTimeStr);
+            this.gbConfiguration.Controls.Add(this.rbDateTimeTc);
             this.gbConfiguration.Controls.Add(this.cbEnabled);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
@@ -357,6 +362,7 @@
             this.gbConfiguration.Controls.Add(this.cmbAuthentication);
             this.gbConfiguration.Controls.Add(this.label9);
             this.gbConfiguration.Controls.Add(this.tbPassword);
+            this.gbConfiguration.Controls.Add(this.label1);
             this.gbConfiguration.Controls.Add(this.label10);
             this.gbConfiguration.Controls.Add(this.tbEncryptionKey);
             this.gbConfiguration.Controls.Add(this.label11);
@@ -368,10 +374,32 @@
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbConfiguration.Location = new System.Drawing.Point(0, 0);
             this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.Size = new System.Drawing.Size(720, 214);
+            this.gbConfiguration.Size = new System.Drawing.Size(720, 234);
             this.gbConfiguration.TabIndex = 9;
             this.gbConfiguration.TabStop = false;
             this.gbConfiguration.Text = "Configuration";
+            // 
+            // rbDateTimeStr
+            // 
+            this.rbDateTimeStr.AutoSize = true;
+            this.rbDateTimeStr.Location = new System.Drawing.Point(257, 209);
+            this.rbDateTimeStr.Name = "rbDateTimeStr";
+            this.rbDateTimeStr.Size = new System.Drawing.Size(184, 17);
+            this.rbDateTimeStr.TabIndex = 7;
+            this.rbDateTimeStr.Text = "String \"yyyy-MM-dd HH:mm:ss.fff\"";
+            this.rbDateTimeStr.UseVisualStyleBackColor = true;
+            // 
+            // rbDateTimeTc
+            // 
+            this.rbDateTimeTc.AutoSize = true;
+            this.rbDateTimeTc.Checked = true;
+            this.rbDateTimeTc.Location = new System.Drawing.Point(36, 209);
+            this.rbDateTimeTc.Name = "rbDateTimeTc";
+            this.rbDateTimeTc.Size = new System.Drawing.Size(159, 17);
+            this.rbDateTimeTc.TabIndex = 7;
+            this.rbDateTimeTc.TabStop = true;
+            this.rbDateTimeTc.Text = "SNMPv2-TC - DateAndTime";
+            this.rbDateTimeTc.UseVisualStyleBackColor = true;
             // 
             // cbEnabled
             // 
@@ -388,7 +416,7 @@
             // buttonConfigurationReset
             // 
             this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(558, 185);
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(558, 206);
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationReset.TabIndex = 6;
@@ -399,7 +427,7 @@
             // buttonConfigurationApply
             // 
             this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(639, 185);
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(639, 206);
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationApply.TabIndex = 6;
@@ -501,6 +529,15 @@
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(100, 20);
             this.tbPassword.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 185);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "DateTime Textual convention:";
             // 
             // label10
             // 
@@ -647,5 +684,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColProtocol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColMsgCounter;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
+        private System.Windows.Forms.RadioButton rbDateTimeStr;
+        private System.Windows.Forms.RadioButton rbDateTimeTc;
+        private System.Windows.Forms.Label label1;
     }
 }

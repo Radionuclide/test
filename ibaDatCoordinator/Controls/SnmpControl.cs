@@ -108,8 +108,16 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            buttonConfigurationApply.PerformClick();
-
+            try
+            {
+                ConfigurationFromControlsToData();
+                // set data to manager and restart snmp agent if necessary
+                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.SaveData() exception: " + ex.Message);
+            }
             // todo ask Michael. Save = Load * 2. why?
             _tmpCndDataSaved++;
             SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Saved { _tmpCndDataSaved}");
@@ -133,6 +141,11 @@ namespace iba.Controls
                 ConfigurationFromControlsToData();
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+
+                // invalidate structure and rebuild the tree
+                // because probabaly textual conventions were changed
+                TaskManager.Manager.SnmpWorker.IsStructureValid = false;
+                RebuildObjectsTree();
             }
             catch (Exception ex)
             {
@@ -159,12 +172,18 @@ namespace iba.Controls
             _data.Port = defData.Port;
             _data.V1V2Security = defData.V1V2Security;
             _data.V3Security = defData.V3Security;
+            _data.UseSnmpV2TcForStrings = defData.UseSnmpV2TcForStrings;
 
             try
             {
                 ConfigurationFromDataToControls();
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+
+                // invalidate structure and rebuild the tree
+                // because probabaly textual conventions were changed
+                TaskManager.Manager.SnmpWorker.IsStructureValid = false;
+                RebuildObjectsTree();
             }
             catch (Exception ex)
             {
@@ -177,11 +196,13 @@ namespace iba.Controls
             // general
             _data.Enabled = cbEnabled.Checked;
             _data.Port = (int)numPort.Value;
+            // misc
+            _data.UseSnmpV2TcForStrings = rbDateTimeTc.Checked;
             // security v1 v2
             _data.V1V2Security = tbCommunity.Text;
+
             // security v3
             IbaSnmpUserAccount v3S = new IbaSnmpUserAccount();
-
             int indAuth = cmbAuthentication.SelectedIndex;
             v3S.AuthAlgorithm = indAuth == -1
                 ? IbaSnmpAuthenticationAlgorithm.Md5 // default
@@ -204,6 +225,9 @@ namespace iba.Controls
             // general
             cbEnabled.Checked = _data.Enabled;
             numPort.Value = _data.Port;
+            // misc
+            rbDateTimeTc.Checked = _data.UseSnmpV2TcForStrings;
+            rbDateTimeStr.Checked = !rbDateTimeTc.Checked;
             // security v1 v2
             tbCommunity.Text = _data?.V1V2Security;
             // security v3

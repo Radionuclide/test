@@ -257,6 +257,8 @@ namespace iba.Processing
             IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> { SnmpData.V3Security });
         }
 
+        public bool UseSnmpV2TcForStrings => SnmpData?.UseSnmpV2TcForStrings ?? true;
+
         #region Objects
 
         private IbaSnmpValueType _enumJobStatus;
@@ -591,23 +593,23 @@ namespace iba.Processing
                     if (stdJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, stdJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(stdJi.TimestampJobStarted));
-                        IbaSnmp.SetUserValue(oidJobGen + 7, ConvertDateTimeToString(stdJi.TimestampLastDirectoryScan));
-                        IbaSnmp.SetUserValue(oidJobGen + 8, ConvertDateTimeToString(stdJi.TimestampLastReprocessErrorsScan));
+                        IbaSnmp.SetUserValue(oidJobGen + 6, stdJi.TimestampJobStarted);
+                        IbaSnmp.SetUserValue(oidJobGen + 7, stdJi.TimestampLastDirectoryScan);
+                        IbaSnmp.SetUserValue(oidJobGen + 8, stdJi.TimestampLastReprocessErrorsScan);
                         IbaSnmpOid oidJobGenLastproc = oidJobGen + 9;
                         IbaSnmp.SetUserValue(oidJobGenLastproc + 0, stdJi.LastProcessingLastDatFileProcessed);
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + 1, ConvertDateTimeToString(stdJi.LastProcessingStartTimeStamp));
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + 2, ConvertDateTimeToString(stdJi.LastProcessingFinishTimeStamp));
+                        IbaSnmp.SetUserValue(oidJobGenLastproc + 1, stdJi.LastProcessingStartTimeStamp);
+                        IbaSnmp.SetUserValue(oidJobGenLastproc + 2, stdJi.LastProcessingFinishTimeStamp);
                     }
                     else if (schJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, schJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(schJi.TimestampLastExecution));
-                        IbaSnmp.SetUserValue(oidJobGen + 7, ConvertDateTimeToString(schJi.TimestampNextExecution));
+                        IbaSnmp.SetUserValue(oidJobGen + 6, schJi.TimestampLastExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 7, schJi.TimestampNextExecution);
                     }
                     else if (otJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + 5, ConvertDateTimeToString(otJi.TimestampLastExecution));
+                        IbaSnmp.SetUserValue(oidJobGen + 5, otJi.TimestampLastExecution);
                     }
                     else
                     {
@@ -851,13 +853,13 @@ namespace iba.Processing
                             JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.7 - Timestamp Last Directory Scan
-                        CreateUserValue(oidJobGen + 7, ConvertDateTimeToString(jobInfo.TimestampLastDirectoryScan),
+                        CreateUserValue(oidJobGen + 7, jobInfo.TimestampLastDirectoryScan,
                             @"Timestamp last directory scan", mibNameJobGen + @"TimestampLastDirectoryScan",
                             null,
                             JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.8 - Timestamp Last Reprocess ErrorsScan
-                        CreateUserValue(oidJobGen + 8, ConvertDateTimeToString(jobInfo.TimestampLastReprocessErrorsScan),
+                        CreateUserValue(oidJobGen + 8, jobInfo.TimestampLastReprocessErrorsScan,
                             @"Timestamp last reprocess errors scan", mibNameJobGen + @"TimestampLastReprocessErrorsScan",
                             null,
                             JobInfoItemRequested, jobInfo);
@@ -1191,6 +1193,7 @@ namespace iba.Processing
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
         }
 
+        // ReSharper disable once UnusedMember.Local
         private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
@@ -1214,7 +1217,9 @@ namespace iba.Processing
             object tag = null)
         {
             AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateUserValue(oidSuffix, ConvertDateTimeToString(initialValue), mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateUserValue(oidSuffix, initialValue, 
+                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr, 
+                mibName, mibDescription, handler, tag);
         }
 
         private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
@@ -1271,12 +1276,5 @@ namespace iba.Processing
 
         #endregion
 
-        public static string ConvertDateTimeToString(DateTime dt)
-        {
-            // todo move this function to ibaSnmp
-            string date = $"{dt.Year}-{dt.Month}-{dt.Day}";
-            string time = $"{dt.Hour}:{dt.Minute}:{dt.Second}.{dt.Millisecond / 100}";
-            return $"{date}, {time}";
-        }
     }
 }
