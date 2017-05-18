@@ -225,6 +225,33 @@
   <data name="&gt;&gt;m_watchdogPane.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_snmpPane.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 26</value>
+  </data>
+  <data name="m_snmpPane.Size" type="System.Drawing.Size, System.Drawing">
+    <value>239, 465</value>
+  </data>
+  <data name="m_snmpPane.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_snmpPane.Text" xml:space="preserve">
+    <value>SNMP Server</value>
+  </data>
+  <data name="m_snmpPane.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Name" xml:space="preserve">
+    <value>m_snmpPane</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Type" xml:space="preserve">
+    <value>TD.Eyefinder.NavigationPane, Eyefinder, Version=1.3.0.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Parent" xml:space="preserve">
+    <value>m_navBar</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_btnClearLogging.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 62</value>
   </data>
