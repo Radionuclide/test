@@ -438,6 +438,7 @@ namespace iba.Controls
 
                 // root.0=Library
                 var nodeLib = nodeRoot.Nodes.Add($"0. Library");
+                //IbaSnmpOid oidLib = ibaSnmp.OidIbaSnmpLibInfo;
 
                 nodeLib.Nodes.Add("1. Name");
                 nodeLib.Nodes.Add("2. Version");
@@ -467,7 +468,7 @@ namespace iba.Controls
 
                     driveNode.Nodes.Add("0. DriveName: " + cleanupInfo.DriveName);
                     driveNode.Nodes.Add("1. Active: " + cleanupInfo.Active);
-                    driveNode.Nodes.Add("2. DriveName: " + cleanupInfo.Size);
+                    driveNode.Nodes.Add("2. Size: " + cleanupInfo.Size);
                     driveNode.Nodes.Add("3. CurrentFreeSpace: " + cleanupInfo.CurrentFreeSpace);
                     driveNode.Nodes.Add("4. MinFreeSpace: " + cleanupInfo.MinFreeSpace);
                     driveNode.Nodes.Add("5. RescanTime: " + cleanupInfo.RescanTime);
@@ -551,6 +552,7 @@ namespace iba.Controls
                 AddTaskToTree(i + 1, jobTasksNode, taskInfo);
             }
         }
+
         private void AddTaskToTree(int index, TreeNode parent, SnmpObjectsData.TaskInfo taskInfo)
         {
             TreeNode taskNode = parent.Nodes.Add($"{index}. {taskInfo.TaskName}");
@@ -573,6 +575,31 @@ namespace iba.Controls
             cleanupNode.Nodes.Add("3. UsedDiskSpace:" + ci.UsedDiskSpace);
         }
 
+        private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            tbObjValue.Text = tbObjOid.Text = e.Node.Text;
+            return;
+            // todo add oid to tag
+            var worker = TaskManager.Manager?.SnmpWorker;
+            if (worker == null)
+            {
+                return;
+            }
+            var od = worker?.ObjectsData;
+            IbaSnmp ibaSnmp = worker?.IbaSnmp;
+            if (od == null || ibaSnmp == null) return;
+
+            IbaSnmpOid oid = e.Node.Tag as IbaSnmpOid;
+
+            tbObjOid.Text = "";
+            tbObjValue.Text = "";
+
+            if (oid == null) return;
+
+            tbObjOid.Text = oid.ToString();
+            var val = ibaSnmp.GetUserValue(oid, false);
+            tbObjValue.Text = val?.ToString();
+        }
 
         private void buttonObjectsRefresh_Click(object sender, EventArgs e)
         {
@@ -589,6 +616,7 @@ namespace iba.Controls
 
             snmpWorker?.RefreshObjectData();
         }
+
 
     }
 }
