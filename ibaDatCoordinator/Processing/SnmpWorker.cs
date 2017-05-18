@@ -514,9 +514,9 @@ namespace iba.Processing
 
                 IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveName);
                 IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.Active);
-                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.Size);
-                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpace);
-                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpace);
+                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.SizeInMb);
+                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceInMb);
+                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceInPercent);
                 IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTime);
 
                 TmpLogLine($"SnmpWrkr. Refreshed Drive {driveInfo.DriveName}");
@@ -758,19 +758,19 @@ namespace iba.Processing
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.2 - Size
-                        CreateUserValue(oidDrive + 2, driveInfo.Size,
+                        CreateUserValue(oidDrive + 2, driveInfo.SizeInMb,
                             @"Size", mibNameDrive + @"Size",
                             null,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.3 - Curr. free space
-                        CreateUserValue(oidDrive + 3, driveInfo.CurrentFreeSpace,
+                        CreateUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceInMb,
                             @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
                             null,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.4 - Min free space
-                        CreateUserValue(oidDrive + 4, driveInfo.MinFreeSpace,
+                        CreateUserValue(oidDrive + 4, driveInfo.MinFreeSpaceInPercent,
                             @"Min free space", mibNameDrive + @"MinFreeSpace",
                             null,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);

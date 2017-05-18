@@ -108,20 +108,35 @@ namespace iba.Data
             public bool Active;
 
             /// <summary> Oid 2 </summary>
-            public uint Size;
+            public uint SizeInMb;
 
             /// <summary> Oid 3 </summary>
-            public uint CurrentFreeSpace;
+            public uint CurrentFreeSpaceInMb;
 
-            /// <summary> Oid 4 </summary>
-            public uint MinFreeSpace;
+            /// <summary> Oid 4 - in Megabytes </summary>
+            public uint MinFreeSpaceInMb;
+
+            /// <summary> Oid 4 - alternative - in percent </summary>
+            public uint MinFreeSpaceInPercent;
 
             /// <summary> Oid 5 </summary>
             public uint RescanTime;
 
+            /// <summary> Resets to default values everything except DriveName (its key) </summary>
+            public void Reset()
+            {
+                // DriveName =; // do NOT reset primary key
+                Active = false;
+                SizeInMb = 0;
+                CurrentFreeSpaceInMb = 0;
+                MinFreeSpaceInMb = 0;
+                MinFreeSpaceInPercent = 0;
+                RescanTime = 0;
+            }
+
             public override string ToString()
             {
-                return $@"{DriveName} [A:{Active}, {CurrentFreeSpace}/{Size}";
+                return $@"{DriveName} [A:{Active}, {CurrentFreeSpaceInMb}/{SizeInMb}";
             }
         }
 
@@ -150,6 +165,17 @@ namespace iba.Data
 
             /// <summary> Oid 5, OPTIONAL, can be null for tasks that have no cleanup options </summary>
             public LocalCleanupInfo CleanupInfo;
+
+            /// <summary> Resets to default values everything except Oid and Parent </summary>
+            public void Reset()
+            {
+                TaskName = "";
+                TaskType = "";
+                Success = false;
+                DurationOfLastExecution = 0;
+                CurrentMemoryUsed = 0;
+                CleanupInfo = null;
+            }
 
             public override string ToString()
             {
@@ -200,6 +226,16 @@ namespace iba.Data
             /// <summary> Oid 1...n, where n - size of the list</summary>
             public List<TaskInfo> Tasks;
 
+            /// <summary> Resets to default values everything except Guid (primary key) and Tasks </summary>
+            public virtual void Reset()
+            {
+                JobName = "";
+                Status = JobStatus.Disabled;
+                TodoCount = 0;
+                DoneCount = 0;
+                FailedCount = 0;
+            }
+
             public override string ToString()
             {
                 string tasksString = (Tasks?.Count ?? 0).ToString();
@@ -226,6 +262,18 @@ namespace iba.Data
 
             /// <summary> Oid 0.8.2 </summary>
             public DateTime LastProcessingFinishTimeStamp;
+
+            public override void Reset()
+            {
+                base.Reset();
+
+                PermFailedCount = 0;
+                TimestampJobStarted = DateTime.MinValue;
+                LastCycleScanningTime = 0;
+                LastProcessingLastDatFileProcessed = "";
+                LastProcessingStartTimeStamp = DateTime.MinValue;
+                LastProcessingFinishTimeStamp = DateTime.MinValue;
+            }
         }
 
         internal class ScheduledJobInfo : JobInfoBase
@@ -238,12 +286,26 @@ namespace iba.Data
 
             /// <summary> Oid 0.7 </summary>
             public DateTime TimestampNextExecution;
+
+            public override void Reset()
+            {
+                base.Reset();
+                PermFailedCount = 0;
+                TimestampLastExecution = DateTime.MinValue;
+                TimestampNextExecution = DateTime.MinValue;
+            }
         }
 
         internal class OneTimeJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
             public DateTime TimestampLastExecution;
+
+            public override void Reset()
+            {
+                base.Reset();
+                TimestampLastExecution = DateTime.MinValue;
+            }
         }
 
         /// <summary> reserved for future </summary> 

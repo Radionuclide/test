@@ -416,37 +416,37 @@ namespace iba.Processing
 
         internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
-            if (String.IsNullOrEmpty(driveInfo?.DriveName))
+            // reset values for the case of an update error
+            driveInfo.Reset();
+
+            if (String.IsNullOrEmpty(driveInfo.DriveName))
             {
-                return false;
+                return false; // failed to update
             }
 
-            lock (m_workers)
+            try
             {
-                try
+                lock (m_workers)
                 {
-                    foreach (GlobalCleanupData gcData in GlobalCleanupDataList)
+                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveName);
+
+                    if (gcData == null)
                     {
-                        // find appropriate configuration by drive name
-                        if (gcData.DriveName != driveInfo.DriveName)
-                        {
-                            continue;
-                        }
-
-                        // set current values
-                        SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
-                        return true; // data was refreshed
+                        // needed GlobalCleanupDataList not found
+                        return false; // failed to update
                     }
-                    return false;
 
+                    // set current values
+                    SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+                    return true; // data was updated
                 }
-                catch
-                {
-                    // suppress
-                    // for the case of change of GlobalCleanupDataList 
-                    // within forach loop by another thread
-                    // todo check for lock protection of GlobalCleanupDataList 
-                }
+            }
+            catch (Exception ex)
+            {
+                // suppress
+                // for the case of change of GlobalCleanupDataList 
+                // during FirstOrDefault query or values update
+                SnmpWorker.TmpLogLine(ex.ToString());
             }
             return false; // failed to update
         }
@@ -454,12 +454,22 @@ namespace iba.Processing
         private void SnmpRefreshGlobalCleanupDriveInfo(
             SnmpObjectsData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
         {
-            driveInfo.Active = gcData.Active; //1
-            driveInfo.Size = 0; // gcData. ;//2
+            driveInfo.Reset();
 
-            driveInfo.CurrentFreeSpace = 99999;// gcData.PercentageFree;//3
-            // todo not%
-            driveInfo.MinFreeSpace = (uint)gcData.PercentageFree; //gcData.;//4
+            driveInfo.Active = gcData.Active; //1
+
+            DriveInfo drive = new DriveInfo(gcData.DriveName);
+            if (drive.IsReady)
+            {
+                driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20); //2 
+                driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20); // 3 
+            }
+
+            // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
+            // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
+            driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); // 4a // 
+            driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree; // 4b
+
             driveInfo.RescanTime = (uint)gcData.RescanTime; //5
 
             driveInfo.PutTimeStamp();
@@ -468,86 +478,80 @@ namespace iba.Processing
 
         internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
         {
-            if (jobInfo == null || jobInfo.Guid == Guid.Empty)
+            jobInfo.Reset();
+
+            if (jobInfo.Guid == Guid.Empty)
             {
                 return false;
             }
 
-            lock (m_workers)
+            try
             {
-                try
+                lock (m_workers)
                 {
-                    // get copy of configurations
-                    List<ConfigurationData> confs = Configurations;
-                    
-                    // no need to sort here
-                    //confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                    var cfg = Configurations.FirstOrDefault(cd => cd.Guid == jobInfo.Guid);
 
-                    foreach (ConfigurationData cfg in confs)
+                    if (cfg == null)
                     {
-                        // find configuration by guid
-                        if (cfg.Guid != jobInfo.Guid)
-                        {
-                            continue;
-                        }
-
-                        // ok, found needed configuration
-                        // copy values from configuration to snmp jobInfo
-                        switch (cfg.JobType)
-                        {
-                            case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
-                                SnmpRefreshStandardJobInfo(jobInfo as SnmpObjectsData.StandardJobInfo, cfg);
-                                break;
-
-                            case ConfigurationData.JobTypeEnum.Scheduled:
-                                SnmpRefreshScheduledJobInfo(jobInfo as SnmpObjectsData.ScheduledJobInfo, cfg);
-                                break;
-
-                            case ConfigurationData.JobTypeEnum.OneTime:
-                                SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-
-                        // updated successfully
-                        return true;
+                        // job with given GUID not found
+                        return false; // failed to update
                     }
-                }
-                catch
-                {
-                    // suppress
-                    // for the case of change of GlobalCleanupDataList 
-                    // within forach loop by another thread
-                    // todo check for lock protection of GlobalCleanupDataList 
+
+                    // ok, found needed configuration
+                    // copy values from configuration to snmp jobInfo
+                    switch (cfg.JobType)
+                    {
+                        case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+                            SnmpRefreshStandardJobInfo(jobInfo as SnmpObjectsData.StandardJobInfo, cfg);
+                            break;
+
+                        case ConfigurationData.JobTypeEnum.Scheduled:
+                            SnmpRefreshScheduledJobInfo(jobInfo as SnmpObjectsData.ScheduledJobInfo, cfg);
+                            break;
+
+                        case ConfigurationData.JobTypeEnum.OneTime:
+                            SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    // updated successfully
+                    return true;
                 }
             }
+            catch
+            {
+                // suppress
+                // for the case of change of GlobalCleanupDataList 
+                // within forach loop by another thread
+                // todo check for lock protection of GlobalCleanupDataList 
+            }
 
-            // job with given GUID not found
-            // failed to update
-            return false;
+            // error
+            return false; // failed to update
         }
 
         private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
         {
+            jobInfo.Reset();
+
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
 
             SnmpRefreshJobInfoBase(jobInfo, s);
 
-            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count;
-
+            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
             jobInfo.TimestampJobStarted = DateTime.MaxValue; //6
-            jobInfo.LastCycleScanningTime = 999999;//7
+            jobInfo.LastCycleScanningTime = 999999; //7
 
             var prFiles = s.ProcessedFiles;
 
             string lastFilename = prFiles.Count > 0 ? prFiles[prFiles.Count - 1] : "";
-
             jobInfo.LastProcessingLastDatFileProcessed = lastFilename; // 80
-            jobInfo.LastProcessingStartTimeStamp = DateTime.MaxValue; //81
-            jobInfo.LastProcessingFinishTimeStamp = DateTime.MaxValue; //82
+            jobInfo.LastProcessingStartTimeStamp = DateTime.MaxValue; // 81
+            jobInfo.LastProcessingFinishTimeStamp = DateTime.MaxValue; // 82
 
             jobInfo.PutTimeStamp();
 
@@ -556,13 +560,16 @@ namespace iba.Processing
 
         private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
         {
+            jobInfo.Reset();
+
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
+
             SnmpRefreshJobInfoBase(jobInfo, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-            jobInfo.TimestampLastExecution = DateTime.MaxValue; //6
-            jobInfo.TimestampNextExecution = worker.NextTrigger; //7
+            jobInfo.TimestampLastExecution = DateTime.MaxValue; // 6
+            jobInfo.TimestampNextExecution = worker.NextTrigger; // 7
 
             jobInfo.PutTimeStamp();
             SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
@@ -570,8 +577,11 @@ namespace iba.Processing
 
         private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
         {
+            jobInfo.Reset();
+
             ConfigurationWorker worker = m_workers[cfg];
             StatusData s = worker.Status;
+
             SnmpRefreshJobInfoBase(jobInfo, s);
 
             jobInfo.TimestampLastExecution = DateTime.MaxValue;//5
@@ -625,6 +635,7 @@ namespace iba.Processing
             {
                 TaskData taskData = cfg.Tasks[i];
                 var taskInfo = ji.Tasks[i];
+                taskInfo.Reset();
 
                 taskInfo.TaskName = taskData.Name;
 
@@ -772,11 +783,12 @@ namespace iba.Processing
                     {
                         try
                         {
-                            foreach (var gcData in GlobalCleanupDataList)
+                            foreach (var gcData in GlobalCleanupDataList.OrderBy(gc => gc.DriveName))
                             {
                                 // create entry
                                 var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo
                                 {
+                                    // set primary key
                                     DriveName = gcData.DriveName
                                 };
                                 od.GlobalCleanup.Add(driveInfo);
@@ -785,12 +797,15 @@ namespace iba.Processing
                                 SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             // suppress
                             // for the case of change of GlobalCleanupDataList 
                             // within forach loop by another thread
                             // todo check for lock protection of GlobalCleanupDataList 
+
+                            // todo log?
+                            SnmpWorker.TmpLogLine(ex.ToString());
                         }
                     }
                     // 2...4. - Jobs
