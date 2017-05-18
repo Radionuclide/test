@@ -46,5 +46,22 @@ namespace iba.Data
                 "public", "12345678", IbaSnmpAuthenticationAlgorithm.Md5,
                 "12345678", IbaSnmpEncryptionAlgorithm.None);
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as SnmpData;
+            if (other == null) return false;
+
+            return
+                Enabled == other.Enabled &&
+                Port == other.Port &&
+                V1V2Security == other.V1V2Security &&
+
+                V3Security.AuthAlgorithm == other.V3Security.AuthAlgorithm &&
+                V3Security.EncrAlgorithm == other.V3Security.EncrAlgorithm &&
+                V3Security.EncryptionKey == other.V3Security.EncryptionKey &&
+                V3Security.Password == other.V3Security.Password &&
+                V3Security.Username == other.V3Security.Username;
+        }
     }
 }
