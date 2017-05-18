@@ -9,6 +9,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using iba.Logging;
 
 namespace iba.Processing
 {
@@ -24,7 +25,6 @@ namespace iba.Processing
                 m_workers.Add(data, cw);
             }
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. AddConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -47,7 +47,6 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. RemoveConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -68,7 +67,6 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. ReplaceConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -92,7 +90,6 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. ReplaceOrAddConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -134,7 +131,6 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. UpdateConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -195,7 +191,6 @@ namespace iba.Processing
             m_workers[data].Start();
 
             // added by kolesnik - begin
-            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StartConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -428,12 +423,9 @@ namespace iba.Processing
                     return true; // data was updated
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                // suppress
-                // for the case of change of GlobalCleanupDataList 
-                // during FirstOrDefault query or values update
-                SnmpWorker.TmpLogLine(ex.ToString());
+                // suppress, not critical
             }
             return false; // failed to update
         }
@@ -460,7 +452,6 @@ namespace iba.Processing
             driveInfo.RescanTime = (uint)gcData.RescanTime; //5
 
             driveInfo.PutTimeStamp();
-            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Drive {driveInfo.DriveName}");
         }
 
         internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
@@ -539,8 +530,6 @@ namespace iba.Processing
             jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; // 82
 
             jobInfo.PutTimeStamp();
-
-            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
         }
 
         private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
@@ -557,7 +546,6 @@ namespace iba.Processing
             jobInfo.TimestampNextExecution = worker.NextTrigger; // 7
 
             jobInfo.PutTimeStamp();
-            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
         }
 
         private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
@@ -572,7 +560,6 @@ namespace iba.Processing
             jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
 
             jobInfo.PutTimeStamp();
-            SnmpWorker.TmpLogLine($"TskMgr. Refreshed Job {jobInfo.JobName}");
         }
 
         private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
@@ -611,7 +598,6 @@ namespace iba.Processing
             if (ji.Tasks.Count != cfg.Tasks.Count)
             {
                 ji.Tasks.Clear();
-                SnmpWorker.TmpLogLine("SnmpRefreshTasks. Tasks amount has changed. Configuration invalidated");
                 SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -753,9 +739,6 @@ namespace iba.Processing
         {
             try
             {
-                SnmpWorker.TmpLogLine("TskMgr. ----------------------");
-                SnmpWorker.TmpLogLine("TskMgr. Rebuilding ObjectsData");
-
                 od.Reset();
 
                 lock (m_workers)
@@ -785,15 +768,9 @@ namespace iba.Processing
                                 SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
                             }
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            // suppress
-                            // for the case of change of GlobalCleanupDataList 
-                            // within forach loop by another thread
-                            // todo check for lock protection of GlobalCleanupDataList 
-
-                            // todo log?
-                            SnmpWorker.TmpLogLine(ex.ToString());
+                            // suppress, not critical
                         }
                     }
                     // 2...4. - Jobs
@@ -833,14 +810,12 @@ namespace iba.Processing
                         }
                     }
                 }
-
-                SnmpWorker.TmpLogLine("TskMgr. Snmp Rebuilt ObjectsData");
-                SnmpWorker.TmpLogLine("TskMgr. ----------------------");
                 return true; // success
             }
             catch (Exception ex)
             {
-                // todo log?    
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"SNMP. Error during rebuilding object data. {ex.Message}.");
                 return false; // error
             }
         }

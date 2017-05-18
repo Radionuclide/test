@@ -384,9 +384,9 @@
             this.rbDateTimeStr.AutoSize = true;
             this.rbDateTimeStr.Location = new System.Drawing.Point(257, 209);
             this.rbDateTimeStr.Name = "rbDateTimeStr";
-            this.rbDateTimeStr.Size = new System.Drawing.Size(184, 17);
+            this.rbDateTimeStr.Size = new System.Drawing.Size(190, 17);
             this.rbDateTimeStr.TabIndex = 7;
-            this.rbDateTimeStr.Text = "String \"yyyy-MM-dd HH:mm:ss.fff\"";
+            this.rbDateTimeStr.Text = "String (\"yyyy-MM-dd HH:mm:ss.fff\")";
             this.rbDateTimeStr.UseVisualStyleBackColor = true;
             // 
             // rbDateTimeTc
@@ -395,10 +395,10 @@
             this.rbDateTimeTc.Checked = true;
             this.rbDateTimeTc.Location = new System.Drawing.Point(36, 209);
             this.rbDateTimeTc.Name = "rbDateTimeTc";
-            this.rbDateTimeTc.Size = new System.Drawing.Size(159, 17);
+            this.rbDateTimeTc.Size = new System.Drawing.Size(197, 17);
             this.rbDateTimeTc.TabIndex = 7;
             this.rbDateTimeTc.TabStop = true;
-            this.rbDateTimeTc.Text = "SNMPv2-TC - DateAndTime";
+            this.rbDateTimeTc.Text = "Binary (SNMPv2-TC - DateAndTime)";
             this.rbDateTimeTc.UseVisualStyleBackColor = true;
             // 
             // cbEnabled
@@ -535,9 +535,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 185);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 13);
+            this.label1.Size = new System.Drawing.Size(108, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "DateTime Textual convention:";
+            this.label1.Text = "Date and time format:";
             // 
             // label10
             // 

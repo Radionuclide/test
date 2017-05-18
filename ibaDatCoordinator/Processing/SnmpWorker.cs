@@ -53,21 +53,6 @@ namespace iba.Processing
 
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
-        #region tmpLog
-
-        public static string _tmpLog = "";
-
-        public static void TmpLog(string str)
-        {
-            _tmpLog += " " + str;
-        }
-
-        public static void TmpLogLine(string str)
-        {
-            _tmpLog += $"\r\n{DateTime.Now.ToLongTimeString()} {str}";
-        }
-
-        #endregion
 
 
         #region Construction, Destruction, Init
@@ -108,7 +93,6 @@ namespace iba.Processing
             };
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
-                TmpLogLine("TIMER");
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why it's needed
@@ -124,8 +108,6 @@ namespace iba.Processing
 
         public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
         {
-            TmpLogLine("TaskManager_SnmpConfigurationChanged");
-
             // we do not need to lock something here
             // it's not a problem if structure is invalidated during rebuild is in progress
 
@@ -475,8 +457,6 @@ namespace iba.Processing
                 IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
                 IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
                 IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
-
-                TmpLogLine("SnmpWrkr. Refreshed License");
             }
 
             return true; // data was updated
@@ -506,8 +486,8 @@ namespace iba.Processing
                     // should not happen
                     // failed to update data
                     // rebuild the tree
-                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    TmpLogLine("Error RefreshGlobalCleanupDriveInfo()");
+                    LogData.Data.Logger.Log(Level.Warning,
+                        "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; rebuilding the tree completely.");
                     RebuildTreeCompletely();
                     return true; // data was updated
                 }
@@ -523,8 +503,6 @@ namespace iba.Processing
                 IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceInMb);
                 IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceInPercent);
                 IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTime);
-
-                TmpLogLine($"SnmpWrkr. Refreshed Drive {driveInfo.DriveName}");
             }
 
             return true; // data was updated
@@ -534,40 +512,39 @@ namespace iba.Processing
         {
             lock (LockObject)
             {
-                if (RebuildTreeIfItIsInvalid())
-                {
-                    // tree was rebuilt completely
-                    // no need to update some parts of it
-                    // just return right now
-                    return true; // data was updated
-                }
-
-                if (jobInfo.IsUpToDate())
-                {
-                    // data fresh, no need to change something
-                    return false; // data was NOT updated
-                }
-
-                var man = TaskManager.Manager;
-                if (!man.SnmpRefreshJobInfo(jobInfo))
-                {
-                    // should not happen
-                    // failed to update data
-                    // rebuild the tree
-                    // todo log?
-                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    TmpLogLine("Error RefreshJobInfo()");
-                    RebuildTreeCompletely();
-                    return true; // data was updated
-                }
-
-                // TaskManager has updated info successfully 
-                // copy it to snmp tree
-
-                IbaSnmpOid oidJobGen = jobInfo.Oid + 0;
-
                 try
                 {
+                    if (RebuildTreeIfItIsInvalid())
+                    {
+                        // tree was rebuilt completely
+                        // no need to update some parts of it
+                        // just return right now
+                        return true; // data was updated
+                    }
+
+                    if (jobInfo.IsUpToDate())
+                    {
+                        // data fresh, no need to change something
+                        return false; // data was NOT updated
+                    }
+
+                    var man = TaskManager.Manager;
+                    if (!man.SnmpRefreshJobInfo(jobInfo))
+                    {
+                        // should not happen
+                        // failed to update data
+                        // rebuild the tree
+                        LogData.Data.Logger.Log(Level.Warning,
+                            "SNMP. RefreshJobInfo(). Failed to refresh; rebuilding the tree completely.");
+                        RebuildTreeCompletely();
+                        return true; // data was updated
+                    }
+
+                    // TaskManager has updated info successfully 
+                    // copy it to snmp tree
+
+                    IbaSnmpOid oidJobGen = jobInfo.Oid + 0;
+
                     IbaSnmp.SetUserValue(oidJobGen + 0, jobInfo.JobName);
                     IbaSnmp.SetUserValue(oidJobGen + 1, (int)jobInfo.Status);
                     IbaSnmp.SetUserValue(oidJobGen + 2, jobInfo.TodoCount);
@@ -605,34 +582,16 @@ namespace iba.Processing
                     }
 
                     // refresh tasks
-                    TmpLogLine($"Refreshing tasks(");
-                    int _debug_i_cnt = 0;
                     foreach (var taskInfo in jobInfo.Tasks)
                     {
                         RefreshTaskInfo(taskInfo);
-                        TmpLog($"{++_debug_i_cnt}");
                     }
-                    TmpLog(") ok");
                 }
-                catch (KeyNotFoundException ex)
+                catch (Exception ex)
                 {
-                    // value does not exist
-                    // todo log?    
-                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    TmpLogLine($"SnmpWrkr. Error in Job {jobInfo.JobName}");
+                    LogData.Data.Logger.Log(Level.Exception,
+                        $"SNMP. Error during refreshing job {jobInfo.JobName}. {ex.Message}.");
                 }
-                catch (FormatException ex)
-                {
-                    // wrong type
-                    // todo log?    
-                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    TmpLogLine($"SnmpWrkr. Error in Job {jobInfo.JobName}");
-                }
-
-                // todo update tasks or separately?
-                //IbaSnmp.SetUserValue(oidJob + 5, jobInfo.RescanTimeId5);
-
-                TmpLogLine($"SnmpWrkr. Refreshed Job {jobInfo.JobName}");
             }
             return true; // was updated
         }
@@ -651,6 +610,7 @@ namespace iba.Processing
                 IbaSnmp.SetUserValue(oidTask + 4, taskInfo.MemoryUsedForLastExecution);
 
                 var ci = taskInfo.CleanupInfo;
+                // ReSharper disable once InvertIf
                 if (ci != null)
                 {
                     IbaSnmpOid oidCleanup = oidTask + 5;
@@ -661,27 +621,15 @@ namespace iba.Processing
                     IbaSnmp.SetUserValue(oidCleanup + 3, ci.UsedDiskSpace);
                 }
             }
-            catch (KeyNotFoundException ex)
+            catch (Exception ex)
             {
-                // value does not exist
-                // todo log?    
-                TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                TmpLogLine($"SnmpWrkr. Error in Task {taskInfo.TaskName}");
-            }
-            catch (FormatException ex)
-            {
-                // wrong type
-                // todo log?    
-                TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                TmpLogLine($"SnmpWrkr. Error in Task {taskInfo.TaskName}");
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"SNMP. Error during refreshing task {taskInfo.TaskName}. {ex.Message}.");
             }
         }
 
         public bool RebuildTreeCompletely()
         {
-            SnmpWorker.TmpLogLine("*****************************");
-            SnmpWorker.TmpLogLine("SnmpWrkr. RebuildTreeCompletely");
-
             var man = TaskManager.Manager;
             if (man == null || IbaSnmp == null)
             {
@@ -725,7 +673,6 @@ namespace iba.Processing
                 BuildSectionOneTimeJobs();
             }
 
-            TmpLogLine("*****************************");
             return true; // rebuilt successfully
         }
 

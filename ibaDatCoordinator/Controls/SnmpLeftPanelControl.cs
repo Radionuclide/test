@@ -39,43 +39,5 @@ namespace iba.Controls
                 cbEnabled.Checked = e.Status != SnmpWorkerStatus.Stopped;
             }
         }
-
-        private void buttonShowDebug_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void timerStatus_Tick(object sender, EventArgs e)
-        {
-            // todo remove timer
-
-            var worker = TaskManager.Manager?.SnmpWorker;
-            if (worker == null) return;
-
-            string str = "";
-            lock (worker.LockObject)
-            {
-                var od = worker.ObjectsData;
-                if (od != null)
-                {
-                    //str += $"LastUpdated: {od.TimeStamp.ToLongTimeString()}\r\n";
-                    str += "\r\n";
-                    str += $"Cleanup: {od.GlobalCleanup.Count}\r\n";
-                    str += $"StandardJobs: {od.StandardJobs.Count}\r\n";
-                    str += $"ScheduledJobs: {od.ScheduledJobs.Count}\r\n";
-                    str += $"OneTimeJobs: {od.OneTimeJobs.Count}\r\n";
-                    str += "\r\n";
-                    str += $"Total SNMP Objects: {worker.IbaSnmp?.GetListOfAllOids().Count}\r\n";
-                }
-
-                tbGeneralInfo.Text = str;
-            }
-
-            tbLog.Text = SnmpWorker._tmpLog;
-        }
-
-        private void buttonCleanLog_Click(object sender, EventArgs e)
-        {
-            SnmpWorker._tmpLog = "";
-        }
     }
 }

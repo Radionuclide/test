@@ -18,16 +18,6 @@ namespace iba.Controls
 {
     public partial class SnmpControl : UserControl, IPropertyPane
     {
-        // todo remove
-        #region Debug
-
-        private int _tmpCntDataLoaded;
-        private int _tmpCntDataCleaned;
-        private int _tmpCndDataSaved;
-
-        #endregion
-
-
         #region Construction, Destruction, Init
 
         public SnmpControl()
@@ -101,9 +91,6 @@ namespace iba.Controls
             {
                 LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.LoadData() exception: " + ex.Message);
             }
-
-            _tmpCntDataLoaded++;
-            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Loaded { _tmpCntDataLoaded}");
         }
 
         public void SaveData()
@@ -118,15 +105,10 @@ namespace iba.Controls
             {
                 LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.SaveData() exception: " + ex.Message);
             }
-            // todo ask Michael. Save = Load * 2. why?
-            _tmpCndDataSaved++;
-            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Saved { _tmpCndDataSaved}");
         }
 
         public void LeaveCleanup()
         {
-            _tmpCntDataCleaned++;
-            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data cleaned { _tmpCntDataCleaned}");
         }
 
         #endregion
