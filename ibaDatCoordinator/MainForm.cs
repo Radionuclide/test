@@ -1740,6 +1740,13 @@ namespace iba
             m_navBar.SelectedPane = m_watchdogPane;
         }
 
+        // added by kolesnik - begin
+        private void snmpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_snmpPane;
+        }
+        // added by kolesnik - end
+
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_settingsPane;

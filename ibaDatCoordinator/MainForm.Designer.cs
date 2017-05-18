@@ -86,6 +86,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -426,6 +427,7 @@ namespace iba
             this.statusToolStripMenuItem,
             this.loggingToolStripMenuItem,
             this.watchdogToolStripMenuItem,
+            this.snmpToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
@@ -525,6 +527,12 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
+            // snmpToolStripMenuItem
+            // 
+            this.snmpToolStripMenuItem.Name = "snmpToolStripMenuItem";
+            resources.ApplyResources(this.snmpToolStripMenuItem, "snmpToolStripMenuItem");
+            this.snmpToolStripMenuItem.Click += new System.EventHandler(this.snmpToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -603,6 +611,7 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_watchdogPane;
         private TD.Eyefinder.NavigationPane m_snmpPane;
+        private System.Windows.Forms.ToolStripMenuItem snmpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem watchdogToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_settingsPane;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
