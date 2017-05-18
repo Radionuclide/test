@@ -639,13 +639,8 @@ namespace iba.Processing
                 {
                     if (taskData is CopyMoveTaskData)
                     {
-                        var typedData = taskData as CopyMoveTaskData;
-
-                        taskTypeStr = typedData.ActionDelete
-                            ? "Delete"
-                            : typedData.RemoveSource
-                                ? "Move"
-                                : "Copy";
+                        taskTypeStr = "CopyMoveDelete";
+                        //var typedData = taskData as CopyMoveTaskData;
                     }
                     if (taskData is CustomTaskDataUNC)
                     {
