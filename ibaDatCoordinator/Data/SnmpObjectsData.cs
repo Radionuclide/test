@@ -5,47 +5,13 @@ using IbaSnmpLib;
 
 namespace iba.Data
 {
-    // todo move inside SnmpObjectsData
-    internal abstract class SnmpObjectWithATimeStamp
-    {
-        public IbaSnmpOid Oid;
-
-        /// <summary> A measure to tell whether data is fresh or outdated </summary>
-        public static TimeSpan AgeThreshold { get; set; }
-            // by default count all data as too old
-            = TimeSpan.FromSeconds(0);
-
-        /// <summary> When data has been last time updated </summary>
-        public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
-
-        public bool IsUpToDate()
-        {
-            if (TimeStamp == DateTime.MinValue)
-            {
-                return false;
-            }
-            TimeSpan age = DateTime.Now - TimeStamp;
-            
-            // if data younger than Threshold, then it is treated as fresh
-            return age < AgeThreshold;
-        }
-
-        public void PutTimeStamp()
-        {
-            TimeStamp = DateTime.Now;
-        }
-    }
-
     /// <summary>
     /// Is used for transferring the information about all SNMP-visible objects between
     /// the TaskManager and SnmpWorker.
     /// </summary>
     internal class SnmpObjectsData 
-        // todo remove inheritance when all included stamps will be used properly
-        : SnmpObjectWithATimeStamp
     {
         public bool IsStructureValid { get; set; }
-
         
         public void Reset()
         {
@@ -73,6 +39,36 @@ namespace iba.Data
 
 
         #region subclasses
+
+        internal abstract class SnmpObjectWithATimeStamp
+        {
+            public IbaSnmpOid Oid;
+
+            /// <summary> A measure to tell whether data is fresh or outdated </summary>
+            public static TimeSpan AgeThreshold { get; set; }
+                // by default count all data as too old
+                = TimeSpan.FromSeconds(0);
+
+            /// <summary> When data has been last time updated </summary>
+            public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
+
+            public bool IsUpToDate()
+            {
+                if (TimeStamp == DateTime.MinValue)
+                {
+                    return false;
+                }
+                TimeSpan age = DateTime.Now - TimeStamp;
+
+                // if data younger than Threshold, then it is treated as fresh
+                return age < AgeThreshold;
+            }
+
+            public void PutTimeStamp()
+            {
+                TimeStamp = DateTime.Now;
+            }
+        }
 
         internal class LicenseInfo : SnmpObjectWithATimeStamp
         {

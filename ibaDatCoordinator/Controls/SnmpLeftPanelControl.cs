@@ -57,7 +57,7 @@ namespace iba.Controls
                 var od = worker.ObjectsData;
                 if (od != null)
                 {
-                    str += $"LastUpdated: {od.TimeStamp.ToLongTimeString()}\r\n";
+                    //str += $"LastUpdated: {od.TimeStamp.ToLongTimeString()}\r\n";
                     str += "\r\n";
                     str += $"Cleanup: {od.GlobalCleanup.Count}\r\n";
                     str += $"StandardJobs: {od.StandardJobs.Count}\r\n";

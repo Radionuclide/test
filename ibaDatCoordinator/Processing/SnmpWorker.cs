@@ -53,7 +53,7 @@ namespace iba.Processing
         /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
         public readonly object LockObject = new object();
 
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
+        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
         private const int InitialisationDelayInSeconds = 1;
 
         #region tmpLog
@@ -106,7 +106,7 @@ namespace iba.Processing
             RestartAgent();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+            SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             RegisterGeneralObjectHandlers();
             RebuildTreeCompletely();

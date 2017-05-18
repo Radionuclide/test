@@ -788,9 +788,9 @@ namespace iba.Processing
                     }
                 }
                 
-                // snmp structure is valid until datcoordinator configuration is cahnged
+                // snmp structure is valid until datcoordinator configuration is changed
                 od.IsStructureValid = true;
-                od.PutTimeStamp();
+                //od.PutTimeStamp();
 
                 SnmpWorker.TmpLogLine("TskMgr. Snmp Rebuilt ObjectsData");
                 SnmpWorker.TmpLogLine("TskMgr. ----------------------");
@@ -798,6 +798,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
+                // todo log?    
                 return false; // error
             }
         }
