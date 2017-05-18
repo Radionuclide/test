@@ -123,17 +123,17 @@ namespace iba.Data
             /// <summary> Oid 0.0 </summary>
             public string JobName;
 
-            /// <summary> Oid 0.1 </summary>
-            public string Status; //(started / stopped /disabled);
+            /// <summary> Oid 0.1 (started / stopped /disabled);</summary>
+            public JobStatus Status; 
 
             /// <summary> Oid 0.2 </summary>
-            public int Todo;
+            public int TodoCount;
 
             /// <summary> Oid 0.3 </summary>
-            public int Done;
+            public int DoneCount;
 
             /// <summary> Oid 0.4 </summary>
-            public int Failed;
+            public int FailedCount;
 
             // Oids 0.5 ... 0.8 vary depending on a Job type: Standard / Scheduled / One-time / Event-based
             // these oids are defined in derived classes
@@ -145,7 +145,7 @@ namespace iba.Data
         internal class StandardJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public int PermFailed;
+            public int PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
             public string TimestampJobStarted;
@@ -166,7 +166,7 @@ namespace iba.Data
         internal class ScheduledJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public int PermFailed;
+            public int PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
             public string TimestampLastExecution;
@@ -178,13 +178,7 @@ namespace iba.Data
         internal class OneTimeJobInfo : JobInfoBase
         {
             /// <summary> Oid 0.5 </summary>
-            public int PermFailed;
-
-            /// <summary> Oid 0.6 </summary>
             public string TimestampLastExecution;
-
-            /// <summary> Oid 0.7 </summary>
-            public string TimestampNextExecution;
         }
 
         /// <summary> reserved for future </summary> 

@@ -386,12 +386,11 @@ namespace iba.Controls
         {
             _tmp___cntTimer++;
 
-            label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
+            label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer % 2 == 0 ? "|" : "-");
 
             IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
 
             string str = "";
-            //str += $"wd1: {_wd1} \r\n";
             str += ibaSnmp == null
                 ? @"ibaSnmp == null"
                 : _tmp___GetLibraryDescriptionString(ibaSnmp);
@@ -422,14 +421,102 @@ namespace iba.Controls
             TreeNodeCollection nodes = tvObjects.Nodes;
             nodes.Clear();
 
-            if (_data == null)
+            var worker = TaskManager.Manager?.SnmpWorker;
+            if (worker == null)
             {
                 return;
             }
 
-            var nodeRoot = nodes.Add("1.3.6.1.4.1.45120");
+            // todo get copy and work with copy
+            lock (worker.LockObject)
+            {
+                var od = worker?.ObjectsData;
+                IbaSnmp ibaSnmp = worker?.IbaSnmp;
+                if (od == null || ibaSnmp == null) return;
 
-            tvObjects.ExpandAll();
+                var nodeRoot = nodes.Add(ibaSnmp.OidIbaRoot.ToString());
+
+                // root.0=Library
+                var nodeLib = nodeRoot.Nodes.Add($"0. Library");
+
+                nodeLib.Nodes.Add("1. Name");
+                nodeLib.Nodes.Add("2. Version");
+                nodeLib.Nodes.Add("3. Host name");
+                nodeLib.Nodes.Add("4. System time");
+
+                // root.2=DatCo
+                var nodeCoord = nodeRoot.Nodes.Add($"{(int)IbaSnmpProductId.IbaDatCoordinator}. ibaDatCoordinator");
+
+                // root.2=DatCo.0=General
+                var nodeGen = nodeCoord.Nodes.Add("0. General");
+                nodeGen.Nodes.Add("1. Title");
+                nodeGen.Nodes.Add("2. Version");
+                var nodeLic = nodeGen.Nodes.Add("3. Licensing");
+                // todo lic
+
+
+                // root.2=DatCo.1=Product
+                var nodeProduct = nodeCoord.Nodes.Add("1. Product");
+
+                // root.2=DatCo.1=Product.1=Cleanup
+                var nodeGlobalCleanup = nodeProduct.Nodes.Add("1. GlobalCleanup");
+                foreach (var cleanupInfo in od.GlobalCleanup)
+                {
+                    var driveNode = nodeGlobalCleanup.Nodes.Add("1. Drive 1");
+
+                    driveNode.Nodes.Add("info1...");
+                    driveNode.Nodes.Add("info2...");
+                }
+
+                // root.2=DatCo.1=Product.2=StandardJobs
+                var nodeStdJobs = nodeProduct.Nodes.Add($"2. Standard Jobs (total {od.StandardJobs.Count})");
+                for (int i = 0; i < od.StandardJobs.Count; i++)
+                {
+                    var jobInfo = od.StandardJobs[i];
+                    var jobNode = nodeStdJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
+
+                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
+                    jobGenNode.Nodes.Add("1. Status: " + jobInfo.Status);
+                    jobGenNode.Nodes.Add("2. Todo #:" + jobInfo.TodoCount);
+                    jobGenNode.Nodes.Add("3. Done #:" + jobInfo.DoneCount);
+
+                    var jobTasksNode = jobNode.Nodes.Add("1. Tasks (total.....) " + jobInfo.Tasks?.Count);
+                    jobTasksNode.Nodes.Add("???. Tasksinfo..." + jobInfo.Tasks);
+                    jobTasksNode.Nodes.Add("???. Tasksinfo..." + jobInfo.Tasks);
+                }
+
+                // root.2=DatCo.1=Product.3=ScheduledJobs
+                var nodeSchJobs = nodeProduct.Nodes.Add($"3. Scheduled Jobs (total {od.ScheduledJobs.Count})");
+                for (int i = 0; i < od.ScheduledJobs.Count; i++)
+                {
+                    var jobInfo = od.ScheduledJobs[i];
+                    var jobNode = nodeSchJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
+
+                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
+                }
+
+                // root.2=DatCo.1=Product.4=OneTimeJobs
+                var nodeOtJobs = nodeProduct.Nodes.Add($"4. One Time Jobs (total {od.OneTimeJobs.Count}):");
+                for (int i = 0; i < od.OneTimeJobs.Count; i++)
+                {
+                    var jobInfo = od.OneTimeJobs[i];
+                    var jobNode = nodeOtJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
+
+                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
+                }
+
+                nodeRoot.Expand();
+                nodeCoord.Expand();
+                nodeProduct.Expand();
+                nodeGlobalCleanup.Expand();
+                nodeStdJobs.Expand();
+                nodeSchJobs.Expand();
+                nodeOtJobs.Expand();
+                //tvObjects.ExpandAll();
+            }
         }
 
         private void buttonObjectsRefresh_Click(object sender, EventArgs e)

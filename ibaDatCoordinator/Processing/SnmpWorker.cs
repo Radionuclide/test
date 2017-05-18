@@ -40,6 +40,7 @@ namespace iba.Processing
         public SnmpWorker()
         {
             Status = SnmpWorkerStatus.Stopped;
+            // todo move to reeource?
             StatusString = "Waiting for delayed initialisation...";
 
             new Task(DelayedInitialisation).Start();
@@ -47,10 +48,11 @@ namespace iba.Processing
 
         private void DelayedInitialisation()
         {
-            int delay = 6;
+            int delay = 2;
             for (int i = delay - 1; i >= 0; i--)
             {
                 Thread.Sleep(1000);
+                // todo move to reeource?
                 StatusString = $"Waiting for delayed initialisation, {i} second(s)...";
                 StatusChanged?.Invoke(this,
                     new StatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
@@ -280,7 +282,7 @@ namespace iba.Processing
             lock (LockObject)
             {
                 // todo probabaly not fully recreate but refresh ?
-                man.GetStatusForSnmp(ObjectsData);
+                man.SnmpGetStatus(ObjectsData);
 
                 // todo this is a probabale dead lock?
                 // todo needa look where from does this call comes? 
@@ -294,18 +296,58 @@ namespace iba.Processing
                     IbaSnmpOid oidJob = oidStdJobs + (uint)(i + 1);
                     SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
-                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.Done, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.Failed, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.LastCycleScanningTime, null, null, UserValueRequested);
+                    // todo add enum
                     ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailed, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+
+                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
+
                     ibaSnmp.CreateUserValue(oidJob + 6, jobInfo.TimestampJobStarted, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.Todo, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.LastCycleScanningTime, null, null, UserValueRequested);
                     ibaSnmp.CreateUserValue(oidJob + "8.0", jobInfo.LastProcessingLastDatFileProcessed, null, null, UserValueRequested);
                     ibaSnmp.CreateUserValue(oidJob + "8.2", jobInfo.LastProcessingFinishTimeStamp, null, null, UserValueRequested);
                     ibaSnmp.CreateUserValue(oidJob + "8.1", jobInfo.LastProcessingStartTimeStamp, null, null, UserValueRequested);
                 }
+
+                IbaSnmpOid oidSchJobs = "3";
+                for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
+                {
+                    IbaSnmpOid oidJob = oidSchJobs + (uint)(i + 1);
+                    var jobInfo = ObjectsData.ScheduledJobs[i];
+
+                    // todo add enum
+                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+
+                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
+
+                    ibaSnmp.CreateUserValue(oidJob + 6, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.TimestampNextExecution, null, null, UserValueRequested);
+                }
+
+                IbaSnmpOid oidOtJobs = "4";
+                for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
+                {
+                    IbaSnmpOid oidJob = oidOtJobs + (uint)(i + 1);
+                    var jobInfo = ObjectsData.OneTimeJobs[i];
+
+                    // todo add enum
+                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+
+                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+
+                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
+                }
+
 
                 ibaSnmp.CreateUserValue("0.1", "Stamp=" + ObjectsData.Stamp.ToString(CultureInfo.InvariantCulture),
                     null,null,  Val_Stamp_Requested);

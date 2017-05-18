@@ -320,7 +320,7 @@ namespace iba.Processing
             set { SnmpWorker.SnmpData = value; }
         }
 
-        internal bool GetStatusForSnmp(SnmpObjectsData od)
+        internal bool SnmpGetStatus(SnmpObjectsData od)
         {
             try
             {
@@ -336,19 +336,46 @@ namespace iba.Processing
                     confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
                     for (int i = 0; i < Math.Min(16, confs.Count); i++)
                     {
-                        StatusData s = m_workers[confs[i]].Status;
+                        ConfigurationData cfg = confs[i];
+                        ConfigurationWorker worker = m_workers[cfg];
+                        StatusData s = worker.Status;
 
-                        var ji = new SnmpObjectsData.StandardJobInfo
+                        switch (cfg.JobType)
                         {
-                            JobName = s.CorrConfigurationData.Name,
-                            Status = s.Started.ToString(),
-                            Todo = s.ReadFiles.Count,
-                            Done = s.ProcessedFiles.Count,
-                            Failed = s.CountErrors(),
-                            PermFailed = s.PermanentErrorFiles.Count
-                        };
+                            case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+                                var stdJi = new SnmpObjectsData.StandardJobInfo();
+                                SnmpFillBaseJobFields(stdJi, s);
+                                stdJi.PermFailedCount = s.PermanentErrorFiles.Count;
 
-                        od.StandardJobs.Add(ji);
+                                //stdJi.LastCycleScanningTime;//7
+                                //stdJi.LastProcessingFinishTimeStamp; //82
+                                //stdJi.LastProcessingLastDatFileProcessed; // 80
+                                //stdJi.LastProcessingStartTimeStamp; //81
+                                //stdJi.TimestampJobStarted = cfg.; //6
+
+                                od.StandardJobs.Add(stdJi);
+                                break;
+
+                            case ConfigurationData.JobTypeEnum.Scheduled: 
+                                var schJi = new SnmpObjectsData.ScheduledJobInfo();
+                                SnmpFillBaseJobFields(schJi, s);
+                                schJi.PermFailedCount = s.PermanentErrorFiles.Count;
+
+                                //schJi.TimestampNextExecution = worker.m_nextTrigger;
+                                od.ScheduledJobs.Add(schJi);
+                                break;
+
+                            case ConfigurationData.JobTypeEnum.OneTime:
+                                var otJi = new SnmpObjectsData.OneTimeJobInfo();
+                                SnmpFillBaseJobFields(otJi, s);
+                                od.OneTimeJobs.Add(otJi);
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                        
+
                     }
 
                 }
@@ -362,6 +389,21 @@ namespace iba.Processing
                 return false; // error
                 // besides flase return value, then timestamp is not set to any valid value
             }
+        }
+
+        private void SnmpFillBaseJobFields(SnmpObjectsData.JobInfoBase ji, StatusData s)
+        {
+            ji.JobName = s.CorrConfigurationData.Name;
+            ji.Status = !s.CorrConfigurationData.Enabled ?
+                SnmpObjectsData.JobStatus.Disabled :
+                (s.Started ?
+                    SnmpObjectsData.JobStatus.Started :
+                    SnmpObjectsData.JobStatus.Stopped);
+
+            ji.TodoCount = s.ReadFiles.Count;
+            ji.DoneCount = s.ProcessedFiles.Count;
+            ji.FailedCount = s.CountErrors();
+            //ji.Tasks
         }
         #endregion
 
