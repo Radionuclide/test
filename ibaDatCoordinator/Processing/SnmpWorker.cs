@@ -195,6 +195,7 @@ namespace iba.Processing
             {
                 IbaSnmp.Stop();
                 ApplyConfigurationToIbaSnmp();
+                string logMessage = null;
 
                 if (_snmpData.Enabled)
                 {
@@ -202,22 +203,32 @@ namespace iba.Processing
                     Status = SnmpWorkerStatus.Started;
                     // todo localize
                     StatusString = $"SNMP server running on port {_snmpData.Port}";
+
+                    // todo localize
+                    logMessage = Status == oldStatus ?
+                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
+                        $"Snmp agent was successfully restarted. Current status: {StatusString}" :
+                        // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
+                        $"Snmp agent was successfully started. Current status: {StatusString}";
                 }
                 else
                 {
                     Status = SnmpWorkerStatus.Stopped;
                     // todo localize
                     StatusString = "SNMP server is disabled";
+
+                    // todo localize
+                    logMessage = Status == oldStatus ?
+                        // do not log anything if status has not changed (now is 'Stopped' as before) 
+                        null :
+                        // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
+                        $"Snmp agent was successfully stopped. Current status: {StatusString}";
                 }
 
-                // log restart:
-                // * if status has changed or 
-                // * if status has not changed, but agent is/was running
-                if (Status != oldStatus || Status == SnmpWorkerStatus.Started)
+                // log the message if it necessary
+                if (logMessage != null)
                 {
-                    LogData.Data.Logger.Log(Level.Info,
-                        // no need to localize
-                        $@"Snmp agent was successfully restarted. Current status: {StatusString}");
+                    LogData.Data.Logger.Log(Level.Info, logMessage);
                 }
             }
             catch (Exception ex)
@@ -227,14 +238,13 @@ namespace iba.Processing
                 StatusString = $"Starting the SNMP server failed with error: {ex.Message}";
 
                 LogData.Data.Logger.Log(Level.Exception,
-                    // no need to localize
-                    $@"SnmpWorker.RestartAgent(). Starting the SNMP server failed with exception: {ex.Message}");
+                    // todo localize
+                    $"Starting the SNMP server failed with exception: {ex.Message}");
             }
 
             // trigger status event
             StatusChanged?.Invoke(this,
                 new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
-
         }
 
         private void ApplyConfigurationToIbaSnmp()
