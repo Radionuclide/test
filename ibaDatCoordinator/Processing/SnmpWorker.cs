@@ -41,13 +41,14 @@ namespace iba.Processing
         /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
         public readonly object LockObject = new object();
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
+        private const int InitialisationDelayInSeconds = 1;
 
         #region Construction, Destruction, Init
 
         public SnmpWorker()
         {
             Status = SnmpWorkerStatus.Stopped;
-            // todo move to reeource?
+            // todo move to resource?
             StatusString = "Waiting for delayed initialisation...";
 
             new Task(DelayedInitialisation).Start();
@@ -55,11 +56,10 @@ namespace iba.Processing
 
         private void DelayedInitialisation()
         {
-            int delay = 2;
-            for (int i = delay - 1; i >= 0; i--)
+            for (int i = InitialisationDelayInSeconds - 1; i >= 0; i--)
             {
                 Thread.Sleep(1000);
-                // todo move to reeource?
+                // todo move to resource?
                 StatusString = $"Waiting for delayed initialisation, {i} second(s)...";
                 StatusChanged?.Invoke(this,
                     new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
