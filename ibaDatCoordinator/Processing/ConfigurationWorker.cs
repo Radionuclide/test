@@ -2864,6 +2864,7 @@ namespace iba.Processing
                 {
                     DatFileStatus.State state = m_sd.DatFileStates[DatFile].States[task];
                     lastExec.Success = state == DatFileStatus.State.COMPLETED_TRUE ||
+                                       state == DatFileStatus.State.COMPLETED_FALSE || 
                                        state == DatFileStatus.State.COMPLETED_SUCCESFULY;
                 }
             }
