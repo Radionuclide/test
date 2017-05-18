@@ -278,9 +278,11 @@ namespace iba.Data
             /// <summary> Oid 0.6 </summary>
             public DateTime TimestampJobStarted;
 
+            // todo
             /// <summary> Oid 0.7 </summary>
-            public uint LastCycleScanningTime;
-
+            public DateTime LastCycleScanningTime_TimestampLastDirectoryScan;
+            public DateTime LastCycleScanningTime_TimestampLastReprocessErrorsScan;
+            
             /// <summary> Oid 0.8.0 </summary>
             public string LastProcessingLastDatFileProcessed;
 
@@ -296,7 +298,8 @@ namespace iba.Data
 
                 PermFailedCount = 0;
                 TimestampJobStarted = DateTime.MinValue;
-                LastCycleScanningTime = 0;
+                LastCycleScanningTime_TimestampLastDirectoryScan = DateTime.MinValue;
+                LastCycleScanningTime_TimestampLastReprocessErrorsScan = DateTime.MinValue;
                 LastProcessingLastDatFileProcessed = "";
                 LastProcessingStartTimeStamp = DateTime.MinValue;
                 LastProcessingFinishTimeStamp = DateTime.MinValue;

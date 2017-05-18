@@ -576,7 +576,10 @@ namespace iba.Processing
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, stdJi.PermFailedCount);
                         IbaSnmp.SetUserValue(oidJobGen + 6, ConvertDateTimeToString(stdJi.TimestampJobStarted));
-                        IbaSnmp.SetUserValue(oidJobGen + 7, stdJi.LastCycleScanningTime);
+                        // todo
+                        IbaSnmp.SetUserValue(oidJobGen + 7,
+                            $"Dir={stdJi.LastCycleScanningTime_TimestampLastDirectoryScan}, Err={stdJi.LastCycleScanningTime_TimestampLastReprocessErrorsScan}"
+                            );
                         IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
 
                         var x = IbaSnmp.GetUserValue(oidJobGen + "8.0");
@@ -831,8 +834,10 @@ namespace iba.Processing
                             null,
                             JobInfoItemRequested, jobInfo);
 
+                        // todo
                         // ibaRoot.DatCoord.Product.StdJobs.Job.7 - Last cycle scanning time
-                        CreateUserValue(oidJobGen + 7, jobInfo.LastCycleScanningTime,
+                        CreateUserValue(oidJobGen + 7,
+                            $"Dir={jobInfo.LastCycleScanningTime_TimestampLastDirectoryScan}, Err={jobInfo.LastCycleScanningTime_TimestampLastReprocessErrorsScan}",
                             @"Last cycle scanning time", mibNameJobGen + @"LastCycleScanningTime",
                             null,
                             JobInfoItemRequested, jobInfo);

@@ -531,7 +531,8 @@ namespace iba.Processing
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
             jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
-            jobInfo.LastCycleScanningTime = 999999; //7
+            jobInfo.LastCycleScanningTime_TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;  // todo 7a
+            jobInfo.LastCycleScanningTime_TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; // todo 7b
 
             var prFiles = s.ProcessedFiles;
 

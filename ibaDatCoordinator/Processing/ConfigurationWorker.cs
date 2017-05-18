@@ -1321,8 +1321,16 @@ namespace iba.Processing
                 rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
         }
 
+        // added by kolesnik - begin
+        public DateTime TimestampLastReprocessErrorsScan { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
+            // added by kolesnik - begin
+            TimestampLastReprocessErrorsScan = DateTime.Now;
+            // added by kolesnik - end
+
             if (networkErrorOccured)
             {
                 if (!m_bTimersstopped && !m_stop && reprocessErrorsTimer != null)
@@ -1368,8 +1376,16 @@ namespace iba.Processing
 
         private enum WhatToUpdate {NEW, ERRORS, DIRECTORY};
 
+        // added by kolesnik - begin
+        public DateTime TimestampLastDirectoryScan { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         private void ScanDirectory()
         {
+            // added by kolesnik - begin
+            TimestampLastDirectoryScan = DateTime.Now;
+            // added by kolesnik - end
+
             if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
             {  
             //don't add any extra (and hope that it will be small enough for the next timer tick
