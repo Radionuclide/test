@@ -164,6 +164,7 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
       <SubType>Form</SubType>
     </Compile>
