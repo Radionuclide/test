@@ -78,6 +78,7 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.iconPaneSnmp.Handle);
+            m_snmpPane.Controls.Add(new SnmpLeftPanelControl(this));
             // added by kolesnik - end
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);

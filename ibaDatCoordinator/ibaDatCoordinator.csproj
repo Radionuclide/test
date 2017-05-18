@@ -155,6 +155,12 @@
     <Compile Include="Controls\SnmpControl.Designer.cs">
       <DependentUpon>SnmpControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SnmpLeftPanelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SnmpLeftPanelControl.Designer.cs">
+      <DependentUpon>SnmpLeftPanelControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SplitterTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -426,6 +432,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SnmpControl.resx">
       <DependentUpon>SnmpControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SnmpLeftPanelControl.resx">
+      <DependentUpon>SnmpLeftPanelControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>
