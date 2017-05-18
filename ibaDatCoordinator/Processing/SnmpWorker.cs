@@ -109,16 +109,32 @@ namespace iba.Processing
             SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             RegisterGeneralObjectHandlers();
-            RegisterProductObjects();
+            RebuildTreeCompletely();
         }
 
-        private void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
+        public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
         {
             TmpLogLine("TaskManager_SnmpConfigurationChanged");
+
+            // tree marked as invalid
+            // it will be rebuilt on 1st request to any existing user node
             lock (LockObject)
             {
                 ObjectsData.IsStructureValid = false;
             }
+
+            // todo
+            // it's better if we improve IbaSnmp - add generic UserValueRequested event to it
+            // and in it's handler here check for (ObjectsData.IsStructureValid == false)
+            // otherwise tree is not rebuilt if some value is requested that 
+            // was not existing before, but exists now.
+            // rare case, but nevertheless.
+            // normally user will perform walk or load MIBs to his manager prior to requesting
+            // so we should not have problems. 
+            // but to be absolutely confident, it's better to do it
+
+            //// Rebuilding it every time is not effective
+            ////RebuildTreeCompletely();
         }
 
         #endregion
@@ -188,6 +204,7 @@ namespace iba.Processing
                 {
                     IbaSnmp.Start();
                     Status = SnmpWorkerStatus.Started;
+
                     // todo localize
                     StatusString = $"SNMP server running on port {_snmpData.Port}";
                 }
@@ -419,7 +436,7 @@ namespace iba.Processing
             }
         }
 
-        private void RefreshGlobalCleanup(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        private void RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
             lock (LockObject)
             {
@@ -442,22 +459,156 @@ namespace iba.Processing
                 // TaskManager has updated driveInfo successfully 
                 // copy it to snmp tree
 
-                IbaSnmpOid oidDrive = _oidSectionGlobalCleanup + driveInfo.Id;
+                IbaSnmpOid oidDrive = driveInfo.Oid;
 
-                IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveNameId0);
-                IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.ActiveId1);
-                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.SizeId2);
-                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceId3);
-                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceId4);
-                IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTimeId5);
+                IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveName);
+                IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.Active);
+                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.Size);
+                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpace);
+                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpace);
+                IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTime);
 
-                TmpLogLine($"SnmpWk. Refreshed Drive {driveInfo.DriveNameId0}");
+                TmpLogLine($"SnmpWrkr. Refreshed Drive {driveInfo.DriveName}");
+            }
+        }
+
+        private void RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        {
+            lock (LockObject)
+            {
+                CheckSnmpTreeStructure();
+
+                if (jobInfo.IsUpToDate())
+                {
+                    return;
+                }
+
+                var man = TaskManager.Manager;
+                if (!man.SnmpRefreshJobInfo(jobInfo))
+                {
+                    // failed to update data
+                    // try to rebuild the tree
+                    RebuildTreeCompletely();
+                    return;
+                }
+
+                // TaskManager has updated info successfully 
+                // copy it to snmp tree
+
+                IbaSnmpOid oidJobGen = jobInfo.Oid + 0;
+
+                try
+                {
+                    IbaSnmp.SetUserValue(oidJobGen + 0, jobInfo.JobName);
+                    IbaSnmp.SetUserValue(oidJobGen + 1, jobInfo.Status.ToString());
+                    IbaSnmp.SetUserValue(oidJobGen + 2, jobInfo.TodoCount);
+                    IbaSnmp.SetUserValue(oidJobGen + 3, jobInfo.DoneCount);
+                    IbaSnmp.SetUserValue(oidJobGen + 4, jobInfo.FailedCount);
+
+                    var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
+                    var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
+                    var otJi = jobInfo as SnmpObjectsData.OneTimeJobInfo;
+                    if (stdJi != null)
+                    {
+                        IbaSnmp.SetUserValue(oidJobGen + 5, stdJi.PermFailedCount);
+                        IbaSnmp.SetUserValue(oidJobGen + 6, stdJi.TimestampJobStarted);
+                        IbaSnmp.SetUserValue(oidJobGen + 7, stdJi.LastCycleScanningTime);
+                        IbaSnmp.SetUserValue(oidJobGen + "8.0", stdJi.LastProcessingLastDatFileProcessed);
+                        IbaSnmp.SetUserValue(oidJobGen + "8.1", stdJi.LastProcessingStartTimeStamp);
+                        IbaSnmp.SetUserValue(oidJobGen + "8.2", stdJi.LastProcessingFinishTimeStamp);
+                    }
+                    else if (schJi != null)
+                    {
+                        IbaSnmp.SetUserValue(oidJobGen + 5, schJi.PermFailedCount);
+                        IbaSnmp.SetUserValue(oidJobGen + 6, schJi.TimestampLastExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 7, schJi.TimestampNextExecution);
+                    }
+                    else if (otJi != null)
+                    {
+                        IbaSnmp.SetUserValue(oidJobGen + 5, otJi.TimestampLastExecution);
+                    }
+                    else
+                    {
+                        // should not happen
+                        throw new Exception("Unknown job type");
+                    }
+
+                    // refresh tasks
+                    TmpLogLine($"Refreshing tasks(");
+                    int _debug_i_cnt = 0;
+                    foreach (var taskInfo in jobInfo.Tasks)
+                    {
+                        RefreshTaskInfo(taskInfo);
+                        TmpLog($"{++_debug_i_cnt}");
+                    }
+                    TmpLog(") ok");
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    // value does not exist
+                    // todo log?    
+                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    TmpLogLine($"SnmpWrkr. Error in Job {jobInfo.JobName}");
+                }
+                catch (FormatException ex)
+                {
+                    // wrong type
+                    // todo log?    
+                    TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    TmpLogLine($"SnmpWrkr. Error in Job {jobInfo.JobName}");
+                }
+
+                // todo update tasks or separately?
+                //IbaSnmp.SetUserValue(oidJob + 5, jobInfo.RescanTimeId5);
+
+                TmpLogLine($"SnmpWrkr. Refreshed Job {jobInfo.JobName}");
+            }
+        }
+
+
+        private void RefreshTaskInfo(SnmpObjectsData.TaskInfo taskInfo)
+        {
+            IbaSnmpOid oidTask = taskInfo.Oid;
+
+            try
+            {
+                IbaSnmp.SetUserValue(oidTask + 0, taskInfo.TaskName);
+                IbaSnmp.SetUserValue(oidTask + 1, taskInfo.TaskType);
+                IbaSnmp.SetUserValue(oidTask + 2, taskInfo.Success);
+                IbaSnmp.SetUserValue(oidTask + 3, taskInfo.DurationOfLastExecution);
+                IbaSnmp.SetUserValue(oidTask + 4, taskInfo.CurrentMemoryUsed);
+
+                var ci = taskInfo.CleanupInfo;
+                if (ci != null)
+                {
+                    IbaSnmpOid oidCleanup = oidTask + 5;
+
+                    IbaSnmp.SetUserValue(oidCleanup + 0, ci.LimitChoice.ToString());
+                    IbaSnmp.SetUserValue(oidCleanup + 1, ci.Subdirectories);
+                    IbaSnmp.SetUserValue(oidCleanup + 2, ci.FreeDiskSpace);
+                    IbaSnmp.SetUserValue(oidCleanup + 3, ci.UsedDiskSpace);
+                }
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // value does not exist
+                // todo log?    
+                TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                TmpLogLine($"SnmpWrkr. Error in Task {taskInfo.TaskName}");
+            }
+            catch (FormatException ex)
+            {
+                // wrong type
+                // todo log?    
+                TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                TmpLogLine($"SnmpWrkr. Error in Task {taskInfo.TaskName}");
             }
         }
 
         private void RebuildTreeCompletely()
         {
-            SnmpWorker.TmpLogLine("TaskManager.RebuildTreeCompletely");
+            SnmpWorker.TmpLogLine("*****************************");
+            SnmpWorker.TmpLogLine("SnmpWrkr. RebuildTreeCompletely");
 
             var man = TaskManager.Manager;
             IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
@@ -490,6 +641,9 @@ namespace iba.Processing
                 // ibaRoot.DatCoord.Product.4 - One time jobs
                 BuildSectionOneTimeJobs();
             }
+
+            SnmpWorker.TmpLogLine("*****************************");
+
         }
 
 
@@ -506,50 +660,50 @@ namespace iba.Processing
                 try
                 {
                     var driveInfo = ObjectsData.GlobalCleanup[i];
-                    driveInfo.Id = (uint)i + 1; 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive
-                    IbaSnmpOid oidDrive = oidSection + driveInfo.Id;
-
+                    IbaSnmpOid oidDrive = oidSection + (uint)(i+1);
+                    driveInfo.Oid = oidDrive;
+                    
                     string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastId()}";
-                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveNameId0}'", mibNameDrive);
+                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive);
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.0 - DriveName
-                        CreateUserValue(oidDrive + 0, driveInfo.DriveNameId0,
+                        CreateUserValue(oidDrive + 0, driveInfo.DriveName,
                             @"Drive Name", mibNameDrive + @"Name",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.1 - Active
-                        CreateUserValue(oidDrive + 1, driveInfo.ActiveId1,
+                        CreateUserValue(oidDrive + 1, driveInfo.Active,
                             @"Active", mibNameDrive + @"Active",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.2 - Size
-                        CreateUserValue(oidDrive + 2, driveInfo.SizeId2,
+                        CreateUserValue(oidDrive + 2, driveInfo.Size,
                             @"Size", mibNameDrive + @"Size",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.3 - Curr. free space
-                        CreateUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceId3,
+                        CreateUserValue(oidDrive + 3, driveInfo.CurrentFreeSpace,
                             @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.4 - Min free space
-                        CreateUserValue(oidDrive + 4, driveInfo.MinFreeSpaceId4,
+                        CreateUserValue(oidDrive + 4, driveInfo.MinFreeSpace,
                             @"Min free space", mibNameDrive + @"MinFreeSpace",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
 
                         // ibaRoot.DatCoord.Product.GlobalCleanup.Drive.5 - Rescan time
-                        CreateUserValue(oidDrive + 5, driveInfo.RescanTimeId5,
+                        CreateUserValue(oidDrive + 5, driveInfo.RescanTime,
                             @"Rescan time", mibNameDrive + @"RescanTime",
                             null,
-                            UserValueCleanupInfoRequested, driveInfo);
+                            GlobalCleanupDriveInfoItemRequested, driveInfo);
                     }
                 }
                 catch
@@ -587,26 +741,25 @@ namespace iba.Processing
                         mibNameJob, out mibNameJobGen,
                         jobInfo);
 
-
                     // create all the rest of general job objects
                     {
                         // ibaRoot.DatCoord.Product.StdJobs.Job.5 - Perm. Failed #
                         CreateUserValue(oidJobGen + 5, jobInfo.PermFailedCount,
                             @"Perm. Failed #", mibNameJobGen + @"PermFailed",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.6 - Timestamp Job started
                         CreateUserValue(oidJobGen + 6, jobInfo.TimestampJobStarted,
                             @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.7 - Last cycle scanning time
                         CreateUserValue(oidJobGen + 7, jobInfo.LastCycleScanningTime,
                             @"Last cycle scanning time", mibNameJobGen + @"LastCycleScanningTime",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.8 - LastProcessing [Folder]
                         IbaSnmpOid oidLastProc = oidJobGen + 8;
@@ -616,23 +769,20 @@ namespace iba.Processing
                         CreateUserValue(oidLastProc + 0, jobInfo.LastProcessingLastDatFileProcessed,
                             @"Last dat-file processed", mibNameJobGen + @"LastFile",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.8.1 - Start Timestamp last processing
                         CreateUserValue(oidLastProc + 1, jobInfo.LastProcessingStartTimeStamp,
                             @"Start timestamp", mibNameJobGen + @"StartStamp",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.8.2 - Finish Timestamp last processing
                         CreateUserValue(oidLastProc + 2, jobInfo.LastProcessingFinishTimeStamp,
                             @"Finish timestamp", mibNameJobGen + @"FinishStamp",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested, jobInfo);
                     }
-
-                    // create tasks
-                    BuildTasks(oidJob, mibNameJob, jobInfo.Tasks);
                 }
                 catch
                 {
@@ -675,23 +825,20 @@ namespace iba.Processing
                         CreateUserValue(oidJobGen + 5, jobInfo.PermFailedCount,
                             @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested);
 
                         // ibaRoot.DatCoord.Product.SchJobs.Job.6 - TimestampLastExecution
                         CreateUserValue(oidJobGen + 6, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested);
 
                         // ibaRoot.DatCoord.Product.SchJobs.Job.7 - TimestampNextExecution
                         CreateUserValue(oidJobGen + 7, jobInfo.TimestampNextExecution,
                             @"Timestamp next execution", mibNameJobGen + @"TimestampNextExecution",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested);
                     }
-
-                    // create tasks
-                    BuildTasks(oidJob, mibNameJob, jobInfo.Tasks);
                 }
                 catch
                 {
@@ -733,10 +880,8 @@ namespace iba.Processing
                         CreateUserValue(oidJobGen + 5, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             null,
-                            UserValueRequested);
+                            JobInfoItemRequested);
                     }
-                    // create tasks
-                    BuildTasks(oidJob, mibNameJob, jobInfo.Tasks);
                 }
                 catch
                 {
@@ -762,6 +907,9 @@ namespace iba.Processing
             string mibNameJob, out string mibNameJobGen,
             SnmpObjectsData.JobInfoBase jobInfo)
         {
+
+            jobInfo.Oid = oidJob;
+
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.0 - General [Folder]
             oidJobGen = oidJob + 0;
             mibNameJobGen = mibNameJob + @"General";
@@ -772,33 +920,36 @@ namespace iba.Processing
                 CreateUserValue(oidJobGen + 0, jobInfo.JobName,
                     @"Job Name", mibNameJobGen + @"Name",
                     null,
-                    UserValueRequested);
+                    JobInfoItemRequested, jobInfo);
 
                 // todo add enum
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.1 - Status
                 CreateUserValue(oidJobGen + 1, jobInfo.Status.ToString(),
                     @"Status", mibNameJobGen + @"Status",
                     null,
-                    UserValueRequested);
+                    JobInfoItemRequested, jobInfo);
 
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.2 - To do #
                 CreateUserValue(oidJobGen + 2, jobInfo.TodoCount,
                     @"Todo #", mibNameJobGen + @"Todo",
                     null,
-                    UserValueRequested);
+                    JobInfoItemRequested, jobInfo);
 
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.3 - Done #
                 CreateUserValue(oidJobGen + 3, jobInfo.DoneCount,
                     @"Done #", mibNameJobGen + @"Done",
                     null,
-                    UserValueRequested);
+                    JobInfoItemRequested, jobInfo);
 
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.4 - Failed #
                 CreateUserValue(oidJobGen + 4, jobInfo.FailedCount,
                     @"Failed #", mibNameJobGen + @"Failed",
                     null,
-                    UserValueRequested);
+                    JobInfoItemRequested, jobInfo);
             }
+
+            // create tasks
+            BuildTasks(oidJob, mibNameJob, jobInfo.Tasks);
         }
 
         #endregion
@@ -841,36 +992,39 @@ namespace iba.Processing
 
         private void BuildTask(IbaSnmpOid oidTask, string mibNameTask, SnmpObjectsData.TaskInfo taskInfo)
         {
+            var parentJob = taskInfo.Parent;
+
+            taskInfo.Oid = oidTask;
+
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.0 - TaskName
             CreateUserValue(oidTask + 0, taskInfo.TaskName,
                 @"Task name", mibNameTask + @"Name",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.1 - Tasktype 
             CreateUserValue(oidTask + 1, taskInfo.TaskType,
                 @"Task type", mibNameTask + @"Type",
                 null,
-                UserValueRequested);
-
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.2 - Success 
             CreateUserValue(oidTask + 2, taskInfo.Success,
                 @"Success", mibNameTask + @"Success",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.3 - DurationOfLastExecution 
             CreateUserValue(oidTask + 3, taskInfo.DurationOfLastExecution,
                 @"Duration of last execution", mibNameTask + @"DurationOfLastExecution",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.4 - CurrentMemoryUsed 
             CreateUserValue(oidTask + 4, taskInfo.CurrentMemoryUsed,
                 @"Current memory used", mibNameTask + @"CurrentMemoryUsed",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             var ci = taskInfo.CleanupInfo;
             if (ci == null)
@@ -888,25 +1042,25 @@ namespace iba.Processing
             CreateUserValue(oidCleanup + 0, ci.LimitChoice.ToString(),
                 @"Limit choice", mibNameCleanup + @"LimitChoice",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.5.1 - Subdirectories
             CreateUserValue(oidCleanup + 1, ci.Subdirectories,
                 @"Subdirectories", mibNameCleanup + @"Subdirectories",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.5.2 - FreeDiskSpace
-            CreateUserValue(oidCleanup + 2, ci.Subdirectories,
+            CreateUserValue(oidCleanup + 2, ci.FreeDiskSpace,
                 @"Free disk space", mibNameCleanup + @"FreeDiskSpace",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.5.3 - UsedDiskSpace
             CreateUserValue(oidCleanup + 3, ci.UsedDiskSpace,
                 @"Used disk space", mibNameCleanup + @"UsedDiskSpace",
                 null,
-                UserValueRequested);
+                JobInfoItemRequested, parentJob);
         }
 
         #endregion
@@ -958,37 +1112,70 @@ namespace iba.Processing
 
         #endregion
 
-        private void UserValueCleanupInfoRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        private void GlobalCleanupDriveInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
             var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
 
             if (driveInfo == null)
             {
+                // should not happen
+                args.Value = null;
                 return;
             }
 
             // refresh data if it is too old, and rebuild all the objects if necessary
-            RefreshGlobalCleanup(driveInfo);
+            RefreshGlobalCleanupDriveInfo(driveInfo);
         }
-        private void UserValueRequested(object sender, IbaSnmpObjectValueRequestedEventArgs ibaSnmpObjectValueRequestedEventArgs)
-        {
-            // refresh data if it is too old, and rebuild all the objects if necessary
-            CheckSnmpTreeStructure();
 
-            // todo this will be removed if all the specialized handlers appear
-            if (!ObjectsData.IsUpToDate())
+
+        private void JobInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        {
+            var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
+
+            if (jobInfo == null)
             {
-                RebuildTreeCompletely();
+                args.Value = null;
+                // should not happen
+                return;
             }
-        }
 
-        private void RegisterProductObjects()
-        {
-            // todo should be done differently
-            CheckSnmpTreeStructure();
-
+            // refresh data if it is too old, and rebuild all the objects if necessary
+            RefreshJobInfo(jobInfo);
         }
-        
+        //private void TaskInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        //{
+        //    var taskInfo = args.Tag as SnmpObjectsData.TaskInfo;
+
+        //    if (taskInfo == null)
+        //    {
+        //        // should not happen
+        //        args.Value = null;
+        //        return;
+        //    }
+
+        //    // refresh data if it is too old, and rebuild all the objects if necessary
+        //    RefreshTaskInfo(taskInfo);
+        //}
+
+        //private void UserValueRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        //{
+        //    // refresh data if it is too old, and rebuild all the objects if necessary
+        //    CheckSnmpTreeStructure();
+
+        //    var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
+        //    var stdJobInfo = args.Tag as SnmpObjectsData.StandardJobInfo;
+        //    if (stdJobInfo != null)
+        //    {
+        //        var done = stdJobInfo.DoneCount;
+        //        done = done;
+        //    }
+
+        //    // todo this will be removed if all the specialized handlers appear
+        //    if (!ObjectsData.IsUpToDate())
+        //    {
+        //        RebuildTreeCompletely();
+        //    }
+        //}
 
         #endregion
 

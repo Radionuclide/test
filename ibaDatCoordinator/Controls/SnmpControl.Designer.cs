@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
@@ -82,6 +82,7 @@
             this.buttonObjectsApply = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonImitateCfgInvalidated = new System.Windows.Forms.Button();
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
@@ -481,6 +482,7 @@
             // gbObjects
             // 
             this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
+            this.gbObjects.Controls.Add(this.buttonImitateCfgInvalidated);
             this.gbObjects.Controls.Add(this.buttonObjectsRefresh);
             this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
             this.gbObjects.Controls.Add(this.buttonObjectsApply);
@@ -634,13 +636,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tvObjects.Location = new System.Drawing.Point(6, 46);
             this.tvObjects.Name = "tvObjects";
-            treeNode1.Name = "NodeRoot";
-            treeNode1.Text = "Root";
+            treeNode2.Name = "NodeRoot";
+            treeNode2.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvObjects.Size = new System.Drawing.Size(691, 434);
             this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
+            // 
+            // buttonImitateCfgInvalidated
+            // 
+            this.buttonImitateCfgInvalidated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonImitateCfgInvalidated.BackColor = System.Drawing.Color.LavenderBlush;
+            this.buttonImitateCfgInvalidated.Location = new System.Drawing.Point(63, 19);
+            this.buttonImitateCfgInvalidated.Name = "buttonImitateCfgInvalidated";
+            this.buttonImitateCfgInvalidated.Size = new System.Drawing.Size(153, 23);
+            this.buttonImitateCfgInvalidated.TabIndex = 7;
+            this.buttonImitateCfgInvalidated.Text = "Event CfgInvalidated";
+            this.buttonImitateCfgInvalidated.UseVisualStyleBackColor = false;
+            this.buttonImitateCfgInvalidated.Click += new System.EventHandler(this.buttonImitateCfgInvalidated_Click);
             // 
             // SnmpControl
             // 
@@ -727,5 +741,6 @@
         private System.Windows.Forms.TextBox tbObjType;
         private System.Windows.Forms.Button buttonObjectsApply;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.Button buttonImitateCfgInvalidated;
     }
 }

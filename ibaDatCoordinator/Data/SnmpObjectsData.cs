@@ -5,12 +5,17 @@ using IbaSnmpLib;
 
 namespace iba.Data
 {
-
     // todo move inside SnmpObjectsData
     internal abstract class SnmpObjectWithATimeStamp
     {
-        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(5);
+        public IbaSnmpOid Oid;
 
+        /// <summary> A measure to tell whether data is fresh or outdated </summary>
+        public static TimeSpan AgeThreshold { get; set; }
+            // by default count all data as too old
+            = TimeSpan.FromSeconds(0);
+
+        /// <summary> When data has been last time updated </summary>
         public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
 
         public bool IsUpToDate()
@@ -20,7 +25,8 @@ namespace iba.Data
                 return false;
             }
             TimeSpan age = DateTime.Now - TimeStamp;
-            // if data is not too old, then it is okay
+            
+            // if data younger than Threshold, then it is treated as fresh
             return age < AgeThreshold;
         }
 
@@ -40,9 +46,6 @@ namespace iba.Data
     {
         public bool IsStructureValid { get; set; }
 
-        public int _tmp_reset_cnt { get; private set; }
-        public int _tmp_updated_cnt { get; set; }
-
         public SnmpObjectsData()
         {
             Reset();
@@ -56,9 +59,7 @@ namespace iba.Data
             OneTimeJobs.Clear();
             EventBasedJobs.Clear();
 
-            // tmp
             // todo remove
-            _tmp_reset_cnt++;
             SnmpWorker.TmpLogLine("SnmpObjectsData.Reset()");
         }
 
@@ -88,47 +89,43 @@ namespace iba.Data
 
         internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
-            /// <summary> least id in the snmp oid of this item </summary>
-            public uint Id;
-
             /// <summary> Oid 0 </summary>
-            public string DriveNameId0;
+            public string DriveName;
 
             /// <summary> Oid 1 </summary>
-            public bool ActiveId1;
+            public bool Active;
 
             /// <summary> Oid 2 </summary>
-            public uint SizeId2;
+            public uint Size;
 
             /// <summary> Oid 3 </summary>
-            public uint CurrentFreeSpaceId3;
+            public uint CurrentFreeSpace;
 
             /// <summary> Oid 4 </summary>
-            public uint MinFreeSpaceId4;
+            public uint MinFreeSpace;
 
             /// <summary> Oid 5 </summary>
-            public uint RescanTimeId5;
+            public uint RescanTime;
+
+            public override string ToString()
+            {
+                return $@"{DriveName} [A:{Active}, {CurrentFreeSpace}/{Size}";
+            }
         }
 
-        internal class LocalCleanupInfo
-        {
-            // todo discuss this oid
-            /// <summary> Oid 0 </summary>
-            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
-
-            /// <summary> Oid 1 </summary>
-            public uint Subdirectories;
-
-            /// <summary> Oid 2 </summary>
-            public uint FreeDiskSpace;
-
-            /// <summary> Oid 3 </summary>
-            public uint UsedDiskSpace;
-        }
+        //internal enum TaskType
+        //{
+        //    // todo
+        //}
 
         /// <summary> OID 1...n - one struct per for each task </summary>
-        internal class TaskInfo : SnmpObjectWithATimeStamp
+        internal class TaskInfo //: SnmpObjectWithATimeStamp
         {
+            public IbaSnmpOid Oid;
+            
+            /// <summary> A Job the task belongs to </summary>
+            public JobInfoBase Parent;
+
             /// <summary> Oid 0 </summary>
             public string TaskName;
 
@@ -147,6 +144,26 @@ namespace iba.Data
 
             /// <summary> Oid 5, OPTIONAL, can be null for tasks that have no cleanup options </summary>
             public LocalCleanupInfo CleanupInfo;
+
+            public override string ToString()
+            {
+                return $@"{TaskName} [{TaskType}, {Oid}, {Parent.JobName}]";
+            }
+        }
+
+        internal class LocalCleanupInfo
+        {
+            /// <summary> Oid 0 </summary>
+            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
+
+            /// <summary> Oid 1 </summary>
+            public uint Subdirectories;
+
+            /// <summary> Oid 2 </summary>
+            public uint FreeDiskSpace;
+
+            /// <summary> Oid 3 </summary>
+            public uint UsedDiskSpace;
         }
 
         /// <summary> OID ...2 Standard Jobs </summary>
@@ -176,6 +193,12 @@ namespace iba.Data
 
             /// <summary> Oid 1...n, where n - size of the list</summary>
             public List<TaskInfo> Tasks;
+
+            public override string ToString()
+            {
+                string tasksString = (Tasks?.Count ?? 0).ToString();
+                return $@"{JobName} [{Status}, {TodoCount}/{DoneCount}/{FailedCount}, T:{tasksString}]";
+            }
         }
 
         internal class StandardJobInfo : JobInfoBase

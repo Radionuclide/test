@@ -213,10 +213,12 @@ namespace iba.Controls
             snmpWorker?.CheckSnmpTreeStructure();
         }
 
-        private void buttonCleanLog_Click(object sender, EventArgs e)
+        private void buttonImitateCfgInvalidated_Click(object sender, EventArgs e)
         {
-        }
+            TaskManager.Manager.SnmpWorker.TaskManager_SnmpConfigurationChanged(null, null);
 
+        }
+        
         #endregion
 
 
@@ -260,7 +262,7 @@ namespace iba.Controls
 
             _tmpCntDataLoaded++;
             label1.Text = $@"Data Loaded {_tmpCntDataLoaded}";
-            SnmpWorker.TmpLogLine($@"Data Loaded { _tmpCntDataLoaded}");
+            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Loaded { _tmpCntDataLoaded}");
         }
 
         public void SaveData()
@@ -270,7 +272,7 @@ namespace iba.Controls
             // todo ask Michael. Save = Load * 2. why?
             _tmpCndDataSaved++;
             label3.Text = $@"Data Saved {_tmpCndDataSaved}";
-            SnmpWorker.TmpLogLine($@"Data Saved { _tmpCndDataSaved}");
+            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data Saved { _tmpCndDataSaved}");
         }
 
         public void LeaveCleanup()
@@ -287,7 +289,7 @@ namespace iba.Controls
 
             _tmpCntDataCleaned++;
             label2.Text = $@"Data cleaned {_tmpCntDataCleaned}";
-            SnmpWorker.TmpLogLine($@"Data cleaned { _tmpCntDataCleaned}");
+            SnmpWorker.TmpLogLine($@"SnmpCtrl. Data cleaned { _tmpCntDataCleaned}");
         }
 
         #endregion
@@ -446,11 +448,15 @@ namespace iba.Controls
 
             // now add the new contents
             var worker = TaskManager.Manager?.SnmpWorker;
+
             IbaSnmp ibaSnmp = worker?.IbaSnmp;
             if (ibaSnmp == null)
             {
                 return;
             }
+
+            // uppdate tree if necessary
+            worker.CheckSnmpTreeStructure();
 
             lock (worker.LockObject)
             {
@@ -600,6 +606,8 @@ namespace iba.Controls
                 return;
             }
 
+            worker.CheckSnmpTreeStructure();
+
             var od = worker.ObjectsData;
             IbaSnmp ibaSnmp = worker.IbaSnmp;
             if (od == null || ibaSnmp == null)
@@ -728,6 +736,7 @@ namespace iba.Controls
                 eventArgs.Name = metadata.MibDescription;
             }
         }
+
 
         #endregion
 
