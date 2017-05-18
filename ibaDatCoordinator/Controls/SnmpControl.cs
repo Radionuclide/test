@@ -477,15 +477,40 @@ namespace iba.Controls
                     var node = parentNode.Nodes.Add(oid.ToString(), caption, ImageIndexLeaf, ImageIndexLeaf);
                     node.Tag = oid;
                 }
-
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProduct)?.Expand();
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific)?.Expand();
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 2)?.Expand(); // std job
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 3)?.Expand(); // sch job
-                FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 4)?.Expand(); // one t job
             }
+
+            // expand some nodes
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProduct)?.Expand();
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific)?.Expand();
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 2)?.Expand(); // std job
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 3)?.Expand(); // sch job
+            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 4)?.Expand(); // one t job
+
+            // navigate to last selected oid if possible
+            if (_lastOid == null)
+            {
+                return;
+            }
+
+            var parents = _lastOid.GetParents();
+            foreach (IbaSnmpOid oid in parents)
+            {
+                try
+                {
+                    FindSingleNodeByOid(worker, oid)?.Expand();
+                }
+                catch
+                {
+                    // just go on with others
+                }
+            }
+
+            tvObjects.SelectedNode = FindSingleNodeByOid(worker, _lastOid);
+
+            //tvObjects.Select();
+            tvObjects.Focus();
         }
 
         private TreeNode FindSingleNodeByOid(SnmpWorker worker, IbaSnmpOid oid)
@@ -591,12 +616,18 @@ namespace iba.Controls
             }
         }
 
+        /// <summary> The last Oid that was selected by the user </summary>
+        private IbaSnmpOid _lastOid;
+
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
             tbObjOid.Text = "";
             tbObjValue.Text = "";
             tbObjMibName.Text = "";
             tbObjType.Text = "";
+
+            // reset last selected oid
+            _lastOid = null;
 
             // get library  
             var worker = TaskManager.Manager?.SnmpWorker;
@@ -639,6 +670,9 @@ namespace iba.Controls
                 return;
             }
 
+            // remember last selected oid
+            // do this only now, after possible call to RebuildObjectsTree() to prevent recursion
+            _lastOid = oid;
 
             if (objInfo != null)
             {
