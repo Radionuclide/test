@@ -66,7 +66,7 @@ namespace iba.Controls
             try
             {
                 IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
-                ibaSnmp.Start();
+                ibaSnmp.Stop();
             }
             catch (Exception ex)
             {
@@ -365,26 +365,27 @@ namespace iba.Controls
         
         private void UpdateStatusText()
         {
-            IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
-            if (_data == null || ibaSnmp == null)
-            {
-                return;
-            }
-
-            // todo use resource text
-            // todo add errored status
-            // todo move to manager
-
-            tbStatus.Text = ibaSnmp.IsStarted ? "Started" : "Stopped";
-            tbStatus.BackColor = ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
+            SnmpWorker snmpWorker = TaskManager.Manager.SnmpWorker;
+            ApplyStatusToTextBox(snmpWorker, tbStatus);
         }
 
+        static void ApplyStatusToTextBox(SnmpWorker snmpWorker, TextBox tb)
+        {
+            tb.Text = snmpWorker.StatusString;
+            var status = snmpWorker.Status;
+            tb.BackColor =
+                status == SnmpWorkerStatus.Started
+                    ? Color.LimeGreen // running
+                    : (status == SnmpWorkerStatus.Stopped
+                        ? Color.LightGray // stopped
+                        : Color.Red); // error
+        }
 
         #endregion
 
 
         #region Objects
-        
+
         public void InitializeObjectsTree()
         {
             TreeNodeCollection nodes = tvObjects.Nodes;

@@ -10,13 +10,19 @@ using IbaSnmpLib;
 
 namespace iba.Processing
 {
+    public enum SnmpWorkerStatus
+    {
+        Started,
+        Stopped,
+        Errored,
+    }
+
     public class SnmpWorker
     {
         public IbaSnmp IbaSnmp { get; } =
             new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
 
         private SnmpData _snmpData;
-
         public SnmpData SnmpData
         {
             get { return _snmpData; }
@@ -33,23 +39,37 @@ namespace iba.Processing
             }
         }
 
+        public SnmpWorkerStatus Status { get; private set; } = SnmpWorkerStatus.Stopped;
+        public string StatusString { get; private set; }
+
         public void RestartAgent()
         {
+            Status = SnmpWorkerStatus.Errored;
+            StatusString = @"";
+
             try
             {
                 IbaSnmp.Stop();
+                Status = SnmpWorkerStatus.Stopped;
+                // todo to resource
+                StatusString = "SNMP server is disabled";
 
                 ApplyConfigurationToIbaSnmp();
 
                 if (_snmpData.Enabled)
                 {
                     IbaSnmp.Start();
+                    Status = SnmpWorkerStatus.Started;
+                    // todo to resource
+                    StatusString = $"SNMP server running on port {_snmpData.Port}";
+                    //SNMP server is disabled
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                Status = SnmpWorkerStatus.Errored;
+                // todo to resource
+                StatusString = $"Starting the SNMP server failed with error: {ex.Message}";
             }
         }
 
