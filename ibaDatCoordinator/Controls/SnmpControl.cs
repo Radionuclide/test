@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using iba.Data;
+using iba.Logging;
 using iba.Processing;
 using iba.Properties;
 using IbaSnmpLib;
@@ -47,14 +48,6 @@ namespace iba.Controls
             tvObjectsImageList.Images.Add(Resources.batchfile_running); // todo use another one
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
-
-            // todo
-            // fill combo boxes not by hand but from enums 
-            // to ensure reliability
-            //for (int i = (int)IbaSnmpAuthenticationAlgorithm.Md5; i < (int)IbaSnmpAuthenticationAlgorithm.Sha; i++)
-            //{
-            //    cmbAuthentication.Items;
-            //}
         }
 
         #endregion
@@ -105,8 +98,7 @@ namespace iba.Controls
             }
             catch (Exception ex)
             {
-                // todo details
-                MessageBox.Show(ex.ToString());
+                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.LoadData() exception: " + ex.Message);
             }
 
             _tmpCntDataLoaded++;
@@ -115,7 +107,17 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+            buttonConfigurationApply.PerformClick();
+            //try
+            //{
+            //    ConfigurationFromControlsToData();
+            //    // set data to manager and restart snmp agent if necessary
+            //    TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.SaveData() exception: " + ex.Message);
+            //}
 
             // todo ask Michael. Save = Load * 2. why?
             _tmpCndDataSaved++;
@@ -139,12 +141,11 @@ namespace iba.Controls
             {
                 ConfigurationFromControlsToData();
                 // set data to manager and restart snmp agent if necessary
-                ApplyConfigurationToManager();
+                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
             }
             catch (Exception ex)
             {
-                // todo details
-                MessageBox.Show(ex.ToString());
+                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.buttonConfigurationApply_Click() exception: " + ex.Message);
             }
         }
 
@@ -163,20 +164,20 @@ namespace iba.Controls
 
             // copy default data to current data
             // but not all data, just configuration data
+            // and do not reset enabled/disabled
             _data.Port = defData.Port;
             _data.V1V2Security = defData.V1V2Security;
             _data.V3Security = defData.V3Security;
-            // do not reset enabled/disabled : _data.Enabled = ...
 
             try
             {
                 ConfigurationFromDataToControls();
-                ApplyConfigurationToManager();
+                // set data to manager and restart snmp agent if necessary
+                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
             }
             catch (Exception ex)
             {
-                // todo details
-                MessageBox.Show(ex.ToString());
+                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.buttonConfigurationReset_Click() exception: " + ex.Message);
             }
         }
 
@@ -222,21 +223,7 @@ namespace iba.Controls
             cmbAuthentication.SelectedIndex = (int)v3S.AuthAlgorithm;
             cmbEncryption.SelectedIndex = (int)v3S.EncrAlgorithm;
         }
-
-        // todo rename and move if it will concern objects also
-        private void ApplyConfigurationToManager()
-        {
-            try
-            {
-                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
-            }
-            catch (Exception ex)
-            {
-                // todo details
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
+        
         #endregion
 
 
@@ -480,10 +467,10 @@ namespace iba.Controls
             {
                 // should not happen 
                 // because cfg theoretically should not change while we are on the snmp page
-                // but nevertheles...
-                // todo log warning here
 
-                SnmpWorker.TmpLogLine("WARNING! tvObjects_AfterSelect() RebuildTreeIfItIsInvalid=ture");
+                LogData.Data.Logger.Log(Level.Debug, @"SnmpControl.tvObjects_AfterSelect(). " +
+                    "SNMP tree was changed since last data loading. This should not happen. Rebuilding the tree.");
+                
                 // rebuild our tree according to worker's tree
                 RebuildObjectsTree();
                 // do nothing else
@@ -607,7 +594,6 @@ namespace iba.Controls
                 eventArgs.Name = metadata.MibDescription;
             }
         }
-
 
 
         #endregion
