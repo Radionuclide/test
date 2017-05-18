@@ -185,6 +185,7 @@
     </Compile>
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
     <Compile Include="Processing\GlobalCleanupManager.cs" />
+    <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -52,7 +52,8 @@ namespace iba.Controls
         {
             try
             {
-                _data.IbaSnmp.Start();
+                IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
+                ibaSnmp.Start();
             }
             catch (Exception ex)
             {
@@ -64,7 +65,8 @@ namespace iba.Controls
         {
             try
             {
-                _data.IbaSnmp.Stop();
+                IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
+                ibaSnmp.Start();
             }
             catch (Exception ex)
             {
@@ -78,6 +80,11 @@ namespace iba.Controls
         /// <returns></returns>
         public string _tmp___GetLibraryDescriptionString(IbaSnmp _lib)
         {
+            if (_lib == null)
+            {
+                return "";
+            }
+
             var str = "";
 
             // general
@@ -184,15 +191,17 @@ namespace iba.Controls
         #region IPropertyPane Members
 
         private SnmpData _data;
-        private IbaSnmp _ibaSnmp;
+        //private IbaSnmp _ibaSnmp;
+
         private bool _isUserModeActive;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            _data = datasource as SnmpData;
-            _ibaSnmp = _data?.IbaSnmp;
+            _data = datasource as SnmpData; // clone of current Manager's data
+            //_ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
 
-            if (_data == null || _ibaSnmp == null)
+            this.Enabled = _data != null;
+            if (_data == null)
             {
                 return;
             }
@@ -216,7 +225,6 @@ namespace iba.Controls
             }
 
             timerStatus.Enabled = true;
-
             _isUserModeActive = true;
         }
 
@@ -245,7 +253,6 @@ namespace iba.Controls
             try
             {
                 ConfigurationFromControlsToData();
-                ConfigurationApplyToIbaSnmp();
             }
             catch (Exception ex)
             {
@@ -279,7 +286,11 @@ namespace iba.Controls
             v3S.EncryptionKey = tbEncryptionKey.Text;
 
             _data.V3Security = v3S;
+
+            // set data to manager and restart snmp agent if necessary
+            ApplyConfigurationToManager();
         }
+
         private void ConfigurationFromDataToControls()
         {
             // general
@@ -295,13 +306,7 @@ namespace iba.Controls
             cmbAuthentication.SelectedIndex = (int)v3S.AuthAlgorithm;
             cmbEncryption.SelectedIndex = (int)v3S.EncrAlgorithm;
         }
-
-        private void ConfigurationApplyToIbaSnmp()
-        {
-            var x = _ibaSnmp;
-
-        }
-
+        
         #endregion
 
 
@@ -314,12 +319,13 @@ namespace iba.Controls
             label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
 
 
-            IbaSnmp ibaSnmp = _data.IbaSnmp;
-            if (_data == null || _ibaSnmp == null)
+            if (_data == null)
             {
                 tbDebug.Text = @"ibaSnmp == null";
                 return;
             }
+            IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
+            if (ibaSnmp!=null)
 
             tbDebug.Text = _tmp___GetLibraryDescriptionString(ibaSnmp);
 
@@ -328,15 +334,18 @@ namespace iba.Controls
         
         private void UpdateStatusText()
         {
-            if (_data == null || _ibaSnmp == null)
+            IbaSnmp ibaSnmp = TaskManager.Manager.SnmpWorker.IbaSnmp;
+            if (_data == null || ibaSnmp == null)
             {
                 return;
             }
 
             // todo use resource text
             // todo add errored status
-            tbStatus.Text = _ibaSnmp.IsStarted ? "Started" : "Stopped";
-            tbStatus.BackColor = _ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
+            // todo move to manager
+
+            tbStatus.Text = ibaSnmp.IsStarted ? "Started" : "Stopped";
+            tbStatus.BackColor = ibaSnmp.IsStarted ? Color.LimeGreen : Color.Gray;
         }
 
 
@@ -350,7 +359,7 @@ namespace iba.Controls
             TreeNodeCollection nodes = tvObjects.Nodes;
             nodes.Clear();
 
-            if (_data == null || _ibaSnmp == null)
+            if (_data == null)
             {
                 return;
             }
@@ -366,5 +375,18 @@ namespace iba.Controls
         }
 
         #endregion
+
+        private void ApplyConfigurationToManager()
+        {
+            try
+            {
+                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+            }
+            catch (Exception ex)
+            {
+                // todo details
+                MessageBox.Show(ex.ToString());
+            }
+        }
     }
 }

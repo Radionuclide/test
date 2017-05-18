@@ -310,22 +310,14 @@ namespace iba.Processing
         
         #region Snmp Data - added by Kolesnik
 
-        // ReSharper disable once InconsistentNaming
-        private readonly IbaSnmpLib.IbaSnmp m_IbaSnmp =
-            new IbaSnmpLib.IbaSnmp(IbaSnmpLib.IbaSnmpProductId.IbaDatCoordinator);
-        private SnmpData m_SnmpData;
-        public virtual IbaSnmpLib.IbaSnmp IbaSnmp => m_IbaSnmp;
+        public SnmpWorker SnmpWorker { get; } = new SnmpWorker();
 
+        /// <summary> Gets/sets data of SnmpWorker. 
+        /// If data is set, then restart of snmp agent is performed if necessary. </summary>
         public virtual SnmpData SnmpData
         {
-            get { return m_SnmpData; }
-            set
-            {
-                m_SnmpData = value;
-                // we have only one existing instance of IbaSnmp
-                // every copy of SnmpData should reference it
-                m_SnmpData.IbaSnmp = m_IbaSnmp;
-            }
+            get { return SnmpWorker.SnmpData; }
+            set { SnmpWorker.SnmpData = value; }
         }
 
         #endregion
@@ -354,9 +346,6 @@ namespace iba.Processing
         {
             m_workers = new SortedDictionary<ConfigurationData, ConfigurationWorker>();
             m_watchdog = new TCPWatchdog();
-            // added by kolesnik - begin
-            m_SnmpData = new SnmpData {IbaSnmp = m_IbaSnmp};
-            // added by kolesnik - end
             m_doPostPone = true;
             m_postponeMinutes = 5;
             m_processPriority = (int)System.Diagnostics.ProcessPriorityClass.Normal;

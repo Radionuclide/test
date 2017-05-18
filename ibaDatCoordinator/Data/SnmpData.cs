@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using IbaSnmpLib;
 
 namespace iba.Data
@@ -14,10 +10,6 @@ namespace iba.Data
         {
             ResetToDefaults();
         }
-
-        [XmlIgnore]
-        /// <summary> reference to the SNMP agent </summary>
-        public IbaSnmp IbaSnmp { get; set; }
 
         public bool Enabled { get; set; }
 
@@ -45,7 +37,6 @@ namespace iba.Data
 
         public void ResetToDefaults()
         {
-            IbaSnmp = null;
             Enabled = false;
 
             Port = IbaSnmpLib.IbaSnmp.DefaultLocalPortBase - 1 + (int)IbaSnmpProductId.IbaDatCoordinator;
