@@ -64,10 +64,10 @@ namespace iba.Processing
             // todo localize
             StatusString = "Waiting for delayed initialisation...";
 
-            new Task(DelayedInitialisation).Start();
+            new Task(DelayedInit).Start();
         }
 
-        private void DelayedInitialisation()
+        private void DelayedInit()
         {
             for (int i = InitialisationDelayInSeconds - 1; i >= 0; i--)
             {
@@ -78,6 +78,11 @@ namespace iba.Processing
                     new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
             }
 
+            Init();
+        }
+
+        public void Init()
+        {
             IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
             IbaSnmp.DosProtectionInternal.Enabled = false;
             IbaSnmp.DosProtectionExternal.Enabled = false;
