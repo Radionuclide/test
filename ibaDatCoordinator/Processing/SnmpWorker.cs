@@ -53,7 +53,6 @@ namespace iba.Processing
         public readonly object LockObject = new object();
 
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
-        private const int InitialisationDelayInSeconds = 1;
 
         #region tmpLog
 
@@ -643,7 +642,7 @@ namespace iba.Processing
                 IbaSnmp.SetUserValue(oidTask + 1, taskInfo.TaskType);
                 IbaSnmp.SetUserValue(oidTask + 2, taskInfo.Success);
                 IbaSnmp.SetUserValue(oidTask + 3, taskInfo.DurationOfLastExecution);
-                IbaSnmp.SetUserValue(oidTask + 4, taskInfo.CurrentMemoryUsed);
+                IbaSnmp.SetUserValue(oidTask + 4, taskInfo.MemoryUsedForLastExecution);
 
                 var ci = taskInfo.CleanupInfo;
                 if (ci != null)
@@ -672,7 +671,7 @@ namespace iba.Processing
             }
         }
 
-        public void RebuildTreeCompletely()
+        public bool RebuildTreeCompletely()
         {
             SnmpWorker.TmpLogLine("*****************************");
             SnmpWorker.TmpLogLine("SnmpWrkr. RebuildTreeCompletely");
@@ -681,7 +680,7 @@ namespace iba.Processing
             IbaSnmp ibaSnmp = man?.SnmpWorker.IbaSnmp;
             if (ibaSnmp == null)
             {
-                return;
+                return false; // rebuild failed
             }
 
             lock (LockObject)
@@ -694,10 +693,14 @@ namespace iba.Processing
                 // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
                 IsStructureValid = true;
 
-                man.SnmpRebuildObjectsData(ObjectsData);
+                ibaSnmp.DeleteAllUserValues();
+
+                if (!man.SnmpRebuildObjectsData(ObjectsData))
+                {
+                    return false; // rebuild failed
+                }
 
                 // todo check more thoroughly probabale dead lock
-                ibaSnmp.DeleteAllUserValues();
 
                 // todo Clean OidCaptions for all product-specific OIDs
 
@@ -718,7 +721,7 @@ namespace iba.Processing
             }
 
             SnmpWorker.TmpLogLine("*****************************");
-
+            return true; // rebuilt successfully
         }
 
 
@@ -1102,8 +1105,8 @@ namespace iba.Processing
                 JobInfoItemRequested, parentJob);
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.4 - CurrentMemoryUsed 
-            CreateUserValue(oidTask + 4, taskInfo.CurrentMemoryUsed,
-                @"Current memory used", mibNameTask + @"CurrentMemoryUsed",
+            CreateUserValue(oidTask + 4, taskInfo.MemoryUsedForLastExecution,
+                @"Memory used for last execution", mibNameTask + @"LastMemoryUsed",
                 null,
                 JobInfoItemRequested, parentJob);
 

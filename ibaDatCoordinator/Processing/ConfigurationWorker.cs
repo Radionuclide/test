@@ -2344,7 +2344,7 @@ namespace iba.Processing
         internal class TaskLastExecutionData
         {
             public bool Success { get; set; }
-            public uint Duration { get; set; }
+            public double DurationMs { get; set; }
             public uint MemoryUsed { get; set; }
         }
 
@@ -2715,6 +2715,7 @@ namespace iba.Processing
         {
             // added by kolesnik - begin
             DateTime processingStarted = DateTime.Now;
+            uint memoryUsed = 0;
             // added by kolesnik - end
 
             lock (m_sd.DatFileStates)
@@ -2729,11 +2730,17 @@ namespace iba.Processing
             {
                 Report(DatFile, task as ReportData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                // added by kolesnik - begin
+                memoryUsed = ((ReportData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is ExtractData)
             {
                 Extract(DatFile, task as ExtractData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);               
+                // added by kolesnik - begin
+                memoryUsed = ((ExtractData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is BatchFileData)
             {
@@ -2743,6 +2750,9 @@ namespace iba.Processing
             {
                 IfTask(DatFile, task as IfTaskData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                // added by kolesnik - begin
+                memoryUsed = ((IfTaskData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is SplitterTaskData)
             {
@@ -2823,30 +2833,29 @@ namespace iba.Processing
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
+
+                // added by kolesnik - begin
+                memoryUsed =
+                    (((CustomTaskData) task).Plugin as IPluginTaskDataIbaAnalyzer)?.
+                        MonitorData.MemoryUsed
+                    ?? 0;
+                // added by kolesnik - end
+
             }
             else if (task is CustomTaskDataUNC)
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
             }
+
             // added by kolesnik - begin
-            DateTime processingFinished = DateTime.Now;
 
-            uint executionDuration = (uint)((processingFinished - processingStarted).TotalMilliseconds);
-            if (executionDuration > 500)
+            TaskLastExecutionData lastExec = new TaskLastExecutionData
             {
-                ;
-            }
-            TaskLastExecutionData lastExec = new TaskLastExecutionData();
-            //if (!TaskLastExecutionDict.ContainsKey(task))
-            //{
-            //    lastExec = ;
-            //}
-            //else
-            //{
-            //    lastExec = TaskLastExecutionDict[task];
-            //}
+                DurationMs = (DateTime.Now - processingStarted).TotalMilliseconds,
+                MemoryUsed = memoryUsed
+            };
 
-            lastExec.Duration = executionDuration;
+
             lock (m_sd.DatFileStates)
             {
                 lastExec.Success = false;
@@ -2854,10 +2863,23 @@ namespace iba.Processing
                     && m_sd.DatFileStates[DatFile].States.ContainsKey(task))
                 {
                     DatFileStatus.State state = m_sd.DatFileStates[DatFile].States[task];
-                    lastExec.Success = state == DatFileStatus.State.COMPLETED_TRUE || state == DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    lastExec.Success = state == DatFileStatus.State.COMPLETED_TRUE ||
+                                       state == DatFileStatus.State.COMPLETED_SUCCESFULY;
                 }
             }
+
+            try
+            {
             TaskLastExecutionDict[task] = lastExec;
+            }
+            catch 
+            {
+                // can happen if configuration has changed
+                // and task became incomparable.
+                // clear it and try again
+                TaskLastExecutionDict.Clear();
+                TaskLastExecutionDict[task] = lastExec;
+            }
             // added by kolesnik - end
 
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;

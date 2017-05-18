@@ -73,6 +73,12 @@ namespace iba.Processing
             try
             {
                 ibaAnalyzerCall();
+                // added by kolesnik - begin
+                // use increase-only setter to calculate the max amount
+                // between current value and 
+                // all the intermediate measurements @ OnMemoryTimerTick() (if they exist)
+                m_data.MemoryUsed = (uint)(m_process.PrivateMemorySize64 >> 20);
+                // added by kolesnik - end        
             }
             catch
             {
@@ -116,6 +122,12 @@ namespace iba.Processing
                 if (m_process == null || m_process.HasExited) return false;
                 m_process.Refresh();
                 long mem = m_process.PrivateMemorySize64;
+                // added by kolesnik - begin
+                // use increase-only setter to calculate the max amount
+                // between current value and all the previous values 
+                m_data.MemoryUsed = (uint) (mem >> 20);
+                // added by kolesnik - end
+
                 if (mem > ((long)(1 << 20) * (long) m_data.MemoryLimit))
                 {
                     m_process.Kill();

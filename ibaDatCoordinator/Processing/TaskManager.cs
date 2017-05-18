@@ -626,11 +626,18 @@ namespace iba.Processing
 
                 // lask execution - success, duration, memory
                 ConfigurationWorker.TaskLastExecutionData lastExec;
-                if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+                try
                 {
-                    taskInfo.Success = lastExec.Success;
-                    taskInfo.DurationOfLastExecution = lastExec.Duration;
-                    taskInfo.CurrentMemoryUsed = lastExec.MemoryUsed; //4
+                    if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+                    {
+                        taskInfo.Success = lastExec.Success; // 2
+                        taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0); // 3
+                        taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed; // 4
+                    }
+                }
+                catch
+                {
+                    worker.TaskLastExecutionDict.Clear();
                 }
 
                 // default is just a type name

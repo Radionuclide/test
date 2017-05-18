@@ -184,11 +184,11 @@ namespace iba.Data
             /// <summary> Oid 2 </summary>
             public bool Success;
 
-            /// <summary> Oid 3 </summary>
+            /// <summary> Oid 3, in seconds </summary>
             public uint DurationOfLastExecution;
 
-            /// <summary> Oid 4 </summary>
-            public uint CurrentMemoryUsed;
+            /// <summary> Oid 4 in megabytes </summary>
+            public uint MemoryUsedForLastExecution;
 
             /// <summary> Oid 5, OPTIONAL, can be null for tasks that have no cleanup options </summary>
             public LocalCleanupInfo CleanupInfo;
@@ -200,7 +200,7 @@ namespace iba.Data
                 TaskType = "";
                 Success = false;
                 DurationOfLastExecution = 0;
-                CurrentMemoryUsed = 0;
+                MemoryUsedForLastExecution = 0;
                 CleanupInfo = null;
             }
 
