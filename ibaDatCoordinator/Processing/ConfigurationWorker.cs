@@ -2336,8 +2336,18 @@ namespace iba.Processing
 
         private DateTime? m_startTimeFromDatFile;
 
+        // added by kolesnik - begin
+        public DateTime LastSuccessfulFileStartProcessingTimeStamp { get; private set; } = DateTime.MinValue;
+        public DateTime LastSuccessfulFileFinishProcessingTimeStamp { get; private set; } = DateTime.MinValue;
+        public string LastSuccessfulFileName { get; private set; } = "";
+        // added by kolesnik - end
+
         private void ProcessDatfile(string InputFile) 
         {
+            // added by kolesnik - begin
+            DateTime processingStarted = DateTime.Now;
+            // added by kolesnik - end
+
             if (m_needIbaAnalyzer)
             {
                 if (m_ibaAnalyzer == null) StartIbaAnalyzer(); //safety, ibaAnalyzer should be present
@@ -2521,6 +2531,14 @@ namespace iba.Processing
                 }
                 m_sd.Changed = true;
             }
+
+            // added by kolesnik - begin
+            // this file was successfully processed
+            // update information about the last processed file
+            LastSuccessfulFileStartProcessingTimeStamp = processingStarted;
+            LastSuccessfulFileFinishProcessingTimeStamp = DateTime.Now;
+            LastSuccessfulFileName = InputFile;
+            // added by kolesnik - end
         }
 
         private void WriteStateInDatFile(string InputFile, bool completeSucces)

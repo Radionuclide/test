@@ -534,12 +534,9 @@ namespace iba.Processing
             jobInfo.LastCycleScanningTime_TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;  // todo 7a
             jobInfo.LastCycleScanningTime_TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; // todo 7b
 
-            var prFiles = s.ProcessedFiles;
-
-            string lastFilename = prFiles.Count > 0 ? prFiles[prFiles.Count - 1] : "";
-            jobInfo.LastProcessingLastDatFileProcessed = lastFilename; // 80
-            jobInfo.LastProcessingStartTimeStamp = DateTime.MaxValue; // 81
-            jobInfo.LastProcessingFinishTimeStamp = DateTime.MaxValue; // 82
+            jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName; // 80
+            jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp; // 81
+            jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; // 82
 
             jobInfo.PutTimeStamp();
 
