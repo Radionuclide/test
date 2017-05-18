@@ -376,42 +376,27 @@ namespace iba.Processing
         {
             licenseInfo.Reset();
 
+            // this feature is not licensed,
+            // so does not need any condition to be true
+            licenseInfo.IsValid = true;
+
             try
             {
                 CDongleInfo info = CDongleInfo.ReadDongle();
-
-                // this feature is not licensed,
-                // so do not need any condition to be true here
-                licenseInfo.IsValid = true;
-
-                if (info == null || info.DongleFound == false)
-                {
-                    licenseInfo.Sn = @"(???)";
-                    licenseInfo.HwId = @"(???)";
-                    licenseInfo.DongleType = @"(???)";
-                    licenseInfo.Customer = @"(???)";
-                    licenseInfo.TimeLimit = 0;
-                    licenseInfo.DemoTimeLimit = 0;
-                }
-                else
+                // ReSharper disable once RedundantBoolCompare
+                if (info != null && info.DongleFound == true)
                 {
                     licenseInfo.Sn = info.SerialNr;
-
-                    // todo
-                    licenseInfo.HwId = @"(???)";
-                    licenseInfo.DongleType = @"(???)";
-
+                    licenseInfo.HwId = info.HwId;
+                    licenseInfo.DongleType = info.DongleType;
                     licenseInfo.Customer = info.Customer;
-                    licenseInfo.TimeLimit = 0;
-                    licenseInfo.DemoTimeLimit = 0;
+                    licenseInfo.TimeLimit = info.TimeLimit;
+                    licenseInfo.DemoTimeLimit = info.DemoTimeLimit;
                 }
 
                 licenseInfo.PutTimeStamp();
             }
-            catch
-            {
-                //
-            }
+            catch {/**/}
 
             return true;
         }

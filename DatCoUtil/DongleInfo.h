@@ -21,10 +21,23 @@ namespace iba {
 		bool dongleFound;
 		String^ customer;
 		String^ serialnumber;
+		// added by kolesnik - begin
+		String^ hwId;
+		String^ dongleType;
+		int timeLimit;
+		int demoTimeLimit;
+		// added by kolesnik - end
 	public:
 		property bool DongleFound {bool	get() {return dongleFound;}}
 		property String^ Customer {String^	get() {return customer;}}
 		property String^ SerialNr {String^	get() {return serialnumber;}}
+		// added by kolesnik - begin
+		property String^ HwId {String^	get() { return hwId; }}
+		property String^ DongleType {String^	get() { return dongleType; }}
+		property int TimeLimit {int	get() { return timeLimit; }}
+		property int DemoTimeLimit {int	get() { return demoTimeLimit; }}
+		// added by kolesnik - end
+
 		void Clear()
 		{
 			readByte = 0;
