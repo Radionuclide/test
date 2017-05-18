@@ -6,6 +6,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using iba.Data;
+using iba.Logging;
 using IbaSnmpLib;
 
 // all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
@@ -148,10 +149,10 @@ namespace iba.Processing
             get { return _snmpData; }
             set
             {
-                // todo probabaly override Equals, because def implementation does not work good enough for this
-                //  if (_snmpData != null && _snmpData.Equals(value))
                 if (_snmpData != null && _snmpData.Equals(value))
                 {
+                    // Configuration has not changed
+                    // do not restart agent
                     return;
                 }
                 _snmpData = value;
@@ -183,25 +184,37 @@ namespace iba.Processing
 
         public void RestartAgent()
         {
+            var oldStatus = Status;
             Status = SnmpWorkerStatus.Errored;
             StatusString = @"";
 
             try
             {
                 IbaSnmp.Stop();
-                Status = SnmpWorkerStatus.Stopped;
-                // todo localize
-                StatusString = "SNMP server is disabled";
-
                 ApplyConfigurationToIbaSnmp();
 
                 if (_snmpData.Enabled)
                 {
                     IbaSnmp.Start();
                     Status = SnmpWorkerStatus.Started;
-
                     // todo localize
                     StatusString = $"SNMP server running on port {_snmpData.Port}";
+                }
+                else
+                {
+                    Status = SnmpWorkerStatus.Stopped;
+                    // todo localize
+                    StatusString = "SNMP server is disabled";
+                }
+
+                // log restart:
+                // * if status has changed or 
+                // * if status has not changed, but agent is/was running
+                if (Status != oldStatus || Status == SnmpWorkerStatus.Started)
+                {
+                    LogData.Data.Logger.Log(Level.Info,
+                        // no need to localize
+                        $@"Snmp agent was successfully restarted. Current status: {StatusString}");
                 }
             }
             catch (Exception ex)
@@ -209,6 +222,10 @@ namespace iba.Processing
                 Status = SnmpWorkerStatus.Errored;
                 // todo localize
                 StatusString = $"Starting the SNMP server failed with error: {ex.Message}";
+
+                LogData.Data.Logger.Log(Level.Exception,
+                    // no need to localize
+                    $@"SnmpWorker.RestartAgent(). Starting the SNMP server failed with exception: {ex.Message}");
             }
 
             // trigger status event
@@ -235,9 +252,6 @@ namespace iba.Processing
             // security
             IbaSnmp.SetSecurityForV1AndV2(new List<string> { SnmpData.V1V2Security });
             IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> { SnmpData.V3Security });
-
-            // todo apply objects
-            //SnmpData.
         }
 
         #region Objects
