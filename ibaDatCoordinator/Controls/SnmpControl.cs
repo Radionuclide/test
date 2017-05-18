@@ -261,6 +261,37 @@ namespace iba.Controls
             }
         }
 
+        private void buttonConfigurationReset_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this,
+                    "Are you sure you want to reset configuration to default?",
+                    "Reset configuration?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            SnmpData defData = new SnmpData();
+
+            // copy default data to current data
+            // but not all data, just configuration data
+            _data.Port = defData.Port;
+            _data.V1V2Security = defData.V1V2Security;
+            _data.V3Security = defData.V3Security;
+            // do not reset enabled/disabled : _data.Enabled = ...
+
+            try
+            {
+                ConfigurationFromDataToControls();
+                ApplyConfigurationToManager();
+            }
+            catch (Exception ex)
+            {
+                // todo details
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         private void ConfigurationFromControlsToData()
         {
             // general

@@ -71,6 +71,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.gbObjects.SuspendLayout();
             this.gbDiagnostics.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
@@ -197,6 +198,7 @@
             // gbConfiguration
             // 
             this.gbConfiguration.Controls.Add(this.cbEnabled);
+            this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
             this.gbConfiguration.Controls.Add(this.label5);
             this.gbConfiguration.Controls.Add(this.button2);
@@ -497,6 +499,17 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "SNMP";
             // 
+            // buttonConfigurationReset
+            // 
+            this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(558, 185);
+            this.buttonConfigurationReset.Name = "buttonConfigurationReset";
+            this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
+            this.buttonConfigurationReset.TabIndex = 6;
+            this.buttonConfigurationReset.Text = "Reset";
+            this.buttonConfigurationReset.UseVisualStyleBackColor = true;
+            this.buttonConfigurationReset.Click += new System.EventHandler(this.buttonConfigurationReset_Click);
+            // 
             // SnmpControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,5 +577,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TreeView tvObjects;
+        private System.Windows.Forms.Button buttonConfigurationReset;
     }
 }
