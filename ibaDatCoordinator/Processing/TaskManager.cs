@@ -23,6 +23,10 @@ namespace iba.Processing
             {
                 m_workers.Add(data, cw);
             }
+            // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. AddConfiguration {data.Name}");
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void AddConfigurations(List<ConfigurationData> datas)
@@ -41,6 +45,11 @@ namespace iba.Processing
                     m_workers.Remove(data);
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. RemoveConfiguration {data.Name}");
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void ReplaceConfiguration(ConfigurationData data)
@@ -53,9 +62,15 @@ namespace iba.Processing
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
+
                 }
                 //else, ignore, replace is due to a belated save of an already deleted configuration
             }
+
+            // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. ReplaceConfiguration {data.Name}");
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         private void ReplaceOrAddConfiguration(ConfigurationData data)
@@ -75,6 +90,11 @@ namespace iba.Processing
                     m_workers.Add(data, cw);
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. ReplaceOrAddConfiguration {data.Name}");
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
@@ -112,6 +132,11 @@ namespace iba.Processing
                     //doesn't matter
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. UpdateConfiguration {data.Name}");
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public bool CompareConfiguration(ConfigurationData data)
@@ -170,6 +195,7 @@ namespace iba.Processing
             m_workers[data].Start();
 
             // added by kolesnik - begin
+            SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StartConfiguration {data.Name}");
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
         }
@@ -178,9 +204,10 @@ namespace iba.Processing
         {
             m_workers[data].Stop = true;
 
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-            // added by kolesnik - end
+            //// added by kolesnik - begin
+            //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration {data.Name}");
+            //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            //// added by kolesnik - end
         }
 
         virtual public void StopConfiguration(Guid guid)
@@ -190,12 +217,13 @@ namespace iba.Processing
                 if (pair.Key.Guid == guid)
                 {
                     pair.Value.Stop = true;
+                    //// added by kolesnik - begin
+                    //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration(Guid) {pair.Value.RunningConfiguration.Name}");
+                    //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                    //// added by kolesnik - end
                     return;
                 }
             }
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-            // added by kolesnik - end
         }
 
         virtual public void StopAndWaitForConfiguration(ConfigurationData data)
@@ -322,6 +350,16 @@ namespace iba.Processing
 
         #region Snmp Data - added by Kolesnik
 
+        /// <summary> 
+        /// Is fired when there is a chance (yes, at least a chance) that snmp data structure (amount of jobs, tasks, etc) is changed. 
+        /// So, SnmpWorker can know this, and may rebuild its SNMP objects tree accordingly.
+        /// It does not guarantee that data is really changed, but only just that it might have changed.
+        /// (SnmpWorker's handler is very lightweight, so it's better to trigger this event
+        /// more often (e.g. let even twice for each real change - no matter), than 
+        /// to miss some point (even some that happens seldom) where it is changed.
+        /// Event is not relevant to some 'small' data changes,
+        /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
+        /// </summary>
         public event EventHandler<EventArgs> SnmpConfigurationChanged;
 
         public SnmpWorker SnmpWorker { get; } = new SnmpWorker();
@@ -578,7 +616,9 @@ namespace iba.Processing
             if (ji.Tasks.Count != cfg.Tasks.Count)
             {
                 ji.Tasks.Clear();
-                throw new Exception("Inconsistency. rebuild the tree completely.");
+                SnmpWorker.TmpLogLine("SnmpRefreshTasks. Tasks amount has changed. Configuration invalidated");
+                SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                return;
             }
 
             for (int i = 0; i < cfg.Tasks.Count; i++)
@@ -694,7 +734,10 @@ namespace iba.Processing
                         Subdirectories = cleanupTaskData.SubfoldersNumber,
                         UsedDiskSpace = cleanupTaskData.Quota
                     };
-                    //taskInfo.CleanupInfo = cleanupInfo;
+                }
+                else
+                {
+                    taskInfo.CleanupInfo = null;
                 }
 
                 //taskInfo.Success = taskData.Enabled;//2
@@ -787,10 +830,6 @@ namespace iba.Processing
                         }
                     }
                 }
-                
-                // snmp structure is valid until datcoordinator configuration is changed
-                od.IsStructureValid = true;
-                //od.PutTimeStamp();
 
                 SnmpWorker.TmpLogLine("TskMgr. Snmp Rebuilt ObjectsData");
                 SnmpWorker.TmpLogLine("TskMgr. ----------------------");

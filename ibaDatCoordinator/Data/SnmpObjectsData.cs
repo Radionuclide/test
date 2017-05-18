@@ -10,9 +10,7 @@ namespace iba.Data
     /// the TaskManager and SnmpWorker.
     /// </summary>
     internal class SnmpObjectsData 
-    {
-        public bool IsStructureValid { get; set; }
-        
+    {        
         public void Reset()
         {
             GlobalCleanup.Clear();

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using iba.Data;
 using IbaSnmpLib;
@@ -102,6 +101,24 @@ namespace iba.Processing
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
             SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
+            // create the timer for delayed tree rebuild
+            _treeValidatorTimer = new System.Timers.Timer
+            {
+                Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
+                AutoReset = false            // do not repeat
+                                             // it will be re-activated only if data was invalidated
+            };
+            _treeValidatorTimer.Elapsed += (sender, args) =>
+            {
+                TmpLogLine("TIMER");
+                RebuildTreeIfItIsInvalid();
+
+                // best option to test why it's needed
+                // 1. setup SNMP manager to monitor some yet inexisting job. it will show "no such instance". ok.
+                // 2. Add one ore several jobs to fit the requested OID area. 
+                //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
+            };
+
             RegisterGeneralObjectHandlers();
             RebuildTreeCompletely();
         }
@@ -110,25 +127,12 @@ namespace iba.Processing
         {
             TmpLogLine("TaskManager_SnmpConfigurationChanged");
 
-            // tree marked as invalid
+            // we do not need to lock something here
+            // it's not a problem if structure is invalidated during rebuild is in progress
+
+            // mark tree as invalid
             // it will be rebuilt on 1st request to any existing user node
-            lock (LockObject)
-            {
-                ObjectsData.IsStructureValid = false;
-            }
-
-            // todo
-            // it's better if we improve IbaSnmp - add generic UserValueRequested event to it
-            // and in it's handler here check for (ObjectsData.IsStructureValid == false)
-            // otherwise tree is not rebuilt if some value is requested that 
-            // was not existing before, but exists now.
-            // rare case, but nevertheless.
-            // normally user will perform walk or load MIBs to his manager prior to requesting
-            // so we should not have problems. 
-            // but to be absolutely confident, it's better to do it
-
-            //// Rebuilding it every time is not effective
-            ////RebuildTreeCompletely();
+            IsStructureValid = false;
         }
 
         #endregion
@@ -238,6 +242,8 @@ namespace iba.Processing
 
         #region Objects
 
+        private System.Timers.Timer _treeValidatorTimer;
+
         private IbaSnmpOid _oidSectionGlobalCleanup = "1";
         private IbaSnmpOid _oidSectionStandardJobs = "2";
         private IbaSnmpOid _oidSectionScheduledJobs = "3";
@@ -264,6 +270,29 @@ namespace iba.Processing
         internal Dictionary<IbaSnmpOid, OidMetadata> OidMetadataDict { get; } = new Dictionary<IbaSnmpOid, OidMetadata>();
 
         internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData();
+
+        private bool _isStructureValid;
+        public bool IsStructureValid
+        {
+            get { return _isStructureValid; }
+            set
+            {
+                // this implementation works properly if called from different threads
+                // lock of the timer is not needed here
+                _isStructureValid = value;
+                
+                // stop current cycle
+                _treeValidatorTimer.Stop();
+
+                // if sturcture is marked ivalid
+                if (!value)
+                {
+                    // schedule a delayed tree rebuild, 
+                    // if it will not happen earlier
+                    _treeValidatorTimer.Start();
+                }
+            }
+        }
 
         private void PrepareOidDescriptions()
         {
@@ -364,7 +393,7 @@ namespace iba.Processing
         #endregion
 
         #region Dat coordinator specific objects
-
+       
         /// <summary>
         /// Rebuilds a tree completely if its <code>IsStructureValid</code> flag is set to true. 
         /// Use returned value to know whether tree has been rebuilt.
@@ -375,7 +404,7 @@ namespace iba.Processing
         {
             lock (LockObject)
             {
-                if (ObjectsData.IsStructureValid)
+                if (IsStructureValid)
                 {
                     return false; // tree structure has not changed
                 }
@@ -384,12 +413,6 @@ namespace iba.Processing
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="driveInfo"></param>
-        /// <returns>sdadf</returns>
         private bool RefreshLicenseInfo()
         {
             lock (LockObject)
@@ -425,12 +448,7 @@ namespace iba.Processing
 
             return true; // data was updated
         }
-        
-        /// <summary>
-                 /// 
-                 /// </summary>
-                 /// <param name="driveInfo"></param>
-                 /// <returns>sdadf</returns>
+
         private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
             lock (LockObject)
@@ -503,6 +521,7 @@ namespace iba.Processing
                     // should not happen
                     // failed to update data
                     // rebuild the tree
+                    // todo log?
                     TmpLogLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     TmpLogLine("Error RefreshJobInfo()");
                     RebuildTreeCompletely();
@@ -626,7 +645,7 @@ namespace iba.Processing
             }
         }
 
-        private void RebuildTreeCompletely()
+        public void RebuildTreeCompletely()
         {
             SnmpWorker.TmpLogLine("*****************************");
             SnmpWorker.TmpLogLine("SnmpWrkr. RebuildTreeCompletely");
@@ -640,11 +659,17 @@ namespace iba.Processing
 
             lock (LockObject)
             {
+                // snmp structure is valid until datcoordinator configuration is changed.
+                // theoretically it can be reset to false by another thread
+                // during the process of rebuild of SnmpObjectsData,
+                // but it's not a problem. 
+                // If this happens, then the tree will be rebuilt once again.
+                // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
+                IsStructureValid = true;
+
                 man.SnmpRebuildObjectsData(ObjectsData);
 
-                // todo this is a probabale dead lock?
-                // todo needa look where from does this call comes? 
-                // todo wheter we are in lock of ibaSnmp.Dict...
+                // todo check more thoroughly probabale dead lock
                 ibaSnmp.DeleteAllUserValues();
 
                 // todo Clean OidCaptions for all product-specific OIDs

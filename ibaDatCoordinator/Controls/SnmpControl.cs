@@ -213,12 +213,7 @@ namespace iba.Controls
             snmpWorker?.RebuildTreeIfItIsInvalid();
         }
 
-        private void buttonImitateCfgInvalidated_Click(object sender, EventArgs e)
-        {
-            TaskManager.Manager.SnmpWorker.TaskManager_SnmpConfigurationChanged(null, null);
-
-        }
-        
+       
         #endregion
 
 
@@ -249,6 +244,10 @@ namespace iba.Controls
             try
             {
                 ConfigurationFromDataToControls();
+                
+                // force rebuild snmpworker's tree to ensure we have most recent information
+                snmpWorker.RebuildTreeCompletely();
+                // rebuild gui-tree
                 RebuildObjectsTree();
                 snmpWorker.ApplyStatusToTextBox(tbStatus);
             }
@@ -606,21 +605,6 @@ namespace iba.Controls
                 return;
             }
 
-            if (worker.RebuildTreeIfItIsInvalid())
-            {
-                // should not happen 
-                // because cfg theoretically should not change while we are on the snmp page
-                // but nevertheles...
-                // todo log warning here
-
-                SnmpWorker.TmpLogLine("WARNING! tvObjects_AfterSelect() RebuildTreeIfItIsInvalid=ture");
-                // rebuild our tree according to worker's tree
-                RebuildObjectsTree();
-                // do nothing else
-                // let the user select another item in a new tree later
-                return;
-            }
-
             var od = worker.ObjectsData;
             IbaSnmp ibaSnmp = worker.IbaSnmp;
             if (od == null || ibaSnmp == null)
@@ -638,6 +622,23 @@ namespace iba.Controls
             tbObjOid.Text = oid.ToString();
 
             var objInfo = ibaSnmp.GetObjectInfo(oid, true);
+
+            // requesting some data from ibaSnmp can theoretically cause tree invalidation
+            if (worker.RebuildTreeIfItIsInvalid())
+            {
+                // should not happen 
+                // because cfg theoretically should not change while we are on the snmp page
+                // but nevertheles...
+                // todo log warning here
+
+                SnmpWorker.TmpLogLine("WARNING! tvObjects_AfterSelect() RebuildTreeIfItIsInvalid=ture");
+                // rebuild our tree according to worker's tree
+                RebuildObjectsTree();
+                // do nothing else
+                // let the user select another item in a new tree later
+                return;
+            }
+
 
             if (objInfo != null)
             {
@@ -669,11 +670,6 @@ namespace iba.Controls
             }
         }
 
-        private void buttonObjectsRefresh_Click(object sender, EventArgs e)
-        {
-            RebuildObjectsTree();
-        }
-
         private void buttonCreateMibFiles_Click(object sender, EventArgs e)
         {
             SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
@@ -692,6 +688,9 @@ namespace iba.Controls
             try
             {
                 string dir = folderBrowserDialog.SelectedPath;
+
+                // ensure we have the latest tree structure
+                snmpWorker.RebuildTreeCompletely();
 
                 IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(ibaSnmp);
 

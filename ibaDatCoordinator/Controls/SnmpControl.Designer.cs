@@ -77,12 +77,9 @@
             this.labelObjType = new System.Windows.Forms.Label();
             this.tbObjType = new System.Windows.Forms.TextBox();
             this.tbObjMibName = new System.Windows.Forms.TextBox();
-            this.buttonObjectsRefresh = new System.Windows.Forms.Button();
             this.buttonCreateMibFiles = new System.Windows.Forms.Button();
-            this.buttonObjectsApply = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonImitateCfgInvalidated = new System.Windows.Forms.Button();
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
@@ -482,10 +479,7 @@
             // gbObjects
             // 
             this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
-            this.gbObjects.Controls.Add(this.buttonImitateCfgInvalidated);
-            this.gbObjects.Controls.Add(this.buttonObjectsRefresh);
             this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
-            this.gbObjects.Controls.Add(this.buttonObjectsApply);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbObjects.Location = new System.Drawing.Point(0, 0);
@@ -595,18 +589,6 @@
             this.tbObjMibName.Size = new System.Drawing.Size(257, 20);
             this.tbObjMibName.TabIndex = 8;
             // 
-            // buttonObjectsRefresh
-            // 
-            this.buttonObjectsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsRefresh.BackColor = System.Drawing.Color.LavenderBlush;
-            this.buttonObjectsRefresh.Location = new System.Drawing.Point(240, 19);
-            this.buttonObjectsRefresh.Name = "buttonObjectsRefresh";
-            this.buttonObjectsRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonObjectsRefresh.TabIndex = 7;
-            this.buttonObjectsRefresh.Text = "Refresh";
-            this.buttonObjectsRefresh.UseVisualStyleBackColor = false;
-            this.buttonObjectsRefresh.Click += new System.EventHandler(this.buttonObjectsRefresh_Click);
-            // 
             // buttonCreateMibFiles
             // 
             this.buttonCreateMibFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -617,17 +599,6 @@
             this.buttonCreateMibFiles.Text = "Create MIB files";
             this.buttonCreateMibFiles.UseVisualStyleBackColor = true;
             this.buttonCreateMibFiles.Click += new System.EventHandler(this.buttonCreateMibFiles_Click);
-            // 
-            // buttonObjectsApply
-            // 
-            this.buttonObjectsApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsApply.BackColor = System.Drawing.Color.LavenderBlush;
-            this.buttonObjectsApply.Location = new System.Drawing.Point(321, 19);
-            this.buttonObjectsApply.Name = "buttonObjectsApply";
-            this.buttonObjectsApply.Size = new System.Drawing.Size(75, 23);
-            this.buttonObjectsApply.TabIndex = 7;
-            this.buttonObjectsApply.Text = "Apply";
-            this.buttonObjectsApply.UseVisualStyleBackColor = false;
             // 
             // tvObjects
             // 
@@ -643,18 +614,6 @@
             this.tvObjects.Size = new System.Drawing.Size(691, 434);
             this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
-            // 
-            // buttonImitateCfgInvalidated
-            // 
-            this.buttonImitateCfgInvalidated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImitateCfgInvalidated.BackColor = System.Drawing.Color.LavenderBlush;
-            this.buttonImitateCfgInvalidated.Location = new System.Drawing.Point(63, 19);
-            this.buttonImitateCfgInvalidated.Name = "buttonImitateCfgInvalidated";
-            this.buttonImitateCfgInvalidated.Size = new System.Drawing.Size(153, 23);
-            this.buttonImitateCfgInvalidated.TabIndex = 7;
-            this.buttonImitateCfgInvalidated.Text = "Event CfgInvalidated";
-            this.buttonImitateCfgInvalidated.UseVisualStyleBackColor = false;
-            this.buttonImitateCfgInvalidated.Click += new System.EventHandler(this.buttonImitateCfgInvalidated_Click);
             // 
             // SnmpControl
             // 
@@ -725,7 +684,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button buttonObjectsRefresh;
         private System.Windows.Forms.Button buttonCreateMibFiles;
         private System.Windows.Forms.TreeView tvObjects;
         private System.Windows.Forms.Button buttonConfigurationReset;
@@ -739,8 +697,6 @@
         private System.Windows.Forms.Label labelObjMibName;
         private System.Windows.Forms.TextBox tbObjMibName;
         private System.Windows.Forms.TextBox tbObjType;
-        private System.Windows.Forms.Button buttonObjectsApply;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.Button buttonImitateCfgInvalidated;
     }
 }
