@@ -307,6 +307,22 @@ namespace iba.Processing
             m_watchdog.Settings = data;
         }
 
+        
+        #region Snmp Data - added by Kolesnik
+
+        // ReSharper disable once InconsistentNaming
+        private readonly IbaSnmpLib.IbaSnmp m_IbaSnmp =
+            new IbaSnmpLib.IbaSnmp(IbaSnmpLib.IbaSnmpProductId.IbaDatCoordinator);
+        private SnmpData m_SnmpData;
+        public virtual IbaSnmpLib.IbaSnmp IbaSnmp => m_IbaSnmp;
+        public virtual SnmpData SnmpData => m_SnmpData;
+        public virtual void ReplaceSnmpData(SnmpData data)
+        {
+            m_SnmpData = data;
+        }
+        #endregion
+
+
         virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
             return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
@@ -330,6 +346,9 @@ namespace iba.Processing
         {
             m_workers = new SortedDictionary<ConfigurationData, ConfigurationWorker>();
             m_watchdog = new TCPWatchdog();
+            // added by kolesnik - begin
+            m_SnmpData = new SnmpData {IbaSnmp = m_IbaSnmp};
+            // added by kolesnik - end
             m_doPostPone = true;
             m_postponeMinutes = 5;
             m_processPriority = (int)System.Diagnostics.ProcessPriorityClass.Normal;

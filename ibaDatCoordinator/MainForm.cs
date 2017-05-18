@@ -455,8 +455,7 @@ namespace iba
                     ctrl = new SnmpControl();
                     propertyPanes["snmpControl"] = ctrl;
                 }
-
-                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle, null);
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle, TaskManager.Manager.SnmpData.Clone());
 
                 EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
@@ -525,6 +524,14 @@ namespace iba
                     pane.LoadData(TaskManager.Manager.WatchDogData.Clone(), this);
                 }
             }
+            // added by kolesnik - begin
+            if (m_navBar.SelectedPane == m_snmpPane)
+            {
+                // todo; is it needed here?
+                SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
+                pane?.LoadData(null, this);
+            }
+            // added by kolesnik - end
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
@@ -3149,10 +3156,9 @@ namespace iba
 
 
         #endregion
-
     }
-    #endregion
 
+    #endregion
 
     #region ImageList
     internal class MyImageList

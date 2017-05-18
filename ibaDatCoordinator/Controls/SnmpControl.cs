@@ -68,7 +68,7 @@ namespace iba.Controls
             //_data.Binary = m_rbBinary.Checked;
 
             //todo
-            //TaskManager.Manager.ReplaceSnmpData(_data.Clone() as SnmpData);
+            TaskManager.Manager.ReplaceSnmpData(_data.Clone() as SnmpData);
             timerStatus.Enabled = false;
         }
 
@@ -88,15 +88,14 @@ namespace iba.Controls
             label4.Text = $@"Instance {_tmp___instCounter} " + (_tmp___cntTimer%2 == 0 ? "|" : "-");
 
 
-            IbaSnmp ibaSnmp = null;
-            //ibaSnmp = _data.IbaSnmp;
+            IbaSnmp ibaSnmp = _data.IbaSnmp;
             if (ibaSnmp == null)
             {
                 tbDebug.Text = "ibaSnmp == null";
                 return;
             }
 
-            //tbDebug.Text = GetLibraryDescriptionString(ibaSnmp);
+            tbDebug.Text = GetLibraryDescriptionString(ibaSnmp);
         }
 
         /// <summary>
