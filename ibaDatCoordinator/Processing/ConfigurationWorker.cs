@@ -2469,6 +2469,12 @@ namespace iba.Processing
                     if(!continueProcessing)
                     {
                         //Log(iba.Logging.Level.Debug, "ContinueProcessing is FALSE: {0}", InputFile);
+
+                        // added by kolesnik - begin
+                        // this file was successfully processed (skipped tasks - it is not an error)
+                        // update information about the last processed file
+                        SetLastSuccessfulFile(InputFile, processingStarted);
+                        // added by kolesnik - end
                         return;
                     }
                     //touch the file
@@ -2535,11 +2541,19 @@ namespace iba.Processing
             // added by kolesnik - begin
             // this file was successfully processed
             // update information about the last processed file
-            LastSuccessfulFileStartProcessingTimeStamp = processingStarted;
-            LastSuccessfulFileFinishProcessingTimeStamp = DateTime.Now;
-            LastSuccessfulFileName = InputFile;
+            SetLastSuccessfulFile(InputFile, processingStarted);
             // added by kolesnik - end
         }
+
+        // added by kolesnik - begin
+        private void SetLastSuccessfulFile(string filename, DateTime processingStarted)
+        {
+            LastSuccessfulFileStartProcessingTimeStamp = processingStarted;
+            LastSuccessfulFileFinishProcessingTimeStamp = DateTime.Now;
+            LastSuccessfulFileName = filename;
+        }
+        // added by kolesnik - end
+
 
         private void WriteStateInDatFile(string InputFile, bool completeSucces)
         {
