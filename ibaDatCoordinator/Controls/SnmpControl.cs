@@ -65,7 +65,6 @@ namespace iba.Controls
         private int _tmpCntDataLoaded;
         private int _tmpCntDataCleaned;
         private int _tmpCndDataSaved;
-        private int _tmpCntTimerTicks;
 
         #endregion
 
@@ -498,7 +497,13 @@ namespace iba.Controls
 
             if (objInfo != null)
             {
-                tbObjValue.Text = objInfo.Value.ToString();
+                tbObjValue.Text =
+                    ibaSnmp.IsEnumDataTypeRegistered(objInfo.ValueType) ?
+                    // enum - format it like e.g. "1 (started)"
+                    $@"{objInfo.Value} ({ibaSnmp.GetEnumValueName(objInfo.ValueType, (int)objInfo.Value)})" :
+                    // other types - just value
+                    objInfo.Value.ToString();
+
                 tbObjMibName.Text = objInfo.MibName;
                 
                 // todo remove after testing of MIB descriptions
@@ -508,21 +513,19 @@ namespace iba.Controls
             }
             else
             {
-                // todo remove this block after testing of MIB descriptions
+                // probabaly this is a folder, that has no corresponding snmp object 
+                // try to get it's description from the worker.
+                SnmpWorker.OidMetadata metadata;
+                lock (worker.LockObject)
                 {
-                    // probabaly this is a folder, that has no corresponding snmp object 
-                    // try to get it's description from the worker.
-                    SnmpWorker.OidMetadata metadata;
-                    lock (worker.LockObject)
+                    if (worker.OidMetadataDict.TryGetValue(oid, out metadata) != true)
                     {
-                        if (worker.OidMetadataDict.TryGetValue(oid, out metadata) != true)
-                        {
-                            return;
-                        }
+                        return;
                     }
-
-                    tbObjMibName.Text = (metadata.MibName ?? "") + @"; " + (metadata.MibDescription ?? "");
                 }
+
+                // todo remove MibDescription after testing of MIB descriptions
+                tbObjMibName.Text = (metadata.MibName ?? "") + @"; " + (metadata.MibDescription ?? "");
             }
         }
 
