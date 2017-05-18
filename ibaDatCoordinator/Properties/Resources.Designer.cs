@@ -2977,6 +2977,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SNMP agent data.
+        /// </summary>
+        internal static string snmpTitle {
+            get {
+                return ResourceManager.GetString("snmpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Speichern {

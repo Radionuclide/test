@@ -357,14 +357,11 @@ namespace iba
                     if(m_statusTreeView.SelectedNode.Tag != null)
                         doSelection(m_statusTreeView.SelectedNode, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
 				}
-                statusToolStripMenuItem.Enabled = false;
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(statusToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
             else if (m_navBar.SelectedPane == m_configPane)
             {
@@ -408,31 +405,28 @@ namespace iba
                     TreeItemData ti = m_configTreeView.SelectedNode.Tag as TreeItemData;
                     if (ti != null) doSelection(m_configTreeView.SelectedNode, ti.What);
                 }
-                configurationToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(configurationToolStripMenuItem);
+                // changed by kolesnik - end
+
                 UpdateButtons();
             }
             else if (m_navBar.SelectedPane == m_loggingPane)
             {
                 SaveRightPaneControl();
                 SetRightPaneControl(propertyPanes["logControl"] as Control, iba.Properties.Resources.logTitle, LogData.Data);
-                loggingToolStripMenuItem.Enabled = false;
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(loggingToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
+
                 m_EntriesNumericUpDown1.Value = Math.Max(1,LogData.Data.MaxRows);
                 int loglevel = LogData.Data.LogLevel;
                 m_rbAllLog.Checked = loglevel == 0;
                 m_rbErrorsWarnings.Checked = loglevel == 1;
                 m_rbOnlyErrors.Checked = loglevel == 2;
-                settingsToolStripMenuItem.Enabled = true;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
             {
@@ -444,16 +438,28 @@ namespace iba
                     propertyPanes["watchdogControl"] = ctrl;
                 }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.watchdogTitle, TaskManager.Manager.WatchDogData.Clone());
-                watchdogToolStripMenuItem.Enabled = false; 
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(watchdogToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
+            // added by kolesnik - begin
+            else if (m_navBar.SelectedPane == m_snmpPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["snmpControl"] as Control;
+                if (ctrl == null)
+                {
+                    ctrl = new WatchdogControl();
+                    propertyPanes["snmpControl"] = ctrl;
+                }
+
+                EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+            }
+            // added by kolesnik - end
+
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 SaveRightPaneControl();
@@ -469,24 +475,49 @@ namespace iba
                     propertyPanes["settingsControl"] = ctrl;
                 }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.settingsTitle, null);
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = false;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(settingsToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
         }
+
+        // added by kolesnik - begin
+        /// <summary> Enable all the items xxxToolStripMenuItems 
+        /// (e.g.  statusToolStripMenuItem, loggingToolStripMenuItem, etc)
+        /// except the given one. The given one will be disabled. </summary>
+        /// <param name="itemToDisable"></param>
+        private void EnableAllButOnePaneToolStripMenuItems(ToolStripMenuItem itemToDisable)
+        {
+            // enable all menuitems
+            statusToolStripMenuItem.Enabled = true;
+            configurationToolStripMenuItem.Enabled = true;
+            loggingToolStripMenuItem.Enabled = true;
+            watchdogToolStripMenuItem.Enabled = true;
+            snmpToolStripMenuItem.Enabled = true;
+            settingsToolStripMenuItem.Enabled = true;
+
+            // disable the only one of them
+            if (itemToDisable!=null)
+                itemToDisable.Enabled = false;
+        }
+        /// <summary> Disables Copy, Paste, Cut and Delete menu items </summary>
+        private void DisableCopyPasteCutDeleteMenuItems()
+        {
+            pasteToolStripMenuItem.Enabled = false;
+            copyToolStripMenuItem.Enabled = false;
+            cutToolStripMenuItem.Enabled = false;
+            deleteToolStripMenuItem.Enabled = false;
+        }
+        // added by kolesnik - end
 
         private void ReloadRightPane()
         { //only handles the cases of settings or watchdog panes, the rest is handled differently
             if (m_navBar.SelectedPane == m_watchdogPane)
             {
                 WatchdogControl pane = propertyPanes["watchdogControl"] as WatchdogControl;
-                if (pane!=null)
+                if (pane != null)
                 {
                     pane.LoadData(TaskManager.Manager.WatchDogData.Clone(), this);
                 }
@@ -3112,11 +3143,11 @@ namespace iba
                 }
             }
         }
-        
+
 
         #endregion
 
-    }    
+    }
     #endregion
 
 
