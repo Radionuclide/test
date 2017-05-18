@@ -46,6 +46,27 @@ namespace iba.Controls
 
         private void timerStatus_Tick(object sender, EventArgs e)
         {
+            // todo remove timer
+
+            var worker = TaskManager.Manager?.SnmpWorker;
+            if (worker == null) return;
+
+            string str = "";
+            lock (worker.LockObject)
+            {
+                var od = worker.ObjectsData;
+                if (od != null)
+                {
+                    str += $"Reset: {od._tmp_reset_cnt}\r\n";
+                    str += $"LastUpdated: {od.Stamp.ToLongTimeString()}\r\n\r\n";
+                    str += $"Cleanup: {od.GlobalCleanup.Count}\r\n";
+                    str += $"StandardJobs: {od.StandardJobs.Count}\r\n";
+                    str += $"ScheduledJobs: {od.ScheduledJobs.Count}\r\n";
+                    str += $"OneTimeJobs: {od.OneTimeJobs.Count}\r\n";
+                }
+
+                tbGeneralInfo.Text = str;
+            }
         }
     }
 }

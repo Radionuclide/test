@@ -34,11 +34,12 @@
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
             this.label14 = new System.Windows.Forms.Label();
+            this.tbGeneralInfo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // buttonShowDebug
             // 
-            this.buttonShowDebug.Location = new System.Drawing.Point(3, 85);
+            this.buttonShowDebug.Location = new System.Drawing.Point(3, 244);
             this.buttonShowDebug.Name = "buttonShowDebug";
             this.buttonShowDebug.Size = new System.Drawing.Size(106, 23);
             this.buttonShowDebug.TabIndex = 0;
@@ -70,6 +71,7 @@
             // 
             // timerStatus
             // 
+            this.timerStatus.Enabled = true;
             this.timerStatus.Interval = 1000;
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
@@ -82,6 +84,16 @@
             this.label14.TabIndex = 5;
             this.label14.Text = "Status:";
             // 
+            // tbGeneralInfo
+            // 
+            this.tbGeneralInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbGeneralInfo.Location = new System.Drawing.Point(3, 85);
+            this.tbGeneralInfo.Multiline = true;
+            this.tbGeneralInfo.Name = "tbGeneralInfo";
+            this.tbGeneralInfo.Size = new System.Drawing.Size(224, 153);
+            this.tbGeneralInfo.TabIndex = 4;
+            // 
             // SnmpLeftPanelControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -89,10 +101,11 @@
             this.AutoScroll = true;
             this.Controls.Add(this.label14);
             this.Controls.Add(this.cbEnabled);
+            this.Controls.Add(this.tbGeneralInfo);
             this.Controls.Add(this.tbStatus);
             this.Controls.Add(this.buttonShowDebug);
             this.Name = "SnmpLeftPanelControl";
-            this.Size = new System.Drawing.Size(230, 119);
+            this.Size = new System.Drawing.Size(230, 291);
             this.Load += new System.EventHandler(this.SnmpLeftPanelControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -105,5 +118,6 @@
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Timer timerStatus;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tbGeneralInfo;
     }
 }
