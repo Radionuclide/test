@@ -475,15 +475,23 @@ namespace iba.Controls
                     var jobInfo = od.StandardJobs[i];
                     var jobNode = nodeStdJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
 
-                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    var jobGenNode = jobNode.Nodes.Add("0. General");
                     jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
                     jobGenNode.Nodes.Add("1. Status: " + jobInfo.Status);
                     jobGenNode.Nodes.Add("2. Todo #:" + jobInfo.TodoCount);
                     jobGenNode.Nodes.Add("3. Done #:" + jobInfo.DoneCount);
 
-                    var jobTasksNode = jobNode.Nodes.Add("1. Tasks (total.....) " + jobInfo.Tasks?.Count);
-                    jobTasksNode.Nodes.Add("???. Tasksinfo..." + jobInfo.Tasks);
-                    jobTasksNode.Nodes.Add("???. Tasksinfo..." + jobInfo.Tasks);
+                    jobGenNode.Nodes.Add("4. Failed #:" + jobInfo.FailedCount);
+                    jobGenNode.Nodes.Add("5. Perm.Failed #:" + jobInfo.PermFailedCount);
+
+                    jobGenNode.Nodes.Add("6. Perm.Failed #:" + jobInfo.TimestampJobStarted);
+                    jobGenNode.Nodes.Add("7. Perm.Failed #:" + jobInfo.LastCycleScanningTime);
+
+                    jobGenNode.Nodes.Add("8.0. LastProcessingLastDatFileProcessed:" + jobInfo.LastProcessingLastDatFileProcessed);
+                    jobGenNode.Nodes.Add("8.1. LastProcessingStartTimeStamp:" + jobInfo.LastProcessingStartTimeStamp);
+                    jobGenNode.Nodes.Add("8.2. LastProcessingFinishTimeStamp:" + jobInfo.LastProcessingFinishTimeStamp);
+
+                    AddTasksToTree(jobNode, jobInfo.Tasks);
                 }
 
                 // root.2=DatCo.1=Product.3=ScheduledJobs
@@ -493,8 +501,10 @@ namespace iba.Controls
                     var jobInfo = od.ScheduledJobs[i];
                     var jobNode = nodeSchJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
 
-                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    var jobGenNode = jobNode.Nodes.Add("0. General");
                     jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
+
+                    AddTasksToTree(jobNode, jobInfo.Tasks);
                 }
 
                 // root.2=DatCo.1=Product.4=OneTimeJobs
@@ -504,8 +514,10 @@ namespace iba.Controls
                     var jobInfo = od.OneTimeJobs[i];
                     var jobNode = nodeOtJobs.Nodes.Add($"{i + 1}. {jobInfo.JobName}");
 
-                    var jobGenNode = jobNode.Nodes.Add("0. General: ");
+                    var jobGenNode = jobNode.Nodes.Add("0. General");
                     jobGenNode.Nodes.Add("0. Name: " + jobInfo.JobName);
+
+                    AddTasksToTree(jobNode, jobInfo.Tasks);
                 }
 
                 nodeRoot.Expand();
@@ -518,6 +530,44 @@ namespace iba.Controls
                 //tvObjects.ExpandAll();
             }
         }
+
+        private void AddTasksToTree(TreeNode parent, List<SnmpObjectsData.TaskInfo> tasks)
+        {
+            var jobTasksNode = parent.Nodes.Add($"1. Tasks (total {tasks?.Count})");
+
+            if (tasks == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                SnmpObjectsData.TaskInfo taskInfo = tasks[i];
+                AddTaskToTree(i + 1, jobTasksNode, taskInfo);
+            }
+        }
+        private void AddTaskToTree(int index, TreeNode parent, SnmpObjectsData.TaskInfo taskInfo)
+        {
+            TreeNode taskNode = parent.Nodes.Add($"{index}. {taskInfo.TaskName}");
+            taskNode.Nodes.Add("0. TaskName: " + taskInfo.TaskName);
+            taskNode.Nodes.Add("1. Tasktype : " + taskInfo.TaskType);
+            taskNode.Nodes.Add("2. Success: " + taskInfo.Success);
+            taskNode.Nodes.Add("3. DurationOfLastExecution: " + taskInfo.DurationOfLastExecution);
+            taskNode.Nodes.Add("4. CurMemoryUsed: " + taskInfo.CurrentMemoryUsed);
+
+            var ci = taskInfo.CleanupInfo;
+            if (ci == null)
+            {
+                return;
+            }
+
+            TreeNode cleanupNode = taskNode.Nodes.Add("5. Cleanup");
+            cleanupNode.Nodes.Add("0. LimitChoice:" + ci.LimitChoice);
+            cleanupNode.Nodes.Add("1. Subdirectories:" + ci.Subdirectories);
+            cleanupNode.Nodes.Add("2. FreeDiskSpace:" + ci.FreeDiskSpace);
+            cleanupNode.Nodes.Add("3. UsedDiskSpace:" + ci.UsedDiskSpace);
+        }
+
 
         private void buttonObjectsRefresh_Click(object sender, EventArgs e)
         {

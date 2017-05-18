@@ -31,11 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             this.timerStatus = new System.Windows.Forms.Timer(this.components);
-            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
-            this.buttonObjectsRefresh = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.buttonObjectsApply = new System.Windows.Forms.Button();
-            this.tvObjects = new System.Windows.Forms.TreeView();
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -72,11 +67,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.gbObjects.SuspendLayout();
+            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
+            this.buttonObjectsRefresh = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.buttonObjectsApply = new System.Windows.Forms.Button();
+            this.tvObjects = new System.Windows.Forms.TreeView();
             this.gbDiagnostics.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.gbDebug.SuspendLayout();
+            this.gbObjects.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerStatus
@@ -85,65 +85,6 @@
             this.timerStatus.Interval = 450;
             this.timerStatus.Tick += new System.EventHandler(this.timerStatus_Tick);
             // 
-            // gbObjects
-            // 
-            this.gbObjects.Controls.Add(this.buttonObjectsRefresh);
-            this.gbObjects.Controls.Add(this.button5);
-            this.gbObjects.Controls.Add(this.buttonObjectsApply);
-            this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbObjects.Location = new System.Drawing.Point(0, 738);
-            this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(703, 143);
-            this.gbObjects.TabIndex = 11;
-            this.gbObjects.TabStop = false;
-            this.gbObjects.Text = "Objects";
-            // 
-            // buttonObjectsRefresh
-            // 
-            this.buttonObjectsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsRefresh.Location = new System.Drawing.Point(541, 114);
-            this.buttonObjectsRefresh.Name = "buttonObjectsRefresh";
-            this.buttonObjectsRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonObjectsRefresh.TabIndex = 7;
-            this.buttonObjectsRefresh.Text = "Refresh";
-            this.buttonObjectsRefresh.UseVisualStyleBackColor = true;
-            this.buttonObjectsRefresh.Click += new System.EventHandler(this.buttonObjectsRefresh_Click);
-            // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(508, 19);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(189, 23);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "Create MIB files";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // buttonObjectsApply
-            // 
-            this.buttonObjectsApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonObjectsApply.Location = new System.Drawing.Point(622, 114);
-            this.buttonObjectsApply.Name = "buttonObjectsApply";
-            this.buttonObjectsApply.Size = new System.Drawing.Size(75, 23);
-            this.buttonObjectsApply.TabIndex = 7;
-            this.buttonObjectsApply.Text = "Apply";
-            this.buttonObjectsApply.UseVisualStyleBackColor = true;
-            // 
-            // tvObjects
-            // 
-            this.tvObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvObjects.Location = new System.Drawing.Point(22, 46);
-            this.tvObjects.Name = "tvObjects";
-            treeNode1.Name = "NodeRoot";
-            treeNode1.Text = "Root";
-            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.tvObjects.Size = new System.Drawing.Size(692, 62);
-            this.tvObjects.TabIndex = 0;
-            // 
             // gbDiagnostics
             // 
             this.gbDiagnostics.Controls.Add(this.tbStatus);
@@ -151,7 +92,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
             this.gbDiagnostics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDiagnostics.Location = new System.Drawing.Point(0, 617);
+            this.gbDiagnostics.Location = new System.Drawing.Point(0, 1163);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Size = new System.Drawing.Size(703, 121);
             this.gbDiagnostics.TabIndex = 10;
@@ -219,7 +160,7 @@
             this.gbConfiguration.Controls.Add(this.label13);
             this.gbConfiguration.Controls.Add(this.numPort);
             this.gbConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbConfiguration.Location = new System.Drawing.Point(0, 403);
+            this.gbConfiguration.Location = new System.Drawing.Point(0, 949);
             this.gbConfiguration.Name = "gbConfiguration";
             this.gbConfiguration.Size = new System.Drawing.Size(703, 214);
             this.gbConfiguration.TabIndex = 9;
@@ -436,7 +377,7 @@
             this.gbDebug.Controls.Add(this.label2);
             this.gbDebug.Controls.Add(this.label3);
             this.gbDebug.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbDebug.Location = new System.Drawing.Point(0, 0);
+            this.gbDebug.Location = new System.Drawing.Point(0, 546);
             this.gbDebug.Name = "gbDebug";
             this.gbDebug.Size = new System.Drawing.Size(703, 403);
             this.gbDebug.TabIndex = 8;
@@ -522,20 +463,78 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "SNMP";
             // 
+            // gbObjects
+            // 
+            this.gbObjects.Controls.Add(this.buttonObjectsRefresh);
+            this.gbObjects.Controls.Add(this.button5);
+            this.gbObjects.Controls.Add(this.buttonObjectsApply);
+            this.gbObjects.Controls.Add(this.tvObjects);
+            this.gbObjects.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbObjects.Location = new System.Drawing.Point(0, 0);
+            this.gbObjects.Name = "gbObjects";
+            this.gbObjects.Size = new System.Drawing.Size(703, 546);
+            this.gbObjects.TabIndex = 11;
+            this.gbObjects.TabStop = false;
+            this.gbObjects.Text = "Objects";
+            // 
+            // buttonObjectsRefresh
+            // 
+            this.buttonObjectsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonObjectsRefresh.Location = new System.Drawing.Point(541, 517);
+            this.buttonObjectsRefresh.Name = "buttonObjectsRefresh";
+            this.buttonObjectsRefresh.Size = new System.Drawing.Size(75, 23);
+            this.buttonObjectsRefresh.TabIndex = 7;
+            this.buttonObjectsRefresh.Text = "Refresh";
+            this.buttonObjectsRefresh.UseVisualStyleBackColor = true;
+            this.buttonObjectsRefresh.Click += new System.EventHandler(this.buttonObjectsRefresh_Click);
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(508, 19);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(189, 23);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "Create MIB files";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // buttonObjectsApply
+            // 
+            this.buttonObjectsApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonObjectsApply.Location = new System.Drawing.Point(622, 517);
+            this.buttonObjectsApply.Name = "buttonObjectsApply";
+            this.buttonObjectsApply.Size = new System.Drawing.Size(75, 23);
+            this.buttonObjectsApply.TabIndex = 7;
+            this.buttonObjectsApply.Text = "Apply";
+            this.buttonObjectsApply.UseVisualStyleBackColor = true;
+            // 
+            // tvObjects
+            // 
+            this.tvObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvObjects.Location = new System.Drawing.Point(22, 46);
+            this.tvObjects.Name = "tvObjects";
+            treeNode1.Name = "NodeRoot";
+            treeNode1.Text = "Root";
+            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.tvObjects.Size = new System.Drawing.Size(675, 465);
+            this.tvObjects.TabIndex = 0;
+            // 
             // SnmpControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.gbObjects);
             this.Controls.Add(this.gbDiagnostics);
             this.Controls.Add(this.gbConfiguration);
             this.Controls.Add(this.gbDebug);
+            this.Controls.Add(this.gbObjects);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "SnmpControl";
             this.Size = new System.Drawing.Size(703, 760);
             this.Load += new System.EventHandler(this.SnmpControl_Load);
-            this.gbObjects.ResumeLayout(false);
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
             this.gbConfiguration.ResumeLayout(false);
@@ -543,6 +542,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.gbDebug.ResumeLayout(false);
             this.gbDebug.PerformLayout();
+            this.gbObjects.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

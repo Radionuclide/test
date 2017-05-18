@@ -4578,6 +4578,10 @@ namespace iba.Processing
         }
 
         private DateTime m_nextTrigger;
+        // added by kolesnik - begin
+        public DateTime NextTrigger => m_nextTrigger;
+        // added by kolesnik - end
+
         private System.Threading.Timer NextEventTimer;
 
         private void ScheduleNextEvent()

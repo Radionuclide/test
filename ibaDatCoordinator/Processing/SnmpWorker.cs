@@ -260,7 +260,7 @@ namespace iba.Processing
         /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
         public readonly object LockObject = new object();
 
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(5);
+        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
         public void RefreshObjectData()
         {
@@ -294,58 +294,72 @@ namespace iba.Processing
                 for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
                 {
                     IbaSnmpOid oidJob = oidStdJobs + (uint)(i + 1);
+                    IbaSnmpOid oidJobGen = oidJob + 0;
+                    IbaSnmpOid oidJobTasks = oidJob + 1;
                     SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
                     // todo add enum
-                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 0, jobInfo.JobName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 6, jobInfo.TimestampJobStarted, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.LastCycleScanningTime, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + "8.0", jobInfo.LastProcessingLastDatFileProcessed, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + "8.2", jobInfo.LastProcessingFinishTimeStamp, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + "8.1", jobInfo.LastProcessingStartTimeStamp, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 6, jobInfo.TimestampJobStarted, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 7, jobInfo.LastCycleScanningTime, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + "8.0", jobInfo.LastProcessingLastDatFileProcessed, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + "8.2", jobInfo.LastProcessingFinishTimeStamp, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + "8.1", jobInfo.LastProcessingStartTimeStamp, null, null, UserValueRequested);
+
+                    AddTasks(ibaSnmp, oidJobTasks, jobInfo.Tasks);
                 }
 
                 IbaSnmpOid oidSchJobs = "3";
                 for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
                 {
                     IbaSnmpOid oidJob = oidSchJobs + (uint)(i + 1);
+                    IbaSnmpOid oidJobGen = oidJob + 0;
+                    IbaSnmpOid oidJobTasks = oidJob + 1;
+
                     var jobInfo = ObjectsData.ScheduledJobs[i];
 
                     // todo add enum
-                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 0, jobInfo.JobName, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 5, jobInfo.PermFailedCount, null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 6, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 7, jobInfo.TimestampNextExecution, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 6, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 7, jobInfo.TimestampNextExecution, null, null, UserValueRequested);
+
+                    AddTasks(ibaSnmp, oidJobTasks, jobInfo.Tasks);
                 }
 
                 IbaSnmpOid oidOtJobs = "4";
                 for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
                 {
                     IbaSnmpOid oidJob = oidOtJobs + (uint)(i + 1);
+                    IbaSnmpOid oidJobGen = oidJob + 0;
+                    IbaSnmpOid oidJobTasks = oidJob + 1;
+
                     var jobInfo = ObjectsData.OneTimeJobs[i];
 
+                    ibaSnmp.CreateUserValue(oidJobGen + 0, jobInfo.JobName, null, null, UserValueRequested);
                     // todo add enum
-                    ibaSnmp.CreateUserValue(oidJob + 0, jobInfo.JobName, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 1, jobInfo.Status.ToString(), null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 2, jobInfo.TodoCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 3, jobInfo.DoneCount, null, null, UserValueRequested);
-                    ibaSnmp.CreateUserValue(oidJob + 4, jobInfo.FailedCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 2, jobInfo.TodoCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 3, jobInfo.DoneCount, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 4, jobInfo.FailedCount, null, null, UserValueRequested);
 
-                    ibaSnmp.CreateUserValue(oidJob + 5, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
+                    ibaSnmp.CreateUserValue(oidJobGen + 5, jobInfo.TimestampLastExecution, null, null, UserValueRequested);
+
+                    AddTasks(ibaSnmp, oidJobTasks, jobInfo.Tasks);
                 }
 
 
@@ -359,9 +373,42 @@ namespace iba.Processing
             }
         }
 
+        private void AddTasks(IbaSnmp ibaSnmp, IbaSnmpOid parent, List<SnmpObjectsData.TaskInfo> tasks)
+        {
+            if (tasks == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                SnmpObjectsData.TaskInfo taskInfo = tasks[i];
+                AddTask(ibaSnmp, parent + (uint)(i + 1), taskInfo);
+            }
+        }
+        private void AddTask(IbaSnmp ibaSnmp, IbaSnmpOid parent, SnmpObjectsData.TaskInfo taskInfo)
+        {
+            ibaSnmp.CreateUserValue(parent + 0, taskInfo.TaskName, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + 1, taskInfo.TaskType, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + 2, taskInfo.Success, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + 3, taskInfo.DurationOfLastExecution, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + 4, taskInfo.CurrentMemoryUsed, null, null, UserValueRequested);
+
+            var ci = taskInfo.CleanupInfo;
+            if (ci == null)
+            {
+                return;
+            }
+
+            ibaSnmp.CreateUserValue(parent + "5.0", ci.LimitChoice.ToString(), null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + "5.1", ci.Subdirectories, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + "5.2", ci.FreeDiskSpace, null, null, UserValueRequested);
+            ibaSnmp.CreateUserValue(parent + "5.3", ci.UsedDiskSpace, null, null, UserValueRequested);
+        }
+
         private bool IsObjectsDataUpToDate()
         {
-            if (ObjectsData.Stamp == SnmpObjectsData.InvalidTimeStamp)
+            if (ObjectsData.Stamp == DateTime.MinValue)
             {
                 return false;
             }

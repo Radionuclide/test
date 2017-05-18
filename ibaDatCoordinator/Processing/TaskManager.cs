@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Linq;
 using System.Net.Sockets;
@@ -329,12 +330,29 @@ namespace iba.Processing
 
                 lock (m_workers)
                 {
-                    //od.GlobalCleanup;
+
+                    //GlobalCleanup;
+                    try
+                    {
+                        foreach (var gcData in GlobalCleanupDataList)
+                        {
+                            SnmpObjectsData.GlobalCleanupDriveInfo di = new SnmpObjectsData.GlobalCleanupDriveInfo();
+                            di.DriveName = gcData.DriveName; //0
+                            di.Active = gcData.Active; //1
+                            di.Size = 0;// gcData. ;//2
+                            //di.CurrentFreeSpace = gcData.PercentageFree;//3
+                            //di.MinFreeSpace = 0;//gcData.;//4
+                            di.RescanTime = gcData.RescanTime; //5
+
+                            od.GlobalCleanup.Add(di);
+                        }
+                    }
+                    catch { /**/ }
 
                     // standard jobs
                     List<ConfigurationData> confs = Configurations;
                     confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
-                    for (int i = 0; i < Math.Min(16, confs.Count); i++)
+                    for (int i = 0; i < confs.Count; i++)
                     {
                         ConfigurationData cfg = confs[i];
                         ConfigurationWorker worker = m_workers[cfg];
@@ -347,27 +365,30 @@ namespace iba.Processing
                                 SnmpFillBaseJobFields(stdJi, s);
                                 stdJi.PermFailedCount = s.PermanentErrorFiles.Count;
 
+                                //stdJi.TimestampJobStarted = cfg.; //6
                                 //stdJi.LastCycleScanningTime;//7
                                 //stdJi.LastProcessingFinishTimeStamp; //82
                                 //stdJi.LastProcessingLastDatFileProcessed; // 80
                                 //stdJi.LastProcessingStartTimeStamp; //81
-                                //stdJi.TimestampJobStarted = cfg.; //6
 
                                 od.StandardJobs.Add(stdJi);
                                 break;
 
                             case ConfigurationData.JobTypeEnum.Scheduled: 
                                 var schJi = new SnmpObjectsData.ScheduledJobInfo();
-                                SnmpFillBaseJobFields(schJi, s);
-                                schJi.PermFailedCount = s.PermanentErrorFiles.Count;
+                                SnmpFillBaseJobFields(schJi, s); // 0-4
+                                schJi.PermFailedCount = s.PermanentErrorFiles.Count; //5
 
-                                //schJi.TimestampNextExecution = worker.m_nextTrigger;
+                                //schJi.TimestampLastExecution =;//6
+                                schJi.TimestampNextExecution = worker.NextTrigger.ToString(CultureInfo.InvariantCulture); //7
                                 od.ScheduledJobs.Add(schJi);
                                 break;
 
                             case ConfigurationData.JobTypeEnum.OneTime:
                                 var otJi = new SnmpObjectsData.OneTimeJobInfo();
                                 SnmpFillBaseJobFields(otJi, s);
+
+                                //otJi.TimestampLastExecution =;//5
                                 od.OneTimeJobs.Add(otJi);
                                 break;
 
@@ -393,8 +414,9 @@ namespace iba.Processing
 
         private void SnmpFillBaseJobFields(SnmpObjectsData.JobInfoBase ji, StatusData s)
         {
-            ji.JobName = s.CorrConfigurationData.Name;
-            ji.Status = !s.CorrConfigurationData.Enabled ?
+            var cfg = s.CorrConfigurationData;
+            ji.JobName = cfg.Name;
+            ji.Status = !cfg.Enabled ?
                 SnmpObjectsData.JobStatus.Disabled :
                 (s.Started ?
                     SnmpObjectsData.JobStatus.Started :
@@ -403,8 +425,132 @@ namespace iba.Processing
             ji.TodoCount = s.ReadFiles.Count;
             ji.DoneCount = s.ProcessedFiles.Count;
             ji.FailedCount = s.CountErrors();
-            //ji.Tasks
+
+            ji.Tasks = new List<SnmpObjectsData.TaskInfo>();
+            foreach (TaskData taskData in cfg.Tasks)
+            {
+                var taskInfo = new SnmpObjectsData.TaskInfo
+                {
+                    TaskName = taskData.Name
+                };
+
+                // default is just a type name
+                string taskTypeStr = taskData.GetType().Name;
+
+                if (taskData is TaskDataUNC)
+                // Derived from TaskDataUNC (alphabetically):
+                //   CopyMoveTaskData
+                //   CustomTaskDataUNC 
+                //   ExtractData 
+                //   GlobalCleanupTaskData 
+                //   ReportData 
+                //   SplitterTaskData 
+                //   UpdateDataTaskData 
+                {
+                    if (taskData is CopyMoveTaskData)
+                    {
+                        taskTypeStr = "CopyMoveDelete";
+                        var typedData = taskData as CopyMoveTaskData;
+
+                        taskTypeStr += typedData.ActionDelete ?
+                            "_Delete" :
+                            typedData.RemoveSource ?
+                            "_Move":
+                            "_Copy";
+                    }
+                    if (taskData is CustomTaskDataUNC)
+                    {
+                        taskTypeStr = "CustomTaskDataUNC";
+                        var typedData = taskData as CustomTaskDataUNC;
+                    }
+                    if (taskData is ExtractData)
+                    {
+                        taskTypeStr = "Extract";
+                        var typedData = taskData as ExtractData;
+                    }
+                    else if (taskData is GlobalCleanupTaskData)
+                    {
+                        // todo - why is this not present in GUI control? 
+                        taskTypeStr = "GlobalCleanup"; 
+                        var typedData = taskData as GlobalCleanupTaskData;
+                    }
+                    if (taskData is ReportData)
+                    {
+                        taskTypeStr = "Report";
+                        var typedData = taskData as ReportData;
+                    }
+                    if (taskData is SplitterTaskData)
+                    {
+                        taskTypeStr = "Splitter";
+                        var typedData = taskData as SplitterTaskData;
+                    }
+                    if (taskData is UpdateDataTaskData)
+                    {
+                        taskTypeStr = "UpdateData";
+                        var typedData = taskData as UpdateDataTaskData;
+                    }
+                }
+                else
+                // NOT derived from TaskDataUNC (alphabetically):
+                //   BatchFileData 
+                //   CleanupTaskData 
+                //   CustomTaskData
+                //   IfTaskData 
+                //   PauseTaskData 
+                {
+                    if (taskData is BatchFileData)
+                    {
+                        taskTypeStr = "Script";
+                        var typedData = taskData as BatchFileData;
+                    }
+                    else if (taskData is CleanupTaskData)
+                    {
+                        taskTypeStr = "Cleanup";
+                        var typedData = taskData as CleanupTaskData;
+                    }
+                    else if (taskData is CustomTaskData)
+                    {
+                        taskTypeStr = "Custom";
+                        var typedData = taskData as CustomTaskData;
+                    }
+                    else if (taskData is IfTaskData)
+                    {
+                        taskTypeStr = "Condition";
+                        var typedData = taskData as IfTaskData;
+
+                    }
+                    else if (taskData is PauseTaskData)
+                    {
+                        taskTypeStr = "Pause";
+                        var typedData = taskData as PauseTaskData;
+                    }
+                }
+
+                taskInfo.TaskType = taskTypeStr;
+
+                // if cleanup info is present, add it to the task
+                var cleanupTaskData = taskData as CleanupTaskData;
+                if (cleanupTaskData != null)
+                {
+                    taskInfo.CleanupInfo = new SnmpObjectsData.LocalCleanupInfo
+                    {
+                        LimitChoice = cleanupTaskData.OutputLimitChoice,
+                        FreeDiskSpace = cleanupTaskData.QuotaFree,
+                        Subdirectories = cleanupTaskData.SubfoldersNumber,
+                        UsedDiskSpace = cleanupTaskData.Quota
+                    };
+                    //taskInfo.CleanupInfo = cleanupInfo;
+                }
+                //ti.Success = taskData.Enabled;//2
+
+                //ti.DurationOfLastExecution =taskData.;//3
+                //ti.CurrentMemoryUsed =;//4
+                //ti.CleanupInfo =;//5
+
+                ji.Tasks.Add(taskInfo);
+            }
         }
+
         #endregion
 
 

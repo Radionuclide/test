@@ -16,7 +16,6 @@ namespace iba.Data
         public int _tmp_reset_cnt { get; private set; }
         public int _tmp_updated_cnt { get; set; }
 
-        public static DateTime InvalidTimeStamp { get; } = DateTime.MinValue;
         public SnmpObjectsData()
         {
             Reset();
@@ -25,7 +24,7 @@ namespace iba.Data
         public void Reset()
         {
             // contained data is not valid
-            Stamp = InvalidTimeStamp;
+            Stamp = DateTime.MinValue;
             GlobalCleanup.Clear();
             StandardJobs.Clear();
             ScheduledJobs.Clear();
@@ -83,14 +82,18 @@ namespace iba.Data
 
         internal class LocalCleanupInfo
         {
+            // todo discuss this oid
+            /// <summary> Oid 0 </summary>
+            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
+
             /// <summary> Oid 1 </summary>
-            public int Subdirectories;
+            public uint Subdirectories;
 
             /// <summary> Oid 2 </summary>
-            public int FreeDiskSpace;
+            public uint FreeDiskSpace;
 
             /// <summary> Oid 3 </summary>
-            public int UsedDiskSpace;
+            public uint UsedDiskSpace;
         }
 
         /// <summary> OID 1...n - one struct per for each task </summary>
