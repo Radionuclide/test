@@ -134,7 +134,7 @@ namespace iba.Services
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
             m_communicationObject.SaveConfigurations();
 
-            m_communicationObject.ForwardEvents = false;
+            m_communicationObject.ClearForwarders();
 
             //Stop publishing service
             if (m_servicePublisher != null)

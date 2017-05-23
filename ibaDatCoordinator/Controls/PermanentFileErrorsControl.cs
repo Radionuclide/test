@@ -280,6 +280,8 @@ namespace iba.Controls
             }
         }
 
+        int lastChangedCount = 0;
+
         public void OnChangedData(object sender, EventArgs e)
         {
             m_refreshTimer.Enabled = false;
@@ -298,12 +300,12 @@ namespace iba.Controls
                 m_deleteDats.Enabled = m_refreshDats.Enabled = true;
                 this.Cursor = Cursors.Default;
             }
-            if (!m_data.Changed && sender != null)
+            if (m_data.ChangedCount == lastChangedCount && sender != null)
             {
                 m_refreshTimer.Enabled = true;
                 return;
             }
-            m_data.Changed = false; 
+            lastChangedCount = m_data.ChangedCount;
 
             DetermineCheckedFiles();
             m_gridView.RowCount = m_data.Files.Count; 

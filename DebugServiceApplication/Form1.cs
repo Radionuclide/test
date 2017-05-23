@@ -30,7 +30,7 @@ namespace iba
         {
             m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
-            m_communicationObject.ForwardEvents = false;
+            //m_communicationObject.ForwardEvents = false;
             LogData.StopLogger();
         }
 
@@ -112,6 +112,5 @@ namespace iba
             }
             Lable1.Text = str;
         }
-
     }
 }

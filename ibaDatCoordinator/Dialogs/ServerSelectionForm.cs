@@ -179,13 +179,13 @@ namespace iba.Dialogs
             this.btSearch = new System.Windows.Forms.Button();
             this.ckAutoConnect = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbAddress = new iba.Controls.ImageComboBox();
             this.grid = new System.Windows.Forms.DataGridView();
-            this.spPortNr = new System.Windows.Forms.NumericUpDown();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPortNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.spPortNr = new System.Windows.Forms.NumericUpDown();
+            this.cbAddress = new iba.Controls.ImageComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPortNr)).BeginInit();
             this.SuspendLayout();
@@ -234,14 +234,6 @@ namespace iba.Dialogs
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
-            // cbAddress
-            // 
-            resources.ApplyResources(this.cbAddress, "cbAddress");
-            this.cbAddress.DefaultImageIndex = -1;
-            this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbAddress.ImageList = null;
-            this.cbAddress.Name = "cbAddress";
-            // 
             // grid
             // 
             this.grid.AllowUserToAddRows = false;
@@ -265,26 +257,6 @@ namespace iba.Dialogs
             this.grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grid.SelectionChanged += new System.EventHandler(this.grid_SelectionChanged);
             this.grid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseDoubleClick);
-            // 
-            // spPortNr
-            // 
-            resources.ApplyResources(this.spPortNr, "spPortNr");
-            this.spPortNr.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.spPortNr.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.spPortNr.Name = "spPortNr";
-            this.spPortNr.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // colName
             // 
@@ -318,7 +290,33 @@ namespace iba.Dialogs
             this.colVersion.Name = "colVersion";
             this.colVersion.ReadOnly = true;
             // 
-            // colSerial
+            // spPortNr
+            // 
+            resources.ApplyResources(this.spPortNr, "spPortNr");
+            this.spPortNr.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.spPortNr.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spPortNr.Name = "spPortNr";
+            this.spPortNr.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cbAddress
+            // 
+            resources.ApplyResources(this.cbAddress, "cbAddress");
+            this.cbAddress.DefaultImageIndex = -1;
+            this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbAddress.ImageList = null;
+            this.cbAddress.Name = "cbAddress";
             // 
             // ServerSelectionForm
             // 

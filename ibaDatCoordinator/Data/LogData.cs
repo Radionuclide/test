@@ -76,7 +76,7 @@ namespace iba.Data
         }
     }
 
-    public class EventForwarder : MarshalByRefObject
+    public class EventForwarder : MarshalByRefObject, IEquatable<EventForwarder>
     {
         public void Forward(int priority, string message, LogExtraData dat)
         {
@@ -100,10 +100,25 @@ namespace iba.Data
             (LogData.Data.Logger as GridViewLogger).clear(); 
         }
 
-        //public bool ForwardReadFromFileCommand(string filename)
-        //{
-        //    return (LogData.Data.Logger as GridViewLogger).readFromFile(filename);
-        //}
+        public bool Equals(EventForwarder other)
+        {
+            return other != null && this.Guid == other.Guid;
+        }
+
+        private Guid m_guid;
+
+        public Guid Guid
+        {
+            get
+            {
+                return m_guid;
+            }
+        }
+
+        public EventForwarder()
+        {
+            m_guid = new Guid();
+        }
     }
 
     public class GridViewLogger : Logger
@@ -120,22 +135,23 @@ namespace iba.Data
             get { return m_control; }
         }
 
-        private EventForwarder m_ef;
-        public EventForwarder Forwarder
+        private System.Collections.Concurrent.ConcurrentDictionary<Guid, EventForwarder> m_efDict = new System.Collections.Concurrent.ConcurrentDictionary<Guid, EventForwarder>();
+        
+        public void AddForwarder(EventForwarder ev, Guid g)
         {
-            get { return m_ef; }
-            set { m_ef = value; }
+            m_efDict.TryAdd(g, ev);
         }
 
-        private bool m_isForwarding;
-        private bool m_isForwarding2;
-        public bool IsForwarding
+        public void RemoveForwarder(Guid g)
         {
-            get { return m_isForwarding2; }
-            set 
-            {   m_isForwarding = value;
-                if (value) m_isForwarding2 = true;    
-            }
+            EventForwarder ev;
+            m_efDict.TryRemove(g, out ev);
+        }
+
+        private bool m_isForwarding; 
+        public bool IsForwading
+        {
+            get { return m_efDict.Count > 0; }
         }
 
         private delegate void UpdateDelegate(Event _event);
@@ -174,6 +190,11 @@ namespace iba.Data
                 if (m_control != null) //gui present
                     if (prevLevel != m_logLevel) m_control.BeginInvoke(m_updateFilterDelegate);
             }
+        }
+
+        public void ClearForwarders()
+        {
+            m_efDict.Clear();
         }
 
         private void update(Event _event)
@@ -309,80 +330,16 @@ namespace iba.Data
             }
         }
 
-        //private bool readFromFileToBeInvoked(string filename)
-        //{
-        //    List<List<string>> readEvents = new List<List<string>>();
-        //    try
-        //    {
-        //        FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        //        using (StreamReader logfile = new StreamReader(stream))
-        //        {
-        //            char[] sep = { '\t' };
-        //            char[] totrim = {'[',']'};
-        //            string str;
-        //            while ((str = logfile.ReadLine()) != null)
-        //            {
-        //                if (String.IsNullOrEmpty(str)) continue;
-        //                string[] pieces = str.Split(sep);
-        //                pieces[3] = pieces[3].Trim(totrim);
-        //                pieces[4] = pieces[4].Trim(totrim);
-        //                pieces[5] = pieces[5].Trim(totrim);
-        //                readEvents.Add(new List<string>(pieces));
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(iba.Properties.Resources.OpenFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return false;
-        //    }
-        //    lock (m_grid.Rows)
-        //    {
-        //        m_grid.Rows.Clear();
-        //        int index = 0;
-        //        foreach (List<string> readEvent in readEvents)
-        //        {
-        //            while (m_grid.Rows.Count >= m_maxRows)
-        //                m_grid.Rows.RemoveAt(0);
-        //            index = m_grid.Rows.Add(new Object[] { readEvent[0], readEvent[3], readEvent[4], readEvent[5], readEvent[2]});
-        //            DataGridViewCellStyle style = m_grid.Rows[index].Cells[4].Style;
-        //            if (readEvent[1] == Logging.Level.Warning.ToString()) style.ForeColor = Color.Orange;
-        //            else if (readEvent[1] == Logging.Level.Info.ToString()) style.ForeColor = Color.Green;
-        //            else if (readEvent[1] == Logging.Level.Exception.ToString()) style.ForeColor = Color.Red;
-        //        }
-        //        if (m_grid.Rows.Count > index)
-        //            m_grid.Rows[index].Selected=true;
-        //    }
-        //    return true;
-        //}
-
-        //public bool readFromFile(string filename)
-        //{
-        //    if (m_control == null && (m_ef == null || !m_isForwarding)) //we are at te server side, but there is no client to forward to
-        //    {
-        //        return true;
-        //    }
-        //    bool result = false;
-        //    if (m_ef != null && m_isForwarding)
-        //    {
-        //        result = m_ef.ForwardReadFromFileCommand(filename);
-        //    }
-        //    m_isForwarding2 = m_isForwarding; //ok to close GUI
-        //    if (m_ef != null) return result;
-        //    if (m_control.InvokeRequired)
-        //        return (bool)m_control.Invoke(m_readDelegate, new object[] { filename });
-        //    else
-        //        return readFromFileToBeInvoked(filename);
-        //}
-
         public void clear()
         {
-            if (m_ef != null && m_isForwarding)
-            {
-                m_ef.ForwardClearCommand();
+            foreach (EventForwarder ef in m_efDict.Values)
+            { 
+                if (ef != null && m_isForwarding)
+                {
+                    ef.ForwardClearCommand();
+                }
             }
-            m_isForwarding2 = m_isForwarding; //ok to close GUI
-            if (m_ef != null) return;
+            if (m_efDict.Count > 0) return;
             if (m_control != null) //gui present
                 m_control.BeginInvoke(m_clearAllRowsDelegate);
         }
@@ -400,7 +357,7 @@ namespace iba.Data
             m_logLevel = 0;
             Profiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
             Profiler.ProfileInt(true, "LastState", "LastLogLevel", ref m_logLevel, 0);
-            m_isForwarding = m_isForwarding2 = false;
+            m_isForwarding = false;
             m_cacheErrors = new List<Event>();
             m_cacheWarnings = new List<Event>();
             m_cacheInfos = new List<Event>();
@@ -408,45 +365,50 @@ namespace iba.Data
 
         protected override void Write(Event _event)
         {
-            if (m_ef != null && m_isForwarding)
+            List<Guid> guidsToDelete = new List<Guid>();
+
+            foreach (var kvp in m_efDict)
             {
                 try
                 {
-                    m_ef.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
-                    m_isForwarding2 = m_isForwarding; //ok to close GUI
+                    kvp.Value.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
                 }
                 catch (Exception)
                 {
-                    m_isForwarding2 = m_isForwarding = false;
-                    m_ef = null;
+                    guidsToDelete.Add(kvp.Key);
                 }
+
             }
-            m_isForwarding2 = m_isForwarding; //ok to close GUI
-            if (m_ef != null) return;
+            EventForwarder ef;
+            foreach (Guid g in guidsToDelete)
+                m_efDict.TryRemove(g, out ef);
+            if (m_efDict.Count > 0 ) return;
             if (m_control != null && m_control.IsHandleCreated && !m_control.IsDisposed)
                 m_control.BeginInvoke(m_updateDelegate, new Object[] { _event });
         }
 
         protected override void Write(Event[] events, int length)
         {
-            if (m_ef != null && m_isForwarding )
+            List<Guid> guidsToDelete = new List<Guid>();
+            foreach (var kvp in m_efDict)
             {
                 try
                 {
                     for (int i = 0; i < length; i++)
                     {
                         Event _event = events[i];
-                        m_ef.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
+                        kvp.Value.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
                     }
                 }
                 catch (Exception)
                 {
-                    m_isForwarding2 = m_isForwarding = false;
-                    m_ef = null;
+                    guidsToDelete.Add(kvp.Key);
                 }
             }
-            m_isForwarding2 = m_isForwarding; //ok to close GUI
-            if (m_ef != null) return;
+            EventForwarder ef;
+            foreach (Guid g in guidsToDelete)
+                m_efDict.TryRemove(g, out ef);
+            if (m_efDict.Count > 0) return;
             if (m_control == null || !m_control.IsHandleCreated || m_control.IsDisposed)
                 return;
             for (int i = 0; i < length; i++)

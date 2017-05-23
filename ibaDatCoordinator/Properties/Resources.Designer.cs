@@ -144,6 +144,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It appears the jobconfigurations on the server side have been modified by another client. Do you wish to save local modifications to file before downloading?.
+        /// </summary>
+        internal static string AskSaveLocal {
+            get {
+                return ResourceManager.GetString("AskSaveLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Script has changed, do you wish to save the scriptfile ?.
         /// </summary>
         internal static string AskToSaveScript {

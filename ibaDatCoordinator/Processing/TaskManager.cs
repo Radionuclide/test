@@ -23,7 +23,7 @@ namespace iba.Processing
                 m_workers.Add(data, cw);
             }
         }
-
+                
         virtual public void AddConfigurations(List<ConfigurationData> datas)
         {
             foreach (ConfigurationData data in datas)
@@ -153,7 +153,7 @@ namespace iba.Processing
         virtual public void StartAllEnabledConfigurationsNoOneTime()
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
-                if (kvp.Key.Enabled && kvp.Key.JobType != ConfigurationData.JobTypeEnum.OneTime)
+                if (kvp.Key.Enabled && (kvp.Key.JobType != ConfigurationData.JobTypeEnum.OneTime))
                     StartConfiguration(kvp.Key);
         }
 
@@ -257,15 +257,6 @@ namespace iba.Processing
             }
             return null;
         }
-
-        //virtual public StatusData GetStatusCopy(Guid guid)
-        //{
-        //    foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
-        //    {
-        //        if (pair.Key.Guid == guid) return pair.Value.Status.Clone();
-        //    }
-        //    throw new KeyNotFoundException(guid.ToString() + " not found");
-        //}
 
         public enum AlterPermanentFileErrorListWhatToDo { AFTERDELETE, AFTERREFRESH };
         virtual public void AlterPermanentFileErrorList(AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
@@ -622,6 +613,35 @@ namespace iba.Processing
             set { m_globalCleanup.GlobalCleanupDataList = value; }
         }
 
+        int m_taskManagerID;
+        virtual public int TaskManagerID
+        {
+            get
+            {
+                return m_taskManagerID;
+            }
+        }
+
+        int m_confStoppedID;
+        virtual public int ConfStoppedID
+        {
+            get
+            {
+                return m_confStoppedID;
+            }
+        }
+
+        internal void IncreaseConfStoppedID()
+        {
+            System.Threading.Interlocked.Increment(ref m_confStoppedID);
+        }
+
+
+        internal void IncreaseTaskManagerID()
+        {
+            System.Threading.Interlocked.Increment(ref m_taskManagerID);
+        }
+
 
         public virtual void StartAllEnabledGlobalCleanups()
         {
@@ -663,8 +683,6 @@ namespace iba.Processing
 
             m_workers[data].ProcessFileDirect(file);
         }
-
-
     }
 
 
@@ -783,20 +801,6 @@ namespace iba.Processing
             }
         }
 
-        //public override StatusData GetStatus(Guid guid)
-        //{
-        //    try
-        //    {
-        //        //if remote, get a copy instead of the status itself
-        //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
-        //        return Manager.GetStatus(guid);
-        //    }
-        //}
-
         public override bool IsJobStarted(Guid guid)
         {
             try
@@ -848,19 +852,6 @@ namespace iba.Processing
                 return Manager.GetStatusPlugin(guid, taskindex);
             }
         }
-
-        //public override StatusData GetStatusCopy(Guid guid)
-        //{
-        //    try
-        //    {
-        //        return Program.CommunicationObject.Manager.GetStatusCopy(guid);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
-        //        return Manager.GetStatusCopy(guid);
-        //    }
-        //}
 
         public override void AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
         {
@@ -1453,6 +1444,38 @@ namespace iba.Processing
             catch(Exception)
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+            }
+        }
+
+        public override int ConfStoppedID
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.ConfStoppedID;
+                }
+                catch (Exception)
+                {
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    return 0;
+                }
+            }
+        }
+
+        public override int TaskManagerID
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.TaskManagerID;
+                }
+                catch (Exception)
+                {
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    return 0;
+                }
             }
         }
     }

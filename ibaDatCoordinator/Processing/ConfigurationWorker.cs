@@ -56,7 +56,18 @@ namespace iba.Processing
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
                 }
+                NotifyClientsOfStop();
             }
+        }
+
+        private void NotifyClientsOfStop()
+        {
+            TaskManager.Manager.IncreaseConfStoppedID();
+        }
+
+        private void NotifyClientsOfUpdate()
+        {
+            TaskManager.Manager.IncreaseTaskManagerID();
         }
 
         public void Signal()
@@ -144,6 +155,7 @@ namespace iba.Processing
                         if (m_notifyTimer == null) m_notifyTimer = new System.Threading.Timer(OnNotifyTimerTick);
                         m_notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                     }
+
                     if (m_toUpdate.RescanEnabled && m_toUpdate.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     {
                         if (rescanTimer == null)
@@ -165,6 +177,7 @@ namespace iba.Processing
                             rescanTimer = null;
                         }
                     }
+
                     if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval && !m_toUpdate.OnetimeJob)
                     {
                         if (reprocessErrorsTimer == null) reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
@@ -188,6 +201,7 @@ namespace iba.Processing
 
                     ConfigurationData oldConfigurationData = m_cd;
                     m_cd = m_toUpdate.Clone_AlsoCopyGuids();
+                    NotifyClientsOfUpdate();
 
                     if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     {
@@ -737,7 +751,6 @@ namespace iba.Processing
             SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
             Log(Logging.Level.Info, iba.Properties.Resources.logConfigurationStopped);
         }
-
 
         private void RunOneTimeJob()
         {
@@ -4734,5 +4747,7 @@ namespace iba.Processing
             m_sd.UpdatingFileList = false;
             m_sd.MergeProcessedAndToProcessLists();
         }
+
+        
     }
 }

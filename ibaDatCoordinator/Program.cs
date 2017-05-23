@@ -176,8 +176,9 @@ namespace iba
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
 
-            if (SingletonApp.CheckIfRunning())
-                return;      
+            //TODO: place this back
+            //if (SingletonApp.CheckIfRunning())
+            //    return;      
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -289,7 +290,7 @@ namespace iba
             get
             {
                 System.Diagnostics.Debug.Assert(Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED);
-               if (string.IsNullOrEmpty(m_serverHost))
+                if (string.IsNullOrEmpty(m_serverHost))
                 {
                     var key =
                     Microsoft.Win32.Registry.CurrentUser.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "IBA", "DATCoordinator"));

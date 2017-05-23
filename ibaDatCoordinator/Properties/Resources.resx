@@ -1355,4 +1355,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="StatusIconStopped" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DatCo_SrvStat_Icon_stopped.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AskSaveLocal" xml:space="preserve">
+    <value>It appears the jobconfigurations on the server side have been modified by another client. Do you wish to save local modifications to file before downloading?</value>
+  </data>
 </root>

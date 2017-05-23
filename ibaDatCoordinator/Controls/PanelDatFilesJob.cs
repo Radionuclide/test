@@ -67,7 +67,7 @@ namespace iba.Controls
                 groupBox1.Size = new Size(groupBox1.Size.Width, newHeight);
                 groupBox1.MinimumSize = new Size(0,newHeight);
                 m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
-
+                m_autoStartCheckBox.Visible = false;
                 this.ResumeLayout();
             }
             else

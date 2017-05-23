@@ -284,6 +284,8 @@ namespace iba.Data
             m_started = false;
         }
 
+        private int m_changedCount;
+
         public MinimalStatusData GetMinimalStatusData(bool permanentError)
         {
             int filesCount = permanentError?m_permanentErrorFiles.Count:Math.Min(m_filesCopy.Count, 200);
@@ -293,7 +295,9 @@ namespace iba.Data
             answer.CorrConfigurationGuid = m_cf.Guid;
             if (permanentError)
             {
-                answer.Changed = m_permanentErrorFilesChanged;
+                if (m_permanentErrorFilesChanged)
+                    m_changedCount++;
+                answer.ChangedCount = m_changedCount;
                 m_permanentErrorFilesChanged = false;
                 lock (m_permanentErrorFilesCopy)
                 {
@@ -328,7 +332,8 @@ namespace iba.Data
             }
             else
             {
-                answer.Changed = m_changed;
+                if (m_changed) m_changedCount++;
+                answer.ChangedCount = m_changedCount;
                 m_changed = false;
                 int count = 0;
                 lock (m_filesCopy)
@@ -379,11 +384,11 @@ namespace iba.Data
             set { m_cdGuid = value; }
         }
 
-        private bool m_changed;
-        public bool Changed
+        private int m_changedCount;
+        public int ChangedCount
         {
-            get { return m_changed; }
-            set { m_changed = value; }
+            get { return m_changedCount; }
+            set { m_changedCount = value; }
         }
 
         private bool m_started;

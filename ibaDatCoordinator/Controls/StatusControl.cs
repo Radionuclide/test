@@ -241,6 +241,7 @@ namespace iba.Controls
             //nothing to be saved as status is purely an output control
         }
 
+        int lastChangedCount;
         public void OnChangedData(object sender, EventArgs e)
         {
             m_refreshTimer.Enabled = false;
@@ -252,12 +253,12 @@ namespace iba.Controls
                 this.Cursor = Cursors.Default;
                 m_gridView.Cursor = this.Cursor; //workaround for cursor in gridview not changing
             }
-            if (!m_data.Changed && sender != null)
+            if (m_data.ChangedCount == lastChangedCount && sender != null)
             {
                 m_refreshTimer.Enabled = true;
                 return;
             }
-            m_data.Changed = false;
+            lastChangedCount = m_data.ChangedCount;
             //wait cursor
             string text = String.Format(iba.Properties.Resources.statText1, m_data.Started ? iba.Properties.Resources.statText2 : iba.Properties.Resources.statText3) + Environment.NewLine;
             //text += "processedFiles: " + m_data.ProcessedFiles.Count.ToString() + Environment.NewLine;

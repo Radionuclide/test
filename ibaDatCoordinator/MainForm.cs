@@ -145,7 +145,7 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
                 Program.CommunicationObject.Logging_Log("Gui Stopped");
-                Program.CommunicationObject.ForwardEvents = false;
+                if (m_ef != null) Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                 Program.CommunicationObject.SaveConfigurations();
             }
             else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
@@ -185,17 +185,6 @@ namespace iba
         }
 
         bool bHandleResize = false;
-
-        //protected override void OnResize(EventArgs e)
-        //{
-        //    base.OnResize(e);
-        //    if(bHandleResize && WindowState == FormWindowState.Minimized)
-        //    {
-        //        FormStateSerializer.SaveSettings(this, "MainForm");
-        //        ShowInTaskbar = false;
-        //        Hide();
-        //    }
-        //}
 
         public void fromStatusToConfiguration()
         {
@@ -1797,10 +1786,16 @@ namespace iba
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (sender != null && !Utility.Crypt.CheckPassword(this)) return;
-	        m_saveFileDialog.CreatePrompt = false;
-		    m_saveFileDialog.OverwritePrompt = true;
-	    	m_saveFileDialog.FileName = "myConfigurations";
-	    	m_saveFileDialog.DefaultExt = "xml";
+            m_saveFileDialog.CreatePrompt = false;
+            m_saveFileDialog.OverwritePrompt = true;
+            if (String.IsNullOrEmpty(m_filename))
+                m_saveFileDialog.FileName = "myConfigurations";
+            else
+            {
+                m_saveFileDialog.InitialDirectory = Path.GetDirectoryName(m_filename);
+                m_saveFileDialog.FileName = Path.GetFileName(m_filename);
+            }
+            m_saveFileDialog.DefaultExt = "xml";
 	    	m_saveFileDialog.Filter = "XML files (*.xml)|*.xml";
             if (m_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -1861,7 +1856,7 @@ namespace iba
                         TaskManager.Manager.StartAllEnabledGlobalCleanups();
                         foreach (ConfigurationData dat in confs)
                         {
-                            if (dat.AutoStart && dat.Enabled) TaskManager.Manager.StartConfiguration(dat);
+                            if (dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
                         }
                     }
                 }
@@ -2686,7 +2681,7 @@ namespace iba
                     Program.CommunicationObject = null; //will kill it
                     Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
                     TryToConnect(null);
-                    if (Program.CommunicationObject == null) //connect failed
+                    if (Program.CommunicationObject == null && old != null) //connect failed
                     {
                         old.HandleBrokenConnection();
                         Program.CommunicationObject = old;
@@ -2724,14 +2719,18 @@ namespace iba
 
         private bool m_suppresUpload = false;
         private bool m_firstConnectToService;
-
+        private int m_lastStopID = -1;
+        private int m_lastTaskManagerID = -1;
+        private EventForwarder m_ef;
         public void TryToConnect(object ignoreMe)
         {
+            if (m_updateClientTimer != null)
+                m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (m_tryConnectTimer != null)
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             try
             {
-                if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
@@ -2759,25 +2758,20 @@ namespace iba
                                     TaskManager.Manager.StartAllEnabledGlobalCleanups();
                                     foreach(ConfigurationData dat in TaskManager.Manager.Configurations)
                                     {
-                                        if(dat.AutoStart) TaskManager.Manager.StartConfiguration(dat);
+                                        if(dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
                                     }
                                     if(m_navBar.SelectedPane == m_statusPane)
                                         loadStatuses();
                                     else if(m_navBar.SelectedPane == m_configPane)
                                         loadConfigurations();
                                     ReloadRightPane();
+                                    UpdateButtons();
                                 }
                                 else //download
                                 {
-                                    var prevPane = m_navBar.SelectedPane;
-                                    loadConfigurations();
-                                    loadStatuses();
-                                    if(prevPane != m_settingsPane)
-                                        ReloadRightPane();
-                                    else
-                                        m_navBar.SelectedPane = prevPane;
+                                    ReloadClient();
                                 }
-                                UpdateButtons();
+
                             };
                             Invoke(m);
                         }
@@ -2795,7 +2789,12 @@ namespace iba
                         else
                             gv = LogData.Data.Logger as GridViewLogger;
                         LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTCONNECTED);
-                        Program.CommunicationObject.Logging_setEventForwarder(new EventForwarder());
+                        if (m_ef != null) //clear any previous attempt
+                        {
+                            Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
+                        }
+                        m_ef = new EventForwarder();
+                        Program.CommunicationObject.Logging_setEventForwarder(m_ef,m_ef.Guid);
                         m_firstConnectToService = false;
                         SetRenderer();
                         UpdateServiceSettingsPane();
@@ -2805,7 +2804,7 @@ namespace iba
                         Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
                     }
                 }
-                else if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 {
                     try
                     {
@@ -2829,6 +2828,72 @@ namespace iba
             if (m_tryConnectTimer == null)
                 m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+            m_lastStopID = -1;
+            m_lastTaskManagerID = -1;
+            if (m_updateClientTimer == null)
+                m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
+            m_updateClientTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+        }
+
+        private void ReloadClient()
+        {
+            var prevPane = m_navBar.SelectedPane;
+            loadConfigurations();
+            loadStatuses();
+            if (prevPane != m_settingsPane)
+                ReloadRightPane();
+            else
+                m_navBar.SelectedPane = prevPane;
+            UpdateButtons();
+        }
+
+        private void UpdateClientTimerTick(object state)
+        {
+            if (m_tryConnectTimer != null)
+                m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED)
+            { //timer, will be enabled again on reconnnect
+                return;
+            }
+            if (m_lastTaskManagerID == -1) m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
+            if (m_lastStopID == -1) m_lastStopID = TaskManager.Manager.ConfStoppedID;
+
+            if (TaskManager.Manager.TaskManagerID != m_lastTaskManagerID && IsServerClientDifference())
+            {
+                //do download or kill.
+                this.BeginInvoke(new Action(() => 
+                {
+                    if (MessageBox.Show(this,
+                        iba.Properties.Resources.AskSaveLocal,
+                        "ibaDatCoordinator",
+                         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                         MessageBoxDefaultButton.Button1)
+                        == DialogResult.Yes)
+                    {
+                        saveAsToolStripMenuItem_Click(null, null);
+                    }
+                    ReloadClient();
+                }
+                ));
+                m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
+            }
+            else if (m_lastStopID != TaskManager.Manager.ConfStoppedID)
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    UpdateButtons();
+                    if (m_configPane == m_navBar.SelectedPane)
+                    {
+                        ConfigurationControl c = (m_rightPane.Controls[0] as ConfigurationControl);
+                        if (c != null)
+                        {
+                            c.UpdateEnabledState();
+                        }
+                    }
+                }
+                ));
+                m_lastStopID = TaskManager.Manager.ConfStoppedID;
+            }
         }
 
         private bool NeedUploadToServer()
@@ -2879,7 +2944,8 @@ namespace iba
         }
 
         private System.Threading.Timer m_tryConnectTimer;
-        
+        private System.Threading.Timer m_updateClientTimer;
+
         public void ReplaceManagerFromTree(TaskManager m)
         {
             List<ConfigurationData> toReplace = new List<ConfigurationData>();
@@ -2983,7 +3049,7 @@ namespace iba
             Show();
             Activate();
             WindowState = FormWindowState.Normal;
-            FormStateSerializer.LoadSettings(this, "StatusForm", true);
+            FormStateSerializer.LoadSettings(this, "MainForm", true);
         }
 
         public void OnExternalClose()

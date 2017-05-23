@@ -74,18 +74,18 @@ namespace iba
             this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.connectServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -462,6 +462,12 @@ namespace iba
             resources.ApplyResources(this.serviceToolStripMenuItem, "serviceToolStripMenuItem");
             this.serviceToolStripMenuItem.DropDownOpening += new System.EventHandler(this.serviceToolStripMenuItem_DropDownOpening);
             // 
+            // connectServiceToolStripMenuItem
+            // 
+            this.connectServiceToolStripMenuItem.Name = "connectServiceToolStripMenuItem";
+            resources.ApplyResources(this.connectServiceToolStripMenuItem, "connectServiceToolStripMenuItem");
+            this.connectServiceToolStripMenuItem.Click += new System.EventHandler(this.miConnectServiceToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -502,15 +508,19 @@ namespace iba
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // startServiceToolStripMenuItem
+            // 
+            this.startServiceToolStripMenuItem.Name = "startServiceToolStripMenuItem";
+            resources.ApplyResources(this.startServiceToolStripMenuItem, "startServiceToolStripMenuItem");
+            // 
+            // stopServiceToolStripMenuItem
+            // 
+            this.stopServiceToolStripMenuItem.Name = "stopServiceToolStripMenuItem";
+            resources.ApplyResources(this.stopServiceToolStripMenuItem, "stopServiceToolStripMenuItem");
+            // 
             // m_openFileDialog
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
-            // 
-            // connectServiceToolStripMenuItem
-            // 
-            this.connectServiceToolStripMenuItem.Name = "connectServiceToolStripMenuItem";
-            resources.ApplyResources(this.connectServiceToolStripMenuItem, "connectServiceToolStripMenuItem");
-            this.connectServiceToolStripMenuItem.Click += new System.EventHandler(this.miConnectServiceToolStripMenuItem_Click);
             // 
             // MainForm
             // 

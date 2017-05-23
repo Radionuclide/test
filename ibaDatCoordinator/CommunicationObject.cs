@@ -145,20 +145,26 @@ namespace iba
             get 
             {
                 if (LogData.Data.Logger == null) return false;
-                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding; 
-            }
-            set 
-            {
-                if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
-                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding = value; 
+                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwading; 
             }
         }
 
-        public void Logging_setEventForwarder(EventForwarder ev)
+        public void Logging_setEventForwarder(EventForwarder ev, Guid g)
         {
-            ForwardEvents = true;
             if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
-                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).Forwarder = ev;
+                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).AddForwarder(ev,g);
+        }
+
+        public void Logging_clearEventForwarder(Guid g)
+        {
+            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
+                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).RemoveForwarder(g);
+        }
+
+        public void ClearForwarders()
+        {
+            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
+                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).ClearForwarders();
         }
 
         public string Logging_fileName
@@ -210,6 +216,8 @@ namespace iba
                 m_testObject = null;
             }
         }
+
+
 
         public void ScriptFinished(object sender, System.EventArgs e)
         {
@@ -469,17 +477,6 @@ namespace iba
                     return false;
                 }
             }
-            set
-            {
-                try
-                {
-                    m_com.ForwardEvents = value;
-                }
-                catch (Exception)
-                {
-                    HandleBrokenConnection();
-                }
-            }
         }
 
         public string Logging_fileName
@@ -498,6 +495,8 @@ namespace iba
             }
         }
 
+        public bool SignalButtonUpdate { get; internal set; }
+
         public void Logging_Log(string message)
         {
             try
@@ -511,11 +510,23 @@ namespace iba
             }
         }
 
-        public void Logging_setEventForwarder(EventForwarder ev)
+        public void Logging_setEventForwarder(EventForwarder ev, Guid g)
         {
             try
             {
-                m_com.Logging_setEventForwarder(ev);
+                m_com.Logging_setEventForwarder(ev,g);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+            }
+        }
+
+        public void Logging_clearEventForwarder( Guid g)
+        {
+            try
+            {
+                m_com.Logging_clearEventForwarder(g);
             }
             catch (Exception)
             {

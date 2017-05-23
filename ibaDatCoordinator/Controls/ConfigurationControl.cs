@@ -217,26 +217,31 @@ namespace iba.Controls
                 m_rbTime.Checked = true;
             }
 
-            if(Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            UpdateEnabledState();
+        }
+
+        public void UpdateEnabledState()
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
                 m_applyToRunningBtn.Enabled = false;
                 m_startButton.Enabled = false;
                 m_stopButton.Enabled = false;
                 m_newTaskToolstrip.Enabled = true;
-                if(m_panelScheduledJob != null)
+                if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
-                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
-            else if(TaskManager.Manager.IsJobStarted(m_data.Guid))
+            else if (TaskManager.Manager.IsJobStarted(m_data.Guid))
             {
                 m_applyToRunningBtn.Enabled = true;
                 m_startButton.Enabled = false;
                 m_newTaskToolstrip.Enabled = false;
                 m_stopButton.Enabled = true;
-                if(m_panelScheduledJob != null)
+                if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = true;
-                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = true;
             }
             else
@@ -245,9 +250,9 @@ namespace iba.Controls
                 m_startButton.Enabled = m_data.Enabled;
                 m_newTaskToolstrip.Enabled = true;
                 m_stopButton.Enabled = false;
-                if(m_panelScheduledJob != null)
+                if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
-                if(m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
         }
