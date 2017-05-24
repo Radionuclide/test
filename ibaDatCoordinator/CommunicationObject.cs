@@ -350,7 +350,7 @@ namespace iba
                 //MessageBox.Show("OK");
                 return true;
             }
-            catch (Exception ex) //Do Nothing
+            catch (Exception) //Do Nothing
             {
                 //MessageBox.Show(ex.Message);
                 return false;

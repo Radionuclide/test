@@ -17,20 +17,32 @@ namespace iba.Processing
 
         virtual public void AddConfiguration(ConfigurationData data)
         {
+            AddConfigurationInternal(data);
+            IncreaseTaskManagerID();
+        }
+
+        private void AddConfigurationInternal(ConfigurationData data)
+        {
             ConfigurationWorker cw = new ConfigurationWorker(data);
             lock (m_workers)
             {
                 m_workers.Add(data, cw);
             }
         }
-                
+
         virtual public void AddConfigurations(List<ConfigurationData> datas)
         {
             foreach (ConfigurationData data in datas)
-                AddConfiguration(data);
+                AddConfigurationInternal(data);
+            IncreaseTaskManagerID();
         }
 
         virtual public void RemoveConfiguration(ConfigurationData data)
+        {
+            RemoveConfigurationInternal(data);
+            IncreaseTaskManagerID();
+        }
+        private void RemoveConfigurationInternal(ConfigurationData data)
         {
             lock (m_workers)
             {
@@ -57,7 +69,7 @@ namespace iba.Processing
             }
         }
 
-        private void ReplaceOrAddConfiguration(ConfigurationData data)
+        private void ReplaceOrAddConfigurationInternal(ConfigurationData data)
         {
             lock (m_workers)
             {
@@ -78,7 +90,8 @@ namespace iba.Processing
 
         virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
         {
-            foreach (ConfigurationData data in datas) ReplaceOrAddConfiguration(data);
+            foreach (ConfigurationData data in datas)
+                ReplaceOrAddConfigurationInternal(data);
             List<ConfigurationData> toRemove = new List<ConfigurationData>();
             //remove spurious configurations;
             foreach (ConfigurationData dat in m_workers.Keys)
@@ -89,8 +102,9 @@ namespace iba.Processing
             }
             foreach (ConfigurationData dat in toRemove)
             {
-                RemoveConfiguration(dat);
+                RemoveConfigurationInternal(dat);
             }
+            IncreaseTaskManagerID();
         }
 
         virtual public void UpdateConfiguration(ConfigurationData data)
@@ -118,7 +132,7 @@ namespace iba.Processing
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
                 if(pair.Key.Guid == data.Guid)
-                    return data.IsSame(pair.Key);
+                    return data.IsSame(pair.Value.RunningConfiguration);
             }
             return false;
         }
@@ -148,6 +162,7 @@ namespace iba.Processing
             {
                 m_workers.Clear();
             }
+            IncreaseTaskManagerID();
         }
 
         virtual public void StartAllEnabledConfigurationsNoOneTime()
@@ -628,6 +643,14 @@ namespace iba.Processing
             get
             {
                 return m_confStoppedID;
+            }
+        }
+
+        virtual public int Version
+        {
+            get
+            {
+                return DatCoVersion.CurrentVersion();
             }
         }
 
@@ -1470,6 +1493,22 @@ namespace iba.Processing
                 try
                 {
                     return Program.CommunicationObject.Manager.TaskManagerID;
+                }
+                catch (Exception)
+                {
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    return 0;
+                }
+            }
+        }
+
+        public override int Version
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.Version;
                 }
                 catch (Exception)
                 {

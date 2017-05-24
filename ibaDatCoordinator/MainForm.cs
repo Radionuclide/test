@@ -2728,6 +2728,7 @@ namespace iba
                 m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (m_tryConnectTimer != null)
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            bool setUpdateTimer = false;
             try
             {
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
@@ -2798,6 +2799,7 @@ namespace iba
                         m_firstConnectToService = false;
                         SetRenderer();
                         UpdateServiceSettingsPane();
+                        setUpdateTimer = true;
                     }
                     else
                     {
@@ -2808,14 +2810,16 @@ namespace iba
                 {
                     try
                     {
-                        if(!Program.CommunicationObject.TestConnection())
+                        if (!Program.CommunicationObject.TestConnection())
                         {
-                            MethodInvoker m2 = delegate()
+                            MethodInvoker m2 = delegate ()
                             {
                                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                             };
                             Invoke(m2);
                         }
+                        else
+                            setUpdateTimer = true;
                     }
                     catch { }
                 }
@@ -2828,11 +2832,15 @@ namespace iba
             if (m_tryConnectTimer == null)
                 m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
-            m_lastStopID = -1;
-            m_lastTaskManagerID = -1;
-            if (m_updateClientTimer == null)
-                m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
-            m_updateClientTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+
+            if (setUpdateTimer && !updateTimerBusy) //if update is busy, it will set its own timer ...
+            {
+                if (m_updateClientTimer == null)
+                    m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
+                m_updateClientTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
+                m_lastStopID = -1;
+                m_lastTaskManagerID = -1;
+            }
         }
 
         private void ReloadClient()
@@ -2847,52 +2855,80 @@ namespace iba
             UpdateButtons();
         }
 
+        private bool updateTimerBusy;
+
         private void UpdateClientTimerTick(object state)
         {
-            if (m_tryConnectTimer != null)
-                m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            if (m_updateClientTimer != null)
+                m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (Program.RunsWithService != Program.ServiceEnum.CONNECTED)
             { //timer, will be enabled again on reconnnect
                 return;
             }
+            updateTimerBusy = true;
             if (m_lastTaskManagerID == -1) m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
             if (m_lastStopID == -1) m_lastStopID = TaskManager.Manager.ConfStoppedID;
 
-            if (TaskManager.Manager.TaskManagerID != m_lastTaskManagerID && IsServerClientDifference())
+            try
             {
-                //do download or kill.
-                this.BeginInvoke(new Action(() => 
-                {
-                    if (MessageBox.Show(this,
-                        iba.Properties.Resources.AskSaveLocal,
-                        "ibaDatCoordinator",
-                         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                         MessageBoxDefaultButton.Button1)
-                        == DialogResult.Yes)
+                bool doStartButtons = false;
+                if (TaskManager.Manager.TaskManagerID != m_lastTaskManagerID)
+                { 
+                    if (IsServerClientDifference())
                     {
-                        saveAsToolStripMenuItem_Click(null, null);
-                    }
-                    ReloadClient();
-                }
-                ));
-                m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
-            }
-            else if (m_lastStopID != TaskManager.Manager.ConfStoppedID)
-            {
-                this.BeginInvoke(new Action(() =>
-                {
-                    UpdateButtons();
-                    if (m_configPane == m_navBar.SelectedPane)
-                    {
-                        ConfigurationControl c = (m_rightPane.Controls[0] as ConfigurationControl);
-                        if (c != null)
+                        //do download or kill.
+                        this.Invoke(new Action(() =>
                         {
-                            c.UpdateEnabledState();
+                            if (MessageBox.Show(this,
+                                iba.Properties.Resources.AskSaveLocal,
+                                "ibaDatCoordinator",
+                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                                 MessageBoxDefaultButton.Button1)
+                                == DialogResult.Yes)
+                            {
+                                saveAsToolStripMenuItem_Click(null, null);
+                            }
+                            ReloadClient();
+                        }
+                        ));
+                        m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
+                    }
+                    else
+                    {
+                        doStartButtons = true;
+                    }
+                }
+
+                if (doStartButtons || (m_lastStopID != TaskManager.Manager.ConfStoppedID))
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        UpdateButtons();
+                        if (m_configPane == m_navBar.SelectedPane)
+                        {
+                            ConfigurationControl c = (m_rightPane.Controls.Count > 0) ? (m_rightPane.Controls[0] as ConfigurationControl) : null;
+                            if (c != null)
+                            {
+                                c.UpdateEnabledState();
+                            }
                         }
                     }
+                    ));
+                    m_lastStopID = TaskManager.Manager.ConfStoppedID;
                 }
-                ));
-                m_lastStopID = TaskManager.Manager.ConfStoppedID;
+                if (m_updateClientTimer == null)
+                    m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
+                m_updateClientTimer.Change(TimeSpan.FromSeconds(1.0), TimeSpan.Zero); //every second now ...
+            }
+            catch(Exception)
+            {
+                if (IsDisposed)
+                    return;
+                throw;
+            }
+            finally
+            {
+                updateTimerBusy = false;
             }
         }
 
@@ -2926,12 +2962,14 @@ namespace iba
 
         private bool IsServerClientDifference()
         {
+            int count = 0;
             for (int index = 0; index < 3; index++)
             {
                 foreach (TreeNode t in m_configTreeView.Nodes[index].Nodes)
                 {
                     if (t.Tag is ConfigurationTreeItemData)
                     {
+                        count++;
                         ConfigurationData data = (t.Tag as ConfigurationTreeItemData).ConfigurationData;
                         if (!TaskManager.Manager.CompareConfiguration(data))
                         {
@@ -2940,6 +2978,7 @@ namespace iba
                     }
                 }
             }
+            if (TaskManager.Manager.Count != count) return true; //added or removed
             return false;
         }
 
