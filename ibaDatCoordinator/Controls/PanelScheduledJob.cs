@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -10,9 +8,8 @@ using System.Windows.Forms;
 using iba.Data;
 using iba.Utility;
 using iba.Processing;
-using iba.Dialogs;
-using System.IO;
 using iba.HD.Common;
+using iba;
 
 namespace iba.Controls
 {
@@ -47,7 +44,7 @@ namespace iba.Controls
             m_hdStorePicker.HideConfigureButton();
             m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
 
-            string[] itemStrs = Properties.Resources.TimeSelectionChoices.Split(';');
+            string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
             long ms = 10000; //10000 * 100 nanosec = 1 ms
             long s = 1000 * ms;
             m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
@@ -376,15 +373,15 @@ namespace iba.Controls
                     break;
                 case TimeBaseAcceptability.Allowed:
                     brush = Brushes.Green;
-                    tooltipText = Properties.Resources.TooltipGreen;
+                    tooltipText = iba.Properties.Resources.TooltipGreen;
                     break;
                 case TimeBaseAcceptability.Questionable:
                     brush = Brushes.DarkOrange;
-                    tooltipText = Properties.Resources.TooltipOrange;
+                    tooltipText = iba.Properties.Resources.TooltipOrange;
                     break;
                 case TimeBaseAcceptability.Forbidden:
                     brush = Brushes.Red;
-                    tooltipText = Properties.Resources.TooltipRed;
+                    tooltipText = iba.Properties.Resources.TooltipRed;
                     break;
             }
             string text = ((ComboBox)sender).Items[e.Index].ToString();
@@ -428,13 +425,13 @@ namespace iba.Controls
                         m_toolTip.SetToolTip(m_cbTimeBase, null);
                         break;
                     case TimeBaseAcceptability.Allowed:
-                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipGreen);
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipGreen);
                         break;
                     case TimeBaseAcceptability.Questionable:
-                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipOrange);
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipOrange);
                         break;
                     case TimeBaseAcceptability.Forbidden:
-                        m_toolTip.SetToolTip(m_cbTimeBase, Properties.Resources.TooltipRed);
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipRed);
                         break;
                 }
             }

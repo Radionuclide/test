@@ -1358,4 +1358,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="AskSaveLocal" xml:space="preserve">
     <value>It appears the jobconfigurations on the server side have been modified by another client. Do you wish to save local modifications to file before downloading?</value>
   </data>
+  <data name="BrowseForFolderOn" xml:space="preserve">
+    <value>Browse for folder on {0}</value>
+  </data>
+  <data name="BrowseForFileOn" xml:space="preserve">
+    <value>Browse for file on {0}</value>
+  </data>
 </root>

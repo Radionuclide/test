@@ -454,7 +454,6 @@ namespace iba.Data
         public string CreateHDQFileDescription(string hdqfile)
         {
             if (hdqfile == lastHDQFile) return lastHDQDescription;
-            //throw new Exception("The method or operation is not implemented.");
             try
             {
                 IniParser ini = new IniParser(hdqfile);

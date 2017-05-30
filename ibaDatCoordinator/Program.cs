@@ -176,9 +176,9 @@ namespace iba
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
 
-            //TODO: place this back
-            //if (SingletonApp.CheckIfRunning())
-            //    return;      
+            //COMMENT OUT THESE LINES if you want to test multiple clients
+            if (SingletonApp.CheckIfRunning())
+                return;      
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -326,7 +326,7 @@ namespace iba
             get
             {
                 string serviceHost = ServiceHost;
-                return serviceHost == "localhost" || serviceHost == System.Net.Dns.GetHostName();
+                return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower();
             }
         }
     }

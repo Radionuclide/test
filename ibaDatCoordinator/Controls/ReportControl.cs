@@ -47,8 +47,7 @@ namespace iba.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+
         }
 
         #region IPropertyPane Members
@@ -57,6 +56,16 @@ namespace iba.Controls
         
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal) //will be called multiple times, causes leak in XP
+            {
+                WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            }
+            else
+            {
+                WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+            }
             m_manager = manager;
             m_data = datasource as ReportData;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
@@ -127,10 +136,32 @@ namespace iba.Controls
 
         private void m_browseFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog1.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
-            DialogResult result = m_openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-                m_pdoFileTextBox.Text = m_openFileDialog1.FileName;
+            string path = m_pdoFileTextBox.Text;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED /*&& !Program.ServiceIsLocal*/)
+            {
+                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+                {
+                    fd.FixedDrivesOnly = false;
+                    fd.ShowFiles = true;
+                    fd.SelectedPath = path;
+                    fd.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+                    if (fd.ShowDialog(this) == DialogResult.OK)
+                    {
+                        m_pdoFileTextBox.Text = fd.SelectedPath;
+                    }
+                }
+            }
+            else
+            {
+                m_openFileDialog1.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+                if (System.IO.File.Exists(path))
+                    m_openFileDialog1.FileName = path;
+                else if (System.IO.Directory.Exists(path))
+                    m_openFileDialog1.InitialDirectory = path;
+                DialogResult result = m_openFileDialog1.ShowDialog();
+                if (result == DialogResult.OK)
+                    m_pdoFileTextBox.Text = m_openFileDialog1.FileName;
+            }
         }
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)

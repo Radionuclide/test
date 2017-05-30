@@ -117,7 +117,7 @@ namespace iba.Data
 
         public EventForwarder()
         {
-            m_guid = new Guid();
+            m_guid = Guid.NewGuid();
         }
     }
 

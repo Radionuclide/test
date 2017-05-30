@@ -92,7 +92,7 @@ namespace iba.Dialogs
                 }
                 m_bRunning = true;
                 m_btPerform.Image = iba.Properties.Resources.Stop;
-                m_toolTip.SetToolTip(m_btPerform, Properties.Resources.CancelStr);
+                m_toolTip.SetToolTip(m_btPerform, iba.Properties.Resources.CancelStr);
                 m_browseFolderButton.Enabled = false;
                 m_targetFolderTextBox.Enabled = false;
                 m_lblProgress.Visible = true;
@@ -174,7 +174,7 @@ namespace iba.Dialogs
             m_progressBar.Visible = false;
             m_lblProgress.Text = "";
             m_btPerform.Image = m_btPerformImage;
-            m_toolTip.SetToolTip(m_btPerform, Properties.Resources.SplitDialogTestButtonTooltipText);
+            m_toolTip.SetToolTip(m_btPerform, iba.Properties.Resources.SplitDialogTestButtonTooltipText);
             m_browseFolderButton.Enabled = true;
             m_targetFolderTextBox.Enabled = true;
             m_progressBar.Value = 0;
@@ -197,7 +197,7 @@ namespace iba.Dialogs
                 this.Invoke(new Action<object, RunWorkerCompletedEventArgs>(m_bgwCalc_RunWorkerCompleted), sender, e);
                 return;
             }
-            m_toolTip.SetToolTip(m_btPerform, Properties.Resources.SplitDialogTestButtonTooltipText);
+            m_toolTip.SetToolTip(m_btPerform, iba.Properties.Resources.SplitDialogTestButtonTooltipText);
             m_btPerform.Image = m_btPerformImage = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
             m_btPerform.Enabled = true;
             m_bRunning = false;

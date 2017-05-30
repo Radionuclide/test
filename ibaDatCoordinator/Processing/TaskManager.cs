@@ -129,10 +129,10 @@ namespace iba.Processing
 
         virtual public bool CompareConfiguration(ConfigurationData data)
         {
-            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
+            foreach (ConfigurationWorker w in m_workers.Values)
             {
-                if(pair.Key.Guid == data.Guid)
-                    return data.IsSame(pair.Value.RunningConfiguration);
+                if(w.RunningConfiguration.Guid == data.Guid)
+                    return data.IsSame(w.RunningConfiguration);
             }
             return false;
         }
@@ -701,7 +701,7 @@ namespace iba.Processing
             }
             if(!string.IsNullOrEmpty(errMessage))
             {
-                LogData.Data.Logger.Log(iba.Logging.Level.Exception, Properties.Resources.RemoveMarkingsProblem + " " + errMessage, new LogExtraData(file,null,data));
+                LogData.Data.Logger.Log(iba.Logging.Level.Exception, iba.Properties.Resources.RemoveMarkingsProblem + " " + errMessage, new LogExtraData(file,null,data));
             }
 
             m_workers[data].ProcessFileDirect(file);

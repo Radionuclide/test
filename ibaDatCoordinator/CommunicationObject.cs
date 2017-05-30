@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using System.Net.Sockets;
 using System.Xml.Serialization;
 using System.IO;
 using iba.Data;
@@ -175,6 +172,14 @@ namespace iba
             }
         }
 
+        public string ServerName
+        {
+            get
+            {
+                return System.Net.Dns.GetHostName();
+            }
+        }
+
         public void Logging_Log(string message)
         {
             LogData.Data.Logger.Log(Logging.Level.Info, message);
@@ -325,6 +330,11 @@ namespace iba
             catch
             {
             }
+        }
+
+        public IPdaServerFiles GetServerSideFileHandler()
+        {
+            return new PdaServerFiles();
         }
     }
 
@@ -495,7 +505,22 @@ namespace iba
             }
         }
 
-        public bool SignalButtonUpdate { get; internal set; }
+        public string ServerName
+        {
+            get
+            {
+                try
+                {
+                    return m_com.ServerName;
+                }
+                catch (Exception)
+                {
+                    HandleBrokenConnection();
+                    return "";
+                }
+            }
+
+        }
 
         public void Logging_Log(string message)
         {
@@ -668,6 +693,19 @@ namespace iba
             catch (Exception)
             {
                 HandleBrokenConnection();
+            }
+        }
+
+        public IPdaServerFiles GetServerSideFileHandler()
+        {
+            try
+            {
+                return m_com.GetServerSideFileHandler();
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+                return null;
             }
         }
     }

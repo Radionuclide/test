@@ -144,7 +144,7 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
-                Program.CommunicationObject.Logging_Log("Gui Stopped");
+                Program.CommunicationObject.Logging_Log(System.Net.Dns.GetHostName() + ": Gui Stopped");
                 if (m_ef != null) Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                 Program.CommunicationObject.SaveConfigurations();
             }
@@ -1943,7 +1943,7 @@ namespace iba
             {
                 fd.DefaultExt = "zip";
                 fd.AddExtension = true;
-                fd.Filter = Properties.Resources.ZipFileFilter;
+                fd.Filter = iba.Properties.Resources.ZipFileFilter;
                 fd.OverwritePrompt = true;
                 fd.FileName = "support.zip";
                 if (fd.ShowDialog(this) != DialogResult.OK)
@@ -2728,7 +2728,7 @@ namespace iba
                 m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (m_tryConnectTimer != null)
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-            bool setUpdateTimer = false;
+            bool resetUpdateTimer = false;
             try
             {
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
@@ -2799,7 +2799,7 @@ namespace iba
                         m_firstConnectToService = false;
                         SetRenderer();
                         UpdateServiceSettingsPane();
-                        setUpdateTimer = true;
+                        resetUpdateTimer = true;
                     }
                     else
                     {
@@ -2818,8 +2818,6 @@ namespace iba
                             };
                             Invoke(m2);
                         }
-                        else
-                            setUpdateTimer = true;
                     }
                     catch { }
                 }
@@ -2833,7 +2831,7 @@ namespace iba
                 m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
 
-            if (setUpdateTimer && !updateTimerBusy) //if update is busy, it will set its own timer ...
+            if (resetUpdateTimer && !updateTimerBusy) //if update is busy, it will set its own timer ...
             {
                 if (m_updateClientTimer == null)
                     m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
@@ -2841,6 +2839,12 @@ namespace iba
                 m_lastStopID = -1;
                 m_lastTaskManagerID = -1;
             }
+            else if (!updateTimerBusy)
+            {
+                if (m_updateClientTimer == null)
+                    m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
+                m_updateClientTimer.Change(TimeSpan.FromSeconds(1.0), TimeSpan.Zero);
+            }//timer still needs to be set...
         }
 
         private void ReloadClient()
@@ -3098,7 +3102,7 @@ namespace iba
 
         public void OnStartService()
         {
-//throw new NotImplementedException();
+
         }
 
 

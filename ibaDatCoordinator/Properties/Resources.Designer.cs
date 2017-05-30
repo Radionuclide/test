@@ -265,6 +265,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse for file on {0}.
+        /// </summary>
+        internal static string BrowseForFileOn {
+            get {
+                return ResourceManager.GetString("BrowseForFileOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for folder on {0}.
+        /// </summary>
+        internal static string BrowseForFolderOn {
+            get {
+                return ResourceManager.GetString("BrowseForFolderOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string CancelStr {

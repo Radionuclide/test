@@ -157,6 +157,9 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ServerFolderBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\SplitterTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -187,14 +190,15 @@
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
-    <Compile Include="Processing\GlobalCleanupManager.cs" />
-    <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utility\PdaServerFiles.cs" />
+    <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
+    <Compile Include="Processing\GlobalCleanupManager.cs" />
+    <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Data\SplitterTaskData.cs" />
     <Compile Include="StatusForm.cs">
       <SubType>Form</SubType>
@@ -446,6 +450,9 @@
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\ServerFolderBrowser.resx">
+      <DependentUpon>ServerFolderBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
