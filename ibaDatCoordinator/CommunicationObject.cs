@@ -336,6 +336,11 @@ namespace iba
         {
             return new PdaServerFiles();
         }
+
+        internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        {
+            return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, out errorMessage);
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -706,6 +711,20 @@ namespace iba
             {
                 HandleBrokenConnection();
                 return null;
+            }
+        }
+
+        internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        {
+            try
+            {
+                return m_com.TestCondition(expression,index,pdo,datfile,out errorMessage);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+                errorMessage = iba.Properties.Resources.connectionLost;
+                return float.NaN;
             }
         }
     }

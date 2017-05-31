@@ -44,11 +44,11 @@ namespace iba.Controls
             m_uncControl.Dock = DockStyle.Fill;
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
+        //protected override void OnLoad(EventArgs e)
+        //{
+        //    base.OnLoad(e);
 
-        }
+        //}
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -86,8 +86,12 @@ namespace iba.Controls
                 ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
             }
 
-            m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(ibaAnalyzerExe);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
+                    File.Exists(ibaAnalyzerExe);
+
             m_panelFile.Enabled = m_rbFile.Checked;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -137,7 +141,7 @@ namespace iba.Controls
         private void m_browseFileButton_Click(object sender, EventArgs e)
         {
             string path = m_pdoFileTextBox.Text;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED /*&& !Program.ServiceIsLocal*/)
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
             {
                 using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
                 {
@@ -166,6 +170,11 @@ namespace iba.Controls
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                MessageBox.Show(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             try
             {
                 using (Process ibaProc = new Process())
@@ -184,8 +193,11 @@ namespace iba.Controls
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(ibaAnalyzerExe);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
+                    File.Exists(ibaAnalyzerExe);
         }
 
       

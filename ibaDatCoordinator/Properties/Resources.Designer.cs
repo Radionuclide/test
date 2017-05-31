@@ -2965,6 +2965,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Opening an analysis is currently not supported..
+        /// </summary>
+        internal static string ServiceRemoteAnalyserNotSupported {
+            get {
+                return ResourceManager.GetString("ServiceRemoteAnalyserNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Testing the splitter task is currently not supported..
+        /// </summary>
+        internal static string ServiceRemoteSplitterNotSupported {
+            get {
+                return ResourceManager.GetString("ServiceRemoteSplitterNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running.
         /// </summary>
         internal static string serviceStatRunning {

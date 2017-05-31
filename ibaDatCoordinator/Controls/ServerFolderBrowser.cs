@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
 using iba.Utility;
+using System.Collections.Generic;
 
 namespace iba.Controls
 {
@@ -31,16 +32,46 @@ namespace iba.Controls
         private static readonly int SELECTEDFOLDER = 2;
         private static readonly int FILE           = 3;
 
-		public ServerFolderBrowser(bool bShowFiles)
-		{
+        private string m_filter = "";
+        private List<string> filterOptions = new List<string>();
+
+        private ComboBox m_cbExtension;
+
+        public ServerFolderBrowser(bool bShowFiles = false, string filter = "")
+        {
             this.bShowFiles = bShowFiles;
             //
             // Required for Windows Form Designer support
             //
             InitializeComponent();
+            UpdateCaption();
+            m_filter = filter;
+            UpdateComboSelection();
+        }
+
+        private void UpdateComboSelection()
+        {
+            m_cbExtension.Items.Clear();
+            if (string.IsNullOrEmpty(m_filter))
+            {
+                m_cbExtension.Visible = false;
+                return;
+            }
+            string[] tokenized = m_filter.Split('|');
+            for (int i = 0; i < tokenized.Length; i+=2)
+            {
+                m_cbExtension.Items.Add(tokenized[i]);
+                filterOptions.Add(tokenized[i + 1]);
+            }
+            m_cbExtension.Visible = true;
+            m_cbExtension.SelectedIndex = 0;
+        }
+
+        private void UpdateCaption()
+        {
             string formatter = bShowFiles ? iba.Properties.Resources.BrowseForFileOn : iba.Properties.Resources.BrowseForFolderOn;
             try
-            { 
+            {
                 serverFiles = Program.CommunicationObject.GetServerSideFileHandler();
                 Text = string.Format(formatter, Program.CommunicationObject.ServerName);
             }
@@ -49,12 +80,12 @@ namespace iba.Controls
                 serverFiles = null;
                 Text = string.Format(formatter, iba.Properties.Resources.BrowseForFolderOn, "");
             }
-		}
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose( bool disposing )
 		{
 			if( disposing )
 			{
@@ -80,6 +111,7 @@ namespace iba.Controls
             this.tbPath = new System.Windows.Forms.TextBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.m_cbExtension = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // tree
@@ -120,12 +152,21 @@ namespace iba.Controls
             this.btCancel.Name = "btCancel";
             this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
+            // m_cbExtension
+            // 
+            this.m_cbExtension.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbExtension.FormattingEnabled = true;
+            resources.ApplyResources(this.m_cbExtension, "m_cbExtension");
+            this.m_cbExtension.Name = "m_cbExtension";
+            this.m_cbExtension.SelectedIndexChanged += new System.EventHandler(this.m_cbExtension_SelectedIndexChanged);
+            // 
             // ServerFolderBrowser
             // 
             this.AcceptButton = this.btOK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
+            this.Controls.Add(this.m_cbExtension);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.tbPath);
@@ -142,8 +183,18 @@ namespace iba.Controls
 
         public bool ShowFiles
         {
-            get {return bShowFiles;}
-            set {bShowFiles = value;}
+            get
+            {
+                return bShowFiles;
+            }
+            set
+            {
+                if (value != bShowFiles)
+                {
+                    bShowFiles = value;
+                    UpdateCaption();
+                }
+            }
         }
 
         public bool FixedDrivesOnly
@@ -158,32 +209,45 @@ namespace iba.Controls
             set {tbPath.Text = value;}
         }
 
-        public string Filter { get; internal set; }
+        public string Filter
+        {
+            get
+            {
+                return m_filter;
+            }
+            set
+            {
+                if (value != m_filter)
+                {
+                    m_filter = value;
+                    UpdateComboSelection();
+                }
+            }
+        }
 
-        protected override void OnLoad(EventArgs e)
-        {           
-            base.OnLoad (e);
-
-            if(serverFiles == null)
+        private void Init()
+        {
+            if (serverFiles == null)
                 return;
 
-            using (Utility.WaitCursor wait = new Utility.WaitCursor())
+            using (WaitCursor wait = new WaitCursor())
             {
                 string[] drives = null;
                 try
                 {
                     drives = serverFiles.BrowseForDrives(bOnlyFixed);
-                    if(drives == null)
+                    if (drives == null)
                         return;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return;
                 }
 
                 bIgnoreChange = true;
                 tree.BeginUpdate();
-                for(int i=0; i<drives.Length; i++)
+                tree.Nodes.Clear();
+                for (int i = 0; i < drives.Length; i++)
                 {
                     TreeNode driveNode = new TreeNode(drives[i], DRIVE, DRIVE);
                     driveNode.Tag = drives[i];
@@ -195,6 +259,13 @@ namespace iba.Controls
 
                 SelectDir(tbPath.Text);
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {           
+            base.OnLoad (e);
+            Init();
+            return;
         }
 
         private TreeNode CreateDummyNode()
@@ -270,7 +341,13 @@ namespace iba.Controls
                 FileSystemEntry[] entries = null;
                 try
                 {
-                    entries = serverFiles.Browse(basePath, bShowFiles);
+                    string extension = "";
+                    if (!string.IsNullOrEmpty(m_filter))
+                    {
+                        int sel = Math.Max(0,m_cbExtension.SelectedIndex);
+                        extension = filterOptions[sel];
+                    }
+                    entries = serverFiles.Browse(basePath, bShowFiles,extension);
                     if(entries == null)
                         return;
                 }
@@ -319,5 +396,10 @@ namespace iba.Controls
         {
             DialogResult = DialogResult.Cancel;
         }
-	}
+
+        private void m_cbExtension_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(m_filter)) Init();
+        }
+    }
 }

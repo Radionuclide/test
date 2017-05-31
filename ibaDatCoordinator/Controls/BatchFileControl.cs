@@ -70,14 +70,14 @@ namespace iba.Controls
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            WindowsAPI.SHAutoComplete(m_batchFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-            WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-        }
+        //protected override void OnLoad(EventArgs e)
+        //{
+        //    base.OnLoad(e);
+        //    WindowsAPI.SHAutoComplete(m_batchFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+        //    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+        //    WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+        //    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+        //}
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -85,6 +85,20 @@ namespace iba.Controls
         
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal) //will be called multiple times, causes leak in XP
+            {
+                WindowsAPI.SHAutoComplete(m_batchFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+                WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            }
+            else
+            {
+                WindowsAPI.SHAutoComplete(m_batchFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+                WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+            }
             m_manager = manager;
             m_data = datasource as BatchFileData;
             if (m_data.WhatFile == BatchFileData.WhatFileEnum.DATFILE)
@@ -210,13 +224,36 @@ namespace iba.Controls
 
         private void m_browseBATCHFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog1.CheckFileExists = true;
-            m_openFileDialog1.FileName = "";
-            m_openFileDialog1.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
-            DialogResult result = m_openFileDialog1.ShowDialog(this);
+            DialogResult result = DialogResult.Abort;
+            String path = m_batchFileTextBox.Text;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+                {
+                    fd.FixedDrivesOnly = false;
+                    fd.ShowFiles = true;
+                    fd.SelectedPath = path;
+                    fd.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
+                    result = fd.ShowDialog(this);
+                    path = fd.SelectedPath;
+                }
+            }
+            else
+            {
+                m_openFileDialog1.CheckFileExists = true;
+                m_openFileDialog1.FileName = "";
+                m_openFileDialog1.Filter = "Batch files (*.bat)|*.bat|Visual Basic scripts (*.vbs)|*.vbs|Java scripts (*.js)|*.js|All files (*.*)|*.*";
+                if (System.IO.File.Exists(path))
+                    m_openFileDialog1.FileName = path;
+                else if (System.IO.Directory.Exists(path))
+                    m_openFileDialog1.InitialDirectory = path;
+                result = m_openFileDialog1.ShowDialog(this);
+                path = m_openFileDialog1.FileName;
+            }
+
             if (result == DialogResult.OK)
             {
-                m_batchFileTextBox.Text = m_openFileDialog1.FileName;
+                m_batchFileTextBox.Text = path;
                 if (loadBatchFile())
                 {
                     m_executeBatchFile.Enabled = true;
@@ -365,13 +402,34 @@ namespace iba.Controls
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog1.CheckFileExists = true;
-            m_openFileDialog1.FileName = "";
-            m_openFileDialog1.Filter = "All files (*.*)|*.*";
-            if (m_openFileDialog1.ShowDialog(this) == DialogResult.OK)
-                m_datFileTextBox.Text = m_openFileDialog1.FileName;
+            DialogResult result = DialogResult.Abort;
+            String path = m_datFileTextBox.Text;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+                {
+                    fd.FixedDrivesOnly = false;
+                    fd.ShowFiles = true;
+                    fd.SelectedPath = path;
+                    fd.Filter = "iba dat files(*.dat) | *.dat";
+                    result = fd.ShowDialog(this);
+                    path = fd.SelectedPath;
+                }
+            }
+            else
+            {
+                m_openFileDialog1.CheckFileExists = true;
+                m_openFileDialog1.FileName = "";
+                m_openFileDialog1.Filter = "iba dat files(*.dat) | *.dat";
+                if (System.IO.File.Exists(path))
+                    m_openFileDialog1.FileName = path;
+                else if (System.IO.Directory.Exists(path))
+                    m_openFileDialog1.InitialDirectory = path;
+                result = m_openFileDialog1.ShowDialog(this);
+                path = m_openFileDialog1.FileName;
+            }
+            if (result == DialogResult.OK)
+                m_datFileTextBox.Text = path;
         }
     }
-
-
 }

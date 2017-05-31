@@ -58,10 +58,15 @@ namespace iba.Controls
                 ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
             }
 
-            m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                File.Exists(ibaAnalyzerExe);
-
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
+                    File.Exists(ibaAnalyzerExe);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -115,6 +120,11 @@ namespace iba.Controls
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                MessageBox.Show(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             try
             {
                 using (Process ibaProc = new Process())
@@ -133,72 +143,108 @@ namespace iba.Controls
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = "iba dat files (*.dat)|*.dat";
-            DialogResult result = m_openFileDialog.ShowDialog();
+            DialogResult result = DialogResult.Abort;
+            String path = m_datFileTextBox.Text;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+                {
+                    fd.FixedDrivesOnly = false;
+                    fd.ShowFiles = true;
+                    fd.SelectedPath = path;
+                    fd.Filter = "iba dat files(*.dat) | *.dat";
+                    result = fd.ShowDialog(this);
+                    path = fd.SelectedPath;
+                }
+            }
+            else
+            {
+                m_openFileDialog.CheckFileExists = true;
+                m_openFileDialog.FileName = "";
+                m_openFileDialog.Filter = "iba dat files(*.dat) | *.dat";
+                if (System.IO.File.Exists(path))
+                    m_openFileDialog.FileName = path;
+                else if (System.IO.Directory.Exists(path))
+                    m_openFileDialog.InitialDirectory = path;
+                result = m_openFileDialog.ShowDialog(this);
+                path = m_openFileDialog.FileName;
+            }
             if (result == DialogResult.OK)
-                m_datFileTextBox.Text = m_openFileDialog.FileName;
+                m_datFileTextBox.Text = path;
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
-            //register this
+            float f;
+            string errorMessage;
             using (new Utility.WaitCursor())
             {
-                //start the com object
-                try
-                {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
-                }
-                catch (Exception ex2)
-                {
-                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
-            float f = 0;
-            try
-            {
-                using (new Utility.WaitCursor())
-                {
-                    if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
-                    ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
-                    f = ibaAnalyzer.Evaluate(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex);
-                    this.ParentForm.Activate();
-                }
-            }
-            catch (Exception ex3)
-            {
-                MessageBox.Show(ex3.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (ibaAnalyzer != null && bUseAnalysis)
-                {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
-                }
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
+                else
+                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
-                MessageBox.Show(iba.Properties.Resources.IfTestBadEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else if (f >= 0.5)
                 MessageBox.Show(iba.Properties.Resources.IfTestPositiveEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        static internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        {
+            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
+            //register this
+            //start the com object
+            try
+            {
+                ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+            }
+            catch (Exception ex2)
+            {
+                errorMessage = ex2.Message;
+                return float.NaN;
+            }
+            bool bUseAnalysis = File.Exists(pdo);
+            float f = 0;
+            try
+            {
+                if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(pdo);
+                ibaAnalyzer.OpenDataFile(0, datfile);
+                f = ibaAnalyzer.Evaluate(expression, index);
+            }
+            catch (Exception ex3)
+            {
+                errorMessage = ex3.Message;
+                return float.NaN;
+            }
+            finally
+            {
+                if (ibaAnalyzer != null)
+                {
+                    if (bUseAnalysis) ibaAnalyzer.CloseAnalysis();
+                    ibaAnalyzer.CloseDataFiles();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                }
+            }
+            errorMessage = (float.IsNaN(f) || float.IsInfinity(f))?iba.Properties.Resources.IfTestBadEvaluation:"";
+            return f;
+        }
+
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-            File.Exists(ibaAnalyzerExe);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
+                    File.Exists(ibaAnalyzerExe);
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
