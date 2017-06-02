@@ -82,9 +82,6 @@ namespace iba.Controls
             {
                 m_monitorGroup.Enabled = false;
             }
-
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
         public void SaveData()
@@ -147,7 +144,7 @@ namespace iba.Controls
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
             {
-                MessageBox.Show(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -179,7 +176,7 @@ namespace iba.Controls
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
             {
-                MessageBox.Show(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteSplitterNotSupported,Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             SaveData();

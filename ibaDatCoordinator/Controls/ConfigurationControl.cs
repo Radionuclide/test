@@ -329,7 +329,7 @@ namespace iba.Controls
             {
                 t.UpdateButtons();
                 t.SwitchToStatusPane();
-                t.StatusBarLabel.Text = ""; //clear any errors on restart
+                t.StatusBarLabelErrors.Text = ""; //clear any errors on restart
             }
         }
 

@@ -206,7 +206,7 @@ namespace iba.Controls
         public string SelectedPath
         {
             get {return tbPath.Text;}
-            set {tbPath.Text = value;}
+            set {tbPath.Text = value; /*SelectDir(value)*/; }
         }
 
         public string Filter
@@ -290,9 +290,12 @@ namespace iba.Controls
                     if(String.Compare(nodes[j].Text, parts[i], true) == 0)
                     {
                         selectedNode = nodes[j];
-                        nodes = selectedNode.Nodes;
-                        if(!selectedNode.IsExpanded)
+                        if (!selectedNode.IsExpanded)
+                        {
                             selectedNode.Expand();
+                            tree_BeforeExpand(this, new TreeViewCancelEventArgs(selectedNode, false, TreeViewAction.Expand));
+                        }
+                        nodes = selectedNode.Nodes;
                         bFound = true;
                         break;
                     }       

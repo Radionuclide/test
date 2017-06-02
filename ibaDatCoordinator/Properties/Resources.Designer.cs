@@ -394,6 +394,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connected to {0}.
+        /// </summary>
+        internal static string ConnectedTo {
+            get {
+                return ResourceManager.GetString("ConnectedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The connection to the ibaDatCoordinator service was lost, ibaDatCoordinator will now continue in offline mode. We recommend you save any changes and restart the service and ibaDatCoordinator..
         /// </summary>
         internal static string connectionLost {
@@ -682,6 +691,15 @@ namespace iba.Properties {
         internal static string DirectoryFound {
             get {
                 return ResourceManager.GetString("DirectoryFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected.
+        /// </summary>
+        internal static string Disconnected {
+            get {
+                return ResourceManager.GetString("Disconnected", resourceCulture);
             }
         }
         
@@ -2965,7 +2983,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Opening an analysis is currently not supported..
+        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Opening an analysis remotely is currently not supported. Please try this operation on a client at the remote site ({0}).
         /// </summary>
         internal static string ServiceRemoteAnalyserNotSupported {
             get {
@@ -2974,7 +2992,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Testing the splitter task is currently not supported..
+        ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Testing the splitter task remotely is currently not supported. Please try this operation on a client at the remote site ({0}).
         /// </summary>
         internal static string ServiceRemoteSplitterNotSupported {
             get {

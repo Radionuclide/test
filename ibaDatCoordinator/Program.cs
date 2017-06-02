@@ -327,9 +327,10 @@ namespace iba
             {
 #if DEBUG
                 return false;
-#endif
+#else
                 string serviceHost = ServiceHost;
                 return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower() ;
+#endif
             }
         }
     }

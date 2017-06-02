@@ -1365,9 +1365,15 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Browse for file on {0}</value>
   </data>
   <data name="ServiceRemoteAnalyserNotSupported" xml:space="preserve">
-    <value>The ibaDatCoordinator service is running on a remote system. Opening an analysis is currently not supported.</value>
+    <value>The ibaDatCoordinator service is running on a remote system. Opening an analysis remotely is currently not supported. Please try this operation on a client at the remote site ({0})</value>
   </data>
   <data name="ServiceRemoteSplitterNotSupported" xml:space="preserve">
-    <value>The ibaDatCoordinator service is running on a remote system. Testing the splitter task is currently not supported.</value>
+    <value>The ibaDatCoordinator service is running on a remote system. Testing the splitter task remotely is currently not supported. Please try this operation on a client at the remote site ({0})</value>
+  </data>
+  <data name="ConnectedTo" xml:space="preserve">
+    <value>Connected to {0}</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
   </data>
 </root>

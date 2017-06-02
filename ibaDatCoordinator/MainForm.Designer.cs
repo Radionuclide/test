@@ -86,6 +86,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_statusBarStripLabelConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -128,7 +129,8 @@ namespace iba
             // 
             resources.ApplyResources(this.m_statusStrip, "m_statusStrip");
             this.m_statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_statusBarStripLabel});
+            this.m_statusBarStripLabel,
+            this.m_statusBarStripLabelConnection});
             this.m_statusStrip.Name = "m_statusStrip";
             // 
             // m_statusBarStripLabel
@@ -522,6 +524,11 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
+            // m_statusBarStripLabelConnection
+            // 
+            this.m_statusBarStripLabelConnection.Name = "m_statusBarStripLabelConnection";
+            resources.ApplyResources(this.m_statusBarStripLabelConnection, "m_statusBarStripLabelConnection");
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -613,6 +620,7 @@ namespace iba
         private System.Windows.Forms.Button m_btnClearLogging;
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectServiceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel m_statusBarStripLabelConnection;
     }
 }
 

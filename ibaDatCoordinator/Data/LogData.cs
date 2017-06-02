@@ -241,7 +241,7 @@ namespace iba.Data
             else if (_event.Level == Logging.Level.Info)
             {
                 style.ForeColor = Color.Green;
-                Program.MainForm.StatusBarLabel.Text = "";//any positive message clears the status bar
+                Program.MainForm.StatusBarLabelErrors.Text = "";//any positive message clears the status bar
             }
             else if (_event.Level == Logging.Level.Exception)
             {
@@ -250,7 +250,7 @@ namespace iba.Data
                 int tindex = text.IndexOf(Environment.NewLine);
                 if (tindex >= 0)
                     text = text.Remove(tindex);
-                Program.MainForm.StatusBarLabel.Text = String.Format(iba.Properties.Resources.StatusBarError, text);
+                Program.MainForm.StatusBarLabelErrors.Text = String.Format(iba.Properties.Resources.StatusBarError, text);
             }
             if (!freeze)
             {

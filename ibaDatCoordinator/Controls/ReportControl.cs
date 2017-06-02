@@ -172,7 +172,7 @@ namespace iba.Controls
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
             {
-                MessageBox.Show(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try

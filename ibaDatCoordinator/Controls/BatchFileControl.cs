@@ -115,7 +115,7 @@ namespace iba.Controls
             m_argumentsTextBox.Text = m_data.Arguments;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
-            if (File.Exists(m_batchFileTextBox.Text) && loadBatchFile())
+            if (DataPath.FileExists(m_batchFileTextBox.Text) && loadBatchFile())
             {
                 m_executeBatchFile.Enabled = true;
             }
@@ -159,52 +159,13 @@ namespace iba.Controls
         private void m_executeBatchFile_Click(object sender, EventArgs e)
         {
             SaveData();
-            if (!File.Exists(m_data.BatchFile)) return;
+            if (!DataPath.FileExists(m_data.BatchFile)) return;
             string arguments = m_data.ParsedArguments(m_datFileTextBox.Text);
             if (arguments==null)
             {
                 MessageBox.Show(iba.Properties.Resources.ScriptArgumentsCouldNotBeParsed, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            //try
-            //{
-            //    int exitCode = 0;
-            //    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !m_rbClientSide.Checked)
-            //    {
-            //        exitCode = Program.CommunicationObject.TestScript(m_batchFileTextBox.Text,arguments);
-            //        if (exitCode == -666)
-            //        {
-            //            MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //            exitCode = 0;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        using (Process ibaProc = new Process())
-            //        {
-            //            ibaProc.EnableRaisingEvents = false;
-            //            ibaProc.StartInfo.FileName = m_batchFileTextBox.Text;
-            //            ibaProc.StartInfo.Arguments = arguments;
-            //            ibaProc.Start();
-            //            if(!ibaProc.WaitForExit(15 * 3600 * 1000))
-            //            {   //wait max 15 minutes
-            //                ibaProc.Kill();
-            //                MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //                exitCode = 0;
-            //            }
-            //            else
-            //                exitCode = ibaProc.ExitCode;
-            //        }
-            //    }
-            //    if (exitCode != 0)
-            //    {
-            //        MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed,exitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
             iba.Dialogs.TestScriptDlg testdlg = new iba.Dialogs.TestScriptDlg(m_data);
             testdlg.StartPosition = FormStartPosition.CenterParent;
             testdlg.ShowDialog(this);
@@ -276,19 +237,16 @@ namespace iba.Controls
                 filename = m_batchFileTextBox.Text;
                 try
                 {
-                    FileInfo ofd = new FileInfo(filename);
-                    if (ofd.Exists && (ofd.Attributes & FileAttributes.ReadOnly) == 0)
+                    bool exists = DataPath.FileExists(m_batchFileTextBox.Text);
+                    if (exists && !DataPath.IsReadOnly(m_batchFileTextBox.Text))
                     {
-                        using (StreamWriter bfile = ofd.CreateText())
-                        {
-                            bfile.Write(m_textEditor.Text);
-                        }
+                        DataPath.WriteFile(filename, m_textEditor.Text);
                         m_saveButton.Enabled = m_bChanged = false;
                         return;
                     }
                     else
                     {
-                        MessageBox.Show(ofd.Exists ? iba.Properties.Resources.ScriptReadOnly : iba.Properties.Resources.ScriptNoExist, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(exists ? iba.Properties.Resources.ScriptReadOnly : iba.Properties.Resources.ScriptNoExist, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -360,29 +318,18 @@ namespace iba.Controls
             {
                 FileInfo ifd = new FileInfo(m_batchFileTextBox.Text);
                 string btext = "";
-                if (ifd.Exists)
+                if (DataPath.FileExists(m_batchFileTextBox.Text))
                 {
-                    using (StreamReader bfile = ifd.OpenText())
-                    {
-                        string str;
-                        while ((str = bfile.ReadLine()) != null)
-                            btext += str + Environment.NewLine;
-                    }
+                    btext = DataPath.ReadFile(m_batchFileTextBox.Text);
                     m_textEditor.Text = btext;
                     m_textEditor.Refresh();
-                    //if (ifd.Extension == ".bat" || ifd.Extension == ".BAT")
-                    //    m_textEditor.SetHighlighting("Default");
+
                     if (ifd.Extension == ".vbs" || ifd.Extension == ".VBS")
                         m_textEditor.SetHighlighting("VBNET");
                     else if (ifd.Extension == ".js" || ifd.Extension == ".JS")
                         m_textEditor.SetHighlighting("JavaScript");
-                    //else if (ifd.Extension == ".cs")
-                    //    m_textEditor.SetHighlighting("C#");
                     else
                         m_textEditor.SetHighlighting("Default");
-
-                    //m_textEditor.Invalidate();
-                    //m_textEditor.Update();
                 }
                 else
                 {

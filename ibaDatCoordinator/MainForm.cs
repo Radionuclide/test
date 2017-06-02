@@ -412,6 +412,8 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 FormStateSerializer.LoadSettings(this, "MainForm");
             SetRenderer();
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
+                UpdateConnectionStatus();
             SetupHelp();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
@@ -2335,7 +2337,7 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
 
-            StatusBarLabel.Text = ""; //clear any errors on restart
+            StatusBarLabelErrors.Text = ""; //clear any errors on restart
             TaskManager.Manager.StartAllEnabledConfigurationsNoOneTime();
             if (m_configTreeView.SelectedNode != null && m_configTreeView.SelectedNode.Tag is ConfigurationTreeItemData)
             {
@@ -2472,7 +2474,7 @@ namespace iba
         }
 
         
-        public ToolStripStatusLabel StatusBarLabel
+        public ToolStripStatusLabel StatusBarLabelErrors
         {
             get {return m_statusBarStripLabel;}
             set { m_statusBarStripLabel = value; }
@@ -2648,9 +2650,6 @@ namespace iba
             }
         }
 
-
-
-
         public delegate void IbaAnalyzerCall();
 
         private void miConnectServiceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2797,8 +2796,13 @@ namespace iba
                         m_ef = new EventForwarder();
                         Program.CommunicationObject.Logging_setEventForwarder(m_ef,m_ef.Guid);
                         m_firstConnectToService = false;
-                        SetRenderer();
-                        UpdateServiceSettingsPane();
+                        MethodInvoker m2 = delegate ()
+                        {
+                            SetRenderer();
+                            UpdateConnectionStatus();
+                            UpdateServiceSettingsPane();
+                        };
+                        Invoke(m2);
                         resetUpdateTimer = true;
                     }
                     else
@@ -2845,6 +2849,16 @@ namespace iba
                     m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
                 m_updateClientTimer.Change(TimeSpan.FromSeconds(1.0), TimeSpan.Zero);
             }//timer still needs to be set...
+        }
+
+        public void UpdateConnectionStatus()
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.ConnectedTo, Program.ServiceHost);
+            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                m_statusBarStripLabelConnection.Text = iba.Properties.Resources.Disconnected;
+            else
+                m_statusBarStripLabelConnection.Text = "";
         }
 
         private void ReloadClient()

@@ -22,11 +22,6 @@ namespace iba
         void SaveRightPaneControl();
 		void SetRightPaneControl(Control newControl, string title, object datasource);
         void AdjustRightPaneControlTitle();
-        ToolStripStatusLabel StatusBarLabel
-        {
-            get;
-            set;
-        }
     }
 
     // Interface to indicate that the form can recieve external commands

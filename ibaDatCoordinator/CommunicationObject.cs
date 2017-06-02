@@ -223,7 +223,6 @@ namespace iba
         }
 
 
-
         public void ScriptFinished(object sender, System.EventArgs e)
         {
             if (m_scriptProc != null)
@@ -340,6 +339,52 @@ namespace iba
         internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
         {
             return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, out errorMessage);
+        }
+
+        public bool FileExists(string file)
+        {
+            return File.Exists(file);
+        }
+
+        public string ReadFile(string filename, out Exception ex)
+        {
+            ex = null;
+            try
+            {
+                return DataPath.ReadFile(filename);
+            }
+            catch (Exception ex2)
+            {
+                ex = ex2;
+                return "";
+            }
+        }
+
+        public bool IsReadOnly(string filename, out Exception ex)
+        {
+            ex = null;
+            try
+            {
+                return DataPath.IsReadOnly(filename);
+            }
+            catch (Exception ex2)
+            {
+                ex = ex2;
+                return false;
+            }
+        }
+
+        public void WriteFile(string filename, string text, out Exception ex)
+        {
+            ex = null;
+            try
+            {
+                DataPath.WriteFile(filename,text);
+            }
+            catch (Exception ex2)
+            {
+                ex = ex2;
+            }
         }
     }
 
@@ -576,6 +621,7 @@ namespace iba
             Program.MainForm.StartButton.Enabled = false;
             Program.MainForm.StopButton.Enabled = false;
             Program.MainForm.SetRenderer();
+            Program.MainForm.UpdateConnectionStatus();
             Program.MainForm.UpdateServiceSettingsPane();
             TaskManager.Manager.StopAllConfigurations();
             TaskManager.Manager.StopAllGlobalCleanups();
@@ -726,6 +772,68 @@ namespace iba
                 errorMessage = iba.Properties.Resources.connectionLost;
                 return float.NaN;
             }
+        }
+
+        public bool FileExists(string file)
+        {
+            try
+            {
+                return m_com.FileExists(file);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+                return false;
+            }
+        }
+
+        public string ReadFile(string filename)
+        {
+            Exception ex = null;
+            string res = "";
+            try
+            {
+                res = m_com.ReadFile(filename, out ex);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+                return "";
+            }
+            if (ex != null) throw ex;
+            return res;
+        }
+
+
+        public bool IsReadOnly(string filename)
+        {
+            Exception ex = null;
+            bool res;
+            try
+            {
+                res = m_com.IsReadOnly(filename, out ex);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+                return false;
+            }
+            if (ex != null) throw ex;
+            return res;
+        }
+
+        public void WriteFile(string filename, string text)
+        {
+            Exception ex = null;
+            try
+            {
+                m_com.WriteFile(filename, text, out ex);
+            }
+            catch (Exception)
+            {
+                HandleBrokenConnection();
+            }
+            if (ex != null) throw ex;
         }
     }
 }
