@@ -2727,6 +2727,7 @@ namespace iba
                 m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (m_tryConnectTimer != null)
                 m_tryConnectTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+
             bool resetUpdateTimer = false;
             try
             {
@@ -2773,7 +2774,7 @@ namespace iba
                                 }
 
                             };
-                            Invoke(m);
+                            this.SafeInvoke(m,true);
                         }
                         else
                         {
@@ -2802,7 +2803,7 @@ namespace iba
                             UpdateConnectionStatus();
                             UpdateServiceSettingsPane();
                         };
-                        Invoke(m2);
+                        this.SafeInvoke(m2, true);
                         resetUpdateTimer = true;
                     }
                     else
@@ -2820,7 +2821,7 @@ namespace iba
                             {
                                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
                             };
-                            Invoke(m2);
+                            this.SafeInvoke(m2, true);
                         }
                     }
                     catch { }
@@ -2850,6 +2851,8 @@ namespace iba
                 m_updateClientTimer.Change(TimeSpan.FromSeconds(1.0), TimeSpan.Zero);
             }//timer still needs to be set...
         }
+
+        public delegate void InvokeHandler();
 
         public void UpdateConnectionStatus()
         {
@@ -2895,7 +2898,7 @@ namespace iba
                     if (IsServerClientDifference())
                     {
                         //do download or kill.
-                        this.Invoke(new Action(() =>
+                        MethodInvoker m = delegate ()
                         {
                             if (MessageBox.Show(this,
                                 iba.Properties.Resources.AskSaveLocal,
@@ -2907,8 +2910,9 @@ namespace iba
                                 saveAsToolStripMenuItem_Click(null, null);
                             }
                             ReloadClient();
-                        }
-                        ));
+                        };
+                        this.SafeInvoke(m, true);
+
                         m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
                     }
                     else
@@ -2919,7 +2923,7 @@ namespace iba
 
                 if (doStartButtons || (m_lastStopID != TaskManager.Manager.ConfStoppedID))
                 {
-                    this.Invoke(new Action(() =>
+                    MethodInvoker m = delegate ()
                     {
                         UpdateButtons();
                         if (m_configPane == m_navBar.SelectedPane)
@@ -2930,8 +2934,8 @@ namespace iba
                                 c.UpdateEnabledState();
                             }
                         }
-                    }
-                    ));
+                    };
+                    this.SafeInvoke(m,true);
                     m_lastStopID = TaskManager.Manager.ConfStoppedID;
                 }
                 if (m_updateClientTimer == null)

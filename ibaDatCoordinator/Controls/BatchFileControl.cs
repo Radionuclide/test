@@ -88,9 +88,9 @@ namespace iba.Controls
             if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal) //will be called multiple times, causes leak in XP
             {
                 WindowsAPI.SHAutoComplete(m_batchFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
                 WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
-                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
             }
             else
             {
@@ -121,7 +121,8 @@ namespace iba.Controls
             }
             else
             {
-                m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
+                if (string.IsNullOrEmpty(m_batchFileTextBox.Text ))
+                    m_batchFileTextBox.Text = iba.Properties.Resources.Untitled;
                 m_textEditor.Text = "";
                 m_executeBatchFile.Enabled = false; 
                 m_textEditor.SetHighlighting("VBNET");

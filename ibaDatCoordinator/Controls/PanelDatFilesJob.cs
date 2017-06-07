@@ -74,14 +74,6 @@ namespace iba.Controls
             {
                 m_toolTip.SetToolTip(m_browseDatFilesButton, iba.Properties.Resources.browseCleanProcessButton);
             }
-            //else
-            //{
-            //    m_browseDatFilesButton.Visible = false;
-            //    int diff = m_refreshDats.Location.X - m_undoChangesBtn.Location.X;
-            //    m_browseFolderButton.Location = new Point(m_browseFolderButton.Location.X + diff, m_browseFolderButton.Location.Y);
-            //    m_datDirTextBox.Size = new Size(m_datDirTextBox.Size.Width + diff, m_datDirTextBox.Size.Height);
-            //}
-
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
@@ -196,36 +188,112 @@ namespace iba.Controls
 
         private void OnClickFolderBrowserButton(object sender, EventArgs e)
         {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                BrowseFolderRemote();
+            else
+                BrowseFolderLocal();
+        }
+
+        private void m_cbDetectNewFiles_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!m_cbDetectNewFiles.Checked) m_cbRescanEnabled.Checked = true;
+        }
+
+        private void BrowseFolderRemote()
+        {
+            bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
+            DialogResult result = DialogResult.Abort;
+            string path = "";
+            string[] lines = null;
+            using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+            {
+                fd.FixedDrivesOnly = false;
+                fd.ShowFiles = false;
+                fd.Filter = ".dat files (*.dat)|*.dat";
+                if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text))
+                    fd.SelectedPath = m_datDirTextBox.Text;
+                else
+                {
+                    lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    if ((lines.Length > 0) && (System.IO.File.Exists(lines[lines.Length - 1]) || System.IO.Directory.Exists(lines[lines.Length - 1])))
+                        fd.SelectedPath = lines[lines.Length - 1];
+                }
+                result = fd.ShowDialog(this);
+                path = fd.SelectedPath;
+            }
+            if (result != DialogResult.OK)
+                return;
+            if (!m_oneTimeJob)
+                m_datDirTextBox.Text = path;
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                    sb.AppendLine(line);
+                sb.AppendLine();
+
+                string uncline = path;
+                try
+                {
+                    uncline = Shares.PathToUnc(uncline, true);
+                }
+                catch
+                {
+                }
+                sb.AppendLine(uncline);
+                m_datDirTextBox.Text = sb.ToString();
+            }
+        }
+
+        private void BrowseFolderLocal()
+        {
             m_folderBrowserDialog1.ShowNewFolderButton = false;
-            if(!m_oneTimeJob)
+            if (!m_oneTimeJob)
             {
                 m_folderBrowserDialog1.SelectedPath = m_datDirTextBox.Text;
                 DialogResult result = m_folderBrowserDialog1.ShowDialog();
-                if(result == DialogResult.OK)
-                    m_datDirTextBox.Text = m_folderBrowserDialog1.SelectedPath;
+                if (result == DialogResult.OK)
+                {
+                    string uncline = m_folderBrowserDialog1.SelectedPath;
+                    try
+                    {
+                        uncline = Shares.PathToUnc(uncline, true);
+                    }
+                    catch
+                    {
+
+                    }
+                    m_datDirTextBox.Text = uncline;
+                }
             }
             else
             {
                 string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 //         ShowEditBox = true,
                 //         //NewStyle = false,
-                if((lines.Length > 0) && (System.IO.File.Exists(lines[lines.Length - 1]) || System.IO.Directory.Exists(lines[lines.Length - 1])))
+                if ((lines.Length > 0) && (System.IO.File.Exists(lines[lines.Length - 1]) || System.IO.Directory.Exists(lines[lines.Length - 1])))
                     m_folderBrowserDialog1.SelectedPath = lines[lines.Length - 1];
                 DialogResult result = m_folderBrowserDialog1.ShowDialog();
-                if(result == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     StringBuilder sb = new StringBuilder();
-                    foreach(string line in lines)
+                    foreach (string line in lines)
                         sb.AppendLine(line);
-                    sb.AppendLine(m_folderBrowserDialog1.SelectedPath);
+                    sb.AppendLine();
+
+                    string uncline = m_folderBrowserDialog1.SelectedPath;
+                    try
+                    {
+                        uncline = Shares.PathToUnc(uncline, true);
+                    }
+                    catch
+                    {
+
+                    }
+                    sb.AppendLine(uncline);
                     m_datDirTextBox.Text = sb.ToString();
                 }
             }
-        }
-
-        private void m_cbDetectNewFiles_CheckedChanged(object sender, EventArgs e)
-        {
-            if(!m_cbDetectNewFiles.Checked) m_cbRescanEnabled.Checked = true;
         }
 
         private void m_refreshDats_Click(object sender, EventArgs e)
@@ -349,23 +417,91 @@ namespace iba.Controls
 
         private void m_browseDatFilesButton_Click(object sender, EventArgs e)
         {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                BrowseDatFileRemote();
+            else
+                BrowseDatFileLocal();
+        }
+
+        private void BrowseDatFileRemote()
+        {
+            bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
+            DialogResult result = DialogResult.Abort;
+            string path = "";
+            using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+            { 
+                if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text))
+                    fd.SelectedPath = m_datDirTextBox.Text;
+                {
+                    fd.FixedDrivesOnly = false;
+                    fd.ShowFiles = true;
+                    fd.Filter = ".dat files (*.dat)|*.dat";
+                    result = fd.ShowDialog(this);
+                    path = fd.SelectedPath;
+                }
+            }
+            if (result != DialogResult.OK)
+                return;
+
+
+            if (oneTime)
+            {
+                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                {
+                    sb.AppendLine(line);
+                }
+                sb.AppendLine(path);
+                m_datDirTextBox.Text = sb.ToString();
+            }
+            else // DatTriggered, clean and reprocess
+            {
+                TaskManager.Manager.CleanAndProcessFileNow(m_data, path);
+            }
+        }
+
+        private void BrowseDatFileLocal()
+        {
             m_selectDatFilesDialog.CheckFileExists = true;
             m_selectDatFilesDialog.FileName = "";
             m_selectDatFilesDialog.Filter = ".dat files (*.dat)|*.dat";
             bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
             m_selectDatFilesDialog.Multiselect = oneTime;
-            if(!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text) && Directory.Exists(m_datDirTextBox.Text))
+            if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text) && Directory.Exists(m_datDirTextBox.Text))
                 m_selectDatFilesDialog.InitialDirectory = m_datDirTextBox.Text;
-            if(m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
+            if (m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
             {
-                if(oneTime)
+                if (oneTime)
                 {
                     string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     StringBuilder sb = new StringBuilder();
-                    foreach(string line in lines)
-                        sb.AppendLine(line);
-                    foreach(string line in m_selectDatFilesDialog.FileNames)
-                        sb.AppendLine(line);
+                    foreach (string line in lines)
+                    {
+                        string uncline = line;
+                        try
+                        {
+                            uncline = Shares.PathToUnc(line, true);
+                        }
+                        catch
+                        {
+
+                        }
+                        sb.AppendLine(uncline);
+                    }
+                    foreach (string line in m_selectDatFilesDialog.FileNames)
+                    {
+                        string uncline = line;
+                        try
+                        {
+                            uncline = Shares.PathToUnc(line, true);
+                        }
+                        catch
+                        {
+
+                        }
+                        sb.AppendLine(uncline);
+                    }
                     m_datDirTextBox.Text = sb.ToString();
                 }
                 else //DatTriggered, clean and reprocess
@@ -373,19 +509,55 @@ namespace iba.Controls
                     string file = "";
                     try
                     {
-                        file = Shares.PathToUnc(m_selectDatFilesDialog.FileName,true);
+                        file = Shares.PathToUnc(m_selectDatFilesDialog.FileName, true);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    if(!string.IsNullOrEmpty(file))
+                    if (!string.IsNullOrEmpty(file))
                     {
-                        TaskManager.Manager.CleanAndProcessFileNow(m_data,file);
+                        TaskManager.Manager.CleanAndProcessFileNow(m_data, file);
                     }
                 }
             }
         }
 
+        private void m_datDirTextBox_Validating(object sender, CancelEventArgs e)
+        {   //translate to UNC paths...
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || !Program.ServiceIsLocal) return; //leave it be...
+            bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
+            if (oneTime)
+            {
+                string[] lines = m_datDirTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        try
+                        {
+                            string newline = Shares.PathToUnc(line, true);
+                            sb.AppendLine(newline);
+                        }
+                        catch
+                        {
+                            sb.AppendLine(line);
+                        }
+                    }
+                }
+                m_datDirTextBox.Text = sb.ToString();
+            }
+            else
+            {
+                try
+                {
+                    m_datDirTextBox.Text = Shares.PathToUnc(m_datDirTextBox.Text, true);
+                }
+                catch
+                {
+                }
+            }
+        }
     }
 }

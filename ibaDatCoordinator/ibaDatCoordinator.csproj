@@ -195,6 +195,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\PdaServerFiles.cs" />
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
     <Compile Include="Processing\GlobalCleanupManager.cs" />

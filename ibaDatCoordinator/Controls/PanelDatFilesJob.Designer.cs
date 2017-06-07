@@ -334,6 +334,7 @@
             this.m_datDirTextBox.Name = "m_datDirTextBox";
             this.m_datDirTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragDrop);
             this.m_datDirTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.m_datDirTextBox_DragOver);
+            this.m_datDirTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.m_datDirTextBox_Validating);
             // 
             // label2
             // 
@@ -346,7 +347,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.MinimumSize = new System.Drawing.Size(0, 256);
             this.Name = "PanelDatFilesJob";
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
