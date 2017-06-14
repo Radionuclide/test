@@ -325,12 +325,12 @@ namespace iba
         {
             get
             {
-#if DEBUG
-                return false;
-#else
+//#if DEBUG
+  //              return false;
+//#else
                 string serviceHost = ServiceHost;
                 return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower() ;
-#endif
+//#endif
             }
         }
     }

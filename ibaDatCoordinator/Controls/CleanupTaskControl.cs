@@ -18,21 +18,52 @@ namespace iba.Controls
         {
             InitializeComponent();
         }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-        }
-
+        
         private void m_browseFolderButton_Click(object sender, EventArgs e)
         {
-            m_folderBrowserDialog1.ShowNewFolderButton = true;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                BrowseFolderRemote();
+            else
+                BrowseFolderLocal();
+        }
+        
+        private void BrowseFolderRemote()
+        {
+            DialogResult result = DialogResult.Abort;
+            string path = "";
+            using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+            {
+                fd.FixedDrivesOnly = false;
+                fd.ShowFiles = false;
+                fd.Filter = ".dat files (*.dat)|*.dat";
+                if ( !String.IsNullOrEmpty(m_targetFolderTextBox.Text))
+                    fd.SelectedPath = m_targetFolderTextBox.Text;
+                result = fd.ShowDialog(this);
+                path = fd.SelectedPath;
+            }
+            if (result != DialogResult.OK)
+                return;
+            m_targetFolderTextBox.Text = path;
+        }
+
+        private void BrowseFolderLocal()
+        {
+            m_folderBrowserDialog1.ShowNewFolderButton = false;
             m_folderBrowserDialog1.SelectedPath = m_targetFolderTextBox.Text;
             DialogResult result = m_folderBrowserDialog1.ShowDialog();
-            if(result == DialogResult.OK)
-                m_targetFolderTextBox.Text = m_folderBrowserDialog1.SelectedPath;
+            if (result == DialogResult.OK)
+            {
+                string uncline = m_folderBrowserDialog1.SelectedPath;
+                try
+                {
+                    uncline = Shares.PathToUnc(uncline, true);
+                }
+                catch
+                {
+
+                }
+                m_targetFolderTextBox.Text = uncline;
+            }
         }
 
         CleanupTaskData m_data;
@@ -40,9 +71,19 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal) //will be called multiple times, causes leak in XP
+            {
+                WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            }
+            else
+            {
+                WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+            }
+
             m_manager = manager;
             m_data = datasource as CleanupTaskData;
-
 
             m_nudDirs.Value = m_data.SubfoldersNumber;
             m_nudQuota.Value = m_data.Quota;
@@ -133,6 +174,18 @@ namespace iba.Controls
             m_rbLimitDirectories.Checked = false;
             m_rbQuota.Checked = false;
             m_rbLimitFree.Checked = true;
+        }
+
+        private void m_targetFolderTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || !Program.ServiceIsLocal) return; //leave it be...
+            try
+            {
+                m_targetFolderTextBox.Text = Shares.PathToUnc(m_targetFolderTextBox.Text, true);
+            }
+            catch
+            {
+            }          
         }
     }
 }

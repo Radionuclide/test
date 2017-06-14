@@ -77,7 +77,7 @@ namespace iba.Utility
             if (includeFiles)
                 files = string.IsNullOrEmpty(extension)?baseDir.GetFiles():baseDir.GetFiles(extension);
             else
-                files = new FileInfo[] { null };
+                files = new FileInfo[] { };
 
             FileSystemEntry[] entries = new FileSystemEntry[subDirs.Length + files.Length];
             for (int i = 0; i < subDirs.Length; i++)

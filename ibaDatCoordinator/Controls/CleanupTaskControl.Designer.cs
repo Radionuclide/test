@@ -103,6 +103,7 @@
             // 
             resources.ApplyResources(this.m_targetFolderTextBox, "m_targetFolderTextBox");
             this.m_targetFolderTextBox.Name = "m_targetFolderTextBox";
+            this.m_targetFolderTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.m_targetFolderTextBox_Validating);
             // 
             // m_tbExtension
             // 

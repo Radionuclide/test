@@ -19,16 +19,19 @@ namespace iba.Controls
             InitializeComponent();
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
-            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-        }
-
         public void SetData(TaskDataUNC data)
         {
             m_data = data;
+            if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal) //will be called multiple times, causes leak in XP
+            {
+                WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            }
+            else
+            {
+                WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+            }
 
             m_rbNONE.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.NONE;
             m_rbOriginal.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.SAME;
@@ -134,11 +137,50 @@ namespace iba.Controls
 
         private void m_browseFolderButton_Click(object sender, EventArgs e)
         {
-            m_folderBrowserDialog1.ShowNewFolderButton = true;
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                BrowseFolderRemote();
+            else
+                BrowseFolderLocal();
+        }
+
+
+        private void BrowseFolderRemote()
+        {
+            DialogResult result = DialogResult.Abort;
+            string path = "";
+            using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+            {
+                fd.FixedDrivesOnly = false;
+                fd.ShowFiles = false;
+                fd.Filter = ".dat files (*.dat)|*.dat";
+                if (!String.IsNullOrEmpty(m_targetFolderTextBox.Text))
+                    fd.SelectedPath = m_targetFolderTextBox.Text;
+                result = fd.ShowDialog(this);
+                path = fd.SelectedPath;
+            }
+            if (result != DialogResult.OK)
+                return;
+            m_targetFolderTextBox.Text = path;
+        }
+
+        private void BrowseFolderLocal()
+        {
+            m_folderBrowserDialog1.ShowNewFolderButton = false;
             m_folderBrowserDialog1.SelectedPath = m_targetFolderTextBox.Text;
             DialogResult result = m_folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
-                m_targetFolderTextBox.Text = m_folderBrowserDialog1.SelectedPath;
+            {
+                string uncline = m_folderBrowserDialog1.SelectedPath;
+                try
+                {
+                    uncline = Shares.PathToUnc(uncline, true);
+                }
+                catch
+                {
+
+                }
+                m_targetFolderTextBox.Text = uncline;
+            }
         }
 
         private void m_checkPathButton_Click(object sender, EventArgs e)

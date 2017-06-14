@@ -114,9 +114,15 @@ namespace iba.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if(!m_oneTimeJob)
-                WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+            if (!m_oneTimeJob)
+            {
+                if (Program.RunsWithService != Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal)
+                    WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
                     SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+                else
+                    WindowsAPI.SHAutoComplete(m_datDirTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
+                    SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
+            }
         }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
