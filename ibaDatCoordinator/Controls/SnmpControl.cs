@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Threading;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
@@ -311,27 +312,48 @@ namespace iba.Controls
             // update worker's tree if necessary
             worker.RebuildTreeIfItIsInvalid();
 
-            lock (worker.LockObject)
+            if (Monitor.TryEnter(worker.LockObject, worker.LockTimeout))
             {
-                var allObjs = ibaSnmp.GetListOfAllOids();
-                foreach (IbaSnmpOid oid in allObjs)
+                try
                 {
-                    if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+                    var allObjs = ibaSnmp.GetListOfAllOids();
+                    foreach (IbaSnmpOid oid in allObjs)
                     {
-                        // ignore everything what is outside iba root area
-                        // (e.g. UpTime or whataver)
-                        continue;
+                        if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+                        {
+                            // ignore everything what is outside iba root area
+                            // (e.g. UpTime or whataver)
+                            continue;
+                        }
+
+                        // find or create a parent (folder) node
+                        var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
+
+                        string caption = $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}";
+
+                        var node = parentNode.Nodes.Add(oid.ToString(), caption, ImageIndexLeaf, ImageIndexLeaf);
+                        node.Tag = oid;
                     }
-
-                    // find or create a parent (folder) node
-                    var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
-
-                    string caption = $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}";
-
-                    var node = parentNode.Nodes.Add(oid.ToString(), caption, ImageIndexLeaf, ImageIndexLeaf);
-                    node.Tag = oid;
+                }
+                finally
+                {
+                    Monitor.Exit(worker.LockObject);
                 }
             }
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when rebuilding TreeView, {SnmpWorker.GetCurrentThreadString()}");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+            }
+        
 
             // expand some nodes
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
@@ -567,7 +589,16 @@ namespace iba.Controls
                 string dir = folderBrowserDialog.SelectedPath;
 
                 // ensure we have the latest tree structure
-                snmpWorker.RebuildTreeCompletely();
+                if (!snmpWorker.RebuildTreeCompletely())
+                {
+                    // failed to Rebuild the tree
+
+                    // todo localize
+                    MessageBox.Show(this,
+                        "Failed to create MIB files. \r\nFailed to rebuild SNMP tree.",
+                        "Create MIB files failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(ibaSnmp);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
@@ -53,7 +54,7 @@ namespace iba.Processing
 
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
-
+        public int LockTimeout { get; } = 50;
 
         #region Construction, Destruction, Init
 
@@ -167,6 +168,13 @@ namespace iba.Processing
                     : Color.Red); // error
         }
 
+        public static string GetCurrentThreadString()
+        {
+            var thr = Thread.CurrentThread;
+            string thrNameOrId = String.IsNullOrWhiteSpace(thr.Name) ? thr.ManagedThreadId.ToString() : thr.Name;
+            return $"thr=[{thrNameOrId}]";
+        }
+
         public void RestartAgent()
         {
             var oldStatus = Status;
@@ -245,8 +253,8 @@ namespace iba.Processing
             IbaSnmp.EndPointsToListen = eps;
 
             // security
-            IbaSnmp.SetSecurityForV1AndV2(new List<string> { SnmpData.V1V2Security });
-            IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> { SnmpData.V3Security });
+            IbaSnmp.SetSecurityForV1AndV2(new List<string> {SnmpData.V1V2Security});
+            IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> {SnmpData.V3Security});
         }
 
         public bool UseSnmpV2TcForStrings => SnmpData?.UseSnmpV2TcForStrings ?? true;
@@ -262,9 +270,9 @@ namespace iba.Processing
                 "JobStatus", "Current status of the job (started, stopped or disabled)",
                 new Dictionary<int, string>
                 {
-                        { (int)SnmpObjectsData.JobStatus.Disabled, "disabled"},
-                        { (int)SnmpObjectsData.JobStatus.Started, "started"},
-                        { (int)SnmpObjectsData.JobStatus.Stopped, "stopped"},
+                    {(int) SnmpObjectsData.JobStatus.Disabled, "disabled"},
+                    {(int) SnmpObjectsData.JobStatus.Started, "started"},
+                    {(int) SnmpObjectsData.JobStatus.Stopped, "stopped"},
                 }
             );
 
@@ -272,10 +280,10 @@ namespace iba.Processing
                 "LocalCleanupType", "Type of limitation of disk space usage",
                 new Dictionary<int, string>
                 {
-                        { (int)CleanupTaskData.OutputLimitChoiceEnum.None, "none"},
-                        { (int)CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
-                        { (int)CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
-                        { (int)CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
+                    {(int) CleanupTaskData.OutputLimitChoiceEnum.None, "none"},
+                    {(int) CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
+                    {(int) CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
+                    {(int) CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
                 }
             );
         }
@@ -390,7 +398,7 @@ namespace iba.Processing
                 }
             }
         }
-        
+
         private void IbaSnmp_UpTimeRequested(object sender, IbaSnmpValueRequestedEventArgs<uint> e)
         {
             // todo override?
@@ -402,7 +410,7 @@ namespace iba.Processing
             // refresh data if it is too old 
             RefreshLicenseInfo();
             // re-read the value and send it back via args
-            args.Value = (T)args.IbaSnmp.GetValue(args.Oid);
+            args.Value = (T) args.IbaSnmp.GetValue(args.Oid);
         }
 
         #endregion
@@ -417,100 +425,166 @@ namespace iba.Processing
         /// <value>false</value> if it is valid and has not been modified by this call.</returns>
         public bool RebuildTreeIfItIsInvalid()
         {
-            lock (LockObject)
+            // here I use triple than normal timeout to give priority over other locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 3))
             {
-                if (IsStructureValid)
+                try
                 {
-                    return false; // tree structure has not changed
+                    if (IsStructureValid)
+                    {
+                        return false; // tree structure has not changed
+                    }
+                    RebuildTreeCompletely();
+                    return true; // tree structure has changed
                 }
-                RebuildTreeCompletely();
-                return true; // tree structure has changed
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+                return false; // tree structure has not changed
             }
         }
 
         private bool RefreshLicenseInfo()
         {
-            lock (LockObject)
+            if (Monitor.TryEnter(LockObject, LockTimeout))
             {
-                if (ObjectsData.License.IsUpToDate())
+                try
                 {
-                    // data fresh, no need to change something
-                    return false; // was not updated
-                }
+                    if (ObjectsData.License.IsUpToDate())
+                    {
+                        // data fresh, no need to change something
+                        return false; // was not updated
+                    }
 
-                var man = TaskManager.Manager;
-                if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
+                    var man = TaskManager.Manager;
+                    if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
+                    {
+                        // should not happen
+                        // failed to update data
+                        // don't rebuild the tree, just return false
+                        return false; // was not updated
+                    }
+
+                    // TaskManager has updated info successfully 
+                    // copy it to snmp tree
+
+                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
+                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
+                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
+                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
+                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
+                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
+                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
+                    return true; // data was updated
+                }
+                finally
                 {
-                    // should not happen
-                    // failed to update data
-                    // don't rebuild the tree, just return false
-                    return false; // was not updated
+                    Monitor.Exit(LockObject);
                 }
-
-                // TaskManager has updated info successfully 
-                // copy it to snmp tree
-
-                IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
-                IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
-                IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
-                IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
-                IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
-                IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
-                IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
             }
-
-            return true; // data was updated
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+                return false; // was not updated
+            }
         }
+        
 
         private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
-            lock (LockObject)
+            if (Monitor.TryEnter(LockObject, LockTimeout))
             {
-                if (RebuildTreeIfItIsInvalid())
+                try
                 {
-                    // tree was rebuilt completely
-                    // no need to update some parts of it
-                    // just return right now
+                    if (RebuildTreeIfItIsInvalid())
+                    {
+                        // tree was rebuilt completely
+                        // no need to update some parts of it
+                        // just return right now
+                        return true; // data was updated
+                    }
+
+                    if (driveInfo.IsUpToDate())
+                    {
+                        // data fresh, no need to change something
+                        return false; // was not updated
+                    }
+
+                    var man = TaskManager.Manager;
+                    if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
+                    {
+                        // should not happen
+                        // failed to update data
+                        // rebuild the tree
+                        LogData.Data.Logger.Log(Level.Warning,
+                            "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; tree is marked invalid.");
+                        IsStructureValid = false;
+                        return false; // data was NOT updated
+                    }
+
+                    // TaskManager has updated driveInfo successfully 
+                    // copy it to snmp tree
+
+                    IbaSnmpOid oidDrive = driveInfo.Oid;
+
+                    IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveName);
+                    IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.Active);
+                    IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.SizeInMb);
+                    IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceInMb);
+                    IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceInPercent);
+                    IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTime);
                     return true; // data was updated
                 }
-
-                if (driveInfo.IsUpToDate())
+                finally
                 {
-                    // data fresh, no need to change something
-                    return false; // was not updated
+                    Monitor.Exit(LockObject);
                 }
-
-                var man = TaskManager.Manager;
-                if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
-                {
-                    // should not happen
-                    // failed to update data
-                    // rebuild the tree
-                    LogData.Data.Logger.Log(Level.Warning,
-                        "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; rebuilding the tree completely.");
-                    RebuildTreeCompletely();
-                    return true; // data was updated
-                }
-
-                // TaskManager has updated driveInfo successfully 
-                // copy it to snmp tree
-
-                IbaSnmpOid oidDrive = driveInfo.Oid;
-
-                IbaSnmp.SetUserValue(oidDrive + 0, driveInfo.DriveName);
-                IbaSnmp.SetUserValue(oidDrive + 1, driveInfo.Active);
-                IbaSnmp.SetUserValue(oidDrive + 2, driveInfo.SizeInMb);
-                IbaSnmp.SetUserValue(oidDrive + 3, driveInfo.CurrentFreeSpaceInMb);
-                IbaSnmp.SetUserValue(oidDrive + 4, driveInfo.MinFreeSpaceInPercent);
-                IbaSnmp.SetUserValue(oidDrive + 5, driveInfo.RescanTime);
             }
-
-            return true; // data was updated
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveName}, {GetCurrentThreadString()}.");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+                return false; // data was NOT updated
+            }
         }
 
         private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
         {
-            lock (LockObject)
+            if (Monitor.TryEnter(LockObject, LockTimeout))
             {
                 try
                 {
@@ -535,9 +609,9 @@ namespace iba.Processing
                         // failed to update data
                         // rebuild the tree
                         LogData.Data.Logger.Log(Level.Warning,
-                            "SNMP. RefreshJobInfo(). Failed to refresh; rebuilding the tree completely.");
-                        RebuildTreeCompletely();
-                        return true; // data was updated
+                            "SNMP. RefreshJobInfo(). Failed to refresh; tree is marked invalid.");
+                        IsStructureValid = false;
+                        return false; // data was NOT updated
                     }
 
                     // TaskManager has updated info successfully 
@@ -546,7 +620,7 @@ namespace iba.Processing
                     IbaSnmpOid oidJobGen = jobInfo.Oid + 0;
 
                     IbaSnmp.SetUserValue(oidJobGen + 0, jobInfo.JobName);
-                    IbaSnmp.SetUserValue(oidJobGen + 1, (int)jobInfo.Status);
+                    IbaSnmp.SetUserValue(oidJobGen + 1, (int) jobInfo.Status);
                     IbaSnmp.SetUserValue(oidJobGen + 2, jobInfo.TodoCount);
                     IbaSnmp.SetUserValue(oidJobGen + 3, jobInfo.DoneCount);
                     IbaSnmp.SetUserValue(oidJobGen + 4, jobInfo.FailedCount);
@@ -587,14 +661,34 @@ namespace iba.Processing
                     {
                         RefreshTaskInfo(taskInfo);
                     }
+                    return true; // was updated
                 }
                 catch (Exception ex)
                 {
                     LogData.Data.Logger.Log(Level.Exception,
                         $"SNMP. Error during refreshing job {jobInfo.JobName}. {ex.Message}.");
+                    return false; // was not updated
+                }
+                finally
+                {
+                    Monitor.Exit(LockObject);
                 }
             }
-            return true; // was updated
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when updating {jobInfo.JobName}, {GetCurrentThreadString()}.");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+                return false; // was not updated
+            }
         }
 
 
@@ -637,47 +731,64 @@ namespace iba.Processing
                 return false; // rebuild failed
             }
 
-            lock (LockObject)
+            if (Monitor.TryEnter(LockObject, LockTimeout))
             {
-                // snmp structure is valid until datcoordinator configuration is changed.
-                // theoretically it can be reset to false by another thread
-                // during the process of rebuild of SnmpObjectsData,
-                // but it's not a problem. 
-                // If this happens, then the tree will be rebuilt once again.
-                // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
-                IsStructureValid = true;
-
-                IbaSnmp.DeleteAllUserValues();
-                IbaSnmp.ClearUserOidMetadata();
-
-                if (!man.SnmpRebuildObjectsData(ObjectsData))
+                try
                 {
-                    return false; // rebuild failed
+                    // snmp structure is valid until datcoordinator configuration is changed.
+                    // theoretically it can be reset to false by another thread
+                    // during the process of rebuild of SnmpObjectsData,
+                    // but it's not a problem. 
+                    // If this happens, then the tree will be rebuilt once again.
+                    // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
+                    IsStructureValid = true;
+
+                    IbaSnmp.DeleteAllUserValues();
+                    IbaSnmp.ClearUserOidMetadata();
+
+                    if (!man.SnmpRebuildObjectsData(ObjectsData))
+                    {
+                        return false; // rebuild failed
+                    }
+
+                    // ibaRoot.DatCoord.1 - Product-Specific
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
+
+                    // ibaRoot.DatCoord.Product.1 - Global cleanup
+                    BuildSectionGlobalCleanup();
+
+                    // ibaRoot.DatCoord.Product.2 - Standard jobs
+                    BuildSectionStandardJobs();
+
+                    // ibaRoot.DatCoord.Product.3 - Scheduled jobs
+                    BuildSectionScheduledJobs();
+
+                    // ibaRoot.DatCoord.Product.4 - One time jobs
+                    BuildSectionOneTimeJobs();
+
+                    return true; // rebuilt successfully
                 }
-
-                // todo check more thoroughly probabale dead lock
-                // i do not see a danger, but to be confident probabaly 
-                // add timeouts to some locks
-
-                // ibaRoot.DatCoord.1 - Product-Specific
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
-
-                // ibaRoot.DatCoord.Product.1 - Global cleanup
-                BuildSectionGlobalCleanup();
-
-                // ibaRoot.DatCoord.Product.2 - Standard jobs
-                BuildSectionStandardJobs();
-
-                // ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                BuildSectionScheduledJobs();
-
-                // ibaRoot.DatCoord.Product.4 - One time jobs
-                BuildSectionOneTimeJobs();
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
             }
-
-            return true; // rebuilt successfully
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                }
+                catch
+                {
+                    // logging is not critical
+                }
+                return false; // rebuild failed
+            }
         }
-
 
         #region Building of tree Sections 1...4 (from 'GlobalCleanup' to 'OneTimeJobs')
 
