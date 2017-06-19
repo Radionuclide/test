@@ -328,75 +328,45 @@ namespace iba.Processing
 
         private void RegisterGeneralObjectHandlers()
         {
-            IbaSnmp.ClearOidMetadata();
+            // change default gui caption from "ibaDatCo" to "ibaDatCoordinator"
+            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, @"ibaDatCoordinator");
 
-            // ibaRoot
-            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaRoot, IbaSnmp.OidIbaRoot.ToString()); // caption here is just an oid
+            // all the other captions can be left as is
+            // all the general objects already have gui Captions, predefined
+            // e.g.:
+            // var captionSample = IbaSnmp.GetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer).GuiCaption;
 
-            {
-                // ibaRoot.0 - Library
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibInfo, @"Library");
-                {
-                    // ibaRoot.Library.1 - Name
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibName, @"Name");
-                    // ibaRoot.Library.2 - Version
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibVersion, @"Version");
-                    // ibaRoot.Library.3 - Hostname
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpHostname, @"Hostname");
-                    // ibaRoot.Library.4 - SystemTime
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpSystemTime, @"System time");
-                }
-                // ibaRoot.2 - DatCoordinator
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, @"ibaDatCoordinator");
-            }
+            // ibaRoot.DatCoord.General.1 - Title
+            //IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
+            IbaSnmp.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
 
-            // ibaRoot.DatCoord.0 - General
-            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneral, @"General");
-            {
-                // ibaRoot.DatCoord.General.1 - Title
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
-                IbaSnmp.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
+            // ibaRoot.DatCoord.General.2 - Version
+            var ver = GetType().Assembly.GetName().Version;
+            IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
 
-                // ibaRoot.DatCoord.General.2 - Version
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralVersion, @"Version");
-                var ver = GetType().Assembly.GetName().Version;
-                IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
+            // will not be displayed in the tree; so, no caption
+            IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
 
-                // ibaRoot.DatCoord.General.3 - Licensing
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensing, @"Licensing");
-                {
-                    // will not be displayed in the tree; so, no caption
-                    IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
+            // ibaRoot.DatCoord.General.Licensing.1 - IsValid
+            IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.1 - IsValid
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingIsValid, @"Is Valid");
-                    IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
+            // ibaRoot.DatCoord.General.Licensing.2 - Serial number
+            IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.2 - Serial number
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingSn, @"Serial number");
-                    IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
+            // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
+            IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingHwId, @"Hardware ID");
-                    IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
+            // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
+            IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingType, @"Dongle type");
-                    IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
+            // ibaRoot.DatCoord.General.Licensing.5 - Customer
+            IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.5 - Customer
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer, @"Customer");
-                    IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
+            // ibaRoot.DatCoord.General.Licensing.6 - Time limit
+            IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
 
-                    // ibaRoot.DatCoord.General.Licensing.6 - Time limit
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingTimeLimit, @"Time limit");
-                    IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
-
-                    // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit, @"Demo time limit");
-                    IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
-                }
-            }
+            // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
+            IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
         }
 
         private void IbaSnmp_UpTimeRequested(object sender, IbaSnmpValueRequestedEventArgs<uint> e)
@@ -744,7 +714,7 @@ namespace iba.Processing
                     IsStructureValid = true;
 
                     IbaSnmp.DeleteAllUserValues();
-                    IbaSnmp.ClearUserOidMetadata();
+                    IbaSnmp.DeleteAllUserOidMetadata();
 
                     if (!man.SnmpRebuildObjectsData(ObjectsData))
                     {
@@ -1223,7 +1193,7 @@ namespace iba.Processing
 
         #region Oid metadata and CreateUserValue() overloads
 
-        private void AddMetadataForOidSuffix(IbaSnmpOid oidSuffix, string guiCaption, string mibName = null, string mibDescription = null)
+        private void AddMetadataForOidSuffix(IbaSnmpOid oidSuffix, string guiCaption, string mibName, string mibDescription = null)
         {
             IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
         }
@@ -1233,8 +1203,8 @@ namespace iba.Processing
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
@@ -1242,8 +1212,8 @@ namespace iba.Processing
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -1252,8 +1222,8 @@ namespace iba.Processing
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
@@ -1261,18 +1231,18 @@ namespace iba.Processing
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
         private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
             IbaSnmp.CreateUserValue(oidSuffix, initialValue, 
-                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr, 
-                mibName, mibDescription, handler, tag);
+                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
+                null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
@@ -1280,8 +1250,8 @@ namespace iba.Processing
             EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
             object tag = null)
         {
-            AddMetadataForOidSuffix(oidSuffix, caption);
-            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, mibName, mibDescription, handler, tag);
+            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
+            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         #endregion
