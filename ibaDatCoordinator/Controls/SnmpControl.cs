@@ -345,7 +345,7 @@ namespace iba.Controls
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when rebuilding TreeView, {SnmpWorker.GetCurrentThreadString()}");
                 }
                 catch

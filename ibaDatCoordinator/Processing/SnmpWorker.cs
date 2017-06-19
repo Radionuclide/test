@@ -425,8 +425,8 @@ namespace iba.Processing
         /// <value>false</value> if it is valid and has not been modified by this call.</returns>
         public bool RebuildTreeIfItIsInvalid()
         {
-            // here I use triple than normal timeout to give priority over other locks
-            if (Monitor.TryEnter(LockObject, LockTimeout * 3))
+            // here I use double than normal timeout to give priority over other locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 2))
             {
                 try
                 {
@@ -448,7 +448,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
                 }
                 catch
@@ -503,7 +503,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
                 }
                 catch
@@ -541,7 +541,7 @@ namespace iba.Processing
                         // should not happen
                         // failed to update data
                         // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Warning,
+                        LogData.Data.Logger.Log(Level.Debug,
                             "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; tree is marked invalid.");
                         IsStructureValid = false;
                         return false; // data was NOT updated
@@ -571,7 +571,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when updating {driveInfo.DriveName}, {GetCurrentThreadString()}.");
                 }
                 catch
@@ -608,7 +608,7 @@ namespace iba.Processing
                         // should not happen
                         // failed to update data
                         // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Warning,
+                        LogData.Data.Logger.Log(Level.Debug,
                             "SNMP. RefreshJobInfo(). Failed to refresh; tree is marked invalid.");
                         IsStructureValid = false;
                         return false; // data was NOT updated
@@ -680,7 +680,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when updating {jobInfo.JobName}, {GetCurrentThreadString()}.");
                 }
                 catch
@@ -779,7 +779,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Warning,
+                    LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch
