@@ -68,11 +68,12 @@ namespace iba.Controls
                 return;
             }
 
-            // let the manager know that GUI is visible
-            // so GUI-specific things can be started suspended
+            // if we have no snmp worker or IbaSnmp
+            // then disable all controls and cancel load
             SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            if (snmpWorker == null)
+            if (snmpWorker?.IbaSnmp == null)
             {
+                Enabled = false;
                 return;
             }
 
@@ -86,6 +87,10 @@ namespace iba.Controls
                 // rebuild gui-tree
                 RebuildObjectsTree();
                 snmpWorker.ApplyStatusToTextBox(tbStatus);
+
+                // user has selected the control, 
+                // enable clients monitoring
+                timerRefreshClients.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -109,6 +114,9 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
+            //  user has hidden the control, 
+            // disable clients monitoring
+            timerRefreshClients.Enabled = false;
         }
 
         #endregion
