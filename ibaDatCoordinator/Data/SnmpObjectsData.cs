@@ -313,15 +313,19 @@ namespace iba.Data
             public uint PermFailedCount;
 
             /// <summary> Oid 0.6 </summary>
-            public DateTime TimestampLastExecution;
+            public DateTime TimestampJobStarted;
 
             /// <summary> Oid 0.7 </summary>
+            public DateTime TimestampLastExecution;
+
+            /// <summary> Oid 0.8 </summary>
             public DateTime TimestampNextExecution;
 
             public override void Reset()
             {
                 base.Reset();
                 PermFailedCount = 0;
+                TimestampJobStarted = DateTime.MinValue;
                 TimestampLastExecution = DateTime.MinValue;
                 TimestampNextExecution = DateTime.MinValue;
             }

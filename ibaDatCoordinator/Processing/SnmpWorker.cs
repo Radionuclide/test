@@ -568,8 +568,9 @@ namespace iba.Processing
                     else if (schJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + 5, schJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + 6, schJi.TimestampLastExecution);
-                        IbaSnmp.SetUserValue(oidJobGen + 7, schJi.TimestampNextExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 6, schJi.TimestampJobStarted);
+                        IbaSnmp.SetUserValue(oidJobGen + 7, schJi.TimestampLastExecution);
+                        IbaSnmp.SetUserValue(oidJobGen + 8, schJi.TimestampNextExecution);
                     }
                     else if (otJi != null)
                     {
@@ -866,14 +867,20 @@ namespace iba.Processing
                             null,
                             JobInfoItemRequested, jobInfo);
 
-                        // ibaRoot.DatCoord.Product.SchJobs.Job.6 - TimestampLastExecution
-                        CreateUserValue(oidJobGen + 6, jobInfo.TimestampLastExecution,
+                        // ibaRoot.DatCoord.Product.SchJobs.Job.6 - TimestampJobStarted
+                        CreateUserValue(oidJobGen + 6, jobInfo.TimestampJobStarted,
+                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
+                            null,
+                            JobInfoItemRequested, jobInfo);
+
+                        // ibaRoot.DatCoord.Product.SchJobs.Job.7 - TimestampLastExecution
+                        CreateUserValue(oidJobGen + 7, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             null,
                             JobInfoItemRequested, jobInfo);
 
-                        // ibaRoot.DatCoord.Product.SchJobs.Job.7 - TimestampNextExecution
-                        CreateUserValue(oidJobGen + 7, jobInfo.TimestampNextExecution,
+                        // ibaRoot.DatCoord.Product.SchJobs.Job.8 - TimestampNextExecution
+                        CreateUserValue(oidJobGen + 8, jobInfo.TimestampNextExecution,
                             @"Timestamp next execution", mibNameJobGen + @"TimestampNextExecution",
                             null,
                             JobInfoItemRequested, jobInfo);

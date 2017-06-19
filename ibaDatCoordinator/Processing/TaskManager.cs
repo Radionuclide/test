@@ -541,8 +541,9 @@ namespace iba.Processing
             SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
             jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-            jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 6
-            jobInfo.TimestampNextExecution = worker.NextTrigger; // 7
+            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+            jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+            jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
 
             jobInfo.PutTimeStamp();
         }
