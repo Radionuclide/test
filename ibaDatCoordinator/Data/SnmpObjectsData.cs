@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using iba.Processing;
 using IbaSnmpLib;
 
 namespace iba.Data

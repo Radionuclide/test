@@ -379,7 +379,11 @@ namespace iba.Processing
         {
             // refresh data if it is too old 
             RefreshLicenseInfo();
+
             // re-read the value and send it back via args
+            // (we should do re-read independently on whether above call to RefreshXxx()
+            // had updated the value or not, because the value could be updated meanwhile by a similar call
+            // in another thread if multiple values are requested)
             args.Value = (T) args.IbaSnmp.GetValue(args.Oid);
         }
 
@@ -429,6 +433,7 @@ namespace iba.Processing
             }
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshLicenseInfo()
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
@@ -483,8 +488,9 @@ namespace iba.Processing
                 return false; // was not updated
             }
         }
-        
 
+
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
@@ -552,6 +558,7 @@ namespace iba.Processing
             }
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
@@ -1273,6 +1280,9 @@ namespace iba.Processing
             RefreshGlobalCleanupDriveInfo(driveInfo);
 
             // re-read the value and send it back via args
+            // (we should do re-read independently on whether above call to RefreshXxx()
+            // had updated the value or not, because the value could be updated meanwhile by a similar call
+            // in another thread if multiple values are requested)
             args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
@@ -1292,6 +1302,9 @@ namespace iba.Processing
             RefreshJobInfo(jobInfo);
 
             // re-read the value and send it back via args
+            // (we should do re-read independently on whether above call to RefreshXxx()
+            // had updated the value or not, because the value could be updated meanwhile by a similar call
+            // in another thread if multiple values are requested)
             args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
