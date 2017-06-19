@@ -528,7 +528,7 @@ namespace iba
             // added by kolesnik - begin
             if (m_navBar.SelectedPane == m_snmpPane)
             {
-                // todo; is it needed here?
+                // todo; to ask Michael; is it needed here?
                 SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
                 pane?.LoadData(null, this);
             }

@@ -459,7 +459,7 @@ namespace iba.Controls
 
         private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
         {
-            OidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
+            IbaSnmpOidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
             return metadata?.GuiCaption ?? "???";
         }
 
@@ -541,7 +541,7 @@ namespace iba.Controls
             {
                 // probabaly this is a folder, that has no corresponding snmp object 
                 // try to get it's description from the worker.
-                OidMetadata metadata = worker.IbaSnmp?.GetOidMetadata(oid);
+                IbaSnmpOidMetadata metadata = worker.IbaSnmp?.GetOidMetadata(oid);
                 // todo remove MibDescription after testing of MIB descriptions
                 tbObjMibName.Text = (metadata?.MibName ?? "") + @"; " + (metadata?.MibDescription ?? "");
             }

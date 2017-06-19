@@ -177,7 +177,7 @@ namespace iba.Processing
             {
                 IbaSnmp.Stop();
                 ApplyConfigurationToIbaSnmp();
-                string logMessage = null;
+                string logMessage;
 
                 if (_snmpData.Enabled)
                 {
@@ -323,74 +323,74 @@ namespace iba.Processing
             IbaSnmp.ClearOidMetadata();
 
             // ibaRoot
-            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaRoot, null, null, IbaSnmp.OidIbaRoot.ToString()); // caption here is just an oid
+            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaRoot, IbaSnmp.OidIbaRoot.ToString()); // caption here is just an oid
 
             {
                 // ibaRoot.0 - Library
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibInfo, null, null, @"Library");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibInfo, @"Library");
                 {
                     // ibaRoot.Library.1 - Name
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibName, null, null, @"Name");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibName, @"Name");
                     // ibaRoot.Library.2 - Version
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibVersion, null, null, @"Version");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpLibVersion, @"Version");
                     // ibaRoot.Library.3 - Hostname
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpHostname, null, null, @"Hostname");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpHostname, @"Hostname");
                     // ibaRoot.Library.4 - SystemTime
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpSystemTime, null, null, @"System time");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaSnmpSystemTime, @"System time");
                 }
                 // ibaRoot.2 - DatCoordinator
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, null, null, @"ibaDatCoordinator");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, @"ibaDatCoordinator");
             }
 
             // ibaRoot.DatCoord.0 - General
-            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneral, null, null, @"General");
+            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneral, @"General");
             {
                 // ibaRoot.DatCoord.General.1 - Title
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, null, null, @"Title");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
                 IbaSnmp.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
 
                 // ibaRoot.DatCoord.General.2 - Version
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralVersion, null, null, @"Version");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralVersion, @"Version");
                 var ver = GetType().Assembly.GetName().Version;
                 IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
 
                 // ibaRoot.DatCoord.General.3 - Licensing
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensing, null, null, @"Licensing");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensing, @"Licensing");
                 {
                     // will not be displayed in the tree; so, no caption
                     IbaSnmp.UpTimeRequested += IbaSnmp_UpTimeRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.1 - IsValid
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingIsValid, null, null, @"Is Valid");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingIsValid, @"Is Valid");
                     IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.2 - Serial number
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingSn, null, null, @"Serial number");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingSn, @"Serial number");
                     IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingHwId, null, null, @"Hardware ID");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingHwId, @"Hardware ID");
                     IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingType, null, null, @"Dongle type");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingType, @"Dongle type");
                     IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.5 - Customer
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer, null, null, @"Customer");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer, @"Customer");
                     IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.6 - Time limit
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingTimeLimit, null, null, @"Time limit");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingTimeLimit, @"Time limit");
                     IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
 
                     // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit, null, null, @"Demo time limit");
+                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingDemoTimeLimit, @"Demo time limit");
                     IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
                 }
             }
         }
-
+        
         private void IbaSnmp_UpTimeRequested(object sender, IbaSnmpValueRequestedEventArgs<uint> e)
         {
             // todo override?
@@ -648,6 +648,7 @@ namespace iba.Processing
                 IsStructureValid = true;
 
                 IbaSnmp.DeleteAllUserValues();
+                IbaSnmp.ClearUserOidMetadata();
 
                 if (!man.SnmpRebuildObjectsData(ObjectsData))
                 {
@@ -658,11 +659,8 @@ namespace iba.Processing
                 // i do not see a danger, but to be confident probabaly 
                 // add timeouts to some locks
 
-                //todo test
-                IbaSnmp.ClearUserOidMetadata();
-
                 // ibaRoot.DatCoord.1 - Product-Specific
-                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, null, null, @"Product");
+                IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
 
                 // ibaRoot.DatCoord.Product.1 - Global cleanup
                 BuildSectionGlobalCleanup();
