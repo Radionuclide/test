@@ -541,6 +541,15 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   nsSCMEx::Stop /NOUNLOAD "Spooler"
   nsSCMEx::Start /NOUNLOAD "Spooler"
 
+  ;add firewall exceptions...
+  nsSCMEx::FirewallIsAvailable
+  Pop $R0
+  ${If} $R0 == "1"
+    DetailPrint $(TEXT_CONFIGURE_FIREWALL)
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client or status"
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorService.exe" "ibaDatCoordinator server"
+  ${EndIf}
+  
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/status" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
@@ -614,6 +623,13 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   SetOutPath "$INSTDIR"
   ;Create uninstall shortcut
 
+    ;add firewall exceptions...
+  nsSCMEx::FirewallIsAvailable
+  Pop $R0
+  ${If} $R0 == "1"
+    DetailPrint $(TEXT_CONFIGURE_FIREWALL)
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client or status"
+  ${EndIf}
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\default.ico"
@@ -722,6 +738,15 @@ Section Uninstall
 
   SetShellVarContext all
   !insertmacro WriteToInstallHistory "Uninstalling ${PRODUCT_NAME} v${PRODUCT_VERSION} (Command line: $CMDLINE)"
+  
+ ;Remove exceptions from firewall
+  nsSCMEx::FirewallIsAvailable
+  Pop $R0
+  ${If} $R0 == "1"
+    DetailPrint $(TEXT_CONFIGURE_FIREWALL)
+    nsSCMEx::FirewallRemoveApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client or status"
+	nsSCMEx::FirewallRemoveApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorService.exe" "ibaDatCoordinator server"
+  ${EndIf}
   
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $0 == "1"
