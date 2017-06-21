@@ -837,6 +837,34 @@ Function un.UninstallTasks
 FunctionEnd
 
 Function un.UninstallService
+    ;Trigger close of all server status instances
+  DetailPrint $(TEXT_STATUS_STOP)
+  WriteRegDWORD HKLM "SOFTWARE\iba\ibaDatCoordinator\Uninstall" "isBusy" 0
+  WriteRegDWORD HKLM "SOFTWARE\iba\ibaDatCoordinator\Uninstall" "isBusy" 1
+  Sleep 500
+
+  ;Check if server status programs are still running
+  StrCpy $R0 "0"
+  StrCpy $R1 "10"
+  againStatus:
+  ClearErrors
+  Delete "$INSTDIR\Server\ibaPdaServerStatus.exe"
+  IfErrors 0 okStatus
+    DetailPrint "Attempt $R0 failed"
+    Sleep 1000
+    IntOp $R0 $R0 + 1
+    IntCmp $R0 $R1 timeoutStatus againStatus
+  timeoutStatus:
+  StrCpy $R0 "0"
+  StrCpy $R1 "1"
+  MessageBox MB_RETRYCANCEL|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_CLOSE_STATUS) IDRETRY againStatus
+    Quit
+  okStatus:
+  
+  ;Clear uninstall is busy flag
+  WriteRegDWORD HKLM "SOFTWARE\iba\ibaPDA\Uninstall" "isBusy" 0
+  
+  
   ;uninstall the service
 
   ;stop statusform
@@ -1201,6 +1229,8 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordin
 LangString TEXT_INSTALLCLIENT         ${LANG_ENGLISH} "Install ibaDatCoordinator client only"
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
+LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaPDA server status is running. Please close the ibaPDA server status program before continuing the installation."
+LangString TEXT_STATUS_STOP               ${LANG_ENGLISH} "Stopping ibaDatCoordinator server status"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
@@ -1235,6 +1265,8 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur 
 LangString TEXT_INSTALLCLIENT         	  ${LANG_GERMAN} "Nur ibaDatCoordinator Client installieren"
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
+LangString TEXT_CLOSE_STATUS              ${LANG_GERMAN}  "ibaDatCoordinator Server Status läuft. Bitte schließen Sie das ibaDatCoordinator Server Status-Programm, bevor Sie mit der Installation fortfahren."
+LangString TEXT_STATUS_STOP               ${LANG_GERMAN}  "ibaDatCoordinator Server Status wird angehalten"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
@@ -1269,3 +1301,5 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoor
 LangString TEXT_INSTALLCLIENT          ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme client seulement"
 LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"
+LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer
+LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" l'installation."

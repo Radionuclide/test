@@ -211,6 +211,7 @@
     <Compile Include="Utility\CueProvider.cs" />
     <Compile Include="Utility\DatcoServerDefaults.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
+    <Compile Include="Utility\RegistryMonitor.cs" />
     <Compile Include="Utility\ServiceControllerEx.cs">
       <SubType>Component</SubType>
     </Compile>

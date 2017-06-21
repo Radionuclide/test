@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using iba.Utility;
 
 namespace iba
 {
@@ -46,7 +47,6 @@ namespace iba
 		{
             try
             {
-
                 m_Mutex = new System.Threading.Mutex(false, Program.RunsWithService == Program.ServiceEnum.STATUS ?"ibaDatCoordinatorServerStatus Mutex": "ibaDatCoordinatorServerClient Mutex");
                 bool owned = false;
                 owned = m_Mutex.WaitOne(TimeSpan.Zero, false);
@@ -85,7 +85,81 @@ namespace iba
         public QuitForm(IExternalCommand form)
         {
             this.form = form;
+            if (Program.RunsWithService == Program.ServiceEnum.STATUS)
+                InitializeRegMon();
         }
+
+        #region Registry monitor
+
+        iba.Utility.RegistryMonitor regMon;
+        string uninstallRegKeyName;
+
+        private void InitializeRegMon()
+        {
+            try
+            {
+                //if(Environment.Is64BitOperatingSystem)
+                //    uninstallRegKeyName = @"SOFTWARE\Wow6432Node\iba\ibaPDA\Uninstall";
+                //else
+                uninstallRegKeyName = @"SOFTWARE\iba\ibaDatCoordinator\Uninstall";
+
+                regMon = new RegistryMonitor(Microsoft.Win32.RegistryHive.LocalMachine, uninstallRegKeyName);
+                regMon.Error += new System.IO.ErrorEventHandler(regMon_Error);
+                regMon.RegChanged += new EventHandler(regMon_RegChanged);
+                regMon.RegChangeNotifyFilter = RegChangeNotifyFilter.Value;
+                regMon.Start();
+            }
+            catch (Exception ex)
+            {
+                //ibaLogger.LogFormat(Level.Exception, "Error starting uninstall registry monitor: {0}", ex);
+                CloseRegMon();
+            }
+        }
+
+        private void CloseRegMon()
+        {
+            try
+            {
+                if (regMon == null)
+                    return;
+
+                if (regMon.IsMonitoring)
+                    regMon.Stop();
+                regMon.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            regMon = null;
+        }
+
+        void regMon_RegChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(uninstallRegKeyName);
+                if (key == null)
+                    return;
+
+                int isBusy = (int)key.GetValue("isBusy", 0);
+                if (isBusy == 1)
+                {
+                    //ibaLogger.Log(Level.Info, "Uninstall isBusy is set to 1 -> closing server status program");
+                    form.OnExternalClose();
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        void regMon_Error(object sender, System.IO.ErrorEventArgs e)
+        {
+            //ibaLogger.LogFormat(Level.Exception, "Received error from uninstall registry monitor: {0}", e.GetException());
+        }
+
+        #endregion
+
 
         IExternalCommand form;
 
