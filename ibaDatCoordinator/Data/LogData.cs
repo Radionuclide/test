@@ -140,16 +140,31 @@ namespace iba.Data
         public void AddForwarder(EventForwarder ev, Guid g)
         {
             m_efDict.TryAdd(g, ev);
+            //if (m_efDict.TryAdd(g, ev))
+            //{
+            //    //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG added logger with guid g {0} Dict count {1}", g, m_efDict.Count));
+            //}
+            //else 
+            //{
+            //    //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG failed adding logger with guid g {0} Dict count {1}", g, m_efDict.Count));
+            //}
         }
 
         public void RemoveForwarder(Guid g)
         {
             EventForwarder ev;
+            //if (m_efDict.TryRemove(g, out ev))
+            //{
+            //    LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG removed logger with guid g {0} Dict count {1}", g, m_efDict.Count));
+            //}
+            //else
+            //{
+            //    LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG failed removing logger with guid g {0} Dict count {1}", g, m_efDict.Count));
+            //}
             m_efDict.TryRemove(g, out ev);
         }
 
-        private bool m_isForwarding; 
-        public bool IsForwading
+        public bool IsForwarding
         {
             get { return m_efDict.Count > 0; }
         }
@@ -194,6 +209,7 @@ namespace iba.Data
 
         public void ClearForwarders()
         {
+            //LogData.Data.FileLog(Level.Info, "EXTRALOG removing logger");
             m_efDict.Clear();
         }
 
@@ -334,7 +350,7 @@ namespace iba.Data
         {
             foreach (EventForwarder ef in m_efDict.Values)
             { 
-                if (ef != null && m_isForwarding)
+                if (ef != null)
                 {
                     ef.ForwardClearCommand();
                 }
@@ -357,7 +373,6 @@ namespace iba.Data
             m_logLevel = 0;
             Profiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
             Profiler.ProfileInt(true, "LastState", "LastLogLevel", ref m_logLevel, 0);
-            m_isForwarding = false;
             m_cacheErrors = new List<Event>();
             m_cacheWarnings = new List<Event>();
             m_cacheInfos = new List<Event>();
@@ -372,9 +387,11 @@ namespace iba.Data
                 try
                 {
                     kvp.Value.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
+                    //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG forwarded to logger with guid g {0} Dict count {1}", kvp.Key, m_efDict.Count));
                 }
-                catch (Exception)
+                catch (Exception /*ex*/)
                 {
+                    //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG failed forwarding  to logger with guid g {0} Dict count {1}, ex: {2} ", kvp.Key, m_efDict.Count,ex.Message));
                     guidsToDelete.Add(kvp.Key);
                 }
 
@@ -398,10 +415,12 @@ namespace iba.Data
                     {
                         Event _event = events[i];
                         kvp.Value.Forward(_event.Level.Priority, _event.Message, _event.Data as LogExtraData);
+                        //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG forwarded to logger with guid g {0} Dict count {1}", kvp.Key, m_efDict.Count));
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    //LogData.Data.FileLog(Level.Info, String.Format("EXTRALOG failed forwarding to logger with guid g {0} Dict count {1}, ex: {2} ", kvp.Key, m_efDict.Count, ex.Message));
                     guidsToDelete.Add(kvp.Key);
                 }
             }
@@ -519,11 +538,19 @@ namespace iba.Data
                 m_logger.Log(level, message);
         }
 
+        public void FileLog(Level level, string message)
+        {
+            if (m_fileLogger != null && m_fileLogger.IsOpen)
+                m_fileLogger.Log(level, message);
+        }
+
         static public void StopLogger()
         {
             if (m_data != null && m_data.m_logger != null && m_data.m_logger.IsOpen)
                 m_data.Logger.Close();
         }
+
+        static private FileLogger m_fileLogger;
 
         static public void InitializeLogger(DataGridView grid, Control control, ApplicationState appState)
         {
@@ -570,6 +597,7 @@ namespace iba.Data
                 fileLogger.MakeDailyArchive = true;
                 fileLogger.MaximumArchiveFiles = 10;
                 fileLogger.EventFormatter.DataFormatter = new LogExtraDataFormatter();
+                m_fileLogger = fileLogger;
 
                 string logWhat = "";
                 switch(appState)

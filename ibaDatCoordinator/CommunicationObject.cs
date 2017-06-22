@@ -142,7 +142,7 @@ namespace iba
             get 
             {
                 if (LogData.Data.Logger == null) return false;
-                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwading; 
+                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding; 
             }
         }
 

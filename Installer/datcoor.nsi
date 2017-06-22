@@ -1301,5 +1301,5 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoor
 LangString TEXT_INSTALLCLIENT          ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme client seulement"
 LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"
-LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer
-LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" l'installation."
+LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer l'installation."
+LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" 
