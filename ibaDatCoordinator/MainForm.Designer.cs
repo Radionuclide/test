@@ -36,6 +36,7 @@ namespace iba
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_navBar = new TD.Eyefinder.NavigationBar();
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
+            this.m_snmpPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
             this.m_btnClearLogging = new System.Windows.Forms.Button();
@@ -87,6 +88,7 @@ namespace iba
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_statusBarStripLabelConnection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -155,6 +157,7 @@ namespace iba
             // m_navBar
             // 
             this.m_navBar.Controls.Add(this.m_settingsPane);
+            this.m_navBar.Controls.Add(this.m_snmpPane);
             this.m_navBar.Controls.Add(this.m_watchdogPane);
             this.m_navBar.Controls.Add(this.m_loggingPane);
             this.m_navBar.Controls.Add(this.m_statusPane);
@@ -165,13 +168,18 @@ namespace iba
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.m_navBar.SelectedPane = this.m_loggingPane;
-            this.m_navBar.ShowPanes = 5;
+            this.m_navBar.ShowPanes = 6;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 
             // m_settingsPane
             // 
             resources.ApplyResources(this.m_settingsPane, "m_settingsPane");
             this.m_settingsPane.Name = "m_settingsPane";
+            // 
+            // m_snmpPane
+            // 
+            resources.ApplyResources(this.m_snmpPane, "m_snmpPane");
+            this.m_snmpPane.Name = "m_snmpPane";
             // 
             // m_watchdogPane
             // 
@@ -422,6 +430,7 @@ namespace iba
             this.statusToolStripMenuItem,
             this.loggingToolStripMenuItem,
             this.watchdogToolStripMenuItem,
+            this.snmpToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
@@ -529,6 +538,12 @@ namespace iba
             this.m_statusBarStripLabelConnection.Name = "m_statusBarStripLabelConnection";
             resources.ApplyResources(this.m_statusBarStripLabelConnection, "m_statusBarStripLabelConnection");
             // 
+            // snmpToolStripMenuItem
+            // 
+            this.snmpToolStripMenuItem.Name = "snmpToolStripMenuItem";
+            resources.ApplyResources(this.snmpToolStripMenuItem, "snmpToolStripMenuItem");
+            this.snmpToolStripMenuItem.Click += new System.EventHandler(this.snmpToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -606,6 +621,8 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_watchdogPane;
+        private TD.Eyefinder.NavigationPane m_snmpPane;
+        private System.Windows.Forms.ToolStripMenuItem snmpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem watchdogToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_settingsPane;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;

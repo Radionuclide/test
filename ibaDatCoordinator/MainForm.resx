@@ -231,6 +231,33 @@
   <data name="&gt;&gt;m_watchdogPane.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_snmpPane.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 26</value>
+  </data>
+  <data name="m_snmpPane.Size" type="System.Drawing.Size, System.Drawing">
+    <value>239, 465</value>
+  </data>
+  <data name="m_snmpPane.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_snmpPane.Text" xml:space="preserve">
+    <value>SNMP Server</value>
+  </data>
+  <data name="m_snmpPane.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Name" xml:space="preserve">
+    <value>m_snmpPane</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Type" xml:space="preserve">
+    <value>TD.Eyefinder.NavigationPane, Eyefinder, Version=1.3.0.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.Parent" xml:space="preserve">
+    <value>m_navBar</value>
+  </data>
+  <data name="&gt;&gt;m_snmpPane.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_btnClearLogging.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 62</value>
   </data>
@@ -647,6 +674,12 @@
   </data>
   <data name="&gt;&gt;splitContainer2.Panel1.Parent" xml:space="preserve">
     <value>splitContainer2</value>
+  <data name="snmpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 24</value>
+  </data>
+  <data name="snmpToolStripMenuItem.Text" xml:space="preserve">
+    <value>S&amp;NMP Server</value>
+  </data>
   </data>
   <data name="&gt;&gt;splitContainer2.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1653,6 +1686,12 @@
   </data>
   <data name="&gt;&gt;m_statusBarStripLabelConnection.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;snmpToolStripMenuItem.Name" xml:space="preserve">
+    <value>snmpToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;snmpToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>

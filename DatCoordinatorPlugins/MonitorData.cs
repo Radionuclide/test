@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    public class MonitorData: ICloneable
+    public class MonitorData : ICloneable
     {
         private bool m_bMonitorTime;
         public bool MonitorTime
@@ -21,7 +21,7 @@ namespace iba.Data
             get { return m_bMonitorMemoryUsage; }
             set { m_bMonitorMemoryUsage = value; }
         }
-        
+
         private TimeSpan m_timeLimit;
         [XmlIgnore]
         public TimeSpan TimeLimit
@@ -41,6 +41,29 @@ namespace iba.Data
             get { return m_memoryLimit; }
             set { m_memoryLimit = value; }
         }
+
+        // added by kolesnik - begin
+        private uint m_memoryUsed;
+        /// <summary>
+        /// Max value of memory (in megabytes) used by ibaAnalyzer.
+        /// Setter is of increase-only type.
+        /// Getter resets the value in order to start the new max-evaluation. 
+        /// Is used to be shown via SNMP.
+        /// </summary>
+        public uint MemoryUsed
+        {
+            get
+            {
+                // remember last value
+                var val = m_memoryUsed;
+                // reset in order to start the new max-evaluation
+                m_memoryUsed = 0;
+                // return what was there before the call
+                return val;
+            }
+            set { m_memoryUsed = Math.Max(m_memoryUsed, value); }
+        }
+        // added by kolesnik - end
 
         public MonitorData()
         {

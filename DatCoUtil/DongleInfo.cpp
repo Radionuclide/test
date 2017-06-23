@@ -39,6 +39,19 @@ namespace iba {
 				info->readByte = contents.multiOptions[0][61];
 				info->customer = gcnew String(contents.customer);
 				info->serialnumber = gcnew String(contents.serialNr,0,7);
+				// added by kolesnik - begin
+				info->dongleType = gcnew String(contents.type == E_USBSx ? "SmarxOS" : "MPI");
+				info->timeLimit = contents.limit;
+				info->demoTimeLimit = contents.demolimit;
+				// format hwid
+				array<Object^>^ temp = gcnew array<Object^> 
+				{
+					contents.hwId[0].ToString("X2"), contents.hwId[1].ToString("X2"), contents.hwId[2].ToString("X2"),
+						contents.hwId[3].ToString("X2"), contents.hwId[4].ToString("X2"), contents.hwId[5].ToString("X2"),
+						contents.hwId[6].ToString("X2"), contents.hwId[7].ToString("X2")
+				};
+				info->hwId = String::Format("{0} {1} {2} {3} {4} {5} {6} {7}", temp);
+				// added by kolesnik - end
 			}
 		}
 		catch(char*)

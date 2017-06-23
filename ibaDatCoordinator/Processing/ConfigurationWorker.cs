@@ -84,6 +84,18 @@ namespace iba.Processing
                 return true;
         }
 
+        // added by kolesnik - begin
+
+        /// <summary> When Job is started. This happens if user clicks 'start' or when
+        /// job is is started on launch of application 
+        /// (if 'automatically start on load' is selected) </summary>
+        public DateTime TimestampJobStarted { get; private set; } = DateTime.MinValue;
+
+        /// <summary> When job's last execution has started. 
+        /// This is used for Scheduled jobs only to show it via SNMP. </summary>
+        public DateTime TimestampJobLastExecution { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         public void Start()
         {
             if (m_sd.Started) return;
@@ -103,6 +115,9 @@ namespace iba.Processing
             m_thread.Name = "workerthread for: " + m_cd.Name;
             m_thread.Start();
             m_sd.Started = true;
+            // added by kolesnik - begin
+            TimestampJobStarted = DateTime.Now;
+            // added by kolesnik - end
         }
 
         private ConfigurationData m_toUpdate = null;
@@ -1327,8 +1342,16 @@ namespace iba.Processing
                 rescanTimer.Change(m_cd.RescanTimeInterval, TimeSpan.Zero);
         }
 
+        // added by kolesnik - begin
+        public DateTime TimestampLastReprocessErrorsScan { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         private void OnReprocessErrorsTimerTick(object ignoreMe)
         {
+            // added by kolesnik - begin
+            TimestampLastReprocessErrorsScan = DateTime.Now;
+            // added by kolesnik - end
+
             if (networkErrorOccured)
             {
                 if (!m_bTimersstopped && !m_stop && reprocessErrorsTimer != null)
@@ -1374,8 +1397,16 @@ namespace iba.Processing
 
         private enum WhatToUpdate {NEW, ERRORS, DIRECTORY};
 
+        // added by kolesnik - begin
+        public DateTime TimestampLastDirectoryScan { get; private set; } = DateTime.MinValue;
+        // added by kolesnik - end
+
         private void ScanDirectory()
         {
+            // added by kolesnik - begin
+            TimestampLastDirectoryScan = DateTime.Now;
+            // added by kolesnik - end
+
             if (m_toProcessFiles.Count >= 10000 && m_cd.RescanEnabled) //failsafe, if processed files is to large, 
             {  
             //don't add any extra (and hope that it will be small enough for the next timer tick
@@ -2326,8 +2357,28 @@ namespace iba.Processing
 
         private DateTime? m_startTimeFromDatFile;
 
+        // added by kolesnik - begin
+        public DateTime LastSuccessfulFileStartProcessingTimeStamp { get; private set; } = DateTime.MinValue;
+        public DateTime LastSuccessfulFileFinishProcessingTimeStamp { get; private set; } = DateTime.MinValue;
+        public string LastSuccessfulFileName { get; private set; } = "";
+
+        internal class TaskLastExecutionData
+        {
+            public bool Success { get; set; }
+            public double DurationMs { get; set; }
+            public uint MemoryUsed { get; set; }
+        }
+
+        public SortedDictionary<TaskData, TaskLastExecutionData> TaskLastExecutionDict =
+            new SortedDictionary<TaskData, TaskLastExecutionData>();
+        // added by kolesnik - end
+
         private void ProcessDatfile(string InputFile) 
         {
+            // added by kolesnik - begin
+            DateTime processingStarted = DateTime.Now;
+            // added by kolesnik - end
+
             if (m_needIbaAnalyzer)
             {
                 if (m_ibaAnalyzer == null) StartIbaAnalyzer(); //safety, ibaAnalyzer should be present
@@ -2449,6 +2500,12 @@ namespace iba.Processing
                     if(!continueProcessing)
                     {
                         //Log(iba.Logging.Level.Debug, "ContinueProcessing is FALSE: {0}", InputFile);
+
+                        // added by kolesnik - begin
+                        // this file was successfully processed (skipped tasks - it is not an error)
+                        // update information about the last processed file
+                        SetLastSuccessfulFile(InputFile, processingStarted);
+                        // added by kolesnik - end
                         return;
                     }
                     //touch the file
@@ -2511,7 +2568,23 @@ namespace iba.Processing
                 }
                 m_sd.Changed = true;
             }
+
+            // added by kolesnik - begin
+            // this file was successfully processed
+            // update information about the last processed file
+            SetLastSuccessfulFile(InputFile, processingStarted);
+            // added by kolesnik - end
         }
+
+        // added by kolesnik - begin
+        private void SetLastSuccessfulFile(string filename, DateTime processingStarted)
+        {
+            LastSuccessfulFileStartProcessingTimeStamp = processingStarted;
+            LastSuccessfulFileFinishProcessingTimeStamp = DateTime.Now;
+            LastSuccessfulFileName = filename;
+        }
+        // added by kolesnik - end
+
 
         private void WriteStateInDatFile(string InputFile, bool completeSucces)
         {
@@ -2661,6 +2734,11 @@ namespace iba.Processing
 
         private bool ProcessTask(string DatFile, TaskData task, ref bool failedOnce)
         {
+            // added by kolesnik - begin
+            DateTime processingStarted = DateTime.Now;
+            uint memoryUsed = 0;
+            // added by kolesnik - end
+
             lock (m_sd.DatFileStates)
             {
                 failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
@@ -2673,11 +2751,17 @@ namespace iba.Processing
             {
                 Report(DatFile, task as ReportData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                // added by kolesnik - begin
+                memoryUsed = ((ReportData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is ExtractData)
             {
                 Extract(DatFile, task as ExtractData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);               
+                // added by kolesnik - begin
+                memoryUsed = ((ExtractData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is BatchFileData)
             {
@@ -2687,6 +2771,9 @@ namespace iba.Processing
             {
                 IfTask(DatFile, task as IfTaskData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                // added by kolesnik - begin
+                memoryUsed = ((IfTaskData) task).MonitorData.MemoryUsed;
+                // added by kolesnik - end
             }
             else if (task is SplitterTaskData)
             {
@@ -2767,11 +2854,56 @@ namespace iba.Processing
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
+
+                // added by kolesnik - begin
+                memoryUsed =
+                    (((CustomTaskData) task).Plugin as IPluginTaskDataIbaAnalyzer)?.
+                        MonitorData.MemoryUsed
+                    ?? 0;
+                // added by kolesnik - end
+
             }
             else if (task is CustomTaskDataUNC)
             {
                 DoCustomTaskUNC(DatFile, task as CustomTaskDataUNC);
             }
+
+            // added by kolesnik - begin
+
+            TaskLastExecutionData lastExec = new TaskLastExecutionData
+            {
+                DurationMs = (DateTime.Now - processingStarted).TotalMilliseconds,
+                MemoryUsed = memoryUsed
+            };
+
+
+            lock (m_sd.DatFileStates)
+            {
+                lastExec.Success = false;
+                if (m_sd.DatFileStates.ContainsKey(DatFile)
+                    && m_sd.DatFileStates[DatFile].States.ContainsKey(task))
+                {
+                    DatFileStatus.State state = m_sd.DatFileStates[DatFile].States[task];
+                    lastExec.Success = state == DatFileStatus.State.COMPLETED_TRUE ||
+                                       state == DatFileStatus.State.COMPLETED_FALSE || 
+                                       state == DatFileStatus.State.COMPLETED_SUCCESFULY;
+                }
+            }
+
+            try
+            {
+            TaskLastExecutionDict[task] = lastExec;
+            }
+            catch 
+            {
+                // can happen if configuration has changed
+                // and task became incomparable.
+                // clear it and try again
+                TaskLastExecutionDict.Clear();
+                TaskLastExecutionDict[task] = lastExec;
+            }
+            // added by kolesnik - end
+
             if (m_needIbaAnalyzer && m_ibaAnalyzer == null) return false;
             return continueProcessing;
         }
@@ -4591,6 +4723,10 @@ namespace iba.Processing
         }
 
         private DateTime m_nextTrigger;
+        // added by kolesnik - begin
+        public DateTime NextTrigger => m_nextTrigger;
+        // added by kolesnik - end
+
         private System.Threading.Timer NextEventTimer;
 
         private void ScheduleNextEvent()
@@ -4636,6 +4772,9 @@ namespace iba.Processing
             NextEventTimer.Change(Timeout.Infinite, Timeout.Infinite);
             if((DateTime.Now - m_nextTrigger).Ticks >= TimeSpan.FromMilliseconds(10).Ticks)
             { //FIRE
+                // added by kolesnik - begin
+                TimestampJobLastExecution = DateTime.Now;
+                // added by kolesnik - end
                 String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),m_nextTrigger));
                 try
                 {
@@ -4702,6 +4841,9 @@ namespace iba.Processing
         public void ForceTrigger()
         {
             DateTime nextTrigger = DateTime.Now;
+            // added by kolesnik - begin
+            TimestampJobLastExecution = nextTrigger;
+            // added by kolesnik - end
             String filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), nextTrigger));
             try
             {

@@ -22,6 +22,7 @@ using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
+// ReSharper disable RedundantNameQualifier
 
 namespace iba
 {
@@ -80,6 +81,10 @@ namespace iba
             m_filename = null;
             CreateMenuItems();
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
+            // added by kolesnik - begin
+            m_snmpPane.LargeImage = m_snmpPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.iconPaneSnmp.Handle);
+            m_snmpPane.Controls.Add(new SnmpLeftPanelControl(this));
+            // added by kolesnik - end
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
@@ -262,14 +267,11 @@ namespace iba
                     if(m_statusTreeView.SelectedNode.Tag != null)
                         doSelection(m_statusTreeView.SelectedNode, (m_statusTreeView.SelectedNode.Tag as TreeItemData).What);
 				}
-                statusToolStripMenuItem.Enabled = false;
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(statusToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
             else if (m_navBar.SelectedPane == m_configPane)
             {
@@ -313,31 +315,28 @@ namespace iba
                     TreeItemData ti = m_configTreeView.SelectedNode.Tag as TreeItemData;
                     if (ti != null) doSelection(m_configTreeView.SelectedNode, ti.What);
                 }
-                configurationToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(configurationToolStripMenuItem);
+                // changed by kolesnik - end
+
                 UpdateButtons();
             }
             else if (m_navBar.SelectedPane == m_loggingPane)
             {
                 SaveRightPaneControl();
                 SetRightPaneControl(propertyPanes["logControl"] as Control, iba.Properties.Resources.logTitle, LogData.Data);
-                loggingToolStripMenuItem.Enabled = false;
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(loggingToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
+
                 m_EntriesNumericUpDown1.Value = Math.Max(1,LogData.Data.MaxRows);
                 int loglevel = LogData.Data.LogLevel;
                 m_rbAllLog.Checked = loglevel == 0;
                 m_rbErrorsWarnings.Checked = loglevel == 1;
                 m_rbOnlyErrors.Checked = loglevel == 2;
-                settingsToolStripMenuItem.Enabled = true;
             }
             else if (m_navBar.SelectedPane == m_watchdogPane)
             {
@@ -349,16 +348,29 @@ namespace iba
                     propertyPanes["watchdogControl"] = ctrl;
                 }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.watchdogTitle, TaskManager.Manager.WatchDogData.Clone());
-                watchdogToolStripMenuItem.Enabled = false; 
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = true;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(watchdogToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
+            // added by kolesnik - begin
+            else if (m_navBar.SelectedPane == m_snmpPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["snmpControl"] as Control;
+                if (ctrl == null)
+                {
+                    ctrl = new SnmpControl();
+                    propertyPanes["snmpControl"] = ctrl;
+                }
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle, TaskManager.Manager.SnmpData.Clone());
+
+                EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+            }
+            // added by kolesnik - end
+
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 SaveRightPaneControl();
@@ -374,28 +386,61 @@ namespace iba
                     propertyPanes["settingsControl"] = ctrl;
                 }
                 SetRightPaneControl(ctrl as Control, iba.Properties.Resources.settingsTitle, null);
-                pasteToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                cutToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                statusToolStripMenuItem.Enabled = true;
-                configurationToolStripMenuItem.Enabled = true;
-                loggingToolStripMenuItem.Enabled = true;
-                watchdogToolStripMenuItem.Enabled = true;
-                settingsToolStripMenuItem.Enabled = false;
+
+                // changed by kolesnik - begin
+                EnableAllButOnePaneToolStripMenuItems(settingsToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+                // changed by kolesnik - end
             }
         }
+
+        // added by kolesnik - begin
+        /// <summary> Enable all the items xxxToolStripMenuItems 
+        /// (e.g.  statusToolStripMenuItem, loggingToolStripMenuItem, etc)
+        /// except the given one. The given one will be disabled. </summary>
+        /// <param name="itemToDisable"></param>
+        private void EnableAllButOnePaneToolStripMenuItems(ToolStripMenuItem itemToDisable)
+        {
+            // enable all menuitems
+            statusToolStripMenuItem.Enabled = true;
+            configurationToolStripMenuItem.Enabled = true;
+            loggingToolStripMenuItem.Enabled = true;
+            watchdogToolStripMenuItem.Enabled = true;
+            snmpToolStripMenuItem.Enabled = true;
+            settingsToolStripMenuItem.Enabled = true;
+
+            // disable the only one of them
+            if (itemToDisable!=null)
+                itemToDisable.Enabled = false;
+        }
+        /// <summary> Disables Copy, Paste, Cut and Delete menu items </summary>
+        private void DisableCopyPasteCutDeleteMenuItems()
+        {
+            pasteToolStripMenuItem.Enabled = false;
+            copyToolStripMenuItem.Enabled = false;
+            cutToolStripMenuItem.Enabled = false;
+            deleteToolStripMenuItem.Enabled = false;
+        }
+        // added by kolesnik - end
 
         private void ReloadRightPane()
         { //only handles the cases of settings or watchdog panes, the rest is handled differently
             if (m_navBar.SelectedPane == m_watchdogPane)
             {
                 WatchdogControl pane = propertyPanes["watchdogControl"] as WatchdogControl;
-                if (pane!=null)
+                if (pane != null)
                 {
                     pane.LoadData(TaskManager.Manager.WatchDogData.Clone(), this);
                 }
             }
+            // added by kolesnik - begin
+            if (m_navBar.SelectedPane == m_snmpPane)
+            {
+                // todo; to ask Michael; is it needed here?
+                SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
+                pane?.LoadData(null, this);
+            }
+            // added by kolesnik - end
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
@@ -427,6 +472,12 @@ namespace iba
                 Hide();
                 bHandleResize = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
             }
+            // added by kolesnik - begin
+            else
+            {
+                TaskManager.Manager.SnmpWorker.Init();
+            }
+            // added by kolesnik - end
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)
@@ -1647,6 +1698,13 @@ namespace iba
         {
             m_navBar.SelectedPane = m_watchdogPane;
         }
+
+        // added by kolesnik - begin
+        private void snmpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_snmpPane;
+        }
+        // added by kolesnik - end
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Linq;
 using System.Net.Sockets;
@@ -8,6 +9,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using iba.Logging;
 
 namespace iba.Processing
 {
@@ -28,6 +30,9 @@ namespace iba.Processing
             {
                 m_workers.Add(data, cw);
             }
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void AddConfigurations(List<ConfigurationData> datas)
@@ -52,6 +57,10 @@ namespace iba.Processing
                     m_workers.Remove(data);
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void ReplaceConfiguration(ConfigurationData data)
@@ -64,9 +73,14 @@ namespace iba.Processing
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
+
                 }
                 //else, ignore, replace is due to a belated save of an already deleted configuration
             }
+
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         private void ReplaceOrAddConfigurationInternal(ConfigurationData data)
@@ -86,6 +100,10 @@ namespace iba.Processing
                     m_workers.Add(data, cw);
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
@@ -125,6 +143,10 @@ namespace iba.Processing
                     //doesn't matter
                 }
             }
+
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public bool CompareConfiguration(ConfigurationData data)
@@ -182,11 +204,20 @@ namespace iba.Processing
         {
             m_workers[data].ConfigurationToUpdate = data;
             m_workers[data].Start();
+
+            // added by kolesnik - begin
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            // added by kolesnik - end
         }
 
         virtual public void StopConfiguration(ConfigurationData data)
         {
             m_workers[data].Stop = true;
+
+            //// added by kolesnik - begin
+            //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration {data.Name}");
+            //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            //// added by kolesnik - end
         }
 
         virtual public void StopConfiguration(Guid guid)
@@ -196,6 +227,10 @@ namespace iba.Processing
                 if (pair.Key.Guid == guid)
                 {
                     pair.Value.Stop = true;
+                    //// added by kolesnik - begin
+                    //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration(Guid) {pair.Value.RunningConfiguration.Name}");
+                    //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                    //// added by kolesnik - end
                     return;
                 }
             }
@@ -312,6 +347,487 @@ namespace iba.Processing
         {
             m_watchdog.Settings = data;
         }
+
+
+        #region Snmp Data - added by Kolesnik
+
+        /// <summary> 
+        /// Is fired when there is a chance (yes, at least a chance) that snmp data structure (amount of jobs, tasks, etc) is changed. 
+        /// So, SnmpWorker can know this, and may rebuild its SNMP objects tree accordingly.
+        /// It does not guarantee that data is really changed, but only just that it might have changed.
+        /// (SnmpWorker's handler is very lightweight, so it's better to trigger this event
+        /// more often (e.g. let even twice for each real change - no matter), than 
+        /// to miss some point (even some that happens seldom) where it is changed.
+        /// Event is not relevant to some 'small' data changes,
+        /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
+        /// </summary>
+        public event EventHandler<EventArgs> SnmpConfigurationChanged;
+
+        public SnmpWorker SnmpWorker { get; } = new SnmpWorker();
+
+        /// <summary> Gets/sets data of SnmpWorker. 
+        /// If data is set, then restart of snmp agent is performed if necessary. </summary>
+        public virtual SnmpData SnmpData
+        {
+            get { return SnmpWorker.SnmpData; }
+            set { SnmpWorker.SnmpData = value; }
+        }
+
+        internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
+        {
+            licenseInfo.Reset();
+
+            // this feature is not licensed,
+            // so does not need any condition to be true
+            licenseInfo.IsValid = true;
+
+            try
+            {
+                CDongleInfo info = CDongleInfo.ReadDongle();
+                // ReSharper disable once RedundantBoolCompare
+                if (info != null && info.DongleFound == true)
+                {
+                    licenseInfo.Sn = info.SerialNr;
+                    licenseInfo.HwId = info.HwId;
+                    licenseInfo.DongleType = info.DongleType;
+                    licenseInfo.Customer = info.Customer;
+                    licenseInfo.TimeLimit = info.TimeLimit;
+                    licenseInfo.DemoTimeLimit = info.DemoTimeLimit;
+                }
+
+                licenseInfo.PutTimeStamp();
+            }
+            catch {/**/}
+
+            return true;
+        }
+
+        internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        {
+            // reset values for the case of an update error
+            driveInfo.Reset();
+
+            if (String.IsNullOrEmpty(driveInfo.DriveName))
+            {
+                return false; // failed to update
+            }
+
+            try
+            {
+                lock (m_workers)
+                {
+                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveName);
+
+                    if (gcData == null)
+                    {
+                        // needed GlobalCleanupDataList not found
+                        return false; // failed to update
+                    }
+
+                    // set current values
+                    SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+                    return true; // data was updated
+                }
+            }
+            catch
+            {
+                // suppress, not critical
+            }
+            return false; // failed to update
+        }
+
+        private void SnmpRefreshGlobalCleanupDriveInfo(
+            SnmpObjectsData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
+        {
+            driveInfo.Reset();
+
+            driveInfo.Active = gcData.Active; //1
+
+            DriveInfo drive = new DriveInfo(gcData.DriveName);
+            if (drive.IsReady)
+            {
+                driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20); //2 
+                driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20); // 3 
+            }
+
+            // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
+            // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
+            driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); // 4a // 
+            driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree; // 4b
+
+            driveInfo.RescanTime = (uint)gcData.RescanTime; //5
+
+            driveInfo.PutTimeStamp();
+        }
+
+        internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        {
+            jobInfo.Reset();
+
+            if (jobInfo.Guid == Guid.Empty)
+            {
+                return false;
+            }
+
+            try
+            {
+                lock (m_workers)
+                {
+                    var cfg = Configurations.FirstOrDefault(cd => cd.Guid == jobInfo.Guid);
+
+                    if (cfg == null)
+                    {
+                        // job with given GUID not found
+                        return false; // failed to update
+                    }
+
+                    // ok, found needed configuration
+                    // copy values from configuration to snmp jobInfo
+                    switch (cfg.JobType)
+                    {
+                        case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+                            SnmpRefreshStandardJobInfo(jobInfo as SnmpObjectsData.StandardJobInfo, cfg);
+                            break;
+
+                        case ConfigurationData.JobTypeEnum.Scheduled:
+                            SnmpRefreshScheduledJobInfo(jobInfo as SnmpObjectsData.ScheduledJobInfo, cfg);
+                            break;
+
+                        case ConfigurationData.JobTypeEnum.OneTime:
+                            SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    // updated successfully
+                    return true;
+                }
+            }
+            catch
+            {
+                // suppress
+                // for the case of change of GlobalCleanupDataList 
+                // within forach loop by another thread
+            }
+
+            // error
+            return false; // failed to update
+        }
+
+        private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
+        {
+            jobInfo.Reset();
+
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
+            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
+            jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan; 
+            jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; 
+
+            jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName; 
+            jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp; 
+            jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; 
+
+            jobInfo.PutTimeStamp();
+        }
+
+        private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
+        {
+            jobInfo.Reset();
+
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+            jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+            jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
+
+            jobInfo.PutTimeStamp();
+        }
+
+        private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
+        {
+            jobInfo.Reset();
+
+            ConfigurationWorker worker = m_workers[cfg];
+            StatusData s = worker.Status;
+
+            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+            jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
+
+            jobInfo.PutTimeStamp();
+        }
+
+        private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
+        {
+            var cfg = s.CorrConfigurationData;
+            ji.JobName = cfg.Name;
+            ji.Status = !cfg.Enabled ?
+                SnmpObjectsData.JobStatus.Disabled :
+                (s.Started ?
+                    SnmpObjectsData.JobStatus.Started :
+                    SnmpObjectsData.JobStatus.Stopped);
+
+            ji.TodoCount = (uint)s.ReadFiles.Count;
+            ji.DoneCount = (uint)s.ProcessedFiles.Count;
+            ji.FailedCount = (uint)s.CountErrors();
+
+            SnmpRefreshTasks(ji, worker, s);
+        }
+
+        private void SnmpRefreshTasks(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData statusData)
+        {
+            var cfg = statusData.CorrConfigurationData;
+
+            // on first call for the job create a list first
+            if (ji.Tasks == null)
+            {
+                ji.Tasks = new List<SnmpObjectsData.TaskInfo>();
+
+                for (int i = 0; i < cfg.Tasks.Count; i++)
+                {
+                    ji.Tasks.Add(new SnmpObjectsData.TaskInfo { Parent = ji });
+                }
+            }
+
+            // fill task's data
+            if (ji.Tasks.Count != cfg.Tasks.Count)
+            {
+                ji.Tasks.Clear();
+                SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            for (int i = 0; i < cfg.Tasks.Count; i++)
+            {
+                TaskData taskData = cfg.Tasks[i];
+                var taskInfo = ji.Tasks[i];
+                taskInfo.Reset();
+
+                taskInfo.TaskName = taskData.Name;
+
+                // lask execution - success, duration, memory
+                ConfigurationWorker.TaskLastExecutionData lastExec;
+                try
+                {
+                    if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+                    {
+                        taskInfo.Success = lastExec.Success; // 2
+                        taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0); // 3
+                        taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed; // 4
+                    }
+                }
+                catch
+                {
+                    worker.TaskLastExecutionDict.Clear();
+                }
+
+                // default is just a type name
+                string taskTypeStr = taskData.GetType().Name;
+
+                if (taskData is TaskDataUNC)
+                // Derived from TaskDataUNC (alphabetically):
+                //   CopyMoveTaskData
+                //   CustomTaskDataUNC 
+                //   ExtractData 
+                //   GlobalCleanupTaskData 
+                //   ReportData 
+                //   SplitterTaskData 
+                //   UpdateDataTaskData 
+                {
+                    if (taskData is CopyMoveTaskData)
+                    {
+                        taskTypeStr = "CopyMoveDelete";
+                        //var typedData = taskData as CopyMoveTaskData;
+                    }
+                    if (taskData is CustomTaskDataUNC)
+                    {
+                        var typedData = taskData as CustomTaskDataUNC;
+                        
+                        // todo for Michael. Please check the following name:
+                        taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
+                    }
+                    if (taskData is ExtractData)
+                    {
+                        taskTypeStr = "Extract";
+                        //var typedData = taskData as ExtractData;
+                    }
+                    else if (taskData is GlobalCleanupTaskData)
+                    {
+                        taskTypeStr = "GlobalCleanup";
+                        //var typedData = taskData as GlobalCleanupTaskData;
+                    }
+                    if (taskData is ReportData)
+                    {
+                        taskTypeStr = "Report";
+                        //var typedData = taskData as ReportData;
+                        //var monitorData = typedData.MonitorData;
+                    }
+                    if (taskData is SplitterTaskData)
+                    {
+                        taskTypeStr = "Splitter";
+                        //var typedData = taskData as SplitterTaskData;
+                    }
+                    if (taskData is UpdateDataTaskData)
+                    {
+                        taskTypeStr = "UpdateData";
+                        //var typedData = taskData as UpdateDataTaskData;
+                    }
+                }
+                else
+                // NOT derived from TaskDataUNC (alphabetically):
+                //   BatchFileData 
+                //   CleanupTaskData 
+                //   CustomTaskData
+                //   IfTaskData 
+                //   PauseTaskData 
+                {
+                    if (taskData is BatchFileData)
+                    {
+                        taskTypeStr = "Script";
+                        //var typedData = taskData as BatchFileData;
+                    }
+                    else if (taskData is CleanupTaskData)
+                    {
+                        taskTypeStr = "Cleanup";
+                        //var typedData = taskData as CleanupTaskData;
+                    }
+                    else if (taskData is CustomTaskData)
+                    {
+                        var typedData = taskData as CustomTaskData;
+                        // todo for Michael. Please check the following name:
+                        taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
+                    }
+                    else if (taskData is IfTaskData)
+                    {
+                        taskTypeStr = "Condition";
+                        //var typedData = taskData as IfTaskData;
+                    }
+                    else if (taskData is PauseTaskData)
+                    {
+                        taskTypeStr = "Pause";
+                        //var typedData = taskData as PauseTaskData;
+                    }
+                }
+
+                taskInfo.TaskType = taskTypeStr;
+
+                // if cleanup info is present, add it to the task
+                var cleanupTaskData = taskData as CleanupTaskData;
+                if (cleanupTaskData != null)
+                {
+                    taskInfo.CleanupInfo = new SnmpObjectsData.LocalCleanupInfo
+                    {
+                        LimitChoice = cleanupTaskData.OutputLimitChoice,
+                        FreeDiskSpace = cleanupTaskData.QuotaFree,
+                        Subdirectories = cleanupTaskData.SubfoldersNumber,
+                        UsedDiskSpace = cleanupTaskData.Quota
+                    };
+                }
+                else
+                {
+                    taskInfo.CleanupInfo = null;
+                }
+            }
+        }
+
+        internal bool SnmpRebuildObjectsData(SnmpObjectsData od)
+        {
+            try
+            {
+                od.Reset();
+
+                lock (m_workers)
+                {
+                    // PrGen.3. License
+                    {
+                        // nothing to create there
+                        // just refresh data
+                        SnmpRefreshLicenseInfo(od.License);
+                    }
+
+                    // 1. GlobalCleanup;
+                    {
+                        try
+                        {
+                            foreach (var gcData in GlobalCleanupDataList.OrderBy(gc => gc.DriveName))
+                            {
+                                // create entry
+                                var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo
+                                {
+                                    // set primary key
+                                    DriveName = gcData.DriveName
+                                };
+                                od.GlobalCleanup.Add(driveInfo);
+
+                                // set current values
+                                SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+                            }
+                        }
+                        catch
+                        {
+                            // suppress, not critical
+                        }
+                    }
+                    // 2...4. - Jobs
+                    {
+                        // get copy of configurations
+                        List<ConfigurationData> confs = Configurations;
+                        confs.Sort((a, b) => a.TreePosition.CompareTo(b.TreePosition));
+
+                        foreach (ConfigurationData cfg in confs)
+                        {
+                            switch (cfg.JobType)
+                            {
+                                case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+                                    var stdJobInfo = new SnmpObjectsData.StandardJobInfo {Guid = cfg.Guid};
+                                    od.StandardJobs.Add(stdJobInfo);
+                                    // fill the data
+                                    SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
+                                    break;
+
+                                case ConfigurationData.JobTypeEnum.Scheduled:
+                                    var schJobInfo = new SnmpObjectsData.ScheduledJobInfo {Guid = cfg.Guid};
+                                    od.ScheduledJobs.Add(schJobInfo);
+                                    // fill the data
+                                    SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
+                                    break;
+
+                                case ConfigurationData.JobTypeEnum.OneTime:
+                                    var otJobInfo = new SnmpObjectsData.OneTimeJobInfo {Guid = cfg.Guid};
+                                    od.OneTimeJobs.Add(otJobInfo);
+                                    // fill the data
+                                    SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
+                                    break;
+
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                    }
+                }
+                return true; // success
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"SNMP. Error during rebuilding object data. {ex.Message}.");
+                return false; // error
+            }
+        }
+
+        #endregion
+
 
         virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
