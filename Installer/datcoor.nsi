@@ -371,6 +371,8 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcp100.dll"
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  ;SNMP
+  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -455,6 +457,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\msvcp100.dll"
   File "..\Dependencies\ibaFilesLiteDotNet.dll"
   File "..\Dependencies\PowerCollections.dll"
+  ;SNMP
+  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -578,7 +582,9 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"  
+  File "..\Dependencies\msvcp100.dll" 
+  ;SNMP
+  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"  
 ;HD-stuff
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
@@ -797,6 +803,8 @@ Function un.UninstallTasks
   Delete "$INSTDIR\hdCommon.dll"
   Delete "$INSTDIR\hdProtoBuf.dll"
   Delete "$INSTDIR\PowerCollections.dll"
+
+  Delete "$INSTDIR\ibaSnmpLib.dll"  
 
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
   Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
