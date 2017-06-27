@@ -372,7 +372,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\ibaFilesLiteDotNet.dll"
   ;SNMP
-  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"
+  File "..\Dependencies\ibaSnmpLib.dll"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -458,7 +458,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\ibaFilesLiteDotNet.dll"
   File "..\Dependencies\PowerCollections.dll"
   ;SNMP
-  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"
+  File "..\Dependencies\ibaSnmpLib.dll"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -584,7 +584,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll" 
   ;SNMP
-  File "D:\proj\ibaDatCoordinator\Dependencies\ibaSnmpLib.dll"  
+  File "..\Dependencies\ibaSnmpLib.dll"
 ;HD-stuff
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
