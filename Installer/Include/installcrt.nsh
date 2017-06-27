@@ -1,63 +1,95 @@
 !include "LogicLib.nsh"
 
-!macro CheckV14Version
-  !define UniqueID ${__LINE__}  
-  ReadRegStr $0 "HKLM" "SOFTWARE\Microsoft\DevDiv\vc\Servicing\14.0\RuntimeMinimum" "Version"		
-  StrCmp $0 "" noversion_${UniqueID}  
-      
-  Push $1
-  Push $2
-  Push $3
-  Push $4
-  Push $5      
-	
-  StrCpy $3 "-1"
-  StrCpy $2 ""
-  StrCpy $4 "10000000" ; version is form of 14.0.24212
-  StrCpy $5 "0"
+!macro CheckV14Version_x86
+  !define UniqueID ${__LINE__}
   
-  charloop_${UniqueID}:
-  IntOp $3 $3 + 1
-  StrCpy $1 $0 1 $3
-  StrCmp $1 "." sepfound_${UniqueID}
-  StrCmp $1 "" sepfound_${UniqueID}
-  StrCmp $1 " " sepfound_${UniqueID}
-  StrCpy $2 $2$1
-  Goto charloop_${UniqueID}
+  Push $R0
+  Push $R1
+  Push $R2
+  Push $R3
   
-  sepfound_${UniqueID}:
-  IntOp $2 $2 * $4
-  IntOp $4 $4 / 100
-  IntCmp $4 1000 +1 +1 +2
-  StrCpy $4 "1"
-  IntOp $5 $5 + $2
-  StrCpy $2 ""
-  StrCmp $1 "." charloop_${UniqueID}
+  ; Do explicit IfFileExists and do not rely on error flag of GetDLLVersion because this gives unexpected results with WOW redirection
+  ClearErrors
+  IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
+  GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
+  IfErrors notinstalled_${UniqueID}
+    
+  IntOp $R0 $R2 / 0x00010000
+  IntOp $R1 $R2 & 0x0000FFFF
   
-  ; check if minimal version is already installed
-  IntCmp $5 140024212 installed_${UniqueID} notinstalled_${UniqueID} installed_${UniqueID}
+  IntCmp $R0 14 0 notinstalled_${UniqueID} notinstalled_${UniqueID} ; Major version has to be 14
+  IntCmp $R1 0 0 notinstalled_${UniqueID} installed_${UniqueID} ; Minor version has to be greater than or equal to 0
   
+  IntOp $R0 $R3 / 0x00010000
+  IntOp $R1 $R3 & 0x0000FFFF
+  
+  IntCmp $R0 24212 0 notinstalled_${UniqueID} installed_${UniqueID}
+  IntCmp $R1 0 installed_${UniqueID} notinstalled_${UniqueID} installed_${UniqueID}
+
   installed_${UniqueID}:
     Push 1
     Goto end_${UniqueID}
   notinstalled_${UniqueID}:
     Push 0
-	
+
   end_${UniqueID}:
-   
-  Exch 5
-  Pop $1
-  Pop $5 
-  Pop $4
-  Pop $3
-  Pop $2       
-  Goto quit_${UniqueID}
-  
-  noversion_${UniqueID}:  
-  Push 0
-  
-  quit_${UniqueID}:
   !undef UniqueID
+  ClearErrors
+  
+  Exch 4
+  Pop $R0
+  Pop $R3
+  Pop $R2
+  Pop $R1
+!macroend
+
+!macro CheckV14Version_x64
+  !define UniqueID ${__LINE__}
+  
+  Push $R0
+  Push $R1
+  Push $R2
+  Push $R3
+  
+  ; Do explicit IfFileExists and do not rely on error flag of GetDLLVersion because this gives unexpected results with WOW redirection
+  ${If} $Is64Bit == 1
+    ${DisableX64FSRedirection}
+    ClearErrors
+    IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
+    GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
+    IfErrors notinstalled_${UniqueID}
+    ${EnableX64FSRedirection}
+  ${Else}
+    Goto notinstalled_${UniqueID}
+  ${EndIf}
+  
+  IntOp $R0 $R2 / 0x00010000
+  IntOp $R1 $R2 & 0x0000FFFF
+  
+  IntCmp $R0 14 0 notinstalled_${UniqueID} notinstalled_${UniqueID} ; Major version has to be 14
+  IntCmp $R1 0 0 notinstalled_${UniqueID} installed_${UniqueID} ; Minor version has to be greater than or equal to 0
+  
+  IntOp $R0 $R3 / 0x00010000
+  IntOp $R1 $R3 & 0x0000FFFF
+  
+  IntCmp $R0 24212 0 notinstalled_${UniqueID} installed_${UniqueID}
+  IntCmp $R1 0 installed_${UniqueID} notinstalled_${UniqueID} installed_${UniqueID}
+
+  installed_${UniqueID}:
+    Push 1
+    Goto end_${UniqueID}
+  notinstalled_${UniqueID}:
+    Push 0
+
+  end_${UniqueID}:
+  !undef UniqueID
+  ClearErrors
+  
+  Exch 4
+  Pop $R0
+  Pop $R3
+  Pop $R2
+  Pop $R1
 !macroend
 
 Function SearchLockCb
@@ -201,7 +233,7 @@ FunctionEnd
   !define UID ${__LINE__}  
   Push $0
 
-  !insertmacro CheckV14Version
+  !insertmacro CheckV14Version_x86
   Pop $0
   ${If} $0 == "0"
     ; Check if we installed System files on previous occasion
@@ -249,7 +281,7 @@ FunctionEnd
   Push $0
 
   SetRegView 64
-  !insertmacro CheckV14Version
+  !insertmacro CheckV14Version_x64
   Pop $0
   ${If} $0 == "0"
     ; Check if we installed System files on previous occasion

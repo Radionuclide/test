@@ -55,13 +55,16 @@
 !include "sections.nsh"
 !include "StrFunc.nsh"
 !include "Include\InstallHistory.nsh"
-
 ;!ifndef UNINSTALLER_ONLY
 !include "Include\InstallCrt.nsh"
 ;!endif
 
 !include WordFunc.nsh
 !insertmacro VersionCompare
+
+!include FileFunc.nsh
+!insertmacro GetParameters
+!insertmacro GetOptions
 
 !addplugindir .
 
@@ -183,6 +186,7 @@ VAR PrevUninstall
 Var StartMenuFolder
 Var ServiceUserName
 Var ServicePassword
+Var InstallTypeSelection
 
 
 InstType "service"
@@ -215,6 +219,21 @@ Function .onInit
   ;In case of a silent install call the PreInstall function directly
   IfSilent +1 +2
     Call PreInstall
+	
+	  
+  ;initialize $DataSupportSelection, when not silent will be overwritten by custom page InstallTypeSelect
+  Push $0
+  strcpy $InstallTypeSelection "1"
+  ${GetParameters} $0
+  ${GetOptions} $0 '/installtype=' $InstallTypeSelection
+  IfErrors +1 lbl_finishedoninit
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  ${If} $InstallTypeSelection == ""
+    strcpy $InstallTypeSelection "1"
+  ${EndIf}
+  
+lbl_finishedoninit:
+  Pop $0
 !endif
 FunctionEnd
 
@@ -679,7 +698,7 @@ Function InstalltypeSelect
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
   !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
-  StrCpy $0 "1"
+  StrCpy $0 $InstallTypeSelection
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   
   ;MessageBox MB_OK $0
