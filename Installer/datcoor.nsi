@@ -411,15 +411,15 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   File "..\Dependencies\de\hdCommon.resources.dll"
-  ;File "..\Dependencies\de\hd_plugin.resources.dll"
+  File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
-  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
-  ;;plugins
-  ;SetOutPath "$INSTDIR\plugins"
-  ;File "..\Dependencies\hd_plugin.dll"
+  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  ;plugins
+  SetOutPath "$INSTDIR\plugins"
+  File "..\Dependencies\hd_plugin.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
@@ -498,15 +498,15 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   File "..\Dependencies\de\hdCommon.resources.dll"
-  ;File "..\Dependencies\de\hd_plugin.resources.dll"
+  File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
-  ;File "..\Dependencies\fr\hd_plugin.resources.dll"
-  ;;plugins
-  ;SetOutPath "$INSTDIR\plugins"
-  ;File "..\Dependencies\hd_plugin.dll"
+  File "..\Dependencies\fr\hd_plugin.resources.dll"
+  ;plugins
+  SetOutPath "$INSTDIR\plugins"
+  File "..\Dependencies\hd_plugin.dll"
   
   ;Install ibaFiles
   DetailPrint $(TEXT_IBAFILES_INSTALL)
