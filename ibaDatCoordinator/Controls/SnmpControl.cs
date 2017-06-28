@@ -9,6 +9,7 @@ using iba.Data;
 using iba.Logging;
 using iba.Processing;
 using iba.Properties;
+using iba.Utility;
 using IbaSnmpLib;
 
 
@@ -29,24 +30,32 @@ namespace iba.Controls
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
 
+        private CollapsibleElementManager _ceManager;
+
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            gbConfiguration.Init();
-            gbDiagnostics.Init();
-            gbObjects.Init();
+            // initialize collapsible group boxes
+            _ceManager = new CollapsibleElementManager(this);
 
-            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            if (snmpWorker != null)
-            {
-                snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
-            }
+            gbConfiguration.Init();
+            _ceManager.AddElement(gbConfiguration);
+
+            gbObjects.Init();
+            _ceManager.AddElement(gbObjects);
+
+            gbDiagnostics.Init();
+            _ceManager.AddElement(gbDiagnostics);
+
+            // bind password text boxes to their show/hide buttons
+            buttonShowPassword.Tag = tbPassword;
+            buttonShowEncryptionKey.Tag = tbEncryptionKey;
 
             // image list for objects TreeView
             ImageList tvObjectsImageList = new ImageList();
             // folder
-            tvObjectsImageList.Images.Add(Resources.copydat_running); // todo use another one
+            tvObjectsImageList.Images.Add(Resources.copydat_running); // todo Kls for Michael use another one
             // leaf
-            tvObjectsImageList.Images.Add(Resources.batchfile_running); // todo use another one
+            tvObjectsImageList.Images.Add(Resources.batchfile_running); // todo Kls for Michael use another one
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
         }
@@ -69,12 +78,24 @@ namespace iba.Controls
                 return;
             }
 
+            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
+            if (snmpWorker != null)
+            {
+                // re-subscribe to status event
+                // (probabaly now we are connected to another server)
+                snmpWorker.StatusChanged -= SnmpWorker_StatusChanged;
+                snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
+            }
+
             // if we have no snmp worker or IbaSnmp
             // then disable all controls and cancel load
-            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            if (snmpWorker?.IbaSnmp == null)
+            bool isServerAvailable = snmpWorker?.IbaSnmp != null;
+            labelNotConnected.Visible = !isServerAvailable;
+            gbConfiguration.Visible = 
+                gbDiagnostics.Visible =
+                gbObjects.Visible = isServerAvailable;
+            if (!isServerAvailable)
             {
-                Enabled = false;
                 return;
             }
 
@@ -146,7 +167,7 @@ namespace iba.Controls
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
-            // todo localize
+            // todo Kls localize
             if (MessageBox.Show(this,
                     "Are you sure you want to reset configuration to default?",
                     "Reset configuration?",
@@ -229,7 +250,38 @@ namespace iba.Controls
             cmbAuthentication.SelectedIndex = (int)v3S.AuthAlgorithm;
             cmbEncryption.SelectedIndex = (int)v3S.EncrAlgorithm;
         }
-        
+
+        /// <summary>
+        /// Shows password in a bound TextBox. 
+        /// Before using, first connect your Button and TextBox like:
+        /// "showHideButton.Tag = TextBoxToBeControlled"
+        /// </summary>
+        private void handler_ShowPassword(object sender, MouseEventArgs e)
+        {
+            TextBox tb = (sender as Button)?.Tag as TextBox;
+            if (tb == null)
+            {
+                return;
+            }
+            tb.PasswordChar = '\0';
+        }
+
+
+        /// <summary>
+        /// Hides password in a bound TextBox. 
+        /// Before using, first connect your Button and TextBox like:
+        /// "showHideButton.Tag = TextBoxToBeControlled"
+        /// </summary>
+        private void handler_HidePassword(object sender, MouseEventArgs e)
+        {
+            TextBox tb = (sender as Button)?.Tag as TextBox;
+            if (tb == null)
+            {
+                return;
+            }
+            tb.PasswordChar = '*';
+        }
+
         #endregion
 
 
@@ -294,6 +346,9 @@ namespace iba.Controls
 
         #region Objects
 
+        private IbaSnmpOid _oidGuiTreeRoot = "1.3.6.1";
+        // todo Kls. whether we want to have mib2.system subtree to be shown in gui - set the value accordingly
+        private readonly bool _whetherToShowMib2SystemItems = false;
 
         public void RebuildObjectsTree()
         {
@@ -309,6 +364,13 @@ namespace iba.Controls
                 return;
             }
 
+            // the topmost possible node to be displayed in our tree
+            if (!_whetherToShowMib2SystemItems)
+            {
+                // narrow down lookup area if mib2.system items are not needed
+                _oidGuiTreeRoot = ibaSnmp.OidIbaRoot;
+            }
+
             // update worker's tree if necessary
             worker.RebuildTreeIfItIsInvalid();
 
@@ -316,13 +378,20 @@ namespace iba.Controls
             {
                 try
                 {
+                    // create root nodes
+                    if (_whetherToShowMib2SystemItems)
+                    {
+                        tvObjects.Nodes.Add(ibaSnmp.OidMib2System.ToString(), ibaSnmp.OidMib2System.ToString()).Tag = ibaSnmp.OidMib2System;
+                    }
+                    tvObjects.Nodes.Add(ibaSnmp.OidIbaRoot.ToString(), ibaSnmp.OidIbaRoot.ToString()).Tag = ibaSnmp.OidIbaRoot;
+
+                    // dynamically create nodes for all the objects in ibaSnmp
                     var allObjs = ibaSnmp.GetListOfAllOids();
                     foreach (IbaSnmpOid oid in allObjs)
                     {
-                        if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+                        if (!oid.StartsWith(_oidGuiTreeRoot))
                         {
-                            // ignore everything what is outside iba root area
-                            // (e.g. UpTime or whataver)
+                            // ignore everything what is outside defined gui root area
                             continue;
                         }
 
@@ -353,16 +422,20 @@ namespace iba.Controls
                     // logging is not critical
                 }
             }
-        
 
             // expand some nodes
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaProduct)?.Expand();
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific)?.Expand();
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
+            //FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 2)?.Expand(); // std job
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 3)?.Expand(); // sch job
             FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 4)?.Expand(); // one t job
+            if (_whetherToShowMib2SystemItems)
+            {
+                // uncomment the following line to show mib2.sys items expanded
+                // FindSingleNodeByOid(worker, ibaSnmp.OidMib2System)?.Expand();
+            }
 
             // navigate to last selected oid if possible
             if (_lastOid == null)
@@ -403,9 +476,7 @@ namespace iba.Controls
                 throw new ArgumentNullException(nameof(oid));
             }
 
-            IbaSnmp ibaSnmp = worker.IbaSnmp;
-
-            if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+            if (!oid.StartsWith(_oidGuiTreeRoot))
             {
                 // should not happen
                 throw new ArgumentOutOfRangeException();
@@ -443,9 +514,9 @@ namespace iba.Controls
                 throw new ArgumentNullException(nameof(oid));
             }
 
-            IbaSnmp ibaSnmp = worker.IbaSnmp;
+            //IbaSnmp ibaSnmp = worker.IbaSnmp;
 
-            if (!oid.StartsWith(ibaSnmp.OidIbaRoot))
+            if (!oid.StartsWith(_oidGuiTreeRoot))
             {
                 // should not happen
                 throw new ArgumentOutOfRangeException();
@@ -462,10 +533,10 @@ namespace iba.Controls
             // not found, then create it
 
             // if this is a root node (recursion stop point)
-            if (oid == ibaSnmp.OidIbaRoot)
+            if (oid == _oidGuiTreeRoot)
             {
-                // then add it to the top of the tree
-                node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
+                    // then add it to the top of the tree
+                    node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
             }
             else
             {
@@ -482,7 +553,7 @@ namespace iba.Controls
         private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
         {
             IbaSnmpOidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
-            return metadata?.GuiCaption ?? "???";
+            return metadata?.GuiCaption ?? String.Empty;
         }
 
         /// <summary> The last Oid that was selected by the user </summary>
@@ -490,10 +561,10 @@ namespace iba.Controls
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            tbObjOid.Text = "";
-            tbObjValue.Text = "";
-            tbObjMibName.Text = "";
-            tbObjType.Text = "";
+            tbObjOid.Text = String.Empty;
+            tbObjValue.Text = String.Empty;
+            tbObjMibName.Text = String.Empty;
+            tbObjType.Text = String.Empty;
 
             // reset last selected oid
             _lastOid = null;
@@ -553,9 +624,12 @@ namespace iba.Controls
                     objInfo.Value.ToString();
 
                 tbObjMibName.Text = objInfo.MibName;
-                
-                // todo remove after testing of MIB descriptions
-                tbObjMibName.Text = objInfo.MibName + @"; " + objInfo.MibDescription; 
+
+                // todo Kls remove after testing of MIB descriptions or move to another textbox
+                if (!String.IsNullOrWhiteSpace(objInfo.MibDescription))
+                {
+                    tbObjMibName.Text += $@"; {objInfo.MibDescription}";
+                }
 
                 tbObjType.Text = objInfo.MibDataType;
             }
@@ -564,8 +638,12 @@ namespace iba.Controls
                 // probabaly this is a folder, that has no corresponding snmp object 
                 // try to get it's description from the worker.
                 IbaSnmpOidMetadata metadata = worker.IbaSnmp?.GetOidMetadata(oid);
-                // todo remove MibDescription after testing of MIB descriptions
-                tbObjMibName.Text = (metadata?.MibName ?? "") + @"; " + (metadata?.MibDescription ?? "");
+                tbObjMibName.Text = metadata?.MibName ?? String.Empty;
+                // todo Kls remove after testing of MIB descriptions or move to another textbox
+                if (!String.IsNullOrWhiteSpace(metadata?.MibDescription))
+                {
+                    tbObjMibName.Text += $@"; {metadata.MibDescription}";
+                }
             }
         }
 
@@ -593,7 +671,7 @@ namespace iba.Controls
                 {
                     // failed to Rebuild the tree
 
-                    // todo localize
+                    // todo Kls localize
                     MessageBox.Show(this,
                         "Failed to create MIB files. \r\nFailed to rebuild SNMP tree.",
                         "Create MIB files failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -608,7 +686,7 @@ namespace iba.Controls
                 string fullFileName1 = $@"{dir}\{gen.GeneralMibFilename}";
                 string fullFileName2 = $@"{dir}\{gen.ProductMibFilename}";
 
-                // todo localize
+                // todo Kls localize
                 if (MessageBox.Show(this, 
                     "Successfully created the following MIB files:" +
                     $"\r\n{fullFileName1}\r\n{fullFileName2}"+
@@ -619,16 +697,12 @@ namespace iba.Controls
                     // open folder and show files
                     Process.Start(@"explorer.exe", $"/select, \"{fullFileName2}\"");
                 }
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
         }
-
-
 
         #endregion
     }

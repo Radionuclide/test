@@ -41,7 +41,7 @@ namespace iba
         public static string GetVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            ver = ver + " BETA12";
+            ver = ver + " BETA14";
             return ver;
         }
 

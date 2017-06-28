@@ -196,7 +196,6 @@ InstType "standalone"
 ; Initialization functions
 Function .onInit
   SetShellVarContext all
-  
 !ifdef UNINSTALLER_ONLY
 
   WriteUninstaller "$EXEDIR\..\InstallFiles\uninst.exe"
@@ -221,7 +220,7 @@ Function .onInit
     Call PreInstall
 	
 	  
-  ;initialize $DataSupportSelection, when not silent will be overwritten by custom page InstallTypeSelect
+  ;initialize $InstallTypeSelection, when not silent will be overwritten by custom page InstallTypeSelect
   Push $0
   strcpy $InstallTypeSelection "1"
   ${GetParameters} $0
@@ -231,9 +230,13 @@ Function .onInit
   ${If} $InstallTypeSelection == ""
     strcpy $InstallTypeSelection "1"
   ${EndIf}
-  
 lbl_finishedoninit:
   Pop $0
+  
+  ;In case of a silent install call the installtype select function directly
+  IfSilent +1 +2
+    Call InstallTypeSelect
+ 
 !endif
 FunctionEnd
 
@@ -261,6 +264,13 @@ Function PreInstall
 
 FunctionEnd
 
+;--------------------------------
+; Function to set the install type manually when ran in silent mode
+
+Function SetSectionFlagsManually
+
+
+FunctionEnd
 
 ;--------------------------------
 ; Requirements check
@@ -687,21 +697,18 @@ Section -Post
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
-
-  IfSilent +1 +2
-    Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
-
 SectionEnd
 
 Function InstalltypeSelect
+
+  IfSilent lbl_applySelect +1
+
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "Text" "$(TEXT_INSTALLSTANDALONE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
   !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
   StrCpy $0 $InstallTypeSelection
-  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
-  
-  ;MessageBox MB_OK $0
+  ;ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   
   ${If} $0 == "0"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
@@ -723,9 +730,17 @@ Function InstalltypeSelect
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
   !insertmacro MUI_INSTALLOPTIONS_READ $1 "serviceorstandalone.ini" "Field 2" "State"
 	
+  ${If} $0 == "0"
+  ${AndIf} $1 == "0"
+    StrCpy $InstallTypeSelection "2"
+  ${Else}
+    StrCpy $InstallTypeSelection $1
+  ${EndIf}
+  
+ lbl_applySelect:
  
   SectionGetFlags ${DATCOOR_NOSERVICE} $R0
-  ${If} $0 == "1"
+  ${If} $InstallTypeSelection == "0"
     IntOp $R1 $R0 | ${SF_SELECTED}
     SectionSetFlags ${DATCOOR_NOSERVICE} $R1
   ${Else}
@@ -734,7 +749,7 @@ Function InstalltypeSelect
   ${EndIf}
   
   SectionGetFlags ${DATCOOR_SERVICE} $R0
-  ${If} $1 == "1"
+    ${If} $InstallTypeSelection == "1"
     IntOp $R1 $R0 | ${SF_SELECTED}
     SectionSetFlags ${DATCOOR_SERVICE} $R1
   ${Else}
@@ -743,8 +758,7 @@ Function InstalltypeSelect
   ${EndIf}
   
   SectionGetFlags ${DATCOOR_CLIENT} $R0
-  ${If} $0 == "0"
-  ${AndIf} $1 == "0"
+  ${If} $InstallTypeSelection == "2"
     IntOp $R1 $R0 | ${SF_SELECTED}
     SectionSetFlags ${DATCOOR_CLIENT} $R1
   ${Else}
@@ -895,12 +909,12 @@ Function un.UninstallService
   ;uninstall the service
 
   ;stop statusform
-  FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-  SendMessage $0 0x8140 0 0
-  ${Unless} $0 == 0
-    Sleep 1000
-    FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-  ${EndUnless}
+  ;FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+  ;SendMessage $0 0x8140 0 0
+  ;${Unless} $0 == 0
+  ;  Sleep 1000
+  ;  FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
+  ;${EndUnless}
 
   ;Stop service
   DetailPrint $(TEXT_SERVICE_STOP)
