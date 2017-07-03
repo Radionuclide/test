@@ -56,7 +56,7 @@ namespace iba.Controls
                 string uncline = m_folderBrowserDialog1.SelectedPath;
                 try
                 {
-                    uncline = Shares.PathToUnc(uncline, true);
+                    uncline = Shares.PathToUnc(uncline, false);
                 }
                 catch
                 {
@@ -181,7 +181,7 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || !Program.ServiceIsLocal) return; //leave it be...
             try
             {
-                m_targetFolderTextBox.Text = Shares.PathToUnc(m_targetFolderTextBox.Text, true);
+                m_targetFolderTextBox.Text = Shares.PathToUnc(m_targetFolderTextBox.Text, false);
             }
             catch
             {

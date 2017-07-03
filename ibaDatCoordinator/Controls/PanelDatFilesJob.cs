@@ -241,7 +241,7 @@ namespace iba.Controls
                 string uncline = path;
                 try
                 {
-                    uncline = Shares.PathToUnc(uncline, true);
+                    uncline = Shares.PathToUnc(uncline, false);
                 }
                 catch
                 {
@@ -263,7 +263,7 @@ namespace iba.Controls
                     string uncline = m_folderBrowserDialog1.SelectedPath;
                     try
                     {
-                        uncline = Shares.PathToUnc(uncline, true);
+                        uncline = Shares.PathToUnc(uncline, false);
                     }
                     catch
                     {
@@ -290,7 +290,7 @@ namespace iba.Controls
                     string uncline = m_folderBrowserDialog1.SelectedPath;
                     try
                     {
-                        uncline = Shares.PathToUnc(uncline, true);
+                        uncline = Shares.PathToUnc(uncline, false);
                     }
                     catch
                     {
@@ -487,7 +487,7 @@ namespace iba.Controls
                         string uncline = line;
                         try
                         {
-                            uncline = Shares.PathToUnc(line, true);
+                            uncline = Shares.PathToUnc(line, false);
                         }
                         catch
                         {
@@ -500,7 +500,7 @@ namespace iba.Controls
                         string uncline = line;
                         try
                         {
-                            uncline = Shares.PathToUnc(line, true);
+                            uncline = Shares.PathToUnc(line, false);
                         }
                         catch
                         {
@@ -515,7 +515,7 @@ namespace iba.Controls
                     string file = "";
                     try
                     {
-                        file = Shares.PathToUnc(m_selectDatFilesDialog.FileName, true);
+                        file = Shares.PathToUnc(m_selectDatFilesDialog.FileName, false);
                     }
                     catch (Exception ex)
                     {
@@ -543,7 +543,7 @@ namespace iba.Controls
                     {
                         try
                         {
-                            string newline = Shares.PathToUnc(line, true);
+                            string newline = Shares.PathToUnc(line, false);
                             sb.AppendLine(newline);
                         }
                         catch
@@ -558,7 +558,7 @@ namespace iba.Controls
             {
                 try
                 {
-                    m_datDirTextBox.Text = Shares.PathToUnc(m_datDirTextBox.Text, true);
+                    m_datDirTextBox.Text = Shares.PathToUnc(m_datDirTextBox.Text, false);
                 }
                 catch
                 {

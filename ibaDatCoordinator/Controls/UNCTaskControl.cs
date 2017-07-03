@@ -173,7 +173,7 @@ namespace iba.Controls
                 string uncline = m_folderBrowserDialog1.SelectedPath;
                 try
                 {
-                    uncline = Shares.PathToUnc(uncline, true);
+                    uncline = Shares.PathToUnc(uncline, false);
                 }
                 catch
                 {
