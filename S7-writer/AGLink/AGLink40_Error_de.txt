@@ -1,0 +1,401 @@
+;
+; Fehlermeldungen fuer ACCON-AGLink 4.0
+;
+; Jede Zeile die nicht mit einer hexadezimalen Zahl beginnt wird als Kommentar gewertet
+;
+; Zwischen der Fehlernummer und dem Fehlertext muss ein Semikolon stehen
+;
+0x00000000;Kein Fehler
+0x00000001;Kein Fehler, Auftrag noch in Bearbeitung
+ 
+0xFFF00000;Funktion nicht implementiert
+0xFFF00001;Parameterfehler beim Funktionsaufruf
+0xFFF00002;Ungueltige Geraetenummer
+0xFFF00003;Ungueltige SPS-Nummer
+0xFFF00004;Ungueltiger Parametertyp
+0xFFF00005;Nicht genuegend Speicher
+0xFFF00006;Geraet bereits geoeffnet
+0xFFF00007;Geraet nicht geoeffnet
+0xFFF00008;Auftrag wurde entfernt
+0xFFF00009;Ungueltige Auftragsnummer
+0xFFF0000A;Funktion wird nicht unterstuetzt
+0xFFF0000B;Adapter nicht initialisiert
+0xFFF0000C;Keine freien Verbindungen verfuegbar
+0xFFF0000D;Geraet ist nicht konfiguriert oder wird nicht unterstuetzt
+0xFFF0000E;Hardware wurde nicht gefunden
+0xFFF0000F;Fehler beim Lesen der Parameter
+0xFFF00010;Fehler beim Schreiben der Parameter
+0xFFF00011;Die Demozeit ist abgelaufen
+0xFFF00012;Falsches Zeichen im Text. Konvertierung nicht moeglich.
+0xFFF00013;Der Puffer ist nicht lang genug
+0xFFF00014;Die Datei wurde nicht gefunden
+0xFFF00015;Fehler beim Aufruf des Konfigurationsprogrammes
+0xFFF00016;Fehler beim dynamischen Laden der DLL
+0xFFF00017;Die Datei konnte nicht erzeugt werden
+0xFFF00018;Die Benachrichtungsart ist bereits in Verwendung
+0xFFF00019;Laufender Auftrag wurde bereits entfernt
+0xFFF0001A;Auftrag wurde bereits entfernt
+0xFFF0001B;Fehler beim Lesen der WLD-Datei
+0xFFF0001C;Fehler beim Schreiben der WLD-Datei
+0xFFF0001D;Ungueltige Struktur in WLD-Datei
+0xFFF0001E;Baustein in WLD-Datei mehrfach vorhanden
+0xFFF0001F;Funktion ist nicht reentrant
+
+0xFFF50000;Kein freier Auftragspuffer verfuegbar
+0xFFF50001;Ungueltiges Paket
+0xFFF50002;Keine Verbindung zum AG
+0xFFF50003;Die Verbindung wurde geschlossen
+0xFFF50004;Timeout
+0xFFF50005;Ungueltiger Kontext
+0xFFF50006;AG-Speicherfehler
+0xFFF50007;Ungueltiger Betriebszustand
+0xFFF50008;Ungueltige Adresse auf dem AG
+0xFFF50009;Ungueltiger Modus
+0xFFF5000A;Keine Daten vorhanden, z.B. DB fehlt
+0xFFF5000B;Ablaufebene fuer OB nicht vorhanden
+0xFFF5000C;Leere Bausteinliste
+0xFFF5000D;Fehler in der Bausteingroesse
+0xFFF5000E;Ungueltige Bausteinnummer
+0xFFF5000F;Schutzstufe der Funktion nicht ausreichend
+0xFFF50010;Unbekannte SZL-ID (z.B. Zugriff auf CP statt AG)
+0xFFF50011;Unbekannter SZL-Index (z.B. Zugriff auf CP statt AG)
+0xFFF50012;Information momentan nicht ermittelbar
+0xFFF50013;Unbekannte Fehlermeldung vom AG (bitte melden!)
+0xFFF50014;Hardwarefehler, z.B. nicht vorhandene Peripherie
+0xFFF50015;Objektzugriff nicht erlaubt
+0xFFF50016;Kontext wird nicht unterstuetzt
+0xFFF50017;Typ (Datenart) nicht unterstuetzt
+0xFFF50018;Interner Fehler, bitte melden
+0xFFF50019;Fehler beim Neustart des AGs
+0xFFF5001A;Fehler beim Wiederanlauf des AGs
+0xFFF5001B;Verbindungsende erhalten
+0xFFF5001C;AG wurde nicht gefunden
+0xFFF5001D;Zuviele Daten für diese ACCON-AGLink-Version
+0xFFF5001E;Die SPS unterstuetzt diese Funktion nicht
+0xFFF5001F;Das eingegebene Passwort ist falsch
+0xFFF50020;Die Verbindung wurde bereits legitimiert
+0xFFF50021;Die Verbindungslegitimation wurde bereits aufgehoben
+0xFFF50022;Das Passswort ist nicht notwendig da keines parametriert ist
+0xFFF50023;Mindestens eine Variablenadresse ist ungültig
+0xFFF50024;Angegebener Auftrag existiert nicht
+0xFFF50025;Unzulaessiger Auftragsstatus
+0xFFF50026;Unzulaessige Zykluszeit (Zeitbasis oder Vielfaches unzulaessig)
+0xFFF50027;Kein weiterer zyklischer Leseauftrag mehr einrichtbar
+0xFFF50028;Funktion für diesen Auftrag nicht moeglich (falscher Zustand)
+0xFFF50029;Abbruch der Funktion wegen Ueberlast (Lesezyklus dauert laenger als die eingestellte Zykluszeit)
+0xFFF5002A;Es wurden keine Daten fuer diesen Teil des Leseauftrags geliefert
+0xFFF5002B;Falsches Zeitformat
+0xFFF5002C;Unbekannter PI-Name
+0xFFF5002D;Der Transfer wurde von der NCK abgebrochen
+0xFFF5002E;Das Antworttelegramm ist zu gross für die PDU-Groesse
+0xFFF5002F;Keine H-CPU gefunden
+0xFFF50030;Die Daten haben sich nicht geaendert
+0xFFF50031;Die empfangenen Daten sind korrupt
+0xFFF50032;Der angefragte Parameter hat die falsche Groesse oder den falschen Typ
+0xFFF50033;Der Parameter hat einen falschen Wert
+0xFFF50034;Der Parameter ist nicht aenderbar
+0xFFF50035;Der Parameter ist nur lesbar
+0xFFF50036;Die Variablendefinition enthält die falsche Groesse
+
+0xFFF30000;Fehler beim Lesen der Geraeteinfo
+0xFFF30001;Fehler beim Lesen der Busparameter
+0xFFF30002;Fehler beim Schreiben der Busparameter
+0xFFF30003;Keine Resourcen auf dem Geraet verfuegbar
+0xFFF30004;Ungueltiges Geraet
+0xFFF30005;Adapter wurde nicht gefunden
+0xFFF30006;Benoetigter Geraetetreiber wurde nicht gefunden
+
+0xFFF20000;Die gewuenschte Adapteradresse existiert bereits
+0xFFF20001;Die HSA ist ungueltig (kleiner als groesster aktiver Teilnehmer)
+0xFFF20002;Der Adapter ist nicht im logischen Ring
+0xFFF20004;Empfangenes Paket hat falschen Inhalt
+0xFFF20006;Unbekannte Fehlernummer vom Adapter
+0xFFF20007;Unbekannte Fehlernummer vom Geraetetreiber
+0xFFF20008;Der Kommunikationsadapter wurde entfernt
+0xFFF20009;Das Modem wurde entfernt
+0xFFF2000A;Kein direkt angeschlossenes AG gefunden
+0xFFF20313;Ungueltige Geschwindigkeit am MPI-Bus
+0xFFF20314;Die Adresse ist groesser als HSA
+0xFFF20315;Die gewuenschte Adapteradresse existiert bereits
+0xFFF2031A;Keinen weiteren aktiven Busteilnehmer gefunden
+0xFFF2031C;Der Bus ist gestoert
+0xFFF2031D;Der Bus ist gestoert
+0xFFF2031E;Automatische Busprofilerkennung funktioniert nicht, Busparametertelegramm fehlt
+0xFFF20337;Die Legitimierung zum Zugriff auf den TS-Adapter fehlt
+
+0xFFF10000;Der COM-Port bereits in Verwendung
+0xFFF10001;Das Modem wurde nicht gefunden
+0xFFF10002;Das Modem hat nicht aufgelegt
+0xFFF10003;Das Modem hat nicht abgenommen
+0xFFF10004;Modemfehler bei der Basisinitialisierung
+0xFFF10005;Fehler im Initstring 1
+0xFFF10006;Fehler im Initstring 2
+0xFFF10007;Fehler im Initstring 3
+0xFFF10008;Fehler im Initstring 4
+0xFFF10009;Fehler in der Waehlartangabe-Sequenz
+0xFFF1000A;Fehler in der Waehltonangabe-Sequenz
+0xFFF1000B;Fehler in der automatischen Rufannahme-Sequenz
+0xFFF1000C;Das Modem wurde entfernt
+0xFFF1000D;Es konnte keine Verbindung hergestellt werden
+0xFFF1000E;Die Anmeldung wurde abgelehnt. Der angegebene Benutzername ist unbekannt.
+0xFFF1000F;Die Anmeldung wurde abgelehnt. Das angegebene Kennwort ist falsch.
+0xFFF10010;Die Anmeldung wurde abgelehnt. Es ist bereits eine Rückrufnummer im TS-Adapter parametriert.
+0xFFF10011;Fehler bei der Anwahl
+
+0xFFF80000;Funktion nicht erlaubt
+0xFFF80001;Ungueltiger Projekt-Handle
+0xFFF80002;Fehler beim Oeffnen eines Projekts
+0xFFF80003;Fehler beim Erzeugen der Programminstanz eines Projekts
+0xFFF80004;Fehler beim Schliessen eines Projekts
+0xFFF80005;Kein bzw. kein weiteres Programm gefunden
+0xFFF80006;Angegebenes Programm nicht gefunden
+0xFFF80007;Einer der Parameter nicht im gueltigen Bereich
+0xFFF80008;Funktionsumfang bzw. Laufzeit ist abgelaufen (Demo-Version)
+0xFFF8000A;Keine bzw. ungueltige Daten angegeben
+0xFFF8000B;Das ausgewaehlte Programm enthaelt keine Symboltabelle
+0xFFF8000C;Symboltabelle bereits geoeffnet
+0xFFF8000D;Keinen bzw. keinen weiteren Symbolikeintrag gefunden
+0xFFF8000E;Fehler beim Lesen eines Symbolikdatensatzes
+0xFFF8000F;Symbol nicht gefunden
+0xFFF80010;Absolutoperand nicht gefunden
+0xFFF80011;Symbol ungueltig
+0xFFF80012;Absolutoperand ungueltig
+0xFFF80013;Filterstring ungueltig
+0xFFF80014;Der angegebene DB ist nicht vorhanden
+0xFFF80015;Fehler beim Lesen der Bausteindaten des DBs
+0xFFF80016;Fehler beim Umsetzen der Bausteindaten des DBs
+0xFFF80017;Es ist bereits ein DB zur Komponentensuche geoeffnet
+0xFFF80018;Es ist noch kein DB zur Komponentensuche geoeffnet
+0xFFF80019;Keine bzw. keine weitere Komponente vorhanden
+0xFFF8001A;DB-Komponente nicht gefunden
+0xFFF8001B;DB-Komponente ungueltig
+0xFFF8001C;DB-Komponente passt nicht
+0xFFF8001E;Konstantenangabe ungueltig
+0xFFF8001F;Konstantengroesse bzw. -formatierung ungueltig
+0xFFF80020;Initialisierung der Objekttypen fehlgeschlagen
+0xFFF80021;Falsche Version der Meldungskonfiguration
+0xFFF80022;Fehler beim Oeffnen der Meldungskonfiguration
+0xFFF80023;Fehler beim Schliessen der Meldungskonfiguration
+0xFFF80024;Kein bzw. kein weiterer Meldeeintrag gefunden
+0xFFF80025;Keine bzw. keine weitere Sprache gefunden
+0xFFF80026;Fehler beim Datenbankzugriff
+0xFFF80027;Signalnummer ungueltig
+0xFFF80028;Begleitwertangabe ungueltig
+0xFFF80029;Nummer des Begleitwerts ungueltig
+0xFFF8002A;Elementtyp ungueltig
+0xFFF8002B;Laenge der Begleitwertdaten ungueltig
+0xFFF8002C;Formatangabe fehlt
+0xFFF8002D;Formatangabe ungueltig
+0xFFF8002E;Keine bzw. keine weitere Textbibliothek vorhanden
+0xFFF8002F;Kein bzw. kein weiterer Textbibliotheks-Eintrag vorhanden
+0xFFF80030;Nicht genügend Speicher
+0xFFF80031;Ungültiger Bausteintyp angegeben
+0xFFF80032;Ungültiger Auflistungshandle angegeben
+0xFFF80033;Der angegebene Baustein ist nicht vorhanden
+0xFFF80034;Fehler beim Lesen der Bausteindaten
+0xFFF80035;Fehler beim Umsetzen der Bausteindaten
+0xFFF80036;Keine bzw. keine weitere Deklaration vorhanden
+0xFFF80037;Kein bzw. kein weiteres Attribut vorhanden 
+0xFFF80038;Fehler beim Schreiben der CPU-Liste
+
+0xFFF90000;Fehler beim Lesen
+0xFFF90001;Fehler beim Schreiben
+0xFFF90002;Fehler beim Lesen (Variablen-Inhalt, Typ)
+0xFFF90003;Falscher SPS-Typ
+0xFFF90064;Interne Annahme (assert) falsch
+0xFFFA0000;Nicht anwendbar
+0xFFFA0001;Zugriff auf ungueltiges Element
+0xFFFA0002;Zugriffsbuffer zu klein
+0xFFFA0003;Zugriffsbuffer enthaelt ungueltiger S5TIME Wert
+0xFFFA0004;Zugriffsbuffer enthaelt ungueltige S5TIME Basis
+0xFFFA0005;Zugriffsbuffer enthaelt ungueltiger S7 COUNTER Wert
+0xFFFA0006;Pfad enthaelt keinen expandierten Index
+0xFFFA0007;Pfad ungueltig
+0xFFFA0008;Pfadende erreicht
+0xFFFA0009;Pfad enthaelt unbekanntes Feld
+0xFFFA000A;Unbekanntes Kind
+0xFFFA000B;Array ist kein Werte Typ
+0xFFFA000C;Arrayindex fehlt
+0xFFFA000D;Arrayindex ungueltig
+0xFFFA000E;Arrayindex nicht erlaubt
+0xFFFA000F;Arraybereich nicht erlaubt
+0xFFFA0010;Arraybereich ungueltig
+0xFFFA0011;UDT hat keinen Basistyp
+0xFFFA0012;Unbekannte Fehlernummer
+0xFFFA0013;Falsche Symbol-ID
+0xFFFA0014;Element Zugriff verweigert
+0xFFFA0015;Schreibgeschuetztes Element
+0xFFFA0016;Partieller Fehler
+0xFFFA0017;Keine Instanz
+0xFFFA0018;Falscher Symbol-ID Pfad
+0xFFFA0019;Symbolisch falscher Bereich
+0xFFFA001A;Falscher Wertebereich
+0xFFFA001B;SPS kann nicht liefern
+0xFFFA001C;SPS Objekt existiert nicht
+0xFFFA001D;SPS Typinformationen fehlen
+0xFFFA0050;Ungueltiger Datenbaustein
+0xFFFA0051;Datenbaustein ist optimiert
+0xFFFA0052;Ungueltiger Tag
+0xFFFA0053;Startaddresse ist zu gross
+0xFFFA0054;Nicht erlaubter Symbolzugriff
+0xFFFA0063;Interner Fehler
+0xFFFA0064;Interner Fehler 0
+0xFFFA0065;Interner Fehler 1
+0xFFFA0066;Interner Fehler 2
+0xFFFA0067;Interner Fehler 3
+0xFFFA0068;Interner Fehler 4
+0xFFFA0069;Interner Fehler 5
+0xFFFA006A;Interner Fehler 6
+0xFFFA006B;Interner Fehler 7
+0xFFFA006C;Interner Fehler 8
+0xFFFA006D;Interner Fehler 9
+0xFFFA006E;Datei Lesefehler
+0xFFFA006F;Interner Fehler 11
+0xFFFA0070;Interner Fehler 12
+0xFFFA0071;Interner Fehler 13
+0xFFFA0072;Interner Fehler 14
+0xFFFA0073;Interner Fehler 15
+0xFFFA0074;Projektdatei nicht gefunden
+0xFFFA0075;Projektdatei hat nicht unterstuetzte Dateiendung
+0xFFFA0076;Projektordner fehlt
+0xFFFA0077;Interner Fehler 19
+0xFFFA0078;Interner Fehler 20
+0xFFFA0079;Interner Fehler 21
+0xFFFA007A;Interner Fehler 22
+0xFFFA007B;Interner Fehler 23
+0xFFFA007C;Interner Fehler 24
+0xFFFA007D;Interner Fehler 25
+0xFFFA007E;Interner Fehler 26
+0xFFFA007F;Interner Fehler 27
+0xFFFA0080;Interner Fehler 28
+0xFFFA0081;Interner Fehler 29
+0xFFFA0082;Interner Fehler 30
+0xFFFA0083;Interner Fehler 31
+0xFFFA0084;Interner Fehler 32
+0xFFFA0085;Interner Fehler 33
+0xFFFA0086;Interner Fehler 34
+0xFFFA0087;Interner Fehler 35
+0xFFFA0088;Interner Fehler 36
+0xFFFA0089;Interner Fehler 37
+0xFFFA008A;Interner Fehler 38
+0xFFFA008B;Interner Fehler 39
+0xFFFA008C;Interner Fehler 40
+0xFFFA008D;Interner Fehler 41
+0xFFFA008E;Interner Fehler 42
+0xFFFA008F;Interner Fehler 43
+0xFFFA0090;Interner Fehler 44
+0xFFFA0091;Interner Fehler 45
+0xFFFA0092;Interner Fehler 46
+0xFFFA0093;Interner Fehler 47
+0xFFFA0094;Interner Fehler 48
+0xFFFA0095;Interner Fehler 49
+0xFFFA0096;Interner Fehler 50
+0xFFFA0097;Interner Fehler 51
+0xFFFA0098;Interner Fehler 52
+0xFFFA0099;Interner Fehler 53
+0xFFFA009A;Interner Fehler 54
+0xFFFA009B;Interner Fehler 55
+0xFFFA009C;Interner Fehler 56
+0xFFFA009D;Interner Fehler 57
+0xFFFA009E;Interner Fehler 58
+0xFFFA009F;Interner Fehler 59
+0xFFFA00A0;Interner Fehler 60
+0xFFFA00A1;Interner Fehler 61
+0xFFFA00A2;Interner Fehler 62
+0xFFFA00A3;Interner Fehler 63
+0xFFFA00A4;Interner Fehler 64
+0xFFFA00A5;Interner Fehler 65
+0xFFFA00A6;Interner Fehler 66
+0xFFFA00A7;Interner Fehler 67
+0xFFFA00A8;Interner Fehler 68
+0xFFFA00A9;Interner Fehler 69
+0xFFFA00AA;Interner Fehler 70
+0xFFFA00AB;Interner Fehler 71
+0xFFFA00AC;Interner Fehler 72
+0xFFFA00AD;Interner Fehler 73
+0xFFFA00AE;Interner Fehler 74
+0xFFFA00AF;Interner Fehler 75
+0xFFFA00B0;Interner Fehler 76
+0xFFFA00B1;Interner Fehler 77
+0xFFFA00B2;Interner Fehler 78
+0xFFFA00B3;Interner Fehler 79
+0xFFFA00B4;Interner Fehler 80
+0xFFFA00B5;Interner Fehler 81
+0xFFFA00B6;Interner Fehler 82
+0xFFFA00B7;Interner Fehler 83
+0xFFFA00B8;Interner Fehler 84
+0xFFFA00B9;Interner Fehler 85
+0xFFFA00BA;Interner Fehler 86
+0xFFFA00BB;Interner Fehler 87
+0xFFFA00BC;Interner Fehler 88
+0xFFFA00BD;Interner Fehler 89
+0xFFFA00BE;Interner Fehler 90
+0xFFFA00BF;Interner Fehler 91
+0xFFFA00C0;Interner Fehler 92
+0xFFFA00C1;Interner Fehler 93
+0xFFFA00C2;Interner Fehler 94
+0xFFFA00C3;Interner Fehler 95
+0xFFFA00C4;Interner Fehler 96
+0xFFFA00C5;Interner Fehler 97
+0xFFFA00C6;Interner Fehler 98
+0xFFFA00C7;Interner Fehler 99
+0xFFFA00C8;Interner Fehler 100
+0xFFFA00C9;Interner Fehler 101
+0xFFFA00CA;Interner Fehler 102
+0xFFFA00CB;Interner Fehler 103
+0xFFFA00CC;Interner Fehler 104
+0xFFFA00CD;Interner Fehler 105
+0xFFFA00CE;Interner Fehler 106
+0xFFFA00CF;Interner Fehler 107
+0xFFFA00D0;Interner Fehler 108
+0xFFFA00D1;Interner Fehler 109
+0xFFFA00D2;Interner Fehler 110
+0xFFFA00D3;Interner Fehler 111
+0xFFFA00D4;Interner Fehler 112
+0xFFFA00D5;Interner Fehler 113
+0xFFFA00D6;Interner Fehler 114
+0xFFFA00D7;Interner Fehler 115
+0xFFFA00D8;Interner Fehler 116
+0xFFFA00D9;Interner Fehler 117
+0xFFFA00DA;Interner Fehler 118
+0xFFFA00DB;Interner Fehler 119
+0xFFFA00DC;Interner Fehler 120
+0xFFFA00DD;Interner Fehler 121
+0xFFFA00DE;Interner Fehler 122
+0xFFFA00DF;Interner Fehler 123
+0xFFFA00E0;Interner Fehler 124
+0xFFFA00E1;Interner Fehler 125
+0xFFFA00E2;Interner Fehler 126
+0xFFFA00E3;Interner Fehler 127
+0xFFFA00E4;Interner Fehler 128
+0xFFFA00E5;Interner Fehler 129
+0xFFFA00E6;Interner Fehler 130
+0xFFFA00E7;Interner Fehler 131
+0xFFFA00E8;Interner Fehler 132
+0xFFFA00E9;Interner Fehler 133
+0xFFFA00EA;Interner Fehler 134
+0xFFFA00EB;Interner Fehler 135
+0xFFFA00EC;Interner Fehler 136
+0xFFFA00ED;Interner Fehler 137
+0xFFFA00EE;Interner Fehler 138
+0xFFFA00EF;Interner Fehler 139
+0xFFFA00F0;Interner Fehler 140
+0xFFFA00F1;Interner Fehler 141
+0xFFFA00F2;Interner Fehler 142
+0xFFFA00F3;Interner Fehler 143
+0xFFFA00F4;Interner Fehler 144
+0xFFFA00F5;Interner Fehler 145
+0xFFFA00F6;Interner Fehler 146
+0xFFFA00F7;Interner Fehler 147
+0xFFFA00F8;Interner Fehler 148
+0xFFFA00F9;Interner Fehler 149
+0xFFFA00FA;Interner Fehler 150
+0xFFFA00FB;Interner Fehler 151
+0xFFFA00FC;Interner Fehler 152
+0xFFFA0190;Interner Kommunikationsfehler
+0xFFFA0191;Interner Kommunikationsfehler 0
+0xFFFA0193;Interner Kommunikationsfehler 2
+0xFFFA0194;Schreibzugriff auf Bool-Bereich erfordert das Start und Anzahl durch 8 teilbar ist
+0xFFFA0195;Falscher Lesetyp
+0xFFFA0196;Automatische SPS Erkennung fehlgeschlagen
+

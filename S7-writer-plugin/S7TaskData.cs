@@ -1,0 +1,391 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using iba.Plugins;
+using System.Xml.Serialization;
+
+using S7_writer;
+
+namespace S7_writer_plugin
+{
+    [Serializable]
+    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
+    {
+
+        #region IPluginTaskData Members
+
+        [NonSerialized]
+        private S7TaskControl m_control;
+        public IPluginControl GetControl()
+        {
+            if(m_control == null)
+                m_control = new S7TaskControl(m_datcoHost);
+            return m_control;
+        }
+
+        [NonSerialized]
+        private S7TaskWorker m_worker;
+
+        public IPluginTaskWorker GetWorker()
+        {
+            if(m_worker == null) m_worker = new S7TaskWorker(this);
+            return m_worker;
+        }
+
+        public void SetWorker(IPluginTaskWorker worker)
+        {
+            m_worker = worker as S7TaskWorker;
+        }
+
+        public string NameInfo
+        {
+            get { return m_nameInfo; }
+            set { m_nameInfo = value; }
+        }
+
+        public S7TaskData()
+        {
+            InitData(null, null, null);
+        }
+
+        public int DongleBitPos
+        {
+            get
+            {
+                return 5;
+            } 
+        }
+
+        public void Reset(IDatCoHost host)
+        {
+            m_datcoHost = host;
+        }
+
+        public void SetParentJob(IJobData data)
+        {
+            m_parentJob = data;
+        }
+
+        #endregion
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            S7TaskData res = new S7TaskData(m_nameInfo, m_datcoHost, m_parentJob);
+            res.m_testDatFile = m_testDatFile;
+            res.m_pdoFile = m_pdoFile;
+
+            for(int i = 0; i < m_records.Count; i++)
+                res.m_records[i] = (Record)m_records[i].Clone();
+
+            res.m_s7Address = m_s7Address;
+            res.m_s7Rack = m_s7Rack;
+            res.m_s7Slot = m_s7Slot;
+            res.m_s7Timeout = m_s7Timeout;
+            res.m_s7ConnType = m_s7ConnType;
+
+            res.m_monitorData = (iba.Data.MonitorData) m_monitorData.Clone();
+
+            return res;
+        }
+
+        #endregion
+
+        public S7TaskData(string name, IDatCoHost host, IJobData parentJob)
+        {
+            InitData(name, host, parentJob);
+        }
+
+        private IDatCoHost m_datcoHost;
+        private IJobData m_parentJob;
+
+        private string m_nameInfo;
+
+        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        {
+            m_parentJob = parentJob;
+            m_datcoHost = host;
+            m_nameInfo = name;
+
+            m_testDatFile = "";
+            m_pdoFile = "";
+
+            m_records = new List<Record>();
+
+            m_s7Address = "";
+            m_s7Rack = 0;
+            m_s7Slot = 2;
+            m_s7Timeout = 10;
+            m_s7ConnType = 0;
+            m_monitorData = new iba.Data.MonitorData();
+        }
+
+        public bool IsSame(IPluginTaskDataIsSame data)
+        {
+            var other = data as S7TaskData;
+            if (other == null) return false;
+            if (m_testDatFile != other.m_testDatFile) return false;
+            if (m_pdoFile != other.m_pdoFile) return false;
+            if (!m_records.SequenceEqual(other.m_records)) return false;
+            if (m_s7Address != other.m_s7Address) return false;
+            if (m_s7Rack != other.m_s7Rack) return false;
+            if (m_s7Slot != other.m_s7Slot) return false;
+            if (m_s7Timeout != other.m_s7Timeout) return false;
+            if (m_s7ConnType != other.m_s7ConnType) return false;
+            if (!m_monitorData.IsSame(other.m_monitorData)) return false;
+            return true;
+        }
+
+        #region Data
+
+        protected string m_pdoFile;
+        public string AnalysisFile
+        {
+            get { return m_pdoFile; }
+            set { m_pdoFile = value; }
+        }
+
+        private string m_testDatFile;
+        public string TestDatFile
+        {
+            get { return m_testDatFile; }
+            set { m_testDatFile = value; }
+        }
+
+        [Serializable]
+        public class Record : ICloneable
+        {
+            private string m_expression;
+            public string Expression
+            {
+                get { return m_expression; }
+                set { m_expression = value; }
+            }
+
+            private int m_dbNr;
+            public int DBNr
+            {
+                get { return m_dbNr; }
+                set { m_dbNr = Math.Max(0, value); }
+            }
+
+            private int m_address;
+            public int Address
+            {
+                get { return m_address; }
+                set { m_address = Math.Max(0, value); }
+            }
+
+            private int m_bitNr;
+            public int BitNr
+            {
+                get { return m_bitNr; }
+                set { m_bitNr = Math.Max(0, Math.Min(7, value)); }
+            }
+
+            private S7DataTypeEnum m_dataType;
+            public S7DataTypeEnum DataType
+            {
+                get { return m_dataType; }
+            }
+
+            [XmlIgnore]
+            public string DataTypeAsString
+            {
+                get { return S7.DataTypes[(int)m_dataType].name; }
+                set
+                {
+                    string newVal = value.ToUpper();
+                    for(int i=0; i<S7.DataTypes.Length; i++)
+                    {
+                        if(newVal == S7.DataTypes[i].name)
+                        {
+                            m_dataType = (S7DataTypeEnum)i;
+                            return;
+                        }
+                    }
+                    
+                    //Unknown data type -> don't change
+                }
+            }
+
+            private double m_testValue;
+            public double TestValue
+            {
+                get { return m_testValue; }
+                set { m_testValue = value; }
+            }
+
+            public string GetOperandName()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("DB ");
+                sb.Append(DBNr);
+                sb.Append(".DB");
+
+                switch(S7.DataTypes[(int)m_dataType].size)
+                {
+                    case 0:
+                        sb.Append("X");
+                        sb.Append(Address);
+                        sb.Append(".");
+                        sb.Append(BitNr);
+                        return sb.ToString();
+                    case 1:
+                        sb.Append("B");
+                        break;
+                    case 2:
+                        sb.Append("W");
+                        break;
+                    default:
+                        sb.Append("D");
+                        break;
+                }
+
+                sb.Append(Address);
+                return sb.ToString();
+            }
+
+            [XmlIgnore]
+            public string TestValueString
+            {
+                get { return (double.IsNaN(m_testValue) || double.IsInfinity(m_testValue))?"":m_testValue.ToString(); }
+            }
+
+            public Record() //no nulls
+            {
+                m_dbNr = 1;
+                m_address = 0;
+                m_bitNr = 0;
+                m_dataType = S7DataTypeEnum.S7Real;
+                m_expression = "";
+                m_testValue = Double.NaN;
+            }
+
+            public bool IsValid()
+            {
+                return !String.IsNullOrEmpty(m_expression);
+            }
+
+            #region ICloneable Members
+
+            public object Clone()
+            {
+                Record res = new Record();
+                res.m_dbNr = m_dbNr;
+                res.m_address = m_address;
+                res.m_bitNr = m_bitNr;
+                res.m_dataType = m_dataType;
+                res.m_expression = m_expression;
+                res.m_testValue = m_testValue;
+                return res;
+            }
+
+            #endregion
+        }
+
+        // Custom comparer for the Record class
+        class RecordComparer : IEqualityComparer<Record>
+        {
+            // Records are equal if their names and Record numbers are equal.
+            public bool Equals(Record x, Record y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if(Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if(Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the Records' properties are equal.
+                return x.Expression == y.Expression && x.DBNr == y.DBNr && x.Address == y.Address && x.BitNr == y.BitNr && x.DataType == y.DataType;
+            }
+
+            // If Equals() returns true for a pair of objects 
+            // then GetHashCode() must return the same value for these objects.
+
+            public int GetHashCode(Record record)
+            {
+                //Check whether the object is null
+                if(Object.ReferenceEquals(record, null)) return 0;
+                return record.Expression.GetHashCode() ^ record.DBNr ^ record.Address ^ record.BitNr ^ (int)record.DataType;
+            }
+
+        }
+
+
+        private List<Record> m_records;
+
+	    public List<Record> Records
+	    {
+		    get { return m_records; }
+		    set { m_records = value; }
+	    }
+
+        private string m_s7Address;
+        public string S7Address
+        {
+            get { return m_s7Address; }
+            set { m_s7Address = value; }
+        }
+
+        private int m_s7Rack;
+        public int S7Rack
+        {
+            get { return m_s7Rack; }
+            set { m_s7Rack = Math.Max(0, value); }
+        }
+
+        private int m_s7Slot;
+        public int S7Slot
+        {
+            get { return m_s7Slot; }
+            set { m_s7Slot = Math.Max(0, value); }
+        }
+
+        private int m_s7Timeout;
+        public int S7Timeout
+        {
+            get { return m_s7Timeout; }
+            set { m_s7Timeout = Math.Max(1, value); }
+        }
+
+        private int m_s7ConnType;
+        public int S7ConnectionType
+        {
+            get { return m_s7ConnType; }
+            set { m_s7ConnType = Math.Max(0, Math.Min(2, value)); }
+        }
+
+        #endregion
+
+        #region IPluginTaskDataIbaAnalyzer Members
+
+        public void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor)
+        {
+            if(m_worker == null) m_worker = new S7TaskWorker(this);
+            m_worker.SetIbaAnalyzer(Analyzer, Monitor);
+        }
+
+        #endregion
+
+        #region IPluginTaskDataIbaAnalyzer Members
+
+        public bool UsesAnalysis
+        {
+            get { return !string.IsNullOrEmpty(m_pdoFile); }
+        }
+
+        private iba.Data.MonitorData m_monitorData;
+        public iba.Data.MonitorData MonitorData
+        {
+            get { return m_monitorData; }
+        }
+
+        #endregion
+    }
+
+}

@@ -663,8 +663,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DevExpress.XtraEditors.v16.1.dll" />
-    <Content Include="DevExpress.XtraGrid.v16.1.dll" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\Toolbars16.bmp" />
