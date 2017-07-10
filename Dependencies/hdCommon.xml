@@ -160,6 +160,11 @@
               Looks up a localized string similar to Read event based store data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventAck">
+            <summary>
+              Looks up a localized string similar to Acknowledge event based store data.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventQuery">
             <summary>
               Looks up a localized string similar to Configure or execute event queries.
@@ -185,9 +190,29 @@
               Looks up a localized string similar to Read time based store data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeCut">
+            <summary>
+              Looks up a localized string similar to Cut time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeMax">
+            <summary>
+              Looks up a localized string similar to Limit time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeOffline">
+            <summary>
+              Looks up a localized string similar to Read offline time based store data.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagement">
             <summary>
               Looks up a localized string similar to User authentication and configuration.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagementVersioning">
+            <summary>
+              Looks up a localized string similar to User management versioning.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterAsync">
@@ -198,6 +223,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
             <summary>
               Looks up a localized string similar to Write event based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEventVariable">
+            <summary>
+              Looks up a localized string similar to Write variable amount of event fields.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterLength">
@@ -452,43 +482,13 @@
             Deprecated since v1.4.1
             </remarks>
         </member>
-        <member name="P:iba.HD.Common.EventReaderData.TriggerIn">
-            <summary>
-            Was the event generated on an incoming trigger?
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.EventReaderData.TriggerOut">
-            <summary>
-            Was the event generated on an outgoing trigger?
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.EventReaderData.Ack">
-            <summary>
-            Has the event been acknowledged?
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.EventReaderData.Message">
-            <summary>
-            Formatted event message
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.EventReaderData.GetTexts">
-            <summary>
-            Gets all text field names and their values
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.EventReaderData.GetFloats">
-            <summary>
-            Gets all float field names and their values
-            </summary>
-        </member>
         <member name="M:iba.HD.Common.EventReaderData.GetFieldValue(System.String,System.String@,System.Single@)">
-            <summary>
-            Get value for field with given name
-            </summary>
-            <param name="fieldName">name of the field</param>
-            <param name="textValue">text field value; null if text field doesn't exist</param>
-            <param name="floatValue">float field value; Float.NaN if float field doesn't exist</param>
+            <param name="textValue">
+            text field value; null if text field doesn't exist
+            </param>
+            <param name="floatValue">
+            float field value; Float.NaN if float field doesn't exist
+            </param>
         </member>
         <member name="M:iba.HD.Common.FileDownloadRequest.#ctor(System.String)">
             <param name="path">
@@ -1049,7 +1049,7 @@
             Make sure total byte size is small enough
             </remarks>
         </member>
-        <member name="M:iba.HD.Common.IHdWriterContract.GetBufferInputPct">
+        <member name="M:iba.HD.Common.IHdWriterContract.GetBufferPct">
             <summary>
             Write buffer input percentage
             </summary>
@@ -1089,21 +1089,6 @@
             <returns>
             Index of largest level with a timebase smaller than or equal to the requested timebase
             </returns>
-        </member>
-        <member name="T:iba.HD.Common.HdServiceConstants">
-            <summary>
-            Groups HD service constants
-            </summary>
-        </member>
-        <member name="T:iba.HD.Common.HdSessionConstants">
-            <summary>
-            Groups HD session service constants
-            </summary>
-        </member>
-        <member name="T:iba.HD.Common.HdSingletonConstants">
-            <summary>
-            Groups HD singleton service constants
-            </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:iba.HD.Common.DataTypeY.#cctor" -->
         <member name="M:iba.HD.Common.DataType.CanRepresent(iba.HD.Common.LogicalType)">
