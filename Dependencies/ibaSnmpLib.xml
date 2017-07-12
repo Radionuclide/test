@@ -1,0 +1,1101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ibaSnmpLib</name>
+    </assembly>
+    <members>
+        <member name="T:IbaSnmpLib.IbaSnmpDiagClient">
+            <summary>
+            Class that gives some information about an SNMP client
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpDiag.ClientInactivityTime">
+            <summary>
+            If a client is inactive for longer than ClientInactivityTime minutes then it is removed from the list
+            </summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpDictionary">
+            <summary>
+            Collection with fast O(1) key-based lookup and fast O(log n) index-based lookup
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpDictionary.SortedKeys">
+            <summary> Gets a sorted list of all OIDs. This is a copy.</summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpDictionary.SortedValues">
+            <summary> Gets a list of all objects sorted by OID. This is a copy.</summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpEnumDataTypeEntry.Name">
+            <summary> Is used as a dictionary key </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpEnumDataTypeEntry.Fullname">
+            <summary> This is how it appears in MIB file </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpInform.DiscoverAndSendV3InformSync(System.Object)">
+            <summary>
+            Helper function that performs synchronous retrieval of report and synchronous sending of inform v3
+            </summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpMessageReceivedEventArgs">
+            <summary> Args for the generic 'message received' event </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._shEngine">
+            <summary> Listening engine </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._shStore">
+            <summary> Collection of all SNMP objects </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._protocolVersions">
+            <summary> Enabled SNMP protocol versions </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.WantToStart">
+            <summary> Whether user wants listening engine to be started. This flag is only used for Restart functionality.
+            If it is true, then library will try to restart an engine if it was stopped due to some configuration changes.
+            Use Start() and Stop() to control this flag. </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.DefaultLocalPortBase">
+            <summary> Default port for each iba product is calculated based on this value </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.NotificationList">
+            <summary> List of notifications: Traps or Inform Requests </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.Logger">
+            <summary> Optional external logger, can be set to null if not required </summary> 
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.LoggingMessageReceivedEnabled">
+            <summary> Whether to log each 'message received' or not. </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2System">
+            <summary> 1.3.6.1.2.1.1 = {iso(1) identified-organization(3) dod(6) internet(1) mgmt(2) mib-2(1) system(1)} </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemDescr">
+            <summary> system.1.0 - A textual description of the entity </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemObjectId">
+            <summary> system.2.0 - vendor's identification of the contained entity </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemUpTime">
+            <summary> system.3.0 - time since node was last re-initialized </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemContact">
+            <summary> system.4.0 - contact person </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemName">
+            <summary> system.5.0 - node's fully-qualified domain name </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidMib2SystemLocation">
+            <summary> system.6.0 - physical location of this node </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaRoot">
+            <summary> 1.3.6.1.4.1.45120 - The root of iba data </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProduct">
+            <summary> The root of product subtree, has no corresponding value </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductGeneral">
+            <summary> The root of product-general subtree, has no corresponding value </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductGeneralLicensing">
+            <summary> The root of licensing subtree, has no corresponding value </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductGeneralLicensingSn">
+            <summary> Dongle serial number </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductGeneralLicensingHwId">
+            <summary> Dongle hardware id </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductGeneralLicensingType">
+            <summary> Dongle type </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.OidIbaProductSpecific">
+            <summary> The root of user data subtree, has no corresponding value </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetListOfAllOids">
+            <summary> Gets a copy of a sorted list of OIDs for all existing SNMP objects </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetListOfAllObjects">
+            <summary> Gets a copy of a list of all existing SNMP objects sorted by OID </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateGenericSnmpObjects">
+            <summary> Create objects with special meaning and handling. </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateEupObjectsIfNotYetExist">
+            <summary> Checks whether EUP objects exist and if not then creates them.  </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ConnectionUseIPv4">
+            <summary>
+            Gets or Sets whether engine should support IPv4 endpoints.
+            If no, IPv6 listners will not be created.
+            Default is true.
+            Be sure to set at least one of properties 'ConnectionUseIPv4' or 'ConnectionUseIPv4' to true, before starting an agent.
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ConnectionUseIPv6">
+            <summary>
+            Gets or Sets whether engine should support IPv6 endpoints.
+            If no, IPv6 listners will not be created.
+            Default is true.
+            Be sure to set at least one of properties 'ConnectionUseIPv4' or 'ConnectionUseIPv4' to true, before starting an agent.
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.EndPointsToListen">
+            <summary>
+            Gets a copy of a list or sets a list of EndPoints to Listen.
+            (Returning a copy instead of an internal list is an intended behavior. Because engine should be restarted on the case of endpoint change)
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ActiveEndPoints">
+            <summary>
+            Gets a copy of a subset of EndPointsToListen filtered depending on whether IPv4/v6 is enabled
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.RecalcActiveEndPoints">
+            <summary>
+            Remove unsupported endpoints from the endpoint list
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.Restart">
+            <summary> 
+            Perform restart of listening engine.
+            All the SNMP objects including user data are preserved. 
+            </summary>
+            <remarks>
+            Stop/Start engine if it is running,
+            Just start it, if it is Stopped but _wantToStart == true,
+            Do nothing, if it is Stopped and _wantToStart == false
+            </remarks>
+            <returns> True if there was a try of restart, false if restart was cancelled because 'wantToStart' is false</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.Start">
+            <summary> Starts engine; i.e. starts listening. Sets WantToStart to true.  </summary>
+            <remarks> Can throw  IbaSnmpIsBannedException, InvalidOperationException</remarks>
+            <returns> True if was started successfully, false if had beed already started</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.Stop">
+            <summary> Stops engine; i.e. stops listening; Sets WantToStart to false.</summary>
+            <returns> True if was stopped successfully, false if had beed already stopped</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.StartEngine">
+            <summary> Starts engine; i.e. starts listening; (_wantToStart is not changed) </summary>
+            <remarks> Can throw  IbaSnmpIsBannedException, InvalidOperationException</remarks>
+            <returns> True if was started successfully, false if had beed already started</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.StopEngine">
+            <summary> Stops engine; i.e. stops listening; (_wantToStart is not changed) </summary>
+            <returns> True if was stopped successfully, false if had beed already stopped</returns>
+        </member>
+        <member name="E:IbaSnmpLib.IbaSnmp.SnmpMessageReceived">
+            <summary>
+            This event is triggered every time when ANY incoming SNMP message arrives.
+            Note 1. It will be triggered even if OID is not from our scope.
+            Note 2. If there is a specialized event bound to the requested OID, 
+            then this event will be triggered after specialized one.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.IsEventHandlerRegistered(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Checks if given object has any subscribtions to 'Requested' event.
+            </summary>
+            <remarks>can throw FormatException, KeyNotFoundException</remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.IsEventHandlerRegisteredByFullOid(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Checks if given object has any subscribtions to 'Requested' event.
+            </summary>
+            <remarks>can throw KeyNotFoundException</remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.RegisterEventHandler(IbaSnmpLib.IbaSnmpOid,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs})">
+            <summary>
+            Add a handler to 'Requested' event of an object with given oidSuffix.
+            </summary>
+            <remarks>can throw FormatException, KeyNotFoundException</remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.UnregisterEventHandler(IbaSnmpLib.IbaSnmpOid,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs})">
+            <summary>
+            Remove a handler from 'Requested' event of an object with given oidSuffix.
+            </summary>
+            <remarks>can throw FormatException, KeyNotFoundException</remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.ForwardTypedRequestedEvent``1(System.EventHandler{IbaSnmpLib.IbaSnmpValueRequestedEventArgs{``0}},IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs)">
+            <summary> Forwards untyped event args to a typed event handler </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.AddObjectToStore(IbaSnmpLib.IbaSnmpObjectBase,System.String,System.String,System.String)">
+            <summary> Equips an object with mib information and adds it to the store </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleObjects(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Delete all objects that start with given prefix </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleObjects(IbaSnmpLib.IbaSnmpValueType)">
+            <summary> Deletes all objects with the given value type </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetMultipleObjects(IbaSnmpLib.IbaSnmpValueType)">
+            <summary> Gets all objects with the given value type </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetValue(IbaSnmpLib.IbaSnmpOid,System.Object)">
+            <summary> Sets an object with a given oid to a given value, performing type check beforehand. </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.AssertLeafConsistency(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Checks if object is not created "inside" another object.
+            Leaf of the tree cannot contain other leaves.
+            Folder-node containing object-nodes and other folder-nodes is just an OID metadata and 
+            should not have a corresponding object
+            </summary>
+            <param name="oid"></param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetValue(IbaSnmpLib.IbaSnmpOid,IbaSnmpLib.IbaSnmpValueType@,System.Boolean)">
+            <summary> Gets a value and a type for a given OID </summary>
+            <param name="oid"> The full OID of the object you want the value for </param>
+            <param name="valueType"> The type of the value </param>
+            <param name="bUpdateValue"> True to update the object's value </param>
+            <returns> The value of the object </returns>
+            <remarks> Can throw KeyNotFoundException </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetValue(IbaSnmpLib.IbaSnmpOid,System.Boolean)">
+            <summary> Gets a value for a given OID </summary>
+            <param name="oid"> The full OID of the object you want the value for </param>
+            <param name="bUpdateValue"> True to update the object's value </param>
+            <returns> The value of the object </returns>
+            <remarks> Can throw KeyNotFoundException </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetValueType(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Gets a value type for a given OID </summary>
+            <param name="oid"> The full OID of the object you want the value for </param>
+            <returns> The value type of the object </returns>
+            <remarks> Can throw KeyNotFoundException </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetObjectInfo(IbaSnmpLib.IbaSnmpOid,System.Boolean)">
+            <summary>
+            Get information about a given OID.
+            </summary>
+            <param name="oid">The full OID of the object you want information for.</param>
+            <param name="bUpdateValue">True to update the object's value.</param>
+            <returns></returns>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueMib2SystemUpTime">
+            <summary> Time since current process was started in centiseconds.
+            The value is read-only, it cannot be set or overridden by using an event </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaSnmpSystemTime">
+            <summary>  System time (returns DateTime.Now.TimeOfDay.ToString())
+            The value cannot be set, but can be overridden using an event </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralVersion">
+            <summary> Product version in the format "Major.Minor.Sub[aux]", where aux is an optional arbitrary string.
+            Has no public setter. To set it please use <see cref="M:IbaSnmpLib.IbaSnmp.SetValueIbaProductGeneralVersion(System.Int32,System.Int32,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetValueIbaProductGeneralVersion(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary> This function sets the value <see cref="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralVersion"/> </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingSn">
+            <summary> Dongle serial number </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingHwId">
+            <summary> Dongle hardware id </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingType">
+            <summary> Dongle type </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingSoftwareBuildDate">
+            <summary> Date as a string in ISO format (YYYY-MM-DD). 
+            (The object for this value does NOT exist by default and is created on 
+            first set-access to one of the EUP items) </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingEupDate">
+            <summary> Date as a string in ISO format (YYYY-MM-DD).
+            (The object for this value does NOT exist by default and is created on 
+            first set-access to one of the EUP items) </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingEupGracePeriod">
+            <summary> Number of days as integer.
+            (The object for this value does NOT exist by default and is created on 
+            first set-access to one of the EUP items) </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ValueIbaProductGeneralLicensingEupGracePeriodActive">
+            <summary> EUP active.
+            (The object for this value does NOT exist by default and is created on 
+            first set-access to one of the EUP items) </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._registeredEnums">
+            <summary> A dictionary of registered user-defined enum data types </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._registeredEnumCounter">
+            <summary> A 'pointer' to the last registered enum data type </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.IsInEnumRegion(IbaSnmpLib.IbaSnmpValueType)">
+            <summary> Checks whether a given type belongs to the region of user-defined enums.
+            It's not checked whether this type is registered or not. </summary>
+            <remarks> No search is performed, the check is very fast. </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetEnumDataTypeEntry(System.String)">
+            <summary>  Gets an IbaSnmpEnumDataTypeEntry for a given key. 
+            Returns null if key was not found.  </summary>
+            <remarks> Search speed is O(n) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetEnumDataTypeEntry(IbaSnmpLib.IbaSnmpValueType)">
+            <summary>  Gets an IbaSnmpEnumDataTypeEntry for a given key. 
+            Returns null if key was not found. 
+            Throws ArgumentException if valueType is not from enums region.  </summary>
+            <remarks> Search speed is O(1) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetEnumDataTypeName(IbaSnmpLib.IbaSnmpValueType)">
+            <summary>  Gets a string name of a user-defined enum. 
+            Returns null if there is no such registered enum. </summary>
+            <remarks> Search speed is O(1) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetEnumDataTypeCode(System.String)">
+            <summary>  Gets an IbaSnmpValueType of a user-defined enum. 
+            Returns IbaSnmpValueType.Unknown if there is no such registered enum. </summary>
+            <remarks> Search speed is O(n) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetEnumValueName(IbaSnmpLib.IbaSnmpValueType,System.Int32)">
+            <summary>  Gets a name of a value of a given enum. 
+            Returns null if such enum is not registered or such value does not exist in this enum. </summary>
+            <param name="valueType"> Registered user-defined enum type </param>
+            <param name="intValue"> A value in the user-defined enum type </param>
+            <remarks> Search speed is O(1) + O(1) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.RegisterEnumDataType(System.String,System.String,System.Collections.Generic.Dictionary{System.Int32,System.String})">
+            <summary>
+            Registers a user's data type. After registering it can be used as a value type of a user value.
+            MIB description for such values will be generated accordingly.
+            </summary>
+            <param name="name"> Identifies enum. Is case sensitive. 
+            Should consist of: {'a-z', 'A-Z', '0-9', '_'} and should start with an uppercase letter.
+            Can start with both uppercase or lowercase letter, (anyway a name in MIB will be equipped with 'IbaEnum' prefix.) </param>
+            <param name="description">Description of a type in a free format.</param>
+            <param name="values">A dictionary of all possible values this enum can have. 
+            Value names should consist of: {'a-z', 'A-Z', '0-9', '_'} and should start with a lowercase letter. </param>
+            <returns> IbaSnmpValueType of the registered type if registering succeeds. </returns>
+            <remarks> It's recommended to use returned IbaSnmpValueType value in future instead of the name of the enum,
+            as access by IbaSnmpValueType is faster. </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.UnregisterEnumDataType(IbaSnmpLib.IbaSnmpValueType,System.Boolean)">
+            <summary>  Unregisters user's enum data type. After this it is impossible to use it with for setting values.
+            If some user values of this type were already created then they should be deleted first.
+            </summary>
+            <param name="valueType"> The enum data type to be unregisterd.</param>
+            <param name="deleteCorrespondingValues">  Makes sense only if values of this type exist. 
+            If true, then these objects will be deleted automatically.
+            If false, then InvalidOperationException will be thrown. </param>
+            <returns> True on successful unregistering, false if such a type was not registered. </returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.IsEnumDataTypeRegistered(IbaSnmpLib.IbaSnmpValueType)">
+            <summary> Checks if a given data type is registered </summary>
+            <remarks> Search speed is O(1) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.AssertEnumDataTypeRegistered(IbaSnmpLib.IbaSnmpValueType)">
+            <summary> Checks if a given data type is registered, and throws ArgumentException if not. </summary>
+            <remarks> Search speed is O(1) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetAllRegisteredEnumDataTypes">
+            <summary>
+            Gets a copy of registered enums dictionary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.Boolean,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.Int32,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.UInt32,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.Single,IbaSnmpLib.IbaSnmpValueType,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.Double,IbaSnmpLib.IbaSnmpValueType,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.DateTime,IbaSnmpLib.IbaSnmpValueType,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateEnumUserValue(IbaSnmpLib.IbaSnmpOid,IbaSnmpLib.IbaSnmpValueType,System.Int32,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateUserValue(IbaSnmpLib.IbaSnmpOid,System.Object,IbaSnmpLib.IbaSnmpValueType,System.String,System.String,System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary> Creates a user value with a given oid suffix. 
+            Optionally you can set a 'Requested' event hadler and a tag object.
+            If the value already exists, then ArgumentException will be thown. 
+            If value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteUserValue(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Deletes a user value with given suffix. </summary>
+            <returns> True on success, false if had been already deleted or not existed</returns>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix()</remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteAllUserValues">
+            <summary> Deletes all user-specific values,
+             i.e. object subtree starting with 'OidIbaProductSpecific' </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleUserValues(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Deletes a subtree of user values, starting (inclusively) with the given oidPrefix. i.e. 'OidIbaProductSpecific.oidPrefix'.
+            To delete all user values set oidPrefix to null or use DeleteAllUserValues() function.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.String)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.Boolean)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.Int32)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            This function is used for both int values and user-defined enum values.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.UInt32)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.Single)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.Double)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserValue(IbaSnmpLib.IbaSnmpOid,System.DateTime)">
+            <summary> Sets a user object with a given oid-suffix to a given value.
+            If such an object does not exist, then KeyNotFoundException will be thrown. 
+            If a value is of incorrect type, then FormatException will be thown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetUserValue(IbaSnmpLib.IbaSnmpOid,System.Boolean)">
+            <summary> Gets a value of an object with a given oid-suffix.
+            If such an object does not exist, then KeyNotFoundException is thrown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetUserValue(IbaSnmpLib.IbaSnmpOid,IbaSnmpLib.IbaSnmpValueType@,System.Boolean)">
+            <summary> Gets a value and type of an object with a given oid-suffix.
+            If such an object does not exist, then KeyNotFoundException is thrown. </summary>
+            <remarks> Can rethrow some exceptions from GetFullOidForUserOidSuffix() </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetFullOidForUserOidSuffix(IbaSnmpLib.IbaSnmpOid)">
+            <summary> 
+            Returns a full OID for a given user's suffix, like e.g. '{ibaOidPrefix}.{ProductId}.{oidSuffix}'
+            </summary>
+            <remarks> Can throw InvalidOperationException, ArgumentException, FormatException </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetOidSuffixForFullOid(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Returns an oidSuffix for a given full OID like e.g. '{ibaOidPrefix}.{ProductId}.{oidSuffix}'
+            Returns null if a gieven fullOid is not from user-area address space.
+            </summary>
+            <remarks> Can throw InvalidOperationException, ArgumentException, FormatException </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateTable(IbaSnmpLib.IbaSnmpOid,System.String,System.String)">
+            <summary>
+            Create an SNMP table. If a table with the same OID already exists then it will throw an ArgumentException.
+            </summary>
+            <param name="oidTable">The OID suffix for this table. The OidIbaProductSpecific OID will be prepended to it to generate the full OID.</param>
+            <param name="mibName">The name of the table. The rules for mib names should be applied (start lower case and only english letters and digits).</param>
+            <param name="mibDescription">The description of the table</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateTableColumn(IbaSnmpLib.IbaSnmpOid,System.UInt32,IbaSnmpLib.IbaSnmpValueType,System.String,System.String)">
+            <summary>
+            Add a column to an existing SNMP table.
+            </summary>
+            <param name="oidTable">The OID suffix for this table.</param>
+            <param name="columnId">The id of this column. This shouldn't be 0. This will be the second to last part of the OID of each cell.</param>
+            <param name="valueType">The data type of the column.</param>
+            <param name="mibName">The name of the column in the MIB file. It must start with a lowercase letter and only contain english letters and digits.</param>
+            <param name="mibDescription">The description of the column in the MIB file.</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.CreateTableRow(IbaSnmpLib.IbaSnmpOid,System.UInt32,System.Object[],System.EventHandler{IbaSnmpLib.IbaSnmpObjectValueRequestedEventArgs},System.Object)">
+            <summary>
+            Add a row to an existing SNMP table. The columns 
+            </summary>
+            <param name="oidTable">The OID suffix for this table.</param>
+            <param name="rowIndex">The id of this row. This will be the last part of the OID of each cell.</param>
+            <param name="colData">The initial data for all the columns. This can be null.</param>
+            <param name="handler">An optional event handler to supply data for the cells.</param>
+            <param name="tag">An optional tag that is sent with the event handler.</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteTableRows(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Delete all table rows of an existing table.
+            </summary>
+            <param name="oidTable">The OID suffix for this table.</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteTable(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Delete an existing table
+            </summary>
+            <param name="oidTable">The OID suffix for this table.</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleTables(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Delete all tables that start with the supplied oidPrefix. If the oidPrefix is null then all tables will be deleted.
+            </summary>
+            <param name="oidPrefix">The OID prefix of the tables to delete. This can be null.</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DoesTableExist(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Checks if the table with this OID exists.
+            </summary>
+            <param name="oidTable">The OID suffix for this table.</param>
+            <returns>True in case the table exists.</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.LogMessage(System.String)">
+            <summary>
+            Sends a message to an external Logger if any one is defined (if this.Logger != null)
+            </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmp._oidMetadataDict">
+            <summary> 
+            Dictionary of metadata for object-nodes and folder-nodes 
+            Can be used by MIB generator (to get descriptions and names) and by GUI (to get captions).
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetUserOidMetadata(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String)">
+            <summary>
+            Sets metadata for the given object-node or folder-node within product-specific area. 
+            If <paramref name="mibName"/> is not null, then it is checked for compliance with MIB rules.
+            If <see cref="P:IbaSnmpLib.IbaSnmpOidMetadata.ParentWildcard"/> is used, then it is resolved here.
+            Also a case of the first letter is changed if necessary.
+            Can throw <see cref="T:System.FormatException"/> and <see cref="T:System.InvalidOperationException"/> 
+            if <paramref name="mibName"/> is incorrect.
+            </summary>
+            <param name="oidSuffix">Oid of the object-node or folder-node within product-specific area;
+            also it is a key for the metadata dictionary</param>
+            <param name="mibName">MIB name for the object or "folder". should be an alphanumeric name e.g. "MyName".
+            You can use a wilcard <see cref="P:IbaSnmpLib.IbaSnmpOidMetadata.ParentWildcard"/> here,
+            then wildcard will be replaced with ancestor's name e.g. "~MyName" -> "parentNameMyName".
+            You can also set it to null, then the name will be generated automatically based on OID.</param>
+            <param name="mibDescription"></param>
+            <param name="guiCaption">A short user-friendly name of the object, can be used in e.g. TreeView</param>
+            <exception cref="T:System.FormatException">
+            Thrown when <paramref name="mibName"/> is present (is not <see langword="null"/>)
+            but has an incorrect value. See <see cref="P:IbaSnmpLib.IbaSnmpOidMetadata.MibName"/> for details.
+            </exception>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetOidMetadata(IbaSnmpLib.IbaSnmpOid,System.String)">
+            <summary>
+            Sets metadata for the given object-node or folder-node within any area (not only product-specific area). 
+            You can set only Caption here (MIB names and descriptions are predefined by the library).
+            If you want to set metadata for user-specific area, 
+            please use a function <see cref="M:IbaSnmpLib.IbaSnmp.SetUserOidMetadata(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String)"/> instead.
+            </summary>
+            <param name="oid">Oid of the object-node or folder-node; also it is a key for the metadata dictionary</param>
+            <param name="guiCaption">A short user-friendly name of the object, can be used in e.g. TreeView</param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetOidMetadata(IbaSnmpLib.IbaSnmpOidMetadata,System.Boolean)">
+            <summary> Set given metadata to 'md.Oid' key </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetUserOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Gets a copy of stored metadata of the node within product-specific area. 
+            </summary>
+            <param name="oidSuffix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Gets a copy of stored metadata of the given node. 
+            </summary>
+            <param name="oid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteUserOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Deletes metadata for a given oidSuffix </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Deletes metadata for a given oid </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleUserOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Deletes metadata for a subtree of user OIDs,
+            starting (inclusively) with the given oidPrefix. i.e. 'OidIbaProductSpecific.oidPrefix'.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteMultipleOidMetadata(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Deletes metadata for a subtree of OIDs,
+            starting (inclusively) with the given oid. 
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteAllUserOidMetadata">
+            <summary> Deletes all metadata entries from below of OidIbaProductSpecific </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.DeleteAllOidMetadata">
+            <summary> Deletes all metadata entries </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.AssertIsMibNameUnique(IbaSnmpLib.IbaSnmpOid,System.String)">
+            <summary>
+            Checks if given mibName is not yet contained in <see cref="F:IbaSnmpLib.IbaSnmp._oidMetadataDict"/>.
+            True means that it is unique.
+            False means not-uniqueness; and it should not be added.
+            </summary>
+            <param name="oid"></param>
+            <param name="mibName"></param>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetOidByMibName(System.String)">
+            <summary>
+            Looks through internal oid metadata dictionary (<see cref="F:IbaSnmpLib.IbaSnmp._oidMetadataDict"/>) for a given mibName.
+            Returns corresponding OID, or null if none was found.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.SetMibNameAndDescription(IbaSnmpLib.IbaSnmpOid,System.String,System.String)">
+            <summary>
+            Sets MIB Name and description without changig guiCaption.
+            </summary>
+            <param name="oid"></param>
+            <param name="mibName"></param>
+            <param name="mibDescription"></param>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmp.ClientInactivityTime">
+            <summary>
+            If a client is inactive for longer than ClientInactivityTime minutes then it is removed from the list
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.GetClients">
+            <summary>
+            Get a list of the SNMP clients that were connected in the last ClientInactivityTime minutes
+            </summary>
+            <returns>The list of clients</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmp.ClearClients">
+            <summary>
+            Clear the list of connected clients
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.DoGenerationPostProcessing(System.Text.StringBuilder)">
+            <summary> Does some formatting (replace '\t' with whitespaces, etc.) </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.AddOid(IbaSnmpLib.IbaSnmpOid)">
+            <summary> Gets MIB name and description from metadata dictionary and adds and oid </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.AddOid(IbaSnmpLib.IbaSnmpOid,System.String,System.String)">
+            <summary> Autodetects parent and least id oid and adds an oid </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsAlphadigitalName(System.String)">
+            <summary>
+            Checks if a given string is an alpha-digital name (including -), and starts with a letter ([a-zA-Z])
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsAlphadigitalLowerCamelName(System.String)">
+            <summary>
+            Checks if a given string is an alpha-digital name (including -), and starts with a lowercase
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsAlphadigitalUpperCamelName(System.String)">
+            <summary>
+            Checks if a given string is an alpha-digital name (including -), and starts with an uppercase
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsEnglishLetter(System.Char)">
+            <summary> Checks if a char is an english letter ([a-zA-Z]). </summary>
+            <remarks> Something like 'ö' is not ok for us, so Char.IsLetter() cannot be used here. </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsEnglishLetterOrDigit(System.Char)">
+            <summary> Checks if a char is an english letter or digit ([a-zA-Z0-9]). </summary>
+            <remarks> Something like 'ö' is not ok for us, so Char.IsLetterOrDigit() cannot be used here. </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.IsEnglishLetterDigitOrHyphen(System.Char)">
+            <summary> Checks if a char is an english letter, digit or hyphen ([a-zA-Z0-9-]). </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpMibGenerator.NormalizeObjectName(System.String)">
+            <summary>
+            This function will check that the object name complies to all rules for object names. 
+            If the name doesn't comply then the function will remove all invalid letters.
+            </summary>
+            <param name="objectName">The object name to normalize</param>
+            <returns>The normalized object name</returns>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpObjectStore.Dictionary">
+            <summary> All the objects that are available over SNMP </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmpObjectStore.LockObject">
+            <summary> Lock this object while using IbaSnmpObjectStore.Dictionary </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectStore.GetListOfAllOids">
+            <summary> Gets a copy of a sorted list of all OIDs </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectStore.GetListOfAllObjects">
+            <summary> Gets a copy of a list of all objects sorted by OID </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmpOid._hashcode">
+            <summary>
+            Hashcode is calculated on first demand and only once. hashcode == 0 means that it has no value yet.
+            </summary>
+        </member>
+        <member name="F:IbaSnmpLib.IbaSnmpOid._list">
+            <remarks> Big-endian order is used (i.e. _list[0] is leftmost (most significant) item) </remarks>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpOid.Count">
+            <summary> Count of numbers in OID </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpOid.Item(System.Int32)">
+            <summary> Direct access to numbers in OID by index. </summary>
+            <remarks> Big-endian order is used (i.e. this[0] is leftmost (most significant) item) </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.StartsWith(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Whether this starts with oidPrefix
+            </summary>
+            <param name="oidPrefix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.Split(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Splits this into prefix and suffix, returns suffix.
+            If this does not start with prefix, then returns null.
+            </summary>
+            <returns>suffix</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.GetLeastSignificantSubId">
+            <summary> Gets the least significant (rightmost) subidentifier for this OID. 
+            (e.g. 6 for "1.3.6") </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.ToNumerical">
+            <summary>
+            Gets a copy of this in an uint[] representation.
+            </summary>
+            <returns></returns>
+            <remarks> Big-endian order is used (i.e. array[0] is most significant. </remarks>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.op_Addition(IbaSnmpLib.IbaSnmpOid,IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Merges OIDs, e.g. '1.2' + '3.4' = '1.2.3.4'
+            </summary>
+            <param name="oidPrefix">left part</param>
+            <param name="oidSuffix">right part</param>
+            <returns>resulting OID</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.op_Addition(IbaSnmpLib.IbaSnmpOid,System.UInt32)">
+            <summary>
+            Merges OIDs, e.g. '1.2' + '3' = '1.2.3'
+            </summary>
+            <param name="oidPrefix">left part</param>
+            <param name="oidSuffix">right part</param>
+            <returns>resulting OID</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.op_Addition(IbaSnmpLib.IbaSnmpOid,System.String)">
+            <summary>
+            Merges OIDs, e.g. '1.2' + '3.4' = '1.2.3.4'
+            </summary>
+            <param name="oidPrefix">left part</param>
+            <param name="oidSuffix">right part</param>
+            <returns>resulting OID</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.op_Subtraction(IbaSnmpLib.IbaSnmpOid,IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Splits fullOid into oidPrefix and oidSuffix if possible, returns oidSuffix.
+            If fullOid does not start with oidPrefix, then returns null.
+            </summary>
+            <param name="fullOid"> e.g.'1.3.6.1.4.1.45120.1.99'</param>
+            <param name="oidPrefix"> e.g. '1.3.6.1.4.1.45120.1'</param>
+            <returns> Rightmost (less significant) part of fullOid without oidPrefix e.g. '99'</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:IbaSnmpLib.IbaSnmpOid"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:IbaSnmpLib.IbaSnmpOid"/>. </param>
+            <returns><value>true</value> if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:IbaSnmpLib.IbaSnmpOid"/>; otherwise, <value>false</value>.
+            </returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.Equals(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns><value>true</value> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <value>false</value>.
+            </returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.Equals(System.IComparable{IbaSnmpLib.IbaSnmpOid},IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            The comparison.
+            </summary>
+            <param name="left">Left <see cref="T:IbaSnmpLib.IbaSnmpOid"/> object</param>
+            <param name="right">Right <see cref="T:IbaSnmpLib.IbaSnmpOid"/> object</param>
+            <returns>
+            Returns <c>true</c> if the values of its operands are equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOid.CompareTo(IbaSnmpLib.IbaSnmpOid)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
+            Less than zero: This object is less than the <paramref name="other"/> parameter.
+            Zero: This object is equal to <paramref name="other"/>.
+            Greater than zero: This object is greater than <paramref name="other"/>.
+            </returns>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpObjectBase.Oid">
+            <summary> OID </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpObjectBase.OidSuffix">
+            <summary> Oid suffix for a user object or null if the object is not a user object </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpObjectBase.Tag">
+            <summary> Tag object with a free access. 
+            <see cref="T:IbaSnmpLib.IbaSnmpObjectBase"/> just stores this tag and does not interact with it anyhow. </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.HasEventSubscriptions">
+            <summary>  Tells whether 'Requested' event has any handlers  </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.UpdateValue">
+            <summary>
+            Triggers 'Requested' event in order to allow a user to refresh a value
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.GetSnmpTypedOutput">
+            <summary>
+            Gets SNMP-representation of an internal value of the object.
+            This function is called after a type check and a check for null, so it is guaranteed, 
+            that if this function is called then UntypedValue is of correct type. 
+            Highly unprobable concurrency problem (causing an outdating of the type check) is not a big issue, 
+            as possible invalid cast exception will be suppressed by the #SNMP library, 
+            and SNMP-get operation will just end with a timeout.
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpObjectBase.CheckableValue">
+            <summary>
+            Gets or sets a value also performing type checks beforehand.
+            get: if type is wrong, then null will be returned.
+            set: if type is wrong, then <see cref="T:System.FormatException"/> will be thrown.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.CheckTypeAndSetValueSilently(System.Object)">
+            <summary>
+            Checks type and sets a value. 
+            If type is wrong, then no Exception will be generated, and value will be set to null.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.CheckTypeOrNull(System.Object)">
+            <summary> Checks if (value is null) OR (is of correct type). </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpObjectBase.CheckType(System.Object)">
+            <summary> Checks if value is of correct type (i.e. correspond to ValueType) </summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpDateTimeTcObject">
+            <summary> DateTime value binary encoded as "DateAndTime" textual convention (SNMPv2-TC)
+            with DISPLAY-HINT "2d-1d-1d,1d:1d:1d.1d,1a1d:1d" </summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpDateTimeStrObject">
+            <summary> DateTime value as a simple string formatted as yyyy-MM-dd HH:mm:ss.fff </summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpDateStrObject">
+            <summary> Date value; internally it is a <see cref="T:System.DateTime"/> type but time component is ignored; 
+            SNMP output is a human-readable string formatted as yyyy-MM-dd (ISO Date format)</summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpOidObject">
+            <summary> An OID in "OBJECT IDENTIFIER" syntax. 
+            A string containing digits (0-9) and decimal points ('.'). e.g. "1.3.6.1.4.1.311" </summary>
+        </member>
+        <member name="T:IbaSnmpLib.VersionCode">
+            <summary>
+            Protocol version code. 
+            </summary>
+            <remarks>
+            Forward of Lextm.SharpSnmpLib.VersionCode
+            </remarks>
+        </member>
+        <member name="F:IbaSnmpLib.VersionCode.V1">
+            <summary>SNMP v1.</summary>
+        </member>
+        <member name="F:IbaSnmpLib.VersionCode.V2">
+            <summary>SNMP v2 classic.</summary>
+        </member>
+        <member name="F:IbaSnmpLib.VersionCode.V3">
+            <summary>SNMP v3.</summary>
+        </member>
+        <member name="T:IbaSnmpLib.IbaSnmpRequestIdContainer">
+            <summary>
+            Is used to retrieve an out parameter from async function
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpNotificationBase.TimeoutValue">
+            <summary>
+            How much time we should wait for send operaion to complete.
+            It is guaranteed that SendFinished event will be fired not later than after this value is elapsed.
+            </summary>
+        </member>
+        <member name="E:IbaSnmpLib.IbaSnmpNotificationBase.SendFinished">
+            <summary>
+            Fired after message send is finished. Contains information about success or failure.
+            </summary>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpNotificationBase.DosProtection">
+            <summary>
+            Dos protection system. Prevents sending too many requests per time period. 
+            Is global for all traps and inform messages. 
+            Is a readonly instance but can be configured at Runtime as desired.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.AutodetectLocalIp">
+            <summary>
+            Autodetect local IP and set 'this.LocalIp' value
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.ConfigV1(System.Net.IPEndPoint,System.String,System.Net.IPEndPoint)">
+            <summary>
+            Configure trap or inform instance to be used over V1 protocol. Required to be called only once before first call of SendAsync().
+            </summary>
+            <param name="destinationEndPoint">Where to send trap/inform to</param>
+            <param name="communityString">Security parameter</param>
+            <param name="localEndPoint">Our Local IP, for reciever to know the sender. 
+            Can be set to null, then library wil try to autodetect it (recommended for systems with single IP interface).</param>
+            <returns>IbaSnmpRetval.Good on success, corresponding value on failure</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.ConfigV2(System.Net.IPEndPoint,System.String,System.Net.IPEndPoint)">
+            <summary>
+            Configure trap or inform instance to be used over V2 protocol. Required to be called only once before first call of SendAsync().
+            </summary>
+            <param name="destinationEndPoint">Where to send trap/inform to</param>
+            <param name="communityString">Security parameter</param>
+            <param name="localEndPoint">Our Local IP, for reciever to know the sender. 
+            Can be set to null, then library wil try to autodetect it (recommended for systems with single IP interface).</param>
+            <returns>IbaSnmpRetval.Good on success, corresponding value on failure</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.ConfigV3(System.Net.IPEndPoint,IbaSnmpLib.IbaSnmpUserAccount,System.Net.IPEndPoint)">
+            <summary>
+            Configure trap or inform instance to be used over V3 protocol. Required to be called only once before first call of SendAsync().
+            </summary>
+            <param name="destinationEndPoint">Where to send trap/inform to</param>
+            <param name="user">User account, containing security information</param>
+            <param name="localEndPoint">Our Local IP, for reciever to know the sender. 
+            Can be set to null, then library wil try to autodetect it (recommended for systems with single IP interface).</param>
+            <returns>IbaSnmpRetval.Good on success, corresponding value on failure</returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.StartSend(System.Int32,Lextm.SharpSnmpLib.ObjectIdentifier,System.Collections.Generic.List{Lextm.SharpSnmpLib.Variable},System.Net.IPEndPoint)">
+            <summary>
+            Creates and starts a task that initiates a send request.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.StartSendAndWaitForTimeout(System.Int32,Lextm.SharpSnmpLib.ObjectIdentifier,System.Collections.Generic.List{Lextm.SharpSnmpLib.Variable},System.Net.IPEndPoint)">
+            <summary>
+            Starts send request and generates an exception if operation does not finish within give Timeout.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.WaitForTaskOrThrowTimeout(System.Object)">
+            <summary>
+            helper function that synchronously waits for a supplied task. 
+            It's guaranteed that it will end end not later than within a defined Timeout interval.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.SendAsyncLowLevel(IbaSnmpLib.IbaSnmpOid,System.String,System.Net.IPEndPoint,IbaSnmpLib.IbaSnmpRequestIdContainer)">
+            <summary>
+            Send an inform/trap to specific endpoint using predefined protocol and credentials.
+            To get the result of sending please use one of the following options: 
+            1. subscribe to 'SendFinished' event. 
+            2. await for this function.
+            </summary>
+            <param name="ibaOid"></param>
+            <param name="value"></param>
+            <param name="endPoint"></param>
+            <param name="rc">(Actually, this is an OUT parameter)
+            Supply this object if you want to get back a requestId which will be used when sending this request. 
+            Previous contents of rc will be ignored and overwritten.
+            Pass null if you're not interested in requestId.</param>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.SendAsync(IbaSnmpLib.IbaSnmpOid,System.String,System.Net.IPEndPoint,IbaSnmpLib.IbaSnmpRequestIdContainer)">
+            <summary>
+            Send an inform/trap to specific endpoint using predefined protocol and credentials.
+            To get the result of sending please use one of the following options: 
+            1. subscribe to 'SendFinished' event. 
+            2. await for this function.
+            </summary>
+            <param name="oid"></param>
+            <param name="value"></param>
+            <param name="endPoint"></param>
+            <param name="rc">(Actually, this is an OUT parameter)
+            Supply this object if you want to get back a requestId which will be used when sending this request. 
+            Previous contents of rc will be ignored and overwritten.
+            Pass null if you're not interested in requestId.</param>
+            <returns></returns>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpNotificationBase.SendAsync(IbaSnmpLib.IbaSnmpOid,System.String,IbaSnmpLib.IbaSnmpRequestIdContainer)">
+            <summary>
+            Send an inform/trap to predefined endpoint using predefined protocol and credentials.
+            To get the result of sending please use one of the following options: 
+            1. subscribe to 'SendFinished' event. 
+            2. await for this function.
+            </summary>
+            <param name="oid"></param>
+            <param name="value"></param>
+            <param name="rc">(Actually, this is an OUT parameter)
+            Supply this object if you want to get back a requestId which will be used when sending this request. 
+            Previous contents of rc will be ignored and overwritten.
+            Pass null if you're not interested in requestId.</param>
+            <returns></returns>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpOidMetadata.MibName">
+            <summary>
+            OID name or object name for MIB file. 
+            You can set it explicitly (e.g. "myFullName") or using 
+            a wildcard <see cref="P:IbaSnmpLib.IbaSnmpOidMetadata.ParentWildcard"/> (e.g. "~MyName").
+            MIB name is not checked by this class, but there are certain rules for this.
+            Please <see cref="M:IbaSnmpLib.IbaSnmp.SetUserOidMetadata(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String)"/> for details.
+            </summary>
+        </member>
+        <member name="M:IbaSnmpLib.IbaSnmpOidMetadata.#ctor(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String)">
+            <summary>
+            Members are set directly without any checks, 
+            though there are some limitations concerning <paramref name="mibName"/>.
+            Please see <see cref="P:IbaSnmpLib.IbaSnmpOidMetadata.MibName"/> and <see cref="M:IbaSnmpLib.IbaSnmp.SetUserOidMetadata(IbaSnmpLib.IbaSnmpOid,System.String,System.String,System.String)"/> for details.
+            </summary>
+            <param name="oid">Is the key id of the metadata dictionary</param>
+            <param name="mibName"></param>
+            <param name="mibDescription"></param>
+            <param name="guiCaption"></param>
+        </member>
+        <member name="P:IbaSnmpLib.IbaSnmpOidMetadata.ParentWildcard">
+            <summary>
+            A symbol to represent a Wildcard that should be replaced with all the ancestor's names.
+            e.g. name "~Date" will be replaced to e.g. "Job1StatusDate".
+            Wildcard replacement is not done immediately when constructed, but on late stage when (and if) requested.
+            </summary>
+        </member>
+    </members>
+</doc>
