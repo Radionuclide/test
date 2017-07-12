@@ -38,9 +38,10 @@
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_gbApp = new System.Windows.Forms.GroupBox();
+            this.m_btChange = new System.Windows.Forms.Button();
+            this.m_tbPort = new System.Windows.Forms.TextBox();
             this.m_btnRestart = new System.Windows.Forms.Button();
             this.m_lblServiceStatus = new System.Windows.Forms.Label();
-            this.m_udPort = new System.Windows.Forms.NumericUpDown();
             this.m_btnStop = new System.Windows.Forms.Button();
             this.m_btnStart = new System.Windows.Forms.Button();
             this.m_lbServPort = new System.Windows.Forms.Label();
@@ -52,7 +53,6 @@
             this.m_timer = new System.Windows.Forms.Timer(this.components);
             this.groupBox5.SuspendLayout();
             this.m_gbApp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox5
@@ -94,9 +94,10 @@
             // m_gbApp
             // 
             resources.ApplyResources(this.m_gbApp, "m_gbApp");
+            this.m_gbApp.Controls.Add(this.m_btChange);
+            this.m_gbApp.Controls.Add(this.m_tbPort);
             this.m_gbApp.Controls.Add(this.m_btnRestart);
             this.m_gbApp.Controls.Add(this.m_lblServiceStatus);
-            this.m_gbApp.Controls.Add(this.m_udPort);
             this.m_gbApp.Controls.Add(this.m_btnStop);
             this.m_gbApp.Controls.Add(this.m_btnStart);
             this.m_gbApp.Controls.Add(this.m_lbServPort);
@@ -107,6 +108,19 @@
             this.m_gbApp.Controls.Add(this.m_cbAutoStart);
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
+            // 
+            // m_btChange
+            // 
+            resources.ApplyResources(this.m_btChange, "m_btChange");
+            this.m_btChange.Name = "m_btChange";
+            this.m_btChange.UseVisualStyleBackColor = true;
+            this.m_btChange.Click += new System.EventHandler(this.btChangePort_Click);
+            // 
+            // m_tbPort
+            // 
+            resources.ApplyResources(this.m_tbPort, "m_tbPort");
+            this.m_tbPort.Name = "m_tbPort";
+            this.m_tbPort.ReadOnly = true;
             // 
             // m_btnRestart
             // 
@@ -121,28 +135,6 @@
             this.m_lblServiceStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.m_lblServiceStatus, "m_lblServiceStatus");
             this.m_lblServiceStatus.Name = "m_lblServiceStatus";
-            // 
-            // m_udPort
-            // 
-            resources.ApplyResources(this.m_udPort, "m_udPort");
-            this.m_udPort.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.m_udPort.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_udPort.Name = "m_udPort";
-            this.m_udPort.Value = new decimal(new int[] {
-            8800,
-            0,
-            0,
-            0});
-            this.m_udPort.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_udPort_KeyUp);
-            this.m_udPort.Validated += new System.EventHandler(this.m_udPort_Validated);
             // 
             // m_btnStop
             // 
@@ -220,7 +212,6 @@
             this.groupBox5.PerformLayout();
             this.m_gbApp.ResumeLayout(false);
             this.m_gbApp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_udPort)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -234,7 +225,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox m_gbApp;
         private System.Windows.Forms.Label m_lblServiceStatus;
-        private System.Windows.Forms.NumericUpDown m_udPort;
         private System.Windows.Forms.Button m_btnStop;
         private System.Windows.Forms.Button m_btnStart;
         private System.Windows.Forms.Label m_lbServPort;
@@ -247,5 +237,7 @@
         private System.Windows.Forms.OpenFileDialog m_openFileDialog;
         private System.Windows.Forms.Button m_btnRestart;
         private System.Windows.Forms.Timer m_timer;
+        private System.Windows.Forms.Button m_btChange;
+        private System.Windows.Forms.TextBox m_tbPort;
     }
 }

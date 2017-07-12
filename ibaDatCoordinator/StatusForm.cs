@@ -102,14 +102,14 @@ namespace iba
                 status = ServiceControllerStatus.Stopped;
                 if (firstFailure)
                 {
-                    if(LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, "Failure getting service info: " + ex.Message);
+                    if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, "Failure getting service info: " + ex.Message);
                     firstFailure = false;
                 }
                 bServiceError = true;
             }
 
 
-            if (status != ServiceControllerStatus.Stopped)
+            if (status != ServiceControllerStatus.Stopped && !updatingCombo)
             {
                 try
                 {
@@ -132,13 +132,15 @@ namespace iba
             }
 
 
-            m_cbAutoStart.CheckedChanged -= new System.EventHandler(this.m_cbAutoStart_CheckedChanged);
-            if (bServiceError)
-                m_cbAutoStart.Checked = false;
-            else
-                m_cbAutoStart.Checked = sc.ServiceStart == ServiceStart.Automatic;
-            m_cbAutoStart.CheckedChanged += new System.EventHandler(this.m_cbAutoStart_CheckedChanged);
-
+            if (!updatingAutoStart)
+            {
+                m_cbAutoStart.CheckedChanged -= new System.EventHandler(this.m_cbAutoStart_CheckedChanged);
+                if (bServiceError)
+                    m_cbAutoStart.Checked = false;
+                else
+                    m_cbAutoStart.Checked = sc.ServiceStart == ServiceStart.Automatic;
+                m_cbAutoStart.CheckedChanged += new System.EventHandler(this.m_cbAutoStart_CheckedChanged);
+            }
             sc.Close();
 
 
@@ -173,6 +175,11 @@ namespace iba
                     m_iconEx.Icon = this.Icon = bServiceError?ServiceDisconnectedIcon:ServiceStoppedIcon;
                     m_iconEx.Text = bServiceError ? iba.Properties.Resources.ServiceStatusTooltipError : iba.Properties.Resources.ServiceStatusTooltipStopped;
                 }
+            }
+
+            if (!updatingPortNr)
+            {
+                m_tbPort.Text = Program.ServicePortNr.ToString();
             }
         }
 
@@ -224,6 +231,17 @@ namespace iba
         public NotifyIcon NotifyIcon
         {
             get { return m_iconEx; }
+        }
+
+        public int PortNr {
+            get
+            {
+                return int.Parse(m_tbPort.Text);
+            }
+            set
+            {
+                m_tbPort.Text = value.ToString();
+            }
         }
 
         private ContextMenuStrip m_iconMenu;
@@ -487,21 +505,11 @@ namespace iba
                 MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void m_udPort_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                PortNrValidate();
-        }
-
-        private void m_udPort_Validated(object sender, EventArgs e)
-        {
-            PortNrValidate();
-        }
 
         private void PortNrValidate()
         {
             int prevNr = Program.ServicePortNr;
-            int newNr = (int)m_udPort.Value;
+            int newNr = int.Parse(m_tbPort.Text);
             if (prevNr != newNr)
             {
                 string text = iba.Properties.Resources.RestartServerQuestion;
@@ -523,7 +531,7 @@ namespace iba
                     }
                     else
                     {
-                        m_udPort.Value = prevNr;
+                        m_tbPort.Text = prevNr.ToString();
                     }
                 }
                 catch (Exception ex)
@@ -572,9 +580,11 @@ namespace iba
             }
         }
 
+        private bool updatingAutoStart;
         private void m_cbAutoStart_CheckedChanged(object sender, EventArgs e)
         {
             ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
+            updatingAutoStart = true;
             if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
@@ -606,6 +616,7 @@ namespace iba
             {
                 service.ServiceStart = ServiceStart.Manual;
             }
+            updatingAutoStart = false;
         }
 
         private void m_registerButton_Click(object sender, EventArgs e)
@@ -724,9 +735,11 @@ namespace iba
             m_timer.Enabled = true;
         }
 
+        private bool updatingCombo;
         private void m_comboPriority_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (m_comboPriority.SelectedIndex < 0) return;
+            updatingCombo = true;
             if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
@@ -757,6 +770,24 @@ namespace iba
             else
             {
                 SetServicePriority(m_comboPriority.SelectedIndex);
+            }
+            updatingCombo = false;
+        }
+
+        private bool updatingPortNr;
+        private void btChangePort_Click(object sender, EventArgs e)
+        {
+            using (iba.Dialogs.ChangeServerPortForm form = new ChangeServerPortForm())
+            {
+                form.PortNr = this.PortNr;
+
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    updatingPortNr = true;
+                    this.PortNr = form.PortNr;
+                    PortNrValidate();
+                    updatingPortNr = false;
+                }
             }
         }
     }

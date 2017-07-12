@@ -30,6 +30,7 @@ namespace iba.Services
         private CommunicationObject m_communicationObject;
 
         private ServicePublisher m_servicePublisher;
+        private TcpChannel localChannel;
 
         protected override void OnStart(string[] args)
         {
@@ -84,8 +85,24 @@ namespace iba.Services
                 IDictionary props = new Hashtable();
                 props["port"] = Program.ServicePortNr;
                 //props["machineName"] = "localhost";
-                TcpChannel localChannel = new TcpChannel(props, clientProvider, serverProvider);
-                ChannelServices.RegisterChannel(localChannel, false);
+                int countTries = 0;
+
+                while (true)
+                {
+                    try
+                    {
+                        localChannel = new TcpChannel(props, clientProvider, serverProvider);
+                        ChannelServices.RegisterChannel(localChannel, false);
+                        break;
+                    }
+                    catch
+                    {
+                        countTries++;
+                        if (countTries > 10) throw;
+                        System.Threading.Thread.Sleep(1000); //lets retry after a second
+                    }
+                }
+
                 RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
 
                 Hashtable serviceProps = new Hashtable();
@@ -97,7 +114,7 @@ namespace iba.Services
                 m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
                 m_servicePublisher.PublishServiceEndpoint(serviceProps);
                 // added by kolesnik - begin
-                m_communicationObject.Manager.SnmpWorker.Init();
+                m_communicationObject.Manager.SnmpWorkerInit();
                 // added by kolesnik - end
             }
             catch (Exception ex)
@@ -153,6 +170,16 @@ namespace iba.Services
             m_servicePublisher = null;
 
             LogData.StopLogger();
+
+            try
+            {
+                localChannel.StopListening(null);
+                ChannelServices.UnregisterChannel(localChannel);
+            }
+            catch
+            {
+
+            }
         }
 
         protected override void OnShutdown()

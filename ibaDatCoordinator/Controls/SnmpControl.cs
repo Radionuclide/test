@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
@@ -69,50 +72,49 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            _data = datasource as SnmpData; // clone of current Manager's data
-
-            // if data is wrong, disable all controls, and cancel load
-            Enabled = _data != null;
-            if (_data == null)
-            {
-                return;
-            }
-
-            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            if (snmpWorker != null)
-            {
-                // re-subscribe to status event
-                // (probabaly now we are connected to another server)
-                snmpWorker.StatusChanged -= SnmpWorker_StatusChanged;
-                snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
-            }
-
-            // if we have no snmp worker or IbaSnmp
-            // then disable all controls and cancel load
-            bool isServerAvailable = snmpWorker?.IbaSnmp != null;
-            labelNotConnected.Visible = !isServerAvailable;
-            gbConfiguration.Visible = 
-                gbDiagnostics.Visible =
-                gbObjects.Visible = isServerAvailable;
-            if (!isServerAvailable)
-            {
-                return;
-            }
-
-            // read from data to controls
             try
             {
+                _data = datasource as SnmpData; // clone of current Manager's data
+
+                // if data is wrong, disable all controls, and cancel load
+                Enabled = _data != null;
+                if (_data == null)
+                {
+                    return;
+                }
+
+                //var mgr = TaskManager.Manager;
+                //SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
+                //if (snmpWorker != null)
+                //{
+                // re-subscribe to status event
+                // (probabaly now we are connected to another server)
+                // todo kls how to handle remote events?
+                //snmpWorker.StatusChanged -= SnmpWorker_StatusChanged;
+                //snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
+                //}
+
+                //bool isConnectedOrLocal = IsConnectedOrLocal;
+
+                ////            gbConfiguration.Visible =
+                //gbDiagnostics.Enabled =
+                //    gbObjects.Enabled = isConnectedOrLocal;
+
+                // read from data to controls
                 ConfigurationFromDataToControls();
-                
-                // force rebuild snmpworker's tree to ensure we have most recent information
-                snmpWorker.RebuildTreeCompletely();
+
+                //// force rebuild snmpworker's tree to ensure we have most recent information
+                //TaskManager.Manager.SnmpRebuildObjectTree();
+
                 // rebuild gui-tree
                 RebuildObjectsTree();
-                snmpWorker.ApplyStatusToTextBox(tbStatus);
 
                 // user has selected the control, 
                 // enable clients monitoring
-                timerRefreshClients.Enabled = true;
+                timerRefreshStatus.Enabled = true;
+
+                // first time refresh status immediately
+                timerRefreshStatus_Tick(null, null);
             }
             catch (Exception ex)
             {
@@ -138,7 +140,7 @@ namespace iba.Controls
         {
             //  user has hidden the control, 
             // disable clients monitoring
-            timerRefreshClients.Enabled = false;
+            timerRefreshStatus.Enabled = false;
         }
 
         #endregion
@@ -154,14 +156,16 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
 
-                // invalidate structure and rebuild the tree
-                // because probabaly textual conventions were changed
-                TaskManager.Manager.SnmpWorker.IsStructureValid = false;
+                // rebuild the tree because probabaly textual conventions were changed
+                TaskManager.Manager.SnmpRebuildObjectTree();
+
+                // rebuild GUI tree
                 RebuildObjectsTree();
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.buttonConfigurationApply_Click() exception: " + ex.Message);
+                LogData.Data.Logger.Log(Level.Exception,
+                    @"SnmpControl.buttonConfigurationApply_Click() exception: " + ex.Message);
             }
         }
 
@@ -192,14 +196,16 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
 
-                // invalidate structure and rebuild the tree
-                // because probabaly textual conventions were changed
-                TaskManager.Manager.SnmpWorker.IsStructureValid = false;
+                // rebuild the tree because probabaly textual conventions were changed
+                TaskManager.Manager.SnmpRebuildObjectTree();
+
+                // rebuild GUI tree
                 RebuildObjectsTree();
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.buttonConfigurationReset_Click() exception: " + ex.Message);
+                LogData.Data.Logger.Log(Level.Exception,
+                    @"SnmpControl.buttonConfigurationReset_Click() exception: " + ex.Message);
             }
         }
 
@@ -207,7 +213,7 @@ namespace iba.Controls
         {
             // general
             _data.Enabled = cbEnabled.Checked;
-            _data.Port = (int)numPort.Value;
+            _data.Port = (int) numPort.Value;
             // misc
             _data.UseSnmpV2TcForStrings = rbDateTimeTc.Checked;
             // security v1 v2
@@ -218,12 +224,12 @@ namespace iba.Controls
             int indAuth = cmbAuthentication.SelectedIndex;
             v3S.AuthAlgorithm = indAuth == -1
                 ? IbaSnmpAuthenticationAlgorithm.Md5 // default
-                : (IbaSnmpAuthenticationAlgorithm)indAuth; // just cast position in the list to enum
+                : (IbaSnmpAuthenticationAlgorithm) indAuth; // just cast position in the list to enum
 
             int indEncr = cmbEncryption.SelectedIndex;
             v3S.EncrAlgorithm = indEncr == -1
                 ? IbaSnmpEncryptionAlgorithm.None // default
-                : (IbaSnmpEncryptionAlgorithm)indEncr; // just cast position in the list to enum
+                : (IbaSnmpEncryptionAlgorithm) indEncr; // just cast position in the list to enum
 
             v3S.Username = tbUserName.Text;
             v3S.Password = tbPassword.Text;
@@ -232,23 +238,27 @@ namespace iba.Controls
             _data.V3Security = v3S;
         }
 
-        private void ConfigurationFromDataToControls()
+        private void ConfigurationFromDataToControls(SnmpData data = null)
         {
+            if (data == null)
+            {
+                data = _data;
+            }
             // general
-            cbEnabled.Checked = _data.Enabled;
-            numPort.Value = _data.Port;
+            cbEnabled.Checked = data.Enabled;
+            numPort.Value = data.Port;
             // misc
-            rbDateTimeTc.Checked = _data.UseSnmpV2TcForStrings;
+            rbDateTimeTc.Checked = data.UseSnmpV2TcForStrings;
             rbDateTimeStr.Checked = !rbDateTimeTc.Checked;
             // security v1 v2
-            tbCommunity.Text = _data?.V1V2Security;
+            tbCommunity.Text = data.V1V2Security;
             // security v3
-            var v3S = _data.V3Security;
+            var v3S = data.V3Security;
             tbUserName.Text = v3S.Username;
             tbPassword.Text = v3S.Password;
             tbEncryptionKey.Text = v3S.EncryptionKey;
-            cmbAuthentication.SelectedIndex = (int)v3S.AuthAlgorithm;
-            cmbEncryption.SelectedIndex = (int)v3S.EncrAlgorithm;
+            cmbAuthentication.SelectedIndex = (int) v3S.AuthAlgorithm;
+            cmbEncryption.SelectedIndex = (int) v3S.EncrAlgorithm;
         }
 
         /// <summary>
@@ -287,57 +297,109 @@ namespace iba.Controls
 
         #region Diagnostics
 
-        private void SnmpWorker_StatusChanged(object sender, SnmpWorkerStatusChangedEventArgs e)
+        // todo kls recreate event?
+        //private void SnmpWorker_StatusChanged(object sender, SnmpWorkerStatusChangedEventArgs e)
+        //{
+        //    if (tbStatus.InvokeRequired)
+        //    {
+        //        Invoke(new EventHandler<SnmpWorkerStatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
+        //    }
+        //    else
+        //    {
+        //        tbStatus.BackColor = e.Color;
+        //        tbStatus.Text = e.Message;
+        //    }
+        //}
+
+        private void RefreshBriefStatus()
         {
-            if (tbStatus.InvokeRequired)
+            try
             {
-                Invoke(new EventHandler<SnmpWorkerStatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
+                var status = TaskManager.Manager.SnmpGetBriefStatus();
+                tbStatus.Text = status.Item2;
+                tbStatus.BackColor = StatusToColor(status.Item1);
             }
-            else
+            catch (Exception ex)
             {
-                tbStatus.BackColor = e.Color;
-                tbStatus.Text = e.Message;
+                tbStatus.Text = "";
+                tbStatus.BackColor = BackColor;
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshBriefStatus)}. {ex.Message}");
             }
+        }
+
+        public static Color StatusToColor(SnmpWorkerStatus status)
+        {
+            return status == SnmpWorkerStatus.Started
+                ? Color.LimeGreen // running
+                : (status == SnmpWorkerStatus.Stopped
+                    ? Color.LightGray // stopped
+                    : Color.Red); // error
         }
 
         private void RefreshClientsTable()
         {
-            // get library  
-            IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-            if (ibaSnmp == null)
+            try
             {
-                return;
+                // clear list
+                dgvClients.Rows.Clear();
+
+                // show new data
+                List<IbaSnmpDiagClient> clients = TaskManager.Manager.SnmpGetClients();
+
+                // can happen when suddenly disconnected
+                if (clients == null)
+                {
+                    return;
+                }
+
+                foreach (var client in clients)
+                {
+                    dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
+                }
             }
-
-            // clear list
-            dgvClients.Rows.Clear();
-
-            // show new data
-            List<IbaSnmpDiagClient> clients = ibaSnmp.GetClients();
-            foreach (var client in clients)
+            catch (Exception ex)
             {
-                dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
             }
         }
 
-        private void timerRefreshClients_Tick(object sender, EventArgs e)
+        private void timerRefreshStatus_Tick(object sender, EventArgs e)
         {
-            RefreshClientsTable();
+            bool isConnectedOrLocal = IsConnectedOrLocal;
+
+            buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled = 
+                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
+
+            if (isConnectedOrLocal)
+            {
+                RefreshBriefStatus();
+                RefreshClientsTable();
+            }
+            else
+            {
+                tbStatus.Text = "";
+                tbStatus.BackColor = BackColor;
+            }
         }
+
+        private static bool IsConnectedOrLocal =>
+            Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
+            Program.RunsWithService == Program.ServiceEnum.CONNECTED;
+
 
         private void buttonClearClients_Click(object sender, EventArgs e)
         {
-            // get library  
-            IbaSnmp ibaSnmp = TaskManager.Manager?.SnmpWorker?.IbaSnmp;
-            if (ibaSnmp == null)
+            // reset monitoring counters in ibaSnmp
+            try
             {
-                return;
+                TaskManager.Manager.SnmpClearClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(buttonClearClients_Click)}. {ex.Message}");
             }
 
-            // reset monitoring list
-            ibaSnmp.ClearClients();
-
-            // refresh
+            // refresh it in GUI
             RefreshClientsTable();
         }
 
@@ -346,95 +408,71 @@ namespace iba.Controls
 
         #region Objects
 
-        private IbaSnmpOid _oidGuiTreeRoot = "1.3.6.1";
-        // todo Kls. whether we want to have mib2.system subtree to be shown in gui - set the value accordingly
-        private readonly bool _whetherToShowMib2SystemItems = false;
-
         public void RebuildObjectsTree()
         {
-            // first of all, clear the tree
-            tvObjects.Nodes.Clear();
-
-            // now add the new contents
-            var worker = TaskManager.Manager?.SnmpWorker;
-
-            IbaSnmp ibaSnmp = worker?.IbaSnmp;
-            if (ibaSnmp == null)
+            if (!IsConnectedOrLocal)
             {
                 return;
             }
 
-            // the topmost possible node to be displayed in our tree
-            if (!_whetherToShowMib2SystemItems)
-            {
-                // narrow down lookup area if mib2.system items are not needed
-                _oidGuiTreeRoot = ibaSnmp.OidIbaRoot;
-            }
+            tvObjects.Nodes.Clear();
 
-            // update worker's tree if necessary
-            worker.RebuildTreeIfItIsInvalid();
-
-            if (Monitor.TryEnter(worker.LockObject, worker.LockTimeout))
+            try
             {
-                try
+                var objSnapshot = TaskManager.Manager.SnmpGetObjectTreeSnapShot();
+
+                if (objSnapshot == null)
                 {
-                    // create root nodes
-                    if (_whetherToShowMib2SystemItems)
+                    return;
+                }
+
+                // get sorted oids, to ensure we create nodes according to depth-first search order
+                var sortedOids = objSnapshot.Keys.ToList();
+                sortedOids.Sort();
+
+
+                var nodesToExpand = new List<TreeNode>();
+
+                foreach (var oid in sortedOids)
+                {
+                    var tag = objSnapshot[oid];
+
+                    // get parent node
+                    var parentOid = oid.GetParent();
+                    var parentNode = FindSingleNodeByOid(parentOid);
+
+                    // if parent node exists, add item there.
+                    // otherwise add directly to the root
+                    var placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
+
+                    // for all but root nodes add least subId before string caption
+                    string leastIdPrefix = parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
+
+                    string captionWithSubid = leastIdPrefix + tag.Caption;
+
+                    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+
+                    // add this item to parent node
+                    var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
+                    node.Tag = tag;
+
+                    // mark for expanding
+                    if (tag.IsExpandedByDefault)
                     {
-                        tvObjects.Nodes.Add(ibaSnmp.OidMib2System.ToString(), ibaSnmp.OidMib2System.ToString()).Tag = ibaSnmp.OidMib2System;
-                    }
-                    tvObjects.Nodes.Add(ibaSnmp.OidIbaRoot.ToString(), ibaSnmp.OidIbaRoot.ToString()).Tag = ibaSnmp.OidIbaRoot;
-
-                    // dynamically create nodes for all the objects in ibaSnmp
-                    var allObjs = ibaSnmp.GetListOfAllOids();
-                    foreach (IbaSnmpOid oid in allObjs)
-                    {
-                        if (!oid.StartsWith(_oidGuiTreeRoot))
-                        {
-                            // ignore everything what is outside defined gui root area
-                            continue;
-                        }
-
-                        // find or create a parent (folder) node
-                        var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
-
-                        string caption = $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}";
-
-                        var node = parentNode.Nodes.Add(oid.ToString(), caption, ImageIndexLeaf, ImageIndexLeaf);
-                        node.Tag = oid;
+                        nodesToExpand.Add(node);
                     }
                 }
-                finally
-                {
-                    Monitor.Exit(worker.LockObject);
-                }
-            }
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when rebuilding TreeView, {SnmpWorker.GetCurrentThreadString()}");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-            }
 
-            // expand some nodes
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaRoot)?.Expand();
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProduct)?.Expand();
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific)?.Expand();
-            //FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 1)?.Expand(); // global cleanup
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 2)?.Expand(); // std job
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 3)?.Expand(); // sch job
-            FindSingleNodeByOid(worker, ibaSnmp.OidIbaProductSpecific + 4)?.Expand(); // one t job
-            if (_whetherToShowMib2SystemItems)
+                // expand those which are marked for
+                foreach (var treeNode in nodesToExpand)
+                {
+                    treeNode.Expand();
+                }
+            }
+            catch (Exception ex)
             {
-                // uncomment the following line to show mib2.sys items expanded
-                // FindSingleNodeByOid(worker, ibaSnmp.OidMib2System)?.Expand();
+                LogData.Data.Logger.Log(Level.Exception,
+                    $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
             }
 
             // navigate to last selected oid if possible
@@ -448,7 +486,7 @@ namespace iba.Controls
             {
                 try
                 {
-                    FindSingleNodeByOid(worker, oid)?.Expand();
+                    FindSingleNodeByOid(oid)?.Expand();
                 }
                 catch
                 {
@@ -456,30 +494,18 @@ namespace iba.Controls
                 }
             }
 
-            tvObjects.SelectedNode = FindSingleNodeByOid(worker, _lastOid);
+            tvObjects.SelectedNode = FindSingleNodeByOid(_lastOid);
 
             //tvObjects.Select();
-            tvObjects.Focus();
+//            tvObjects.Focus();
         }
 
-        private TreeNode FindSingleNodeByOid(SnmpWorker worker, IbaSnmpOid oid)
+        private TreeNode FindSingleNodeByOid(IbaSnmpOid oid)
         {
-            if (worker == null)
-            {
-                // should not happen
-                throw new ArgumentNullException(nameof(worker));
-            }
-
             if (oid == null)
             {
                 // should not happen
                 throw new ArgumentNullException(nameof(oid));
-            }
-
-            if (!oid.StartsWith(_oidGuiTreeRoot))
-            {
-                // should not happen
-                throw new ArgumentOutOfRangeException();
             }
 
             // check if exists
@@ -500,158 +526,120 @@ namespace iba.Controls
             return null; // not found
         }
 
-        private TreeNode FindOrCreateFolderNode(SnmpWorker worker, IbaSnmpOid oid)
-        {
-            if (worker == null)
-            {
-                // should not happen
-                throw new ArgumentNullException(nameof(worker));
-            }
+        // todo move to Snw
+        //private TreeNode FindOrCreateFolderNode(SnmpWorker worker, IbaSnmpOid oid)
+        //{
+        //    if (worker == null)
+        //    {
+        //        // should not happen
+        //        throw new ArgumentNullException(nameof(worker));
+        //    }
 
-            if (oid == null)
-            {
-                // should not happen
-                throw new ArgumentNullException(nameof(oid));
-            }
+        //    if (oid == null)
+        //    {
+        //        // should not happen
+        //        throw new ArgumentNullException(nameof(oid));
+        //    }
 
-            //IbaSnmp ibaSnmp = worker.IbaSnmp;
+        //    //IbaSnmp ibaSnmp = worker.IbaSnmp;
 
-            if (!oid.StartsWith(_oidGuiTreeRoot))
-            {
-                // should not happen
-                throw new ArgumentOutOfRangeException();
-            }
+        //    if (!oid.StartsWith(_oidGuiTreeRoot))
+        //    {
+        //        // should not happen
+        //        throw new ArgumentOutOfRangeException();
+        //    }
 
-            // check if exists
-            TreeNode node = FindSingleNodeByOid(worker, oid);
+        //    // check if exists
+        //    TreeNode node = FindSingleNodeByOid(worker, oid);
 
-            if (node != null)
-            {
-                return node;
-            }
+        //    if (node != null)
+        //    {
+        //        return node;
+        //    }
 
-            // not found, then create it
+        //    // not found, then create it
 
-            // if this is a root node (recursion stop point)
-            if (oid == _oidGuiTreeRoot)
-            {
-                    // then add it to the top of the tree
-                    node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
-            }
-            else
-            {
-                // first, find/create the parent node recursively
-                var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
-                // add the node to the parent node
-                node = parentNode.Nodes.Add(oid.ToString(), $@"{oid.GetLeastId()}. {GetOidGuiCaption(worker, oid)}");
-            }
+        //    // if this is a root node (recursion stop point)
+        //    if (oid == _oidGuiTreeRoot)
+        //    {
+        //        // then add it to the top of the tree
+        //        node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
+        //    }
+        //    else
+        //    {
+        //        // first, find/create the parent node recursively
+        //        var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
+        //        // add the node to the parent node
+        //        node = parentNode.Nodes.Add(oid.ToString(),
+        //            $@"{oid.GetLeastSignificantSubId()}. {GetOidGuiCaption(worker, oid)}");
+        //    }
 
-            node.Tag = oid;
-            return node;
-        }
+        //    node.Tag = oid;
+        //    return node;
+        //}
 
-        private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
-        {
-            IbaSnmpOidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
-            return metadata?.GuiCaption ?? String.Empty;
-        }
+        //private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
+        //{
+        //    IbaSnmpOidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
+        //    return metadata?.GuiCaption ?? String.Empty;
+        //}
 
         /// <summary> The last Oid that was selected by the user </summary>
         private IbaSnmpOid _lastOid;
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            tbObjOid.Text = String.Empty;
-            tbObjValue.Text = String.Empty;
-            tbObjMibName.Text = String.Empty;
-            tbObjType.Text = String.Empty;
-
-            // reset last selected oid
-            _lastOid = null;
-
-            // get library  
-            var worker = TaskManager.Manager?.SnmpWorker;
-            if (worker == null)
+            if (!IsConnectedOrLocal)
             {
                 return;
             }
 
-            var od = worker.ObjectsData;
-            IbaSnmp ibaSnmp = worker.IbaSnmp;
-            if (od == null || ibaSnmp == null)
+            try
             {
-                return;
-            }
+                // reset last selected oid
+                _lastOid = null;
 
-            // get OID from node's tag
-            IbaSnmpOid oid = e.Node.Tag as IbaSnmpOid;
-            if (oid == null)
-            {
-                return;
-            }
+                // reset all fields
+                tbObjOid.Text = String.Empty;
+                tbObjValue.Text = String.Empty;
+                tbObjMibName.Text = String.Empty;
+                tbObjMibDescription.Text = String.Empty;
+                tbObjType.Text = String.Empty;
 
-            tbObjOid.Text = oid.ToString();
+                // get existing node's tag
+                var tag = (SnmpTreeNodeTag)e.Node.Tag;
 
-            var objInfo = ibaSnmp.GetObjectInfo(oid, true);
-
-            // requesting some data from ibaSnmp can theoretically cause tree invalidation
-            if (worker.RebuildTreeIfItIsInvalid())
-            {
-                // should not happen 
-                // because cfg theoretically should not change while we are on the snmp page
-
-                LogData.Data.Logger.Log(Level.Debug, @"SnmpControl.tvObjects_AfterSelect(). " +
-                    "SNMP tree was changed since last data loading. This should not happen. Rebuilding the tree.");
-                
-                // rebuild our tree according to worker's tree
-                RebuildObjectsTree();
-                // do nothing else
-                // let the user select another item in a new tree later
-                return;
-            }
-
-            // remember last selected oid
-            // do this only now, after possible call to RebuildObjectsTree() to prevent recursion
-            _lastOid = oid;
-
-            if (objInfo != null)
-            {
-                tbObjValue.Text =
-                    ibaSnmp.IsEnumDataTypeRegistered(objInfo.ValueType) ?
-                    // enum - format it like e.g. "1 (started)"
-                    $@"{objInfo.Value} ({ibaSnmp.GetEnumValueName(objInfo.ValueType, (int)objInfo.Value)})" :
-                    // other types - just value
-                    objInfo.Value.ToString();
-
-                tbObjMibName.Text = objInfo.MibName;
-
-                // todo Kls remove after testing of MIB descriptions or move to another textbox
-                if (!String.IsNullOrWhiteSpace(objInfo.MibDescription))
+                // try to refresh node's tag
+                try
                 {
-                    tbObjMibName.Text += $@"; {objInfo.MibDescription}";
+                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
+                }
+                catch (Exception)
+                {
+                    // reset value that we know that something is wrong
+                    tag.Value = String.Empty;
+                    tag.Type = String.Empty;
                 }
 
-                tbObjType.Text = objInfo.MibDataType;
+                tbObjOid.Text = tag.Oid?.ToString();
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjMibName.Text = tag.MibName;
+                tbObjMibDescription.Text = tag.MibDescription;
+
+                // remember last selected oid
+                _lastOid = tag.Oid;
             }
-            else
+            catch (Exception ex)
             {
-                // probabaly this is a folder, that has no corresponding snmp object 
-                // try to get it's description from the worker.
-                IbaSnmpOidMetadata metadata = worker.IbaSnmp?.GetOidMetadata(oid);
-                tbObjMibName.Text = metadata?.MibName ?? String.Empty;
-                // todo Kls remove after testing of MIB descriptions or move to another textbox
-                if (!String.IsNullOrWhiteSpace(metadata?.MibDescription))
-                {
-                    tbObjMibName.Text += $@"; {metadata.MibDescription}";
-                }
+                LogData.Data.Logger.Log(Level.Debug,
+                    @"SnmpControl.tvObjects_AfterSelect(). Exception: " + ex.Message);
             }
         }
 
         private void buttonCreateMibFiles_Click(object sender, EventArgs e)
         {
-            SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-            var ibaSnmp = snmpWorker?.IbaSnmp;
-            if (ibaSnmp == null)
+            if (!IsConnectedOrLocal)
             {
                 return;
             }
@@ -667,35 +655,41 @@ namespace iba.Controls
                 string dir = folderBrowserDialog.SelectedPath;
 
                 // ensure we have the latest tree structure
-                if (!snmpWorker.RebuildTreeCompletely())
-                {
-                    // failed to Rebuild the tree
+                var mibFiles = TaskManager.Manager.SnmpGenerateMibFiles();
 
+                if (mibFiles == null || mibFiles.Count == 0)
+                {
                     // todo Kls localize
                     MessageBox.Show(this,
-                        "Failed to create MIB files. \r\nFailed to rebuild SNMP tree.",
-                        "Create MIB files failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        "Failed to create MIB files.",
+                        "Failed to create MIB files", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(ibaSnmp);
+                // create dir if not existing
+                Directory.CreateDirectory(dir);
 
-                gen.Generate();
-                gen.SaveToFile(dir);
-
-                string fullFileName1 = $@"{dir}\{gen.GeneralMibFilename}";
-                string fullFileName2 = $@"{dir}\{gen.ProductMibFilename}";
+                // create files
+                string filesListForMessage = "";
+                string lastFilename = "";
+                foreach (var container in mibFiles)
+                {
+                    var fullFilename = Path.Combine(dir, container.FileName);
+                    lastFilename = fullFilename;
+                    // create files
+                    IbaSnmpMibGenerator.CreateFileFromString(container.Contents, fullFilename);
+                    filesListForMessage += $"\r\n{fullFilename}";
+                }
 
                 // todo Kls localize
-                if (MessageBox.Show(this, 
-                    "Successfully created the following MIB files:" +
-                    $"\r\n{fullFileName1}\r\n{fullFileName2}"+
+                if (MessageBox.Show(this,
+                    $"Successfully created the following MIB files: {filesListForMessage}." +
                     "\r\n\r\nDo you wish to navigate to these files?",
                     "Create MIB files", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
                     == DialogResult.Yes)
                 {
                     // open folder and show files
-                    Process.Start(@"explorer.exe", $"/select, \"{fullFileName2}\"");
+                    Process.Start(@"explorer.exe", $"/select, \"{lastFilename}\"");
                 }
             }
             catch (Exception ex)
@@ -705,5 +699,7 @@ namespace iba.Controls
         }
 
         #endregion
+
+
     }
 }

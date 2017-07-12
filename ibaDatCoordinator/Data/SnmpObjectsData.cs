@@ -5,23 +5,38 @@ using IbaSnmpLib;
 namespace iba.Data
 {
     /// <summary>
-    /// Is used for transferring the information about all SNMP-visible objects between
-    /// the TaskManager and SnmpWorker.
+    /// Is used for transferring information about all SNMP-visible objects between
+    /// TaskManager and SnmpWorker.
     /// </summary>
     internal class SnmpObjectsData 
     {        
         /// <summary> PrGeneral.3 </summary>
         public LicenseInfo License = new LicenseInfo();
+
         /// <summary> PrSpecific.1 </summary>
         public List<GlobalCleanupDriveInfo> GlobalCleanup = new List<GlobalCleanupDriveInfo>();
+        /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+        public const uint GlobalCleanupOid = 1;
+
         /// <summary> PrSpecific.2 </summary>
         public List<StandardJobInfo> StandardJobs = new List<StandardJobInfo>();
+        /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+        public const uint StandardJobsOid = 2;
+
         /// <summary> PrSpecific.3 </summary>
         public List<ScheduledJobInfo> ScheduledJobs = new List<ScheduledJobInfo>();
+        /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+        public const uint ScheduledJobsOid = 3;
+
         /// <summary> PrSpecific.4 </summary>
         public List<OneTimeJobInfo> OneTimeJobs = new List<OneTimeJobInfo>();
+        /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+        public const uint OneTimeJobsOid = 4;
+
         /// <summary> PrSpecific.5 </summary>
         public List<EventBasedJobInfo> EventBasedJobs = new List<EventBasedJobInfo>();
+        /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+        public const uint EventBasedJobsOid = 5;
 
         public void Reset()
         {
@@ -115,26 +130,35 @@ namespace iba.Data
 
         internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
-            /// <summary> Oid 0 </summary>
-            public string DriveName;
-
             /// <summary> Oid 1 </summary>
-            public bool Active;
+            public string DriveName;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint DriveNameOid = 1;
 
             /// <summary> Oid 2 </summary>
-            public uint SizeInMb;
+            public bool Active;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint ActiveOid = 2;
 
             /// <summary> Oid 3 </summary>
+            public uint SizeInMb;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint SizeInMbOid = 3;
+
+            /// <summary> Oid 4 </summary>
             public uint CurrentFreeSpaceInMb;
-
-            /// <summary> Oid 4 - in Megabytes </summary>
-            public uint MinFreeSpaceInMb;
-
-            /// <summary> Oid 4 - alternative - in percent </summary>
-            public uint MinFreeSpaceInPercent;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint CurrentFreeSpaceInMbOid = 4;
 
             /// <summary> Oid 5 </summary>
+            public uint MinFreeSpaceInPercent;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint MinFreeSpaceInPercentOid = 5;
+
+            /// <summary> Oid 6 </summary>
             public uint RescanTime;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint RescanTimeOid = 6;
 
             /// <summary> Resets to default values everything except DriveName (its key) </summary>
             public void Reset()
@@ -143,7 +167,6 @@ namespace iba.Data
                 Active = false;
                 SizeInMb = 0;
                 CurrentFreeSpaceInMb = 0;
-                MinFreeSpaceInMb = 0;
                 MinFreeSpaceInPercent = 0;
                 RescanTime = 0;
             }
@@ -174,23 +197,35 @@ namespace iba.Data
             /// <summary> A Job the task belongs to </summary>
             public JobInfoBase Parent;
 
-            /// <summary> Oid 0 </summary>
-            public string TaskName;
-
             /// <summary> Oid 1 </summary>
-            public string TaskType;
+            public string TaskName;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TaskNameOid = 1;
 
             /// <summary> Oid 2 </summary>
+            public string TaskType;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TaskTypeOid = 2;
+
+            /// <summary> Oid 3 </summary>
             public bool Success;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint SuccessOid = 3;
 
-            /// <summary> Oid 3, in seconds </summary>
+            /// <summary> Oid 4, in seconds </summary>
             public uint DurationOfLastExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint DurationOfLastExecutionOid = 4;
 
-            /// <summary> Oid 4 in megabytes </summary>
+            /// <summary> Oid 5 in megabytes </summary>
             public uint MemoryUsedForLastExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint MemoryUsedForLastExecutionOid = 5;
 
-            /// <summary> Oid 5, OPTIONAL, can be null for tasks that have no cleanup options </summary>
+            /// <summary> Oid 6, OPTIONAL, can be null for tasks that have no cleanup settings </summary>
             public LocalCleanupInfo CleanupInfo;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint CleanupInfoOid = 6;
 
             /// <summary> Resets to default values everything except Oid and Parent </summary>
             public void Reset()
@@ -209,19 +244,29 @@ namespace iba.Data
             }
         }
 
+
         internal class LocalCleanupInfo
         {
-            /// <summary> Oid 0 </summary>
-            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
-
             /// <summary> Oid 1 </summary>
-            public uint Subdirectories;
+            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint LimitChoiceOid = 1;
 
             /// <summary> Oid 2 </summary>
-            public uint FreeDiskSpace;
+            public uint Subdirectories;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint SubdirectoriesOid = 2;
 
             /// <summary> Oid 3 </summary>
             public uint UsedDiskSpace;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint UsedDiskSpaceOid = 3;
+
+            /// <summary> Oid 4 </summary>
+            public uint FreeDiskSpace;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint FreeDiskSpaceOid = 4;
+
         }
 
         /// <summary> OID ...2 Standard Jobs </summary>
@@ -230,27 +275,42 @@ namespace iba.Data
             /// <summary> key of the job list </summary>
             public Guid Guid;
 
-            // general section - Oid 0
-            /// <summary> Oid 0.0 </summary>
+            // general section
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint GeneralOid = 1;
+
+            /// <summary> Oid General.1 </summary>
             public string JobName;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint JobNameOid = 1;
 
-            /// <summary> Oid 0.1 (started / stopped /disabled);</summary>
-            public JobStatus Status; 
+            /// <summary> Oid General.2 (started / stopped /disabled);</summary>
+            public JobStatus Status;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint StatusOid = 2;
 
-            /// <summary> Oid 0.2 </summary>
+            /// <summary> Oid General.3 </summary>
             public uint TodoCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TodoCountOid = 3;
 
-            /// <summary> Oid 0.3 </summary>
+            /// <summary> Oid General.4 </summary>
             public uint DoneCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint DoneCountOid = 4;
 
-            /// <summary> Oid 0.4 </summary>
+            /// <summary> Oid General.5 </summary>
             public uint FailedCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint FailedCountOid = 5;
 
-            // Oids 0.5 ... 0.8 vary depending on a Job type: Standard / Scheduled / One-time / Event-based
+            // Oids General.5 ... General.8 vary depending on a Job type: Standard / Scheduled / One-time / Event-based
             // these oids are defined in derived classes
 
-            /// <summary> Oid 1...n, where n - size of the list</summary>
+            /// <summary> Oid Tasks.1...Tasks.n, where n - size of the list</summary>
             public List<TaskInfo> Tasks;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TasksOid = 2;
 
             /// <summary> Resets to default values everything except Guid (primary key) and Tasks </summary>
             public virtual void Reset()
@@ -271,26 +331,43 @@ namespace iba.Data
 
         internal class StandardJobInfo : JobInfoBase
         {
-            /// <summary> Oid 0.5 </summary>
+            /// <summary> Oid 6 </summary>
             public uint PermFailedCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint PermFailedCountOid = 6;
 
-            /// <summary> Oid 0.6 </summary>
+            /// <summary> Oid 7 </summary>
             public DateTime TimestampJobStarted;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampJobStartedOid = 7;
 
-            /// <summary> Oid 0.7 </summary>
+            /// <summary> Oid 8 </summary>
             public DateTime TimestampLastDirectoryScan;
-            
-            /// <summary> Oid 0.8 </summary>
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampLastDirectoryScanOid = 8;
+
+            /// <summary> Oid 9 </summary>
             public DateTime TimestampLastReprocessErrorsScan;
-            
-            /// <summary> Oid 0.9.0 </summary>
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampLastReprocessErrorsScanOid = 9;
+
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint LastProcessingOid = 10;
+
+            /// <summary> Oid 10.1 </summary>
             public string LastProcessingLastDatFileProcessed;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint LastProcessingLastDatFileProcessedOid = 1;
 
-            /// <summary> Oid 0.9.1 </summary>
+            /// <summary> Oid 10.2 </summary>
             public DateTime LastProcessingStartTimeStamp;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint LastProcessingStartTimeStampOid = 2;
 
-            /// <summary> Oid 0.9.2 </summary>
+            /// <summary> Oid 10.3 </summary>
             public DateTime LastProcessingFinishTimeStamp;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint LastProcessingFinishTimeStampOid = 3;
 
             public override void Reset()
             {
@@ -308,17 +385,25 @@ namespace iba.Data
 
         internal class ScheduledJobInfo : JobInfoBase
         {
-            /// <summary> Oid 0.5 </summary>
+            /// <summary> Oid 6 </summary>
             public uint PermFailedCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint PermFailedCountOid = 6;
 
-            /// <summary> Oid 0.6 </summary>
+            /// <summary> Oid 7 </summary>
             public DateTime TimestampJobStarted;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampJobStartedOid = 7;
 
-            /// <summary> Oid 0.7 </summary>
+            /// <summary> Oid 8 </summary>
             public DateTime TimestampLastExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampLastExecutionOid = 8;
 
-            /// <summary> Oid 0.8 </summary>
+            /// <summary> Oid 9 </summary>
             public DateTime TimestampNextExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampNextExecutionOid = 9;
 
             public override void Reset()
             {
@@ -332,8 +417,10 @@ namespace iba.Data
 
         internal class OneTimeJobInfo : JobInfoBase
         {
-            /// <summary> Oid 0.5 </summary>
+            /// <summary> Oid 6 </summary>
             public DateTime TimestampLastExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampLastExecutionOid = 6;
 
             public override void Reset()
             {
@@ -345,8 +432,6 @@ namespace iba.Data
         /// <summary> reserved for future </summary> 
         internal class EventBasedJobInfo : JobInfoBase
         {
-            ///// <summary> Oid 0.??? </summary>
-            //public string EventDescription = @"This is a description of the event";
         }
 
         #endregion

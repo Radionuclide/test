@@ -17,7 +17,7 @@ namespace iba
     {
         static public MainForm MainForm;
         static public StatusForm StatusForm;
-        public enum ServiceEnum {CONNECTED, DISCONNECTED, NOSERVICE, STATUS}
+        public enum ServiceEnum {CONNECTED, DISCONNECTED, NOSERVICE, STATUS,COMMANDGIVEN}
 
         static public ServiceEnum RunsWithService;
         static private CommunicationObjectWrapper m_comWrapper;
@@ -56,6 +56,7 @@ namespace iba
         [STAThread]
         static void Main(string [] args)
         {
+            Program.RunsWithService = ServiceEnum.COMMANDGIVEN; //assume a command is given until otherwise
             if (args.Length > 0 && String.Compare(args[0], "/startservice", true) == 0)
             {
                 try
@@ -253,9 +254,9 @@ namespace iba
                 if (m_servicePortNr < 0)
                 {
                     RegistryKey key = null;
-                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED)
+                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED) //client, persistency
                         key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "IBA", "DATCoordinator"));
-                    else
+                    else //status or command
                         key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
                     if (key == null)
                         m_servicePortNr = 8800;
@@ -270,10 +271,10 @@ namespace iba
                 {
                     m_servicePortNr = value;
                     RegistryKey key = null;
-                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED)
+                    if (Program.RunsWithService == ServiceEnum.CONNECTED || Program.RunsWithService == ServiceEnum.DISCONNECTED) //client, persistency
                         key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
                     "IBA", "DATCoordinator"));
-                    else
+                    else  //status or command
                         key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}",
                     "iba", "ibaDatCoordinator"));
                     if (key != null)

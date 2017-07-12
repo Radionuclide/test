@@ -187,7 +187,7 @@ Var StartMenuFolder
 Var ServiceUserName
 Var ServicePassword
 Var InstallTypeSelection
-
+Var PortNumber
 
 InstType "service"
 InstType "standalone"
@@ -225,13 +225,24 @@ Function .onInit
   strcpy $InstallTypeSelection "1"
   ${GetParameters} $0
   ${GetOptions} $0 '/installtype=' $InstallTypeSelection
-  IfErrors +1 lbl_finishedoninit
+  IfErrors +1 lbl_finishedinstalltype
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $InstallTypeSelection == ""
     strcpy $InstallTypeSelection "1"
   ${EndIf}
-lbl_finishedoninit:
+lbl_finishedinstalltype:
   Pop $0
+  
+  ;initialize $InstallTypeSelection, when not silent will be overwritten by custom page InstallTypeSelect
+  Push $0
+  strcpy $PortNumber "0"
+  ${GetParameters} $0
+  ${GetOptions} $0 '/port=' $PortNumber
+  ${If} $PortNumber == ""
+    strcpy $PortNumber "0"
+  ${EndIf}
+  Pop $0
+  
   
   ;In case of a silent install call the installtype select function directly
   IfSilent +1 +2
@@ -261,14 +272,6 @@ Function PreInstall
   ${Else}
     StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
   ${EndIf}
-
-FunctionEnd
-
-;--------------------------------
-; Function to set the install type manually when ran in silent mode
-
-Function SetSectionFlagsManually
-
 
 FunctionEnd
 
@@ -503,6 +506,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
+  ;File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
@@ -589,8 +593,16 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
+
+  ;Set port number if necessary
+  
+  ${If} $PortNumber != "0"
+  Exec '"$INSTDIR\ibaDatCoordinator.exe" /setportnumber:$PortNumber'
+  ${EndIf}
+ 
   ;Start service
    nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
+  
   ;Start service status
    Exec '"$INSTDIR\ibaDatCoordinator.exe" /status'
    !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"

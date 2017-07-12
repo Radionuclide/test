@@ -10,6 +10,7 @@ using iba.Utility;
 using iba.Plugins;
 using System.IO;
 using iba.Logging;
+using IbaSnmpLib;
 
 namespace iba.Processing
 {
@@ -47,6 +48,7 @@ namespace iba.Processing
             RemoveConfigurationInternal(data);
             IncreaseTaskManagerID();
         }
+
         private void RemoveConfigurationInternal(ConfigurationData data)
         {
             lock (m_workers)
@@ -114,7 +116,8 @@ namespace iba.Processing
             //remove spurious configurations;
             foreach (ConfigurationData dat in m_workers.Keys)
             {
-                if (!datas.Contains(dat)) //contains works because we've already replaced all datas (it would fail otherwise because contains
+                if (!datas.Contains(dat))
+                    //contains works because we've already replaced all datas (it would fail otherwise because contains
                     // uses  equality comparer instead of CompareTo)
                     toRemove.Add(dat);
             }
@@ -153,7 +156,7 @@ namespace iba.Processing
         {
             foreach (ConfigurationWorker w in m_workers.Values)
             {
-                if(w.RunningConfiguration.Guid == data.Guid)
+                if (w.RunningConfiguration.Guid == data.Guid)
                     return data.IsSame(w.RunningConfiguration);
             }
             return false;
@@ -213,11 +216,6 @@ namespace iba.Processing
         virtual public void StopConfiguration(ConfigurationData data)
         {
             m_workers[data].Stop = true;
-
-            //// added by kolesnik - begin
-            //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration {data.Name}");
-            //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-            //// added by kolesnik - end
         }
 
         virtual public void StopConfiguration(Guid guid)
@@ -227,10 +225,6 @@ namespace iba.Processing
                 if (pair.Key.Guid == guid)
                 {
                     pair.Value.Stop = true;
-                    //// added by kolesnik - begin
-                    //SnmpWorker.TmpLogLine($"SnmpConfigurationChanged. StopConfiguration(Guid) {pair.Value.RunningConfiguration.Name}");
-                    //SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-                    //// added by kolesnik - end
                     return;
                 }
             }
@@ -303,13 +297,21 @@ namespace iba.Processing
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
                 if (pair.Key.Guid == guid && pair.Key.Tasks[taskindex] is ICustomTaskData && pair.Value.Status.Started)
-                    return (pair.Value.RunningConfiguration.Tasks[taskindex] as ICustomTaskData).Plugin.GetWorker().GetWorkerStatus();
+                    return
+                        (pair.Value.RunningConfiguration.Tasks[taskindex] as ICustomTaskData).Plugin.GetWorker()
+                            .GetWorkerStatus();
             }
             return null;
         }
 
-        public enum AlterPermanentFileErrorListWhatToDo { AFTERDELETE, AFTERREFRESH };
-        virtual public void AlterPermanentFileErrorList(AlterPermanentFileErrorListWhatToDo todo, Guid guid, List<string> files)
+        public enum AlterPermanentFileErrorListWhatToDo
+        {
+            AFTERDELETE,
+            AFTERREFRESH
+        };
+
+        virtual public void AlterPermanentFileErrorList(AlterPermanentFileErrorListWhatToDo todo, Guid guid,
+            List<string> files)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
@@ -328,6 +330,7 @@ namespace iba.Processing
 
         //watchdog data
         private TCPWatchdog m_watchdog;
+
         public TCPWatchdog WatchDog
         {
             get { return m_watchdog; }
@@ -349,7 +352,7 @@ namespace iba.Processing
         }
 
 
-        #region Snmp Data - added by Kolesnik
+        #region SNMP interface - Added by Kolesnik
 
         /// <summary> 
         /// Is fired when there is a chance (yes, at least a chance) that snmp data structure (amount of jobs, tasks, etc) is changed. 
@@ -363,15 +366,141 @@ namespace iba.Processing
         /// </summary>
         public event EventHandler<EventArgs> SnmpConfigurationChanged;
 
-        public SnmpWorker SnmpWorker { get; } = new SnmpWorker();
+        private SnmpWorker SnmpWorker { get; } = new SnmpWorker();
+
+        public void SnmpWorkerInit()
+        {
+            SnmpWorker.Init();
+        }
+
+        #region Functionality for GUI
+
+        #region Configuration
 
         /// <summary> Gets/sets data of SnmpWorker. 
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
         public virtual SnmpData SnmpData
         {
-            get { return SnmpWorker.SnmpData; }
-            set { SnmpWorker.SnmpData = value; }
+            get
+            {
+                return SnmpWorker?.SnmpData;
+            }
+            set
+            {
+                if (SnmpWorker != null)
+                {
+                    SnmpWorker.SnmpData = value;
+                }
+            }
         }
+
+        #endregion
+
+
+        #region Objects
+
+        public virtual void SnmpRebuildObjectTree()
+        {
+            try
+            {
+                SnmpWorker.RebuildTree();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpRebuildObjectTree)}. {ex.Message}");
+            }
+        }
+
+        public virtual Dictionary<IbaSnmpOid, SnmpTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        {
+            try
+            {
+                return SnmpWorker.GetObjectTreeSnapShot();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual SnmpTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        {
+            try
+            {
+                // refresh value and get information
+                return SnmpWorker.GetTreeNodeTag(oid, true);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual List<SnmpMibFileContainer> SnmpGenerateMibFiles()
+        {
+            try
+            {
+                return SnmpWorker.GenerateMibFiles();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpRebuildObjectTree)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        #endregion
+
+
+        #region Diagnostics
+
+        public virtual Tuple<SnmpWorkerStatus, string> SnmpGetBriefStatus()
+        {
+            try
+            {
+                return new Tuple<SnmpWorkerStatus, string>(SnmpWorker.Status, SnmpWorker.StatusString);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetBriefStatus)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual List<IbaSnmpDiagClient> SnmpGetClients()
+        {
+            try
+            {
+                return SnmpWorker.IbaSnmp?.GetClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual void SnmpClearClients()
+        {
+            try
+            {
+                SnmpWorker.IbaSnmp?.ClearClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpClearClients)}. {ex.Message}");
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
+
+        #region Internal Server functions
 
         internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
         {
@@ -441,21 +570,21 @@ namespace iba.Processing
         {
             driveInfo.Reset();
 
-            driveInfo.Active = gcData.Active; //1
+            driveInfo.Active = gcData.Active; 
 
             DriveInfo drive = new DriveInfo(gcData.DriveName);
             if (drive.IsReady)
             {
-                driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20); //2 
-                driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20); // 3 
+                driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20); 
+                driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20); 
             }
 
             // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
             // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
-            driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); // 4a // 
-            driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree; // 4b
+            //driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); 
+            driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree; 
 
-            driveInfo.RescanTime = (uint)gcData.RescanTime; //5
+            driveInfo.RescanTime = (uint)gcData.RescanTime; 
 
             driveInfo.PutTimeStamp();
         }
@@ -520,52 +649,75 @@ namespace iba.Processing
         {
             jobInfo.Reset();
 
-            ConfigurationWorker worker = m_workers[cfg];
-            StatusData s = worker.Status;
+            try
+            {
+                ConfigurationWorker worker = m_workers[cfg];
+                StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+                SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
-            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
-            jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan; 
-            jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan; 
+                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
+                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
+                jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;
+                jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan;
 
-            jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName; 
-            jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp; 
-            jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp; 
+                jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName;
+                jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp;
+                jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp;
 
-            jobInfo.PutTimeStamp();
+                jobInfo.PutTimeStamp();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshStandardJobInfo(): " + ex.Message);
+            }
         }
 
         private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
         {
             jobInfo.Reset();
 
-            ConfigurationWorker worker = m_workers[cfg];
-            StatusData s = worker.Status;
+            try
+            {
+                ConfigurationWorker worker = m_workers[cfg];
+                StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+                SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-            jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-            jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
-            jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
-            jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
+                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+                jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+                jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
 
-            jobInfo.PutTimeStamp();
+                jobInfo.PutTimeStamp();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshScheduledJobInfo(): " + ex.Message);
+            }
+
         }
 
         private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
         {
             jobInfo.Reset();
 
-            ConfigurationWorker worker = m_workers[cfg];
-            StatusData s = worker.Status;
+            try
+            {
+                ConfigurationWorker worker = m_workers[cfg];
+                StatusData s = worker.Status;
 
-            SnmpRefreshJobInfoBase(jobInfo, worker, s);
+                SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-            jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
+                jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
 
-            jobInfo.PutTimeStamp();
+                jobInfo.PutTimeStamp();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshOneTimeJobInfo(): " + ex.Message);
+            }
+
         }
 
         private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
@@ -617,14 +769,14 @@ namespace iba.Processing
                 taskInfo.TaskName = taskData.Name;
 
                 // lask execution - success, duration, memory
-                ConfigurationWorker.TaskLastExecutionData lastExec;
                 try
                 {
+                    ConfigurationWorker.TaskLastExecutionData lastExec;
                     if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
                     {
-                        taskInfo.Success = lastExec.Success; // 2
-                        taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0); // 3
-                        taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed; // 4
+                        taskInfo.Success = lastExec.Success; 
+                        taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0); 
+                        taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed; 
                     }
                 }
                 catch
@@ -653,8 +805,8 @@ namespace iba.Processing
                     if (taskData is CustomTaskDataUNC)
                     {
                         var typedData = taskData as CustomTaskDataUNC;
-                        
-                        // todo for Michael. Please check the following name:
+
+                        // todo Kls for Michael. Please check the following name:
                         taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     if (taskData is ExtractData)
@@ -705,7 +857,7 @@ namespace iba.Processing
                     else if (taskData is CustomTaskData)
                     {
                         var typedData = taskData as CustomTaskData;
-                        // todo for Michael. Please check the following name:
+                        // todo Kls for Michael. Please check the following name:
                         taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     else if (taskData is IfTaskData)
@@ -790,21 +942,21 @@ namespace iba.Processing
                             switch (cfg.JobType)
                             {
                                 case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
-                                    var stdJobInfo = new SnmpObjectsData.StandardJobInfo {Guid = cfg.Guid};
+                                    var stdJobInfo = new SnmpObjectsData.StandardJobInfo { Guid = cfg.Guid };
                                     od.StandardJobs.Add(stdJobInfo);
                                     // fill the data
                                     SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
                                     break;
 
                                 case ConfigurationData.JobTypeEnum.Scheduled:
-                                    var schJobInfo = new SnmpObjectsData.ScheduledJobInfo {Guid = cfg.Guid};
+                                    var schJobInfo = new SnmpObjectsData.ScheduledJobInfo { Guid = cfg.Guid };
                                     od.ScheduledJobs.Add(schJobInfo);
                                     // fill the data
                                     SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
                                     break;
 
                                 case ConfigurationData.JobTypeEnum.OneTime:
-                                    var otJobInfo = new SnmpObjectsData.OneTimeJobInfo {Guid = cfg.Guid};
+                                    var otJobInfo = new SnmpObjectsData.OneTimeJobInfo { Guid = cfg.Guid };
                                     od.OneTimeJobs.Add(otJobInfo);
                                     // fill the data
                                     SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
@@ -826,6 +978,9 @@ namespace iba.Processing
             }
         }
 
+        #endregion
+
+        
         #endregion
 
 
@@ -1323,6 +1478,167 @@ namespace iba.Processing
                 return Manager.GetWatchdogStatus();
             }
         }
+
+
+        #region SNMP interface - Added by Kolesnik
+
+        /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection()"/> 
+        /// for <see cref="Program.CommunicationObject"/>  if it is not null. </summary>
+        private void HandleBrokenConnection()
+        {
+            Program.CommunicationObject?.HandleBrokenConnection();
+            // todo kls for Michael to review 
+            // Michael, do I understand correctly, that the following two lines are equal:
+            //
+            // 1: if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+            // 2: Program.CommunicationObject?.HandleBrokenConnection();
+            //
+            // Maybe there are some things that I'm not aware about?
+            // as far as I know, null propagation (second variant) is even more thread-safe than 1st one.
+            // Null propagation should be equal to something like this:
+            // var commObj = Program.CommunicationObject;
+            // if (commObj != null) commObj.HandleBrokenConnection();
+
+            // So, if yes, then I suggest replacing all such occurencies with the line above.
+            // or with this HandleBrokenConnection() method.
+        }
+
+        #region Configuration
+
+        public override SnmpData SnmpData
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.SnmpData;
+                }
+                catch
+                {
+                    HandleBrokenConnection();
+                    return Manager.SnmpData;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.SnmpData = value;
+                }
+                catch
+                {
+                    HandleBrokenConnection();
+                    Manager.SnmpData = value;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Objects
+
+        public override void SnmpRebuildObjectTree()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.SnmpRebuildObjectTree();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                Manager.SnmpRebuildObjectTree();
+            }
+        }
+
+        public override Dictionary<IbaSnmpOid, SnmpTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.SnmpGetObjectTreeSnapShot();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                return Manager.SnmpGetObjectTreeSnapShot();
+            }
+        }
+
+        public override SnmpTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.SnmpGetTreeNodeTag(oid);
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                return Manager.SnmpGetTreeNodeTag(oid);
+            }
+        }
+
+        public override List<SnmpMibFileContainer> SnmpGenerateMibFiles()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.SnmpGenerateMibFiles();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                return Manager.SnmpGenerateMibFiles();
+            }
+        }
+
+
+        #endregion
+
+
+        #region Diagnostics
+
+        public override Tuple<SnmpWorkerStatus, string> SnmpGetBriefStatus()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.SnmpGetBriefStatus();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                return Manager.SnmpGetBriefStatus();
+            }
+        }
+        
+        public override List<IbaSnmpDiagClient> SnmpGetClients()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.SnmpGetClients();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                return Manager.SnmpGetClients();
+            }
+        }
+
+        public override void SnmpClearClients()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.SnmpClearClients();
+            }
+            catch
+            {
+                HandleBrokenConnection();
+                Manager.SnmpClearClients();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
 
         public override int Count
         {

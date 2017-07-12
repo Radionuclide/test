@@ -12,6 +12,14 @@ namespace iba.Data
         }
 
         public bool Enabled { get; set; }
+        //public bool Enabled
+        //{
+        //    get { return true; }
+        //    set
+        //    {
+        //        ;
+        //    }
+        //}
 
         public bool UseSnmpV2TcForStrings { get; set; }
 
@@ -58,6 +66,11 @@ namespace iba.Data
                 Port == other.Port &&
                 V1V2Security == other.V1V2Security &&
                 V3Security == other.V3Security;
+        }
+
+        public override string ToString()
+        {
+            return $"({Enabled}, {Port}, {V1V2Security})";
         }
 
         public override int GetHashCode()

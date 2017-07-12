@@ -31,8 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.timerRefreshClients = new System.Windows.Forms.Timer(this.components);
-            this.labelNotConnected = new System.Windows.Forms.Label();
+            this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.dgvClients = new System.Windows.Forms.DataGridView();
             this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,12 +45,14 @@
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
             this.tbObjOid = new System.Windows.Forms.TextBox();
+            this.labelObjType = new System.Windows.Forms.Label();
             this.labelObjOid = new System.Windows.Forms.Label();
+            this.tbObjType = new System.Windows.Forms.TextBox();
             this.labelObjValue = new System.Windows.Forms.Label();
             this.tbObjValue = new System.Windows.Forms.TextBox();
+            this.LabObjMibDescription = new System.Windows.Forms.Label();
             this.labelObjMibName = new System.Windows.Forms.Label();
-            this.labelObjType = new System.Windows.Forms.Label();
-            this.tbObjType = new System.Windows.Forms.TextBox();
+            this.tbObjMibDescription = new System.Windows.Forms.TextBox();
             this.tbObjMibName = new System.Windows.Forms.TextBox();
             this.buttonCreateMibFiles = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
@@ -91,23 +92,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.SuspendLayout();
             // 
-            // timerRefreshClients
+            // timerRefreshStatus
             // 
-            this.timerRefreshClients.Enabled = true;
-            this.timerRefreshClients.Interval = 1000;
-            this.timerRefreshClients.Tick += new System.EventHandler(this.timerRefreshClients_Tick);
-            // 
-            // labelNotConnected
-            // 
-            this.labelNotConnected.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelNotConnected.Location = new System.Drawing.Point(0, 0);
-            this.labelNotConnected.Name = "labelNotConnected";
-            this.labelNotConnected.Padding = new System.Windows.Forms.Padding(15);
-            this.labelNotConnected.Size = new System.Drawing.Size(720, 43);
-            this.labelNotConnected.TabIndex = 3;
-            this.labelNotConnected.Text = "Cannot connect to ibaDatCoordintor SNMP server.";
-            this.labelNotConnected.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.labelNotConnected.Visible = false;
+            this.timerRefreshStatus.Interval = 1000;
+            this.timerRefreshStatus.Tick += new System.EventHandler(this.timerRefreshStatus_Tick);
             // 
             // gbDiagnostics
             // 
@@ -118,7 +106,7 @@
             this.gbDiagnostics.Controls.Add(this.buttonClearClients);
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 667);
+            this.gbDiagnostics.Location = new System.Drawing.Point(15, 692);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
@@ -233,7 +221,7 @@
             this.gbObjects.Location = new System.Drawing.Point(15, 243);
             this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(690, 418);
+            this.gbObjects.Size = new System.Drawing.Size(690, 443);
             this.gbObjects.TabIndex = 1;
             this.gbObjects.TabStop = false;
             this.gbObjects.Text = "Objects";
@@ -243,105 +231,128 @@
             this.splitContainerObjectsFooter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainerObjectsFooter.IsSplitterFixed = true;
-            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(6, 355);
+            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(6, 352);
             this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
             // 
             // splitContainerObjectsFooter.Panel1
             // 
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjOid);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjType);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjOid);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjType);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
             this.splitContainerObjectsFooter.Panel1.Margin = new System.Windows.Forms.Padding(15, 0, 0, 0);
             // 
             // splitContainerObjectsFooter.Panel2
             // 
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.LabObjMibDescription);
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjMibName);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjType);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjType);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjMibDescription);
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjMibName);
-            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(678, 57);
-            this.splitContainerObjectsFooter.SplitterDistance = 330;
+            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(678, 85);
+            this.splitContainerObjectsFooter.SplitterDistance = 310;
             this.splitContainerObjectsFooter.TabIndex = 2;
             // 
             // tbObjOid
             // 
             this.tbObjOid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjOid.Location = new System.Drawing.Point(82, 3);
+            this.tbObjOid.Location = new System.Drawing.Point(71, 3);
             this.tbObjOid.Name = "tbObjOid";
             this.tbObjOid.ReadOnly = true;
-            this.tbObjOid.Size = new System.Drawing.Size(233, 20);
+            this.tbObjOid.Size = new System.Drawing.Size(232, 20);
             this.tbObjOid.TabIndex = 0;
             this.tbObjOid.TabStop = false;
+            // 
+            // labelObjType
+            // 
+            this.labelObjType.AutoSize = true;
+            this.labelObjType.Location = new System.Drawing.Point(9, 58);
+            this.labelObjType.Name = "labelObjType";
+            this.labelObjType.Size = new System.Drawing.Size(34, 13);
+            this.labelObjType.TabIndex = 9;
+            this.labelObjType.Text = "Type:";
             // 
             // labelObjOid
             // 
             this.labelObjOid.AutoSize = true;
             this.labelObjOid.Location = new System.Drawing.Point(9, 6);
             this.labelObjOid.Name = "labelObjOid";
-            this.labelObjOid.Size = new System.Drawing.Size(26, 13);
+            this.labelObjOid.Size = new System.Drawing.Size(29, 13);
             this.labelObjOid.TabIndex = 9;
-            this.labelObjOid.Text = "OID";
+            this.labelObjOid.Text = "OID:";
+            // 
+            // tbObjType
+            // 
+            this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjType.Location = new System.Drawing.Point(71, 55);
+            this.tbObjType.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            this.tbObjType.Name = "tbObjType";
+            this.tbObjType.ReadOnly = true;
+            this.tbObjType.Size = new System.Drawing.Size(232, 20);
+            this.tbObjType.TabIndex = 1;
+            this.tbObjType.TabStop = false;
             // 
             // labelObjValue
             // 
             this.labelObjValue.AutoSize = true;
             this.labelObjValue.Location = new System.Drawing.Point(9, 32);
             this.labelObjValue.Name = "labelObjValue";
-            this.labelObjValue.Size = new System.Drawing.Size(34, 13);
+            this.labelObjValue.Size = new System.Drawing.Size(37, 13);
             this.labelObjValue.TabIndex = 9;
-            this.labelObjValue.Text = "Value";
+            this.labelObjValue.Text = "Value:";
             // 
             // tbObjValue
             // 
             this.tbObjValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjValue.Location = new System.Drawing.Point(82, 29);
+            this.tbObjValue.Location = new System.Drawing.Point(71, 29);
             this.tbObjValue.Name = "tbObjValue";
             this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.Size = new System.Drawing.Size(233, 20);
+            this.tbObjValue.Size = new System.Drawing.Size(232, 20);
             this.tbObjValue.TabIndex = 1;
             this.tbObjValue.TabStop = false;
+            // 
+            // LabObjMibDescription
+            // 
+            this.LabObjMibDescription.AutoSize = true;
+            this.LabObjMibDescription.Location = new System.Drawing.Point(3, 39);
+            this.LabObjMibDescription.Name = "LabObjMibDescription";
+            this.LabObjMibDescription.Size = new System.Drawing.Size(63, 26);
+            this.LabObjMibDescription.TabIndex = 9;
+            this.LabObjMibDescription.Text = "MIB \r\nDescription:";
             // 
             // labelObjMibName
             // 
             this.labelObjMibName.AutoSize = true;
             this.labelObjMibName.Location = new System.Drawing.Point(3, 6);
             this.labelObjMibName.Name = "labelObjMibName";
-            this.labelObjMibName.Size = new System.Drawing.Size(57, 13);
+            this.labelObjMibName.Size = new System.Drawing.Size(60, 13);
             this.labelObjMibName.TabIndex = 9;
-            this.labelObjMibName.Text = "MIB Name";
+            this.labelObjMibName.Text = "MIB Name:";
             // 
-            // labelObjType
+            // tbObjMibDescription
             // 
-            this.labelObjType.AutoSize = true;
-            this.labelObjType.Location = new System.Drawing.Point(3, 32);
-            this.labelObjType.Name = "labelObjType";
-            this.labelObjType.Size = new System.Drawing.Size(31, 13);
-            this.labelObjType.TabIndex = 9;
-            this.labelObjType.Text = "Type";
-            // 
-            // tbObjType
-            // 
-            this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tbObjMibDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjType.Location = new System.Drawing.Point(87, 29);
-            this.tbObjType.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
-            this.tbObjType.Name = "tbObjType";
-            this.tbObjType.ReadOnly = true;
-            this.tbObjType.Size = new System.Drawing.Size(245, 20);
-            this.tbObjType.TabIndex = 1;
-            this.tbObjType.TabStop = false;
+            this.tbObjMibDescription.Location = new System.Drawing.Point(94, 29);
+            this.tbObjMibDescription.Multiline = true;
+            this.tbObjMibDescription.Name = "tbObjMibDescription";
+            this.tbObjMibDescription.ReadOnly = true;
+            this.tbObjMibDescription.Size = new System.Drawing.Size(258, 46);
+            this.tbObjMibDescription.TabIndex = 0;
+            this.tbObjMibDescription.TabStop = false;
             // 
             // tbObjMibName
             // 
             this.tbObjMibName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjMibName.Location = new System.Drawing.Point(87, 3);
+            this.tbObjMibName.Location = new System.Drawing.Point(94, 3);
             this.tbObjMibName.Name = "tbObjMibName";
             this.tbObjMibName.ReadOnly = true;
-            this.tbObjMibName.Size = new System.Drawing.Size(245, 20);
+            this.tbObjMibName.Size = new System.Drawing.Size(258, 20);
             this.tbObjMibName.TabIndex = 0;
             this.tbObjMibName.TabStop = false;
             // 
@@ -369,7 +380,7 @@
             treeNode1.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.tvObjects.Size = new System.Drawing.Size(654, 303);
+            this.tvObjects.Size = new System.Drawing.Size(654, 300);
             this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
@@ -446,7 +457,7 @@
             // buttonConfigurationReset
             // 
             this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(516, 206);
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(516, 205);
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationReset.TabIndex = 12;
@@ -457,7 +468,7 @@
             // buttonConfigurationApply
             // 
             this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(597, 206);
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(597, 205);
             this.buttonConfigurationApply.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
@@ -478,13 +489,13 @@
             // buttonShowPassword
             // 
             this.buttonShowPassword.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonShowPassword.Image = global::iba.Properties.Resources.Eye;
             this.buttonShowPassword.Location = new System.Drawing.Point(649, 128);
             this.buttonShowPassword.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
             this.buttonShowPassword.Name = "buttonShowPassword";
             this.buttonShowPassword.Size = new System.Drawing.Size(23, 23);
             this.buttonShowPassword.TabIndex = 6;
             this.buttonShowPassword.TabStop = false;
-            this.buttonShowPassword.Text = "☼";
             this.buttonShowPassword.UseVisualStyleBackColor = true;
             this.buttonShowPassword.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
             this.buttonShowPassword.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
@@ -501,12 +512,12 @@
             // buttonShowEncryptionKey
             // 
             this.buttonShowEncryptionKey.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonShowEncryptionKey.Image = global::iba.Properties.Resources.Eye;
             this.buttonShowEncryptionKey.Location = new System.Drawing.Point(448, 153);
             this.buttonShowEncryptionKey.Name = "buttonShowEncryptionKey";
             this.buttonShowEncryptionKey.Size = new System.Drawing.Size(23, 23);
             this.buttonShowEncryptionKey.TabIndex = 9;
             this.buttonShowEncryptionKey.TabStop = false;
-            this.buttonShowEncryptionKey.Text = "☼";
             this.buttonShowEncryptionKey.UseVisualStyleBackColor = true;
             this.buttonShowEncryptionKey.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
             this.buttonShowEncryptionKey.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
@@ -659,11 +670,10 @@
             this.Controls.Add(this.gbDiagnostics);
             this.Controls.Add(this.gbObjects);
             this.Controls.Add(this.gbConfiguration);
-            this.Controls.Add(this.labelNotConnected);
             this.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "SnmpControl";
-            this.Size = new System.Drawing.Size(720, 875);
+            this.Size = new System.Drawing.Size(720, 865);
             this.Load += new System.EventHandler(this.SnmpControl_Load);
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
@@ -723,7 +733,7 @@
         private System.Windows.Forms.TextBox tbObjMibName;
         private System.Windows.Forms.TextBox tbObjType;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.Timer timerRefreshClients;
+        private System.Windows.Forms.Timer timerRefreshStatus;
         private System.Windows.Forms.DataGridView dgvClients;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColProtocol;
@@ -732,6 +742,7 @@
         private System.Windows.Forms.RadioButton rbDateTimeStr;
         private System.Windows.Forms.RadioButton rbDateTimeTc;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label labelNotConnected;
+        private System.Windows.Forms.Label LabObjMibDescription;
+        private System.Windows.Forms.TextBox tbObjMibDescription;
     }
 }

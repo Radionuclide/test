@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceProcess;
 using System.Linq;
+using System.Threading;
 using iba.Data;
 using iba.Controls;
 using iba.Utility;
@@ -83,7 +84,6 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.iconPaneSnmp.Handle);
-            //m_snmpPane.Controls.Add(new SnmpLeftPanelControl(this));
             // added by kolesnik - end
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
@@ -364,8 +364,9 @@ namespace iba
                     ctrl = new SnmpControl();
                     propertyPanes["snmpControl"] = ctrl;
                 }
-                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle, TaskManager.Manager.SnmpData.Clone());
 
+                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle,
+                    TaskManager.Manager.SnmpData?.Clone());
                 EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
             }
@@ -438,7 +439,7 @@ namespace iba
             {
                 // todo; to ask Michael; is it needed here?
                 SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
-                pane?.LoadData(null, this);
+                pane?.LoadData(TaskManager.Manager.SnmpData.Clone(), this);
             }
             // added by kolesnik - end
             else if (m_navBar.SelectedPane == m_settingsPane)
@@ -473,9 +474,11 @@ namespace iba
                 bHandleResize = Program.RunsWithService != Program.ServiceEnum.NOSERVICE;
             }
             // added by kolesnik - begin
-            else
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
-                TaskManager.Manager.SnmpWorker.Init();
+                // Initialize it here only if the app is standalone
+                //TaskManager.Manager.SnmpWorker = new SnmpWorker();
+                TaskManager.Manager.SnmpWorkerInit();
             }
             // added by kolesnik - end
         }
@@ -2808,7 +2811,7 @@ namespace iba
                                 TaskManager.ClientManager = null; //remove previous client taskmanager so it does not stay
                                 // alive during the online session
                                 Program.CommunicationObject = wrapper;
-                                if(NeedUploadToServer())
+                                if (NeedUploadToServer())
                                 {
                                     //initialise with configurations;
                                     SaveRightPaneControl();
@@ -2832,6 +2835,7 @@ namespace iba
                                 }
 
                             };
+
                             this.SafeInvoke(m,true);
                         }
                         else
@@ -2890,6 +2894,8 @@ namespace iba
                 MessageBox.Show(ex.ToString());
                 MessageBox.Show(ex.StackTrace);
             }
+
+            
             if (m_tryConnectTimer == null)
                 m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
