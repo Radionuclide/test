@@ -345,7 +345,7 @@ namespace iba
             }
             if (result)
             {
-                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
 
             }
@@ -376,7 +376,7 @@ namespace iba
             }
             if (result)
             {
-                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStarted);
 
             }
@@ -605,7 +605,8 @@ namespace iba
 
                 try
                 {
-                    System.Diagnostics.Process.Start(procInfo);
+                    Process p = System.Diagnostics.Process.Start(procInfo);
+                    p.WaitForExit(1000);
                 }
                 catch
                 {

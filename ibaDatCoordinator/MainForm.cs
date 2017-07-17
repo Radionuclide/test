@@ -2743,7 +2743,7 @@ namespace iba
                     TryToConnect(null);
                     if (Program.CommunicationObject == null && old != null) //connect failed
                     {
-                        old.HandleBrokenConnection();
+                        old.HandleBrokenConnection(null);
                         Program.CommunicationObject = old;
                     }
                 }
@@ -2881,7 +2881,7 @@ namespace iba
                         {
                             MethodInvoker m2 = delegate ()
                             {
-                                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(new Exception("testconnection failed"));
                             };
                             this.SafeInvoke(m2, true);
                         }

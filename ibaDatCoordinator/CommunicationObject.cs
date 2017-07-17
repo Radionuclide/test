@@ -423,9 +423,9 @@ namespace iba
             {
                 m_com.SaveConfigurations();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -437,9 +437,9 @@ namespace iba
                 {
                     return m_com.LoggerMaxRows;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return LogData.Data.MaxRows;
                 }
             }
@@ -449,9 +449,9 @@ namespace iba
                 {
                     m_com.LoggerMaxRows = value;
                 }
-                catch(Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                 }
             }
         }
@@ -464,9 +464,9 @@ namespace iba
                 {
                     return m_com.LoggerLogLevel;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return LogData.Data.LogLevel;
                 }
             }
@@ -476,9 +476,9 @@ namespace iba
                 {
                     m_com.LoggerLogLevel = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                 }
             }
         }
@@ -489,9 +489,9 @@ namespace iba
             {
                 m_com.LoggerClearGrid();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 LogData.Data.ClearGrid();
             }
         }
@@ -504,9 +504,9 @@ namespace iba
                 {
                     return m_com.Manager;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return TaskManager.Manager;
                 }
             }
@@ -516,9 +516,9 @@ namespace iba
                 {
                     m_com.Manager = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                 }
             }
         }
@@ -531,9 +531,9 @@ namespace iba
                 {
                     return m_com.ForwardEvents;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return false;
                 }
             }
@@ -547,9 +547,9 @@ namespace iba
                 {
                     return m_com.Logging_fileName;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return null;
                 }
             }
@@ -563,9 +563,9 @@ namespace iba
                 {
                     return m_com.ServerName;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return "";
                 }
             }
@@ -578,9 +578,9 @@ namespace iba
             {
                 m_com.Logging_Log(message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 LogData.Data.Log(Logging.Level.Info, message);
             }
         }
@@ -591,9 +591,9 @@ namespace iba
             {
                 m_com.Logging_setEventForwarder(ev,g);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -603,17 +603,19 @@ namespace iba
             {
                 m_com.Logging_clearEventForwarder(g);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
-        public void HandleBrokenConnection()
+        private void HandleBrokenConnectionGUI()
         {
-            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
-            Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-            //if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            if (Program.MainForm.InvokeRequired)
+            {
+                Program.MainForm.BeginInvoke(new Action(()=>HandleBrokenConnectionGUI()));
+                return;
+            }
             Program.MainForm.ReplaceManagerFromTree(TaskManager.Manager);
             Program.MainForm.Icon = iba.Properties.Resources.disconnectedIcon;
             //Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
@@ -623,6 +625,15 @@ namespace iba
             Program.MainForm.SetRenderer();
             Program.MainForm.UpdateConnectionStatus();
             Program.MainForm.UpdateServiceSettingsPane();
+        }
+
+        public void HandleBrokenConnection(Exception ex)
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
+            Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
+            //if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            HandleBrokenConnectionGUI();
+
             TaskManager.Manager.StopAllConfigurations();
             TaskManager.Manager.StopAllGlobalCleanups();
             //logger resetten
@@ -635,6 +646,12 @@ namespace iba
 
             if (gv != null)
                 LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTDISCONNECTED);
+
+            //TODO remove THIS after the test ...
+            if (ex == null)
+                ex = new Exception("Handle Broken connection called without exception");
+
+            LogData.Data.FileLog(Logging.Level.Exception, ex.Message + ex.StackTrace);
         }
 
         public void TestScript(string scriptfile, string arguments, ScriptTester scripObject)
@@ -643,9 +660,9 @@ namespace iba
             {
                 m_com.TestScript(scriptfile,arguments, scripObject);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -655,9 +672,9 @@ namespace iba
             {
                 m_com.KillScript();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -667,9 +684,9 @@ namespace iba
             {
                 return m_com.TestDbTaskConnection(udt);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return null;
             }
         }
@@ -680,9 +697,9 @@ namespace iba
             {
                 m_com.TestNotifier(m_data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -692,9 +709,9 @@ namespace iba
             {
                 m_com.RemoveMarkings(path, username, pass, recursive,myBar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -704,9 +721,9 @@ namespace iba
             {
                 m_com.DeleteFiles(path,  username,  pass, files, myBar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -716,9 +733,9 @@ namespace iba
             {
                 m_com.RemoveMarkings(path,  username,  pass, files, myBar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -728,9 +745,9 @@ namespace iba
             {
                 return m_com.GetIbaAnalyzerRegKey();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return "";
             }
         }
@@ -741,9 +758,9 @@ namespace iba
             {
                 m_com.DeleteFile(outFile);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
         }
 
@@ -753,9 +770,9 @@ namespace iba
             {
                 return m_com.GetServerSideFileHandler();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return null;
             }
         }
@@ -766,9 +783,9 @@ namespace iba
             {
                 return m_com.TestCondition(expression,index,pdo,datfile,out errorMessage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 errorMessage = iba.Properties.Resources.connectionLost;
                 return float.NaN;
             }
@@ -780,60 +797,60 @@ namespace iba
             {
                 return m_com.FileExists(file);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return false;
             }
         }
 
         public string ReadFile(string filename)
         {
-            Exception ex = null;
+            Exception exfile = null;
             string res = "";
             try
             {
-                res = m_com.ReadFile(filename, out ex);
+                res = m_com.ReadFile(filename, out exfile);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return "";
             }
-            if (ex != null) throw ex;
+            if (exfile != null) throw exfile;
             return res;
         }
 
 
         public bool IsReadOnly(string filename)
         {
-            Exception ex = null;
+            Exception exfile = null;
             bool res;
             try
             {
-                res = m_com.IsReadOnly(filename, out ex);
+                res = m_com.IsReadOnly(filename, out exfile);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return false;
             }
-            if (ex != null) throw ex;
+            if (exfile != null) throw exfile;
             return res;
         }
 
         public void WriteFile(string filename, string text)
         {
-            Exception ex = null;
+            Exception exfile = null;
             try
             {
-                m_com.WriteFile(filename, text, out ex);
+                m_com.WriteFile(filename, text, out exfile);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
             }
-            if (ex != null) throw ex;
+            if (exfile != null) throw exfile;
         }
     }
 }

@@ -1389,9 +1389,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AddConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.AddConfiguration(data);
             }
         }
@@ -1402,9 +1402,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AddConfigurations(datas);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.AddConfigurations(datas);
             }
         }
@@ -1415,9 +1415,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ClearConfigurations();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.ClearConfigurations();
             }
         }
@@ -1430,9 +1430,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Configurations;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.Configurations;
                 }
             }
@@ -1442,9 +1442,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.Configurations = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.Configurations = value;
                 }
             }
@@ -1458,9 +1458,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.WatchDogData;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.WatchDogData;
                 }
             }
@@ -1472,9 +1472,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetWatchdogStatus();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetWatchdogStatus();
             }
         }
@@ -1482,25 +1482,25 @@ namespace iba.Processing
 
         #region SNMP interface - Added by Kolesnik
 
-        /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection()"/> 
+        /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection(ex)"/> 
         /// for <see cref="Program.CommunicationObject"/>  if it is not null. </summary>
-        private void HandleBrokenConnection()
+        private void HandleBrokenConnection(Exception ex)
         {
-            Program.CommunicationObject?.HandleBrokenConnection();
+            Program.CommunicationObject?.HandleBrokenConnection(ex);
             // todo kls for Michael to review 
             // Michael, do I understand correctly, that the following two lines are equal:
             //
-            // 1: if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
-            // 2: Program.CommunicationObject?.HandleBrokenConnection();
+            // 1: if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+            // 2: Program.CommunicationObject?.HandleBrokenConnection(ex);
             //
             // Maybe there are some things that I'm not aware about?
             // as far as I know, null propagation (second variant) is even more thread-safe than 1st one.
             // Null propagation should be equal to something like this:
             // var commObj = Program.CommunicationObject;
-            // if (commObj != null) commObj.HandleBrokenConnection();
+            // if (commObj != null) commObj.HandleBrokenConnection(ex);
 
             // So, if yes, then I suggest replacing all such occurencies with the line above.
-            // or with this HandleBrokenConnection() method.
+            // or with this HandleBrokenConnection(ex) method.
         }
 
         #region Configuration
@@ -1513,9 +1513,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.SnmpData;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     return Manager.SnmpData;
                 }
             }
@@ -1525,9 +1525,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.SnmpData = value;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    HandleBrokenConnection();
+                    HandleBrokenConnection(ex);
                     Manager.SnmpData = value;
                 }
             }
@@ -1544,9 +1544,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.SnmpRebuildObjectTree();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 Manager.SnmpRebuildObjectTree();
             }
         }
@@ -1557,9 +1557,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.SnmpGetObjectTreeSnapShot();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return Manager.SnmpGetObjectTreeSnapShot();
             }
         }
@@ -1570,9 +1570,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.SnmpGetTreeNodeTag(oid);
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return Manager.SnmpGetTreeNodeTag(oid);
             }
         }
@@ -1583,9 +1583,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.SnmpGenerateMibFiles();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return Manager.SnmpGenerateMibFiles();
             }
         }
@@ -1602,9 +1602,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.SnmpGetBriefStatus();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return Manager.SnmpGetBriefStatus();
             }
         }
@@ -1615,9 +1615,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.SnmpGetClients();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 return Manager.SnmpGetClients();
             }
         }
@@ -1628,9 +1628,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.SnmpClearClients();
             }
-            catch
+            catch (Exception ex)
             {
-                HandleBrokenConnection();
+                HandleBrokenConnection(ex);
                 Manager.SnmpClearClients();
             }
         }
@@ -1648,9 +1648,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Count;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.Count;
                 }
             }
@@ -1662,9 +1662,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.IsJobStarted(guid);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.IsJobStarted(guid);
             }
         }
@@ -1675,9 +1675,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetConfigurationFromWorker(guid);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetConfigurationFromWorker(guid);
             }
         }
@@ -1688,9 +1688,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetMinimalStatus(guid, permanentError);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetMinimalStatus(guid, permanentError);
             }
         }
@@ -1701,9 +1701,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.GetStatusPlugin(guid, taskindex);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetStatusPlugin(guid, taskindex);
             }
         }
@@ -1714,9 +1714,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AlterPermanentFileErrorList(todo, guid, files);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1726,9 +1726,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.RemoveConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.RemoveConfiguration(data);
             }
         }
@@ -1739,9 +1739,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.ReplaceConfiguration(data);
             }
         }
@@ -1752,9 +1752,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceConfigurations(datas);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.ReplaceConfigurations(datas);
             }
         }
@@ -1765,9 +1765,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.UpdateConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.UpdateConfiguration(data);
             }
         }
@@ -1778,9 +1778,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceWatchdogData(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.ReplaceWatchdogData(data);
             }
         }
@@ -1791,9 +1791,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ReplaceGlobalCleanupData(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.ReplaceGlobalCleanupData(data);
             }
         }
@@ -1804,9 +1804,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.CompareConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return false;
             }
         }
@@ -1817,9 +1817,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartAllEnabledConfigurationsNoOneTime();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1829,9 +1829,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1841,9 +1841,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAllConfigurations();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1853,9 +1853,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForAllConfigurations();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1865,9 +1865,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1877,9 +1877,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAndWaitForConfiguration(guid);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1889,9 +1889,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopConfiguration(data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1901,9 +1901,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopConfiguration(guid);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1913,9 +1913,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.UpdateTreePosition(guid, pos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -1925,9 +1925,9 @@ namespace iba.Processing
             {
                 return Program.CommunicationObject.Manager.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
                 return false;
             }
@@ -1941,9 +1941,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.DoPostponeProcessing;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.DoPostponeProcessing;
                 }
             }
@@ -1953,9 +1953,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.DoPostponeProcessing = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.DoPostponeProcessing = value;
                 }
             }
@@ -1969,9 +1969,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.PostponeMinutes;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.PostponeMinutes;
                 }
             }
@@ -1981,9 +1981,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.PostponeMinutes = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.PostponeMinutes = value;
                 }
             }
@@ -1997,9 +1997,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxResourceIntensiveTasks;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.MaxResourceIntensiveTasks;
                 }
             }
@@ -2009,9 +2009,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxResourceIntensiveTasks = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.MaxResourceIntensiveTasks = value;
                 }
             }
@@ -2025,9 +2025,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.MaxSimultaneousIbaAnalyzers;
                 }
             }
@@ -2037,9 +2037,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxSimultaneousIbaAnalyzers = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.MaxSimultaneousIbaAnalyzers = value;
                 }
             }
@@ -2053,9 +2053,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.MaxIbaAnalyzerCalls;
                 }
             }
@@ -2065,9 +2065,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.MaxIbaAnalyzerCalls = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.MaxIbaAnalyzerCalls = value;
                 }
             }
@@ -2081,9 +2081,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.IsIbaAnalyzerCallsLimited;
                 }
             }
@@ -2093,9 +2093,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.IsIbaAnalyzerCallsLimited = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.IsIbaAnalyzerCallsLimited = value;
                 }
             }
@@ -2109,9 +2109,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.ProcessPriority;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.ProcessPriority;
                 }
             }
@@ -2121,9 +2121,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.ProcessPriority = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.ProcessPriority = value;
                 }
             }
@@ -2135,10 +2135,10 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.AdditionalFileNames(myList);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 myList.Clear();
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 Manager.AdditionalFileNames(myList);
             }
         }
@@ -2151,9 +2151,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Password;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return "";
                 }
             }
@@ -2163,9 +2163,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.Password = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 }
             }
         }
@@ -2178,9 +2178,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.RememberPassTime;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return TimeSpan.MinValue;
                 }
             }
@@ -2190,9 +2190,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.RememberPassTime = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 }
             }
         }
@@ -2205,9 +2205,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.RememberPassEnabled;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return false;
                 }
             }
@@ -2217,9 +2217,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.RememberPassEnabled = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 }
             }
         }
@@ -2231,9 +2231,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StartAllEnabledGlobalCleanups();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -2243,9 +2243,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.StopAllGlobalCleanups();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -2257,9 +2257,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.GlobalCleanupDataList;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return Manager.GlobalCleanupDataList;
                 }
             }
@@ -2269,9 +2269,9 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.GlobalCleanupDataList = value;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     Manager.GlobalCleanupDataList = value;
                 }
             }
@@ -2284,9 +2284,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.ForceTrigger(data);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -2296,9 +2296,9 @@ namespace iba.Processing
             {
                 Program.CommunicationObject.Manager.CleanAndProcessFileNow(data,file);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 
@@ -2310,9 +2310,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.ConfStoppedID;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return 0;
                 }
             }
@@ -2326,9 +2326,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.TaskManagerID;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return 0;
                 }
             }
@@ -2342,9 +2342,9 @@ namespace iba.Processing
                 {
                     return Program.CommunicationObject.Manager.Version;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection();
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return 0;
                 }
             }
