@@ -137,6 +137,9 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="ibaLogger">
+      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -153,6 +156,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
     <ClInclude Include="AGLink\OSDefInc.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="S7-writer.h" />
+    <ClInclude Include="S7ConnectionParameters.h" />
     <ClInclude Include="S7Operand.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>

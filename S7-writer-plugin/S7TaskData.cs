@@ -80,11 +80,11 @@ namespace S7_writer_plugin
             for(int i = 0; i < m_records.Count; i++)
                 res.m_records[i] = (Record)m_records[i].Clone();
 
-            res.m_s7Address = m_s7Address;
-            res.m_s7Rack = m_s7Rack;
-            res.m_s7Slot = m_s7Slot;
-            res.m_s7Timeout = m_s7Timeout;
-            res.m_s7ConnType = m_s7ConnType;
+            res.S7Address = S7Address;
+            res.S7Rack = S7Rack;
+            res.S7Slot = S7Slot;
+            res.S7Timeout = S7Timeout;
+            res.S7ConnectionType = S7ConnectionType;
 
             res.m_monitorData = (iba.Data.MonitorData) m_monitorData.Clone();
 
@@ -114,11 +114,8 @@ namespace S7_writer_plugin
 
             m_records = new List<Record>();
 
-            m_s7Address = "";
-            m_s7Rack = 0;
-            m_s7Slot = 2;
-            m_s7Timeout = 10;
-            m_s7ConnType = 0;
+            m_s7ConnPars = new S7ConnectionParameters();
+            m_bAllowErrors = false;
             m_monitorData = new iba.Data.MonitorData();
         }
 
@@ -129,11 +126,12 @@ namespace S7_writer_plugin
             if (m_testDatFile != other.m_testDatFile) return false;
             if (m_pdoFile != other.m_pdoFile) return false;
             if (!m_records.SequenceEqual(other.m_records)) return false;
-            if (m_s7Address != other.m_s7Address) return false;
-            if (m_s7Rack != other.m_s7Rack) return false;
-            if (m_s7Slot != other.m_s7Slot) return false;
-            if (m_s7Timeout != other.m_s7Timeout) return false;
-            if (m_s7ConnType != other.m_s7ConnType) return false;
+            if (S7Address != other.S7Address) return false;
+            if (S7Rack != other.S7Rack) return false;
+            if (S7Slot != other.S7Slot) return false;
+            if (S7Timeout != other.S7Timeout) return false;
+            if (S7ConnectionType != other.S7ConnectionType) return false;
+            if (AllowErrors != other.AllowErrors) return false;
             if (!m_monitorData.IsSame(other.m_monitorData)) return false;
             return true;
         }
@@ -155,7 +153,7 @@ namespace S7_writer_plugin
         }
 
         [Serializable]
-        public class Record : ICloneable
+        public class Record : ICloneable, IComparable<Record>
         {
             private string m_expression;
             public string Expression
@@ -283,6 +281,31 @@ namespace S7_writer_plugin
                 return res;
             }
 
+            public int CompareTo(Record other)
+            {
+                int diff = DBNr - other.DBNr;
+                if (diff != 0)
+                    return diff;
+
+                diff = Address - other.Address;
+                if (diff != 0)
+                    return diff;
+
+                int typeSize = S7.DataTypes[(int)DataType].size;
+                int otherTypeSize = S7.DataTypes[(int)other.DataType].size;
+                diff = otherTypeSize - typeSize; //Biggest data type first
+                if (diff != 0)
+                    return diff;
+
+                if(DataType == S7DataTypeEnum.S7Bool)
+                {
+                    diff = BitNr - other.BitNr;
+                    if (diff != 0)
+                        return diff;
+                }
+
+                return m_expression.CompareTo(other.m_expression);
+            }
             #endregion
         }
 
@@ -325,39 +348,47 @@ namespace S7_writer_plugin
 		    set { m_records = value; }
 	    }
 
-        private string m_s7Address;
+        private S7ConnectionParameters m_s7ConnPars;
         public string S7Address
         {
-            get { return m_s7Address; }
-            set { m_s7Address = value; }
+            get { return m_s7ConnPars.Address; }
+            set { m_s7ConnPars.Address = value ?? ""; }
         }
 
-        private int m_s7Rack;
         public int S7Rack
         {
-            get { return m_s7Rack; }
-            set { m_s7Rack = Math.Max(0, value); }
+            get { return m_s7ConnPars.Rack; }
+            set { m_s7ConnPars.Rack = Math.Max(0, value); }
         }
 
-        private int m_s7Slot;
         public int S7Slot
         {
-            get { return m_s7Slot; }
-            set { m_s7Slot = Math.Max(0, value); }
+            get { return m_s7ConnPars.Slot; }
+            set { m_s7ConnPars.Slot = Math.Max(0, value); }
         }
 
-        private int m_s7Timeout;
         public int S7Timeout
         {
-            get { return m_s7Timeout; }
-            set { m_s7Timeout = Math.Max(1, value); }
+            get { return m_s7ConnPars.TimeoutInSec; }
+            set { m_s7ConnPars.TimeoutInSec = Math.Max(1, value); }
         }
 
-        private int m_s7ConnType;
         public int S7ConnectionType
         {
-            get { return m_s7ConnType; }
-            set { m_s7ConnType = Math.Max(0, Math.Min(2, value)); }
+            get { return m_s7ConnPars.ConnType; }
+            set { m_s7ConnPars.ConnType = Math.Max(0, Math.Min(2, value)); }
+        }
+
+        private bool m_bAllowErrors;
+        public bool AllowErrors
+        {
+            get { return m_bAllowErrors; }
+            set { m_bAllowErrors = value; }
+        }
+
+        public S7ConnectionParameters GetConnectionParameters()
+        {
+            return m_s7ConnPars;
         }
 
         #endregion

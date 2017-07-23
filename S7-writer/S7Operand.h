@@ -239,6 +239,7 @@ namespace S7_writer
 			//gcnew S7OperandType(59, "Z"   , "C"   , 2   , 0x86 , nullptr , (int) S7DataTypeEnum::S7Word ,							                                                 S7CPUType::S5 ),
 
         };
+
     };
 
     private ref class S7OperandParser

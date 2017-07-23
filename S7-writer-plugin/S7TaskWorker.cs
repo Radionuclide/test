@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using iba.Plugins;
 using System.IO;
+using S7_writer;
 
 namespace S7_writer_plugin
 {
@@ -26,6 +27,7 @@ namespace S7_writer_plugin
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
             m_dataToApply = newtask as S7TaskData;
+            m_dataToApply.Records.Sort();
             return true;
         }
 
@@ -43,21 +45,7 @@ namespace S7_writer_plugin
             }
             m_error = "";
             
-            //assumes ibaAnalyzer is loaded with the .dat File -> get .dat file date
-            DateTime startTime = new DateTime();
-            int microSecPart = 0;
-            m_monitor.Execute(delegate() { m_analyzer.GetStartTime(ref startTime, ref microSecPart); }); //can throw
-            startTime.AddTicks(microSecPart * 10);
-            startTime = startTime.ToUniversalTime();
-            int count = 20;
-            for(int i = 19; i >= 0; i--)
-            {
-                if(!m_data.Records[i].IsValid())
-                    break;
-                count = i;
-            }
-
-            if(count == 0)
+            if(m_data.Records.Count == 0)
             {
                 m_error = Properties.Resources.NoValidEntriesSpecified;
                 return false;
@@ -73,34 +61,51 @@ namespace S7_writer_plugin
                 m_monitor.Execute(delegate() { m_analyzer.OpenAnalysis(m_data.AnalysisFile); });
             }
 
-            //using (AMOSPCprotocol.OSPCConnector connector = new AMOSPCprotocol.OSPCConnector())
-            //{
-            //    int validCount = 0;
-            //    for(int i = 0; i < count; i++)
-            //    {
-            //        S7TaskData.Record record = m_data.Records[i];
-            //        double f = double.NaN;
-            //        if(!string.IsNullOrEmpty(record.Expression))
-            //        {
-            //            if (m_bNewVersion)
-            //                m_monitor.Execute(delegate() { f = m_analyzer.EvaluateDouble(record.Expression, 0); }); 
-            //            else
-            //                m_monitor.Execute(delegate() { f = (double)m_analyzer.Evaluate(record.Expression, 0); }); 
-            //        }
-            //        if(!Double.IsNaN(f) && !Double.IsInfinity(f))
-            //        {
-            //            validCount++;
-            //        }
-            //        connector.AddRecord(record.ProcessName, record.VariableName, f);
-            //    }
-            //    if ( validCount == 0)
-            //    {
-            //        m_error = Properties.Resources.NoValidEntriesSpecified;
-            //        return false;
-            //    }
-            //    connector.Connect(m_data.OspcServerHost, m_data.OspcServerUser, m_data.OspcServerPassword);
-            //    connector.Send(startTime);
-            //}        
+            try
+            {
+                List<double> values = new List<double>(m_data.Records.Count);
+                List<S7Operand> operands = new List<S7Operand>(m_data.Records.Count);
+                foreach (S7TaskData.Record record in m_data.Records)
+                {
+                    double f = double.NaN;
+                    if (!string.IsNullOrEmpty(record.Expression))
+                    {
+                        if (m_bNewVersion)
+                            m_monitor.Execute(delegate () { f = m_analyzer.EvaluateDouble(record.Expression, 0); });
+                        else
+                            m_monitor.Execute(delegate () { f = (double)m_analyzer.Evaluate(record.Expression, 0); });
+                    }
+
+                    if (!Double.IsNaN(f) && !Double.IsInfinity(f))
+                    {
+                        operands.Add(new S7Operand(record.GetOperandName(), (int)record.DataType));
+                        values.Add(f);
+                    }
+                    else if (!m_data.AllowErrors)
+                    {
+                        m_error = String.Format(Properties.Resources.BadEvaluate, record.GetOperandName());
+                        return false;
+                    }
+                }
+
+                if (operands.Count == 0)
+                {
+                    m_error = Properties.Resources.NoValidEntriesSpecified;
+                    return false;
+                }
+
+                using (S7_writer.S7Connection conn = new S7_writer.S7Connection())
+                {
+                    conn.Connect(m_data.GetConnectionParameters());
+                    conn.WriteOperands(operands, values, m_data.AllowErrors);
+                }
+            }
+            catch (Exception ex)
+            {
+                m_error = ex.Message;
+                return false;      	
+            }
+        
             return true;
         }
 

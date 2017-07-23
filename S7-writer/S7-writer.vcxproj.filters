@@ -57,6 +57,9 @@
     <ClInclude Include="AGLink\OSDefInc.h">
       <Filter>AGLink</Filter>
     </ClInclude>
+    <ClInclude Include="S7ConnectionParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="S7-writer.cpp">
