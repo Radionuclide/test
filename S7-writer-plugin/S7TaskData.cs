@@ -77,14 +77,16 @@ namespace S7_writer_plugin
             res.m_testDatFile = m_testDatFile;
             res.m_pdoFile = m_pdoFile;
 
+            res.Records = new List<Record>(m_records.Count);
             for(int i = 0; i < m_records.Count; i++)
-                res.m_records[i] = (Record)m_records[i].Clone();
+                res.m_records.Add((Record)m_records[i].Clone());
 
             res.S7Address = S7Address;
             res.S7Rack = S7Rack;
             res.S7Slot = S7Slot;
             res.S7Timeout = S7Timeout;
             res.S7ConnectionType = S7ConnectionType;
+            res.AllowErrors = AllowErrors;
 
             res.m_monitorData = (iba.Data.MonitorData) m_monitorData.Clone();
 
@@ -280,6 +282,7 @@ namespace S7_writer_plugin
                 res.m_testValue = m_testValue;
                 return res;
             }
+            #endregion
 
             public int CompareTo(Record other)
             {
@@ -297,7 +300,7 @@ namespace S7_writer_plugin
                 if (diff != 0)
                     return diff;
 
-                if(DataType == S7DataTypeEnum.S7Bool)
+                if (DataType == S7DataTypeEnum.S7Bool)
                 {
                     diff = BitNr - other.BitNr;
                     if (diff != 0)
@@ -306,38 +309,64 @@ namespace S7_writer_plugin
 
                 return m_expression.CompareTo(other.m_expression);
             }
-            #endregion
-        }
 
-        // Custom comparer for the Record class
-        class RecordComparer : IEqualityComparer<Record>
-        {
-            // Records are equal if their names and Record numbers are equal.
-            public bool Equals(Record x, Record y)
+            public override bool Equals(object obj)
             {
-
-                //Check whether the compared objects reference the same data.
-                if(Object.ReferenceEquals(x, y)) return true;
-
-                //Check whether any of the compared objects is null.
-                if(Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                if (obj == null)
                     return false;
 
-                //Check whether the Records' properties are equal.
-                return x.Expression == y.Expression && x.DBNr == y.DBNr && x.Address == y.Address && x.BitNr == y.BitNr && x.DataType == y.DataType;
+                return Equals(obj as Record);
             }
 
-            // If Equals() returns true for a pair of objects 
-            // then GetHashCode() must return the same value for these objects.
-
-            public int GetHashCode(Record record)
+            public bool Equals(Record other)
             {
-                //Check whether the object is null
-                if(Object.ReferenceEquals(record, null)) return 0;
-                return record.Expression.GetHashCode() ^ record.DBNr ^ record.Address ^ record.BitNr ^ (int)record.DataType;
+                if (other == null)
+                    return false;
+                else if (CompareTo(other) != 0)
+                    return false;
+                else if (DataType != other.DataType)
+                    return false;
+                else if (Expression != other.Expression)
+                    return false;
+                else
+                    return true;
             }
 
+            public override int GetHashCode()
+            {
+                return Expression.GetHashCode();
+            }
         }
+
+        //// Custom comparer for the Record class
+        //class RecordComparer : IEqualityComparer<Record>
+        //{
+        //    // Records are equal if their names and Record numbers are equal.
+        //    public bool Equals(Record x, Record y)
+        //    {
+
+        //        //Check whether the compared objects reference the same data.
+        //        if(Object.ReferenceEquals(x, y)) return true;
+
+        //        //Check whether any of the compared objects is null.
+        //        if(Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+        //            return false;
+
+        //        //Check whether the Records' properties are equal.
+        //        return x.Expression == y.Expression && x.DBNr == y.DBNr && x.Address == y.Address && x.BitNr == y.BitNr && x.DataType == y.DataType;
+        //    }
+
+        //    // If Equals() returns true for a pair of objects 
+        //    // then GetHashCode() must return the same value for these objects.
+
+        //    public int GetHashCode(Record record)
+        //    {
+        //        //Check whether the object is null
+        //        if(Object.ReferenceEquals(record, null)) return 0;
+        //        return record.Expression.GetHashCode() ^ record.DBNr ^ record.Address ^ record.BitNr ^ (int)record.DataType;
+        //    }
+
+        //}
 
 
         private List<Record> m_records;

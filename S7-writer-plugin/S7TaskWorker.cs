@@ -97,7 +97,7 @@ namespace S7_writer_plugin
                 using (S7_writer.S7Connection conn = new S7_writer.S7Connection())
                 {
                     conn.Connect(m_data.GetConnectionParameters());
-                    conn.WriteOperands(operands, values, m_data.AllowErrors);
+                    conn.WriteOperands(operands, values, false); //m_data.AllowErrors);
                 }
             }
             catch (Exception ex)

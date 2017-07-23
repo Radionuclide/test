@@ -31,6 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
             this.m_datagvMessages = new System.Windows.Forms.DataGridView();
+            this.m_columnAnalyzerExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnDBNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnBitNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_columnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_browsePDOFileButton = new System.Windows.Forms.Button();
@@ -58,12 +64,7 @@
             this.tbAddress = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.spSlot = new System.Windows.Forms.NumericUpDown();
-            this.m_columnAnalyzerExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnDBNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnBitNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_columnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ckAllowErrors = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).BeginInit();
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
@@ -88,6 +89,68 @@
             this.m_datagvMessages.Name = "m_datagvMessages";
             this.m_datagvMessages.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.m_datagvMessages_DataError);
             this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
+            // 
+            // m_columnAnalyzerExpression
+            // 
+            this.m_columnAnalyzerExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnAnalyzerExpression.DataPropertyName = "Expression";
+            this.m_columnAnalyzerExpression.FillWeight = 40F;
+            resources.ApplyResources(this.m_columnAnalyzerExpression, "m_columnAnalyzerExpression");
+            this.m_columnAnalyzerExpression.Name = "m_columnAnalyzerExpression";
+            this.m_columnAnalyzerExpression.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // m_columnDBNr
+            // 
+            this.m_columnDBNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnDBNr.DataPropertyName = "DBNr";
+            this.m_columnDBNr.FillWeight = 10F;
+            resources.ApplyResources(this.m_columnDBNr, "m_columnDBNr");
+            this.m_columnDBNr.Name = "m_columnDBNr";
+            this.m_columnDBNr.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.m_columnDBNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // columnAddress
+            // 
+            this.columnAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.columnAddress.DataPropertyName = "Address";
+            this.columnAddress.FillWeight = 10F;
+            resources.ApplyResources(this.columnAddress, "columnAddress");
+            this.columnAddress.Name = "columnAddress";
+            // 
+            // columnBitNr
+            // 
+            this.columnBitNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.columnBitNr.DataPropertyName = "BitNr";
+            this.columnBitNr.FillWeight = 10F;
+            resources.ApplyResources(this.columnBitNr, "columnBitNr");
+            this.columnBitNr.Name = "columnBitNr";
+            // 
+            // m_columnDataType
+            // 
+            this.m_columnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnDataType.DataPropertyName = "DataTypeAsString";
+            this.m_columnDataType.FillWeight = 20F;
+            resources.ApplyResources(this.m_columnDataType, "m_columnDataType");
+            this.m_columnDataType.Items.AddRange(new object[] {
+            "BOOL",
+            "BYTE",
+            "CHAR",
+            "WORD",
+            "INT",
+            "DWORD",
+            "DINT",
+            "REAL"});
+            this.m_columnDataType.Name = "m_columnDataType";
+            this.m_columnDataType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // m_columnTestValue
+            // 
+            this.m_columnTestValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.m_columnTestValue.DataPropertyName = "TestValueString";
+            this.m_columnTestValue.FillWeight = 20F;
+            resources.ApplyResources(this.m_columnTestValue, "m_columnTestValue");
+            this.m_columnTestValue.Name = "m_columnTestValue";
+            this.m_columnTestValue.ReadOnly = true;
             // 
             // label2
             // 
@@ -301,72 +364,17 @@
             0});
             this.spSlot.Name = "spSlot";
             // 
-            // m_columnAnalyzerExpression
+            // ckAllowErrors
             // 
-            this.m_columnAnalyzerExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnAnalyzerExpression.DataPropertyName = "Expression";
-            this.m_columnAnalyzerExpression.FillWeight = 40F;
-            resources.ApplyResources(this.m_columnAnalyzerExpression, "m_columnAnalyzerExpression");
-            this.m_columnAnalyzerExpression.Name = "m_columnAnalyzerExpression";
-            this.m_columnAnalyzerExpression.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // m_columnDBNr
-            // 
-            this.m_columnDBNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnDBNr.DataPropertyName = "DBNr";
-            this.m_columnDBNr.FillWeight = 10F;
-            resources.ApplyResources(this.m_columnDBNr, "m_columnDBNr");
-            this.m_columnDBNr.Name = "m_columnDBNr";
-            this.m_columnDBNr.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.m_columnDBNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // columnAddress
-            // 
-            this.columnAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.columnAddress.DataPropertyName = "Address";
-            this.columnAddress.FillWeight = 10F;
-            resources.ApplyResources(this.columnAddress, "columnAddress");
-            this.columnAddress.Name = "columnAddress";
-            // 
-            // columnBitNr
-            // 
-            this.columnBitNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.columnBitNr.DataPropertyName = "BitNr";
-            this.columnBitNr.FillWeight = 10F;
-            resources.ApplyResources(this.columnBitNr, "columnBitNr");
-            this.columnBitNr.Name = "columnBitNr";
-            // 
-            // m_columnDataType
-            // 
-            this.m_columnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnDataType.DataPropertyName = "DataTypeAsString";
-            this.m_columnDataType.FillWeight = 20F;
-            resources.ApplyResources(this.m_columnDataType, "m_columnDataType");
-            this.m_columnDataType.Items.AddRange(new object[] {
-            "BOOL",
-            "BYTE",
-            "CHAR",
-            "WORD",
-            "INT",
-            "DWORD",
-            "DINT",
-            "REAL"});
-            this.m_columnDataType.Name = "m_columnDataType";
-            this.m_columnDataType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // m_columnTestValue
-            // 
-            this.m_columnTestValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.m_columnTestValue.DataPropertyName = "TestValueString";
-            this.m_columnTestValue.FillWeight = 20F;
-            resources.ApplyResources(this.m_columnTestValue, "m_columnTestValue");
-            this.m_columnTestValue.Name = "m_columnTestValue";
-            this.m_columnTestValue.ReadOnly = true;
+            resources.ApplyResources(this.ckAllowErrors, "ckAllowErrors");
+            this.ckAllowErrors.Name = "ckAllowErrors";
+            this.ckAllowErrors.UseVisualStyleBackColor = true;
             // 
             // S7TaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ckAllowErrors);
             this.Controls.Add(this.spRack);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label5);
@@ -437,5 +445,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn columnBitNr;
         private System.Windows.Forms.DataGridViewComboBoxColumn m_columnDataType;
         private System.Windows.Forms.DataGridViewTextBoxColumn m_columnTestValue;
+        private System.Windows.Forms.CheckBox ckAllowErrors;
     }
 }

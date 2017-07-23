@@ -68,6 +68,8 @@ namespace S7_writer_plugin
             tbAddress.Text = m_data.S7Address;
             spRack.SetIntValue(m_data.S7Rack);
             spSlot.SetIntValue(m_data.S7Slot);
+
+            ckAllowErrors.Checked = m_data.AllowErrors;
             
             UpdateButtons();
 
@@ -88,6 +90,7 @@ namespace S7_writer_plugin
             m_data.S7Address = tbAddress.Text;
             m_data.S7Rack = spRack.GetIntValue();
             m_data.S7Slot = spSlot.GetIntValue();
+            m_data.AllowErrors = ckAllowErrors.Checked;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
@@ -223,7 +226,7 @@ namespace S7_writer_plugin
                             MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.GetOperandName()), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
-                    m_datagvMessages.DataSource = records.ToList();
+                    m_datagvMessages.Refresh();
                     this.ParentForm.Activate();
                 }
             }

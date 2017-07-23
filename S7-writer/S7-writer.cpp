@@ -32,7 +32,7 @@ namespace S7_writer
 		GlobalDeviceNr = -1;
 
 		int res = LoadDll();
-		InitializeOk = res == AGL40_SUCCESS;
+		InitializeOk = res == 1;
 		if (!InitializeOk)
 			return;
 
@@ -125,7 +125,7 @@ namespace S7_writer
 		AGL_GetParas(deviceNr, TYPE_S7_TCPIP, &para, sizeof(para));
 
 		para.Conn[0].bConnType = connPars->ConnType;
-		para.Conn[0].lTimeOut = connPars->TimeoutInSec;
+		para.Conn[0].lTimeOut = connPars->TimeoutInSec*1000;
 		para.Conn[0].wPlcNr = 0;
 		para.Conn[0].bRemRackNr = connPars->Rack;
 		para.Conn[0].bRemSlotNr = connPars->Slot;
@@ -252,9 +252,9 @@ namespace S7_writer
 				if (dataRW[i].Result != AGL40_SUCCESS)
 				{
 					if (bAllowErrors)
-						ibaLogger::DebugFormat("Writing operand {0} returned error {1}", operands[i]->ToString(), GetAglinkErrorMessage(dataRW[i].Result, "AGL_WriteMixEx"));
+						ibaLogger::DebugFormat("Writing operand {0} returned error {1}", operands[i]->GetName(), GetAglinkErrorMessage(dataRW[i].Result, "AGL_WriteMixEx"));
 					else
-						throw gcnew Exception(String::Format("Writing operand {0} returned error {1}", operands[i]->ToString(), GetAglinkErrorMessage(dataRW[i].Result, "AGL_WriteMixEx")));
+						throw gcnew Exception(String::Format("Writing operand {0} returned error {1}", operands[i]->GetName(), GetAglinkErrorMessage(dataRW[i].Result, "AGL_WriteMixEx")));
 				}
 			}
 		}
