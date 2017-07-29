@@ -85,20 +85,20 @@ enum ConnTypeEx
 
 typedef struct tagRESULT40
 {
-  agl_long32_t         State;                              // Zustand der Kommunikation
-  agl_long32_t         ErrCode;                            // Fehlercode bei Kommunikationsabbruch
+  agl_long_t           State;                              // Zustand der Kommunikation
+  agl_long_t           ErrCode;                            // Fehlercode bei Kommunikationsabbruch
   agl_systemtime_t     SysTime;                            // Datum und Uhrzeit beim Ende der Kommunikation
-  agl_long32_t         SError;                             // ggf. Fehlercode von Hardware
+  agl_long_t           SError;                             // ggf. Fehlercode von Hardware
   agl_ptrdiff_t        UserVal;                            // Wert zur freien Verwendung durch den Programmierer
 } RESULT40, *LPRESULT40;
 
 
 typedef struct tagPROGRESS
 {
-  agl_long32_t         AktVal;                             // Aktueller Byteszahl
-  agl_long32_t         MaxVal;                             // Maximale Bytezahl
+  agl_long_t           AktVal;                             // Aktueller Byteszahl
+  agl_long_t           MaxVal;                             // Maximale Bytezahl
   agl_ptrdiff_t        UserVal;                            // Wert zur freien Verwendung durch den Programmierer
-  agl_long32_t         Reserve[5];                         // For future extension
+  agl_long_t           Reserve[5];                         // For future extension
 } PROGRESS, *LPPROGRESS;
 
 

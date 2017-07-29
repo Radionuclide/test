@@ -40,6 +40,7 @@
 0xFFF0001D;Ungueltige Struktur in WLD-Datei
 0xFFF0001E;Baustein in WLD-Datei mehrfach vorhanden
 0xFFF0001F;Funktion ist nicht reentrant
+0xFFF00020;Funktion zur Codegroessenreduzierung entfernt
 
 0xFFF50000;Kein freier Auftragspuffer verfuegbar
 0xFFF50001;Ungueltiges Paket
@@ -96,6 +97,8 @@
 0xFFF50034;Der Parameter ist nicht aenderbar
 0xFFF50035;Der Parameter ist nur lesbar
 0xFFF50036;Die Variablendefinition enthält die falsche Groesse
+0xFFF50037;Arrayindex existiert nicht
+0xFFF50038;PARA existiert nicht
 
 0xFFF30000;Fehler beim Lesen der Geraeteinfo
 0xFFF30001;Fehler beim Lesen der Busparameter

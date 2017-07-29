@@ -40,6 +40,7 @@
 0xFFF0001D;Invalid structure in WLD file
 0xFFF0001E;Multiple blocks in WLD file
 0xFFF0001F;Function is not reentrant
+0xFFF00020;Function removed for code size reduction
 
 0xFFF50000;No free job buffer available 
 0xFFF50001;Invalid packet 
@@ -96,6 +97,8 @@
 0xFFF50034;The parameter is not changeable
 0xFFF50035;The parameter is read only
 0xFFF50036;The variable definition contains the wrong size
+0xFFF50037;Array index does not exist
+0xFFF50038;PARA does not exist
 
 0xFFF30000;Error when reading device information
 0xFFF30001;Error when reading bus parameters 

@@ -88,6 +88,12 @@
   
   #endif
 
+  #if defined( EMBEDDED_TIA )
+
+    #define __EMBEDDED_LINUX_TIA__
+  
+  #endif
+
   #if !defined( __LINUX__ )
 
     #define __LINUX__
@@ -158,6 +164,7 @@
 
 typedef short agl_int16_t;
 typedef int agl_int32_t;
+typedef long agl_long_t;
 typedef long long int agl_int64_t;
 
 typedef float agl_float32_t;

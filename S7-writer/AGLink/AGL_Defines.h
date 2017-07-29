@@ -53,7 +53,7 @@
   #define MAX_PLCS                  8             // Maximale Anzahl SPSen (Verbindungen) je Device
   #define ZERO_SIZE                 0             // Offene Arrays sind hier möglich - Längenangabe notwendig
 
-#elif defined( __EMBEDDED_LINUX__ )
+#elif defined( __EMBEDDED_LINUX__ ) || defined( __EMBEDDED_LINUX_TIA__ )
 
   #define MAX_DEVICES             256             // Maximale Anzahl Devices
   #define MAX_PLCS                  4             // Maximale Anzahl SPSen (Verbindungen) je Device
@@ -264,6 +264,8 @@
 #define AGL40_PARA_NOT_CHANGEABLE           (ERROR_CLASS_L5+52)
 #define AGL40_PARA_READ_ONLY                (ERROR_CLASS_L5+53)
 #define AGL40_WRONG_VAR_SIZE                (ERROR_CLASS_L5+54)
+#define AGL40_ARRAY_INDEX_DOES_NOT_EXIST    (ERROR_CLASS_L5+55)
+#define AGL40_PARA_DOES_NOT_EXIST           (ERROR_CLASS_L5+56)
 
 #define AGL40_L4_ERROR                      (ERROR_CLASS_L4+0)
 

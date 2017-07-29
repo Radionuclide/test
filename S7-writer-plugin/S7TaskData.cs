@@ -334,7 +334,10 @@ namespace S7_writer_plugin
 
             public override int GetHashCode()
             {
-                return Expression.GetHashCode();
+                if (Expression != null)
+                    return Expression.GetHashCode();
+                else
+                    return base.GetHashCode();
             }
         }
 

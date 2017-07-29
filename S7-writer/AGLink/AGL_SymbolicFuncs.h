@@ -69,7 +69,7 @@ agl_int32_t AGL_API AGL_Symbolic_WriteMixEx( agl_int32_t ConnNr, SymbolicRW_t* S
 // Ausgangspunkt für alle weiteren Funktionen.
 // *******************************
 // Eingabe:
-//  ProjectFile - Pfad auf eine TIA Projektdatei (ap11,ap12,ap13)
+//  ProjectFile - Pfad auf eine TIA Projektdatei (ap11, ap12, ap13, ap14)
 //  AutoExpand - Wenn dieser Parameter auf 1 steht werden Kind-Knoten von Arrays automatisch bei Zugriff expandiert - ansonsten muss die Funktion AGL_Symbolic_Expand verwendet werden
 //  Große Arrays mit vielen Knoten (Hundertausende, Millionen) können mit aktiviertem AutoExpand und einem direkten Knotenzugriff auf solche Arrays zu einem sofortigem sehr hohem Speicherverbrauch und Ladezeit führen.
 // Ausgabe:
@@ -86,7 +86,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const P
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
 // Hinweis: bei Verwendung dieser Funktion heisst bei Symbol-Pfadangaben der SPS-Knoten immer 'PLC'. Beispiel: PLC.Blocks.DB_Name.VariablenName
 //
-agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(const int ConnNr, HandleType* const RootNodeHandle);
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, HandleType* const RootNodeHandle);
 
 // *******************************
 // Speichern von Symbolen in einer AGLink Symbolformat Datei
@@ -250,7 +250,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, Seg
 agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
 
 // *******************************
-// Maskiert Sonderzeichen in Elementbezeichnungen, wie . ( ) [ ]
+// Maskiert Sonderzeichen in Elementbezeichnungen, wie  . ( ) [ ] und "
 // Diese Funktion erwartet nur den Elementnamen, nicht den gesamten Pfad. Da sonst die Ebenentrennpunkte ebenfalls maskiert werden.
 // *******************************
 // Eingabe:
@@ -262,12 +262,12 @@ agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, 
 agl_int32_t AGL_API AGL_Symbolic_EscapeString(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* ErrorPosition);
 
 // *******************************
-// Zugriff auf einen Kindknoten über den vollständigen Knotennamen, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Datablocks.Datenblock_1.ElementX
-// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Datablocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
+// Zugriff auf einen Kindknoten über den vollständigen Knotennamen, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Blocks.Datenblock_1.ElementX
+// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Blocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
 // *******************************
 // Eingabe:
 //   NodeHandle - Startknoten
-//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten
+//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten (Hinweis: Maskierungsregeln siehe AGL_Symbolic_EscapeString())
 // Ausgabe:
 //   FoundNodeHandle - Handle auf das gefundene Element
 //   ErrorPosition  - Im Feherfall die Position im Text an der der Fehler auftrat
@@ -361,7 +361,7 @@ agl_int32_t AGL_API AGL_Symbolic_CreateAccess(const HandleType NodeHandle, Handl
 // *******************************
 // Eingabe:
 //   ParentNodeHandle - Knoten im Baum
-//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten
+//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten (Hinweis: Maskierungsregeln siehe AGL_Symbolic_EscapeString())
 // Ausgabe:
 //   AccessHandle - Handle auf das Zugriffsobjekt
 //   ErrorPosition  - Im Feherfall die Position im Text an der der Fehler auftrat
@@ -386,7 +386,7 @@ agl_int32_t AGL_API AGL_Symbolic_Get_DATA_RW40(const HandleType NodeHandle, DATA
 // *******************************
 // Eingabe:
 //   NodeHandle - Knoten im Baum
-//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten
+//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten (Hinweis: Maskierungsregeln siehe AGL_Symbolic_EscapeString())
 // Ausgabe:
 //   DataRW - Zeiger auf eine leere DATA_RW-Struktur
 //   ErrorPosition  - Im Feherfall die Position im ItemPath an der der Fehler auftrat
@@ -644,7 +644,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetProjectCulture(const HandleType RootNodeHand
 // *******************************
 // Eingabe:
 //   NodeHandle - Knoten im Baum
-//   LCID - Ländercode z.B. 1031 für Deutschland, 1033 für Vereinigte Staaten, etc.
+//   LCID - Ländercode z.B. 1031 für Deutschland, 1033 für Vereinigte Staaten, etc. Wird dieser nicht gefunden, wird versucht den Standartkommentar (LCID = -1) zu laden
 //   CommentMaxSize - Maximal verfügbare Puffergröße für das Kommentar
 // Ausgabe:
 //   Comment - Kommentar zum übergebenen Knoten
@@ -676,6 +676,24 @@ agl_int32_t AGL_API AGL_Symbolic_GetCommentCulture(const HandleType NodeHandle, 
 // Ausgabe:
 //   Number - Datenblock-Nummer
 agl_int32_t AGL_API AGL_Symbolic_DatablockGetNumber(const HandleType NodeHandle, agl_int32_t* const Number);
+
+// *******************************
+// Liefert fuer einen Datenblock-Knoten, ob dieser Optimiert und damit nur Symbolischer Zugriff erlaubt ist, zurueck
+// *******************************
+// Eingabe:
+//   NodeHandle - Datenblock-Knoten im Baum
+// Ausgabe:
+//   BooleanValue - Wert des Attributes
+agl_int32_t AGL_API AGL_Symbolic_DatablockIsSymbolic(const HandleType NodeHandle, agl_int32_t* const BooleanValue);
+
+// *******************************
+// Liefert fuer einen Datenblock-Knoten den Typ zurueck
+// *******************************
+// Eingabe:
+//   NodeHandle - Datenblock-Knoten im Baum
+// Ausgabe:
+//   BooleanValue - Wert des Attributes
+agl_int32_t AGL_API AGL_Symbolic_DatablockGetType(const HandleType NodeHandle, DatablockTypes_t::enum_t* const DataBlockType);
 
 // *******************************
 // Liefert zu einem Knoten den vollen Pfad
@@ -848,11 +866,11 @@ agl_int32_t AGL_API AGL_Simotion_GetChild(const HandleType NodeHandle, const agl
 
 // *******************************
 // Zugriff auf einen Kindknoten über den vollständigen Knotennamen, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Datablocks.Datenblock_1.ElementX
-// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Datablocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
+// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Blocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
 // *******************************
 // Eingabe:
 //   NodeHandle - Startknoten
-//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten
+//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten (Hinweis: Maskierungsregeln siehe AGL_Symbolic_EscapeString())
 // Ausgabe:
 //   FoundNodeHandle - Handle auf das gefundene Element
 //   ErrorPosition  - Im Feherfall die Position im Text an der der Fehler auftrat
@@ -868,13 +886,13 @@ agl_int32_t AGL_API AGL_Simotion_GetNodeByPath(const HandleType NodeHandle, cons
 agl_int32_t AGL_API AGL_Simotion_CreateAccess(const HandleType NodeHandle, HandleType* const AccessHandle);
 
 // *******************************
-// Erzeugt einen Zugriffshandle anhand des Elementpfades, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Datablocks.Datenblock_1.ElementX.
-// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Datablocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
+// Erzeugt einen Zugriffshandle anhand des Elementpfades, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Blocks.Datenblock_1.ElementX.
+// Alternativ kann ein beliebiger Knoten übergeben werden und dann der Zugriff auf diesem Erfolgen. Z.B. Wenn das NodeHandle "PLC_1.Blocks" entspräche, dann wäre der Kindname "Datenblock_1.ElementX"
 // Funktionalität vergleichbar mit AGL_Symbolic_CreateAccess.
 // *******************************
 // Eingabe:
 //   NodeHandle - Knoten im Baum
-//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten
+//   ItemPath - Pfad zum gewünschten Element ausgehend vom Startknoten (Hinweis: Maskierungsregeln siehe AGL_Symbolic_EscapeString())
 // Ausgabe:
 //   AccessHandle - Handle auf das Zugriffsobjekt
 //   ErrorPosition  - Im Feherfall die Position im Text an der der Fehler auftrat
