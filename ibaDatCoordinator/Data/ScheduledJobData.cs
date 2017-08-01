@@ -143,6 +143,10 @@ namespace iba.Data
             return dateTime.AddTicks(halfIntervelTicks - ((dateTime.Ticks + halfIntervelTicks) % interval.Ticks));
         }
 
+
+        internal static bool SerializingFlag = false;
+
+
         //time ranges
         public ScheduledJobData()
         {
@@ -150,12 +154,25 @@ namespace iba.Data
             m_triggerType = TriggerTypeEnum.Daily;
             m_dayTriggerEveryNDay = 1;
             m_weekTriggerEveryNWeek = 1;
-            m_weekTriggerWeekDays = new List<int>(Enumerable.Range(1,1)); //monday (0 is sunday
-            m_monthTriggerMonths = new List<int>(Enumerable.Range(1, 12)); //all months
             m_monthTriggerUseDays = true;
-            m_monthTriggerDays = new List<int>(Enumerable.Range(1, 1)); //1st day off month;
-            m_monthTriggerOn = new List<int>(Enumerable.Repeat(0, 1));//1st
-            m_monthTriggerWeekDay = new List<int>(Enumerable.Range(1, 1));//monday
+
+            if (SerializingFlag) //apparently, for serializing, the default constructor needs to create empty lists...
+            {
+                m_weekTriggerWeekDays = new List<int>(); //monday (0 is sunday
+                m_monthTriggerMonths = new List<int>(); //all months
+                m_monthTriggerDays = new List<int>(); //1st day off month;
+                m_monthTriggerOn = new List<int>();//1st
+                m_monthTriggerWeekDay = new List<int>();//monday
+            }
+            else
+            {
+                m_weekTriggerWeekDays = new List<int>(Enumerable.Range(1, 1)); //monday (0 is sunday
+                m_monthTriggerMonths = new List<int>(Enumerable.Range(1, 12)); //all months
+                m_monthTriggerDays = new List<int>(Enumerable.Range(1, 1)); //1st day off month;
+                m_monthTriggerOn = new List<int>(Enumerable.Repeat(0, 1));//1st
+                m_monthTriggerWeekDay = new List<int>(Enumerable.Range(1, 1));//monday
+            }
+
             m_doRepeat = false;
             m_repeatEvery = TimeSpan.FromHours(1);
             m_repeatTimes = 0;

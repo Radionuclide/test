@@ -74,7 +74,7 @@ namespace iba
                         ibaDatCoordinatorData dat = null;
                         try
                         {
-                            dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                            dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer,myFileStream);
                         }
                         catch (Exception ex)
                         { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file

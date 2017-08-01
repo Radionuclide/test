@@ -1895,7 +1895,7 @@ namespace iba
                     List<ConfigurationData> confs;
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
-                        ibaDatCoordinatorData dat = (ibaDatCoordinatorData) mySerializer.Deserialize(myFileStream);
+                        ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
                         confs = dat.ApplyToManager(TaskManager.Manager);
                     }
                     m_filename = filename;

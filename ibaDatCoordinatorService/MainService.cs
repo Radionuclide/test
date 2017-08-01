@@ -58,7 +58,7 @@ namespace iba.Services
                         using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
                             ibaDatCoordinatorData dat = null;
-                            dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                            dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
                             confs = dat.ApplyToManager(m_communicationObject.Manager);
                         }
                         foreach (ConfigurationData dat in confs)

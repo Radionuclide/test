@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iba.Processing;
 using System.Xml.Serialization;
+using System.IO;
 
 namespace iba.Data
 {
@@ -172,6 +173,8 @@ namespace iba.Data
             return Configurations;
         }
 
+
+
         private ibaDatCoordinatorData()
         {
             //defaults
@@ -192,6 +195,20 @@ namespace iba.Data
             m_maxSimultaneousIbaAnalyzers = 5;
             m_maxIbaAnalyzerCalls = 20;
             m_isIbaAnalyzerCallsLimited = true;
+        }
+
+        public static ibaDatCoordinatorData SerializeFromStream(XmlSerializer mySerializer, Stream myFileStream)
+        {
+            ScheduledJobData.SerializingFlag = true; //tell the default constructor of ScheduledJobData to create empty lists, otherwise not correct serialization
+            try
+            {
+                ibaDatCoordinatorData dat = (ibaDatCoordinatorData)mySerializer.Deserialize(myFileStream);
+                return dat;
+            }
+            finally
+            {
+                ScheduledJobData.SerializingFlag = false;
+            }
         }
     }
 }
