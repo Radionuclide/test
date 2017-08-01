@@ -407,8 +407,12 @@ namespace iba
             try
             {
                 m_com.TestConnection();
+                if (m_com.Manager.Version >= 2000000)
+                    return true;
+                else
+                    return false;
                 //MessageBox.Show("OK");
-                return true;
+                //return true;
             }
             catch (Exception) //Do Nothing
             {
