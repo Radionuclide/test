@@ -2742,8 +2742,12 @@ namespace iba
                     if (old != null)
                     {
                         //Remove event forwarder
-                        if(m_ef != null)
+                        if (m_ef != null)
+                        {
                             old.Logging_clearEventForwarder(m_ef.Guid);
+                            m_ef.Dispose();
+                            m_ef = null;
+                        }
 
                         //Disconnect
                         old.HandleBrokenConnection(new Exception("Forced disconnect because connecting to other server"));
@@ -2873,6 +2877,7 @@ namespace iba
                         if (m_ef != null) //clear any previous attempt
                         {
                             Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
+                            m_ef.Dispose();
                         }
                         m_ef = new EventForwarder();
                         Program.CommunicationObject.Logging_setEventForwarder(m_ef, m_ef.Guid);

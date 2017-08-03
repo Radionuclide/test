@@ -41,7 +41,7 @@ namespace iba
         }
     }
 
-    public class CommunicationObject: MarshalByRefObject, ISponsor
+    public class CommunicationObject: MarshalByRefObject
     {
         private TaskManager m_manager;
         public TaskManager Manager
@@ -115,26 +115,9 @@ namespace iba
 
         public override object InitializeLifetimeService()
         {
-            if (Program.IsServer)
-                return null;
-
-            ILease lease = (ILease)base.InitializeLifetimeService();
-            if (lease.CurrentState == LeaseState.Initial)
-            {
-                lease.InitialLeaseTime = TimeSpan.FromMinutes(5);
-                //lease.SponsorshipTimeout = TimeSpan.FromMinutes(2);
-                lease.RenewOnCallTime = TimeSpan.FromMinutes(1);
-                lease.Register(this);
-            }
-            return lease;
-        }
-
-        public TimeSpan Renewal(ILease lease)
-        {
-            if (Program.CommunicationObject != null && Program.CommunicationObject.IsStillValid(this))
-                return TimeSpan.FromMinutes(1);
-            else
-                return TimeSpan.Zero;
+            //This is only called on the server where this object must live forever
+            Debug.Assert(Program.IsServer);
+            return null;
         }
 
         public bool ForwardEvents
@@ -409,11 +392,6 @@ namespace iba
             m_com = com;
         }
 
-        internal bool IsStillValid(CommunicationObject obj)
-        {
-            return m_com == obj;
-        }
-
         //This will return the server version when connection is ok and throw if it isn't
         public int Connect()
         {
@@ -668,6 +646,7 @@ namespace iba
 
             TaskManager.Manager.StopAllConfigurations();
             TaskManager.Manager.StopAllGlobalCleanups();
+
             //logger resetten
             LogData.StopLogger();
             GridViewLogger gv = null;

@@ -28,7 +28,7 @@ namespace iba.Remoting
             props["name"] = "RemoteChannel";
             props["InvocationTimeout"] = 60000;
             //props["MaxTimeSpanToReconnect"] = 1000;
-            props["ConnectTimeout"] = 20000;
+            props["ConnectTimeout"] = 10000;
             props["NoSizeChecking"] = true;
             props["MaxContentSize"] = 10000000;
             props["MaxTotalSize"] = 20000000;

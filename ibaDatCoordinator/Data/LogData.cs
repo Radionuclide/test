@@ -76,7 +76,7 @@ namespace iba.Data
         }
     }
 
-    public class EventForwarder : MarshalByRefObject, IEquatable<EventForwarder>
+    public class EventForwarder : MarshalByRefObject, IEquatable<EventForwarder>, IDisposable
     {
         public void Forward(int priority, string message, LogExtraData dat)
         {
@@ -90,10 +90,20 @@ namespace iba.Data
             }
         }
 
+        #region Lifetime
+
         public override object InitializeLifetimeService()
         {
+            //Use an infinite lifetime for remoting. The object will be removed from remoting via the Dispose call
             return null;
         }
+
+        public void Dispose()
+        {
+            System.Runtime.Remoting.RemotingServices.Disconnect(this);
+        }
+
+        #endregion
 
         public void ForwardClearCommand()
         {
