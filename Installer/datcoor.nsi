@@ -55,9 +55,6 @@
 !include "sections.nsh"
 !include "StrFunc.nsh"
 !include "Include\InstallHistory.nsh"
-;!ifndef UNINSTALLER_ONLY
-!include "Include\InstallCrt.nsh"
-;!endif
 
 !include WordFunc.nsh
 !insertmacro VersionCompare
@@ -369,6 +366,9 @@ Function CheckPreviousVersions
 
   end:
 FunctionEnd
+
+; Include installcrt.nsh here since it includes LangString definitions
+!include "Include\installcrt.nsh"
 
 ;--------------------------------
 ; Uninstall previous version section
@@ -1288,6 +1288,7 @@ LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
 LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaPDA server status is running. Please close the ibaPDA server status program before continuing the installation."
 LangString TEXT_STATUS_STOP               ${LANG_ENGLISH} "Stopping ibaDatCoordinator server status"
+LangString TEXT_CONFIGURE_FIREWALL        ${LANG_ENGLISH} "Configuring firewall"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
@@ -1324,6 +1325,7 @@ LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 LangString TEXT_CLOSE_STATUS              ${LANG_GERMAN}  "ibaDatCoordinator Server Status läuft. Bitte schließen Sie das ibaDatCoordinator Server Status-Programm, bevor Sie mit der Installation fortfahren."
 LangString TEXT_STATUS_STOP               ${LANG_GERMAN}  "ibaDatCoordinator Server Status wird angehalten"
+LangString TEXT_CONFIGURE_FIREWALL        ${LANG_GERMAN}  "Firewall wird konfiguriert"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
@@ -1360,3 +1362,4 @@ LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"
 LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer l'installation."
 LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" 
+LangString TEXT_CONFIGURE_FIREWALL        ${LANG_FRENCH}  "Configuration du pare-fue"
