@@ -90,6 +90,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
     </Reference>
+    <Reference Include="GenuineChannels">
+      <HintPath>..\Dependencies\GenuineChannels.dll</HintPath>
+    </Reference>
     <Reference Include="hdClient, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\hdClient.dll</HintPath>
@@ -213,6 +216,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Remoting\ClientRemotingManager.cs" />
+    <Compile Include="Remoting\ServerRemotingManager.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\PdaServerFiles.cs" />
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />

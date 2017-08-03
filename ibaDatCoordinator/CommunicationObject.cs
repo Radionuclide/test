@@ -633,7 +633,9 @@ namespace iba
 
         public void HandleBrokenConnection(Exception ex)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED) return;
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                return;
+
             Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
             //if (!m_stoppingService) MessageBox.Show(iba.Properties.Resources.connectionLost, iba.Properties.Resources.connectionLostCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             HandleBrokenConnectionGUI();
@@ -655,7 +657,7 @@ namespace iba
             if (ex == null)
                 ex = new Exception("Handle Broken connection called without exception");
 
-            LogData.Data.FileLog(Logging.Level.Exception, ex.Message + ex.StackTrace);
+            LogData.Data.FileLog(Logging.Level.Exception, ex.ToString());
         }
 
         public void TestScript(string scriptfile, string arguments, ScriptTester scripObject)

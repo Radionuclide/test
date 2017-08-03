@@ -31,7 +31,8 @@ namespace iba
         {
             get
             {
-                return String.Format("tcp://{1}:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr, ServiceHost);
+                //return String.Format("tcp://{1}:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr, ServiceHost);
+                return String.Format("gtcp://{1}:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr, ServiceHost);
                 //return String.Format("tcp://NOTE-ELEWOUT:{0}/IbaDatCoordinatorCommunicationObject", ServicePortNr);
             }
         }
@@ -196,14 +197,8 @@ namespace iba
                 MainForm = new MainForm();
                 if (RunsWithService == ServiceEnum.DISCONNECTED)
                 {
-                    BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-                    BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-                    serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-                    Hashtable props = new Hashtable();
-                    props["port"] = 0;
-                    // Pass the properties for the port setting and the server provider in the server chain argument. (Client remains null here.)
-                    TcpChannel channel = new TcpChannel(props, clientProvider, serverProvider);
-                    ChannelServices.RegisterChannel(channel, false);
+                    Remoting.ClientRemotingManager.SetupRemoting();
+
                     MainForm.TryToConnect(null);
                 }
 

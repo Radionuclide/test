@@ -78,32 +78,7 @@ namespace iba.Services
                     LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
                 }
 
-                //publish this manager
-                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-                IDictionary props = new Hashtable();
-                props["port"] = Program.ServicePortNr;
-                //props["machineName"] = "localhost";
-                int countTries = 0;
-
-                while (true)
-                {
-                    try
-                    {
-                        localChannel = new TcpChannel(props, clientProvider, serverProvider);
-                        ChannelServices.RegisterChannel(localChannel, false);
-                        break;
-                    }
-                    catch
-                    {
-                        countTries++;
-                        if (countTries > 10) throw;
-                        System.Threading.Thread.Sleep(1000); //lets retry after a second
-                    }
-                }
-
-                RemotingServices.Marshal(m_communicationObject, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
+                Remoting.ServerRemotingManager.SetupRemoting(m_communicationObject, Program.ServicePortNr);
 
                 Hashtable serviceProps = new Hashtable();
                 serviceProps.Add("HostName", Environment.MachineName);
@@ -113,6 +88,7 @@ namespace iba.Services
 
                 m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
                 m_servicePublisher.PublishServiceEndpoint(serviceProps);
+               
                 // added by kolesnik - begin
                 m_communicationObject.Manager.SnmpWorkerInit();
                 // added by kolesnik - end
@@ -171,15 +147,17 @@ namespace iba.Services
 
             LogData.StopLogger();
 
-            try
-            {
-                localChannel.StopListening(null);
-                ChannelServices.UnregisterChannel(localChannel);
-            }
-            catch
-            {
+            Remoting.ServerRemotingManager.StopRemoting(m_communicationObject);
 
-            }
+            //try
+            //{
+            //    localChannel.StopListening(null);
+            //    ChannelServices.UnregisterChannel(localChannel);
+            //}
+            //catch
+            //{
+
+            //}
         }
 
         protected override void OnShutdown()

@@ -149,7 +149,7 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
-                Program.CommunicationObject.Logging_Log(System.Net.Dns.GetHostName() + ": Gui Stopped");
+                Program.CommunicationObject.Logging_Log(Environment.MachineName + ": Gui Stopped");
                 if (m_ef != null) Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                 Program.CommunicationObject.SaveConfigurations();
             }
