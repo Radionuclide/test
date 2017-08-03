@@ -58,5 +58,10 @@ namespace iba
             Version v = typeof(iba.MainForm).Assembly.GetName().Version;
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Revision;
         }
+
+        public static string FormatVersion(int ver)
+        {
+            return String.Format("{0}.{1}.{2}", ver / 1000000, (ver % 1000000) / 1000, ver % 1000);
+        }
     }
 }

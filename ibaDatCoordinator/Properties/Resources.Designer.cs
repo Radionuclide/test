@@ -337,6 +337,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator client {0} has connected.
+        /// </summary>
+        internal static string ClientConnected {
+            get {
+                return ResourceManager.GetString("ClientConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator client {0} has disconnected.
+        /// </summary>
+        internal static string ClientDisconnected {
+            get {
+                return ResourceManager.GetString("ClientDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing.
         /// </summary>
         internal static string closing {
@@ -695,7 +713,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disconnected.
+        ///   Looks up a localized string similar to Disconnected from {0}.
         /// </summary>
         internal static string Disconnected {
             get {
@@ -793,6 +811,15 @@ namespace iba.Properties {
         internal static string ErrorScheduleNextTrigger {
             get {
                 return ResourceManager.GetString("ErrorScheduleNextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error connecting to {0}.
+        /// </summary>
+        internal static string ErrorServerConnect {
+            get {
+                return ResourceManager.GetString("ErrorServerConnect", resourceCulture);
             }
         }
         
@@ -3175,6 +3202,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("standalone", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standalone.
+        /// </summary>
+        internal static string StandaloneText {
+            get {
+                return ResourceManager.GetString("StandaloneText", resourceCulture);
             }
         }
         

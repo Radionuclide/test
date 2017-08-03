@@ -9,12 +9,14 @@ using Belikov.GenuineChannels.Utilities;
 using Belikov.GenuineChannels.TransportContext;
 using Belikov.GenuineChannels.GenuineTcp;
 using Belikov.GenuineChannels.DotNetRemotingLayer;
+using Belikov.GenuineChannels;
 
 namespace iba.Remoting
 {
     public class ServerRemotingManager
     {
         static ITransportContext serverChannel;
+        static System.Collections.Concurrent.ConcurrentDictionary<string, string> clients = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
 
         public static void SetupRemoting(CommunicationObject commObj, int portNr)
         {
@@ -46,6 +48,22 @@ namespace iba.Remoting
             Log(Logging.Level.Info, "Remoting config OK");
         }
 
+        public static string RegisterClient(string clientName)
+        {
+            try
+            {
+                HostInformation hi = GenuineUtility.CurrentSession as HostInformation;
+                string remoteEp = hi.PhysicalAddress.ToString();
+                if(!String.IsNullOrEmpty(remoteEp))
+                    clients.TryAdd(remoteEp, clientName);
+                return remoteEp;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
         private static void OnGenuineChannelsGlobalEvent(object sender, GenuineEventArgs e)
         {
             Log(Logging.Level.Debug, "Genuine event : {0} caused by {1} for host {2}",
@@ -57,9 +75,8 @@ namespace iba.Remoting
             {
                 case GenuineEventType.GeneralConnectionEstablished:
                     if(e.HostInformation != null)
-                    {
-                        Log(Logging.Level.Debug, "Connected to {0}.", e.HostInformation.PhysicalAddress);
-                    }
+                        Log(Logging.Level.Debug, "{0} is connected", e.HostInformation.PhysicalAddress);
+
                     break;
 
                 case GenuineEventType.GeneralConnectionReestablishing:
@@ -71,7 +88,15 @@ namespace iba.Remoting
                 case GenuineEventType.GeneralConnectionClosed:
                     if (e.HostInformation != null)
                     {
-                        Log(Logging.Level.Debug, "Connection to {0} is closed.", e.HostInformation.PhysicalAddress);
+                        string clientName = null;
+                        string remoteEp = e.HostInformation.PhysicalAddress?.ToString();
+                        if (!String.IsNullOrEmpty(remoteEp))
+                            clients.TryRemove(remoteEp, out clientName);
+
+                        if (!String.IsNullOrEmpty(clientName))
+                            Log(Logging.Level.Info, String.Format(Properties.Resources.ClientDisconnected, clientName));
+                        else
+                            Log(Logging.Level.Debug, "{0} is disconnected", e.HostInformation.PhysicalAddress);
 
                         //try
                         //{

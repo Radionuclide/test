@@ -1374,7 +1374,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Connected to {0}</value>
   </data>
   <data name="Disconnected" xml:space="preserve">
-    <value>Disconnected</value>
+    <value>Disconnected from {0}</value>
   </data>
   <data name="iconPaneSnmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\paneSnmpIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1384,5 +1384,17 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="Eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClientConnected" xml:space="preserve">
+    <value>ibaDatCoordinator client {0} has connected</value>
+  </data>
+  <data name="ErrorServerConnect" xml:space="preserve">
+    <value>Error connecting to {0}</value>
+  </data>
+  <data name="StandaloneText" xml:space="preserve">
+    <value>Standalone</value>
+  </data>
+  <data name="ClientDisconnected" xml:space="preserve">
+    <value>ibaDatCoordinator client {0} has disconnected</value>
   </data>
 </root>

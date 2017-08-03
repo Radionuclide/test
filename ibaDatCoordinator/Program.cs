@@ -199,7 +199,7 @@ namespace iba
                 {
                     Remoting.ClientRemotingManager.SetupRemoting();
 
-                    MainForm.TryToConnect(null);
+                    MainForm.TryToConnect(false);
                 }
 
                 MainForm.WindowState = FormWindowState.Normal;

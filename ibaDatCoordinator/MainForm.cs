@@ -149,8 +149,9 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
-                Program.CommunicationObject.Logging_Log(Environment.MachineName + ": Gui Stopped");
-                if (m_ef != null) Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
+                //Program.CommunicationObject.Logging_Log(Environment.MachineName + ": Gui Stopped");
+                if (m_ef != null)
+                    Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                 Program.CommunicationObject.SaveConfigurations();
             }
             else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
@@ -2728,7 +2729,6 @@ namespace iba
             ServerConfiguration cf = new ServerConfiguration();
             cf.Address = server;
             cf.PortNr = port;
-            cf.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED;
             using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
             {
                 DialogResult r = ssf.ShowDialog();
@@ -2737,15 +2737,22 @@ namespace iba
                     m_suppresUpload = true;
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
+
                     CommunicationObjectWrapper old = Program.CommunicationObject;
+                    if (old != null)
+                    {
+                        //Remove event forwarder
+                        if(m_ef != null)
+                            old.Logging_clearEventForwarder(m_ef.Guid);
+
+                        //Disconnect
+                        old.HandleBrokenConnection(new Exception("Forced disconnect because connecting to other server"));
+                    }
                     Program.CommunicationObject = null; //will kill it
                     Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-                    TryToConnect(null);
-                    if (Program.CommunicationObject == null && old != null) //connect failed
-                    {
-                        old.HandleBrokenConnection(null);
-                        Program.CommunicationObject = old;
-                    }
+                    UpdateConnectionStatus();
+
+                    TryToConnect(true);
                 }
             }
         }
@@ -2782,7 +2789,13 @@ namespace iba
         private int m_lastStopID = -1;
         private int m_lastTaskManagerID = -1;
         private EventForwarder m_ef;
-        public void TryToConnect(object ignoreMe)
+
+        void OnConnectTimer(object ignoreMe)
+        {
+            TryToConnect(false);
+        }
+
+        public void TryToConnect(bool bInteractive)
         {
             if (m_updateClientTimer != null)
                 m_updateClientTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
@@ -2796,15 +2809,20 @@ namespace iba
                 {
                     CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
                     CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
-                    if(wrapper.TestConnection()) //succesfully connected
+
+                    try
                     {
-                        if(m_tryConnectTimer != null) //this is not the first call, restore stuff
+                        //Let's try connecting, this will throw in case the connection fails
+                        int serverVersion = wrapper.Connect();
+
+                        //We are connected!
+                        if (m_tryConnectTimer != null) //this is not the first call, restore stuff
                         {
-                            MethodInvoker m = delegate()
+                            MethodInvoker m = delegate ()
                             {
                                 Program.RunsWithService = Program.ServiceEnum.CONNECTED;
                                 ibaDatCoordinatorData data = null;
-                                if(TaskManager.ClientManager != null)
+                                if (TaskManager.ClientManager != null)
                                 {
                                     data = ibaDatCoordinatorData.Create(TaskManager.ClientManager);
                                 }
@@ -2815,16 +2833,16 @@ namespace iba
                                 {
                                     //initialise with configurations;
                                     SaveRightPaneControl();
-                                    if(data != null) data.ApplyToManager(TaskManager.Manager);
+                                    if (data != null) data.ApplyToManager(TaskManager.Manager);
                                     ReplaceManagerFromTree(TaskManager.Manager);
                                     TaskManager.Manager.StartAllEnabledGlobalCleanups();
-                                    foreach(ConfigurationData dat in TaskManager.Manager.Configurations)
+                                    foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                                     {
-                                        if(dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
+                                        if (dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
                                     }
-                                    if(m_navBar.SelectedPane == m_statusPane)
+                                    if (m_navBar.SelectedPane == m_statusPane)
                                         loadStatuses();
-                                    else if(m_navBar.SelectedPane == m_configPane)
+                                    else if (m_navBar.SelectedPane == m_configPane)
                                         loadConfigurations();
                                     ReloadRightPane();
                                     UpdateButtons();
@@ -2836,7 +2854,7 @@ namespace iba
 
                             };
 
-                            this.SafeInvoke(m,true);
+                            this.SafeInvoke(m, true);
                         }
                         else
                         {
@@ -2847,7 +2865,7 @@ namespace iba
                         }
                         LogData.Data.Logger.Close();
                         GridViewLogger gv = null;
-                        if(LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
+                        if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
                             gv = LogData.Data.Logger.Children[0] as GridViewLogger;
                         else
                             gv = LogData.Data.Logger as GridViewLogger;
@@ -2857,7 +2875,7 @@ namespace iba
                             Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                         }
                         m_ef = new EventForwarder();
-                        Program.CommunicationObject.Logging_setEventForwarder(m_ef,m_ef.Guid);
+                        Program.CommunicationObject.Logging_setEventForwarder(m_ef, m_ef.Guid);
                         m_firstConnectToService = false;
                         MethodInvoker m2 = delegate ()
                         {
@@ -2868,9 +2886,12 @@ namespace iba
                         this.SafeInvoke(m2, true);
                         resetUpdateTimer = true;
                     }
-                    else
+                    catch (Exception connEx)
                     {
                         Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
+                        LogData.Data.Logger.Log(Logging.Level.Debug, String.Format("Failed to connect to {0} with error {1}", Program.CommObjectString, connEx.Message));
+                        if (bInteractive)
+                            MessageBox.Show(connEx.Message, String.Format(Properties.Resources.ErrorServerConnect, Program.ServiceHost), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -2892,12 +2913,10 @@ namespace iba
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                MessageBox.Show(ex.StackTrace);
             }
 
-            
             if (m_tryConnectTimer == null)
-                m_tryConnectTimer = new System.Threading.Timer(TryToConnect);
+                m_tryConnectTimer = new System.Threading.Timer(OnConnectTimer);
             m_tryConnectTimer.Change(TimeSpan.FromSeconds(5.0), TimeSpan.Zero);
 
             if (resetUpdateTimer && !updateTimerBusy) //if update is busy, it will set its own timer ...
@@ -2923,9 +2942,9 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.ConnectedTo, Program.ServiceHost);
             else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-                m_statusBarStripLabelConnection.Text = iba.Properties.Resources.Disconnected;
+                m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.Disconnected, Program.ServiceHost);
             else
-                m_statusBarStripLabelConnection.Text = "";
+                m_statusBarStripLabelConnection.Text = Properties.Resources.StandaloneText;
         }
 
         private void ReloadClient()
@@ -3110,9 +3129,6 @@ namespace iba
             service.Close();
         }
 
-
-        #endregion
-
         #region Online Help
         private HelpProvider helpProvider;
 
@@ -3190,8 +3206,8 @@ namespace iba
 
         #endregion
 
-
     }
+    #endregion
 
     #region ImageList
     internal class MyImageList

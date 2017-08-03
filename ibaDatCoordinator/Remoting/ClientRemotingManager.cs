@@ -9,6 +9,7 @@ using Belikov.GenuineChannels.Utilities;
 using Belikov.GenuineChannels.TransportContext;
 using Belikov.GenuineChannels.GenuineTcp;
 using Belikov.GenuineChannels.DotNetRemotingLayer;
+using Belikov.GenuineChannels;
 
 namespace iba.Remoting
 {
@@ -42,6 +43,19 @@ namespace iba.Remoting
             channel = tcpChannel.ITransportContext;
 
             //Log(Logging.Level.Debug, "Registered channel");
+        }
+
+        public static void Disconnect(MarshalByRefObject mbr, Exception ex)
+        {
+            try
+            {
+                HostInformation hi = GenuineUtility.FetchHostInformationFromMbr(mbr);
+                if (hi != null)
+                    hi.ITransportContext.KnownHosts.ReleaseHostResources(hi, ex);
+            }
+            catch(Exception)
+            {
+            }
         }
 
         private static void OnGenuineChannelsGlobalEvent(object sender, GenuineEventArgs e)

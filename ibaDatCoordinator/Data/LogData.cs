@@ -566,7 +566,9 @@ namespace iba.Data
             {
                 string rootPath = Utility.DataPath.Folder(appState);
                 string filename = "";
-                if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
+                if(appState == ApplicationState.SERVICE)
+                    filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_service.txt");
+                else if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
                     filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_disconnected.txt");
                 else
                     filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog.txt");
@@ -574,14 +576,16 @@ namespace iba.Data
                 {
                     try
                     {
-                        FileBackup.Backup(filename, Path.GetDirectoryName(filename), appState == ApplicationState.CLIENTDISCONNECTED ? "ibaDatCoordinatorLog_disconnected" : "ibaDatCoordinatorLog", 10);
+                        FileBackup.Backup(filename, Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), 10);
                         File.Delete(filename);
                     }
                     catch (Exception)
                     {
                         rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
                         filename = "";
-                        if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
+                        if (appState == ApplicationState.SERVICE)
+                            filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_service.txt");
+                        else if (appState == ApplicationState.CLIENTDISCONNECTED) //other file name as not to overwrite possible filename from service
                             filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog_disconnected.txt");
                         else
                             filename = m_data.m_filename = Path.Combine(rootPath, @"iba\ibaDatCoordinator\ibaDatCoordinatorLog.txt"); ;

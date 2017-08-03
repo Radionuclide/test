@@ -189,6 +189,18 @@ namespace iba
         {
         }
 
+        //This function is called by a client when connecting to the server
+        public int Connect(string clientName, int clientVersion, string userName, string password)
+        {
+            //We allow all clients
+            string remoteEp = Remoting.ServerRemotingManager.RegisterClient(clientName);
+            LogData.Data.Log(Logging.Level.Debug, String.Format("Client {0} (version {1}) is trying to connect from {2}.", clientName, 
+                DatCoVersion.FormatVersion(clientVersion), remoteEp));
+            LogData.Data.Log(Logging.Level.Info, String.Format(Properties.Resources.ClientConnected, clientName));
+
+            return DatCoVersion.CurrentVersion();
+        }
+
         private Process m_scriptProc;
         private ScriptTester m_testObject;
 
@@ -400,6 +412,20 @@ namespace iba
         internal bool IsStillValid(CommunicationObject obj)
         {
             return m_com == obj;
+        }
+
+        //This will return the server version when connection is ok and throw if it isn't
+        public int Connect()
+        {
+            try
+            {
+                return m_com.Connect(Environment.MachineName + "\\" + Environment.UserName, DatCoVersion.CurrentVersion(), "admin", "");
+            }
+            catch(Exception ex)
+            {
+                Remoting.ClientRemotingManager.Disconnect(m_com, ex);
+                throw ex;
+            }
         }
 
         public bool TestConnection()
@@ -656,6 +682,9 @@ namespace iba
             //TODO remove THIS after the test ...
             if (ex == null)
                 ex = new Exception("Handle Broken connection called without exception");
+
+            if (m_com != null)
+                Remoting.ClientRemotingManager.Disconnect(m_com, ex);
 
             LogData.Data.FileLog(Logging.Level.Exception, ex.ToString());
         }
