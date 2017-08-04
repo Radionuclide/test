@@ -1397,4 +1397,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ClientDisconnected" xml:space="preserve">
     <value>ibaDatCoordinator client {0} has disconnected</value>
   </data>
+  <data name="PasswordRemoved" xml:space="preserve">
+    <value>The password has been removed by {0}</value>
+  </data>
+  <data name="PasswordSet" xml:space="preserve">
+    <value>A password has been set by {0}</value>
+  </data>
 </root>

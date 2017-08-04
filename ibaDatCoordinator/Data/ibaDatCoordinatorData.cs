@@ -149,7 +149,7 @@ namespace iba.Data
             return answer;
         }
 
-        public List<ConfigurationData> ApplyToManager(TaskManager manager) //returns confs instead of applying them to manager immediately because they might need special treatment before
+        public List<ConfigurationData> ApplyToManager(TaskManager manager, string initiator) //returns confs instead of applying them to manager immediately because they might need special treatment before
         {
             manager.ReplaceWatchdogData(WatchDogData);
             // added by kolesnik - begin
@@ -164,7 +164,7 @@ namespace iba.Data
             manager.IsIbaAnalyzerCallsLimited = IsIbaAnalyzerCallsLimited;
             manager.RememberPassTime = TimeSpan.FromMinutes(RememberTimeMinutes);
             manager.RememberPassEnabled = RememberPass;
-            manager.Password = Password;
+            manager.ChangePassword(Password, initiator);
             manager.GlobalCleanupDataList = GlobalCleanupDataList;
             
             if (LogItemCount == 0) LogItemCount = 50;

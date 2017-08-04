@@ -2477,6 +2477,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The password has been removed by {0}.
+        /// </summary>
+        internal static string PasswordRemoved {
+            get {
+                return ResourceManager.GetString("PasswordRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A password has been set by {0}.
+        /// </summary>
+        internal static string PasswordSet {
+            get {
+                return ResourceManager.GetString("PasswordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap paste {

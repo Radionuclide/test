@@ -397,7 +397,7 @@ namespace iba
         {
             try
             {
-                return m_com.Connect(Environment.MachineName + "\\" + Environment.UserName, DatCoVersion.CurrentVersion(), "admin", "");
+                return m_com.Connect(Program.ClientName, DatCoVersion.CurrentVersion(), "admin", "");
             }
             catch(Exception ex)
             {

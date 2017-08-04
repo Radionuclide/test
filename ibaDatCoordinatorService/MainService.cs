@@ -59,7 +59,7 @@ namespace iba.Services
                         {
                             ibaDatCoordinatorData dat = null;
                             dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-                            confs = dat.ApplyToManager(m_communicationObject.Manager);
+                            confs = dat.ApplyToManager(m_communicationObject.Manager, null);
                         }
                         foreach (ConfigurationData dat in confs)
                         {

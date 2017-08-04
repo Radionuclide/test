@@ -74,8 +74,11 @@ namespace iba.Utility
                 doRemember = iba.Processing.TaskManager.Manager.RememberPassEnabled;
             }
             catch{}
+
             if (string.IsNullOrEmpty(pass) || 
-                (LastSpecifiedPass != null && doRemember && pass == LastSpecifiedPass && (DateTime.Now - LastTime) < rememberTime)) return true;
+                (LastSpecifiedPass != null && doRemember && pass == LastSpecifiedPass && Math.Abs((DateTime.UtcNow - LastTime).TotalSeconds) < rememberTime.TotalSeconds))
+                return true;
+
             iba.Dialogs.PasswordConfirm dlg = new iba.Dialogs.PasswordConfirm(pass);
             dlg.StartPosition = (parent != null) ? System.Windows.Forms.FormStartPosition.CenterParent : System.Windows.Forms.FormStartPosition.CenterScreen;
             if (parent != null)
@@ -87,7 +90,7 @@ namespace iba.Utility
                 if (doRemember)
                 {
                     LastSpecifiedPass = pass;
-                    LastTime = DateTime.Now;
+                    LastTime = DateTime.UtcNow;
                 }
                 return true;
             }

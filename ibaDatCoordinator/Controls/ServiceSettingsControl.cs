@@ -115,7 +115,6 @@ namespace iba.Controls
                 m_ClearPassBtn.Enabled = true;
                 m_passwordStatusLabel.Text = iba.Properties.Resources.PassSet;
             }
-            TaskManager.Manager.Password = m_pass;
         }
 
 
@@ -211,22 +210,32 @@ namespace iba.Controls
 
         private void m_SetChangePassBtn_Click(object sender, EventArgs e)
         {
-            if (!Utility.Crypt.CheckPassword()) return;
-            iba.Dialogs.SpecifyPasswordDialog dlg = new iba.Dialogs.SpecifyPasswordDialog();
-            dlg.Pass = m_pass;
-            dlg.StartPosition = FormStartPosition.CenterParent;
-            dlg.ShowDialog(this);
-            if (!dlg.Cancelled)
+            if (!Utility.Crypt.CheckPassword())
+                return;
+
+            using (iba.Dialogs.SpecifyPasswordDialog dlg = new iba.Dialogs.SpecifyPasswordDialog())
             {
-                m_pass = dlg.Pass;
-                UpdatePassControls();
+                dlg.Pass = m_pass;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ShowDialog(this);
+                if (!dlg.Cancelled)
+                {
+                    m_pass = dlg.Pass;
+                    TaskManager.Manager.ChangePassword(m_pass, Program.ClientName);
+
+                    UpdatePassControls();
+                }
             }
         }
 
         private void m_ClearPassBtn_Click(object sender, EventArgs e)
         {
-            if (!Utility.Crypt.CheckPassword()) return;
+            if (!Utility.Crypt.CheckPassword())
+                return;
+
             m_pass = "";
+            TaskManager.Manager.ChangePassword(m_pass, Program.ClientName);
+
             UpdatePassControls();
         }
 

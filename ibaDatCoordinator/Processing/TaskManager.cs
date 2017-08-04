@@ -1023,19 +1023,16 @@ namespace iba.Processing
             {
                 if (Program.IsServer) //was set by the service
                     return theTaskManager;
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && RemoteTaskManager != null)
+
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 {
+                    if (RemoteTaskManager == null)
+                        RemoteTaskManager = new TaskManagerWrapper();
                     return RemoteTaskManager;
                 }
-                else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                {
-                    RemoteTaskManager = new TaskManagerWrapper();
-                    return RemoteTaskManager;
-                }
-                else if (theTaskManager == null)
-                {
+                
+                if (theTaskManager == null)
                     theTaskManager = new TaskManager();
-                }
                 return theTaskManager;
             }
 
@@ -1265,7 +1262,20 @@ namespace iba.Processing
         virtual public string Password
         {
             get { return m_password; }
-            set { m_password = value; }
+        }
+
+        virtual public void ChangePassword(string newPassword, string initiator)
+        {
+            if (newPassword == null)
+                newPassword = "";
+
+            if (m_password == newPassword)
+                return;
+
+            m_password = newPassword;
+
+            if (initiator != null)
+                LogData.Data.Log(Level.Info, String.Format(newPassword == "" ? Properties.Resources.PasswordRemoved : Properties.Resources.PasswordSet, initiator));
         }
 
         TimeSpan m_rememberPassTime;
@@ -2157,16 +2167,17 @@ namespace iba.Processing
                     return "";
                 }
             }
-            set
+        }
+
+        public override void ChangePassword(string newPassword, string initiator)
+        {
+            try
             {
-                try
-                {
-                    Program.CommunicationObject.Manager.Password = value;
-                }
-                catch (Exception ex)
-                {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-                }
+                Program.CommunicationObject.Manager.ChangePassword(newPassword, initiator);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
 

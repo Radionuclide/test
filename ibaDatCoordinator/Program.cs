@@ -37,6 +37,14 @@ namespace iba
             }
         }
 
+        static public string ClientName
+        {
+            get
+            {
+                return String.Concat(Environment.MachineName, "\\", Environment.UserName);
+            }
+        }
+
         static public string CloseFormCaption
         {
             get

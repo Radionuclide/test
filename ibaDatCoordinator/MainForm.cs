@@ -1897,7 +1897,7 @@ namespace iba
                     using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
                     {
                         ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-                        confs = dat.ApplyToManager(TaskManager.Manager);
+                        confs = dat.ApplyToManager(TaskManager.Manager, Program.ClientName);
                     }
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
@@ -2837,7 +2837,7 @@ namespace iba
                                 {
                                     //initialise with configurations;
                                     SaveRightPaneControl();
-                                    if (data != null) data.ApplyToManager(TaskManager.Manager);
+                                    if (data != null) data.ApplyToManager(TaskManager.Manager, Program.ClientName);
                                     ReplaceManagerFromTree(TaskManager.Manager);
                                     TaskManager.Manager.StartAllEnabledGlobalCleanups();
                                     foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
