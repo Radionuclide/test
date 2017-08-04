@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace iba.Dialogs
+namespace iba.DatCoordinator.Status.Dialogs
 {
     public partial class ChangeServerPortForm : Form
     {

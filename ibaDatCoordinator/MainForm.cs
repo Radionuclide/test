@@ -56,7 +56,7 @@ namespace iba
             m_firstConnectToService = true;
             InitializeComponent();
 
-            m_quitForm = new QuitForm(this);
+            m_quitForm = new QuitForm(this, "ibaDatCoordinatorClientCloseForm", false);
             m_quitForm.CreateHandle(new CreateParams());
 
             //Setup default toolbar and menu looks

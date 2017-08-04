@@ -12,12 +12,12 @@ namespace iba
 	{
 		static System.Threading.Mutex m_Mutex;
 
-		public static bool CheckIfRunning()
+		public static bool CheckIfRunning(string closeFormCaption)
 		{
             bool standAlone = Program.RunsWithService == Program.ServiceEnum.NOSERVICE;
             if (standAlone)
             {
-                IntPtr handle = FindWindow(null, Program.CloseFormCaption);
+                IntPtr handle = FindWindow(null, closeFormCaption);
                 if (handle.ToInt32() != 0)
                 {
                     iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
@@ -26,7 +26,7 @@ namespace iba
                 return false;
             }
 
-			if(IsFirstInstance())
+			if(IsFirstInstance(closeFormCaption))
 			{
 				Application.ApplicationExit += new EventHandler(OnExit);
 				return false;
@@ -34,7 +34,7 @@ namespace iba
 			else
 			{
 				//Activate app that is already running
-                IntPtr handle = FindWindow(null, Program.CloseFormCaption);
+                IntPtr handle = FindWindow(null, closeFormCaption);
                 if (handle.ToInt32() != 0)
                     iba.Utility.WindowsAPI.SendMessage(handle, 0x8141, 0, 0);
                 else
@@ -43,11 +43,12 @@ namespace iba
 			}
 		}
 
-		static bool IsFirstInstance()
+		static bool IsFirstInstance(string closeFormCaption)
 		{
             try
             {
-                m_Mutex = new System.Threading.Mutex(false, Program.RunsWithService == Program.ServiceEnum.STATUS ?"ibaDatCoordinatorServerStatus Mutex": "ibaDatCoordinatorServerClient Mutex");
+                string mutexName = closeFormCaption + " Mutex";
+                m_Mutex = new System.Threading.Mutex(false, mutexName);
                 bool owned = false;
                 owned = m_Mutex.WaitOne(TimeSpan.Zero, false);
                 return owned;
@@ -76,16 +77,17 @@ namespace iba
 	#endregion
 
     #region Helper to quit application from installer
-    internal class QuitForm : NativeWindow
+    class QuitForm : NativeWindow
     {
         const int WM_GRACEFUL_QUIT = 0x8140;
         const int WM_GRACEFUL_ACTIVATE = 0x8141;
         const int WM_START_SERVICE = 0x8142;
 
-        public QuitForm(IExternalCommand form)
+        public QuitForm(IExternalCommand form, string caption, bool bMonitorRegistry)
         {
             this.form = form;
-            if (Program.RunsWithService == Program.ServiceEnum.STATUS)
+            this.caption = caption;
+            if (bMonitorRegistry)
                 InitializeRegMon();
         }
 
@@ -162,10 +164,11 @@ namespace iba
 
 
         IExternalCommand form;
+        string caption;
 
         public override void CreateHandle(CreateParams cp)
         {
-            cp.Caption = Program.CloseFormCaption;
+            cp.Caption = caption;
             cp.Style = 0;
             base.CreateHandle(cp);
         }

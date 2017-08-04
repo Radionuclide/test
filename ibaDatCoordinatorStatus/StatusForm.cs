@@ -13,36 +13,37 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Controls;
 using iba.Data;
-using iba.Dialogs;
-using iba.Utility;
+using iba.DatCoordinator.Status.Dialogs;
+using iba.DatCoordinator.Status.Utility;
 using Microsoft.Win32;
 
-namespace iba
+namespace iba.DatCoordinator.Status
 {
     public partial class StatusForm : Form, IExternalCommand
     {
-        private static Icon ServiceRunningIcon = iba.Properties.Resources.StatusIconRunning;
-        private static Icon ServiceStoppedIcon = iba.Properties.Resources.StatusIconStopped;
-        private static Icon ServiceDisconnectedIcon = iba.Properties.Resources.StatusIconDisconnected;
+        private static Icon ServiceRunningIcon = Properties.Resources.StatusIconRunning;
+        private static Icon ServiceStoppedIcon = Properties.Resources.StatusIconStopped;
+        private static Icon ServiceDisconnectedIcon = Properties.Resources.StatusIconDisconnected;
+
         public StatusForm()
         {
             InitializeComponent();
-            m_quitForm = new QuitForm(this);
+            m_quitForm = new QuitForm(this, "ibaDatCoordinatorStatusCloseForm", true);
             m_quitForm.CreateHandle(new CreateParams());
 
             WindowState = FormWindowState.Minimized;
-            m_miRestoreCoordinator = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemRestore, null, miRestore_Click);
+            m_miRestoreCoordinator = new ToolStripMenuItem(Properties.Resources.notifyIconMenuItemRestore, null, miRestore_Click);
             m_miRestoreCoordinator.Font = new Font(m_miRestoreCoordinator.Font, FontStyle.Bold);
-            m_miStartService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStartService, null, miStartService_Click);
-            m_miStopService = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemStopService, null, miStopService_Click);
-            if (!Utility.DataPath.IsAdmin)
+            m_miStartService = new ToolStripMenuItem(Properties.Resources.notifyIconMenuItemStartService, null, miStartService_Click);
+            m_miStopService = new ToolStripMenuItem(Properties.Resources.notifyIconMenuItemStopService, null, miStopService_Click);
+            if (!Program.IsAdmin)
             {
-                m_miStartService.Image = iba.Properties.Resources.shield;
-                m_miStopService.Image = iba.Properties.Resources.shield;
+                m_miStartService.Image = Properties.Resources.shield;
+                m_miStopService.Image = Properties.Resources.shield;
             }
 
 
-            m_miExit = new ToolStripMenuItem(iba.Properties.Resources.notifyIconMenuItemExit, null, miExit_Click);
+            m_miExit = new ToolStripMenuItem(Properties.Resources.notifyIconMenuItemExit, null, miExit_Click);
             ToolStripItem seperator = new ToolStripSeparator();
             ToolStripItem seperator2 = new ToolStripSeparator();
             m_iconMenu = new ContextMenuStrip();
@@ -66,7 +67,7 @@ namespace iba
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
-            Text = typeof(Program).Assembly.GetName().Name + " " + iba.Properties.Resources.StatusProgram +  " " + DatCoVersion.GetVersion();
+            Text = Text +  " " + DatCoVersion.GetVersion();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -75,7 +76,7 @@ namespace iba
             UpdateServerStatus(true);
             m_timer.Enabled = true;
             m_iconEx.Visible = true;
-            string output = PathUtil.FindAnalyzerPath();
+            string output = iba.Utility.PathUtil.FindAnalyzerPath();
             m_tbAnalyzerExe.Text = output;
             m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
             //m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
@@ -102,7 +103,7 @@ namespace iba
                 status = ServiceControllerStatus.Stopped;
                 if (firstFailure)
                 {
-                    if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, "Failure getting service info: " + ex.Message);
+                    //if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, "Failure getting service info: " + ex.Message);
                     firstFailure = false;
                 }
                 bServiceError = true;
@@ -149,7 +150,7 @@ namespace iba
                 if (bForce || !bRunning)
                 {
                     bRunning = true;
-                    m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatRunning;
+                    m_lblServiceStatus.Text = Properties.Resources.serviceStatRunning;
                     m_lblServiceStatus.BackColor = Color.LimeGreen;
                     m_btnStart.Enabled = false;
                     m_btnStop.Enabled = true;
@@ -157,7 +158,7 @@ namespace iba
                     m_btnOptimize.Enabled = true;
                     m_btTransferAnalyzerSettings.Enabled = true;
                     m_iconEx.Icon = this.Icon = ServiceRunningIcon;
-                    m_iconEx.Text = iba.Properties.Resources.ServiceStatusTooltipRunning;
+                    m_iconEx.Text = Properties.Resources.ServiceStatusTooltipRunning;
                 }
             }
             else
@@ -165,7 +166,7 @@ namespace iba
                 if (bForce || bRunning)
                 {
                     bRunning = false;
-                    m_lblServiceStatus.Text = iba.Properties.Resources.serviceStatStopped;
+                    m_lblServiceStatus.Text = Properties.Resources.serviceStatStopped;
                     m_lblServiceStatus.BackColor = Color.Red;
                     m_btnStart.Enabled = true;
                     m_btnStop.Enabled = false;
@@ -173,7 +174,7 @@ namespace iba
                     m_btnOptimize.Enabled = false;
                     m_btTransferAnalyzerSettings.Enabled = false;
                     m_iconEx.Icon = this.Icon = bServiceError?ServiceDisconnectedIcon:ServiceStoppedIcon;
-                    m_iconEx.Text = bServiceError ? iba.Properties.Resources.ServiceStatusTooltipError : iba.Properties.Resources.ServiceStatusTooltipStopped;
+                    m_iconEx.Text = bServiceError ? Properties.Resources.ServiceStatusTooltipError : Properties.Resources.ServiceStatusTooltipStopped;
                 }
             }
 
@@ -209,7 +210,7 @@ namespace iba
         protected override void OnClosing(CancelEventArgs e)
         {
             if (WindowState != FormWindowState.Minimized)
-                FormStateSerializer.SaveSettings(this, "StatusForm");
+                iba.Utility.FormStateSerializer.SaveSettings(this, "StatusForm");
 
             if (!m_actualClose)
             {
@@ -222,7 +223,7 @@ namespace iba
                 return;
             }
 
-            if (LogData.Data.Logger != null) LogData.Data.Logger.Close();
+            //if (LogData.Data.Logger != null) LogData.Data.Logger.Close();
             base.OnClosing(e);
         }
 
@@ -255,7 +256,7 @@ namespace iba
             Show();
             Activate();
             WindowState = FormWindowState.Normal;
-            FormStateSerializer.LoadSettings(this, "StatusForm", true);
+            iba.Utility.FormStateSerializer.LoadSettings(this, "StatusForm", true);
             ShowInTaskbar = true;
         }
 
@@ -345,8 +346,7 @@ namespace iba
             }
             if (result)
             {
-                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-                if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
+                //if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStopped);
 
             }
             UpdateServerStatus(true);
@@ -376,8 +376,7 @@ namespace iba
             }
             if (result)
             {
-                //if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-                if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStarted);
+                //if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStarted);
 
             }
             UpdateServerStatus(true);
@@ -436,12 +435,12 @@ namespace iba
 
         private void m_btTransferAnalyzerSettings_Click(object sender, EventArgs e)
         {
-            Pair<String, String> res = GetFilesForTransfer();
-            //if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            iba.Utility.Pair<String, String> res = GetFilesForTransfer();
+            //if (!Program.IsAdmin) //elevated process start the service
             //{
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -461,7 +460,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             //}
@@ -469,14 +468,14 @@ namespace iba
               //  OnTransferSettings(res.First, res.Second);
         }
 
-        private Pair<string, string> GetFilesForTransfer()
+        private iba.Utility.Pair<string, string> GetFilesForTransfer()
         {
             string IbaAnalyzerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             IbaAnalyzerPath = Path.Combine(IbaAnalyzerPath, "iba", "ibaAnalyzer");
             string tempDir = System.IO.Path.GetTempPath();
             string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
-            Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
-            return new Pair<string, string>(IbaAnalyzerPath, outFile);
+            iba.Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
+            return new iba.Utility.Pair<string, string>(IbaAnalyzerPath, outFile);
         }
 
         public static void OnTransferSettings(string AnalyzerFolder, string regFile)
@@ -512,7 +511,7 @@ namespace iba
             int newNr = int.Parse(m_tbPort.Text);
             if (prevNr != newNr)
             {
-                string text = iba.Properties.Resources.RestartServerQuestion;
+                string text = Properties.Resources.RestartServerQuestion;
                 DialogResult res = DialogResult.No;
                 res = MessageBox.Show(this, text, this.Text,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
@@ -548,11 +547,11 @@ namespace iba
 
         void SetPortNumber(int number)
         {
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            if (!Program.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
@@ -571,7 +570,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -585,11 +584,11 @@ namespace iba
         {
             ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
             updatingAutoStart = true;
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            if (!Program.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     service.Close();
                     return;
                 }
@@ -610,7 +609,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -639,7 +638,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -688,11 +687,11 @@ namespace iba
 
         private void m_btnOptimize_Click(object sender, EventArgs e)
         {
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+            if (!Program.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACTextRegistrySettings, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -712,7 +711,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACTextRegistrySettings, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACTextRegistrySettings, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -739,13 +738,16 @@ namespace iba
         private bool updatingCombo;
         private void m_comboPriority_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (m_comboPriority.SelectedIndex < 0) return;
+            if (m_comboPriority.SelectedIndex < 0)
+                return;
+
             updatingCombo = true;
-            if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+
+            if (!Program.IsAdmin) //elevated process start the service
             {
                 if (System.Environment.OSVersion.Version.Major < 6)
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -765,7 +767,7 @@ namespace iba
                 }
                 catch
                 {
-                    MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -778,7 +780,7 @@ namespace iba
         private bool updatingPortNr;
         private void btChangePort_Click(object sender, EventArgs e)
         {
-            using (iba.Dialogs.ChangeServerPortForm form = new ChangeServerPortForm())
+            using (ChangeServerPortForm form = new ChangeServerPortForm())
             {
                 form.PortNr = this.PortNr;
 

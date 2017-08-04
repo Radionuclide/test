@@ -1,4 +1,4 @@
-﻿namespace iba
+﻿namespace iba.DatCoordinator.Status
 {
     partial class StatusForm
     {
@@ -81,7 +81,7 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.Analyzer_001;
+            this.m_executeIBAAButton.Image = global::iba.DatCoordinator.Status.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);

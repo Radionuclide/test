@@ -5,7 +5,7 @@ using System.Text;
 
 namespace iba.Utility
 {
-    public class DataPath
+    class DataPath
     {
         public static string Folder(ApplicationState state)
         {
@@ -31,7 +31,7 @@ namespace iba.Utility
 
 
         static bool m_IsAdmin;
-        static public bool IsAdmin
+        public static bool IsAdmin
         {
             get { return m_IsAdmin; }
         }
@@ -67,7 +67,7 @@ namespace iba.Utility
             return ApplicationState.SERVICE;
         }
 
-        public static bool  FileExists(string file)
+        public static bool FileExists(string file)
         {
             if (MyState() == ApplicationState.CLIENTCONNECTED)
             {

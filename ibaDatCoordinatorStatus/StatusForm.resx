@@ -270,174 +270,6 @@
   <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_btChange.Name" xml:space="preserve">
-    <value>m_btChange</value>
-  </data>
-  <data name="&gt;&gt;m_btChange.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btChange.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btChange.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tbPort.Name" xml:space="preserve">
-    <value>m_tbPort</value>
-  </data>
-  <data name="&gt;&gt;m_tbPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbPort.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_tbPort.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_btnRestart.Name" xml:space="preserve">
-    <value>m_btnRestart</value>
-  </data>
-  <data name="&gt;&gt;m_btnRestart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRestart.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnRestart.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Name" xml:space="preserve">
-    <value>m_lblServiceStatus</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lblServiceStatus.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
-    <value>m_btnStop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Name" xml:space="preserve">
-    <value>m_btnStart</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnStart.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Name" xml:space="preserve">
-    <value>m_lbServPort</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lbServPort.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Name" xml:space="preserve">
-    <value>m_lbServStatus</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lbServStatus.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Name" xml:space="preserve">
-    <value>m_btnOptimize</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnOptimize.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Name" xml:space="preserve">
-    <value>m_comboPriority</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_comboPriority.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Name" xml:space="preserve">
-    <value>m_lblPriority</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Name" xml:space="preserve">
-    <value>m_cbAutoStart</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 5</value>
-  </data>
-  <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 137</value>
-  </data>
-  <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_gbApp.Text" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="&gt;&gt;m_gbApp.Name" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_gbApp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbApp.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btChange.Location" type="System.Drawing.Point, System.Drawing">
     <value>230, 100</value>
   </data>
@@ -813,6 +645,30 @@
   <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
+  <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 5</value>
+  </data>
+  <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 137</value>
+  </data>
+  <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_gbApp.Text" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Name" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="m_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>652, 17</value>
   </metadata>
@@ -832,7 +688,7 @@
     <value>740, 280</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>StatusForm</value>
+    <value>ibaDatCoordinator Status</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

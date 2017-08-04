@@ -187,20 +187,8 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Dialogs\ChangeServerPortForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\ChangeServerPortForm.designer.cs">
-      <DependentUpon>ChangeServerPortForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\ServerSelectionForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\RestartServiceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\RestartServiceDialog.Designer.cs">
-      <DependentUpon>RestartServiceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\SnmpObjectsData.cs" />
@@ -219,25 +207,17 @@
     <Compile Include="Remoting\ClientRemotingManager.cs" />
     <Compile Include="Remoting\ServerRemotingManager.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
+    <Compile Include="Utility\LanguageHelper.cs" />
     <Compile Include="Utility\PdaServerFiles.cs" />
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
     <Compile Include="Processing\GlobalCleanupManager.cs" />
     <Compile Include="Processing\SplitterTaskWorker.cs" />
     <Compile Include="Data\SplitterTaskData.cs" />
-    <Compile Include="StatusForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StatusForm.Designer.cs">
-      <DependentUpon>StatusForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utility\ControlExtensions.cs" />
     <Compile Include="Utility\CueProvider.cs" />
     <Compile Include="Utility\DatcoServerDefaults.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
     <Compile Include="Utility\RegistryMonitor.cs" />
-    <Compile Include="Utility\ServiceControllerEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
@@ -419,18 +399,6 @@
     <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="Processing\TriggerCalculator.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
-    <Compile Include="Dialogs\StartServiceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\StartServiceDialog.Designer.cs">
-      <DependentUpon>StartServiceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\StopServiceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\StopServiceDialog.Designer.cs">
-      <DependentUpon>StopServiceDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -505,15 +473,8 @@
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ChangeServerPortForm.resx">
-      <DependentUpon>ChangeServerPortForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ServerSelectionForm.resx">
       <DependentUpon>ServerSelectionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\RestartServiceDialog.resx">
-      <DependentUpon>RestartServiceDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
@@ -556,9 +517,6 @@
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
-    <EmbeddedResource Include="StatusForm.resx">
-      <DependentUpon>StatusForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Utility\CustomComboBox.resx">
       <DependentUpon>CustomComboBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -639,14 +597,6 @@
     <EmbeddedResource Include="Controls\WatchdogControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WatchdogControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\StartServiceDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StartServiceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\StopServiceDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>StopServiceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestScriptDlg.resx">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>

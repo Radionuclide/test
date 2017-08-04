@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace iba.Dialogs
+namespace iba.DatCoordinator.Status.Dialogs
 {
     public partial class StartServiceDialog : Form
     {
@@ -32,13 +32,12 @@ namespace iba.Dialogs
         {
             try
             {
-                System.ServiceProcess.ServiceController myController =
-                new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+                System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+                if (!Program.IsAdmin) //elevated process start the service
                 {
                     if (System.Environment.OSVersion.Version.Major < 6)
                     {
-                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         myController.Close();
                         m_result = false;
                         return;
@@ -60,7 +59,7 @@ namespace iba.Dialogs
                     }
                     catch
                     {
-                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         myController.Close();
                         m_result = false;
                         return;
@@ -75,7 +74,7 @@ namespace iba.Dialogs
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
                 if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
                 {
-                    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, iba.Properties.Resources.ServiceConnectProblem2, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);                            
+                    MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem, Properties.Resources.ServiceConnectProblem2, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);                            
                     m_result = false;
                     return;
                 }
@@ -87,14 +86,9 @@ namespace iba.Dialogs
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem, ex.Message, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 m_result = false;
                 return;
-            }
-            if (Program.RunsWithService != Program.ServiceEnum.STATUS)
-            {
-                CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
-                Program.CommunicationObject = new CommunicationObjectWrapper(com);
             }
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace iba.Utility
+namespace iba.DatCoordinator.Status.Utility
 {
 
     internal class ServiceControllerEx : System.ServiceProcess.ServiceController

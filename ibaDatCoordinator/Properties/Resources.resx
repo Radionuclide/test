@@ -130,9 +130,6 @@
   <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disconnected.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="notifyIconMenuItemExit" xml:space="preserve">
-    <value>Exit</value>
-  </data>
   <data name="pasteTitle" xml:space="preserve">
     <value>Paste</value>
   </data>
@@ -154,9 +151,6 @@
   <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="notifyIconMenuItemStopService" xml:space="preserve">
-    <value>Stop Service</value>
-  </data>
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -165,9 +159,6 @@
   </data>
   <data name="logDatDirError" xml:space="preserve">
     <value>specified .dat folder does not exist</value>
-  </data>
-  <data name="ServiceConnectProblem" xml:space="preserve">
-    <value>There was a problem connecting to the ibaDatCoordinator service : ''{0}"{1}ibaDatCoordinator will continue in disconnected mode.</value>
   </data>
   <data name="logNotificationNotSupported" xml:space="preserve">
     <value>this network request is not supported</value>
@@ -192,9 +183,6 @@
   </data>
   <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\status.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ServiceConnectProblem3" xml:space="preserve">
-    <value>There was a problem connecting to the ibaDatCoordinator service :"{0}"{1}Please stop the service manually</value>
   </data>
   <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,17 +247,11 @@
   <data name="Timeout" xml:space="preserve">
     <value>timed out! (see logfile)</value>
   </data>
-  <data name="ServiceConnectProblem2" xml:space="preserve">
-    <value>The service could not be started</value>
-  </data>
   <data name="cutTitle" xml:space="preserve">
     <value>Cut</value>
   </data>
   <data name="redarrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\redarrow1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="notifyIconMenuItemStartService" xml:space="preserve">
-    <value>Start Service</value>
   </data>
   <data name="logConfigurationStopped" xml:space="preserve">
     <value>stopped processing configuration</value>
@@ -343,9 +325,6 @@
   <data name="logNoExtractPdo" xml:space="preserve">
     <value>.pdo file for extractor does not exist</value>
   </data>
-  <data name="ServiceConnectProblemCaption" xml:space="preserve">
-    <value>Could not connect to the ibaDatCoordinator Service</value>
-  </data>
   <data name="logReportSuccess" xml:space="preserve">
     <value>report successfully completed</value>
   </data>
@@ -378,9 +357,6 @@
   </data>
   <data name="ServerSaveFileProblem" xml:space="preserve">
     <value>Problem saving file at server side</value>
-  </data>
-  <data name="ServiceConnectProblem4" xml:space="preserve">
-    <value>The service could not be stopped</value>
   </data>
   <data name="deleteTitle" xml:space="preserve">
     <value>Delete</value>
@@ -444,9 +420,6 @@
   </data>
   <data name="toolTipStartAll" xml:space="preserve">
     <value>Start ALLjobs</value>
-  </data>
-  <data name="notifyIconMenuItemRestore" xml:space="preserve">
-    <value>Restore</value>
   </data>
   <data name="stopConfiguration" xml:space="preserve">
     <value>Stopping Job</value>
@@ -1012,15 +985,6 @@
   <data name="SetStr" xml:space="preserve">
     <value>Enable</value>
   </data>
-  <data name="UACCaption" xml:space="preserve">
-    <value>User Account Control</value>
-  </data>
-  <data name="UACText" xml:space="preserve">
-    <value>Elevated UAC privileges are required to alter the ibaDatCoordinator service status</value>
-  </data>
-  <data name="shield" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\shield.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="undoChangesButton" xml:space="preserve">
     <value>Undo changes in jobconfiguration since last apply</value>
   </data>
@@ -1083,9 +1047,6 @@
   </data>
   <data name="regOptRestart" xml:space="preserve">
     <value>The Windows registry modifications are successfully applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?</value>
-  </data>
-  <data name="UACTextRegistrySettings" xml:space="preserve">
-    <value>Elevated UAC privileges are required to alter the windows registry settings</value>
   </data>
   <data name="regOptAskProceed" xml:space="preserve">
     <value>Do you wish to proceed ?</value>
@@ -1225,21 +1186,9 @@
   <data name="invalidSender" xml:space="preserve">
     <value>The sender e-mail address is not correctly formatted, invalid or not supplied</value>
   </data>
-  <data name="TransferIbaAnalyzerSettingsSuccess" xml:space="preserve">
-    <value>ibaAnalyzer settings successfully transfered from local account to service account</value>
-  </data>
   <data name="refreshPermanentErrorFilesError" xml:space="preserve">
     <value>This action is not allowed because the files will not be processed.
 Please either start the job or enable scans for .dat files before attempting this action again.</value>
-  </data>
-  <data name="RestartServerQuestion" xml:space="preserve">
-    <value>The new port number will not take effect until the server is restarted. Do you want to restart the server now?</value>
-  </data>
-  <data name="serviceStatRunning" xml:space="preserve">
-    <value>Running</value>
-  </data>
-  <data name="serviceStatStopped" xml:space="preserve">
-    <value>Stopped</value>
   </data>
   <data name="PermanentlyFailedTriggers" xml:space="preserve">
     <value>permanently failed triggers</value>
@@ -1328,32 +1277,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Toolbars16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Toolbars16.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="StatusProgram" xml:space="preserve">
-    <value>server status</value>
-  </data>
   <data name="AskToUploadToCurrentServer" xml:space="preserve">
     <value>Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?</value>
-  </data>
-  <data name="ServiceStatusTooltipError" xml:space="preserve">
-    <value>ibaDatCoordinator Service is not available</value>
-  </data>
-  <data name="ServiceStatusTooltipRunning" xml:space="preserve">
-    <value>ibaDatCoordinator Service is running</value>
-  </data>
-  <data name="ServiceStatusTooltipStopped" xml:space="preserve">
-    <value>ibaDatCoordinator Service is stopped</value>
-  </data>
-  <data name="StatusIconDisconnected" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatCo_SrvStat_Icon_disconn.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="StatusIconNeutral" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatCo_SrvStat_Icon_pure.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="StatusIconRunning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatCo_SrvStat_Icon_run.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="StatusIconStopped" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatCo_SrvStat_Icon_stopped.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AskSaveLocal" xml:space="preserve">
     <value>It appears the jobconfigurations on the server side have been modified by another client. Do you wish to save local modifications to file before downloading?</value>

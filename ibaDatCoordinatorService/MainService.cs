@@ -183,7 +183,7 @@ namespace iba.Services
         {
             try
             {
-                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key == null) return;
                 string sourcePath  = (string)key.GetValue("AnalyzerFolder", "");
                 string regFile = (string)key.GetValue("RegFile", "");
@@ -202,7 +202,7 @@ namespace iba.Services
             try
             {
                 int number = 2;
-                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key == null)
                     number = 2;
                 else

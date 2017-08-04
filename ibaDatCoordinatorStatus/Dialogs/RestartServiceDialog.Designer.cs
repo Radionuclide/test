@@ -1,4 +1,4 @@
-namespace iba.Dialogs
+namespace iba.DatCoordinator.Status.Dialogs
 {
     partial class RestartServiceDialog
     {

@@ -2330,42 +2330,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit.
-        /// </summary>
-        internal static string notifyIconMenuItemExit {
-            get {
-                return ResourceManager.GetString("notifyIconMenuItemExit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore.
-        /// </summary>
-        internal static string notifyIconMenuItemRestore {
-            get {
-                return ResourceManager.GetString("notifyIconMenuItemRestore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start Service.
-        /// </summary>
-        internal static string notifyIconMenuItemStartService {
-            get {
-                return ResourceManager.GetString("notifyIconMenuItemStartService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop Service.
-        /// </summary>
-        internal static string notifyIconMenuItemStopService {
-            get {
-                return ResourceManager.GetString("notifyIconMenuItemStopService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ibaDatCoordinator notifications test message.
         /// </summary>
         internal static string notifyTestMessage {
@@ -2838,15 +2802,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The new port number will not take effect until the server is restarted. Do you want to restart the server now?.
-        /// </summary>
-        internal static string RestartServerQuestion {
-            get {
-                return ResourceManager.GetString("RestartServerQuestion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to running....
         /// </summary>
         internal static string Running {
@@ -3003,51 +2958,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was a problem connecting to the ibaDatCoordinator service : &apos;&apos;{0}&quot;{1}ibaDatCoordinator will continue in disconnected mode..
-        /// </summary>
-        internal static string ServiceConnectProblem {
-            get {
-                return ResourceManager.GetString("ServiceConnectProblem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The service could not be started.
-        /// </summary>
-        internal static string ServiceConnectProblem2 {
-            get {
-                return ResourceManager.GetString("ServiceConnectProblem2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There was a problem connecting to the ibaDatCoordinator service :&quot;{0}&quot;{1}Please stop the service manually.
-        /// </summary>
-        internal static string ServiceConnectProblem3 {
-            get {
-                return ResourceManager.GetString("ServiceConnectProblem3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The service could not be stopped.
-        /// </summary>
-        internal static string ServiceConnectProblem4 {
-            get {
-                return ResourceManager.GetString("ServiceConnectProblem4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not connect to the ibaDatCoordinator Service.
-        /// </summary>
-        internal static string ServiceConnectProblemCaption {
-            get {
-                return ResourceManager.GetString("ServiceConnectProblemCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The ibaDatCoordinator service is running on a remote system. Opening an analysis remotely is currently not supported. Please try this operation on a client at the remote site ({0}).
         /// </summary>
         internal static string ServiceRemoteAnalyserNotSupported {
@@ -3062,51 +2972,6 @@ namespace iba.Properties {
         internal static string ServiceRemoteSplitterNotSupported {
             get {
                 return ResourceManager.GetString("ServiceRemoteSplitterNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Running.
-        /// </summary>
-        internal static string serviceStatRunning {
-            get {
-                return ResourceManager.GetString("serviceStatRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopped.
-        /// </summary>
-        internal static string serviceStatStopped {
-            get {
-                return ResourceManager.GetString("serviceStatStopped", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ibaDatCoordinator Service is not available.
-        /// </summary>
-        internal static string ServiceStatusTooltipError {
-            get {
-                return ResourceManager.GetString("ServiceStatusTooltipError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ibaDatCoordinator Service is running.
-        /// </summary>
-        internal static string ServiceStatusTooltipRunning {
-            get {
-                return ResourceManager.GetString("ServiceStatusTooltipRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ibaDatCoordinator Service is stopped.
-        /// </summary>
-        internal static string ServiceStatusTooltipStopped {
-            get {
-                return ResourceManager.GetString("ServiceStatusTooltipStopped", resourceCulture);
             }
         }
         
@@ -3135,16 +3000,6 @@ namespace iba.Properties {
         internal static string settingsTitle {
             get {
                 return ResourceManager.GetString("settingsTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap shield {
-            get {
-                object obj = ResourceManager.GetObject("shield", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -3312,55 +3167,6 @@ namespace iba.Properties {
         internal static string StatusBarError {
             get {
                 return ResourceManager.GetString("StatusBarError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconDisconnected {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconDisconnected", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconNeutral {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconNeutral", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconRunning {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconRunning", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconStopped {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconStopped", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to server status.
-        /// </summary>
-        internal static string StatusProgram {
-            get {
-                return ResourceManager.GetString("StatusProgram", resourceCulture);
             }
         }
         
@@ -3624,15 +3430,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer settings successfully transfered from local account to service account.
-        /// </summary>
-        internal static string TransferIbaAnalyzerSettingsSuccess {
-            get {
-                return ResourceManager.GetString("TransferIbaAnalyzerSettingsSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The item could not be processed within the maximum number of attempts, further processing will not be attempted.
         /// </summary>
         internal static string TriedToManyTimes {
@@ -3647,33 +3444,6 @@ namespace iba.Properties {
         internal static string TriggerInfoCaption {
             get {
                 return ResourceManager.GetString("TriggerInfoCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Account Control.
-        /// </summary>
-        internal static string UACCaption {
-            get {
-                return ResourceManager.GetString("UACCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevated UAC privileges are required to alter the ibaDatCoordinator service status.
-        /// </summary>
-        internal static string UACText {
-            get {
-                return ResourceManager.GetString("UACText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevated UAC privileges are required to alter the windows registry settings.
-        /// </summary>
-        internal static string UACTextRegistrySettings {
-            get {
-                return ResourceManager.GetString("UACTextRegistrySettings", resourceCulture);
             }
         }
         

@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AM-OSPC-plugin", "Sidmar-OS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AM-OSPC-protocol", "AM-OSPC-protocol\AM-OSPC-protocol.vcxproj", "{7FDB294F-85C6-43A5-A053-100EC865A77B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinatorStatus", "ibaDatCoordinatorStatus\ibaDatCoordinatorStatus.csproj", "{B35988FF-174E-487C-93DB-812CDFA88151}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +180,22 @@ Global
 		{7FDB294F-85C6-43A5-A053-100EC865A77B}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{7FDB294F-85C6-43A5-A053-100EC865A77B}.Release|Win32.ActiveCfg = Release|Win32
 		{7FDB294F-85C6-43A5-A053-100EC865A77B}.Release|x86.ActiveCfg = Release|Win32
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|Win32.Build.0 = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Debug|x86.Build.0 = Debug|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Win32.ActiveCfg = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|Win32.Build.0 = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|x86.ActiveCfg = Release|Any CPU
+		{B35988FF-174E-487C-93DB-812CDFA88151}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

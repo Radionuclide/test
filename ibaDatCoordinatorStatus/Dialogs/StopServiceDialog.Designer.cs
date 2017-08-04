@@ -1,6 +1,6 @@
-namespace iba.Dialogs
+namespace iba.DatCoordinator.Status.Dialogs
 {
-    partial class StartServiceDialog
+    partial class StopServiceDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +29,10 @@ namespace iba.Dialogs
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartServiceDialog));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StopServiceDialog));
             this.m_progressBar = new System.Windows.Forms.ProgressBar();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // m_progressBar
@@ -46,18 +46,18 @@ namespace iba.Dialogs
             this.m_progressBar.Step = 5;
             this.m_progressBar.UseWaitCursor = true;
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // timer1
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // StartServiceDialog
+            // StopServiceDialog
             // 
             this.AccessibleDescription = null;
             this.AccessibleName = null;
@@ -71,12 +71,11 @@ namespace iba.Dialogs
             this.Icon = null;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "StartServiceDialog";
+            this.Name = "StopServiceDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.TopMost = true;
-            this.UseWaitCursor = true;
             this.ResumeLayout(false);
 
         }
@@ -84,7 +83,7 @@ namespace iba.Dialogs
         #endregion
 
         private System.Windows.Forms.ProgressBar m_progressBar;
-        private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

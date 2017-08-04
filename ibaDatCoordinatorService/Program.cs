@@ -81,7 +81,7 @@ namespace iba.Services
                 if(m_servicePortNr < 0)
                 {
                     var key =
-                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                     if(key == null)
                         m_servicePortNr = 8800;
                     else

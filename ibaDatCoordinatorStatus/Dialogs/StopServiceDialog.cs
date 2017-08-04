@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace iba.Dialogs
+namespace iba.DatCoordinator.Status.Dialogs
 {
-    public partial class RestartServiceDialog : Form
+    public partial class StopServiceDialog : Form
     {
-        public RestartServiceDialog()
+        public StopServiceDialog()
         {
             InitializeComponent();
             m_result = false;
@@ -34,11 +34,11 @@ namespace iba.Dialogs
             {
                 System.ServiceProcess.ServiceController myController =
                 new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                if (!iba.Utility.DataPath.IsAdmin) //elevated process start the service
+                if (!Program.IsAdmin) //elevated process start the service
                 {
                     if (System.Environment.OSVersion.Version.Major < 6)
                     {
-                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         myController.Close();
                         m_result = false;
                         return;
@@ -50,7 +50,7 @@ namespace iba.Dialogs
                     procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                     procInfo.FileName = Application.ExecutablePath;
 
-                    procInfo.Arguments = "/restartservice";
+                    procInfo.Arguments = "/stopservice";
                     procInfo.Verb = "runas";
 
                     try
@@ -59,7 +59,7 @@ namespace iba.Dialogs
                     }
                     catch
                     {
-                        MessageBox.Show(this, iba.Properties.Resources.UACText, iba.Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         myController.Close();
                         m_result = false;
                         return;
@@ -68,14 +68,11 @@ namespace iba.Dialogs
                 else
                 {
                     myController.Stop();
-                    myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
-                    myController.Start();
                 }
-
-                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, TimeSpan.FromHours(1.0));
-                if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Running)
+                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(3.0));
+                if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Stopped)
                 {
-                    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, iba.Properties.Resources.ServiceConnectProblem4, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, Properties.Resources.ServiceConnectProblem4, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     m_result = false;
                     return;
                 }
@@ -87,7 +84,7 @@ namespace iba.Dialogs
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), iba.Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
                 m_result = false;
                 return;
             }
