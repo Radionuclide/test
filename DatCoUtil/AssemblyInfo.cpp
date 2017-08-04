@@ -14,9 +14,9 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute("DatCoUtil")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("iba")];
-[assembly:AssemblyProductAttribute("DatCoUtil")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) iba 2007")];
+[assembly:AssemblyCompanyAttribute("iba AG")];
+[assembly:AssemblyProductAttribute("ibaDatCoordinator")];
+[assembly:AssemblyCopyrightAttribute("© iba AG. All rights reserved")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 

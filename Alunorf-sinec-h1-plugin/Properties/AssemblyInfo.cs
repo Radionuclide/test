@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Alunorf-sinec-h1-plugin")]
+[assembly: AssemblyTitle("Alunorf-sinec-h1 plugin for ibaDatCoordinator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("iba")]
-[assembly: AssemblyProduct("Alunorf-sinec-h1-plugin")]
-[assembly: AssemblyCopyright("Copyright © iba 2006")]
+[assembly: AssemblyCompany("iba AG")]
+[assembly: AssemblyProduct("ibaDatCoordinator")]
+[assembly: AssemblyCopyright("© iba AG. All rights reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

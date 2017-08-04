@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Alunorf_roh_plugin")]
+[assembly: AssemblyTitle("Alunorf roh plugin for ibaDatCoordinator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Alunorf_roh_plugin")]
-[assembly: AssemblyCopyright("Copyright © 2009")]
+[assembly: AssemblyCompany("iba AG")]
+[assembly: AssemblyProduct("ibaDatCoordinator")]
+[assembly: AssemblyCopyright("© iba AG. All rights reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

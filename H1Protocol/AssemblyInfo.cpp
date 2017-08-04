@@ -11,12 +11,12 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("H1Protocol")];
+[assembly:AssemblyTitleAttribute("H1Protocol library")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("iba")];
-[assembly:AssemblyProductAttribute("H1Protocol")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) iba 2006")];
+[assembly:AssemblyCompanyAttribute("iba AG")];
+[assembly:AssemblyProductAttribute("ibaDatCoordinator")];
+[assembly:AssemblyCopyrightAttribute("© iba AG. All rights reserved")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 

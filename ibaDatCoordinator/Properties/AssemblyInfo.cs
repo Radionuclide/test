@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ibaDatCoordinator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ibaDatCoordinator standalone or client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("iba")]
+[assembly: AssemblyCompany("iba AG")]
 [assembly: AssemblyProduct("ibaDatCoordinator")]
-[assembly: AssemblyCopyright("Copyright © iba 2005")]
+[assembly: AssemblyCopyright("© iba AG. All rights reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

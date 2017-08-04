@@ -11,12 +11,12 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("RohWriter")];
+[assembly:AssemblyTitleAttribute("RohWriter library")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("")];
-[assembly:AssemblyProductAttribute("RohWriter")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c)  2009")];
+[assembly:AssemblyCompanyAttribute("iba AG")];
+[assembly:AssemblyProductAttribute("ibaDatCoordinator")];
+[assembly:AssemblyCopyrightAttribute("© iba AG. All rights reserved")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 

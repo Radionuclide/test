@@ -11,12 +11,12 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("AMOSPCprotocol")];
+[assembly:AssemblyTitleAttribute("AM OSPC protocol library")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("iba")];
-[assembly:AssemblyProductAttribute("AMOSPCprotocol")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) iba 2016")];
+[assembly:AssemblyCompanyAttribute("iba AG")];
+[assembly:AssemblyProductAttribute("ibaDatCoordinator")];
+[assembly:AssemblyCopyrightAttribute("© iba AG. All rights reserved")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
