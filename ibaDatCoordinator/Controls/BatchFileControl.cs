@@ -167,20 +167,22 @@ namespace iba.Controls
                 MessageBox.Show(iba.Properties.Resources.ScriptArgumentsCouldNotBeParsed, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            iba.Dialogs.TestScriptDlg testdlg = new iba.Dialogs.TestScriptDlg(m_data);
-            testdlg.StartPosition = FormStartPosition.CenterParent;
-            testdlg.ShowDialog(this);
-            switch (testdlg.Result)
+            using (iba.Dialogs.TestScriptDlg testdlg = new iba.Dialogs.TestScriptDlg(m_data))
             {
-                case iba.Dialogs.TestScriptDlg.ScriptResult.TIMEOUT:
-                    MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                case iba.Dialogs.TestScriptDlg.ScriptResult.SUCCESS:
-                    MessageBox.Show(iba.Properties.Resources.logBatchfileSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
-                case iba.Dialogs.TestScriptDlg.ScriptResult.ERROR:
-                    MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed, testdlg.ExitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                testdlg.StartPosition = FormStartPosition.CenterParent;
+                testdlg.ShowDialog(this);
+                switch (testdlg.Result)
+                {
+                    case iba.Dialogs.TestScriptDlg.ScriptResult.TIMEOUT:
+                        MessageBox.Show(iba.Properties.Resources.logBatchfileTimeout, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case iba.Dialogs.TestScriptDlg.ScriptResult.SUCCESS:
+                        MessageBox.Show(iba.Properties.Resources.logBatchfileSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    case iba.Dialogs.TestScriptDlg.ScriptResult.ERROR:
+                        MessageBox.Show(string.Format(iba.Properties.Resources.logBatchfileFailed, testdlg.ExitCode), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                }
             }
         }
 

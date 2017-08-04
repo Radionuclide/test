@@ -826,32 +826,34 @@ namespace iba.Utility
             public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton)
             {
                 //Create a new instance of the FlexibleMessageBox form
-                var flexibleMessageBoxForm = new FlexibleMessageBoxForm();
-                flexibleMessageBoxForm.ShowInTaskbar = false;
+                using (var flexibleMessageBoxForm = new FlexibleMessageBoxForm())
+                {
+                    flexibleMessageBoxForm.ShowInTaskbar = false;
 
-                //Bind the caption and the message text
-                flexibleMessageBoxForm.CaptionText = caption;
-                flexibleMessageBoxForm.MessageText = text;
-                flexibleMessageBoxForm.FlexibleMessageBoxFormBindingSource.DataSource = flexibleMessageBoxForm;
+                    //Bind the caption and the message text
+                    flexibleMessageBoxForm.CaptionText = caption;
+                    flexibleMessageBoxForm.MessageText = text;
+                    flexibleMessageBoxForm.FlexibleMessageBoxFormBindingSource.DataSource = flexibleMessageBoxForm;
 
-                //Set the buttons visibilities and texts. Also set a default button.
-                SetDialogButtons(flexibleMessageBoxForm, buttons, defaultButton);
+                    //Set the buttons visibilities and texts. Also set a default button.
+                    SetDialogButtons(flexibleMessageBoxForm, buttons, defaultButton);
 
-                //Set the dialogs icon. When no icon is used: Correct placement and width of rich text box.
-                SetDialogIcon(flexibleMessageBoxForm, icon);
+                    //Set the dialogs icon. When no icon is used: Correct placement and width of rich text box.
+                    SetDialogIcon(flexibleMessageBoxForm, icon);
 
-                //Set the font for all controls
-                flexibleMessageBoxForm.Font = FONT;
-                flexibleMessageBoxForm.richTextBoxMessage.Font = FONT;
+                    //Set the font for all controls
+                    flexibleMessageBoxForm.Font = FONT;
+                    flexibleMessageBoxForm.richTextBoxMessage.Font = FONT;
 
-                //Calculate the dialogs start size (Try to auto-size width to show longest text row). Also set the maximum dialog size. 
-                SetDialogSizes(flexibleMessageBoxForm, text, caption);
+                    //Calculate the dialogs start size (Try to auto-size width to show longest text row). Also set the maximum dialog size. 
+                    SetDialogSizes(flexibleMessageBoxForm, text, caption);
 
-                //Set the dialogs start position when given. Otherwise center the dialog on the current screen.
-                SetDialogStartPosition(flexibleMessageBoxForm, owner);
+                    //Set the dialogs start position when given. Otherwise center the dialog on the current screen.
+                    SetDialogStartPosition(flexibleMessageBoxForm, owner);
 
-                //Show the dialog
-                return flexibleMessageBoxForm.ShowDialog(owner);
+                    //Show the dialog
+                    return flexibleMessageBoxForm.ShowDialog(owner);
+                }
             }
 
             #endregion

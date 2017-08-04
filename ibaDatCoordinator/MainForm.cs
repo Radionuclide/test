@@ -2001,18 +2001,24 @@ namespace iba
         private void saveInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Utility.Crypt.CheckPassword(this)) return;
-            SaveFileDialog fd = new SaveFileDialog();
+
             ZipFile zip = null;
             try 
             {
-                fd.DefaultExt = "zip";
-                fd.AddExtension = true;
-                fd.Filter = iba.Properties.Resources.ZipFileFilter;
-                fd.OverwritePrompt = true;
-                fd.FileName = "support.zip";
-                if (fd.ShowDialog(this) != DialogResult.OK)
-                    return;
-                string destFile = fd.FileName;
+                string destFile;
+                using (SaveFileDialog fd = new SaveFileDialog())
+                {
+                    fd.DefaultExt = "zip";
+                    fd.AddExtension = true;
+                    fd.Filter = iba.Properties.Resources.ZipFileFilter;
+                    fd.OverwritePrompt = true;
+                    fd.FileName = "support.zip";
+                    if (fd.ShowDialog(this) != DialogResult.OK)
+                        return;
+
+                    destFile = fd.FileName;
+                }
+
                 string destDir = Path.GetDirectoryName(destFile);
                 using (WaitCursor wait = new WaitCursor())
                 {
@@ -3054,18 +3060,20 @@ namespace iba
             //test if there's a difference between the client and server configurations
             if (IsServerClientDifference())
             {
-                UploadOrDownloadConfigurationsDialog uodDiag = new UploadOrDownloadConfigurationsDialog();
-                if (WindowState == FormWindowState.Minimized)
+                using (UploadOrDownloadConfigurationsDialog uodDiag = new UploadOrDownloadConfigurationsDialog())
                 {
-                    uodDiag.StartPosition = FormStartPosition.CenterScreen;
-                    uodDiag.ShowDialog();
+                    if (WindowState == FormWindowState.Minimized)
+                    {
+                        uodDiag.StartPosition = FormStartPosition.CenterScreen;
+                        uodDiag.ShowDialog();
+                    }
+                    else
+                    {
+                        uodDiag.StartPosition = FormStartPosition.CenterParent;
+                        uodDiag.ShowDialog(this);
+                    }
+                    return uodDiag.Upload;
                 }
-                else
-                {
-                    uodDiag.StartPosition = FormStartPosition.CenterParent;
-                    uodDiag.ShowDialog(this);
-                }
-                return uodDiag.Upload;
             }
             return false;
         }

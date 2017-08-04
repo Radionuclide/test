@@ -483,54 +483,56 @@ namespace Alunorf_roh_plugin
 
         private void m_selectButton_Click(object sender, EventArgs e)
         {
-            SelectInfoOrChannels dlg = new SelectInfoOrChannels();
-            DataGridView grid;
-            if (m_tabControl.SelectedTab == m_stichTab)
+            using (SelectInfoOrChannels dlg = new SelectInfoOrChannels())
             {
-                dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectStich;
-                grid = m_datagvStich;
-                dlg.SelectChannels = false;
-            }
-            else if (m_tabControl.SelectedTab == m_kopfTab)
-            {
-                dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectKopf;
-                grid = m_datagvKopf;
-                dlg.SelectChannels = false;
-            }
-            else if (m_tabControl.SelectedTab == m_schlussTab)
-            {
-                dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectSchluss;
-                grid = m_datagvSchluss;
-                dlg.SelectChannels = false;
-            }
-            else if (m_tabControl.SelectedTab == m_kanalTab)
-            {
-                dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectKanal;
-                grid = m_datagvKanalbeschreibung;
-                dlg.SelectChannels = true;
-            }
-            else return;
-            dlg.DatFile = m_datFileTextBox.Text;
-            if (dlg.ShowDialog(this) == DialogResult.OK)
-            {
-                int startrow = grid.Rows.Count - 1;
-                while (startrow >= 0 && (grid.Rows[startrow].Cells[0].Value == null || (grid.Rows[startrow].Cells[0].Value as string) == ""))
-                    startrow--;
-                startrow++;
-                string[] results = dlg.SelectedItems();
-                if (results.Length == 0) return;
-                while (startrow + results.Length >= grid.RowCount) //always leav
-                    grid.RowCount++;
-                for (int i = 0; i < results.Length; i++)
+                DataGridView grid;
+                if (m_tabControl.SelectedTab == m_stichTab)
                 {
-                    grid.Rows[startrow + i].Cells[0].Value = results[i];
-                    if (dlg.AdditionalInfos.ContainsKey(results[i]))
+                    dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectStich;
+                    grid = m_datagvStich;
+                    dlg.SelectChannels = false;
+                }
+                else if (m_tabControl.SelectedTab == m_kopfTab)
+                {
+                    dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectKopf;
+                    grid = m_datagvKopf;
+                    dlg.SelectChannels = false;
+                }
+                else if (m_tabControl.SelectedTab == m_schlussTab)
+                {
+                    dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectSchluss;
+                    grid = m_datagvSchluss;
+                    dlg.SelectChannels = false;
+                }
+                else if (m_tabControl.SelectedTab == m_kanalTab)
+                {
+                    dlg.Text = Alunorf_roh_plugin.Properties.Resources.SelectKanal;
+                    grid = m_datagvKanalbeschreibung;
+                    dlg.SelectChannels = true;
+                }
+                else return;
+                dlg.DatFile = m_datFileTextBox.Text;
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    int startrow = grid.Rows.Count - 1;
+                    while (startrow >= 0 && (grid.Rows[startrow].Cells[0].Value == null || (grid.Rows[startrow].Cells[0].Value as string) == ""))
+                        startrow--;
+                    startrow++;
+                    string[] results = dlg.SelectedItems();
+                    if (results.Length == 0) return;
+                    while (startrow + results.Length >= grid.RowCount) //always leav
+                        grid.RowCount++;
+                    for (int i = 0; i < results.Length; i++)
                     {
-                        ExtraData ed = dlg.AdditionalInfos[results[i]];
-                        grid.Rows[startrow + i].Cells[1].Value = ed.description;
-                        grid.Rows[startrow + i].Cells[2].Value = ed.kurz;
-                        grid.Rows[startrow + i].Cells[3].Value = ed.unit;
-                        grid.Rows[startrow + i].Cells[4].Value = ed.dt;
+                        grid.Rows[startrow + i].Cells[0].Value = results[i];
+                        if (dlg.AdditionalInfos.ContainsKey(results[i]))
+                        {
+                            ExtraData ed = dlg.AdditionalInfos[results[i]];
+                            grid.Rows[startrow + i].Cells[1].Value = ed.description;
+                            grid.Rows[startrow + i].Cells[2].Value = ed.kurz;
+                            grid.Rows[startrow + i].Cells[3].Value = ed.unit;
+                            grid.Rows[startrow + i].Cells[4].Value = ed.dt;
+                        }
                     }
                 }
             }

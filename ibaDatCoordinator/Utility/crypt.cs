@@ -79,22 +79,25 @@ namespace iba.Utility
                 (LastSpecifiedPass != null && doRemember && pass == LastSpecifiedPass && Math.Abs((DateTime.UtcNow - LastTime).TotalSeconds) < rememberTime.TotalSeconds))
                 return true;
 
-            iba.Dialogs.PasswordConfirm dlg = new iba.Dialogs.PasswordConfirm(pass);
-            dlg.StartPosition = (parent != null) ? System.Windows.Forms.FormStartPosition.CenterParent : System.Windows.Forms.FormStartPosition.CenterScreen;
-            if (parent != null)
-                dlg.ShowDialog(parent);
-            else
-                dlg.ShowDialog();
-            if (!dlg.Cancelled)
+            using (iba.Dialogs.PasswordConfirm dlg = new iba.Dialogs.PasswordConfirm(pass))
             {
-                if (doRemember)
+                dlg.StartPosition = (parent != null) ? System.Windows.Forms.FormStartPosition.CenterParent : System.Windows.Forms.FormStartPosition.CenterScreen;
+                if (parent != null)
+                    dlg.ShowDialog(parent);
+                else
+                    dlg.ShowDialog();
+                if (!dlg.Cancelled)
                 {
-                    LastSpecifiedPass = pass;
-                    LastTime = DateTime.UtcNow;
+                    if (doRemember)
+                    {
+                        LastSpecifiedPass = pass;
+                        LastTime = DateTime.UtcNow;
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
+            
         }
     }
 }
