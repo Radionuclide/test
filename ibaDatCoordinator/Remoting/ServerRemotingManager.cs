@@ -64,6 +64,18 @@ namespace iba.Remoting
             }
         }
 
+        public static void DisconnectClient(HostInformation hi, Exception ex)
+        {
+            try
+            {
+                if (hi != null)
+                    hi.ITransportContext.KnownHosts.ReleaseHostResources(hi, ex);
+            }
+            catch(Exception)
+            {
+            }
+        }
+    
         private static void OnGenuineChannelsGlobalEvent(object sender, GenuineEventArgs e)
         {
             Log(Logging.Level.Debug, "Genuine event : {0} caused by {1} for host {2}",

@@ -73,7 +73,7 @@ namespace iba.Controls
             try
             {
                 serverFiles = Program.CommunicationObject.GetServerSideFileHandler();
-                Text = string.Format(formatter, Program.CommunicationObject.ServerName);
+                Text = string.Format(formatter, Program.ServiceHost);
             }
             catch
             {

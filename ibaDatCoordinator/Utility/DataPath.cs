@@ -9,24 +9,27 @@ namespace iba.Utility
     {
         public static string Folder(ApplicationState state)
         {
-            string rootPath;
-            if (state != ApplicationState.SERVICE)
-            {
-                rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-            }
-            else
-            {
-                if (IsAdmin)
-                {
-                    rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
-                }
-                else
-                {
-                    rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-                }
-            }
-            //rootPath = System.IO.Path.Combine(rootPath,@"iba\ibaDatCoordinator");
+            string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            rootPath = System.IO.Path.Combine(rootPath, @"iba\ibaDatCoordinator");
             return rootPath;
+            //string rootPath;
+            //if (state != ApplicationState.SERVICE)
+            //{
+            //    rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            //}
+            //else
+            //{
+            //    if (IsAdmin)
+            //    {
+            //        rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+            //    }
+            //    else
+            //    {
+            //        rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            //    }
+            //}
+            ////rootPath = System.IO.Path.Combine(rootPath,@"iba\ibaDatCoordinator");
+            //return rootPath;
         }
 
 

@@ -30,15 +30,17 @@ namespace iba.Services
         private CommunicationObject m_communicationObject;
 
         private ServicePublisher m_servicePublisher;
-        private TcpChannel localChannel;
 
         protected override void OnStart(string[] args)
         {
             try
             {
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-                LogData.InitializeLogger(null, null, iba.Utility.ApplicationState.SERVICE); //dummy gridlogger
+
+                LogData.InitializeServerLogger();
+
                 PluginManager.Manager.LoadPlugins();
+
                 m_communicationObject = new CommunicationObject();
                 TaskManager.Manager = m_communicationObject.Manager;
 
@@ -130,8 +132,6 @@ namespace iba.Services
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
             m_communicationObject.SaveConfigurations();
 
-            m_communicationObject.ClearForwarders();
-
             //Stop publishing service
             if (m_servicePublisher != null)
             {
@@ -144,10 +144,10 @@ namespace iba.Services
                 }
             }
             m_servicePublisher = null;
+            
+            Remoting.ServerRemotingManager.StopRemoting(m_communicationObject);
 
             LogData.StopLogger();
-
-            Remoting.ServerRemotingManager.StopRemoting(m_communicationObject);
 
             //try
             //{

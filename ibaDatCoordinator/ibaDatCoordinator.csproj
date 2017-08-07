@@ -187,6 +187,8 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\GridViewLogger.cs" />
+    <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\ServerSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +208,7 @@
     </Compile>
     <Compile Include="Remoting\ClientRemotingManager.cs" />
     <Compile Include="Remoting\ServerRemotingManager.cs" />
+    <Compile Include="Utility\CircularBuffer.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\LanguageHelper.cs" />
     <Compile Include="Utility\PdaServerFiles.cs" />

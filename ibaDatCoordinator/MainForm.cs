@@ -67,14 +67,14 @@ namespace iba
             PluginManager.Manager.LoadPlugins();
 
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
+
+            //Initialize logger
             LogControl theLogControl; 
             propertyPanes["logControl"] = theLogControl = new LogControl();
-            iba.Utility.ApplicationState state = iba.Utility.ApplicationState.CLIENTSTANDALONE;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                state = iba.Utility.ApplicationState.CLIENTCONNECTED;
-            else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-                state = iba.Utility.ApplicationState.CLIENTDISCONNECTED;
-            LogData.InitializeLogger(theLogControl.LogView, theLogControl, state);
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                LogData.InitializeStandAloneLogger(theLogControl.LogView, theLogControl);
+            else
+                LogData.InitializeClientLogger(theLogControl.LogView, theLogControl);
             theLogControl.CreateControl();
 
             configurationToolStripMenuItem.Enabled = false;
@@ -186,7 +186,7 @@ namespace iba
                     waiter.ShowDialog(this);
                 }
             }
-            LogData.Data.Logger.Close();
+            
             base.OnClosing(e);
         }
 
@@ -459,8 +459,7 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 FormStateSerializer.LoadSettings(this, "MainForm");
             SetRenderer();
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
-                UpdateConnectionStatus();
+            UpdateConnectionStatus();
             SetupHelp();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
@@ -2356,8 +2355,6 @@ namespace iba
         private void m_EntriesNumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             LogData.Data.MaxRows = Math.Max(1,(int) m_EntriesNumericUpDown1.Value);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                Program.CommunicationObject.LoggerMaxRows = LogData.Data.MaxRows;
         }
 
         private void m_rbLogLevelRbCheckedChanged(object sender, EventArgs e)
@@ -2367,16 +2364,11 @@ namespace iba
             if (m_rbErrorsWarnings.Checked) loglevel = 1;
             else if (m_rbOnlyErrors.Checked) loglevel = 2;
             LogData.Data.LogLevel = loglevel;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                Program.CommunicationObject.LoggerLogLevel = loglevel;
         }
 
         private void m_btnClearLogging_Click(object sender, EventArgs e)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                Program.CommunicationObject.LoggerClearGrid();
-            else
-                LogData.Data.ClearGrid();
+            LogData.Data.ClearGrid();
         }
 
         private void m_stopButton_Click(object sender, EventArgs e)
@@ -2873,20 +2865,18 @@ namespace iba
                             // alive during the online session
                             Program.CommunicationObject = wrapper;
                         }
-                        LogData.Data.Logger.Close();
-                        GridViewLogger gv = null;
-                        if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
-                            gv = LogData.Data.Logger.Children[0] as GridViewLogger;
-                        else
-                            gv = LogData.Data.Logger as GridViewLogger;
-                        LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTCONNECTED);
+
                         if (m_ef != null) //clear any previous attempt
                         {
                             Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
                             m_ef.Dispose();
                         }
+
+                        LogData.Data.ClearGrid();
+
                         m_ef = new EventForwarder();
                         Program.CommunicationObject.Logging_setEventForwarder(m_ef, m_ef.Guid);
+
                         m_firstConnectToService = false;
                         MethodInvoker m2 = delegate ()
                         {

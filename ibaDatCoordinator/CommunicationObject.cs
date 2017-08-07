@@ -82,37 +82,6 @@ namespace iba
             set { m_filename = value; }
         }
 
-        public int LoggerMaxRows
-        {
-            get
-            {
-                return LogData.Data.MaxRows;
-            }
-            set
-            {
-                LogData.Data.MaxRows = value;
-            }
-        }
-
-        public int LoggerLogLevel
-        {
-            get
-            {
-                return LogData.Data.LogLevel;
-            }
-            set
-            {
-                LogData.Data.LogLevel = value;
-            }
-        }
-
-        public void LoggerClearGrid()
-        {
-            if (LogData.Data.Logger == null) return;
-            if (LogData.Data.Logger.ChildCount > 0)
-               (LogData.Data.Logger.Children[0] as GridViewLogger).clear();
-        }
-
         public override object InitializeLifetimeService()
         {
             //This is only called on the server where this object must live forever
@@ -120,52 +89,18 @@ namespace iba
             return null;
         }
 
-        public bool ForwardEvents
+        public void Logging_setEventForwarder(IEventForwarder ev, Guid g, string clientName)
         {
-            get 
-            {
-                if (LogData.Data.Logger == null) return false;
-                return (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).IsForwarding; 
-            }
-        }
-
-        public void Logging_setEventForwarder(EventForwarder ev, Guid g)
-        {
-            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
-                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).AddForwarder(ev,g);
+            RemoteLogger remoteLogger = LogData.RemoteLogger;
+            if (remoteLogger != null)
+                remoteLogger.AddForwarder(ev, g, clientName);
         }
 
         public void Logging_clearEventForwarder(Guid g)
         {
-            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
-                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).RemoveForwarder(g);
-        }
-
-        public void ClearForwarders()
-        {
-            if (LogData.Data.Logger != null && LogData.Data.Logger.ChildCount > 0 && (LogData.Data.Logger.GetChildAt(0) is GridViewLogger))
-                (LogData.Data.Logger.GetChildAt(0) as GridViewLogger).ClearForwarders();
-        }
-
-        public string Logging_fileName
-        {
-            get
-            {
-                return LogData.Data.FileName;
-            }
-        }
-
-        public string ServerName
-        {
-            get
-            {
-                return System.Net.Dns.GetHostName();
-            }
-        }
-
-        public void Logging_Log(string message)
-        {
-            LogData.Data.Logger.Log(Logging.Level.Info, message);
+            RemoteLogger remoteLogger = LogData.RemoteLogger;
+            if (remoteLogger != null)
+                remoteLogger.RemoveForwarder(g);
         }
 
         public void TestConnection() //does nothing
@@ -306,7 +241,6 @@ namespace iba
             try
             {
                 string regFileName = "";
-                string destDir = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
                 regFileName = Path.Combine(Utility.DataPath.Folder(),"ibaanalyzer.reg");
                 if (!RegistryExporter.ExportIbaAnalyzerKey(regFileName))
                     return "";
@@ -437,73 +371,6 @@ namespace iba
             }
         }
 
-        public int LoggerMaxRows
-        {
-            get
-            {
-                try
-                {
-                    return m_com.LoggerMaxRows;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                    return LogData.Data.MaxRows;
-                }
-            }
-            set
-            {
-                try
-                {
-                    m_com.LoggerMaxRows = value;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                }
-            }
-        }
-
-        public int LoggerLogLevel
-        {
-            get
-            {
-                try
-                {
-                    return m_com.LoggerLogLevel;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                    return LogData.Data.LogLevel;
-                }
-            }
-            set
-            {
-                try
-                {
-                    m_com.LoggerLogLevel = value;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                }
-            }
-        }
-
-        public void LoggerClearGrid()
-        {
-            try
-            {
-                m_com.LoggerClearGrid();
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                LogData.Data.ClearGrid();
-            }
-        }
-
         public TaskManager Manager
         {
             get 
@@ -531,73 +398,11 @@ namespace iba
             }
         }
 
-        public bool ForwardEvents
-        {
-            get
-            {
-                try
-                {
-                    return m_com.ForwardEvents;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                    return false;
-                }
-            }
-        }
-
-        public string Logging_fileName
-        {
-            get
-            {
-                try
-                {
-                    return m_com.Logging_fileName;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                    return null;
-                }
-            }
-        }
-
-        public string ServerName
-        {
-            get
-            {
-                try
-                {
-                    return m_com.ServerName;
-                }
-                catch (Exception ex)
-                {
-                    HandleBrokenConnection(ex);
-                    return "";
-                }
-            }
-
-        }
-
-        public void Logging_Log(string message)
+        public void Logging_setEventForwarder(IEventForwarder ev, Guid g)
         {
             try
             {
-                m_com.Logging_Log(message);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                LogData.Data.Log(Logging.Level.Info, message);
-            }
-        }
-
-        public void Logging_setEventForwarder(EventForwarder ev, Guid g)
-        {
-            try
-            {
-                m_com.Logging_setEventForwarder(ev,g);
+                m_com.Logging_setEventForwarder(ev, g, Program.ClientName);
             }
             catch (Exception ex)
             {
@@ -647,18 +452,6 @@ namespace iba
             TaskManager.Manager.StopAllConfigurations();
             TaskManager.Manager.StopAllGlobalCleanups();
 
-            //logger resetten
-            LogData.StopLogger();
-            GridViewLogger gv = null;
-            if (LogData.Data.Logger is iba.Logging.Loggers.CompositeLogger)
-                gv = LogData.Data.Logger.Children[0] as GridViewLogger;
-            else
-                gv = LogData.Data.Logger as GridViewLogger;
-
-            if (gv != null)
-                LogData.InitializeLogger(gv.Grid, gv.LogControl, iba.Utility.ApplicationState.CLIENTDISCONNECTED);
-
-            //TODO remove THIS after the test ...
             if (ex == null)
                 ex = new Exception("Handle Broken connection called without exception");
 

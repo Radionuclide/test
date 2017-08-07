@@ -82,6 +82,8 @@ namespace iba
             MainForm.WindowState = FormWindowState.Normal;
             MainForm.ShowInTaskbar = true;
             Application.Run(MainForm);
+
+            Data.LogData.StopLogger();
         }
 
         static int m_servicePortNr = -1;

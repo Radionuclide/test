@@ -98,7 +98,7 @@ namespace iba.DatCoordinator.Status
             {
                 status = sc.Status;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 status = ServiceControllerStatus.Stopped;
                 if (firstFailure)
