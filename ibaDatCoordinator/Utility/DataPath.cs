@@ -9,7 +9,11 @@ namespace iba.Utility
     {
         public static string Folder(ApplicationState state)
         {
-            string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+            string rootPath;
+            if (Program.IsServer && IsAdmin)
+                rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+            else
+                rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
             rootPath = System.IO.Path.Combine(rootPath, @"iba\ibaDatCoordinator");
             return rootPath;
             //string rootPath;

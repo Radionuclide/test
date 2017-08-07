@@ -106,12 +106,14 @@ namespace iba.Utility
                 buffer[tail] = src[srcIndex];
             }
 
+            if (tail == capacity)
+                tail = 0;
+
             size += count;
             if(size > capacity)
             {
-                int extra = size - capacity;
                 size = capacity;
-                head = (head + count) % capacity;
+                head = tail;
             }
 
             return count;
@@ -130,8 +132,7 @@ namespace iba.Utility
             if (size > capacity)
             {
                 size = capacity;
-                if (++head == capacity)
-                    head = 0;
+                head = tail;
             }
         }
 

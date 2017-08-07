@@ -2128,6 +2128,8 @@ namespace iba
 
                     try
                     {
+                        //TODO retrieve log files from server instead
+
                         //logfiles, server
                         string logdir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
                         logdir = Path.Combine(logdir, @"iba\ibaDatCoordinator");
@@ -2955,8 +2957,10 @@ namespace iba
             loadStatuses();
             if (prevPane != m_settingsPane)
                 ReloadRightPane();
-            else
-                m_navBar.SelectedPane = prevPane;
+
+            //Force update
+            m_navBar.SelectedPane = null;
+            m_navBar.SelectedPane = prevPane;
             UpdateButtons();
         }
 

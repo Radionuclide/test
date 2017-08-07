@@ -640,10 +640,6 @@
     <None Include="Resources\scheduled_configuration.ico" />
     <None Include="Resources\scheduled_configuration_new.ico" />
     <None Include="Resources\broom.png" />
-    <None Include="Resources\DatCo_SrvStat_Icon_stopped.ico" />
-    <None Include="Resources\DatCo_SrvStat_Icon_disconn.ico" />
-    <None Include="Resources\DatCo_SrvStat_Icon_pure.ico" />
-    <None Include="Resources\DatCo_SrvStat_Icon_run.ico" />
     <Content Include="Resources\default.ico" />
     <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
       <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
