@@ -11,6 +11,9 @@
 !define PRODUCT_FILE_VERSION "2.0.0.0"
 !endif
 
+!define PRODUCT_KEYWORDS "ibaDatCoordinator, data post processing"
+
+
 !ifdef DO_UNINSTALLER_SIGNING
 ;Section to generate uninstaller and sign it.
 ;This actually calls the same script again with the UNINSTALLER_ONLY define set.
@@ -37,7 +40,7 @@
 
 !endif
 !define PRODUCT_NAME "ibaDatCoordinator"
-!define PRODUCT_PUBLISHER "iba ag"
+!define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 ;!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\ibaPda.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -158,14 +161,14 @@ ShowInstDetails hide
 ShowUnInstDetails hide
 BrandingText "iba AG"
 
-!define /date CurrentYear "%Y"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2006-${CurrentYear} by iba AG"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© iba AG. All rights reserved"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_FILE_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "Keywords" "${PRODUCT_KEYWORDS}"
 VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 ;--------------------------------
@@ -516,7 +519,6 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
-  ;File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
@@ -596,7 +598,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   Pop $R0
   ${If} $R0 == "1"
     DetailPrint $(TEXT_CONFIGURE_FIREWALL)
-    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client or status"
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorStatus.exe" "ibaDatCoordinator status"
     nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorService.exe" "ibaDatCoordinator server"
   ${EndIf}
   
@@ -689,7 +691,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   Pop $R0
   ${If} $R0 == "1"
     DetailPrint $(TEXT_CONFIGURE_FIREWALL)
-    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client or status"
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client"
   ${EndIf}
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
