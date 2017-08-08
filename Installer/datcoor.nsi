@@ -598,7 +598,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   Pop $R0
   ${If} $R0 == "1"
     DetailPrint $(TEXT_CONFIGURE_FIREWALL)
-    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorStatus.exe" "ibaDatCoordinator status"
+    nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" "ibaDatCoordinator client"
     nsSCMEx::FirewallAddApplication /NOUNLOAD "$INSTDIR\ibaDatCoordinatorService.exe" "ibaDatCoordinator server"
   ${EndIf}
   
