@@ -5,7 +5,7 @@
 #include "ByteStream.h"
 #include <H1Def.h>
 #include <map>
-using namespace std;
+//using namespace std;
 
 
 using namespace System;
@@ -68,8 +68,8 @@ namespace iba {
 		bool m_connections;
 		String^ m_lastError;
 		String^ LoadError(UINT id);
-		map<unsigned short, H1_RECPARAMS*>* m_rp;
-		map<unsigned short, H1_SENDPARAMS*>* m_sp;
+		std::map<unsigned short, H1_RECPARAMS*>* m_rp;
+		std::map<unsigned short, H1_SENDPARAMS*>* m_sp;
 		unsigned char* m_blockedBytes;
 		unsigned int m_blockpos;
 	public:

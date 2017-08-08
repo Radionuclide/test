@@ -18,8 +18,8 @@ namespace iba {
 		m_driverloaded = error == 0;
 		CString message;
 		m_lastError = m_driverloaded?"":LoadError(DRIVER_LOAD_FAILED);
-		m_sp = new map<unsigned short, H1_SENDPARAMS*>();
-		m_rp = new map<unsigned short, H1_RECPARAMS*>();
+		m_sp = new std::map<unsigned short, H1_SENDPARAMS*>();
+		m_rp = new std::map<unsigned short, H1_RECPARAMS*>();
 		m_blockedBytes = new unsigned char [16*4096];
 		m_blockpos = 0;
 	}
@@ -39,7 +39,7 @@ namespace iba {
 		m_driverloaded= false;
 		if (m_rp)
 		{
-			for (map<unsigned short,H1_RECPARAMS*>::iterator it = m_rp->begin(); it != m_rp->end(); it++)
+			for (std::map<unsigned short,H1_RECPARAMS*>::iterator it = m_rp->begin(); it != m_rp->end(); it++)
 			{
 				if (it->second)
 				{
@@ -54,7 +54,7 @@ namespace iba {
 		m_blockedBytes = NULL;
 		if (m_sp)
 		{
-			for (map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
+			for (std::map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
 			{
 				if (it->second)
 				{
@@ -75,7 +75,7 @@ namespace iba {
 		m_driverloaded = false;
 		if (m_rp)
 		{
-			for (map<unsigned short,H1_RECPARAMS*>::iterator it = m_rp->begin(); it != m_rp->end(); it++)
+			for (std::map<unsigned short,H1_RECPARAMS*>::iterator it = m_rp->begin(); it != m_rp->end(); it++)
 			{
 				if (it->second)
 				{
@@ -90,7 +90,7 @@ namespace iba {
 		m_blockedBytes = NULL;
 		if (m_sp)
 		{
-			for (map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
+			for (std::map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->begin(); it != m_sp->end(); it++)
 			{
 				if (it->second)
 				{
@@ -194,14 +194,14 @@ namespace iba {
 	{
 		//delete obsolete send parameters and recieve parameters
 		unsigned short findval = vnr;
-		map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->find(findval);
+		std::map<unsigned short,H1_SENDPARAMS*>::iterator it = m_sp->find(findval);
 		if (it != m_sp->end())
 		{
 			free (it->second);
 			m_sp->erase(it);
 		}
 		//delete obsolete recieve parameters
-		map<unsigned short,H1_RECPARAMS*>::iterator it2 = m_rp->find(findval);
+		std::map<unsigned short,H1_RECPARAMS*>::iterator it2 = m_rp->find(findval);
 		if (it2 != m_rp->end())
 		{
 			free (it2->second);

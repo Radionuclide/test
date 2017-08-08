@@ -64,7 +64,7 @@
         //create an Id like ibaAnalyzer would
         internal static string CreateIbaAnalyzerChannelId(this IbaChannelReader channel)
         {
-            int moduleNr = channel.ModuleNumber;
+            int moduleNr = channel.moduleNumber;
             int nrInModule = channel.NumberInModule;
             int subchannelNr = channel.SubChannelNumber;
             bool digital = channel.IsDigital() == 1;
