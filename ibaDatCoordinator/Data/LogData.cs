@@ -213,12 +213,6 @@ namespace iba.Data
                 m_logger.Log(level, message);
         }
 
-        public void FileLog(Level level, string message)
-        {
-            if (m_fileLogger != null && m_fileLogger.IsOpen)
-                m_fileLogger.Log(level, message);
-        }
-
         static public void StopLogger()
         {
             if (m_data.m_logger != null && m_data.m_logger.IsOpen)
@@ -297,7 +291,7 @@ namespace iba.Data
                 m_data.Logger.Open();
                 ibaLogger.Logger = m_data.Logger;
 
-                m_fileLogger.Log(versionLine); //so it is inserted in the first logfile
+                m_data.Logger.Log(Level.Debug, versionLine); //so it is inserted in the first logfile
             }
             catch
             {

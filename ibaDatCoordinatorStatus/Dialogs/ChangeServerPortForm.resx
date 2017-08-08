@@ -268,7 +268,7 @@
     <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Change ibaPDA server port number</value>
+    <value>Change ibaDatCoordinator server port number</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ChangeServerPortForm</value>

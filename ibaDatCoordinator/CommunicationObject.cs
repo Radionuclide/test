@@ -458,7 +458,7 @@ namespace iba
             if (m_com != null)
                 Remoting.ClientRemotingManager.Disconnect(m_com, ex);
 
-            LogData.Data.FileLog(Logging.Level.Exception, ex.ToString());
+            LogData.Data.Log(Logging.Level.Exception, ex.ToString());
         }
 
         public void TestScript(string scriptfile, string arguments, ScriptTester scripObject)

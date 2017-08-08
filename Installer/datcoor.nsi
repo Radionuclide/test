@@ -178,8 +178,9 @@ ReserveFile "serviceorstandalone.ini"
 
 ${StrLoc}
 
-VAR WinVer
-VAR PrevUninstall
+Var WinVer
+Var Is64Bit
+Var PrevUninstall
 Var StartMenuFolder
 Var ServiceUserName
 Var ServicePassword
@@ -263,8 +264,9 @@ Function PreInstall
   Call CheckRequirements
   Call CheckPreviousVersions
 
-  ${If} $WinVer == "Win8"
-  ${OrIf} $WinVer == "Win8.1"
+  ${If} $WinVer == "8"
+  ${OrIf} $WinVer == "2012"
+  ${OrIf} $WinVer == "10"
     StrCpy $StartMenuFolder "ibaDatCoordinator" 
   ${Else}
     StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
@@ -277,17 +279,23 @@ FunctionEnd
 
 Function CheckRequirements
   ;Check that operating system is supported
-  Call GetWindowsVersion
+  nsSCMEx::GetOsVersion
+  Pop $Is64Bit
   Pop $WinVer
-  StrCmp $WinVer "2000" OSisOk +1
-  StrCmp $WinVer "XP" OSisOK +1
-  StrCmp $WinVer "2003" OSisOK +1
+  StrCmp $WinVer "VISTA" WarnNoLongerSupported +1
   StrCmp $WinVer "2008" OSisOK +1
-  StrCmp $WinVer "win7" OSisOK +1
-  StrCmp $WinVer "win8" OSisOK +1
-  StrCmp $WinVer "win8.1" OSisOK +1
-    MessageBox MB_OK|MB_ICONSTOP $(TEXT_OS_NOT_SUPPORTED)
+  StrCmp $WinVer "7" OSisOK +1
+  StrCmp $WinVer "2008 R2" OSisOK +1
+  StrCmp $WinVer "8" OSisOK +1
+  StrCmp $WinVer "2012" OSisOK +1
+  StrCmp $WinVer "10" OSisOK +1
+    MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_OS_NOT_SUPPORTED)
     Quit
+
+  WarnNoLongerSupported:
+  MessageBox MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND|MB_DEFBUTTON2 $(TEXT_OS_NOT_FULLY_SUPPORTED) /SD IDNO IDYES OSisOk
+  Quit
+
   OSisOk:
 
   ;Check user has administrator rights
@@ -513,9 +521,10 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
   File "..\ibaDatCoordinator\Resources\running.ico"
-  File "..\ibaDatCoordinator\Resources\DatCo_SrvStat_Icon_pure.ico"
+  File "..\ibaDatCoordinatorStatus\Resources\DatCo_SrvStat_Icon_pure.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
+  File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
   File "versions_dat.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
@@ -531,11 +540,13 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
+  File "..\Passolo\de\ibaDatCoordinatorStatus.resources.dll"
   File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
   File "..\Dependencies\de\hdCommon.resources.dll"
   File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
+  File "..\Passolo\fr\ibaDatCoordinatorStatus.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
   File "..\Dependencies\fr\hd_plugin.resources.dll"
@@ -570,7 +581,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Service2" $ServicePassword
 
   ;Add serverstatus to autorun
-  WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinator.exe /status"
+  WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status" "$INSTDIR\ibaDatCoordinatorStatus.exe"
 
   ;printer stuff
   SetOutPath "$INSTDIR"
@@ -591,7 +602,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/status" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinatorStatus.exe" "" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
@@ -599,15 +610,15 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;Set port number if necessary
   
   ${If} $PortNumber != "0"
-  Exec '"$INSTDIR\ibaDatCoordinator.exe" /setportnumber:$PortNumber'
+  Exec '"$INSTDIR\ibaDatCoordinatorStatus.exe" /setportnumber:$PortNumber'
   ${EndIf}
  
   ;Start service
-   nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
+  nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
   
   ;Start service status
-   Exec '"$INSTDIR\ibaDatCoordinator.exe" /status'
-   !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+  Exec "$INSTDIR\ibaDatCoordinatorStatus.exe"
+  !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
 Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
@@ -830,11 +841,17 @@ SectionEnd
 
 
 Function un.UninstallTasks
+
+  ;Check if client is still running
+  again:
   ClearErrors
   Delete "$INSTDIR\ibaDatCoordinator.exe"
-  IfErrors 0 +2
-    Call un.stillRunning
-	
+  IfErrors 0 ok
+    MessageBox MB_RETRYCANCEL|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_CLOSE_CLIENT) IDRETRY again
+      Quit
+  ok:
+  Delete "$INSTDIR\ibaDatCoordinator.exe.config"
+
   Delete "$INSTDIR\*.chm"
   Delete "$INSTDIR\ibaLogger.dll"
   Delete "$INSTDIR\Eyefinder.dll"
@@ -894,7 +911,7 @@ Function un.UninstallTasks
 FunctionEnd
 
 Function un.UninstallService
-    ;Trigger close of all server status instances
+  ;Trigger close of all server status instances
   DetailPrint $(TEXT_STATUS_STOP)
   WriteRegDWORD HKLM "SOFTWARE\iba\ibaDatCoordinator\Uninstall" "isBusy" 0
   WriteRegDWORD HKLM "SOFTWARE\iba\ibaDatCoordinator\Uninstall" "isBusy" 1
@@ -905,7 +922,7 @@ Function un.UninstallService
   StrCpy $R1 "10"
   againStatus:
   ClearErrors
-  Delete "$INSTDIR\Server\ibaPdaServerStatus.exe"
+  Delete "$INSTDIR\ibaDatCoordinatorStatus.exe"
   IfErrors 0 okStatus
     DetailPrint "Attempt $R0 failed"
     Sleep 1000
@@ -918,19 +935,13 @@ Function un.UninstallService
     Quit
   okStatus:
   
+  Delete "$INSTDIR\de\ibaDatCoordinatorStatus.resources.dll"
+  Delete "$INSTDIR\fr\ibaDatCoordinatorStatus.resources.dll"
+
   ;Clear uninstall is busy flag
   WriteRegDWORD HKLM "SOFTWARE\iba\ibaPDA\Uninstall" "isBusy" 0
   
-  
   ;uninstall the service
-
-  ;stop statusform
-  ;FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-  ;SendMessage $0 0x8140 0 0
-  ;${Unless} $0 == 0
-  ;  Sleep 1000
-  ;  FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
-  ;${EndUnless}
 
   ;Stop service
   DetailPrint $(TEXT_SERVICE_STOP)
@@ -946,19 +957,16 @@ Function un.UninstallService
 
   Delete "$INSTDIR\running.ico"
   Delete "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
+  
   ;Remove server status from autorun
   DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status"
+
 FunctionEnd
 
 Function un.WaitAndDelete
   Sleep 1000
   Delete "$INSTDIR\ibaDatCoordinatorService.exe"
   IfErrors -2 0
-FunctionEnd
-
-Function un.StillRunning
-  MessageBox MB_ICONSTOP|MB_OK $(TEXT_STILL_RUNNING)
-  Abort
 FunctionEnd
 
 !endif ;DO_UNINSTALLER_SIGNING
@@ -1049,117 +1057,6 @@ Function GetDotNETVersion
   Exch $1
   Exch 1
   Exch $0
-FunctionEnd
-
-
-; latest version: http://nsis.sourceforge.net/Get_Windows_version
-;--------------------------------
-; GetWindowsVersion
-;
-; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
-; Updated by Joost Verburg
-;
-; Returns on top of stack
-;
-; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003)
-; or
-; '' (Unknown Windows Version)
-;
-; Usage:
-;   Call GetWindowsVersion
-;   Pop $R0
-;   ; at this point $R0 is "NT 4.0" or whatnot
-
-Function GetWindowsVersion
-
-  Push $R0
-  Push $R1
-
-  ClearErrors
-
-  ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-
-  IfErrors 0 lbl_winnt
-
-   ; we are not NT
-  ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
-
-  StrCpy $R1 $R0 1
-  StrCmp $R1 '4' 0 lbl_error
-
-  StrCpy $R1 $R0 3
-
-  StrCmp $R1 '4.0' lbl_win32_95
-  StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
-
-  lbl_win32_95:
-    StrCpy $R0 '95'
-  Goto lbl_done
-
-  lbl_win32_98:
-    StrCpy $R0 '98'
-  Goto lbl_done
-
-  lbl_win32_ME:
-    StrCpy $R0 'ME'
-  Goto lbl_done
-
-  lbl_winnt:
-
-  StrCpy $R1 $R0 1
-
-  StrCmp $R1 '3' lbl_winnt_x
-  StrCmp $R1 '4' lbl_winnt_x
-
-  StrCpy $R1 $R0 3
-
-  StrCmp $R1 '5.0' lbl_winnt_2000
-  StrCmp $R1 '5.1' lbl_winnt_XP
-  StrCmp $R1 '5.2' lbl_winnt_2003
-  StrCmp $R1 '6.0' lbl_winnt_2008
-  StrCmp $R1 '6.1' lbl_winnt_7
-  StrCmp $R1 '6.2' lbl_winnt_8
-  StrCmp $R1 '6.3' lbl_winnt_8_1 lbl_error
-  
-  lbl_winnt_x:
-    StrCpy $R0 "NT $R0" 6
-  Goto lbl_done
-
-  lbl_winnt_2000:
-    Strcpy $R0 '2000'
-  Goto lbl_done
-
-  lbl_winnt_XP:
-    Strcpy $R0 'XP'
-  Goto lbl_done
-
-  lbl_winnt_2003:
-    Strcpy $R0 '2003'
-  Goto lbl_done
-
-  lbl_winnt_2008:
-    Strcpy $R0 '2008'
-  Goto lbl_done
-  
-  lbl_winnt_7:
-    Strcpy $R0 'win7'
-  Goto lbl_done
-
-  lbl_winnt_8:
-    Strcpy $R0 'Win8'
-  Goto lbl_done
-  
-  lbl_winnt_8_1:
-    Strcpy $R0 'Win8.1'
-  Goto lbl_done
-  
-  lbl_error:
-    Strcpy $R0 ''
-  lbl_done:
-
-  Pop $R1
-  Exch $R0
-
 FunctionEnd
 
 ;--------------------------------
@@ -1258,7 +1155,8 @@ LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_ENGLISH} "Select the user accou
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_ENGLISH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_ENGLISH} "ibaDatCoordinator Server/Client"
 LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Client"
-LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "This operating system is not supported."
+LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "ibaDatCoordinator cannot be installed: This operating system is not supported."
+LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_ENGLISH} "This operating system is no longer supported. Would you like to continue the installation anyway?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_ENGLISH} "You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation."
 LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.5.2 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
 LangString TEXT_UNINSTALL                 ${LANG_ENGLISH} "Uninstall ${PRODUCT_NAME}"
@@ -1286,16 +1184,18 @@ LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordin
 LangString TEXT_INSTALLCLIENT         ${LANG_ENGLISH} "Install ibaDatCoordinator client only"
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
 LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
-LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaPDA server status is running. Please close the ibaPDA server status program before continuing the installation."
+LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaDatCoordinator server status is running. Please close the ibaDatCoordinator server status program before continuing the installation."
 LangString TEXT_STATUS_STOP               ${LANG_ENGLISH} "Stopping ibaDatCoordinator server status"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_ENGLISH} "Configuring firewall"
+LangString TEXT_CLOSE_CLIENT              ${LANG_ENGLISH} "ibaDatCoordinator client is running. Please close the ibaDatCoordinator client before continuing the installation."
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_GERMAN} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_GERMAN} "ibaDatCoordinator Server/Client"
 LangString DESC_DATCOOR_CLIENT           ${LANG_GERMAN} "ibaDatCoordinator Client"
-LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN} "Das Betriebssystem ist nicht unterstützt."
+LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN}  "ibaDatCoordinator kann nicht installiert werden: Das Betriebssystem wird nicht unterstützt."
+LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_GERMAN}  "Das Betriebssystem wird nicht mehr unterstützt. Möchten Sie mit der Installation trotzdem fortfahren?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_GERMAN} "Sie besitzen keine ausreichenden Berechtigungen, um diese Installation für alle Benutzer dieses Computers auszuführen. Melden Sie sich als Administrator an, und wiederholen Sie diese Installation."
 LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.5.2, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
 LangString TEXT_UNINSTALL                 ${LANG_GERMAN} "${PRODUCT_NAME} deinstallieren"
@@ -1326,13 +1226,15 @@ LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird install
 LangString TEXT_CLOSE_STATUS              ${LANG_GERMAN}  "ibaDatCoordinator Server Status läuft. Bitte schließen Sie das ibaDatCoordinator Server Status-Programm, bevor Sie mit der Installation fortfahren."
 LangString TEXT_STATUS_STOP               ${LANG_GERMAN}  "ibaDatCoordinator Server Status wird angehalten"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_GERMAN}  "Firewall wird konfiguriert"
+LangString TEXT_CLOSE_CLIENT              ${LANG_GERMAN}  "Der ibaDatCoordinator-Client läuft. Bitte schließen Sie den ibaDatCoordinator-Client, bevor Sie mit der Installation fortfahren."
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_FRENCH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_FRENCH} "ibaDatCoordinator Serveur/Client"
-LangString DESC_DATCOOR_CLIENT           ${LANG_FRENCH} "ibaDatCoordinator Client"
-LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH} "Le système d'exploitation n'est pas support?"
+LangString DESC_DATCOOR_CLIENT            ${LANG_FRENCH} "ibaDatCoordinator Client"
+LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH}  "ibaDatCoordinator ne peut pas être installé: Le système d'exploitation n'est pas supporté."
+LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_FRENCH}  "Le système d'exploitation n'est plus supporté. Voulez-vous quand même continuer l'installation?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
 LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.5.2 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
 LangString TEXT_UNINSTALL                 ${LANG_FRENCH} "Désinstaller ${PRODUCT_NAME}"
@@ -1363,3 +1265,4 @@ LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFi
 LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer l'installation."
 LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" 
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_FRENCH}  "Configuration du pare-fue"
+LangString TEXT_CLOSE_CLIENT              ${LANG_FRENCH}  "Le client d'ibaDatCoordinator est en cours d'exécution. Veuillez fermer le client d'ibaDatCoordinator avant de continuer l'installation."

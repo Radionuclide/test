@@ -45,7 +45,7 @@ namespace iba.Remoting
 
             // Expose communication object on registered channel
             System.Runtime.Remoting.RemotingServices.Marshal(commObj, "IbaDatCoordinatorCommunicationObject", typeof(CommunicationObject));
-            Log(Logging.Level.Info, "Remoting config OK");
+            Log(Logging.Level.Debug, "Remoting config OK");
         }
 
         public static string RegisterClient(string clientName)
@@ -80,7 +80,7 @@ namespace iba.Remoting
         {
             Log(Logging.Level.Debug, "Genuine event : {0} caused by {1} for host {2}",
                 e.EventType.ToString(), e.SourceException == null ? "null" : e.SourceException.Message,
-                e.HostInformation != null ? e.HostInformation.Uri : "null");
+                e.HostInformation != null ? (e.HostInformation.PhysicalAddress != null ? e.HostInformation.PhysicalAddress.ToString() : e.HostInformation.Uri) : "null");
 
             HostInformation hi = e.HostInformation;
             switch (e.EventType)

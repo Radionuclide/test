@@ -82,8 +82,6 @@ namespace iba
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -471,7 +469,6 @@ namespace iba
             this.connectServiceToolStripMenuItem});
             this.serviceToolStripMenuItem.Name = "serviceToolStripMenuItem";
             resources.ApplyResources(this.serviceToolStripMenuItem, "serviceToolStripMenuItem");
-            this.serviceToolStripMenuItem.DropDownOpening += new System.EventHandler(this.serviceToolStripMenuItem_DropDownOpening);
             // 
             // connectServiceToolStripMenuItem
             // 
@@ -518,16 +515,6 @@ namespace iba
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // startServiceToolStripMenuItem
-            // 
-            this.startServiceToolStripMenuItem.Name = "startServiceToolStripMenuItem";
-            resources.ApplyResources(this.startServiceToolStripMenuItem, "startServiceToolStripMenuItem");
-            // 
-            // stopServiceToolStripMenuItem
-            // 
-            this.stopServiceToolStripMenuItem.Name = "stopServiceToolStripMenuItem";
-            resources.ApplyResources(this.stopServiceToolStripMenuItem, "stopServiceToolStripMenuItem");
             // 
             // m_openFileDialog
             // 
@@ -616,8 +603,6 @@ namespace iba
         private System.Windows.Forms.StatusStrip m_statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel m_statusBarStripLabel;
         private System.Windows.Forms.ToolStripMenuItem serviceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startServiceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopServiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_watchdogPane;

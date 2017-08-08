@@ -105,13 +105,20 @@ namespace iba.Services
                 {
                 }
 
-                string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
-                using (StreamWriter sw = new StreamWriter(file))
+                try
                 {
-                    sw.WriteLine("exception occured at" + DateTime.Now.ToString());
-                    sw.Write(ex.ToString());
-                    sw.WriteLine("logfile: " + LogData.Data.FileName);
+                    string file = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "exception.txt");
+                    using (StreamWriter sw = new StreamWriter(file))
+                    {
+                        sw.WriteLine("exception occured at" + DateTime.Now.ToString());
+                        sw.WriteLine(ex.ToString());
+                        sw.WriteLine("logfile: " + LogData.Data.FileName);
+                    }
                 }
+                catch
+                {
+                }
+
                 Stop();
             }
         }

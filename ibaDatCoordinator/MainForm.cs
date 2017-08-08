@@ -3111,31 +3111,6 @@ namespace iba
             TaskManager.Manager.ReplaceConfigurations(toReplace);
         }
 
-
-        private void serviceToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
-        {
-            ServiceController service = new ServiceController("IbaDatCoordinatorService");
-            try
-            {
-                if (service.Status == ServiceControllerStatus.Stopped)
-                {
-                    startServiceToolStripMenuItem.Enabled = true;
-                    stopServiceToolStripMenuItem.Enabled = false;
-                }
-                else
-                {
-                    startServiceToolStripMenuItem.Enabled = false;
-                    stopServiceToolStripMenuItem.Enabled = true;
-                }
-            }
-            catch (Exception)
-            {
-                startServiceToolStripMenuItem.Enabled = false;
-                stopServiceToolStripMenuItem.Enabled = false;
-            }
-            service.Close();
-        }
-
         #region Online Help
         private HelpProvider helpProvider;
 

@@ -83,13 +83,14 @@
     <Compile Include="Utility\ServiceControllerEx.cs">
       <SubType>Component</SubType>
     </Compile>
-	<Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Dialogs\ChangeServerPortForm.resx">
       <DependentUpon>ChangeServerPortForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\RestartServiceDialog.resx">
       <DependentUpon>RestartServiceDialog.cs</DependentUpon>
