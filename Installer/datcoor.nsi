@@ -32,7 +32,7 @@
 !echo "Signing uninstaller"
 !ifdef SIGN_TIMESTAMP_URL
 !system '"${SIGN_TOOL}" sign /f "${SIGN_CERT}" /p ${SIGN_PASS} /t ${SIGN_TIMESTAMP_URL} ..\InstallFiles\uninst.exe' = 0
-!elseB
+!else
 !system '"${SIGN_TOOL}" sign /f "${SIGN_CERT}" /p ${SIGN_PASS} ..\InstallFiles\uninst.exe' = 0
 !endif
 
