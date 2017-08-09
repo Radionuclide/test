@@ -1328,4 +1328,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="PasswordSet" xml:space="preserve">
     <value>A password has been set by {0}</value>
   </data>
+  <data name="ErrDownloadingFiles" xml:space="preserve">
+    <value>Error downloading files : {0}</value>
+  </data>
+  <data name="ErrUploadingFiles" xml:space="preserve">
+    <value>Error uploading files : {0}</value>
+  </data>
 </root>

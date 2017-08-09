@@ -760,6 +760,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error downloading files : {0}.
+        /// </summary>
+        internal static string ErrDownloadingFiles {
+            get {
+                return ResourceManager.GetString("ErrDownloadingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to create an instance of ibaAnalyzer: .
         /// </summary>
         internal static string errIbaAnalyzerCreate {
@@ -820,6 +829,15 @@ namespace iba.Properties {
         internal static string ErrorServerConnect {
             get {
                 return ResourceManager.GetString("ErrorServerConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error uploading files : {0}.
+        /// </summary>
+        internal static string ErrUploadingFiles {
+            get {
+                return ResourceManager.GetString("ErrUploadingFiles", resourceCulture);
             }
         }
         

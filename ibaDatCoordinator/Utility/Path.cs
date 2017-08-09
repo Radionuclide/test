@@ -9,7 +9,7 @@ namespace iba.Utility
 {
     class PathUtil
     {
-        private static string rootPath;
+        public static string rootPath;
         //private static char[] invalidChars;
 
         static PathUtil()

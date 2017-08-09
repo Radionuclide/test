@@ -202,11 +202,22 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Remoting\ClientRemotingManager.cs" />
+    <Compile Include="Remoting\FileDownloaderImpl.cs" />
+    <Compile Include="Remoting\FilesDownloaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remoting\FilesUploaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remoting\FileUploaderImpl.cs" />
     <Compile Include="Remoting\ServerRemotingManager.cs" />
     <Compile Include="Utility\CircularBuffer.cs" />
+    <Compile Include="Utility\Components\BackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\LanguageHelper.cs" />
-    <Compile Include="Utility\PdaServerFiles.cs" />
+    <Compile Include="Remoting\PdaServerFiles.cs" />
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
     <Compile Include="Processing\GlobalCleanupManager.cs" />
     <Compile Include="Processing\SplitterTaskWorker.cs" />
@@ -216,6 +227,7 @@
     <Compile Include="Utility\DatcoServerDefaults.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
     <Compile Include="Utility\RegistryMonitor.cs" />
+    <Compile Include="Utility\SupportFileGenerator.cs" />
     <Compile Include="Utility\TaskControl.cs" />
     <Compile Include="Data\GlobalCleanupData.cs" />
     <Compile Include="Data\GlobalCleanupTaskData.cs" />
@@ -515,6 +527,15 @@
     <Compile Include="TreeItemData.cs" />
     <Compile Include="Utility\WaitCursor.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
+    <EmbeddedResource Include="Remoting\FilesDownloaderForm.resx">
+      <DependentUpon>FilesDownloaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Remoting\FilesUploaderForm.resx">
+      <DependentUpon>FilesUploaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\Components\BackgroundWorker.resx">
+      <DependentUpon>BackgroundWorker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utility\CustomComboBox.resx">
       <DependentUpon>CustomComboBox.cs</DependentUpon>
     </EmbeddedResource>

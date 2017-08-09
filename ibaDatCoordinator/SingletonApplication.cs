@@ -111,7 +111,7 @@ namespace iba
                 regMon.RegChangeNotifyFilter = RegChangeNotifyFilter.Value;
                 regMon.Start();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //ibaLogger.LogFormat(Level.Exception, "Error starting uninstall registry monitor: {0}", ex);
                 CloseRegMon();

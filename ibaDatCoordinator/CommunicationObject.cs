@@ -6,6 +6,7 @@ using iba.Data;
 using iba.Processing;
 using System.Diagnostics;
 using iba.Utility;
+using iba.Remoting;
 using System.Runtime.Remoting.Lifetime;
 
 /**

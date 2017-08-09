@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using iba.Utility;
 
-namespace iba.Utility
+namespace iba.Remoting
 {
     #region IPdaServerFiles
     public interface IPdaServerFiles
@@ -14,9 +15,9 @@ namespace iba.Utility
         ////Get info of all files in basePath with extension
         ////Extension is passed to DirectoryInfo.GetFiles(extension)!!!
         //ServerFileInfo[] GetFilesInfo(string basePath, string extension);
-        //IFileDownload DownloadFile(string localFileName, out long fileSize);
-        //void UploadFile(string destPath, IFileDownload file, long fileSize);
-        //void UploadFile(string[] destPathArray, IFileDownload file, long fileSize);
+        IFileDownload DownloadFile(string localFileName, out long fileSize);
+        void UploadFile(string destPath, IFileDownload file, long fileSize);
+        void UploadFile(string[] destPathArray, IFileDownload file, long fileSize);
 
         string[] BrowseForDrives(bool onlyFixed);
         FileSystemEntry[] Browse(string basePath, bool includeFiles, string extensions="");
@@ -107,6 +108,36 @@ namespace iba.Utility
 
         [DllImport("kernel32.dll", EntryPoint = "GetDriveTypeW", CharSet = CharSet.Unicode, SetLastError = true, BestFitMapping = false)]
         internal static extern int GetDriveType(string drive);
+
+        public IFileDownload DownloadFile(string localFileName, out long fileSize)
+        {
+            localFileName = NormalizePath(localFileName);
+            FileStream file = File.Open(localFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            fileSize = file.Length;
+            return new FileUploaderImpl(file);
+        }
+
+        internal static string NormalizePath(string localFileName)
+        {
+            return localFileName.Replace("%serverpath%", PathUtil.rootPath);
+        }
+
+        public void UploadFile(string destPath, IFileDownload file, long fileSize)
+        {
+            destPath = NormalizePath(destPath);
+            String dir = Path.GetDirectoryName(destPath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            FileStream stream = File.Create(destPath);
+            new FileDownloaderImpl(stream, fileSize, file);
+        }
+
+        public void UploadFile(string[] destPathArray, IFileDownload file, long fileSize)
+        {
+            if (destPathArray.Length == 0)
+                return;
+            new FileDownloaderImpl(destPathArray, fileSize, file);
+        }
     }
     #endregion
 }
