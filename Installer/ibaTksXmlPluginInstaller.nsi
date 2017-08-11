@@ -163,6 +163,7 @@ standalonecopy:
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
   File "..\TKS-XML-plugin\bin\Release\TKS-XML-plugin.dll"
+  File "..\TKS-XML-plugin\bin\Release\ibaFilesLiteDotNet.dll"
   IfErrors standalonecopyError standalonecopyOk
 standalonecopyError:
   MessageBox MB_ICONSTOP $(FAILED_COPY)
@@ -225,6 +226,7 @@ servicecopy:
   DetailPrint "Copying plugin files"
   SetOutPath "$PluginPath"
   File "..\TKS-XML-plugin\bin\Release\TKS-XML-plugin.dll"
+  File "..\TKS-XML-plugin\bin\Release\ibaFilesLiteDotNet.dll"
   IfErrors servicecopyError servicecopyOk
 
 servicecopyError:

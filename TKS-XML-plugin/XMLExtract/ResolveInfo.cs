@@ -8,7 +8,7 @@ namespace XmlExtract
     using System.Globalization;
 
     using iba.TKS_XML_Plugin.Properties;
-    using ibaFilesLiteLib;
+    using iba.ibaFilesLiteDotNet;
 
 
     internal class ResolveInfo
@@ -41,13 +41,12 @@ namespace XmlExtract
             //Laenge = Single.Parse(reader.QueryInfoByName("$DE_LAENGE").Trim());
 
             var info = new Info();
-            var infoFields = reader.InfoFields();
             string infoFieldValue;
 
             // return when tksident (is set && not empty && <> 0)
-            if (infoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
+            if (reader.InfoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
                 info.TKSIdent = infoFieldValue;
-            else if (infoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
+            else if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
                 info.LocalIdent = infoFieldValue;
             else
                 _missingFields.Add(String.Concat(DE_TKSIDENT, "' oder '", DE_BUNDNR));
@@ -55,7 +54,7 @@ namespace XmlExtract
 
             if (st == StandortType.DU)
             {
-                if (infoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
+                if (reader.InfoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
                 {
                     MaterialArtType mat;
                     if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out mat))
@@ -68,7 +67,7 @@ namespace XmlExtract
             }
 
 
-            if (infoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
+            if (reader.InfoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
             {
                 var blr = BandlaufrichtungEnum.InWalzRichtung;
                 if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out blr))
@@ -80,13 +79,13 @@ namespace XmlExtract
                 _missingFields.Add(DE_BANDLAUFRICHTUNG);
 
 
-            if (infoFields.TryGetValue(DE_AGGREGAT, out infoFieldValue))
+            if (reader.InfoFields.TryGetValue(DE_AGGREGAT, out infoFieldValue))
                 info.Aggregat = infoFieldValue.Trim();
             else
                 _missingFields.Add(DE_AGGREGAT);
 
 
-            if (infoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
+            if (reader.InfoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
             {
                 var ep = true;
                 if (TryConvertToBoolean(infoFieldValue.Trim(), out ep))
@@ -132,33 +131,30 @@ namespace XmlExtract
         {
             string dtValue;
             DateTime dt;
-            if (reader.InfoFields().TryGetValue(DE_MESSZEITPUNKT, out dtValue))
+            if (reader.InfoFields.TryGetValue(DE_MESSZEITPUNKT, out dtValue))
             {
                 if (GetDateTimeParseExact(dtValue, out dt))
                     return dt;
                 else
                     _wrongValueFields.Add(DE_MESSZEITPUNKT);
             }
-            else if (reader.InfoFields().TryGetValue(STARTTIME, out dtValue))
+            else 
             {
-                if (GetDateTimeParseExact(dtValue, out dt))
-                    return dt;
-                else
-                    _wrongValueFields.Add(STARTTIME);
+                return reader.StartTime;
             }
-
             return DateTime.Now;
         }
 
-        static string[] parseFormats = new string[] {
+        private static string[] _parseFormats = new string[] {
             "dd.MM.yyyy HH:mm:ss.fff",
             "dd.MM.yyyy HH:mm:ss.ffffff"
         };
 
         internal static bool GetDateTimeParseExact(string val, out DateTime date)
         {
-            return DateTime.TryParseExact(val, parseFormats, new CultureInfo("de-DE"), DateTimeStyles.None, out date);
+            return DateTime.TryParseExact(val, _parseFormats, new CultureInfo("de-DE"), DateTimeStyles.None, out date);
         }
+
 
         internal static string StripPrefix(string value)
         {
@@ -166,29 +162,28 @@ namespace XmlExtract
             return value.Replace(prefix, "");
         }
 
+        private static List<string> _trueStrings = new List<string>(new string[] { "ja", "wahr", "true", "t", "yes", "y" });
+        private static List<string> _falseStrings = new List<string>(new string[] { "nein", "falsch", "false", "f", "no", "n" });
 
         internal static bool TryConvertToBoolean(string input, out bool result)
         {
-            var TrueStrings = new List<string>(new string[] { "ja", "wahr", "true", "t", "yes", "y" });
-            var FalseStrings = new List<string>(new string[] { "nein", "falsch", "false", "f", "no", "n" });
-
             // Remove whitespace from string and lowercase
-            string formattedInput = input.Trim().ToLower();
+            input = input.Trim().ToLower();
 
-            if (TrueStrings.Contains(formattedInput))
+            if (_trueStrings.Contains(input))
             {
                 result = true;
                 return true;
             }
 
-            if (FalseStrings.Contains(formattedInput))
+            if (_falseStrings.Contains(input))
             {
                 result = false;
                 return true;
             }
 
             int intVal = 0;
-            if (int.TryParse(formattedInput, out intVal))
+            if (int.TryParse(input, out intVal))
             {
                 result = Convert.ToBoolean(intVal);
                 return true;

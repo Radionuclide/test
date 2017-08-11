@@ -8,7 +8,7 @@ namespace XmlExtract
     using System.Globalization;
     using System.Xml.Serialization;
     using System.Collections.Generic;
-    using ibaFilesLiteLib;
+    using iba.ibaFilesLiteDotNet;
 
 
     public class DatExtractor : IDisposable
@@ -22,7 +22,7 @@ namespace XmlExtract
         /// </summary>
         public DatExtractor()
         {
-            _reader = new IbaFile();
+            _reader = new IbaFileReader();
             _resolveEinheit = new ResolveEinheit();
         }
 
@@ -79,11 +79,11 @@ namespace XmlExtract
                     met.MaterialHeader.MaterialArt = info.MaterialArt;
             }
 
-            foreach (IbaChannelReader channel in reader.Channels())
+            foreach (IbaChannelReader channel in reader.Channels)
             {
 
                 var signalId = channel.ResolveSignalId(data.IdField);
-                if (channel.Name().Contains("__IE__") || channel.Name().Contains("__SE__"))
+                if (channel.Name.Contains("__IE__") || channel.Name.Contains("__SE__"))
                 {
                     EinzelwertType ew = GetEinzelWert(channel, signalId);
                     met.Einzelwerte.Einzelwert.Add(ew);
@@ -122,14 +122,15 @@ namespace XmlExtract
 
             var spur = new SpurType();
             spur.Bezeichner = signalId;
-            spur.DimensionX = channel.IsDefaultLengthbased() == 1 ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
+            spur.DimensionX = channel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
 
-            var channelUnit = channel.Unit();
+            var channelUnit = channel.Unit;
             spur.Einheit = _resolveEinheit.Parse(channelUnit);
             if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
                 spur.EinheitLokal = channelUnit;
 
             ChannelData channelData = GetChannelData(channel);
+
             if (channelData != null)
             {
                 spur.Raster1D.SegmentgroesseX = channelData.Interval;
@@ -148,14 +149,21 @@ namespace XmlExtract
             var ew = new EinzelwertType();
             ew.Bezeichner = signalId;
 
-            string ewChannelUnit = channel.Unit();
+            string ewChannelUnit = channel.Unit;
             ew.Einheit = _resolveEinheit.Parse(ewChannelUnit);
             if (ew.Einheit == null && !String.IsNullOrEmpty(ewChannelUnit))
                 ew.EinheitLokal = ewChannelUnit;
 
-            if (Convert.ToBoolean(channel.IsText()))
+            if (channel.Text)
             {
-                var textData = GetChannelTextData(channel);
+                string[] textData = null;
+                double[] timeStampDate = null;
+                try
+                {
+                    channel.QueryNEData(channel.DefaultXBaseType, out timeStampDate, out textData);
+                }
+                catch { }
+
                 if (textData != null && textData.Length > 0)
                     ew.Wert = textData[0];
                 return ew;
@@ -167,40 +175,13 @@ namespace XmlExtract
             return ew;
         }
 
-        private string[] GetChannelTextData(IbaChannelReader channel)
-        {
-
-            object data = null;
-            object distances = null;
-            try
-            {
-                if (channel.IsDefaultLengthbased() == 1)
-                    channel.QueryLengthbasedTextData(out distances, out data);
-                else
-                    channel.QueryTimebasedTextData(out distances, out data);
-            }
-            catch 
-            {
-                return null;
-            }
-
-            var values = data as IEnumerable<string>;
-            if (values == null)
-                return new string[0];
-
-            return values.ToArray();
-        }
-
         private static ChannelData GetChannelData(IbaChannelReader channel)
         {
             float interval, xoffset;
-            object data;
+            float[] data;
             try
             {
-                if (channel.IsDefaultLengthbased() == 1)
-                    channel.QueryLengthbasedData(out interval, out xoffset, out data);
-                else
-                    channel.QueryTimebasedData(out interval, out xoffset, out data);
+                channel.QueryData(channel.DefaultXBaseType, out interval, out xoffset, out data);
             }
             catch
             {
@@ -211,15 +192,12 @@ namespace XmlExtract
             channelData.Interval = interval;
             channelData.XOffset = xoffset;
 
-            var values = data as IEnumerable<float>;
-            if (null == values)
+            if (data == null)
                 return channelData;
 
-            channelData.Data = new List<float>(values);
+            channelData.Data = new List<float>(data);
             return channelData;
         }
-
-
 
         #region IDisposable Members
 
@@ -237,7 +215,7 @@ namespace XmlExtract
             {
                 if (disposing)
                 {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(_reader);
+                    _reader.Dispose();
                 }
             }
             _disposed = true;
