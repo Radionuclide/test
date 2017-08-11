@@ -316,6 +316,14 @@ namespace iba
                 ex = ex2;
             }
         }
+
+        public string GenerateSupportZipFile()
+        {
+            string tempDir = System.IO.Path.GetTempPath();
+            string tempZipfile = Path.Combine(tempDir, "server.zip");
+            SupportFileGenerator.GenerateServerZipFile(tempZipfile);
+            return tempZipfile;
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -357,6 +365,19 @@ namespace iba
             {
                 //MessageBox.Show(ex.Message);
                 return false;
+            }
+        }
+
+        public string GenerateSupportZipFile()
+        {
+            try
+            {
+                return m_com.GenerateSupportZipFile();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return "";
             }
         }
 

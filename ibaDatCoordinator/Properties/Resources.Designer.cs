@@ -3254,6 +3254,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ibaDatCoordinator server {0} is not connected. The support file will not contain any information about the ibaDatCoordinator server. Do you wish to generate the support file anyway?.
+        /// </summary>
+        internal static string SupportFileServerNotConnected {
+            get {
+                return ResourceManager.GetString("SupportFileServerNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send a test message.
         /// </summary>
         internal static string testNotifications {

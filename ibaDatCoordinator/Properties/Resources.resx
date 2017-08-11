@@ -1334,4 +1334,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ErrUploadingFiles" xml:space="preserve">
     <value>Error uploading files : {0}</value>
   </data>
+  <data name="SupportFileServerNotConnected" xml:space="preserve">
+    <value>The ibaDatCoordinator server {0} is not connected. The support file will not contain any information about the ibaDatCoordinator server. Do you wish to generate the support file anyway?</value>
+  </data>
 </root>

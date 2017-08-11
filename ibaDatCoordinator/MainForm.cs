@@ -2001,7 +2001,7 @@ namespace iba
         {
             if (!Utility.Crypt.CheckPassword(this)) return;
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
-            SupportFileGenerator.SaveInformation(this, m_filename);
+            new SupportFileGenerator(this, m_filename);
         }
 
 

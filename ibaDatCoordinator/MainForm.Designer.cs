@@ -612,7 +612,7 @@ namespace iba
         private TD.Eyefinder.NavigationPane m_settingsPane;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ToolStripMenuItem saveInformationToolStripMenuItem;
+        internal System.Windows.Forms.ToolStripMenuItem saveInformationToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem VersionHistoryToolStripMenuItem;
         private System.Windows.Forms.Label label2;
