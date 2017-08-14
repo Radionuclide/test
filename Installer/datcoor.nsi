@@ -725,6 +725,7 @@ Section -Post
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
+  nsSCMEx::Unload
 SectionEnd
 
 Function InstalltypeSelect
@@ -835,10 +836,8 @@ Section Uninstall
 
   ;Delete "Add/Remove programs" registry keys
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
+  nsSCMEx::Unload  
   SetAutoClose true
-  
-
-  
 SectionEnd
 
 
