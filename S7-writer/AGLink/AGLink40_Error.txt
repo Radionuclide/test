@@ -1,0 +1,403 @@
+;
+; Error messages for ACCON-AGLink 4.0
+;
+; Each line which does not start with a hexadecimal number is considered as a comment. 
+;
+; There has to be a semicolon between the error code and the error text
+;
+0x00000000;No error
+0x00000001;No error, job still in process
+ 
+0xFFF00000;Function not implemented
+0xFFF00001;Parameter error when calling function 
+0xFFF00002;Invalid device number 
+0xFFF00003;Invalid PLC number 
+0xFFF00004;Invalid parameter type 
+0xFFF00005;Insufficient memory 
+0xFFF00006;Device already opened 
+0xFFF00007;Device not opened 
+0xFFF00008;Job removed 
+0xFFF00009;Invalid job number 
+0xFFF0000A;Function not supported 
+0xFFF0000B;Adapter not initialized 
+0xFFF0000C;No free connections available 
+0xFFF0000D;Device not configured or not supported 
+0xFFF0000E;Hardware not found 
+0xFFF0000F;Error when reading parameters 
+0xFFF00010;Error when writing parameters 
+0xFFF00011;Demo period expired 
+0xFFF00012;Wrong character in text. Conversion not possible 
+0xFFF00013;Buffer is not long enough 
+0xFFF00014;File not found 
+0xFFF00015;Error when calling configuration program 
+0xFFF00016;Error when loading DLL dynamically 
+0xFFF00017;Could not create file
+0xFFF00018;Notification type already in use
+0xFFF00019;Running job already removed 
+0xFFF0001A;Job already removed 
+0xFFF0001B;Error when reading WLD file
+0xFFF0001C;Error when writing WLD file
+0xFFF0001D;Invalid structure in WLD file
+0xFFF0001E;Multiple blocks in WLD file
+0xFFF0001F;Function is not reentrant
+0xFFF00020;Function removed for code size reduction
+
+0xFFF50000;No free job buffer available 
+0xFFF50001;Invalid packet 
+0xFFF50002;No connection to PLC
+0xFFF50003;Connection closed 
+0xFFF50004;Timeout
+0xFFF50005;Invalid context 
+0xFFF50006;PLC memory error 
+0xFFF50007;Invalid operating state 
+0xFFF50008;Invalid address on PLC 
+0xFFF50009;Invalid mode 
+0xFFF5000A;No data available e.g. DB is missing 
+0xFFF5000B;Priority class associated to OB does not exist
+0xFFF5000C;Empty blocklist 
+0xFFF5000D;Block size error 
+0xFFF5000E;Invalid block number 
+0xFFF5000F;Protection level of function not sufficient 
+0xFFF50010;Unknown SSL-ID (e.g. access to CP instead of PLC) 
+0xFFF50011;Unknown SSL-index (e.g. access to CP instead of PLC) 
+0xFFF50012;Information currently not ascertainable 
+0xFFF50013;Unknown error message from PLC (please report!) 
+0xFFF50014;Hardware error e.g. not available periphery
+0xFFF50015;Object access not allowed 
+0xFFF50016;Context not supported 
+0xFFF50017;Type (data type) not supported 
+0xFFF50018;Internal error, please report 
+0xFFF50019;Error rebooting PLC 
+0xFFF5001A;Error restarting PLC 
+0xFFF5001B;Connection end received 
+0xFFF5001C;PLC not found 
+0xFFF5001D;Too many data for this version of ACCON-AGLink
+0xFFF5001E;PLC does not support this function
+0xFFF5001F;Wrong Password
+0xFFF50020;Connection already legitimated
+0xFFF50021;Legitimation already released
+0xFFF50022;Password not neccessary
+0xFFF50023;At least one variable address invalid
+0xFFF50024;Job does not exist
+0xFFF50025;Invalid job state
+0xFFF50026;Invalid cycle time
+0xFFF50027;No more cyclic job possible
+0xFFF50028;Function not posible for this job (invalid state)
+0xFFF50029;Function abort (overload)
+0xFFF5002A;No data for this variable
+0xFFF5002B;Wrong time format
+0xFFF5002C;Unknown PI name
+0xFFF5002D;File transfer canceled by NCK
+0xFFF5002E;Response too large for PDU size
+0xFFF5002F;No H-PLC found
+0xFFF50030;Data not changed
+0xFFF50031;Received data is corrupt
+0xFFF50032;The requested parameter has the wrong size or type
+0xFFF50033;The parameter has a wrong value
+0xFFF50034;The parameter is not changeable
+0xFFF50035;The parameter is read only
+0xFFF50036;The variable definition contains the wrong size
+0xFFF50037;Array index does not exist
+0xFFF50038;PARA does not exist
+
+0xFFF30000;Error when reading device information
+0xFFF30001;Error when reading bus parameters 
+0xFFF30002;Error when writing bus parameters 
+0xFFF30003;No resources available on device 
+0xFFF30004;Invalid device 
+0xFFF30005;Adapter not found 
+0xFFF30006;Needed device driver not found
+
+0xFFF20000;The desired adapter address already exists 
+0xFFF20001;Invalid HSA (smaller than biggest active participant) 
+0xFFF20002;Adapter is not in the logical ring 
+0xFFF20004;Received package has wrong content 
+0xFFF20006;Unknown error number from adapter 
+0xFFF20007;Unknown error number from device driver 
+0xFFF20008;Communications adapter has been removed 
+0xFFF20009;Modem has been removed 
+0xFFF2000A;No directly connected PLC found 
+0xFFF20313;Invalid speed on MPI bus 
+0xFFF20314;Address is bigger than HSA 
+0xFFF20315;The desired adapter address already exists
+0xFFF2031A;No other active bus participants found 
+0xFFF2031C;Bus is jammed 
+0xFFF2031D;Bus is jammed 
+0xFFF2031E;Automatic detection of bus profile doesn't work, missing bus parameter telegram 
+0xFFF20337;Legitimation missing
+
+0xFFF10000;COM-Port already used
+0xFFF10001;Modem not found
+0xFFF10002;Modem not onhook
+0xFFF10003;Modem not offhook
+0xFFF10004;Error in basic initialisation
+0xFFF10005;Error in Initstring 1
+0xFFF10006;Error in Initstring 2
+0xFFF10007;Error in Initstring 3
+0xFFF10008;Error in Initstring 4
+0xFFF10009;Error in dialtype sequence
+0xFFF1000A;Error in dialtone sequence
+0xFFF1000B;Error in autoanswer sequence
+0xFFF1000C;Modem has been removed
+0xFFF1000D;Connection could not be established
+0xFFF1000E;Login denied. Unknown user.
+0xFFF1000F;Login denied. Wrong password.
+0xFFF10010;Login denied. Callback number defined in adapter.
+0xFFF10011;Error while dialing
+
+0xFFF80000;Function not allowed                               
+0xFFF80001;Invalid project handle                             
+0xFFF80002;Error opening project                              
+0xFFF80003;Error creating program instance of project         
+0xFFF80004;Error closing project                              
+0xFFF80005;No resp. no more programs found                    
+0xFFF80006;Program not found                                  
+0xFFF80007;At least one of the specified parameters is invalid
+0xFFF80008;Runtime has expired (demo version)                 
+0xFFF8000A;No resp. invalid data specified                    
+0xFFF8000B;The program selected has no symbol table           
+0xFFF8000C;Symbol table already opened                        
+0xFFF8000D;No resp. no more symbol entry found                
+0xFFF8000E;Error reading symbol entry                         
+0xFFF8000F;Symbol not found                                   
+0xFFF80010;Operand not found                                  
+0xFFF80011;Invalid symbol                                     
+0xFFF80012;Invalid operand                                    
+0xFFF80013;Invalid filter string                              
+0xFFF80014;Data block (DB) not present                        
+0xFFF80015;Error reading DB block data                        
+0xFFF80016;Error parsing DB block data                        
+0xFFF80017;An opened DB is already present                    
+0xFFF80018;No opened DB present                               
+0xFFF80019;No resp. no more DB component found                
+0xFFF8001A;Specified DB component not found                   
+0xFFF8001B;Specified DB component is invalid                  
+0xFFF8001C;Specified DB component not matching                
+0xFFF8001E;Invalid constant                                   
+0xFFF8001F;Invalid constant size or format                    
+0xFFF80020;Object type initialization failed                  
+0xFFF80021;Invalid version of message configuration           
+0xFFF80022;Error opening message configuration                
+0xFFF80023;Error closing message configuration                
+0xFFF80024;No resp. no more message entry found               
+0xFFF80025;No resp. no more language found                    
+0xFFF80026;Database access error                              
+0xFFF80027;Invalid signal number                              
+0xFFF80028;Invalid add. value specification
+0xFFF80029;Add. value number invalid
+0xFFF8002A;Element type of add. value invalid
+0xFFF8002B;Add. value data length invalid
+0xFFF8002C;Format specification missing
+0xFFF8002D;Format specification invalid
+0xFFF8002E;No resp. no more text library found
+0xFFF8002F;No resp. no more text library entry found
+0xFFF80030;Not enough memory
+0xFFF80031;Block type invalid
+0xFFF80032;Listing handle invalid
+0xFFF80033;Block not present
+0xFFF80034;Error reading block data
+0xFFF80035;Error parsing block data
+0xFFF80036;No resp. no more declaration found
+0xFFF80037;No resp. no more attributes found
+0xFFF80038;Writing CPU list failed
+
+0xFFF90000;Read error
+0xFFF90001;Write error
+0xFFF90002;Read error (variable content, type)
+0xFFF90003;Wrong PLC type
+0xFFF90064;Internal assert wrong
+0xFFFA0000;Not applicable
+0xFFFA0001;Access invalid element
+0xFFFA0002;Access buffer too small
+0xFFFA0003;Access buffer invalid S5TIME value
+0xFFFA0004;Access buffer invalid S5TIME base
+0xFFFA0005;Access buffer invalid S7 COUNTER value
+0xFFFA0006;Path missing expanded index
+0xFFFA0007;Path invalid
+0xFFFA0008;Path end reached
+0xFFFA0009;Path unknown field
+0xFFFA000A;Unknown child
+0xFFFA000B;Array is no value type
+0xFFFA000C;Array index missing
+0xFFFA000D;Array index invalid
+0xFFFA000E;Array index not allowed
+0xFFFA000F;Array range not allowed
+0xFFFA0010;Array range invalid
+0xFFFA0011;UDT has no base type
+0xFFFA0012;Unknown error code
+0xFFFA0013;Wrong symbol ID
+0xFFFA0014;Item access denied
+0xFFFA0015;Read only item
+0xFFFA0016;Partial errors
+0xFFFA0017;Not an instance
+0xFFFA0018;Wrong symbol ID path
+0xFFFA0019;Symbolic wrong area
+0xFFFA001A;Wrong value range
+0xFFFA001B;PLC cant deliver
+0xFFFA001C;PLC object does not exists
+0xFFFA001D;PLC type info missing
+0xFFFA0050;Invalid datablock
+0xFFFA0051;Datablock is optimized
+0xFFFA0052;Invalid Tag
+0xFFFA0053;Start address too big
+0xFFFA0054;Not allowed symbolic access
+0xFFFA0063;Internal error
+0xFFFA0064;Internal error 0
+0xFFFA0065;Internal error 1
+0xFFFA0066;Internal error 2
+0xFFFA0067;Internal error 3
+0xFFFA0068;Internal error 4
+0xFFFA0069;Internal error 5
+0xFFFA006A;Internal error 6
+0xFFFA006B;Internal error 7
+0xFFFA006C;Internal error 8
+0xFFFA006D;Internal error 9
+0xFFFA006E;File read error
+0xFFFA006F;Internal error 11
+0xFFFA0070;Internal error 12
+0xFFFA0071;Internal error 13
+0xFFFA0072;Internal error 14
+0xFFFA0073;Internal error 15
+0xFFFA0074;Project file not found
+0xFFFA0075;Project file unsupported extension
+0xFFFA0076;Project folder missing
+0xFFFA0077;Internal error 19
+0xFFFA0078;Internal error 20
+0xFFFA0079;Internal error 21
+0xFFFA007A;Internal error 22
+0xFFFA007B;Internal error 23
+0xFFFA007C;Internal error 24
+0xFFFA007D;Internal error 25
+0xFFFA007E;Internal error 26
+0xFFFA007F;Internal error 27
+0xFFFA0080;Internal error 28
+0xFFFA0081;Internal error 29
+0xFFFA0082;Internal error 30
+0xFFFA0083;Internal error 31
+0xFFFA0084;Internal error 32
+0xFFFA0085;Internal error 33
+0xFFFA0086;Internal error 34
+0xFFFA0087;Internal error 35
+0xFFFA0088;Internal error 36
+0xFFFA0089;Internal error 37
+0xFFFA008A;Internal error 38
+0xFFFA008B;Internal error 39
+0xFFFA008C;Internal error 40
+0xFFFA008D;Internal error 41
+0xFFFA008E;Internal error 42
+0xFFFA008F;Internal error 43
+0xFFFA0090;Internal error 44
+0xFFFA0091;Internal error 45
+0xFFFA0092;Internal error 46
+0xFFFA0093;Internal error 47
+0xFFFA0094;Internal error 48
+0xFFFA0095;Internal error 49
+0xFFFA0096;Internal error 50
+0xFFFA0097;Internal error 51
+0xFFFA0098;Internal error 52
+0xFFFA0099;Internal error 53
+0xFFFA009A;Internal error 54
+0xFFFA009B;Internal error 55
+0xFFFA009C;Internal error 56
+0xFFFA009D;Internal error 57
+0xFFFA009E;Internal error 58
+0xFFFA009F;Internal error 59
+0xFFFA00A0;Internal error 60
+0xFFFA00A1;Internal error 61
+0xFFFA00A2;Internal error 62
+0xFFFA00A3;Internal error 63
+0xFFFA00A4;Internal error 64
+0xFFFA00A5;Internal error 65
+0xFFFA00A6;Internal error 66
+0xFFFA00A7;Internal error 67
+0xFFFA00A8;Internal error 68
+0xFFFA00A9;Internal error 69
+0xFFFA00AA;Internal error 70
+0xFFFA00AB;Internal error 71
+0xFFFA00AC;Internal error 72
+0xFFFA00AD;Internal error 73
+0xFFFA00AE;Internal error 74
+0xFFFA00AF;Internal error 75
+0xFFFA00B0;Internal error 76
+0xFFFA00B1;Internal error 77
+0xFFFA00B2;Internal error 78
+0xFFFA00B3;Internal error 79
+0xFFFA00B4;Internal error 80
+0xFFFA00B5;Internal error 81
+0xFFFA00B6;Internal error 82
+0xFFFA00B7;Internal error 83
+0xFFFA00B8;Internal error 84
+0xFFFA00B9;Internal error 85
+0xFFFA00BA;Internal error 86
+0xFFFA00BB;Internal error 87
+0xFFFA00BC;Internal error 88
+0xFFFA00BD;Internal error 89
+0xFFFA00BE;Internal error 90
+0xFFFA00BF;Internal error 91
+0xFFFA00C0;Internal error 92
+0xFFFA00C1;Internal error 93
+0xFFFA00C2;Internal error 94
+0xFFFA00C3;Internal error 95
+0xFFFA00C4;Internal error 96
+0xFFFA00C5;Internal error 97
+0xFFFA00C6;Internal error 98
+0xFFFA00C7;Internal error 99
+0xFFFA00C8;Internal error 100
+0xFFFA00C9;Internal error 101
+0xFFFA00CA;Internal error 102
+0xFFFA00CB;Internal error 103
+0xFFFA00CC;Internal error 104
+0xFFFA00CD;Internal error 105
+0xFFFA00CE;Internal error 106
+0xFFFA00CF;Internal error 107
+0xFFFA00D0;Internal error 108
+0xFFFA00D1;Internal error 109
+0xFFFA00D2;Internal error 110
+0xFFFA00D3;Internal error 111
+0xFFFA00D4;Internal error 112
+0xFFFA00D5;Internal error 113
+0xFFFA00D6;Internal error 114
+0xFFFA00D7;Internal error 115
+0xFFFA00D8;Internal error 116
+0xFFFA00D9;Internal error 117
+0xFFFA00DA;Internal error 118
+0xFFFA00DB;Internal error 119
+0xFFFA00DC;Internal error 120
+0xFFFA00DD;Internal error 121
+0xFFFA00DE;Internal error 122
+0xFFFA00DF;Internal error 123
+0xFFFA00E0;Internal error 124
+0xFFFA00E1;Internal error 125
+0xFFFA00E2;Internal error 126
+0xFFFA00E3;Internal error 127
+0xFFFA00E4;Internal error 128
+0xFFFA00E5;Internal error 129
+0xFFFA00E6;Internal error 130
+0xFFFA00E7;Internal error 131
+0xFFFA00E8;Internal error 132
+0xFFFA00E9;Internal error 133
+0xFFFA00EA;Internal error 134
+0xFFFA00EB;Internal error 135
+0xFFFA00EC;Internal error 136
+0xFFFA00ED;Internal error 137
+0xFFFA00EE;Internal error 138
+0xFFFA00EF;Internal error 139
+0xFFFA00F0;Internal error 140
+0xFFFA00F1;Internal error 141
+0xFFFA00F2;Internal error 142
+0xFFFA00F3;Internal error 143
+0xFFFA00F4;Internal error 144
+0xFFFA00F5;Internal error 145
+0xFFFA00F6;Internal error 146
+0xFFFA00F7;Internal error 147
+0xFFFA00F8;Internal error 148
+0xFFFA00F9;Internal error 149
+0xFFFA00FA;Internal error 150
+0xFFFA00FB;Internal error 151
+0xFFFA00FC;Internal error 152
+0xFFFA0190;Internal communication error
+0xFFFA0191;Internal communication error 0
+0xFFFA0193;Internal communication error 2
+0xFFFA0194;Write bool range needs modulo 8 start and count
+0xFFFA0195;Wrong read type
+0xFFFA0196;PLC auto detect failed
