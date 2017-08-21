@@ -94,6 +94,7 @@ namespace Alunorf_roh_plugin
                     return false;
                 }
 
+                Stream strm = null;
                 //ftp stuff
                 try
                 {
@@ -126,22 +127,22 @@ namespace Alunorf_roh_plugin
                     request.Method = WebRequestMethods.Ftp.UploadFile;
                     FileInfo finf = new FileInfo(tempFilePath);
                     request.ContentLength = (finf).Length;
-                    Stream strm = request.GetRequestStream();
+                    strm = request.GetRequestStream();
 
                     int bufferSize = 64 * 1024;
                     int readCount;
                     byte[] buff = new byte[bufferSize];
-                    
-                    FileStream fs = finf.OpenRead();
-                    readCount = fs.Read(buff, 0, bufferSize);
 
-                    while (readCount != 0)
+                    using (FileStream fs = finf.OpenRead())
                     {
-                        strm.Write(buff, 0, readCount);
                         readCount = fs.Read(buff, 0, bufferSize);
+
+                        while (readCount != 0)
+                        {
+                            strm.Write(buff, 0, readCount);
+                            readCount = fs.Read(buff, 0, bufferSize);
+                        }
                     }
-                    strm.Close();
-                    fs.Close();
                 }
                 catch (Exception ftpex)
                 {
@@ -155,17 +156,26 @@ namespace Alunorf_roh_plugin
                     }
                     return false;
                 }
-                try
+                finally
                 {
-                    File.Delete(tempFilePath);
-                }
-                catch
-                {
+                    if (strm != null)
+                    {
+                        strm.Close();
+                        strm = null;
+                    }
+                    try
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    catch
+                    {
+                    }
                 }
             }
             catch (Exception ex)
             {
                 m_error = String.Format(Properties.Resources.ErrorUnexpected, ex.Message);
+                return false;
             }
 
             return true;

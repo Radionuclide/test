@@ -23,6 +23,7 @@ namespace iba.Utility
         private void SaveInformation()
         {
             ZipFile zip = null;
+            string host = iba.Properties.Resources.ThisSystem;
             try
             {
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
@@ -40,9 +41,12 @@ namespace iba.Utility
                 string clientFile = Path.Combine(destDir, "client.zip");
                 string serverFile = Path.Combine(destDir, "server.zip");
                 GenerateClientZipFile(Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? supportFileName : clientFile);
+                bool generated = false;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
                 {
-                    GenerateServerZipFile(Path.Combine(destDir, "server.zip"));
+                    GetServerZipFile(Path.Combine(destDir, "server.zip"));
+                    host = Program.ServiceHost;
+                    generated = true;
                 }
 
                 if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) return;
@@ -51,19 +55,20 @@ namespace iba.Utility
                     {
                         zip = ZipFile.Create(supportFileName);
                         zip.BeginUpdate();
-                        zip.Add(clientFile);
-                        zip.Add(serverFile);
+                        zip.Add(clientFile,"client.zip");
+                        if (generated) zip.Add(serverFile,"server.zip");
                         zip.CommitUpdate();
                         zip.Close();
                         File.Delete(clientFile);
-                        File.Delete(serverFile);
+                        if (generated) File.Delete(serverFile);
                     }
+                MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileSuccess, host, supportFileName),
+                    Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                if (MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileServerNotConnected, Program.ServiceHost),
-                    Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
-                    return;
+                MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileError, host, ex.Message),
+                    Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -104,11 +109,68 @@ namespace iba.Utility
             }
         }
 
-        private void GetDongleInfo(StringBuilder sb)
+        static private void GetDongleInfo(StringBuilder sb)
         {
             CDongleInfo licInfo = CDongleInfo.ReadDongle();
             sb.AppendLine("Dongle serial number: " + licInfo.SerialNr);
             sb.AppendLine("Customer: " + licInfo.Customer);
+        }
+
+        static private void GenerateInfo(ZipFile zip,string targetDir)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            try
+            {
+                sb.Append("ibaDatCoordinator Version: ");
+                sb.AppendLine(DatCoVersion.GetVersion());
+            }
+            catch
+            { }
+
+            try
+            {
+                sb.Append("ibaAnalyzer Version: ");
+                IbaAnalyzer.IbaAnalysis MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                sb.AppendLine(MyIbaAnalyzer.GetVersion().Remove(0, 12));
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
+            }
+            catch
+            { }
+
+            try
+            {
+                sb.Append("ibaFiles Version: ");
+                ibaFilesLiteLib.IbaFileClass myIbaFile = new ibaFilesLiteLib.IbaFileClass();
+                sb.AppendLine(myIbaFile.GetType().Assembly.GetName().Version.ToString());
+                sb.Append("ibaFiles Version (GetVersion): ");
+                sb.AppendLine(myIbaFile.GetVersion());
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
+            }
+            catch
+            { }
+
+
+            try
+            {
+                GetDongleInfo(sb);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                string infoFile = Path.Combine(targetDir, "info.txt");
+                SystemInfoCollector.SaveSystemInfo(sb.ToString(), "", infoFile);
+                zip.BeginUpdate();
+                zip.Add(infoFile, @"info.txt");
+                zip.CommitUpdate();
+                File.Delete(infoFile);
+            }
+            catch
+            {
+            }
         }
 
         private void GenerateClientZipFile(string target)
@@ -116,59 +178,8 @@ namespace iba.Utility
             using (WaitCursor wait = new WaitCursor())
             {
                 ZipFile zip = ZipFile.Create(target);
-                StringBuilder sb = new StringBuilder();
+                GenerateInfo(zip,Path.GetDirectoryName(target));
 
-                try
-                {
-                    sb.Append("ibaDatCoordinator Version: ");
-                    sb.AppendLine(parent.GetType().Assembly.GetName().Version.ToString(3));
-                }
-                catch
-                { }
-
-                try
-                {
-                    sb.Append("ibaAnalyzer Version: ");
-                    IbaAnalyzer.IbaAnalysis MyIbaAnalyzer = new IbaAnalyzer.IbaAnalysis();
-                    sb.AppendLine(MyIbaAnalyzer.GetVersion().Remove(0, 12));
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
-                }
-                catch
-                { }
-
-                try
-                {
-                    sb.Append("ibaFiles Version: ");
-                    ibaFilesLiteLib.IbaFileClass myIbaFile = new ibaFilesLiteLib.IbaFileClass();
-                    sb.AppendLine(myIbaFile.GetType().Assembly.GetName().Version.ToString());
-                    sb.Append("ibaFiles Version (GetVersion): ");
-                    sb.AppendLine(myIbaFile.GetVersion());
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
-                }
-                catch
-                { }
-
-
-                try
-                {
-                    GetDongleInfo(sb);
-                }
-                catch
-                {
-                }
-
-                try
-                {
-                    string clientInfoFile = Path.Combine(destDir, "info.txt");
-                    SystemInfoCollector.SaveSystemInfo(sb.ToString(), clientInfoFile);
-                    zip.BeginUpdate();
-                    zip.Add(clientInfoFile, @"client_info.txt");
-                    zip.CommitUpdate();
-                    File.Delete(clientInfoFile);
-                }
-                catch
-                {
-                }
 
                 try
                 {
@@ -207,7 +218,7 @@ namespace iba.Utility
                             try
                             {
                                 zip.BeginUpdate();
-                                zip.Add(file, @"logging\local\" + Path.GetFileName(file));
+                                zip.Add(file, @"logging\" + Path.GetFileName(file));
                                 zip.CommitUpdate();
                             }
                             catch
@@ -254,6 +265,20 @@ namespace iba.Utility
                             {
                             }
                         }
+
+                        try
+                        {
+                            var myList = TaskManager.Manager.AdditionalFileNames();
+                            foreach (var p in myList)
+                            {
+                                zip.BeginUpdate();
+                                zip.Add(p.Key, p.Value);
+                                zip.CommitUpdate();
+                            }
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -297,7 +322,7 @@ namespace iba.Utility
                 }
                 using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] {new ServerFileInfo(onServer) }, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
                 {
-                    downloadForm.ShowDialog();
+                    downloadForm.ShowDialog(parent);
                 }
                 Program.CommunicationObject.DeleteFile(onServer);
             }
@@ -306,13 +331,15 @@ namespace iba.Utility
         public static void GenerateServerZipFile(string target)
         {
             ZipFile zip = ZipFile.Create(target);
+
+            GenerateInfo(zip, Path.GetDirectoryName(target));
+
             try
             {
                 //TODO retrieve log files from server instead
 
                 //logfiles, server
                 string logdir = DataPath.Folder();
-                logdir = Path.Combine(logdir, @"iba\ibaDatCoordinator");
                 if (Directory.Exists(logdir))
                 {
                     string[] logFiles = Directory.GetFiles(logdir, "ibaDatCoordinatorLog*.txt");
@@ -321,7 +348,7 @@ namespace iba.Utility
                         try
                         {
                             zip.BeginUpdate();
-                            zip.Add(file, @"logging\server\" + Path.GetFileName(file));
+                            zip.Add(file, @"logging\" + Path.GetFileName(file));
                             zip.CommitUpdate();
                         }
                         catch
@@ -385,8 +412,7 @@ namespace iba.Utility
 
             try
             {
-                List<KeyValuePair<string, string>> myList = new List<KeyValuePair<string, string>>();
-                TaskManager.Manager.AdditionalFileNames(myList);
+                var myList = TaskManager.Manager.AdditionalFileNames(); 
                 foreach(var p in myList)
                 {
                     zip.BeginUpdate();
@@ -394,8 +420,9 @@ namespace iba.Utility
                     zip.CommitUpdate();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
             }
 
             zip.Close();

@@ -117,6 +117,7 @@ Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE License_Agreement_DatCoordinator.rtf
 Page custom InstalltypeSelect
 Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
@@ -439,6 +440,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "License_Agreement_DatCoordinator.pdf"
   
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
@@ -528,6 +530,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
   File "versions_dat.htm"
+  File "License_Agreement_DatCoordinator.pdf"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
   ; runtime
@@ -660,6 +663,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "License_Agreement_DatCoordinator.pdf"
   
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
@@ -889,6 +893,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\versions_dat.htm"
+  Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
   ; runtime

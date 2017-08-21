@@ -1293,13 +1293,15 @@ namespace iba.Processing
         }
 
 
-        virtual public void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+        virtual public KeyValuePair<string, string>[] AdditionalFileNames()
         {
+            List<KeyValuePair<string, string>> myList = new List<KeyValuePair<string, string>>();
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> pair in m_workers)
             {
                 if (pair.Key != null)
                     pair.Key.AdditionalFileNames(myList);
             }
+            return myList.ToArray();
         }
 
         private GlobalCleanupManager m_globalCleanup;
@@ -2139,17 +2141,16 @@ namespace iba.Processing
             }
         }
 
-        public override void AdditionalFileNames(List<KeyValuePair<string, string>> myList)
+        public override KeyValuePair<string, string>[] AdditionalFileNames()
         {
             try
             {
-                Program.CommunicationObject.Manager.AdditionalFileNames(myList);
+                return Program.CommunicationObject.Manager.AdditionalFileNames();
             }
             catch (Exception ex)
             {
-                myList.Clear();
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-                Manager.AdditionalFileNames(myList);
+                return Manager.AdditionalFileNames();
             }
         }
 

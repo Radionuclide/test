@@ -3254,11 +3254,29 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error generating the support file for {0} : {1}.
+        /// </summary>
+        internal static string SupportFileError {
+            get {
+                return ResourceManager.GetString("SupportFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The ibaDatCoordinator server {0} is not connected. The support file will not contain any information about the ibaDatCoordinator server. Do you wish to generate the support file anyway?.
         /// </summary>
         internal static string SupportFileServerNotConnected {
             get {
                 return ResourceManager.GetString("SupportFileServerNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support file succesfully generatated successfully for {0}; saved to  {1}.
+        /// </summary>
+        internal static string SupportFileSuccess {
+            get {
+                return ResourceManager.GetString("SupportFileSuccess", resourceCulture);
             }
         }
         
@@ -3286,6 +3304,15 @@ namespace iba.Properties {
         internal static string Third {
             get {
                 return ResourceManager.GetString("Third", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to this system.
+        /// </summary>
+        internal static string ThisSystem {
+            get {
+                return ResourceManager.GetString("ThisSystem", resourceCulture);
             }
         }
         

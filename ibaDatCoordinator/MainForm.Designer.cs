@@ -33,6 +33,7 @@ namespace iba
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.m_statusStrip = new System.Windows.Forms.StatusStrip();
             this.m_statusBarStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.m_statusBarStripLabelConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_navBar = new TD.Eyefinder.NavigationBar();
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
@@ -73,6 +74,7 @@ namespace iba
             this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,13 +82,11 @@ namespace iba
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_statusBarStripLabelConnection = new System.Windows.Forms.ToolStripStatusLabel();
-            this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.licenseAgreementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -138,6 +138,11 @@ namespace iba
             this.m_statusBarStripLabel.Name = "m_statusBarStripLabel";
             resources.ApplyResources(this.m_statusBarStripLabel, "m_statusBarStripLabel");
             this.m_statusBarStripLabel.Spring = true;
+            // 
+            // m_statusBarStripLabelConnection
+            // 
+            this.m_statusBarStripLabelConnection.Name = "m_statusBarStripLabelConnection";
+            resources.ApplyResources(this.m_statusBarStripLabelConnection, "m_statusBarStripLabelConnection");
             // 
             // splitContainer2
             // 
@@ -457,6 +462,12 @@ namespace iba
             resources.ApplyResources(this.watchdogToolStripMenuItem, "watchdogToolStripMenuItem");
             this.watchdogToolStripMenuItem.Click += new System.EventHandler(this.watchdogToolStripMenuItem_Click);
             // 
+            // snmpToolStripMenuItem
+            // 
+            this.snmpToolStripMenuItem.Name = "snmpToolStripMenuItem";
+            resources.ApplyResources(this.snmpToolStripMenuItem, "snmpToolStripMenuItem");
+            this.snmpToolStripMenuItem.Click += new System.EventHandler(this.snmpToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -482,7 +493,7 @@ namespace iba
             this.helpMenuItem,
             this.saveInformationToolStripMenuItem,
             this.VersionHistoryToolStripMenuItem,
-            this.toolStripSeparator1,
+            this.licenseAgreementToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
@@ -505,11 +516,6 @@ namespace iba
             resources.ApplyResources(this.VersionHistoryToolStripMenuItem, "VersionHistoryToolStripMenuItem");
             this.VersionHistoryToolStripMenuItem.Click += new System.EventHandler(this.VersionHistoryToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -520,16 +526,11 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
-            // m_statusBarStripLabelConnection
+            // licenseAgreementToolStripMenuItem
             // 
-            this.m_statusBarStripLabelConnection.Name = "m_statusBarStripLabelConnection";
-            resources.ApplyResources(this.m_statusBarStripLabelConnection, "m_statusBarStripLabelConnection");
-            // 
-            // snmpToolStripMenuItem
-            // 
-            this.snmpToolStripMenuItem.Name = "snmpToolStripMenuItem";
-            resources.ApplyResources(this.snmpToolStripMenuItem, "snmpToolStripMenuItem");
-            this.snmpToolStripMenuItem.Click += new System.EventHandler(this.snmpToolStripMenuItem_Click);
+            this.licenseAgreementToolStripMenuItem.Name = "licenseAgreementToolStripMenuItem";
+            resources.ApplyResources(this.licenseAgreementToolStripMenuItem, "licenseAgreementToolStripMenuItem");
+            this.licenseAgreementToolStripMenuItem.Click += new System.EventHandler(this.licenseAgreementToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -613,7 +614,6 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
         internal System.Windows.Forms.ToolStripMenuItem saveInformationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem VersionHistoryToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton m_rbOnlyErrors;
@@ -623,6 +623,7 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectServiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel m_statusBarStripLabelConnection;
+        private System.Windows.Forms.ToolStripMenuItem licenseAgreementToolStripMenuItem;
     }
 }
 

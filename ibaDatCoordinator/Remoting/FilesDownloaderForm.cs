@@ -156,10 +156,8 @@ namespace iba.Remoting
         {
             if((pdaFiles == null) || (remoteFiles == null) || (remoteFiles.Length == 0))
                 return;
-
-            if(!Directory.Exists(localCachePath))
+            if(!Directory.Exists(Path.GetDirectoryName(localCachePath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(localCachePath));
-
             long totalSize = 0;
             for(int i = 0; i < remoteFiles.Length; i++)
                 totalSize += remoteFiles[i].FileSize;
