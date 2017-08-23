@@ -23,6 +23,7 @@ using iba.Plugins;
 using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
+using iba.Remoting;
 // ReSharper disable RedundantNameQualifier
 
 namespace iba
@@ -64,7 +65,7 @@ namespace iba
             ToolStripManager.Renderer = new ibaToolstripRenderer();
 
             //load any optional plugins
-            PluginManager.Manager.LoadPlugins();
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) PluginManager.Manager.LoadPlugins();
 
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
 
@@ -108,12 +109,12 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
-            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
-            {
-                confsImageList.Images.Add(info.Icon);
-            }
-
             m_configTreeView.ImageList = confsImageList;
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                PluginManager.Manager.LoadPlugins();
+                UpdateImageListConfTree();
+            }
             
             ImageList confsImageList2 = new ImageList();
             confsImageList2.Images.Add(iba.Properties.Resources.greenarrow);
@@ -135,7 +136,6 @@ namespace iba
             }
             m_navBar.SelectedPane = m_configPane;
         }
-
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -1234,6 +1234,15 @@ namespace iba
 
         private void CreateMenuItems()
         {
+            if (m_menuItems != null) //dispose the old items
+            {
+                foreach(ToolStripMenuItem item in m_menuItems)
+                {
+                    item.Dispose();
+                }
+                m_menuItems = null;
+            }
+
             MyImageList il = new MyImageList();
             ImageList menuImages = new ImageList();
             menuImages.ColorDepth = ColorDepth.Depth32Bit;
@@ -2575,9 +2584,15 @@ namespace iba
 
                     try
                     {
+
                         //Let's try connecting, this will throw in case the connection fails
                         int serverVersion = wrapper.Connect();
 
+                        if (PluginManager.Manager.PluginActionsOnConnect(wrapper))
+                        {
+                            Application.Restart(); //should close ourselves
+                            return;
+                        }
                         //We are connected!
                         if (m_tryConnectTimer != null) //this is not the first call, restore stuff
                         {
@@ -2944,6 +2959,40 @@ namespace iba
 
         }
 
+
+        #endregion
+
+        #region Plugins
+
+        public void UpdatePluginGUIElements()
+        {
+            //throw new NotImplementedException();
+            //update imagelist of configuration tree
+            m_cd_copy = null;
+            m_task_copy = null; //no old copy pastes...
+            UpdateImageListConfTree();
+            CreateMenuItems(); //recreate menu items
+            foreach(var pane in PropertyPanes)
+            {
+                (pane as IPluginsUpdatable)?.UpdatePlugins();
+            }
+        }
+
+        private void UpdateImageListConfTree()
+        {
+            ImageList confsImageList = m_configTreeView.ImageList;
+
+            //remove old plugins
+            while (confsImageList.Images.Count > CUSTOMTASK_INDEX)
+                confsImageList.Images.RemoveAt(CUSTOMTASK_INDEX);
+
+            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+            {
+                confsImageList.Images.Add(info.Icon);
+            }
+
+            List<ConfigurationControl> CControlsToUpdate = new List<ConfigurationControl>();
+        }
 
         #endregion
     }

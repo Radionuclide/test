@@ -89,7 +89,6 @@ namespace AM_OSPC_plugin
         public void LeaveCleanup()
         {
             //nothing to do
-            //throw new NotImplementedException();
         }
 
         #endregion

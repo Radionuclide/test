@@ -12,6 +12,11 @@ namespace iba
 		void SaveData();
     }
 
+    public interface IPluginsUpdatable
+    {
+        void UpdatePlugins();
+    }
+
     // Interface that can be used to derive a form from that uses the Eyefinder pane manager layout
     public interface IPropertyPaneManager
     {

@@ -317,12 +317,22 @@ namespace iba
             }
         }
 
-        public string GenerateSupportZipFile()
+        public ServerFileInfo GenerateSupportZipFile()
         {
             string tempDir = System.IO.Path.GetTempPath();
             string tempZipfile = Path.Combine(tempDir, "server.zip");
             SupportFileGenerator.GenerateServerZipFile(tempZipfile);
-            return tempZipfile;
+            return new ServerFileInfo(tempZipfile);
+        }
+
+        public ServerFileInfo[] GetPluginFiles()
+        {
+            return PluginManager.Manager.GetPluginFiles();
+        }
+
+        public string GetPluginPath()
+        {
+            return PluginManager.Manager.PluginPath;
         }
     }
 
@@ -368,7 +378,7 @@ namespace iba
             }
         }
 
-        public string GenerateSupportZipFile()
+        public ServerFileInfo GenerateSupportZipFile()
         {
             try
             {
@@ -377,7 +387,33 @@ namespace iba
             catch (Exception ex)
             {
                 HandleBrokenConnection(ex);
-                return "";
+                return null;
+            }
+        }
+
+        public ServerFileInfo[] GetPluginFiles()
+        {
+            try
+            {
+                return m_com.GetPluginFiles();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public string GetPluginPath()
+        {
+            try
+            {
+                return m_com.GetPluginPath();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
             }
         }
 

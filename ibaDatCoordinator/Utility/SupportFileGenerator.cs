@@ -44,12 +44,13 @@ namespace iba.Utility
                 bool generated = false;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
                 {
-                    GetServerZipFile(Path.Combine(destDir, "server.zip"));
+                    GetServerZipFile(serverFile);
                     host = Program.ServiceHost;
-                    generated = true;
+                    generated = File.Exists(serverFile);
                 }
 
-                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) return;
+                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                    return;
                 else
                     using (WaitCursor wait = new WaitCursor())
                     {
@@ -315,16 +316,17 @@ namespace iba.Utility
             }
             else
             {
-                string onServer;
+                ServerFileInfo inf;
                 using (WaitCursor wait = new WaitCursor())
                 {
-                    onServer = Program.CommunicationObject.GenerateSupportZipFile();
+                    inf = Program.CommunicationObject.GenerateSupportZipFile();
+                    if (inf == null) return;
                 }
-                using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] {new ServerFileInfo(onServer) }, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
+                using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] {inf}, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
                 {
                     downloadForm.ShowDialog(parent);
                 }
-                Program.CommunicationObject.DeleteFile(onServer);
+                Program.CommunicationObject.DeleteFile(inf.LocalFileName);
             }
         }
 

@@ -5,6 +5,8 @@ using System.Reflection;
 using iba.Plugins;
 using System.IO;
 using iba.Data;
+using iba.Remoting;
+using System.Windows.Forms;
 
 namespace iba.Utility
 {
@@ -27,16 +29,32 @@ namespace iba.Utility
         {
             m_pluginInfos = new List<PluginTaskInfo>();
             m_plugins = new SortedDictionary<string, IDatCoPlugin>();
-            m_pluginPath = PathUtil.GetAbsolutePath("Plugins");
+            if (Program.IsServer || Program.RunsWithService == Program.ServiceEnum.NOSERVICE )
+                m_pluginPath = PathUtil.GetAbsolutePath("Plugins");
+            else
+            {
+                string rootPath = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+                m_cachePath = System.IO.Path.Combine(rootPath, @"iba\ibaDatCoordinator\PluginCache");
+                rootPath = System.IO.Path.Combine(rootPath, @"iba\ibaDatCoordinator\Plugins");
+                if (!Directory.Exists(rootPath))
+                {
+                    Directory.CreateDirectory(rootPath);
+                }
+                m_pluginPath = rootPath;
+            }
+            if (Directory.Exists(m_pluginPath))
+                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
         }
 
         private string m_pluginPath;
+        private string m_cachePath;
 
         public void LoadPlugins()
         {
             if (!Directory.Exists(m_pluginPath)) return;
 
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);    
+            m_plugins.Clear();
+            m_pluginInfos.Clear();
             Type requiredInterface = typeof(IDatCoPlugin);
             String[] assemblies = Directory.GetFiles(m_pluginPath, @"*plugin.dll");
             
@@ -71,6 +89,30 @@ namespace iba.Utility
             }
         }
 
+        internal bool CopyPluginCache()
+        {
+            var files = Directory.GetFiles(m_cachePath, "*.*", SearchOption.AllDirectories);
+            foreach (string file in files)
+            {
+                string cpy = file.Replace(m_cachePath, m_pluginPath);
+                try
+                {
+                    File.Copy(file, cpy, true);
+
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        internal bool CopyCacheNeeded()
+        {
+            return (Directory.Exists(m_cachePath));
+        }
+
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
 		    //Extract dll filename
@@ -103,6 +145,93 @@ namespace iba.Utility
                     m_instance = new PluginManager();
                 return m_instance;
             }
+        }
+
+        public string PluginPath
+        {
+            get
+            {
+                return m_pluginPath;
+            }
+        }
+
+        public string CachePath
+        {
+            get
+            {
+                return m_cachePath;
+            }
+        }
+
+        public ServerFileInfo[] GetPluginFiles() //called from server side
+        {
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(m_pluginPath);
+                FileInfo[] files = dirInfo.GetFiles("*.*",SearchOption.AllDirectories);
+                if (files == null || files.Length==0)
+                    return new ServerFileInfo[0];
+                ServerFileInfo[] result = new ServerFileInfo[files.Length];
+                for (int i = 0; i < files.Length; i++)
+                    result[i] = new ServerFileInfo(files[i].FullName, files[i].LastWriteTimeUtc,files[i].Length);
+                return result;
+            }
+            catch
+            {
+                return new ServerFileInfo[0];
+            }
+        }
+
+        //called from client side, filter plugins to installed plugins
+        public ServerFileInfo[] FilterPlugins(ServerFileInfo[] onServer) 
+        {
+            List<ServerFileInfo> result = new List<ServerFileInfo>();
+
+            string serverPluginPath = Program.CommunicationObject.GetPluginPath();
+            string clientPluginPath = m_pluginPath;
+
+            foreach (ServerFileInfo serverInfo in onServer)
+            {
+                string clientFile = serverInfo.LocalFileName.Replace(serverPluginPath, clientPluginPath);
+                if (!File.Exists(clientFile))
+                    result.Add(serverInfo);
+                else
+                {
+                    FileInfo clientInfo = new FileInfo(clientFile);
+                    if (clientInfo.LastAccessTimeUtc != serverInfo.LastWriteTimeUtc || clientInfo.Length != serverInfo.FileSize)
+                    {
+                        result.Add(serverInfo);
+                    }
+                }
+            }
+            return result.ToArray();
+        }
+
+        //returns true if restart is required.
+        public bool PluginActionsOnConnect(CommunicationObjectWrapper wrapper)
+        {
+            var list = wrapper.GetPluginFiles();
+            if (list == null || list.Length == 0) return false; //no plugins to load
+            string basePath = wrapper.GetPluginPath();
+            bool failed = false;
+            MethodInvoker m = delegate ()
+            {
+                if (!Directory.Exists(m_cachePath))
+                    Directory.CreateDirectory(m_cachePath);
+                using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(list, basePath, m_cachePath, Program.CommunicationObject.GetServerSideFileHandler()))
+                {
+                    downloadForm.ShowDialog(Program.MainForm);
+                }
+                if (!CopyPluginCache())
+                    failed = true;
+                else
+                {
+                    PluginManager.Manager.LoadPlugins();
+                    Program.MainForm.UpdatePluginGUIElements();
+                }
+            };
+            Program.MainForm.Invoke(m);
+            return !failed;
         }
     }
 }

@@ -18,7 +18,7 @@ using iba.Dialogs;
 
 namespace iba.Controls
 {
-    public partial class ConfigurationControl : UserControl, IPropertyPane
+    public partial class ConfigurationControl : UserControl, IPropertyPane, IPluginsUpdatable
     {
         public ConfigurationControl(ConfigurationData.JobTypeEnum type)
         {
@@ -84,19 +84,8 @@ namespace iba.Controls
             m_newCleanupTaskButton.ToolTipText = iba.Properties.Resources.cleanuptaskButton;
             m_newSplitterTaskButton.ToolTipText = iba.Properties.Resources.splittertaskButton;
 
-            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
-            {
-                ToolStripButton bt = new ToolStripButton();
-                bt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-                bt.AutoSize = false;
-                bt.Height = bt.Width = 40;
-                bt.Image = Bitmap.FromHicon(info.Icon.Handle);
-                bt.ImageScaling = ToolStripItemImageScaling.None;
-                bt.ToolTipText = info.Description;
-                bt.Tag = info;
-                bt.Click += new EventHandler(newCustomTaskButton_Click);
-                m_newTaskToolstrip.Items.Add(bt);
-            }
+            m_taskCount = m_newTaskToolstrip.Items.Count;
+            UpdatePlugins();
 
             //common buttons
             if(m_panelDatFilesJob != null)
@@ -151,6 +140,8 @@ namespace iba.Controls
 
             CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
+
+        private int m_taskCount;
 
         private CollapsibleElementManager m_ceManager;
 
@@ -609,5 +600,28 @@ namespace iba.Controls
             = m_cbAuthentication.Checked && m_rbEmail.Checked;
         }
 
+        public void UpdatePlugins()
+        {
+            while (m_newTaskToolstrip.Items.Count > m_taskCount)
+            {
+                var but = m_newTaskToolstrip.Items[m_taskCount];
+                m_newTaskToolstrip.Items.RemoveAt(m_taskCount);
+                but.Dispose();
+            }
+
+            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+            {
+                ToolStripButton bt = new ToolStripButton();
+                bt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+                bt.AutoSize = false;
+                bt.Height = bt.Width = 40;
+                bt.Image = Bitmap.FromHicon(info.Icon.Handle);
+                bt.ImageScaling = ToolStripItemImageScaling.None;
+                bt.ToolTipText = info.Description;
+                bt.Tag = info;
+                bt.Click += new EventHandler(newCustomTaskButton_Click);
+                m_newTaskToolstrip.Items.Add(bt);
+            }
+        }
     }
 }

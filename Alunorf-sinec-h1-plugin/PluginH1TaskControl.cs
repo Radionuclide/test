@@ -86,7 +86,7 @@ namespace Alunorf_sinec_h1_plugin
         PluginH1Task m_data;
         ICommonTaskControl m_control;
 
-        public void  LoadData(object datasource, ICommonTaskControl parentcontrol)
+        public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
  	        m_data = datasource as PluginH1Task;
             m_control = parentcontrol;

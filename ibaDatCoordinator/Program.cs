@@ -10,6 +10,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using Microsoft.Win32;
+using System.Threading;
 
 namespace iba
 {
@@ -55,6 +56,10 @@ namespace iba
             IsServer = false;
             LanguageHelper.SetupLanguage(args);
 
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            System.Threading.Thread.CurrentThread.Name = "GUI thread";
+
             //Check if not already running
             if (args.Length > 0 && String.Compare(args[0], "/service", true) == 0)
             {
@@ -63,13 +68,25 @@ namespace iba
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
 
-            //COMMENT OUT THESE LINES if you want to test multiple clients
-            if (SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
-                return;
+            if (RunsWithService == ServiceEnum.DISCONNECTED && PluginManager.Manager.CopyCacheNeeded()) //not needed standalone, check if we are restarted in order to copy plugins
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (!SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
+                        break;
+                    Thread.Sleep(500);
+                }
+                if (SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
+                    return;
+                PluginManager.Manager.CopyPluginCache();
+            }
+            else
+            {
+                if (SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
+                    return;
+            }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            System.Threading.Thread.CurrentThread.Name = "GUI thread";
+
 
             MainForm = new MainForm();
             if (RunsWithService == ServiceEnum.DISCONNECTED)
