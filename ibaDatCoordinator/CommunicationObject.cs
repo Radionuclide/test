@@ -334,6 +334,11 @@ namespace iba
         {
             return PluginManager.Manager.PluginPath;
         }
+
+        public bool HasPlugin(string name)
+        {
+            return PluginManager.Manager.HasPlugin(name);
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -414,6 +419,20 @@ namespace iba
             {
                 HandleBrokenConnection(ex);
                 return null;
+            }
+        }
+
+
+        public bool HasPlugin(string name)
+        { 
+            try
+            {
+                return m_com.HasPlugin(name);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return false;
             }
         }
 
@@ -717,5 +736,6 @@ namespace iba
             }
             if (exfile != null) throw exfile;
         }
+
     }
 }

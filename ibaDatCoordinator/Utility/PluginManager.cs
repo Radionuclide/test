@@ -73,6 +73,8 @@ namespace iba.Utility
                             {
                                 foreach (PluginTaskInfo pti in plugin.GetTasks())
                                 {
+                                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.CommunicationObject.HasPlugin(pti.Name))
+                                        continue;
                                     m_pluginInfos.Add(pti);
                                     m_plugins.Add(pti.Name, plugin);
                                 }
@@ -232,6 +234,11 @@ namespace iba.Utility
             };
             Program.MainForm.Invoke(m);
             return !failed;
+        }
+
+        public bool HasPlugin(string name)
+        {
+            return (m_plugins != null && m_plugins.ContainsKey(name));
         }
     }
 }
