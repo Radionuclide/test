@@ -15,7 +15,7 @@ namespace iba.Utility
         static PathUtil()
 		{
 			rootPath = Path.GetDirectoryName(typeof(PathUtil).Assembly.Location);
-			rootPath += @"\\";
+			rootPath += "\\";
 
             //List<char> chars = new List<char>(Path.InvalidPathChars);
 		}

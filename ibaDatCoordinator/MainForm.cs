@@ -2972,7 +2972,7 @@ namespace iba
             m_task_copy = null; //no old copy pastes...
             UpdateImageListConfTree();
             CreateMenuItems(); //recreate menu items
-            foreach(var pane in PropertyPanes)
+            foreach(var pane in PropertyPanes.Values)
             {
                 (pane as IPluginsUpdatable)?.UpdatePlugins();
             }

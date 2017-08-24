@@ -1346,4 +1346,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ThisSystem" xml:space="preserve">
     <value>this system</value>
   </data>
+  <data name="RestartPluginsRequired" xml:space="preserve">
+    <value>The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side.</value>
+  </data>
 </root>

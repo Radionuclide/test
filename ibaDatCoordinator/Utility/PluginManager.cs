@@ -49,7 +49,7 @@ namespace iba.Utility
         private string m_pluginPath;
         private string m_cachePath;
 
-        public void LoadPlugins()
+        public void LoadPlugins(CommunicationObjectWrapper wrapper = null)
         {
             if (!Directory.Exists(m_pluginPath)) return;
 
@@ -73,7 +73,7 @@ namespace iba.Utility
                             {
                                 foreach (PluginTaskInfo pti in plugin.GetTasks())
                                 {
-                                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.CommunicationObject.HasPlugin(pti.Name))
+                                    if (!Program.IsServer && wrapper!= null && !wrapper.HasPlugin(pti.Name))
                                         continue;
                                     m_pluginInfos.Add(pti);
                                     m_plugins.Add(pti.Name, plugin);
@@ -99,14 +99,26 @@ namespace iba.Utility
                 string cpy = file.Replace(m_cachePath, m_pluginPath);
                 try
                 {
+                    string dir = Path.GetDirectoryName(cpy);
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
                     File.Copy(file, cpy, true);
-
+                    
                 }
                 catch
                 {
                     return false;
                 }
             }
+            try
+            {
+                Directory.Delete(m_cachePath, true);
+            }
+            catch
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -185,13 +197,13 @@ namespace iba.Utility
         }
 
         //called from client side, filter plugins to installed plugins
-        public ServerFileInfo[] FilterPlugins(ServerFileInfo[] onServer) 
+        public ServerFileInfo[] FilterPlugins(ServerFileInfo[] onServer, string basePath) 
         {
             List<ServerFileInfo> result = new List<ServerFileInfo>();
 
-            string serverPluginPath = Program.CommunicationObject.GetPluginPath();
+            string serverPluginPath = basePath;
             string clientPluginPath = m_pluginPath;
-
+            if (!clientPluginPath.EndsWith("\\")) clientPluginPath += "\\";
             foreach (ServerFileInfo serverInfo in onServer)
             {
                 string clientFile = serverInfo.LocalFileName.Replace(serverPluginPath, clientPluginPath);
@@ -200,7 +212,7 @@ namespace iba.Utility
                 else
                 {
                     FileInfo clientInfo = new FileInfo(clientFile);
-                    if (clientInfo.LastAccessTimeUtc != serverInfo.LastWriteTimeUtc || clientInfo.Length != serverInfo.FileSize)
+                    if (clientInfo.LastWriteTimeUtc != serverInfo.LastWriteTimeUtc || clientInfo.Length != serverInfo.FileSize)
                     {
                         result.Add(serverInfo);
                     }
@@ -213,27 +225,37 @@ namespace iba.Utility
         public bool PluginActionsOnConnect(CommunicationObjectWrapper wrapper)
         {
             var list = wrapper.GetPluginFiles();
-            if (list == null || list.Length == 0) return false; //no plugins to load
             string basePath = wrapper.GetPluginPath();
+            if (list == null || string.IsNullOrEmpty(basePath)) return false; //error in connecton, no need to restart
+            if (!basePath.EndsWith("\\")) basePath += "\\";
+            list = FilterPlugins(list, basePath);
             bool failed = false;
             MethodInvoker m = delegate ()
             {
-                if (!Directory.Exists(m_cachePath))
-                    Directory.CreateDirectory(m_cachePath);
-                using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(list, basePath, m_cachePath, Program.CommunicationObject.GetServerSideFileHandler()))
+                if (list != null && list.Length > 0)
                 {
-                    downloadForm.ShowDialog(Program.MainForm);
+
+                    if (!Directory.Exists(m_cachePath))
+                        Directory.CreateDirectory(m_cachePath);
+                    using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(list, basePath, m_cachePath, wrapper.GetServerSideFileHandler()))
+                    {
+                        downloadForm.ShowDialog(Program.MainForm);
+                    }
+                    if (!CopyPluginCache())
+                    {
+                        MessageBox.Show(iba.Properties.Resources.RestartPluginsRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        failed = true;
+                        return;
+                    }
                 }
-                if (!CopyPluginCache())
-                    failed = true;
-                else
+                if (!failed)
                 {
-                    PluginManager.Manager.LoadPlugins();
+                    PluginManager.Manager.LoadPlugins(wrapper);
                     Program.MainForm.UpdatePluginGUIElements();
                 }
             };
             Program.MainForm.Invoke(m);
-            return !failed;
+            return failed;
         }
 
         public bool HasPlugin(string name)

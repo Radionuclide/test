@@ -2820,6 +2820,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side..
+        /// </summary>
+        internal static string RestartPluginsRequired {
+            get {
+                return ResourceManager.GetString("RestartPluginsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to running....
         /// </summary>
         internal static string Running {

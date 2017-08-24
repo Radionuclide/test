@@ -170,13 +170,16 @@ namespace iba.Remoting
                 //Download file
                 long fileSize;
                 string localFileName;
-                if(bFullDestinationPath)
+                if (bFullDestinationPath)
                     localFileName = localCachePath;
                 else
                 {
                     localFileName = Path.Combine(localCachePath, Path.GetFileName(remoteFiles[i].LocalFileName));
-                    if(remoteBasePath != null)
-                        localFileName = Path.Combine(localCachePath, remoteFiles[i].LocalFileName.Replace(remoteBasePath, ""));
+                    if (remoteBasePath != null)
+                    {
+                        string relative = remoteFiles[i].LocalFileName.Replace(remoteBasePath, "");
+                        localFileName = Path.Combine(localCachePath, relative);
+                    }
                 }
 
                 //Check that destination directory exists

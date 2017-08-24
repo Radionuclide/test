@@ -69,6 +69,7 @@ namespace iba
             {
                 m_Mutex.ReleaseMutex();
                 m_Mutex.Close();
+                m_Mutex = null;
             }
 		}
 
