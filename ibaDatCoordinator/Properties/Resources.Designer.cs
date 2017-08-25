@@ -2578,6 +2578,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not copy the required files from {0} to {1}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can copy the files manually and remove the source folder ({0}). The ibaDatCoordinator client will now close..
+        /// </summary>
+        internal static string PluginCopyFailed {
+            get {
+                return ResourceManager.GetString("PluginCopyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove the folder {0}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can remove folder {0} manually. The ibaDatCoordinator client will now close..
+        /// </summary>
+        internal static string PluginSourceFailed {
+            get {
+                return ResourceManager.GetString("PluginSourceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap plus {

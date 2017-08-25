@@ -1346,6 +1346,12 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ThisSystem" xml:space="preserve">
     <value>this system</value>
   </data>
+  <data name="PluginCopyFailed" xml:space="preserve">
+    <value>Could not copy the required files from {0} to {1}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can copy the files manually and remove the source folder ({0}). The ibaDatCoordinator client will now close.</value>
+  </data>
+  <data name="PluginSourceFailed" xml:space="preserve">
+    <value>Could not remove the folder {0}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can remove folder {0} manually. The ibaDatCoordinator client will now close.</value>
+  </data>
   <data name="RestartPluginsRequired" xml:space="preserve">
     <value>The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side.</value>
   </data>

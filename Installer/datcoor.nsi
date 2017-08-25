@@ -104,11 +104,20 @@ Function OnEnd
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $0 == "1"
   ${OrIf} $0 == "2"
-    Exec '"$INSTDIR\ibaDatCoordinator.exe" /service'
+    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe" /service'
   ${Else}
-    Exec '"$INSTDIR\ibaDatCoordinator.exe"'
+    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe"'
   ${EndIf}
-FunctionEnd
+
+  nsSCMEx::RunAsNonElevatedUser /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" $1 "$INSTDIR"
+
+  Pop $R0
+  ${If} $R0 != "success"
+    ;ibaPDA couldn't be started non-elevated so let's start it normally
+    Exec $1
+  ${EndIf}
+
+  FunctionEnd
 
 ;--------------------------------
 ; Install pages

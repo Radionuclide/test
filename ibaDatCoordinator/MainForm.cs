@@ -2033,7 +2033,7 @@ namespace iba
             string readmeFile = "";
             try
             {
-                readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement.pdf");
+                readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement_DatCoordinator.pdf");
                 System.Diagnostics.Process.Start(readmeFile);
             }
             catch (System.Exception ex)

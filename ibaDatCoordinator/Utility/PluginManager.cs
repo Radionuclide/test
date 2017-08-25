@@ -91,7 +91,7 @@ namespace iba.Utility
             }
         }
 
-        internal bool CopyPluginCache()
+        internal int CopyPluginCache() //0, ok, 1, could not copy, 2, could not delete
         {
             var files = Directory.GetFiles(m_cachePath, "*.*", SearchOption.AllDirectories);
             foreach (string file in files)
@@ -107,7 +107,7 @@ namespace iba.Utility
                 }
                 catch
                 {
-                    return false;
+                    return 1;
                 }
             }
             try
@@ -116,10 +116,10 @@ namespace iba.Utility
             }
             catch
             {
-                return false;
+                return 2;
             }
 
-            return true;
+            return 0;
         }
 
         internal bool CopyCacheNeeded()
@@ -241,7 +241,7 @@ namespace iba.Utility
                     {
                         downloadForm.ShowDialog(Program.MainForm);
                     }
-                    if (!CopyPluginCache())
+                    if (CopyPluginCache()!=0)
                     {
                         MessageBox.Show(iba.Properties.Resources.RestartPluginsRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         failed = true;

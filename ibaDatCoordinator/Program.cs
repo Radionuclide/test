@@ -78,7 +78,18 @@ namespace iba
                 }
                 if (SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
                     return;
-                PluginManager.Manager.CopyPluginCache();
+                switch (PluginManager.Manager.CopyPluginCache())
+                {
+                    case 0: break; //
+                    case 1:
+                        MessageBox.Show(string.Format(iba.Properties.Resources.PluginCopyFailed, PluginManager.Manager.CachePath, PluginManager.Manager.PluginPath), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        Application.Exit();
+                        return;
+                    case 2:
+                        MessageBox.Show(string.Format(iba.Properties.Resources.PluginSourceFailed, PluginManager.Manager.CachePath), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        Application.Exit();
+                        return;
+                }
             }
             else
             {
