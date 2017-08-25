@@ -438,7 +438,6 @@ namespace iba
             // added by kolesnik - begin
             if (m_navBar.SelectedPane == m_snmpPane)
             {
-                // todo; to ask Michael; is it needed here?
                 SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
                 pane?.LoadData(TaskManager.Manager.SnmpData.Clone(), this);
             }

@@ -648,6 +648,7 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\snmp_images.png" />
     <None Include="Resources\Toolbars16.bmp" />
     <None Include="Resources\paneSnmpIcon.ico" />
     <None Include="Resources\SplitDat.ico" />

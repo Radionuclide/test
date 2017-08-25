@@ -1355,4 +1355,43 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="RestartPluginsRequired" xml:space="preserve">
     <value>The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side.</value>
   </data>
+  <data name="snmpCreatedMibFiles" xml:space="preserve">
+    <value>Successfully created the following MIB files: {0}.\r\n\r\nDo you wish to navigate to these files?</value>
+  </data>
+  <data name="snmpCreatedMibFilesTitle" xml:space="preserve">
+    <value>Created MIB files</value>
+  </data>
+  <data name="snmpFailedMibFiles" xml:space="preserve">
+    <value>Failed to create MIB files</value>
+  </data>
+  <data name="snmpQuestionReset" xml:space="preserve">
+    <value>Are you sure you want to reset configuration to default?</value>
+  </data>
+  <data name="snmpQuestionResetTitle" xml:space="preserve">
+    <value>Reset configuration?</value>
+  </data>
+  <data name="snmpStatusDisabled" xml:space="preserve">
+    <value>SNMP server is disabled</value>
+  </data>
+  <data name="snmpStatusError" xml:space="preserve">
+    <value>Starting the SNMP server failed with error: {0}</value>
+  </data>
+  <data name="snmpStatusNotInit" xml:space="preserve">
+    <value>SNMP server is not initialized.</value>
+  </data>
+  <data name="snmpStatusRunningOnPort" xml:space="preserve">
+    <value>SNMP server running on port {0}</value>
+  </data>
+  <data name="snmpStatusRunningRestarted" xml:space="preserve">
+    <value>Snmp agent was successfully restarted. Current status: {0}</value>
+  </data>
+  <data name="snmpStatusRunningStarted" xml:space="preserve">
+    <value>Snmp agent was successfully started. Current status: {0}</value>
+  </data>
+  <data name="snmpStatusStopped" xml:space="preserve">
+    <value>Snmp agent was successfully stopped. Current status: {0}</value>
+  </data>
+  <data name="snmp_images" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\snmp_images.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

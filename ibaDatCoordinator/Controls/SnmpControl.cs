@@ -53,12 +53,18 @@ namespace iba.Controls
             buttonShowPassword.Tag = tbPassword;
             buttonShowEncryptionKey.Tag = tbEncryptionKey;
 
+            ImageList pdaList = new ImageList();
+            pdaList.ImageSize = new System.Drawing.Size(16, 16);
+            pdaList.TransparentColor = Color.Magenta;
+            pdaList.ColorDepth = ColorDepth.Depth24Bit;
+            pdaList.Images.AddStrip(iba.Properties.Resources.snmp_images);
+
             // image list for objects TreeView
             ImageList tvObjectsImageList = new ImageList();
             // folder
-            tvObjectsImageList.Images.Add(Resources.copydat_running); // todo Kls for Michael use another one
+            tvObjectsImageList.Images.Add(pdaList.Images[0]);
             // leaf
-            tvObjectsImageList.Images.Add(Resources.batchfile_running); // todo Kls for Michael use another one
+            tvObjectsImageList.Images.Add(pdaList.Images[2]);
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
         }
@@ -82,23 +88,6 @@ namespace iba.Controls
                 {
                     return;
                 }
-
-                //var mgr = TaskManager.Manager;
-                //SnmpWorker snmpWorker = TaskManager.Manager?.SnmpWorker;
-                //if (snmpWorker != null)
-                //{
-                // re-subscribe to status event
-                // (probabaly now we are connected to another server)
-                // todo kls how to handle remote events?
-                //snmpWorker.StatusChanged -= SnmpWorker_StatusChanged;
-                //snmpWorker.StatusChanged += SnmpWorker_StatusChanged;
-                //}
-
-                //bool isConnectedOrLocal = IsConnectedOrLocal;
-
-                ////            gbConfiguration.Visible =
-                //gbDiagnostics.Enabled =
-                //    gbObjects.Enabled = isConnectedOrLocal;
 
                 // read from data to controls
                 ConfigurationFromDataToControls();
@@ -171,10 +160,9 @@ namespace iba.Controls
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
-            // todo Kls localize
             if (MessageBox.Show(this,
-                    "Are you sure you want to reset configuration to default?",
-                    "Reset configuration?",
+                    iba.Properties.Resources.snmpQuestionReset,
+                    iba.Properties.Resources.snmpQuestionResetTitle,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
@@ -296,20 +284,6 @@ namespace iba.Controls
 
 
         #region Diagnostics
-
-        // todo kls recreate event?
-        //private void SnmpWorker_StatusChanged(object sender, SnmpWorkerStatusChangedEventArgs e)
-        //{
-        //    if (tbStatus.InvokeRequired)
-        //    {
-        //        Invoke(new EventHandler<SnmpWorkerStatusChangedEventArgs>(SnmpWorker_StatusChanged), sender, e);
-        //    }
-        //    else
-        //    {
-        //        tbStatus.BackColor = e.Color;
-        //        tbStatus.Text = e.Message;
-        //    }
-        //}
 
         private void RefreshBriefStatus()
         {
@@ -526,63 +500,6 @@ namespace iba.Controls
             return null; // not found
         }
 
-        // todo move to Snw
-        //private TreeNode FindOrCreateFolderNode(SnmpWorker worker, IbaSnmpOid oid)
-        //{
-        //    if (worker == null)
-        //    {
-        //        // should not happen
-        //        throw new ArgumentNullException(nameof(worker));
-        //    }
-
-        //    if (oid == null)
-        //    {
-        //        // should not happen
-        //        throw new ArgumentNullException(nameof(oid));
-        //    }
-
-        //    //IbaSnmp ibaSnmp = worker.IbaSnmp;
-
-        //    if (!oid.StartsWith(_oidGuiTreeRoot))
-        //    {
-        //        // should not happen
-        //        throw new ArgumentOutOfRangeException();
-        //    }
-
-        //    // check if exists
-        //    TreeNode node = FindSingleNodeByOid(worker, oid);
-
-        //    if (node != null)
-        //    {
-        //        return node;
-        //    }
-
-        //    // not found, then create it
-
-        //    // if this is a root node (recursion stop point)
-        //    if (oid == _oidGuiTreeRoot)
-        //    {
-        //        // then add it to the top of the tree
-        //        node = tvObjects.Nodes.Add(oid.ToString(), oid.ToString());
-        //    }
-        //    else
-        //    {
-        //        // first, find/create the parent node recursively
-        //        var parentNode = FindOrCreateFolderNode(worker, oid.GetParent());
-        //        // add the node to the parent node
-        //        node = parentNode.Nodes.Add(oid.ToString(),
-        //            $@"{oid.GetLeastSignificantSubId()}. {GetOidGuiCaption(worker, oid)}");
-        //    }
-
-        //    node.Tag = oid;
-        //    return node;
-        //}
-
-        //private static string GetOidGuiCaption(SnmpWorker worker, IbaSnmpOid oid)
-        //{
-        //    IbaSnmpOidMetadata metadata = worker?.IbaSnmp?.GetOidMetadata(oid);
-        //    return metadata?.GuiCaption ?? String.Empty;
-        //}
 
         /// <summary> The last Oid that was selected by the user </summary>
         private IbaSnmpOid _lastOid;
@@ -659,10 +576,10 @@ namespace iba.Controls
 
                 if (mibFiles == null || mibFiles.Count == 0)
                 {
-                    // todo Kls localize
                     MessageBox.Show(this,
-                        "Failed to create MIB files.",
-                        "Failed to create MIB files", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        iba.Properties.Resources.snmpFailedMibFiles,
+                        iba.Properties.Resources.snmpFailedMibFiles,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -681,11 +598,8 @@ namespace iba.Controls
                     filesListForMessage += $"\r\n{fullFilename}";
                 }
 
-                // todo Kls localize
-                if (MessageBox.Show(this,
-                    $"Successfully created the following MIB files: {filesListForMessage}." +
-                    "\r\n\r\nDo you wish to navigate to these files?",
-                    "Create MIB files", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+                if (MessageBox.Show(this, String.Format(iba.Properties.Resources.snmpCreatedMibFiles, filesListForMessage),
+                    iba.Properties.Resources.snmpCreatedMibFilesTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information)
                     == DialogResult.Yes)
                 {
                     // open folder and show files

@@ -21,21 +21,6 @@ namespace iba.Processing
         Errored
     }
 
-    // todo kls recreate event?
-    //public class SnmpWorkerStatusChangedEventArgs : EventArgs
-    //{
-    //    public SnmpWorkerStatus Status { get; }
-    //    public Color Color { get; }
-    //    public string Message { get; }
-
-    //    public SnmpWorkerStatusChangedEventArgs(SnmpWorkerStatus status, Color color, string message)
-    //    {
-    //        Status = status;
-    //        Color = color;
-    //        Message = message;
-    //    }
-    //}
-
     [Serializable]
     public class SnmpTreeNodeTag
     {
@@ -103,8 +88,7 @@ namespace iba.Processing
         public SnmpWorker()
         {
             Status = SnmpWorkerStatus.Errored;
-            // todo Kls localize
-            StatusString = "SNMP server is not initialized.";
+            StatusString = iba.Properties.Resources.snmpStatusNotInit;
         }
 
         public void Init()
@@ -167,9 +151,6 @@ namespace iba.Processing
         //private IbaSnmp IbaSnmp { get; set; }
         public IbaSnmp IbaSnmp { get; private set; }
 
-        // todo kls recreate event?
-        //public event EventHandler<SnmpWorkerStatusChangedEventArgs> StatusChanged;
-
         private SnmpData _snmpData = new SnmpData();
 
         public SnmpData SnmpData
@@ -224,32 +205,28 @@ namespace iba.Processing
                 {
                     IbaSnmp.Start();
                     Status = SnmpWorkerStatus.Started;
-                    // todo Kls localize
-                    StatusString = $"SNMP server running on port {_snmpData.Port}";
+                    StatusString = String.Format(iba.Properties.Resources.snmpStatusRunningOnPort, _snmpData.Port);
 
-                    // todo Kls localize
                     logMessage = Status == oldStatus
                         ?
-                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
-                        $"Snmp agent was successfully restarted. Current status: {StatusString}"
+                       // log 'was restarted' if status has not changed (now is 'Started' as before) 
+                       String.Format(iba.Properties.Resources.snmpStatusRunningRestarted, StatusString)
                         :
                         // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
-                        $"Snmp agent was successfully started. Current status: {StatusString}";
+                        String.Format(iba.Properties.Resources.snmpStatusRunningStarted, StatusString);
                 }
                 else
                 {
                     Status = SnmpWorkerStatus.Stopped;
-                    // todo Kls localize
-                    StatusString = "SNMP server is disabled";
+                    StatusString = iba.Properties.Resources.snmpStatusDisabled;
 
-                    // todo Kls localize
                     logMessage = Status == oldStatus
                         ?
                         // do not log anything if status has not changed (now is 'Stopped' as before) 
                         null
                         :
                         // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
-                        $"Snmp agent was successfully stopped. Current status: {StatusString}";
+                        String.Format(iba.Properties.Resources.snmpStatusStopped, StatusString);
                 }
 
                 // log the message if it necessary
@@ -261,18 +238,9 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Status = SnmpWorkerStatus.Errored;
-                // todo Kls localize
-                StatusString = $"Starting the SNMP server failed with error: {ex.Message}";
-
-                LogData.Data.Logger.Log(Level.Exception,
-                    // todo Kls localize
-                    $"Starting the SNMP server failed with exception: {ex.Message}");
+                StatusString = String.Format(iba.Properties.Resources.snmpStatusError, ex.Message);
+                LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
-
-            // todo kls recreate event?
-            // trigger status event
-            //StatusChanged?.Invoke(this,
-            //    new SnmpWorkerStatusChangedEventArgs(Status, StatusToColor(Status), StatusString));
         }
 
         private void ApplyConfigurationToIbaSnmp()

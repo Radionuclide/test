@@ -805,8 +805,6 @@ namespace iba.Processing
                     if (taskData is CustomTaskDataUNC)
                     {
                         var typedData = taskData as CustomTaskDataUNC;
-
-                        // todo Kls for Michael. Please check the following name:
                         taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     if (taskData is ExtractData)
@@ -857,7 +855,6 @@ namespace iba.Processing
                     else if (taskData is CustomTaskData)
                     {
                         var typedData = taskData as CustomTaskData;
-                        // todo Kls for Michael. Please check the following name:
                         taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
                     }
                     else if (taskData is IfTaskData)
@@ -1499,20 +1496,6 @@ namespace iba.Processing
         private void HandleBrokenConnection(Exception ex)
         {
             Program.CommunicationObject?.HandleBrokenConnection(ex);
-            // todo kls for Michael to review 
-            // Michael, do I understand correctly, that the following two lines are equal:
-            //
-            // 1: if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-            // 2: Program.CommunicationObject?.HandleBrokenConnection(ex);
-            //
-            // Maybe there are some things that I'm not aware about?
-            // as far as I know, null propagation (second variant) is even more thread-safe than 1st one.
-            // Null propagation should be equal to something like this:
-            // var commObj = Program.CommunicationObject;
-            // if (commObj != null) commObj.HandleBrokenConnection(ex);
-
-            // So, if yes, then I suggest replacing all such occurencies with the line above.
-            // or with this HandleBrokenConnection(ex) method.
         }
 
         #region Configuration

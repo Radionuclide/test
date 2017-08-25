@@ -3049,6 +3049,124 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap snmp_images {
+            get {
+                object obj = ResourceManager.GetObject("snmp_images", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully created the following MIB files: {0}.\r\n\r\nDo you wish to navigate to these files?.
+        /// </summary>
+        internal static string snmpCreatedMibFiles {
+            get {
+                return ResourceManager.GetString("snmpCreatedMibFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created MIB files.
+        /// </summary>
+        internal static string snmpCreatedMibFilesTitle {
+            get {
+                return ResourceManager.GetString("snmpCreatedMibFilesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create MIB files.
+        /// </summary>
+        internal static string snmpFailedMibFiles {
+            get {
+                return ResourceManager.GetString("snmpFailedMibFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reset configuration to default?.
+        /// </summary>
+        internal static string snmpQuestionReset {
+            get {
+                return ResourceManager.GetString("snmpQuestionReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset configuration?.
+        /// </summary>
+        internal static string snmpQuestionResetTitle {
+            get {
+                return ResourceManager.GetString("snmpQuestionResetTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SNMP server is disabled.
+        /// </summary>
+        internal static string snmpStatusDisabled {
+            get {
+                return ResourceManager.GetString("snmpStatusDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the SNMP server failed with error: {0}.
+        /// </summary>
+        internal static string snmpStatusError {
+            get {
+                return ResourceManager.GetString("snmpStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SNMP server is not initialized..
+        /// </summary>
+        internal static string snmpStatusNotInit {
+            get {
+                return ResourceManager.GetString("snmpStatusNotInit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SNMP server running on port {0}.
+        /// </summary>
+        internal static string snmpStatusRunningOnPort {
+            get {
+                return ResourceManager.GetString("snmpStatusRunningOnPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snmp agent was successfully restarted. Current status: {0}.
+        /// </summary>
+        internal static string snmpStatusRunningRestarted {
+            get {
+                return ResourceManager.GetString("snmpStatusRunningRestarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snmp agent was successfully started. Current status: {0}.
+        /// </summary>
+        internal static string snmpStatusRunningStarted {
+            get {
+                return ResourceManager.GetString("snmpStatusRunningStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snmp agent was successfully stopped. Current status: {0}.
+        /// </summary>
+        internal static string snmpStatusStopped {
+            get {
+                return ResourceManager.GetString("snmpStatusStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SNMP server.
         /// </summary>
         internal static string snmpTitle {
