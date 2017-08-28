@@ -1301,9 +1301,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Disconnected" xml:space="preserve">
     <value>Disconnected from {0}</value>
   </data>
-  <data name="iconPaneSnmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\paneSnmpIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="snmpTitle" xml:space="preserve">
     <value>SNMP server</value>
   </data>
@@ -1341,7 +1338,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>There was an error generating the support file for {0} : {1}</value>
   </data>
   <data name="SupportFileSuccess" xml:space="preserve">
-    <value>Support file succesfully generatated successfully for {0}; saved to  {1}</value>
+    <value>Support file generatated successfully for {0}; saved to  {1}</value>
   </data>
   <data name="ThisSystem" xml:space="preserve">
     <value>this system</value>
@@ -1383,15 +1380,18 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>SNMP server running on port {0}</value>
   </data>
   <data name="snmpStatusRunningRestarted" xml:space="preserve">
-    <value>Snmp agent was successfully restarted. Current status: {0}</value>
+    <value>SNMP agent was successfully restarted. Current status: {0}</value>
   </data>
   <data name="snmpStatusRunningStarted" xml:space="preserve">
-    <value>Snmp agent was successfully started. Current status: {0}</value>
+    <value>SNMP agent was successfully started. Current status: {0}</value>
   </data>
   <data name="snmpStatusStopped" xml:space="preserve">
-    <value>Snmp agent was successfully stopped. Current status: {0}</value>
+    <value>SNMP agent was successfully stopped. Current status: {0}</value>
   </data>
   <data name="snmp_images" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\snmp_images.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="snmp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\snmp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

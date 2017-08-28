@@ -113,7 +113,7 @@ namespace iba.Dialogs
                 return;
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action<string, int>(Update), message, progress);
+                this.Invoke(new Action<string, int>(Update), message, progress);
                 return;
             }
             if (readyToSplit)

@@ -1027,16 +1027,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon iconPaneSnmp {
-            get {
-                object obj = ResourceManager.GetObject("iconPaneSnmp", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://www.icsharpcode.net/OpenSource/SD.
         /// </summary>
         internal static string ICSharpTextEditorUrl {
@@ -3051,6 +3041,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap snmp_icon {
+            get {
+                object obj = ResourceManager.GetObject("snmp_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap snmp_images {
             get {
                 object obj = ResourceManager.GetObject("snmp_images", resourceCulture);
@@ -3140,7 +3140,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Snmp agent was successfully restarted. Current status: {0}.
+        ///   Looks up a localized string similar to SNMP agent was successfully restarted. Current status: {0}.
         /// </summary>
         internal static string snmpStatusRunningRestarted {
             get {
@@ -3149,7 +3149,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Snmp agent was successfully started. Current status: {0}.
+        ///   Looks up a localized string similar to SNMP agent was successfully started. Current status: {0}.
         /// </summary>
         internal static string snmpStatusRunningStarted {
             get {
@@ -3158,7 +3158,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Snmp agent was successfully stopped. Current status: {0}.
+        ///   Looks up a localized string similar to SNMP agent was successfully stopped. Current status: {0}.
         /// </summary>
         internal static string snmpStatusStopped {
             get {
@@ -3417,7 +3417,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Support file succesfully generatated successfully for {0}; saved to  {1}.
+        ///   Looks up a localized string similar to Support file generatated successfully for {0}; saved to  {1}.
         /// </summary>
         internal static string SupportFileSuccess {
             get {
