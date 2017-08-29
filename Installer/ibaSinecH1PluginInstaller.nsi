@@ -24,7 +24,7 @@ Var ibaDatCoordinatorPath
 !define MUI_HEADERIMAGE_BITMAP "Graphics\MUIInstallLogo.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
 
-!define MUI_FINISHPAGE_TEXT "The Plugin DLL(s) are now installed on your computer"
+!define MUI_FINISHPAGE_TEXT $(FINISH_TEXT)
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 
 !define DATCO_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\ibaDatCoordinator"
@@ -72,6 +72,7 @@ InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator\plugins"
 ShowInstDetails show
 BrandingText "iba AG"
 
+
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
@@ -84,7 +85,7 @@ VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 Section "MainSection" SEC01
 
-  ;Check version of installed ibaPDA
+  ;Check version of installed ibaDatco
   ReadRegStr $0 ${DATCO_UNINST_ROOT_KEY} "${DATCO_UNINST_KEY}" "DisplayVersion"
   ${If} $0 != ""
     DetailPrint "ibaDatCoordinator $0 is installed"
@@ -93,16 +94,16 @@ Section "MainSection" SEC01
     Push $0
     Call GetVersionNr
     Pop $R0
-    IntCmp $R0 1220000 okVersion oldVersion okVersion
+    IntCmp $R0 1230300 okVersion oldVersion okVersion
 
     oldVersion:
-    MessageBox MB_ICONSTOP "ibaDatCoordinator v1.22.0 or higher is required for this plugin.$\r$\nPlease contact iba-AG for an upgrade."
+    MessageBox MB_ICONSTOP $(UPGRADE_REQUIRED)
     Abort
 
     okVersion:
 
   ${Else}
-    MessageBox MB_ICONSTOP "ibaDatCoordinator is not installed."
+    MessageBox MB_ICONSTOP $(NO_DATCO) 
     Abort
   ${EndIf}
 
@@ -116,7 +117,7 @@ datcorunsstandalone:
   ReadRegStr $0 "${DATCO_UNINST_ROOT_KEY}" "${DATCO_UNINST_KEY}" "InstallDir"
   IfErrors nodatcoordinator coordinatorpresent
 nodatcoordinator:
-  MessageBox MB_ICONSTOP "No DatCoordinator found, please install the iba DatCoordinator first"
+  MessageBox MB_ICONSTOP $(NO_DATCO_FOUND)
   Abort
 coordinatorpresent:
   StrCpy $ibaDatCoordinatorPath $0
@@ -128,7 +129,7 @@ coordinatorpresent:
         Goto standalonecopy
   ${EndIf}
 
-  MessageBox MB_YESNO "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?" IDYES standalonestop IDNO standalonenostop
+  MessageBox MB_YESNO $(STOP_DATCO_REQ) IDYES standalonestop IDNO standalonenostop
 standalonestop:
   ;stop statusform
   FindWindow $0 "" "ibaDatCoordinatorStatusCloseForm"
@@ -157,7 +158,7 @@ standalonecopy:
   File "..\INAT\viewnetworks.cmd"
   IfErrors standalonecopyError standalonecopyOk
 standalonecopyError:
-  MessageBox MB_ICONSTOP "Failed to copy plugin files"
+  MessageBox MB_ICONSTOP $(FAILED_COPY)
   Abort
 standalonecopyOk:
   ;ask to install the H1driver
@@ -168,7 +169,7 @@ standalonecopyOk:
   ;Exec '"$ibaDatCoordinatorPath\ibaDatCoordinator.exe"'
   Goto end
 standalonenostop:
-  MessageBox MB_ICONSTOP "The plugin dlls cannot be installed while the ibaDatCoordinator is running!"
+  MessageBox MB_ICONSTOP $(DATCO_RUNNING_FAILURE)
   Abort
 datcorunsasservice:
   DetailPrint "Imagepath to ibaDatCoordinatorService is : $0"
@@ -184,7 +185,7 @@ datcorunsasservice:
 
   StrCmp $ServiceStatus '1:stopped' servicecopy  ; check on running
 
-  MessageBox MB_YESNO "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator service now?" IDYES servicestop IDNO servicenostop
+  MessageBox MB_YESNO $(STOP_DATCO_SERVICE_REQ) IDYES servicestop IDNO servicenostop
 
 servicestop:
   ;stop statusform
@@ -205,7 +206,7 @@ servicestop:
 
   Call GetServiceStatus
   Pop $ServiceStatus
-  DetailPrint "ibaPDA service status is $ServiceStatus"
+  DetailPrint "ibaDatCoordinator service status is $ServiceStatus"
   ;Sleep 1000
 
 servicecopy:
@@ -233,7 +234,7 @@ servicecopy:
   IfErrors servicecopyError servicecopyOk
 
 servicecopyError:
-  MessageBox MB_ICONSTOP "Failed to copy plugin files"
+  MessageBox MB_ICONSTOP $(FAILED_COPY)
   Abort
 servicecopyOk:
   ;ask to install the H1driver
@@ -255,9 +256,8 @@ servicecopyOk:
   ;DetailPrint "ibaDatCoordinatorservice status is $ServiceStatus"
 
   Goto end
-  
 servicenostop:
-  MessageBox MB_ICONSTOP "The plugin dlls cannot be installed when the ibaDatCoordinator service is running!"
+  MessageBox MB_ICONSTOP $(DATCO_RUNNING_FAILURE)
   Abort
 end:
 
@@ -388,6 +388,20 @@ Function GetVersionNr
 
 FunctionEnd
 
-LangString DESC_H1INSTALL  ${LANG_ENGLISH} "Installation of the PC-H1 protocol driver:$\r$\n$\t- Open the network settings in your system$\r$\n$\t- Choose minimal one Local Area Connection$\r$\n$\t- Press Properties$\r$\n$\t- If installed, disable 'Qos Packet Scheduler'$\r$\n$\t- Press Install$\r$\n$\t- Add a (new) protocol$\r$\n$\t- Press the button 'Have Disc'$\r$\n$\t- You will find the drivers under$\r$\n$\t$\t $PluginPath\H1Driver$\r$\n$\t- Select the *.inf file$\r$\n$\t- Confirm with 'Open' and 'OK'$\r$\n$\t- Select 'INAT H1 Iso Protocol'$\r$\n$\t- Confirm with 'OK'$\r$\n$\t- The PC-H1 protocol driver is linked now to ALL of your network cards, disable the INAT H1 Iso Protocol on the cards that shouldn't have the protocol enabled.$\r$\n$\t- Close all network windows$\r$\n$\r$\nAttention:$\r$\n$\tWhen the PC-H1 protocol driver is installed, the PC has to be rebooted"
-LangString DESC_H1INSTALL  ${LANG_GERMAN} "Installation des PC-H1 Protokoll Treibers:$\r$\n$\t- Über die Systemsteuerung die Netzwerkverbindungen öffnen$\r$\n$\t- Wählen Sie mindestens eine LAN Verbindung aus$\r$\n$\t- Eigenschaften$\r$\n$\t- Wenn 'Qos-Paketplaner' installiert ist, bitte deaktivieren$\r$\n$\t- Installieren$\r$\n$\t- 'Protokoll hinzufügen' auswählen$\r$\n$\t- Wählen Sie 'Datenträger'$\r$\n$\t- Über 'Durchsuchen' folgenden Pfad auswählen:$\r$\n$\t$\t $PluginPath\H1Driver$\r$\n$\t- Die *.inf Datei anwählen$\r$\n$\t- Mit 'Öffnen' und 'OK' bestätigen$\r$\n$\t- 'INAT H1 Iso Protocol' auswählen$\r$\n$\t- Mit 'OK' bestätigen$\r$\n$\t- Der PC-H1 Protokolltreiber ist nun mit ALLEN Ihren Netzwerkkarten verbunden. Deaktivieren Sie das INAT H1 Iso Protokoll auf den Karten, auf denen es nicht aktiv sein soll.$\r$\n$\t- Alle Netzwerkeinstellungen schliessen$\r$\n$\r$\nBitte beachten Sie:$\r$\n$\tNach der Installation des PC-H1 Protokoll Treibers muss der PC neu gestartet werden"
+LangString UPGRADE_REQUIRED                  ${LANG_ENGLISH} "ibaDatCoordinator v1.23.4 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
+LangString NO_DATCO                          ${LANG_ENGLISH} "ibaDatCoordinator is not installed."
+LangString NO_DATCO_FOUND                    ${LANG_ENGLISH} "No DatCoordinator found, please install the iba DatCoordinator first"
+LangString STOP_DATCO_REQ                    ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
+LangString FINISH_TEXT                       ${LANG_ENGLISH} "The Plugin DLL(s) are now installed on your computer"
+LangString FAILED_COPY                       ${LANG_ENGLISH} "Failed to copy plugin files"
+LangString DATCO_RUNNING_FAILURE             ${LANG_ENGLISH} "The plugin dlls cannot be installed when the ibaDatCoordinator service is running!"
+LangString STOP_DATCO_SERVICE_REQ            ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator service now?"
 
+LangString UPGRADE_REQUIRED                  ${LANG_GERMAN} "ibaDatCoordinator v1.23.4 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
+LangString NO_DATCO                          ${LANG_GERMAN} "ibaDatCoordinator is not installed."
+LangString NO_DATCO_FOUND                    ${LANG_GERMAN} "No DatCoordinator found, please install the iba DatCoordinator first"
+LangString STOP_DATCO_REQ                    ${LANG_GERMAN} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
+LangString FINISH_TEXT                       ${LANG_GERMAN} "The Plugin DLL(s) are now installed on your computer"
+LangString FAILED_COPY                       ${LANG_GERMAN} "Failed to copy plugin files"
+LangString DATCO_RUNNING_FAILURE             ${LANG_GERMAN} "The plugin dlls cannot be installed when the ibaDatCoordinator service is running!"
+LangString STOP_DATCO_SERVICE_REQ            ${LANG_GERMAN} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator service now?"

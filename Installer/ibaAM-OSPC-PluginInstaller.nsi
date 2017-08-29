@@ -36,6 +36,8 @@ Var ibaDatCoordinatorPath
 !include "StrFunc.nsh"
 !include "FileFunc.nsh"
 
+!addplugindir .
+
 SetCompressor /SOLID lzma
 
 ; MUI Settings
@@ -75,9 +77,10 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" ""
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright © 2006 iba AG"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© iba AG. All rights reserved"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME} installer"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_FILE_VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_VERSION}"
 VIProductVersion "${PRODUCT_FILE_VERSION}"
 
 Section "MainSection" SEC01
