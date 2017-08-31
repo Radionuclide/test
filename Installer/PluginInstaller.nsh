@@ -106,7 +106,7 @@ Section "MainSection" SEC01
   ${EndIf}
 
   ${If} $StandAlone == "1"
-    nsSCMEx::RunAsNonElevatedUser /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" $1 "$INSTDIR"
+    nsSCMEx::RunAsNonElevatedUser /NOUNLOAD "$INSTDIR\..\ibaDatCoordinator.exe" '"$INSTDIR\..\ibaDatCoordinator.exe"' "$INSTDIR"
   ${Else}
     nsSCMEx::Start /NOUNLOAD "ibaDatCoordinatorService"
   ${Endif}  
@@ -145,8 +145,8 @@ Function PreInstall
 
   StrCpy $StandAlone "0"
   ClearErrors
-  ReadRegStr $ibaDatCoordinatorPath HKLM "System\Currentcontrolset\services\ibaDatcoordinatorService" "imagepath"
-  ${If} $ibaDatCoordinatorPath == ""
+  ReadRegStr $0 HKLM "System\Currentcontrolset\services\ibaDatcoordinatorService" "imagepath"
+  ${If} $0 == ""
 
 	  ClearErrors
 	  ReadRegStr $ibaDatCoordinatorPath "${DATCO_UNINST_ROOT_KEY}" "${DATCO_UNINST_KEY}" "InstallDir"
@@ -164,8 +164,10 @@ Function PreInstall
 	   Abort
 	 ${EndIf}
 	 
-	 StrCpy $StandAlone "1"
-	 
+	 StrCpy $ibaDatCoordinatorPath "0"
+  ${Else} 
+    ${GetParent} $0 $1
+	StrCpy $ibaDatCoordinatorPath $1
   ${EndIf}
 
   StrCpy $PluginPath "$ibaDatCoordinatorPath\Plugins"
@@ -176,7 +178,7 @@ Function CloseStandAlone
   FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
   
   ${Unless} $0 == 0
-	MessageBox MB_YESNO $(STOP_DATCO_REQ) IDYES standalonestop IDNO standalonenostop
+	MessageBox MB_YESNO $(STOP_DATCO_STANDALONE_REQ) IDYES standalonestop IDNO standalonenostop
 standalonestop:
     SendMessage $0 0x8140 0 0
 	Sleep 1000
@@ -343,20 +345,20 @@ Function GetVersionNr
 
 FunctionEnd
 
-LangString UPGRADE_REQUIRED                  ${LANG_ENGLISH} "ibaDatCoordinator v1.23.4 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
+LangString UPGRADE_REQUIRED                  ${LANG_ENGLISH} "ibaDatCoordinator v2.0.0 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
 LangString NO_DATCO                          ${LANG_ENGLISH} "ibaDatCoordinator is not installed."
 LangString NO_DATCO_FOUND                    ${LANG_ENGLISH} "No DatCoordinator found, please install the iba DatCoordinator first"
-LangString STOP_DATCO_REQ                    ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
+LangString STOP_DATCO_STANDALONE_REQ         ${LANG_ENGLISH} "The ibaDatCoordinator program needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
 LangString FINISH_TEXT                       ${LANG_ENGLISH} "The Plugin DLL(s) are now installed on your computer"
 LangString FAILED_COPY                       ${LANG_ENGLISH} "Failed to copy plugin files"
 LangString DATCO_RUNNING_FAILURE             ${LANG_ENGLISH} "The plugin dlls cannot be installed when the ibaDatCoordinator service is running!"
 LangString STOP_DATCO_SERVICE_REQ            ${LANG_ENGLISH} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator service now?"
 LangString DATCO_CLIENTONLY					 ${LANG_ENGLISH} "ibaDatCoordinator is installed as client only. The plugin needs to be installed on the remote server side only!"
 
-LangString UPGRADE_REQUIRED                  ${LANG_GERMAN} "ibaDatCoordinator v1.23.4 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
+LangString UPGRADE_REQUIRED                  ${LANG_GERMAN} "ibaDatCoordinator v2.0.0 or higher is required for the plugin.$\r$\nPlease contact iba-AG for an upgrade."
 LangString NO_DATCO                          ${LANG_GERMAN} "ibaDatCoordinator is not installed."
 LangString NO_DATCO_FOUND                    ${LANG_GERMAN} "No DatCoordinator found, please install the iba DatCoordinator first"
-LangString STOP_DATCO_REQ                    ${LANG_GERMAN} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
+LangString STOP_DATCO_STANDALONE_REQ         ${LANG_GERMAN} "The ibaDatCoordinator Service needs to be stopped to install the Plugin DLLs. Do you want to stop the ibaDatCoordinator now?"
 LangString FINISH_TEXT                       ${LANG_GERMAN} "The Plugin DLL(s) are now installed on your computer"
 LangString FAILED_COPY                       ${LANG_GERMAN} "Failed to copy plugin files"
 LangString DATCO_RUNNING_FAILURE             ${LANG_GERMAN} "The plugin dlls cannot be installed when the ibaDatCoordinator service is running!"

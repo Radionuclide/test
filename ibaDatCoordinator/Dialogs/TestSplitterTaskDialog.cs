@@ -82,7 +82,7 @@ namespace iba.Dialogs
                 {
                     try
                     {
-                        Directory.CreateDirectory("m_targetFolderTextBox.Text");
+                        Directory.CreateDirectory(m_targetFolderTextBox.Text);
                     }
                     catch (Exception ex)
                     {
