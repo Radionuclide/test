@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator ArcelorMittal OSPC Plugin Installer"
 !define PRODUCT_SHORTNAME "AM-OSPC"
-!define PRODUCT_VERSION "2.0"
+!define PRODUCT_VERSION "2.0.0"
 !define PRODUCT_FILE_VERSION "2.0.0.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
