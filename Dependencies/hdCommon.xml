@@ -4,44 +4,6 @@
         <name>hdCommon</name>
     </assembly>
     <members>
-        <member name="M:iba.HD.Common.IHdConfigContract.IsValidVersion(System.String)">
-            <summary>
-            Checks service version
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdConfigContract.ReloadProjectFiles">
-            <summary>
-            Reloads project files
-            </summary>
-            <returns>
-            Null upon success or error message otherwise
-            </returns>
-        </member>
-        <member name="M:iba.HD.Common.IHdConfigContract.GetSupportFiles">
-            <summary>
-            Gets support files
-            </summary>
-            <returns>
-            Tuple.Item1: null if operation succeeds; error message if operation fails
-            Tuple.Item2: zipped data if operation succeeds; null if operation fails
-            </returns>
-        </member>
-        <member name="M:iba.HD.Common.IHdConfigContract.GetUserNames(iba.HD.Common.HdUserType)">
-            <summary>
-            Gets names of users with given type
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdConfigContract.SetQueries(System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Boolean)">
-            <summary>
-            Sets the list of configured event queries
-            </summary>
-            <param name="force">
-            Skip out of date check
-            </param>
-            <returns>
-            false if config out of date
-            </returns>
-        </member>
         <member name="T:iba.HD.Common.Enumeration">
             <remarks>
             WCF cannot (de)serialize unknown enum values. Unknown
@@ -130,9 +92,24 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:iba.HD.Common.Properties.Resources.Days">
+        <member name="P:iba.HD.Common.Properties.Resources.DurationDays">
             <summary>
               Looks up a localized string similar to days.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationMonths">
+            <summary>
+              Looks up a localized string similar to months.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationWeeks">
+            <summary>
+              Looks up a localized string similar to weeks.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationYears">
+            <summary>
+              Looks up a localized string similar to years.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureAuthentication">
@@ -163,6 +140,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventAck">
             <summary>
               Looks up a localized string similar to Acknowledge event based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventNote">
+            <summary>
+              Looks up a localized string similar to Read event based store annotation data.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventQuery">
@@ -203,6 +185,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeOffline">
             <summary>
               Looks up a localized string similar to Read offline time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderUpdateSignals">
+            <summary>
+              Looks up a localized string similar to Update signals.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagement">
@@ -250,6 +237,11 @@
               Looks up a localized string similar to Write time based store data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FolderAnnotations">
+            <summary>
+              Looks up a localized string similar to Annotations.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.GB">
             <summary>
               Looks up a localized string similar to GB.
@@ -285,11 +277,6 @@
               Looks up a localized string similar to Vector.
             </summary>
         </member>
-        <member name="P:iba.HD.Common.Properties.Resources.Months">
-            <summary>
-              Looks up a localized string similar to months.
-            </summary>
-        </member>
         <member name="P:iba.HD.Common.Properties.Resources.NewValueSignal">
             <summary>
               Looks up a localized string similar to &lt;Select signal&gt;.
@@ -305,19 +292,9 @@
               Looks up a localized string similar to Unlimited.
             </summary>
         </member>
-        <member name="P:iba.HD.Common.Properties.Resources.Weeks">
-            <summary>
-              Looks up a localized string similar to weeks.
-            </summary>
-        </member>
         <member name="P:iba.HD.Common.Properties.Resources.WriterConfigMaxSignals">
             <summary>
               Looks up a localized string similar to Maximal HD store acquisition signal count ({0}) exceeded by {1} signals.
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.Properties.Resources.Years">
-            <summary>
-              Looks up a localized string similar to years.
             </summary>
         </member>
         <member name="M:iba.HD.Common.BackupTrigger.Calculate(System.DateTime)">
@@ -481,14 +458,6 @@
             <remarks>
             Deprecated since v1.4.1
             </remarks>
-        </member>
-        <member name="M:iba.HD.Common.EventReaderData.GetFieldValue(System.String,System.String@,System.Single@)">
-            <param name="textValue">
-            text field value; null if text field doesn't exist
-            </param>
-            <param name="floatValue">
-            float field value; Float.NaN if float field doesn't exist
-            </param>
         </member>
         <member name="M:iba.HD.Common.FileDownloadRequest.#ctor(System.String)">
             <param name="path">
@@ -815,21 +784,6 @@
             Depricated
             </remarks>
         </member>
-        <member name="M:iba.HD.Common.IHdSignalCallback.UpdateSignals">
-            <summary>
-            Tells client to update its signals
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdSignalContract.GetSignals">
-            <summary>
-            Gets signals in all stores
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdSignalContract.GetSignalsAt(iba.HD.Common.UncPath)">
-            <summary>
-            Gets signals in store at given path
-            </summary>
-        </member>
         <member name="M:iba.HD.Common.IHdSegmentContract.GetSegmentFirst(iba.HD.Common.HdSegmentRequest)">
             <summary>
             Gets first signal segment. Null if not found.
@@ -867,36 +821,6 @@
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,System.Collections.Generic.List{System.String},iba.HD.Common.HdNotificationType)" -->
-        <member name="M:iba.HD.Common.IHdNotifyContract.NotifyClients(iba.HD.Common.HdNotification)">
-            <summary>
-            Notify users on connected clients
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdReaderContract.Authenticate(System.Byte[])">
-            <summary>
-            Authentication
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdReaderContract.Request(iba.HD.Common.HdReaderRequest)">
-            <summary>
-            Request signal data from server
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdReaderContract.GetQueries">
-            <summary>
-            Gets all event queries on server
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdReaderContract.AcquireLicense(System.Int32)">
-            <summary>
-            Acquires a license from server
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.IHdReaderContract.ReleaseLicense(System.Int32)">
-            <summary>
-            Releases a license from server
-            </summary>
-        </member>
         <member name="T:iba.HD.Common.HdWriterSolution">
             <summary>
             Solution to writer conflict
@@ -1113,10 +1037,11 @@
             <param name="type">data type</param>
             <param name="iConfig">index of signal in configuration</param>
         </member>
-        <member name="M:iba.HD.Common.EventWriterItem.#ctor(System.Int32,System.Int64,System.Boolean,System.Boolean,System.Single[],System.String[])">
-            <param name="texts">text values</param>
+        <member name="M:iba.HD.Common.EventWriterItem.#ctor(System.Int32,System.Int64,System.Boolean,System.Boolean,System.Single[],System.String[],System.Byte[][])">
             <param name="floats">float values</param>
-            <param name="stampUtc">event stamp</param>
+            <param name="texts">text values</param>
+            <param name="blobs">blob values</param>
+            <param name="stampUtc">time stamp</param>
             <param name="inSlope">in slope active</param>
             <param name="outSlope">out slope active</param>
             <param name="iConfig">index of event in configuration</param>

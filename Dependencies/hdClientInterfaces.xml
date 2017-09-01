@@ -55,6 +55,11 @@
             A HD channel used to request data
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdChannel.Type">
+            <summary>
+            Channel type
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdChannel.Id">
             <summary>
             Id of the channel
@@ -65,9 +70,9 @@
             Is the channel valid?
             </summary>
         </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdChannel.Type">
+        <member name="P:iba.HD.Client.Interfaces.IHdChannel.Active">
             <summary>
-            Channel type
+            Is the channel being written?
             </summary>
         </member>
         <member name="P:iba.HD.Client.Interfaces.IHdChannel.VisualMin">
@@ -834,6 +839,25 @@
             True, if the request has been sent to the server
             </returns>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.Annotate(iba.HD.Common.EventNoteRequest)">
+            <summary>
+            Adds an annotation to an event
+            </summary>
+            <param name="request">
+            Annotation data
+            </param>
+            <returns>
+            True, if the request has been sent to the server
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetBlob(iba.HD.Common.EventReaderData,System.String,System.String,System.IO.Stream)">
+            <summary>
+            Retrieve event blob
+            </summary>
+            <returns>
+            True upon success
+            </returns>
+        </member>
         <member name="T:iba.HD.Client.Interfaces.IHdTimeSynchronizer">
             <summary>
             Interface to convert between server time and local client time
@@ -967,6 +991,11 @@
         <member name="M:iba.HD.Client.Interfaces.IHdReader.GetSegmentRange(iba.HD.Common.HdSegmentRequest)">
             <summary>
             Gets all signal segments touching given range
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.TryReadLicense(System.Int32,System.Byte@)">
+            <summary>
+            Read a license value from server
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.AcquireLicense(System.Int32)">
