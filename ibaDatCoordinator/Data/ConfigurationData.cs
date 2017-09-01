@@ -369,7 +369,11 @@ namespace iba.Data
             if (m_tasks.Count != other.m_tasks.Count) return false;
             for (int i = 0; i < m_tasks.Count; i++)
             {
-                if (!other.m_tasks[i].IsSame(m_tasks[i])) return false;
+                if (!other.m_tasks[i].IsSame(m_tasks[i]))
+                {
+                    System.Diagnostics.Debug.WriteLine(String.Format("Difference in job {0} task {1}", other.Name, other.Name));
+                    return false;
+                }
             }
             if(m_jobType != other.m_jobType) return false;
             if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
