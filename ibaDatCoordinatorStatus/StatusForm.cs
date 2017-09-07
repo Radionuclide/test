@@ -614,7 +614,7 @@ namespace iba.DatCoordinator.Status
             }
             else
             {
-                service.ServiceStart = ServiceStart.Manual;
+                service.ServiceStart = service.ServiceStart == ServiceStart.Manual ? ServiceStart.Automatic : ServiceStart.Manual;
             }
             updatingAutoStart = false;
         }
