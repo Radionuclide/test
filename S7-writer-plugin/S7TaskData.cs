@@ -53,7 +53,7 @@ namespace S7_writer_plugin
         {
             get
             {
-                return 5;
+                return 6;
             } 
         }
 
@@ -191,7 +191,7 @@ namespace S7_writer_plugin
                 get { return m_dataType; }
             }
 
-            [XmlIgnore]
+            [XmlElement(ElementName = "DataType")]
             public string DataTypeAsString
             {
                 get { return S7.DataTypes[(int)m_dataType].name; }
@@ -211,6 +211,7 @@ namespace S7_writer_plugin
                 }
             }
 
+            [XmlIgnore]
             private double m_testValue;
             public double TestValue
             {

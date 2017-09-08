@@ -153,14 +153,14 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_datagvMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 116</value>
+    <value>0, 105</value>
   </data>
   <data name="m_datagvMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>565, 173</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_datagvMessages.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_datagvMessages.Name" xml:space="preserve">
     <value>m_datagvMessages</value>
@@ -181,7 +181,7 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 84</value>
+    <value>3, 73</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 13</value>
@@ -208,13 +208,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_pdoFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 81</value>
+    <value>110, 70</value>
   </data>
   <data name="m_pdoFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>357, 20</value>
   </data>
   <data name="m_pdoFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_pdoFileTextBox.Name" xml:space="preserve">
     <value>m_pdoFileTextBox</value>
@@ -228,6 +228,9 @@
   <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="m_browsePDOFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -235,17 +238,14 @@
     <value>NoControl</value>
   </data>
   <data name="m_browsePDOFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>473, 70</value>
+    <value>473, 59</value>
   </data>
   <data name="m_browsePDOFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
   <data name="m_browsePDOFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>6</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="m_browsePDOFileButton.ToolTip" xml:space="preserve">
     <value>Browse for analysis file</value>
   </data>
@@ -268,13 +268,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>519, 70</value>
+    <value>519, 59</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
   <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="m_executeIBAAButton.ToolTip" xml:space="preserve">
     <value>Start ibaAnalyzer</value>
@@ -304,7 +304,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>11</value>
   </data>
   <data name="m_browseDatFileButton.ToolTip" xml:space="preserve">
     <value>Browse for .dat file</value>
@@ -364,7 +364,7 @@
     <value>357, 20</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.Name" xml:space="preserve">
     <value>m_datFileTextBox</value>
@@ -391,7 +391,7 @@
     <value>40, 40</value>
   </data>
   <data name="m_testButton.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>12</value>
   </data>
   <data name="m_testButton.ToolTip" xml:space="preserve">
     <value>Test by updating values in grid</value>
@@ -408,11 +408,110 @@
   <data name="&gt;&gt;m_testButton.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>123, 17</value>
   </metadata>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
+    <value>m_nudMemory</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Name" xml:space="preserve">
+    <value>m_cbTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Name" xml:space="preserve">
+    <value>m_cbMemory</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 341</value>
+  </data>
+  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 73</value>
+  </data>
+  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_monitorGroup.Text" xml:space="preserve">
+    <value>Monitor ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -484,7 +583,7 @@
     <value>78, 20</value>
   </data>
   <data name="m_nudTime.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
     <value>m_nudTime</value>
@@ -508,7 +607,7 @@
     <value>78, 20</value>
   </data>
   <data name="m_nudMemory.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
     <value>m_nudMemory</value>
@@ -582,30 +681,6 @@
   <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 341</value>
-  </data>
-  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 73</value>
-  </data>
-  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="m_monitorGroup.Text" xml:space="preserve">
-    <value>Monitor ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
-    <value>m_monitorGroup</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="spTimeout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -616,7 +691,7 @@
     <value>61, 20</value>
   </data>
   <data name="spTimeout.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;spTimeout.Name" xml:space="preserve">
     <value>spTimeout</value>
@@ -649,7 +724,7 @@
     <value>157, 21</value>
   </data>
   <data name="cbConnType.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;cbConnType.Name" xml:space="preserve">
     <value>cbConnType</value>
@@ -736,7 +811,7 @@
     <value>51, 20</value>
   </data>
   <data name="spRack.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;spRack.Name" xml:space="preserve">
     <value>spRack</value>
@@ -766,7 +841,7 @@
     <value>28, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>4</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Slot:</value>
@@ -826,7 +901,7 @@
     <value>157, 20</value>
   </data>
   <data name="tbAddress.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tbAddress.Name" xml:space="preserve">
     <value>tbAddress</value>
@@ -880,7 +955,7 @@
     <value>51, 20</value>
   </data>
   <data name="spSlot.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;spSlot.Name" xml:space="preserve">
     <value>spSlot</value>
@@ -894,17 +969,20 @@
   <data name="&gt;&gt;spSlot.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="ckAllowErrors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <data name="ckAllowErrors.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="ckAllowErrors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 283</value>
   </data>
   <data name="ckAllowErrors.Size" type="System.Drawing.Size, System.Drawing">
     <value>226, 17</value>
   </data>
   <data name="ckAllowErrors.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>9</value>
   </data>
   <data name="ckAllowErrors.Text" xml:space="preserve">
     <value>Ignore expressions that can't be evaluated</value>

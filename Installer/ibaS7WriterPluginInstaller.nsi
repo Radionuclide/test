@@ -13,10 +13,14 @@
 Function CopyFiles
   ClearErrors
   DetailPrint "Copying plugin files"
+
+  SetOutPath "$ibaDatCoordinatorPath"
+  File "..\S7-writer\AGLink\AGLink40.dll"
+
   SetOutPath "$PluginPath"
   File "..\S7-writer-plugin\bin\Release\S7-writer.dll"
   File "..\S7-writer-plugin\bin\Release\S7-writer-plugin.dll"
-  File "..\S7-writer\AGLink\AGLink40.dll"
+
   IfErrors copyError copyOk
 copyError:
   Push "error"

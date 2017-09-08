@@ -27,7 +27,6 @@ namespace S7_writer_plugin
         public bool OnApply(IPluginTaskData newtask, IJobData newParentJob)
         {
             m_dataToApply = newtask as S7TaskData;
-            m_dataToApply.Records.Sort();
             return true;
         }
 
@@ -40,7 +39,13 @@ namespace S7_writer_plugin
                     m_error = Properties.Resources.ibaAnalyzerVersionError;
                     return false;
                 }
-                m_data = m_dataToApply;
+                
+                //Take copy of task data instead of just a reference so that we can work independently
+                m_data = m_dataToApply.Clone() as S7TaskData;
+
+                //Sort records by address
+                m_data.Records.Sort();
+
                 m_dataToApply = null;
             }
             m_error = "";

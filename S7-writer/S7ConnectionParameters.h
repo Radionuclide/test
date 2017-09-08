@@ -2,7 +2,8 @@
 
 namespace S7_writer
 {
-
+	[Serializable]
+	[System::Reflection::Obfuscation]
 	public ref class S7ConnectionParameters
     {
     public:

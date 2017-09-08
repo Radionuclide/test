@@ -105,6 +105,9 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
 copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+
+mkdir "$(SolutionDir)ibaDatCoordinatorService\bin\$(ConfigurationName)\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinatorService\bin\$(ConfigurationName)\plugins"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -205,6 +205,8 @@ namespace S7_writer_plugin
                 {
                     if(bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if(bUseDatFile) ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
+
+                    bool bOneValid = false;
                     S7TaskData.Record[] records = (m_datagvMessages.DataSource as IList<S7TaskData.Record>).ToArray<S7TaskData.Record>();
                     foreach (S7TaskData.Record record in records)
                     {
@@ -220,14 +222,17 @@ namespace S7_writer_plugin
                             f = (double) ibaAnalyzer.Evaluate(record.Expression, 0);
                         }
                         record.TestValue = f;
-                        if(double.IsNaN(f) || double.IsInfinity(f))
-                        {
-                           
+                        if (double.IsNaN(f) || double.IsInfinity(f))
                             MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.GetOperandName()), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                        else
+                            bOneValid = true;
                     }
+
                     m_datagvMessages.Refresh();
                     this.ParentForm.Activate();
+
+                    if(!bOneValid)
+                        MessageBox.Show(Properties.Resources.NoValidEntriesSpecified, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch(Exception ex3)
