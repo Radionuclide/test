@@ -82,11 +82,11 @@ namespace iba
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.licenseAgreementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.licenseAgreementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -516,6 +516,12 @@ namespace iba
             resources.ApplyResources(this.VersionHistoryToolStripMenuItem, "VersionHistoryToolStripMenuItem");
             this.VersionHistoryToolStripMenuItem.Click += new System.EventHandler(this.VersionHistoryToolStripMenuItem_Click);
             // 
+            // licenseAgreementToolStripMenuItem
+            // 
+            this.licenseAgreementToolStripMenuItem.Name = "licenseAgreementToolStripMenuItem";
+            resources.ApplyResources(this.licenseAgreementToolStripMenuItem, "licenseAgreementToolStripMenuItem");
+            this.licenseAgreementToolStripMenuItem.Click += new System.EventHandler(this.licenseAgreementToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -526,19 +532,12 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
-            // licenseAgreementToolStripMenuItem
-            // 
-            this.licenseAgreementToolStripMenuItem.Name = "licenseAgreementToolStripMenuItem";
-            resources.ApplyResources(this.licenseAgreementToolStripMenuItem, "licenseAgreementToolStripMenuItem");
-            this.licenseAgreementToolStripMenuItem.Click += new System.EventHandler(this.licenseAgreementToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStripContainer1);
             this.Name = "MainForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();

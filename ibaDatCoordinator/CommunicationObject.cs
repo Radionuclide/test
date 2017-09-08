@@ -514,7 +514,6 @@ namespace iba
             Program.MainForm.StopButton.Enabled = false;
             Program.MainForm.SetRenderer();
             Program.MainForm.UpdateConnectionStatus();
-            Program.MainForm.UpdateServiceSettingsPane();
         }
 
         public void HandleBrokenConnection(Exception ex)

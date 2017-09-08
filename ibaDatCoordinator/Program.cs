@@ -97,19 +97,21 @@ namespace iba
                     return;
             }
 
-
-
-            MainForm = new MainForm();
-            if (RunsWithService == ServiceEnum.DISCONNECTED)
+            try
             {
-                Remoting.ClientRemotingManager.SetupRemoting();
+                if (RunsWithService == ServiceEnum.DISCONNECTED)
+                    Remoting.ClientRemotingManager.SetupRemoting();
 
-                MainForm.TryToConnect(false);
+                MainForm = new MainForm();
+                MainForm.WindowState = FormWindowState.Normal;
+                MainForm.ShowInTaskbar = true;
+                Application.Run(MainForm);
             }
-
-            MainForm.WindowState = FormWindowState.Normal;
-            MainForm.ShowInTaskbar = true;
-            Application.Run(MainForm);
+            catch(Exception ex)
+            {
+                //This shouldn't happen
+                MessageBox.Show(ex.ToString(), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             Data.LogData.StopLogger();
         }

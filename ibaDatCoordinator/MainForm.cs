@@ -64,9 +64,6 @@ namespace iba
             ToolStripManager.VisualStylesEnabled = true;
             ToolStripManager.Renderer = new ibaToolstripRenderer();
 
-            //load any optional plugins
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE) PluginManager.Manager.LoadPlugins();
-
             this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
 
             //Initialize logger
@@ -77,6 +74,9 @@ namespace iba
             else
                 LogData.InitializeClientLogger(theLogControl.LogView, theLogControl);
             theLogControl.CreateControl();
+
+            //load plugins
+            PluginManager.Manager.LoadPlugins();
 
             configurationToolStripMenuItem.Enabled = false;
             statusToolStripMenuItem.Enabled = true;
@@ -110,12 +110,8 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
             m_configTreeView.ImageList = confsImageList;
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-            {
-                PluginManager.Manager.LoadPlugins();
-                UpdateImageListConfTree();
-            }
-            
+            UpdateImageListConfTree();
+                        
             ImageList confsImageList2 = new ImageList();
             confsImageList2.Images.Add(iba.Properties.Resources.greenarrow);
             confsImageList2.Images.Add(iba.Properties.Resources.redarrow); 
@@ -130,11 +126,23 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
-                WindowState = FormWindowState.Normal;
                 m_menuStrip.Items.Remove(serviceToolStripMenuItem);
                 this.Icon = iba.Properties.Resources.standalone;
             }
             m_navBar.SelectedPane = m_configPane;
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
+                //Start connection timer here
+                Debug.Assert(m_tryConnectTimer == null);
+                m_tryConnectTimer = new System.Threading.Timer(OnConnectTimer);
+                m_tryConnectTimer.Change(TimeSpan.FromMilliseconds(1), TimeSpan.Zero);
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -455,8 +463,9 @@ namespace iba
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                FormStateSerializer.LoadSettings(this, "MainForm");
+
+            FormStateSerializer.LoadSettings(this, "MainForm");
+
             SetRenderer();
             UpdateConnectionStatus();
             SetupHelp();
@@ -2241,16 +2250,6 @@ namespace iba
             }
         }
 
-        public void UpdateServiceSettingsPane()
-        {
-            if(m_navBar.SelectedPane != m_settingsPane || m_settingsPane == null) return; //will be updated on load
-            ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
-            if(pane != null)
-            {
-               // pane.UpdateServiceControls();
-            }
-        }
-
         public Button StartButton
         {
             get { return m_startButton; }
@@ -2657,7 +2656,6 @@ namespace iba
                         {
                             SetRenderer();
                             UpdateConnectionStatus();
-                            UpdateServiceSettingsPane();
                         };
                         this.SafeInvoke(m2, true);
                         resetUpdateTimer = true;
@@ -2755,7 +2753,9 @@ namespace iba
             {
                 bool doStartButtons = false;
                 if (TaskManager.Manager.TaskManagerID != m_lastTaskManagerID)
-                { 
+                {
+                    m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
+
                     if (IsServerClientDifference())
                     {
                         //do download or kill.
@@ -2773,8 +2773,6 @@ namespace iba
                             ReloadClient();
                         };
                         this.SafeInvoke(m, true);
-
-                        m_lastTaskManagerID = TaskManager.Manager.TaskManagerID;
                     }
                     else
                     {
@@ -2989,8 +2987,6 @@ namespace iba
             {
                 confsImageList.Images.Add(info.Icon);
             }
-
-            List<ConfigurationControl> CControlsToUpdate = new List<ConfigurationControl>();
         }
 
         #endregion

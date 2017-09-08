@@ -7,6 +7,7 @@ using System.IO;
 using iba.Data;
 using iba.Remoting;
 using System.Windows.Forms;
+using iba.Logging;
 
 namespace iba.Utility
 {
@@ -77,6 +78,9 @@ namespace iba.Utility
                                         continue;
                                     m_pluginInfos.Add(pti);
                                     m_plugins.Add(pti.Name, plugin);
+
+                                    ibaLogger.DebugFormat("Successfully loaded plugin {0} v{1} from assembly {2}", pti.Name,
+                                        assembly.GetName().Version, assembly.Location);
                                 }
                             }
                         }
@@ -97,19 +101,36 @@ namespace iba.Utility
             foreach (string file in files)
             {
                 string cpy = file.Replace(m_cachePath, m_pluginPath);
+
                 try
                 {
                     string dir = Path.GetDirectoryName(cpy);
                     if (!Directory.Exists(dir))
                         Directory.CreateDirectory(dir);
-                    File.Copy(file, cpy, true);
-                    
                 }
                 catch
                 {
                     return 1;
                 }
+
+                //Try a few times just in case a previous instance is still running
+                for (int i = 0; i < 5; i++)
+                {
+                    try
+                    {
+                        File.Copy(file, cpy, true);
+                        break;
+                    }
+                    catch
+                    {
+                        if (i == 4)
+                            return 1;
+                        else
+                            System.Threading.Thread.Sleep(1000);
+                    }
+                }
             }
+
             try
             {
                 Directory.Delete(m_cachePath, true);
@@ -229,33 +250,46 @@ namespace iba.Utility
             if (list == null || string.IsNullOrEmpty(basePath)) return false; //error in connecton, no need to restart
             if (!basePath.EndsWith("\\")) basePath += "\\";
             list = FilterPlugins(list, basePath);
+
+            if (list == null || list.Length == 0)
+                return false;
+
             bool failed = false;
+
+            System.Diagnostics.Debug.Assert(Program.MainForm.IsHandleCreated);
+
             MethodInvoker m = delegate ()
             {
-                if (list != null && list.Length > 0)
-                {
-
-                    if (!Directory.Exists(m_cachePath))
-                        Directory.CreateDirectory(m_cachePath);
-                    using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(list, basePath, m_cachePath, wrapper.GetServerSideFileHandler()))
-                    {
-                        downloadForm.ShowDialog(Program.MainForm);
-                    }
-                    if (CopyPluginCache()!=0)
-                    {
-                        MessageBox.Show(iba.Properties.Resources.RestartPluginsRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        failed = true;
-                        return;
-                    }
-                }
-                if (!failed)
+                if (DownloadFiles(list, basePath, wrapper))
                 {
                     PluginManager.Manager.LoadPlugins(wrapper);
                     Program.MainForm.UpdatePluginGUIElements();
                 }
+                else
+                    failed = true;
             };
             Program.MainForm.Invoke(m);
+
             return failed;
+        }
+
+        bool DownloadFiles(ServerFileInfo[] list, string basePath, CommunicationObjectWrapper wrapper)
+        {
+            if (!Directory.Exists(m_cachePath))
+                Directory.CreateDirectory(m_cachePath);
+
+            using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(list, basePath, m_cachePath, wrapper.GetServerSideFileHandler()))
+            {
+                downloadForm.ShowDialog(Program.MainForm);
+            }
+
+            if (CopyPluginCache() != 0)
+            {
+                MessageBox.Show(iba.Properties.Resources.RestartPluginsRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
         }
 
         public bool HasPlugin(string name)
