@@ -280,7 +280,7 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid) return pair.Value.Status.GetMinimalStatusData(permanentError);
             }
-            throw new KeyNotFoundException(guid.ToString() + " not found");
+            return null;
         }
 
         virtual public bool IsJobStarted(Guid guid)

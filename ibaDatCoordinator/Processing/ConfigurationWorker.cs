@@ -101,7 +101,7 @@ namespace iba.Processing
             if (m_sd.Started) return;
             m_stop = false;
             m_delayedHDQStop = false;
-            UpdateConfiguration();
+            UpdateConfiguration(false);
             m_sd = new StatusData(m_cd);
             m_sd.ProcessedFiles = m_processedFiles = new FileSetWithTimeStamps();
             m_sd.ReadFiles = m_toProcessFiles = new FileSetWithTimeStamps();
@@ -158,7 +158,68 @@ namespace iba.Processing
             }
         }
 
-        private bool UpdateConfiguration()
+        private void AddNetworkReferences()
+        {
+            if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+            {
+                object errorObject;
+                SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
+                bool doSourceDirectory = true;
+                if (errorObject != null)
+                {
+                    doSourceDirectory = false;
+                    if (errorObject is ConfigurationData)
+                    {
+                        networkErrorOccured = true;
+                        Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, m_cd.DatDirectoryUNC));
+                        tickCount = 0;
+                    }
+                    else
+                    {
+                        TaskDataUNC t = errorObject as TaskDataUNC;
+                        if (t != null)
+                        {
+                            Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
+                        }
+                        //task was the problem, not the source -> doSource
+                        doSourceDirectory = true;
+                    }
+                }
+
+                if (doSourceDirectory)
+                {
+                    if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
+                        networkErrorOccured = true;
+                    }
+                    else if (m_cd.DetectNewFiles)
+                    {
+                        RenewFswt();
+                        networkErrorOccured = false;
+                    }
+                    tickCount = 0;
+                }
+
+                if (!m_cd.DetectNewFiles)
+                    DisposeFswt();
+            }
+            else if (m_cd.JobType == ConfigurationData.JobTypeEnum.OneTime)
+            {
+                object errorObject;
+                SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
+                if (errorObject != null)
+                {
+                    CleanupTaskData t = errorObject as CleanupTaskData;
+                    if (t != null)
+                    {
+                        Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
+                    }
+                }
+            }
+        }
+
+        private bool UpdateConfiguration(bool bAddNetworkReferences = true)
         {
             if (m_toUpdate != null)
             {
@@ -218,63 +279,11 @@ namespace iba.Processing
                     m_cd = m_toUpdate.Clone_AlsoCopyGuids();
                     NotifyClientsOfUpdate();
 
-                    if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                    if (bAddNetworkReferences)
                     {
-                        object errorObject;
-                        SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
-                        bool doSourceDirectory = true;
-                        if (errorObject != null)
-                        {
-                            doSourceDirectory = false;
-                            if (errorObject is ConfigurationData)
-                            {
-                                networkErrorOccured = true;
-                                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, m_cd.DatDirectoryUNC));
-                                tickCount = 0;
-                            }
-                            else
-                            {
-                                TaskDataUNC t = errorObject as TaskDataUNC;
-                                if (t != null)
-                                {
-                                    Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
-                                }
-                                //task was the problem, not the source -> doSource
-                                doSourceDirectory = true;
-                            }
-                        }
-                        
-                        if (doSourceDirectory)
-                        {
-                            if (!Directory.Exists(m_cd.DatDirectoryUNC)) //share exist but folder does not, this situation is handled by main Run loop
-                            {
-                                Log(Logging.Level.Exception, iba.Properties.Resources.logDatDirError);
-                                networkErrorOccured = true;
-                            }
-                            else if (m_cd.DetectNewFiles)
-                            {
-                                RenewFswt();
-                                networkErrorOccured = false;
-                            }
-                            tickCount = 0;
-                        }
+                        AddNetworkReferences();
+                    }
 
-                        if (!m_cd.DetectNewFiles)
-                            DisposeFswt();
-                    }
-                    else if (m_cd.JobType == ConfigurationData.JobTypeEnum.OneTime)
-                    {
-                        object errorObject;
-                        SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
-                        if (errorObject != null)
-                        {
-                            CleanupTaskData t = errorObject as CleanupTaskData;
-                            if (t != null)
-                            {
-                                Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
-                            }
-                        }
-                    }
 
                     //also update statusdata
                     m_sd.CorrConfigurationData = m_cd;
@@ -538,9 +547,12 @@ namespace iba.Processing
             if (m_stop)
             {
                 m_sd.Started = false;
-                SharesHandler.Handler.ReleaseFromConfiguration(m_cd); 
+                //MV: 11-9-2017 not necessary anymore, network references aren't added by UpdateConfiguration initial call anymore
+                //SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                 return;
             }
+            AddNetworkReferences();
+
 
             lock (m_licensedTasks)
             {
@@ -773,10 +785,11 @@ namespace iba.Processing
             if (m_stop)
             {
                 m_sd.Started = false;
-                SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
+                //MV: 11-9-2017 not necessary anymore, network references aren't added by UpdateConfiguration initial call anymore
+                //SharesHandler.Handler.ReleaseFromConfiguration(m_cd);
                 return;
             }
-
+            AddNetworkReferences();
 
             lock (m_licensedTasks)
             {

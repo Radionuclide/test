@@ -232,6 +232,11 @@ namespace iba.Controls
             m_refreshTimer.Enabled = false;
             if (sender != null) //refresh
                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
+            if (m_data==null) //returned zero, try again other time
+            {
+                m_refreshTimer.Enabled = true;
+                return;
+            }
             if(m_data.UpdatingFileList) this.Cursor = Cursors.WaitCursor;
             else
             {

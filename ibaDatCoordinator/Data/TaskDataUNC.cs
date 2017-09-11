@@ -163,6 +163,7 @@ namespace iba.Data
             cdat.m_numbFolders = m_numbFolders;
             cdat.m_username = m_username;
             cdat.m_pass = m_pass;
+            cdat.m_destinationMap = m_destinationMap;
             cdat.m_destinationMapUNC = m_destinationMapUNC;
             cdat.m_quota = m_quota;
             cdat.m_quotaFree = m_quotaFree;
@@ -362,7 +363,7 @@ namespace iba.Data
         public void CopyUNCData(TaskDataUNC uncdat)
         {
             CopyCleanupData(uncdat);
-            uncdat.m_destinationMap = m_destinationMap;
+            //uncdat.m_destinationMap = m_destinationMap;
             uncdat.m_overwriteFiles = m_overwriteFiles;
             uncdat.m_subfolderChoice = m_subfolderChoice;
             uncdat.m_dirTimeChoice = m_dirTimeChoice;

@@ -6,6 +6,7 @@ using System.IO;
 using iba.Data;
 using iba.Plugins;
 using iba.Logging;
+using System.Threading;
 
 namespace iba.Utility
 {
@@ -142,33 +143,83 @@ namespace iba.Utility
             }
         }
 
-        private int m_error;
         private int AddReference(string computer, string user, string pass)
         {
+            int errorCode;
+            return AddReferenceInternal(computer, user, pass, out errorCode);
+        }
+        private int AddReferenceInternal(string computer, string user, string pass, out int errorCode)
+        {
+            errorCode = 0;
             lock (m_connectedComputers)
             {
                 if (m_connectedComputers.ContainsKey(computer))
                     return ++m_connectedComputers[computer];
                 else
                 {
-                    m_error = Shares.ConnectToComputer(computer, user, pass);
-                    if (m_error == 0)
+                    switch (TryToConnectToComputer(computer,user,pass,out errorCode))
                     {
-                        m_connectedComputers.Add(computer, 1);
-                        return 1;
-                    }
-                    else if (Directory.Exists(computer) ) //already available, do not add
-                    {
-                        LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " already existed" + m_error.ToString());
-                        return 1;
-                    }
-                    else
-                    {
-                        LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " failed: " + m_error.ToString());
-                        return 0;
+                        case ConnectResult.OK:
+                            m_connectedComputers.Add(computer, 1);
+                            return 1;
+                        case ConnectResult.ACCESSIBLE:
+                            LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " already existed" + errorCode.ToString());
+                            return 1;
+                        case ConnectResult.FAILED:
+                            LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " failed: " + errorCode.ToString());
+                            return 0;
+                        case ConnectResult.TIMEDOUT:
+                            LogData.Data.Log(Logging.Level.Warning, "AddReference: connection to: " + computer + " timed out");
+                            return 0;
                     }
                 }
+                return 0;
             }
+        }
+        enum ConnectResult { OK, ACCESSIBLE, FAILED, TIMEDOUT }
+        ConnectResult TryToConnectToComputer(string computer, string user, string pass, out int errorCode)
+        {
+            //TODO: do this on a thread
+            TimeSpan timeOut = TimeSpan.FromSeconds(10);
+
+            AutoResetEvent waitConnect = new AutoResetEvent(false);
+            int errorCodeLocal=0;
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+               errorCodeLocal = Shares.ConnectToComputer(computer, user, pass);
+               waitConnect.Set();
+            }
+            
+            );
+            if (!waitConnect.WaitOne(timeOut))
+            {
+                errorCode = errorCodeLocal;
+                return ConnectResult.TIMEDOUT;
+            }
+            errorCode = errorCodeLocal;
+            if (errorCode == 0)
+            {
+                waitConnect.Dispose();
+                return ConnectResult.OK;
+            }
+            else
+            {
+                bool exists = false;
+                ThreadPool.QueueUserWorkItem(o =>
+                {
+                    exists = Directory.Exists(computer);
+                });
+                if (!waitConnect.WaitOne(timeOut))
+                {
+                    errorCode = errorCodeLocal;
+                    return ConnectResult.TIMEDOUT;
+                }
+                else if (exists) //already available, do not add
+                {
+                    return ConnectResult.ACCESSIBLE;
+                }
+            }
+            return ConnectResult.FAILED;
         }
 
         public bool TryReconnect(string path, string user, string pass)
@@ -297,11 +348,12 @@ namespace iba.Utility
                  Release(ComputerName(path));
         }
 
-        public void AddReferenceDirect(string path, string username, string pass, out string error)
+        public void AddReferenceDirect(string path, string username, string pass, out string errorStr)
         {
-            error = String.Empty;
-            if (IsUNC(path) && AddReference(ComputerName(path), username, pass)==0)
-                error = GetErrorMessage(m_error);
+            errorStr = String.Empty;
+            int error;
+            if (IsUNC(path) && AddReferenceInternal(ComputerName(path), username, pass, out error)==0)
+                errorStr = GetErrorMessage(error);
         }
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
