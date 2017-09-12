@@ -210,7 +210,7 @@ namespace iba.Processing
                 SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject); //for a one time job those are only the tasks
                 if (errorObject != null)
                 {
-                    CleanupTaskData t = errorObject as CleanupTaskData;
+                    TaskWithTargetDirData t = errorObject as TaskWithTargetDirData;
                     if (t != null)
                     {
                         Log(iba.Logging.Level.Exception, String.Format(iba.Properties.Resources.UNCPathUnavailable, t.DestinationMapUNC));
@@ -1310,7 +1310,7 @@ namespace iba.Processing
                                     catch (System.IO.FileNotFoundException)
                                     {
                                         //Log(iba.Logging.Level.Warning, String.Format("Directory {0} exists but setting FileSystemWatcher failed, forcing reconnect.",m_cd.DatDirectoryUNC));
-                                        SharesHandler.Handler.TryReconnectForce(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password);
+                                        SharesHandler.Handler.TryReconnect(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password,true);
                                         RenewFswt();
                                     }
                                 }
@@ -2860,9 +2860,9 @@ namespace iba.Processing
                 else
                     CopyDatFile(DatFile, dat);
             }
-            else if(task.GetType() == typeof(CleanupTaskData))
+            else if(task.GetType() == typeof(TaskWithTargetDirData))
             {
-                DoCleanupTask(DatFile, task as CleanupTaskData);
+                DoCleanupTask(DatFile, task as TaskWithTargetDirData);
             }
             else if (task is CustomTaskData)
             {
@@ -3355,6 +3355,15 @@ namespace iba.Processing
                 {
                     dir = GetOutputDirectoryName(filename, task);
                     if(dir == null) return;
+                    if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+                    {
+                        Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
+                        {
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                        }
+                        return;
+                    }
                     if(!Directory.Exists(dir))
                     {
                         try
@@ -3363,31 +3372,12 @@ namespace iba.Processing
                         }
                         catch
                         {
-                            bool failed = true;
-                            if(SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                            lock(m_sd.DatFileStates)
                             {
-                                failed = false;
-                                if(!Directory.Exists(dir))
-                                {
-                                    try
-                                    {
-                                        Directory.CreateDirectory(dir);
-                                    }
-                                    catch
-                                    {
-                                        failed = true;
-                                    }
-                                }
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                             }
-                            if (failed)
-                            {
-                                Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                                lock(m_sd.DatFileStates)
-                                {
-                                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                                }
-                                return;
-                            }
+                            return;
                         }
                         //new directory created, do directory cleanup if that is the setting
                         if(task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
@@ -3431,6 +3421,15 @@ namespace iba.Processing
                     dir = htmlOrImageOutputdir;
                 }
 
+                if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
 
                 if (!Directory.Exists(dir))
                 {
@@ -3440,32 +3439,12 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        bool failed = true;
-                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
                         {
-                            failed = false;
-                            if (!Directory.Exists(dir))
-                            {
-                                try
-                                {
-                                    Directory.CreateDirectory(dir);
-                                }
-                                catch
-                                {
-                                    failed = true;
-                                }
-                            }
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
-
-                        if (failed)
-                        {
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            }
-                            return;
-                        }
+                        return;
                     }
                     if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                         task.DoDirCleanupNow = true;                    
@@ -3649,6 +3628,15 @@ namespace iba.Processing
             {
                 dir = GetOutputDirectoryName(filename, task);
                 if (dir == null) return;
+                if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
                 if (!Directory.Exists(dir))
                 {
                     try
@@ -3657,31 +3645,12 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        bool failed = true;
-                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
                         {
-                            failed = false;
-                            if (!Directory.Exists(dir))
-                            {
-                                try
-                                {
-                                    Directory.CreateDirectory(dir);
-                                }
-                                catch
-                                {
-                                    failed = true;
-                                }
-                            }
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
-                        if (failed)
-                        {
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            }
-                            return;
-                        }
+                        return;
                     }
                     //new directory created, do directory cleanup if that is the setting
                     if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
@@ -3786,7 +3755,7 @@ namespace iba.Processing
             }
         }
 
-        internal void CleanupDirs(string filename, CleanupTaskData task, string extension)
+        internal void CleanupDirs(string filename, TaskWithTargetDirData task, string extension)
         {
             try
             {
@@ -3835,7 +3804,7 @@ namespace iba.Processing
             }
         }
 
-        private void RemoveDirectory(string filename, CleanupTaskData task, string extension, string dir)
+        private void RemoveDirectory(string filename, TaskWithTargetDirData task, string extension, string dir)
         {
             try
             {
@@ -3954,6 +3923,15 @@ namespace iba.Processing
                     }
                     return;
                 }
+                if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
                 if (!Directory.Exists(dir))
                 {
                     try
@@ -3962,31 +3940,12 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        bool failed = true;
-                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
                         {
-                            failed = false;
-                            if (!Directory.Exists(dir))
-                            {
-                                try
-                                {
-                                    Directory.CreateDirectory(dir);
-                                }
-                                catch
-                                {
-                                    failed = true;
-                                }
-                            }
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
-                        if (failed)
-                        {
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            }
-                            return;
-                        }
+                        return;
                     }
                     if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                         task.DoDirCleanupNow = true;
@@ -4107,15 +4066,15 @@ namespace iba.Processing
         }
 
 
-        private void DoCleanupTask(string filename, CleanupTaskData data)
+        private void DoCleanupTask(string filename, TaskWithTargetDirData data)
         {
             switch(data.OutputLimitChoice)
             {
-                case CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories:
+                case TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories:
                     CleanupDirs(filename, data, data.Extension);
                     break;
-                case CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace:
-                case CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace:
+                case TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace:
+                case TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace:
                     {
                         FileQuotaCleanup fqc = new FileQuotaCleanup(data, data.Extension);
                         fqc.Init();
@@ -4420,7 +4379,15 @@ namespace iba.Processing
                 }
                 return;
             }
-
+            if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
             if (!Directory.Exists(dir))
             {
                 try
@@ -4429,32 +4396,12 @@ namespace iba.Processing
                 }
                 catch
                 {
-                    bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                    Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                    lock (m_sd.DatFileStates)
                     {
-                        failed = false;
-                        if (!Directory.Exists(dir))
-                        {
-                            try
-                            {
-                                Directory.CreateDirectory(dir);
-                            }
-                            catch
-                            {
-                                failed = true;
-                            }
-                        }
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
-
-                    if (failed)
-                    {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                        lock (m_sd.DatFileStates)
-                        {
-                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                        }
-                        return;
-                    }
+                    return;
                 }
                 if (task.Subfolder != ReportData.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
                     task.DoDirCleanupNow = true;
@@ -4584,6 +4531,15 @@ namespace iba.Processing
             {
                 dir = GetOutputDirectoryName(filename, task);
                 if (dir == null) return;
+                if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
+                {
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                    return;
+                }
                 if (!Directory.Exists(dir))
                 {
                     try
@@ -4592,31 +4548,12 @@ namespace iba.Processing
                     }
                     catch
                     {
-                        bool failed = true;
-                        if (SharesHandler.Handler.TryReconnect(dir, task.Username, task.Password))
+                        Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
+                        lock (m_sd.DatFileStates)
                         {
-                            failed = false;
-                            if (!Directory.Exists(dir))
-                            {
-                                try
-                                {
-                                    Directory.CreateDirectory(dir);
-                                }
-                                catch
-                                {
-                                    failed = true;
-                                }
-                            }
+                            m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                         }
-                        if (failed)
-                        {
-                            Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, task);
-                            lock (m_sd.DatFileStates)
-                            {
-                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                            }
-                            return;
-                        }
+                        return;
                     }
                     //new directory created, do directory cleanup if that is the setting
                     if (task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)

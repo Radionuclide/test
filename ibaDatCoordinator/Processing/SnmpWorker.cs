@@ -308,10 +308,10 @@ namespace iba.Processing
                 "LocalCleanupType", "Type of limitation of disk space usage",
                 new Dictionary<int, string>
                 {
-                    {(int) CleanupTaskData.OutputLimitChoiceEnum.None, "none"},
-                    {(int) CleanupTaskData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
-                    {(int) CleanupTaskData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
-                    {(int) CleanupTaskData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.None, "none"},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
                 }
             );
         }

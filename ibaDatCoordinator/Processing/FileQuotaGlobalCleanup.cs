@@ -13,7 +13,7 @@ namespace iba.Processing
     internal class FileQuotaGlobalCleanup : FileQuotaCleanup
     {
 
-        public FileQuotaGlobalCleanup(CleanupTaskData task, string extension) 
+        public FileQuotaGlobalCleanup(TaskWithTargetDirData task, string extension) 
             : base(task, extension)
         { }
 

@@ -204,7 +204,15 @@ namespace iba.Processing
                 }
                 dir = mp4outputdir;
             }
-
+            if (!SharesHandler.Handler.TestTargetDirAvailable(m_task)) //will also try reconnect
+            {
+                m_confWorker.Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, m_task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return null;
+            }
             if (!Directory.Exists(dir))
             {
                 try
@@ -213,31 +221,12 @@ namespace iba.Processing
                 }
                 catch
                 {
-                    bool failed = true;
-                    if (SharesHandler.Handler.TryReconnect(dir, m_task.Username, m_task.Password))
+                    m_confWorker.Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, m_task);
+                    lock (m_sd.DatFileStates)
                     {
-                        failed = false;
-                        if (!Directory.Exists(dir))
-                        {
-                            try
-                            {
-                                Directory.CreateDirectory(dir);
-                            }
-                            catch
-                            {
-                                failed = true;
-                            }
-                        }
+                        m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
                     }
-                    if (failed)
-                    {
-                        m_confWorker.Log(Logging.Level.Exception, iba.Properties.Resources.logCreateDirectoryFailed + ": " + dir, filename, m_task);
-                        lock (m_sd.DatFileStates)
-                        {
-                            m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
-                        }
-                        return null;
-                    }
+                    return null;
                 }
                 //new directory created, do directory cleanup if that is the setting
                 if (m_task.Subfolder != TaskDataUNC.SubfolderChoice.NONE && m_task.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)

@@ -127,18 +127,15 @@
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_btTransferAnalyzerSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 53</value>
+    <value>19, 53</value>
   </data>
   <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 23</value>
+    <value>208, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
@@ -163,10 +160,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbAnalyzerExe.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 27</value>
+    <value>132, 27</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>554, 20</value>
+    <value>503, 20</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +187,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>638, 16</value>
+    <value>641, 16</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -244,10 +241,10 @@
     <value>3</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 148</value>
+    <value>12, 148</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 86</value>
+    <value>705, 86</value>
   </data>
   <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -295,10 +292,10 @@
     <value>0</value>
   </data>
   <data name="m_tbPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 103</value>
+    <value>132, 103</value>
   </data>
   <data name="m_tbPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 20</value>
+    <value>92, 20</value>
   </data>
   <data name="m_tbPort.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -328,7 +325,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRestart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>578, 67</value>
+    <value>581, 67</value>
   </data>
   <data name="m_btnRestart.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
@@ -358,10 +355,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblServiceStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 74</value>
+    <value>132, 74</value>
   </data>
   <data name="m_lblServiceStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 23</value>
+    <value>198, 23</value>
   </data>
   <data name="m_lblServiceStatus.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -397,7 +394,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>472, 67</value>
+    <value>475, 67</value>
   </data>
   <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
@@ -433,7 +430,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 67</value>
+    <value>369, 67</value>
   </data>
   <data name="m_btnStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
@@ -523,7 +520,7 @@
     <value>14, 43</value>
   </data>
   <data name="m_btnOptimize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 23</value>
+    <value>210, 23</value>
   </data>
   <data name="m_btnOptimize.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -562,10 +559,10 @@
     <value>Realtime</value>
   </data>
   <data name="m_comboPriority.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 17</value>
+    <value>132, 17</value>
   </data>
   <data name="m_comboPriority.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 21</value>
+    <value>198, 21</value>
   </data>
   <data name="m_comboPriority.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -612,9 +609,6 @@
   <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_cbAutoStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="m_cbAutoStart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -646,10 +640,10 @@
     <value>11</value>
   </data>
   <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 5</value>
+    <value>12, 5</value>
   </data>
   <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 137</value>
+    <value>705, 137</value>
   </data>
   <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>

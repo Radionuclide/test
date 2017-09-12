@@ -103,7 +103,7 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.updateDataTaskTitle;
             else if (this is PauseTaskData)
                 m_name = iba.Properties.Resources.pauseTaskTitle;
-            else if (this is CleanupTaskData)
+            else if (this is TaskWithTargetDirData)
                 m_name = iba.Properties.Resources.cleanupTaskTitle; 
         }
 

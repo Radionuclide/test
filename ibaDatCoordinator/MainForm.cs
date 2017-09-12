@@ -544,10 +544,10 @@ namespace iba
                     taskNode = new TreeNode(task.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, task as PauseTaskData);
                 }
-                else if(task.GetType() == typeof(CleanupTaskData))
+                else if(task.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
-                    taskNode.Tag = new CleanupTaskTreeItemData(this, task as CleanupTaskData);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, task as TaskWithTargetDirData);
                 }
                 else if (task.GetType() == typeof(SplitterTaskData))
                 {
@@ -1099,10 +1099,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if(m_task_copy.GetType() == typeof(CleanupTaskData))
+                else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
-                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as TaskWithTargetDirData);
                 }
                 else if (m_task_copy.GetType() == typeof(SplitterTaskData))
                 {
@@ -1183,10 +1183,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
-                else if(m_task_copy.GetType() == typeof(CleanupTaskData))
+                else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
-                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as CleanupTaskData);
+                    taskNode.Tag = new CleanupTaskTreeItemData(this, m_task_copy as TaskWithTargetDirData);
                 }
                 else if (m_task_copy.GetType() == typeof(SplitterTaskData))
                 {
@@ -1617,7 +1617,7 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            CleanupTaskData cleanup = new CleanupTaskData(confData);
+            TaskWithTargetDirData cleanup = new TaskWithTargetDirData(confData);
             new SetNextName(cleanup);
             confData.Tasks.Add(cleanup);
             if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)

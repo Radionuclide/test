@@ -7,9 +7,9 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    public class CleanupTaskData : TaskData
+    public class TaskWithTargetDirData : TaskData
     {
-        public CleanupTaskData(ConfigurationData parent)
+        public TaskWithTargetDirData(ConfigurationData parent)
             : base(parent) 
         {
             m_pass = "";
@@ -22,7 +22,7 @@ namespace iba.Data
             m_extension = "*.dat";
         }
 
-        public CleanupTaskData() : this(null)
+        public TaskWithTargetDirData() : this(null)
         {
         }
 
@@ -146,7 +146,7 @@ namespace iba.Data
             set { m_destinationMapUNC = value; }
         }
 
-        public bool CleanupDataIsSame(CleanupTaskData other)
+        public bool CleanupDataIsSame(TaskWithTargetDirData other)
         {
             return other.m_numbFolders == m_numbFolders &&
             other.m_destinationMap == m_destinationMap &&
@@ -158,7 +158,7 @@ namespace iba.Data
             other.m_outputLimitChoice == m_outputLimitChoice;
         }
 
-        public void CopyCleanupData(CleanupTaskData cdat)
+        public void CopyCleanupData(TaskWithTargetDirData cdat)
         {
             cdat.m_numbFolders = m_numbFolders;
             cdat.m_username = m_username;
@@ -173,14 +173,14 @@ namespace iba.Data
 
         override public TaskData CloneInternal()
         {
-            CleanupTaskData res = new CleanupTaskData(m_parentCD);
+            TaskWithTargetDirData res = new TaskWithTargetDirData(m_parentCD);
             CopyCleanupData(res);
             return res;
         }
 
         override public bool IsSameInternal(TaskData taskData)
         {
-            return CleanupDataIsSame(taskData as CleanupTaskData);
+            return CleanupDataIsSame(taskData as TaskWithTargetDirData);
         }
 
         public void UpdateUNC()
@@ -191,7 +191,7 @@ namespace iba.Data
     }
 
     [Serializable]
-    public abstract class TaskDataUNC : CleanupTaskData
+    public abstract class TaskDataUNC : TaskWithTargetDirData
     {
         private bool m_overwriteFiles;
         public bool OverwriteFiles

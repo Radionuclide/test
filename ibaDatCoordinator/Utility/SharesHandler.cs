@@ -208,6 +208,7 @@ namespace iba.Utility
                 ThreadPool.QueueUserWorkItem(o =>
                 {
                     exists = Directory.Exists(computer);
+                    waitConnect.Set();
                 });
                 if (!waitConnect.WaitOne(timeOut))
                 {
@@ -216,36 +217,56 @@ namespace iba.Utility
                 }
                 else if (exists) //already available, do not add
                 {
+                    waitConnect.Dispose();
                     return ConnectResult.ACCESSIBLE;
                 }
             }
             return ConnectResult.FAILED;
         }
 
-        public bool TryReconnect(string path, string user, string pass)
-        {
-            return TryReconnectCommon(path, user, pass, false);
-        }
-
-        public bool TryReconnectForce(string path, string user, string pass)
-        {
-            return TryReconnectCommon(path, user, pass, true);
-        }
-
-        public bool TryReconnectCommon(string path, string user, string pass, bool force)
+        public bool TryReconnect(string path, string user, string pass, bool force = false)
         {
             string computer = ComputerName(path);
             lock (m_connectedComputers)
             {
                 if (m_connectedComputers.ContainsKey(computer))
                 {
-                    if (!force && Directory.Exists(path)) return true; //path restored by other means
-                    return Shares.ConnectToComputer(computer, user, pass) == 0
+                    TimeSpan timeOut = TimeSpan.FromSeconds(10);
+                    AutoResetEvent waitConnect = new AutoResetEvent(false);
+                    if (!force)
+                    {
+                        bool exists = false;
+                        ThreadPool.QueueUserWorkItem(o =>
+                        {
+                            exists = Directory.Exists(computer);
+                            waitConnect.Set();
+                        });
+                        if (!waitConnect.WaitOne(timeOut))
+                        {
+                            return false;
+                        }
+                        if (exists)
+                        {
+                            waitConnect.Dispose();
+                            return true; //path restored by other means
+                        }
+                    }
+                    bool connected = false;
+                    ThreadPool.QueueUserWorkItem(o =>
+                    {
+                        connected =
+                        Shares.ConnectToComputer(computer, user, pass) == 0
                         && Directory.Exists(computer);
+                    });
+                    if (!waitConnect.WaitOne(timeOut))
+                    {
+                        return false;
+                    }
+                    waitConnect.Dispose();
+                    return connected;
                 }
                 else
                 {
-                    //return false;
                     return AddReference(computer, user, pass) == 1 && Directory.Exists(computer);
                 }
             }
@@ -266,14 +287,14 @@ namespace iba.Utility
             foreach (TaskData dat in conf.Tasks)
             {
                 if (!dat.Enabled) continue;
-                CleanupTaskData datUNC = dat as CleanupTaskData;
+                TaskWithTargetDirData datUNC = dat as TaskWithTargetDirData;
                 if (datUNC != null && IsUNC(datUNC.DestinationMapUNC))
                 {
                     if (AddReference(ComputerName(datUNC.DestinationMapUNC), datUNC.Username, datUNC.Password) == 0)
                     {
                         foreach (TaskData dat2 in conf.Tasks)
                         {
-                            CleanupTaskData datUNC2 = dat2 as CleanupTaskData;
+                            TaskWithTargetDirData datUNC2 = dat2 as TaskWithTargetDirData;
                             if (datUNC == datUNC2) break;
                             if (datUNC2 != null)
                                 Release(ComputerName(datUNC2.DestinationMapUNC));
@@ -284,6 +305,14 @@ namespace iba.Utility
                 }
             }
         }
+
+        public bool TestTargetDirAvailable(TaskWithTargetDirData tData)
+        {
+            if (!tData.Enabled) return true;
+            if (!IsUNC(tData.DestinationMapUNC)) return true; //no network connection tests, old code to test di
+            return TryReconnect(tData.DestinationMapUNC, tData.Username, tData.Password);
+        }
+
 
         public bool IsUNC(string path)
         {

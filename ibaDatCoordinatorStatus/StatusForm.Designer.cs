@@ -207,7 +207,6 @@
             this.Controls.Add(this.m_gbApp);
             this.Name = "StatusForm";
             this.ShowInTaskbar = false;
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.m_gbApp.ResumeLayout(false);

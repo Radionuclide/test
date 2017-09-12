@@ -292,6 +292,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target system cannot be accessed:.
+        /// </summary>
+        internal static string cannotAccessTargetSystem {
+            get {
+                return ResourceManager.GetString("cannotAccessTargetSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         internal static string ChangeStr {

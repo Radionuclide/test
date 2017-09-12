@@ -248,7 +248,7 @@ namespace iba.Data
         internal class LocalCleanupInfo
         {
             /// <summary> Oid 1 </summary>
-            public CleanupTaskData.OutputLimitChoiceEnum LimitChoice;
+            public TaskWithTargetDirData.OutputLimitChoiceEnum LimitChoice;
             /// <summary> Least significant (rightmost) subid for corresponding object </summary>
             public const uint LimitChoiceOid = 1;
 

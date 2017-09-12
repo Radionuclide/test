@@ -66,7 +66,7 @@ namespace iba.Controls
             }
         }
 
-        CleanupTaskData m_data;
+        TaskWithTargetDirData m_data;
         IPropertyPaneManager m_manager;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
@@ -83,7 +83,7 @@ namespace iba.Controls
             }
 
             m_manager = manager;
-            m_data = datasource as CleanupTaskData;
+            m_data = datasource as TaskWithTargetDirData;
 
             m_nudDirs.Value = m_data.SubfoldersNumber;
             m_nudQuota.Value = m_data.Quota;
@@ -92,7 +92,7 @@ namespace iba.Controls
             m_rbLimitDirectories.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories;
             m_rbQuota.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDiskspace;
             m_rbLimitFree.Checked = m_data.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
-            if(m_data.OutputLimitChoice == CleanupTaskData.OutputLimitChoiceEnum.None) //someones been manually editing
+            if(m_data.OutputLimitChoice == TaskWithTargetDirData.OutputLimitChoiceEnum.None) //someones been manually editing
             {
                 m_rbLimitDirectories.Checked = true;
             }

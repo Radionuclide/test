@@ -13,13 +13,13 @@ namespace iba.Processing
     internal class FileQuotaCleanup
     {
         private LinkedList<String> m_files;
-        protected CleanupTaskData m_task;
+        protected TaskWithTargetDirData m_task;
         protected string m_extension;
         protected UInt64 m_size;
         protected CancellationToken m_cancelToken = new CancellationToken(false);
         protected bool m_failureWhilePreviouslyScanning = false;
 
-        public FileQuotaCleanup(CleanupTaskData task, string extension)
+        public FileQuotaCleanup(TaskWithTargetDirData task, string extension)
         {
             m_task = task;
             m_files = new LinkedList<String>();

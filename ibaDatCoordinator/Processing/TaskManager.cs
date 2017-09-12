@@ -847,7 +847,7 @@ namespace iba.Processing
                         taskTypeStr = "Script";
                         //var typedData = taskData as BatchFileData;
                     }
-                    else if (taskData is CleanupTaskData)
+                    else if (taskData is TaskWithTargetDirData)
                     {
                         taskTypeStr = "Cleanup";
                         //var typedData = taskData as CleanupTaskData;
@@ -872,7 +872,7 @@ namespace iba.Processing
                 taskInfo.TaskType = taskTypeStr;
 
                 // if cleanup info is present, add it to the task
-                var cleanupTaskData = taskData as CleanupTaskData;
+                var cleanupTaskData = taskData as TaskWithTargetDirData;
                 if (cleanupTaskData != null)
                 {
                     taskInfo.CleanupInfo = new SnmpObjectsData.LocalCleanupInfo

@@ -121,12 +121,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj">
-      <Project>{03efd2fc-187d-42a5-b3a7-38232b4ff060}</Project>
-      <Name>ibaDatCoordinator</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\DatCo_SrvStat_Icon_disconn.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DatCo_SrvStat_Icon_stopped.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj">
+      <Project>{03efd2fc-187d-42a5-b3a7-38232b4ff060}</Project>
+      <Name>ibaDatCoordinator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

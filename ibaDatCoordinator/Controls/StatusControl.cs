@@ -287,7 +287,7 @@ namespace iba.Controls
                             bitmap = m_pauseIcons[value];
                         else if (task is SplitterTaskData)
                             bitmap = m_splitIcons[value];
-                        else if (task is CleanupTaskData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
+                        else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
                             bitmap = m_cleanupIcons[value];
                         else if (task is ICustomTaskData)
                         {

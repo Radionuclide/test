@@ -465,7 +465,7 @@ namespace iba
     #region CleanupTaskTreeItemData
     public class CleanupTaskTreeItemData : TreeItemData
     {
-        public CleanupTaskTreeItemData(IPropertyPaneManager propManager, CleanupTaskData tdc)
+        public CleanupTaskTreeItemData(IPropertyPaneManager propManager, TaskWithTargetDirData tdc)
             : base(propManager)
         {
             m_tdc = tdc;
@@ -476,7 +476,7 @@ namespace iba
             get { return "CleanupTask"; }
         }
 
-        protected CleanupTaskData m_tdc;
+        protected TaskWithTargetDirData m_tdc;
 
         public override object DataSource
         {
@@ -486,7 +486,7 @@ namespace iba
             }
             set
             {
-                m_tdc = value as CleanupTaskData;
+                m_tdc = value as TaskWithTargetDirData;
             }
         }
 
