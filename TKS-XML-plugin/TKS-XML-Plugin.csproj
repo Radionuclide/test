@@ -42,6 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,8 +52,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ibaFilesLiteDotNet">
+      <HintPath>..\Dependencies\ibaFilesLiteDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -90,16 +95,6 @@
     <Compile Include="XMLExtract\ResolveInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="ibaFilesLiteLib">
-      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
       <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
       <Name>DatCoordinatorPlugins</Name>
@@ -114,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TKS-XMLTask.ico" />
+    <Content Include="versions_tks-xml.htm" />
     <Content Include="XMLExtract\Misc\8515202_de.txt" />
     <Content Include="XMLExtract\Misc\8515202_de_00.txt" />
     <Content Include="XMLExtract\Misc\8515202_de_00.xml" />
@@ -155,8 +151,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
-copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+    <PostBuildEvent>if not exist "$(ProjectDir)..\ibaDatCoordinator\bin\$(ConfigurationName)\plugins" mkdir "$(ProjectDir)..\ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+copy "$(TargetDir)*" "$(ProjectDir)..\ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

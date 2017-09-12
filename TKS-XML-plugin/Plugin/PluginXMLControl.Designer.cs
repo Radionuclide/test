@@ -35,6 +35,7 @@
             this.m_rbBO = new System.Windows.Forms.RadioButton();
             this.m_rbAnderer = new System.Windows.Forms.RadioButton();
             this.m_txtAndererStandort = new System.Windows.Forms.TextBox();
+            this.m_rbSI = new System.Windows.Forms.RadioButton();
             this.m_gbId = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbComment2 = new System.Windows.Forms.RadioButton();
@@ -75,17 +76,19 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.m_rbDU, 0, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Controls.Add(this.m_rbDO, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_rbBO, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbAnderer, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_txtAndererStandort, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbAnderer, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_txtAndererStandort, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbSI, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbDU, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 15);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -109,7 +112,7 @@
             // 
             this.m_rbDO.AutoSize = true;
             this.m_rbDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbDO.Location = new System.Drawing.Point(149, 3);
+            this.m_rbDO.Location = new System.Drawing.Point(120, 3);
             this.m_rbDO.Name = "m_rbDO";
             this.m_rbDO.Size = new System.Drawing.Size(71, 17);
             this.m_rbDO.TabIndex = 2;
@@ -133,7 +136,7 @@
             // 
             this.m_rbAnderer.AutoSize = true;
             this.m_rbAnderer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbAnderer.Location = new System.Drawing.Point(441, 3);
+            this.m_rbAnderer.Location = new System.Drawing.Point(471, 3);
             this.m_rbAnderer.Name = "m_rbAnderer";
             this.m_rbAnderer.Size = new System.Drawing.Size(62, 17);
             this.m_rbAnderer.TabIndex = 4;
@@ -143,11 +146,22 @@
             // 
             // m_txtAndererStandort
             // 
-            this.m_txtAndererStandort.Location = new System.Drawing.Point(509, 3);
+            this.m_txtAndererStandort.Location = new System.Drawing.Point(539, 3);
             this.m_txtAndererStandort.Name = "m_txtAndererStandort";
             this.m_txtAndererStandort.Size = new System.Drawing.Size(100, 20);
             this.m_txtAndererStandort.TabIndex = 5;
             // 
+            // m_rbSI
+            // 
+            this.m_rbSI.AutoSize = true;
+            this.m_rbSI.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbSI.Location = new System.Drawing.Point(354, 3);
+            this.m_rbSI.Name = "m_rbSI";
+            this.m_rbSI.Size = new System.Drawing.Size(75, 17);
+            this.m_rbSI.TabIndex = 6;
+            this.m_rbSI.TabStop = true;
+            this.m_rbSI.Text = "Siegerland";
+            this.m_rbSI.UseVisualStyleBackColor = true;
             // m_gbId
             // 
             this.m_gbId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -380,5 +394,6 @@
         private System.Windows.Forms.GroupBox m_grpXsdLocation;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TextBox m_txtXsdLocation;
+        private System.Windows.Forms.RadioButton m_rbSI;
     }
 }

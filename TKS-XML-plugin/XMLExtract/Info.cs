@@ -6,6 +6,7 @@ namespace XmlExtract
 
     internal class Info
     {
+        public string TKSIdent { get; set; }
         public string LocalIdent { get; set; }
         public BandlaufrichtungEnum Bandlaufrichtung { get; set; }
         public bool Endprodukt { get; set; }

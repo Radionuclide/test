@@ -36,6 +36,7 @@ namespace iba.TKS_XML_Plugin
             m_rbDO.Checked = m_data.StandOrt == StandortType.DO;
             m_rbDU.Checked = m_data.StandOrt == StandortType.DU;
             m_rbBO.Checked = m_data.StandOrt == StandortType.BO;
+            m_rbSI.Checked = m_data.StandOrt == StandortType.SI;
             m_rbAnderer.Checked = m_data.StandOrt == StandortType.Anderer;
             
             m_rbName.Checked = m_data.IdField == IdFieldLocation.Name;
@@ -45,7 +46,6 @@ namespace iba.TKS_XML_Plugin
             m_txtAndererStandort.Text = m_data.AndererStandort.Trim();
             m_txtSchemaLocation.Text = m_data.XmlSchemaLocation.Trim();
             m_txtXsdLocation.Text = m_data.XsdLocation.Trim();
-
         }
 
         public void SaveData()
@@ -54,6 +54,8 @@ namespace iba.TKS_XML_Plugin
                 m_data.StandOrt = StandortType.BO;
             else if (m_rbDO.Checked)
                 m_data.StandOrt = StandortType.DO;
+            else if (m_rbSI.Checked)
+                m_data.StandOrt = StandortType.SI;
             else if (m_rbAnderer.Checked)
                 m_data.StandOrt = StandortType.Anderer;
             else /* if (m_rbDU.Checked) */
@@ -77,6 +79,7 @@ namespace iba.TKS_XML_Plugin
         }
 
         #endregion
+
 
     }
 }
