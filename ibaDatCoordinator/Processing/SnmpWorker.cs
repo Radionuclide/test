@@ -239,7 +239,7 @@ namespace iba.Processing
             {
                 Status = SnmpWorkerStatus.Errored;
                 StatusString = String.Format(iba.Properties.Resources.snmpStatusError, ex.Message);
-                LogData.Data.Logger.Log(Level.Exception, StatusString);
+                if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
 
