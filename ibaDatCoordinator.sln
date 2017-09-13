@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Installer\datcoor.nsi = Installer\datcoor.nsi
 		Installer\readme.htm = Installer\readme.htm
+		Installer\versions_dat.htm = Installer\versions_dat.htm
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alunorf-sinec-h1-plugin", "Alunorf-sinec-h1-plugin\Alunorf-sinec-h1-plugin.csproj", "{64BC4718-3E53-4184-8B5E-0927382EF8C1}"
