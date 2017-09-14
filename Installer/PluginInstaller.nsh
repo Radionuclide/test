@@ -89,7 +89,7 @@ FunctionEnd
   
 Section "MainSection" SEC01
 
-  DetailPrint "Path to plugins is : $PluginPath"
+  DetailPrint "Path to plugins is: $PluginPath"
  
   ${If} $StandAlone == "1"
     Call CloseStandAlone
@@ -97,11 +97,11 @@ Section "MainSection" SEC01
     Call StopService
   ${Endif}  
   
-    Call CopyFiles
-    Pop $0
+  Call CopyFiles
+  Pop $0
   
   ${If} $0 == "error"
-    MessageBox MB_ICONSTOP $(FAILED_COPY)
+    MessageBox MB_OK|MB_ICONSTOP $(FAILED_COPY) /SD IDOK
     Abort
   ${EndIf}
 
@@ -133,14 +133,14 @@ Function PreInstall
     IntCmp $R0 2000000 okVersion oldVersion okVersion
 
     oldVersion:
-    MessageBox MB_ICONSTOP $(UPGRADE_REQUIRED)
-    Abort
+    MessageBox MB_OK|MB_ICONSTOP $(UPGRADE_REQUIRED) /SD IDOK
+    Quit
 
     okVersion:
 
   ${Else}
-    MessageBox MB_ICONSTOP $(NO_DATCO) 
-    Abort
+    MessageBox MB_OK|MB_ICONSTOP $(NO_DATCO) /SD IDOK
+    Quit
   ${EndIf}
 
   StrCpy $StandAlone "0"
@@ -153,15 +153,14 @@ Function PreInstall
 	  IfErrors nodatcoordinator coordinatorpresent
 
 	nodatcoordinator:
-	  MessageBox MB_ICONSTOP $(NO_DATCO_FOUND)
-	  Abort
-	  
+	  MessageBox MB_OK|MB_ICONSTOP $(NO_DATCO_FOUND) /SD IDOK
+      Quit	  
 	coordinatorpresent:
 	 ; could also be client: 
 	 ReadRegStr $1 "${DATCO_UNINST_ROOT_KEY}" "${DATCO_UNINST_KEY}" "Server"
 	 ${If} $1 == "2"
-	   MessageBox MB_ICONSTOP $(DATCO_CLIENTONLY) 
-	   Abort
+	   MessageBox MB_OK|MB_ICONSTOP $(DATCO_CLIENTONLY) /SD IDOK
+       Quit    
 	 ${EndIf}
 	 
 	 StrCpy $ibaDatCoordinatorPath "0"
@@ -178,7 +177,7 @@ Function CloseStandAlone
   FindWindow $0 "" "ibaDatCoordinatorClientCloseForm"
   
   ${Unless} $0 == 0
-	MessageBox MB_YESNO $(STOP_DATCO_STANDALONE_REQ) IDYES standalonestop IDNO standalonenostop
+	MessageBox MB_YESNO $(STOP_DATCO_STANDALONE_REQ) /SD IDYES IDYES standalonestop IDNO standalonenostop
 standalonestop:
     SendMessage $0 0x8140 0 0
 	Sleep 1000
@@ -187,8 +186,8 @@ standalonestop:
   Return
   
 standalonenostop:  
-  MessageBox MB_ICONSTOP $(DATCO_RUNNING_FAILURE)
-  Abort
+  MessageBox MB_OK|MB_ICONSTOP $(DATCO_RUNNING_FAILURE) /SD IDOK
+  Quit
 FunctionEnd
 
 Function StopService
@@ -199,7 +198,7 @@ Function StopService
 
   StrCmp $ServiceStatus '1:stopped' serviceend  ; check on running
 
-  MessageBox MB_YESNO $(STOP_DATCO_SERVICE_REQ) IDYES servicestop IDNO servicenostop
+  MessageBox MB_YESNO $(STOP_DATCO_SERVICE_REQ) /SD IDYES IDYES servicestop IDNO servicenostop
 
 servicestop:
   ;Stop service
@@ -216,8 +215,8 @@ servicestop:
   StrCmp $ServiceStatus '1:stopped' serviceend  ; check on running
   
 servicenoStop:
-  MessageBox MB_ICONSTOP $(DATCO_RUNNING_FAILURE)
-  Abort
+  MessageBox MB_OK|MB_ICONSTOP $(DATCO_RUNNING_FAILURE) /SD IDOK
+  Quit
   
 serviceend:
 
