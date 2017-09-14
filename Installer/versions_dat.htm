@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
-<HEAD>                                                                                                               
+<HEAD>
 	<TITLE>ibaDatCoordinator Version History</TITLE>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 	<style type="text/css">
 		 body				{background-color: white; font-family: Tahoma, Helvetica, Arial; font-size: 13px}
-		 table      {width: 100%}
+		 table			{width: 100%}
 		 .title			{color: navy; font-size: 26px; font-weight: bold}
 		.header1		{color: white; background-color: #315BA9; font-size: 16px; font-weight: bold; margin: 0px; padding: 2px}
 		.header2		{color: black; font-size: 14px; font-weight: bold}
-		.warning      {color: red; font-size: 14px; font-weight: bold}
+		.warning		{color: red; font-size: 14px; font-weight: bold}
 		.btn_selected	{cursor: pointer; cursor: pointer; color: white; background-color: #00AA00; font-size: 20px; font-weight: bold; padding: 4px}
 		.btn_normal	{cursor: pointer; cursor: pointer; color: white; background-color: #006600; font-size: 20px; font-weight: bold; padding: 4px}
 		.btn_over		{cursor: pointer; cursor: pointer; color: white; background-color: #008800; font-size: 20px; font-weight: bold; padding: 4px}
@@ -47,12 +47,12 @@
 				<tr><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
-				<tr><td>ibaDatCoordinator-SinecH1-PluginInstaller_v2.3.0</td><td></td></tr>
-				<tr><td>ibaDatCoordinator-Roh-PluginInstaller_v2.1.0</td><td></td></tr>
-				<tr><td>ibaDatCoordinator-AM-OSPC-PluginInstaller_v2.0.0</td><td></td></tr>
-				<tr><td>ibaDatCoordinator-S7-Writer-PluginInstaller_v2.0.1</td><td></td></tr>
-				<tr><td>ibaDatCoordinator-TksXml-PluginInstaller_v2.0.0</td><td></td></tr>
-				<tr><td>ibaDatmanagerDBSync v1.0.5</td><td></td></tr>
+				<tr><td>ibaSinecH1 v2.3.0</td><td></td></tr>
+				<tr><td>ibaRoh v2.1.0</td><td></td></tr>
+				<tr><td>ibaAM-OSPC v2.0.0</td><td></td></tr>
+				<tr><td>ibaS7-Writer v2.0.1</td><td></td></tr>
+				<tr><td>ibaTksXml v2.0.0</td><td></td></tr>
+				<tr><td>ibaDBSync v1.0.5</td><td></td></tr>
 				<tr><td>ibaDatawyzer-ICC v1.17.3</td><td></td></tr>
 
 
@@ -60,8 +60,22 @@
 				<tr><th class="head" colspan="3">History</th></tr>
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
 
-				<tr><th rowspan="1">v2.0.0</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
-				<tr><th rowspan="1">v1.25.1</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7 is supported also</td></tr>
+				<tr><th rowspan="3">v2.0.0</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
+				<tr><td>ibaS7-Writer v2.0.0</td><td></td></tr>
+				<tr><td>ibaDBSync v1.0.4</td><td></td></tr>
+				
+				<tr><td class="empty" /></tr>
+
+				<tr><th rowspan="7">v1.25.1</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7 is supported also</td></tr>
+				<tr><td>ibaSinecH1 v1.0</td><td></td></tr>
+				<tr><td>ibaRoh v1.5</td><td></td></tr>
+				<tr><td>ibaAM-OSPC v1.0</td><td></td></tr>
+				<tr><td>ibaTksXml v1.3.2</td><td></td></tr>
+				<tr><td>ibaDatmanagerDBSync v1.0.3</td><td></td></tr>
+				<tr><td>ibaDatawyzer-ICC v1.17.1</td><td></td></tr>
+								
+				<tr><td class="empty" /></tr>
+
 				<tr><th rowspan="1">v1.24.0</th><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64) and Windows 2012 Server R2 (x64)</td><td>Windows XP (x86) and Windows 2003 Server (x86) are no longer supported</td></tr>
 				<tr><td class="empty" /></tr>
 
@@ -81,9 +95,9 @@
 			<OL>
 				<li>New plugin: ibaS7Writer, writes data to S7 DBs.</li>
 			</OL>
-			<P class="header2">Improvements (B)</P>
+			<P class="header2">Improvements (I)</P>
 			<OL>
-				<li>ibaDongleViewer updated to version 1.6.13</li>
+				<li>ibaDongleViewer updated to version 1.6.13.</li>
 				<li>Client connects immediately to server when starting up.</li>
 			</OL>
 			<P class="header2">Bugfixes (B)</P>
@@ -98,15 +112,15 @@
 				<li>The entire ibaDatCoordinator has been migrated to a Client-Server architecture where multiple ibaDatCoordinator clients can connect to a central ibaDatCoordinator server.</li>
 				<li>ibaDatCoordinator is an SNMP server:
 					<ol type="a">
-					  <li>SNMP protocol V1, V2c and V3 are supported.</li>
-					  <li>MIB files can be generated. #8911</li>
+						<li>SNMP protocol V1, V2c and V3 are supported.</li>
+						<li>MIB files can be generated. #8911</li>
 					</ol>
 				</li>
 				</li>
 				<li>ibaHD import task: import .dat files into a Historical data server</li>
 				<li>New plugin: ibaS7Writer, writes data to S7 DBs</li>
 			</OL>
-			<P class="header2">Improvements (B)</P>
+			<P class="header2">Improvements (I)</P>
 			<OL>
 				<li>ibaDongleViewer updated to version 1.6.12</li>
 				<li>Support for .NET framework 4.7.1</li>
@@ -119,7 +133,7 @@
 			<p>&nbsp; </p>
 			
 			<P class="header1">Version 1.25.1 - 19/04/2017</P>
-			<P class="header2">Improvements (B)</P>
+			<P class="header2">Improvements (I)</P>
 			<OL>
 				<li>ibaDongleViewer updated to version 1.6.11</li>
 				<li>Support for .NET framework 4.7</li>
