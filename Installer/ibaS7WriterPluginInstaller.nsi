@@ -3,8 +3,8 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator S7 Writer Plugin Installer"
 !define PRODUCT_SHORTNAME "S7-Writer"
-!define PRODUCT_VERSION "2.0.0"
-!define PRODUCT_FILE_VERSION "2.0.0.0"
+!define PRODUCT_VERSION "2.0.1"
+!define PRODUCT_FILE_VERSION "2.0.1.0"
 !define PRODUCT_PUBLISHER "iba AG"
 !define PRODUCT_WEB_SITE "http://www.iba-ag.com"
 
