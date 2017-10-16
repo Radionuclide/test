@@ -957,6 +957,11 @@
             Fired when signals are updated
             </summary>
         </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdReader.SignalDataUpdated">
+            <summary>
+            Fired when signal data is updated
+            </summary>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.CreateSignalTree(System.Boolean)">
             <summary>
             Creates a signal tree

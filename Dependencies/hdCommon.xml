@@ -167,6 +167,11 @@
               Looks up a localized string similar to Acquire license options.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderLicenseRead">
+            <summary>
+              Looks up a localized string similar to Read license options.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTime">
             <summary>
               Looks up a localized string similar to Read time based store data.
@@ -1337,52 +1342,6 @@
         <member name="M:iba.HD.Common.HdWriterConfig.RemoveInfoFields(System.String)">
             <summary>
             Removes info fields for given key
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.HdWriterSignal.InfoKeys">
-            <summary>
-            Gets all info field keys
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.AddInfoField(System.String,System.String)">
-            <summary>
-            Adds info field value
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.GetInfoField(System.String)">
-            <summary>
-            Gets info field values for given key
-            </summary>
-            <returns>
-            null if key unknown
-            </returns>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.RemoveInfoField(System.String)">
-            <summary>
-            Removes info fields for given key
-            </summary>
-        </member>
-        <member name="P:iba.HD.Common.HdWriterSignal.LinkedKeys">
-            <summary>
-            Gets all linked field keys. Linked field values use index to get field values from store.
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.AddLinkedField(System.String,System.Int32)">
-            <summary>
-            Adds linked field value
-            </summary>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.GetLinkedField(System.String)">
-            <summary>
-            Gets linked fields for given key
-            </summary>
-            <returns>
-            null if key unknown
-            </returns>
-        </member>
-        <member name="M:iba.HD.Common.HdWriterSignal.RemoveLinkedField(System.String)">
-            <summary>
-            Removes linked fields for given key
             </summary>
         </member>
         <member name="T:iba.HD.Common.TimeWriterSignal">
