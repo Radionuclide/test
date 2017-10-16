@@ -48,6 +48,7 @@ namespace iba.Processing
                 }
                 catch { }
             }
+            myBar.Finished = true;
         }
 
         public void RemoveMarkings(List<string> files, FileProcessingProgressBar myBar)
@@ -62,6 +63,7 @@ namespace iba.Processing
                 stop = myBar.UpdateProgress(filename,count);
                 RemoveMarkingsFromFile(filename, ibaDatFile);
             }
+            myBar.Finished = true;
         }
 
         public static string RemoveMarkingsFromFile(string filename, IbaFile ibaDatFile = null)

@@ -191,6 +191,19 @@ namespace iba.Data
     }
 
     [Serializable]
+    public class CleanupTaskData : TaskWithTargetDirData //synonym, we had backwards compatibility issue after renaming
+    {
+        public CleanupTaskData(ConfigurationData parent)
+            : base(parent) 
+        {
+        }
+
+        public CleanupTaskData() : this(null)
+        {
+        }
+    }
+
+    [Serializable]
     public abstract class TaskDataUNC : TaskWithTargetDirData
     {
         private bool m_overwriteFiles;

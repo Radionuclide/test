@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.IO;
 using iba.Data;
 using ibaFilesLiteLib;
+using System.Threading;
 
 namespace iba.Dialogs
 {
@@ -93,10 +94,25 @@ namespace iba.Dialogs
         {
             if (runswithservice)
             {
-                if (m_files == null)
-                    Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_bRecursive, new RemoveMarkingsProgressBar(this));
-                else
-                    Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_files, new RemoveMarkingsProgressBar(this));
+                var pb = new RemoveMarkingsProgressBar(this);
+                try
+                {
+                    if (m_files == null)
+                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_bRecursive, pb);
+                    else
+                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_files, pb);
+                    while (!pb.Finished)
+                    {
+                        Thread.Sleep(5000);
+                    }
+                }
+                catch (Exception) //try old way in case of server client discrepancy
+                {
+                    if (m_files == null)
+                        Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_bRecursive, pb);
+                    else
+                        Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_files, pb);
+                }
             }
             else
             {

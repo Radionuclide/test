@@ -80,6 +80,7 @@ namespace iba.Data
         XmlElement(Type = typeof(UpdateDataTaskData)), 
         XmlElement(Type = typeof(PauseTaskData)),
         XmlElement(Type = typeof(TaskWithTargetDirData)),
+        XmlElement(Type = typeof(CleanupTaskData)),
         XmlElement(Type = typeof(SplitterTaskData)), 
         XmlElement(Type = typeof(CustomTaskData)), 
         XmlElement(Type = typeof(CustomTaskDataUNC))]

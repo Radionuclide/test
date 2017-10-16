@@ -544,7 +544,7 @@ namespace iba
                     taskNode = new TreeNode(task.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, task as PauseTaskData);
                 }
-                else if(task.GetType() == typeof(TaskWithTargetDirData))
+                else if(task.GetType() == typeof(TaskWithTargetDirData) || task.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
                     taskNode.Tag = new CleanupTaskTreeItemData(this, task as TaskWithTargetDirData);
@@ -1617,7 +1617,7 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            TaskWithTargetDirData cleanup = new TaskWithTargetDirData(confData);
+            CleanupTaskData cleanup = new CleanupTaskData(confData);
             new SetNextName(cleanup);
             confData.Tasks.Add(cleanup);
             if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)

@@ -17,7 +17,7 @@ namespace iba.Processing
             m_status = MonitorStatus.OK;
             m_timeTimer = null;
             m_memoryTimer = null;
-            if (data == null || analyzer == null || (!data.MonitorTime && !data.MonitorMemoryUsage)) return;
+            if (data == null || analyzer == null /*|| (!data.MonitorTime && !data.MonitorMemoryUsage)*/) return;
             try
             {
                 string version = analyzer.GetVersion();
@@ -49,11 +49,11 @@ namespace iba.Processing
                 m_timeTimer = new SafeTimer(OnTimeTimerTick);
                 m_timeTimer.Period = m_data.TimeLimit;
             }
-            if (data.MonitorMemoryUsage)
-            {
+            //if (data.MonitorMemoryUsage)
+            //{
                 m_memoryTimer = new SafeTimer(OnMemoryTimerTick);
                 m_memoryTimer.Period = TimeSpan.FromSeconds(5.0);
-            }
+            //}
         }
 
         private Process m_process;
@@ -128,7 +128,7 @@ namespace iba.Processing
                 m_data.MemoryUsed = (uint) (mem >> 20);
                 // added by kolesnik - end
 
-                if (mem > ((long)(1 << 20) * (long) m_data.MemoryLimit))
+                if (m_data.MonitorMemoryUsage && (mem > ((long)(1 << 20) * (long) m_data.MemoryLimit)))
                 {
                     m_process.Kill();
                     m_status = MonitorStatus.OUT_OF_MEMORY;

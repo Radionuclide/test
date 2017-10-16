@@ -462,7 +462,7 @@ namespace iba.Controls
 
         private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
         {
-            TaskWithTargetDirData cleanup = new TaskWithTargetDirData(m_data);
+            TaskWithTargetDirData cleanup = new CleanupTaskData(m_data);
             new SetNextName(cleanup);
             m_data.Tasks.Add(cleanup);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);

@@ -8,6 +8,8 @@ using System.Diagnostics;
 using iba.Utility;
 using iba.Remoting;
 using System.Runtime.Remoting.Lifetime;
+using iba.Dialogs;
+using System.Threading;
 
 /**
  * Description: class used to communicate with the service
@@ -23,6 +25,13 @@ namespace iba
         {
             get { return "";}
             set { }
+        }
+
+        private bool finished;
+        public bool Finished
+        {
+            get { return finished; }
+            set { finished = value; }
         }
     }
 
@@ -201,23 +210,6 @@ namespace iba
             }
         }
 
-        public void DeleteFiles(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
-        {
-            try
-            {
-                using (FileProcessing fp = new FileProcessing(path, username, pass))
-                {
-                    if (!String.IsNullOrEmpty(fp.ErrorString))
-                        myBar.Error = iba.Properties.Resources.DeleteFilesProblem + fp.ErrorString;
-                    else
-                        fp.RemoveFiles(files, myBar);
-                }
-            }
-            catch (Exception ex)
-            {
-                myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
-            }
-        }
 
         public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
         {
@@ -236,6 +228,42 @@ namespace iba
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
             }
         }
+
+        public void RemoveMarkingsAsync(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        {
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                RemoveMarkings(path, username, pass, recursive, myBar);
+            });
+        }
+
+        public void RemoveMarkingsAsync(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                RemoveMarkings(path, username, pass, files, myBar);
+            });
+        }
+
+
+        public void DeleteFiles(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                {
+                    if (!String.IsNullOrEmpty(fp.ErrorString))
+                        myBar.Error = iba.Properties.Resources.DeleteFilesProblem + fp.ErrorString;
+                    else
+                        fp.RemoveFiles(files, myBar);
+                }
+            }
+            catch (Exception ex)
+            {
+                myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
+        }
+
 
         public string GetIbaAnalyzerRegKey()
         {
@@ -598,6 +626,43 @@ namespace iba
             }
         }
 
+        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.RemoveMarkings(path, username, pass, files, myBar);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+
+        public void RemoveMarkingsAsync(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.RemoveMarkingsAsync(path, username, pass, recursive, myBar);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void RemoveMarkingsAsync(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        {
+            try
+            {
+                m_com.RemoveMarkingsAsync(path, username, pass, files, myBar);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
         public void DeleteFiles(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
         {
             try
@@ -610,17 +675,6 @@ namespace iba
             }
         }
 
-        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
-        {
-            try
-            {
-                m_com.RemoveMarkings(path,  username,  pass, files, myBar);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-            }
-        }
 
         public string GetIbaAnalyzerRegKey()
         {
