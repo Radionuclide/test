@@ -783,7 +783,7 @@ namespace iba.DatCoordinator.Status
             using (ChangeServerPortForm form = new ChangeServerPortForm())
             {
                 form.PortNr = this.PortNr;
-
+                form.Icon = Icon;
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
                     updatingPortNr = true;

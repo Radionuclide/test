@@ -210,5 +210,33 @@ namespace iba.Data
                 ScheduledJobData.SerializingFlag = false;
             }
         }
+
+        public static ibaDatCoordinatorData SerializeFromFile(string filename)
+        {
+            XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+
+            using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
+            {
+                ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
+                return dat;
+            }
+        }
+
+        internal List<string> PluginList()
+        {
+            HashSet<string> plugins = new HashSet<string>();
+            foreach(ConfigurationData cd in m_confs)
+            {
+                foreach(TaskData task in cd.Tasks)
+                {
+                    CustomTaskData ctd = task as CustomTaskData;
+                    if (ctd != null)
+                    {
+                        plugins.Add(ctd.Plugin.NameInfo);
+                    }
+                }
+            }
+            return new List<string>(plugins);
+        }
     }
 }

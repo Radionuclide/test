@@ -46,6 +46,7 @@
             // btCancel
             // 
             resources.ApplyResources(this.btCancel, "btCancel");
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btCancel.Name = "btCancel";
             this.btCancel.UseVisualStyleBackColor = true;
             this.btCancel.Click += new System.EventHandler(this.OnCancel);

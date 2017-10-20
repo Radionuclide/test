@@ -1386,6 +1386,11 @@ namespace iba.Processing
 
             m_workers[data].ProcessFileDirect(file);
         }
+
+        public virtual List<string> CheckPluginsAvailable(List<string> plugins)
+        {
+            return PluginManager.Manager.CheckPluginsAvailable(plugins);
+        }
     }
 
 
@@ -1451,10 +1456,19 @@ namespace iba.Processing
                 {
                     Program.CommunicationObject.Manager.Configurations = value;
                 }
-                catch (Exception ex)
+                catch (Belikov.GenuineChannels.OperationException oe)
                 {
-                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(oe);
                     Manager.Configurations = value;
+                }
+                catch (System.Runtime.Remoting.RemotingException re)
+                {
+                    if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(re);
+                    Manager.Configurations = value;
+                }
+                catch (Exception) //assume serialization exception;
+                {
+                    throw;
                 }
             }
         }
@@ -2342,6 +2356,21 @@ namespace iba.Processing
                     if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                     return 0;
                 }
+            }
+        }
+
+        public override List<string> CheckPluginsAvailable(List<string> plugins)
+        {
+            int v = Version;
+            if (v <  2000003 /*2.0.3*/) return null;
+            try
+            {
+                return Program.CommunicationObject.Manager.CheckPluginsAvailable(plugins);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                return null;
             }
         }
     }

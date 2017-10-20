@@ -98,7 +98,7 @@ namespace iba.Utility
 					}
 					else
 					{
-						throw new ApplicationException( "You try to assign incorect data to Value property." );
+						throw new ApplicationException( "You try to assign incorrect data to Value property." );
 					}
 				} 
 			}

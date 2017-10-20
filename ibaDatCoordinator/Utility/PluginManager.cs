@@ -8,6 +8,7 @@ using iba.Data;
 using iba.Remoting;
 using System.Windows.Forms;
 using iba.Logging;
+using System.Linq;
 
 namespace iba.Utility
 {
@@ -58,9 +59,21 @@ namespace iba.Utility
             m_pluginInfos.Clear();
             Type requiredInterface = typeof(IDatCoPlugin);
             String[] assemblies = Directory.GetFiles(m_pluginPath, @"*plugin.dll");
-            
+
             foreach (string assemblyFileName in assemblies)
             {
+                if (assemblyFileName.Contains("Sidmar-OSPC-plugin.dll"))
+                { 
+                    try
+                    {
+                        File.Delete(assemblyFileName);
+                    }
+                    catch
+                    {
+
+                    }
+                    continue; //was renamed ...
+                }
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(assemblyFileName);
@@ -295,6 +308,21 @@ namespace iba.Utility
         public bool HasPlugin(string name)
         {
             return (m_plugins != null && m_plugins.ContainsKey(name));
+        }
+
+        public List<string> CheckPluginsAvailable(List<string> data)
+        {
+            return data.Except(m_plugins.Keys).ToList<string>();
+        }
+
+        public List<string> FullNames(List<string> plugins)
+        {
+            List<string> res = new List<string>();
+            foreach(string name in plugins)
+            {
+                res.Add(m_pluginInfos.Find(item => item.Name == name).Description);
+            }
+            return res;
         }
     }
 }

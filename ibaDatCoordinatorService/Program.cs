@@ -89,6 +89,7 @@ namespace iba.Services
                 }
                 return m_servicePortNr;
             }
+
             //no setter on service side
             //set
             //{

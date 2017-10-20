@@ -1908,13 +1908,26 @@ namespace iba
             {
                 using (WaitCursor wait = new WaitCursor())
                 {
-                    XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-                    List<ConfigurationData> confs;
-                    using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
+                    //XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+
+                    //using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
+                    //{
+                    //    ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
+                    //    confs = dat.ApplyToManager(TaskManager.Manager, Program.ClientName);
+                    //}
+                    ibaDatCoordinatorData data = ibaDatCoordinatorData.SerializeFromFile(filename);
+
+                    List<string> missingPlugins = TaskManager.Manager.CheckPluginsAvailable(data.PluginList());
+                    if (missingPlugins != null && missingPlugins.Count > 0)
                     {
-                        ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-                        confs = dat.ApplyToManager(TaskManager.Manager, Program.ClientName);
+                        MessageBox.Show(iba.Properties.Resources.uploadFileProblem + " "  + iba.Properties.Resources.missingPlugins + Environment.NewLine + String.Join(Environment.NewLine, PluginManager.Manager.FullNames(missingPlugins))
+                            , "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
                     }
+
+
+                    List<ConfigurationData> confs = data.ApplyToManager(TaskManager.Manager, Program.ClientName); ;
+
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
                     foreach (ConfigurationData dat in confs)
@@ -1930,7 +1943,18 @@ namespace iba
                             waiter.ShowDialog(this);
                         }
                     }
-                    TaskManager.Manager.Configurations = confs;
+                    try
+                    {
+                        TaskManager.Manager.Configurations = confs;
+                    }
+                    catch (Exception serEx) //likely serialization exception
+                    {
+                        MessageBox.Show(iba.Properties.Resources.uploadFileProblem + " " + serEx.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //remoting will likely be in an inconsistent state, reconnect
+                        Reconnect();
+
+                        return false;
+                    }
                     if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
                     {
                         TaskManager.Manager.StartAllEnabledGlobalCleanups();
@@ -1943,6 +1967,8 @@ namespace iba
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null && ex.InnerException is ApplicationException)
+                    ex = ex.InnerException;
                 if (!beSilent) MessageBox.Show(iba.Properties.Resources.OpenFileProblem + "  " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -2485,6 +2511,29 @@ namespace iba
             OnConnectService();
         }
 
+        private void Reconnect()
+        {
+            CommunicationObjectWrapper old = Program.CommunicationObject;
+            if (old != null)
+            {
+                //Remove event forwarder
+                if (m_ef != null)
+                {
+                    old.Logging_clearEventForwarder(m_ef.Guid);
+                    m_ef.Dispose();
+                    m_ef = null;
+                }
+
+                //Disconnect
+                old.HandleBrokenConnection(new Exception("Forced disconnect because connecting to other server"));
+            }
+            Program.CommunicationObject = null; //will kill it
+            Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
+            UpdateConnectionStatus();
+
+            TryToConnect(true);
+        }
+
         private void OnConnectService()
         {
             SaveRightPaneControl();
@@ -2504,25 +2553,8 @@ namespace iba
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
 
-                    CommunicationObjectWrapper old = Program.CommunicationObject;
-                    if (old != null)
-                    {
-                        //Remove event forwarder
-                        if (m_ef != null)
-                        {
-                            old.Logging_clearEventForwarder(m_ef.Guid);
-                            m_ef.Dispose();
-                            m_ef = null;
-                        }
+                    Reconnect();
 
-                        //Disconnect
-                        old.HandleBrokenConnection(new Exception("Forced disconnect because connecting to other server"));
-                    }
-                    Program.CommunicationObject = null; //will kill it
-                    Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-                    UpdateConnectionStatus();
-
-                    TryToConnect(true);
                 }
             }
         }
@@ -2609,19 +2641,29 @@ namespace iba
                                 {
                                     //initialise with configurations;
                                     SaveRightPaneControl();
-                                    if (data != null) data.ApplyToManager(TaskManager.Manager, Program.ClientName);
-                                    ReplaceManagerFromTree(TaskManager.Manager);
-                                    TaskManager.Manager.StartAllEnabledGlobalCleanups();
-                                    foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
+                                    List<string> missingPlugins = TaskManager.Manager.CheckPluginsAvailable(data.PluginList());
+                                    if (missingPlugins != null && missingPlugins.Count > 0)
                                     {
-                                        if (dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
+                                        MessageBox.Show(iba.Properties.Resources.uploadFileProblem + " " + iba.Properties.Resources.missingPlugins + Environment.NewLine + String.Join(Environment.NewLine, missingPlugins)
+                                            , "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        ReloadClient();
                                     }
-                                    if (m_navBar.SelectedPane == m_statusPane)
-                                        loadStatuses();
-                                    else if (m_navBar.SelectedPane == m_configPane)
-                                        loadConfigurations();
-                                    ReloadRightPane();
-                                    UpdateButtons();
+                                    else
+                                    {
+                                        if (data != null) data.ApplyToManager(TaskManager.Manager, Program.ClientName);
+                                        ReplaceManagerFromTree(TaskManager.Manager);
+                                        TaskManager.Manager.StartAllEnabledGlobalCleanups();
+                                        foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
+                                        {
+                                            if (dat.AutoStart && dat.Enabled && dat.JobType != ConfigurationData.JobTypeEnum.OneTime) TaskManager.Manager.StartConfiguration(dat);
+                                        }
+                                        if (m_navBar.SelectedPane == m_statusPane)
+                                            loadStatuses();
+                                        else if (m_navBar.SelectedPane == m_configPane)
+                                            loadConfigurations();
+                                        ReloadRightPane();
+                                        UpdateButtons();
+                                    }
                                 }
                                 else //download
                                 {

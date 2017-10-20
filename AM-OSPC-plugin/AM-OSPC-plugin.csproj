@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AM_OSPC_plugin</RootNamespace>
-    <AssemblyName>Sidmar-OSPC-plugin</AssemblyName>
+    <AssemblyName>AM-OSPC-plugin</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

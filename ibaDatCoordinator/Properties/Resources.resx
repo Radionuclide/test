@@ -1397,4 +1397,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="cannotAccessTargetSystem" xml:space="preserve">
     <value>The target system cannot be accessed:</value>
   </data>
+  <data name="PluginNotInstalled" xml:space="preserve">
+    <value>Plugin "{0}" not installed, please contact iba Support</value>
+  </data>
+  <data name="uploadFileProblem" xml:space="preserve">
+    <value>There was an issue uploading the file to the server :</value>
+  </data>
+  <data name="missingPlugins" xml:space="preserve">
+    <value>The following plugins are missing: </value>
+  </data>
 </root>

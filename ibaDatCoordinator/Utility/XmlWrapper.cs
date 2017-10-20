@@ -35,8 +35,18 @@ namespace iba.Utility
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
+            Type type;
             string dub= reader.GetAttribute("type");
-            Type type = Type.GetType(dub);
+            if (dub.Contains("Sidmar-OSPC")) //was wrongly named in the past...
+            {
+                dub = dub.Replace("Sidmar-OSPC", "AM-OSPC");
+            }
+            type = Type.GetType(dub);
+            if (type == null)
+            {
+                throw new ApplicationException(String.Format(iba.Properties.Resources.PluginNotInstalled, dub));
+            }
+
             reader.ReadStartElement();
             m_objectToSerialize = (new XmlSerializer(type)).Deserialize(reader);
             reader.ReadEndElement();

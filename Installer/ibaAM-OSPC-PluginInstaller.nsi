@@ -5,8 +5,8 @@
                                                                     ;e.g. "ibaDatCoordinator-ArcelorMittal-OSPC-PluginInstaller_vX.Y.Z.exe"
 !define PRODUCT_SHORTNAME "AM-OSPC" ;(optional) will result in "ibaDatCoordinator-${PRODUCT_SHORTNAME}-PluginInstaller_vX.Y.Z.exe"
                                     ;e.g. "ibaDatCoordinator-AM-OSPC-PluginInstaller_vX.Y.Z.exe"
-!define PRODUCT_VERSION "2.0.0"
-!define PRODUCT_FILE_VERSION "2.0.0.0"
+!define PRODUCT_VERSION "2.0.2"
+!define PRODUCT_FILE_VERSION "2.0.2.0"
 
 ;!define PRODUCT_PUBLISHER "iba AG"                     ;(optional) default to "iba AG"
 ;!define PRODUCT_WEB_SITE "http://www.iba-ag.com"       ;(optional) default to "http://www.iba-ag.com"
@@ -19,8 +19,9 @@ Function CopyFiles
   SetOutPath "$PluginPath"
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
-  File "..\Sidmar-OSPC-plugin\bin\Release\Sidmar-OSPC-plugin.dll"
-  File "..\Sidmar-OSPC-plugin\bin\Release\AM-OSPC-protocol.dll"
+  Delete "$PluginPath\Sidmar-OSPC-Plugin.dll" ;remove old version of plugin with different name
+  File "..\AM-OSPC-plugin\bin\Release\AM-OSPC-plugin.dll"
+  File "..\AM-OSPC-plugin\bin\Release\AM-OSPC-protocol.dll"
   File "..\AM-OSPC-protocol\SPCServerps.dll"
   IfErrors copyError copyOk
 copyError:

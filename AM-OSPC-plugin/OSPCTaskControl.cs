@@ -284,8 +284,8 @@ namespace AM_OSPC_plugin
         private void UpdateButtons()
         {
             bool enabled = File.Exists(ibaAnalyzerExe);
-            if(enabled) enabled = string.IsNullOrEmpty(m_pdoFileTextBox.Text) || File.Exists(m_pdoFileTextBox.Text);
-            if(enabled) enabled = string.IsNullOrEmpty(m_datFileTextBox.Text) || File.Exists(m_datFileTextBox.Text);
+            if (enabled) enabled = string.IsNullOrEmpty(m_pdoFileTextBox.Text);// || File.Exists(m_pdoFileTextBox.Text);
+            if (enabled) enabled = string.IsNullOrEmpty(m_datFileTextBox.Text);// || File.Exists(m_datFileTextBox.Text);
             m_executeIBAAButton.Enabled = enabled;
         }
     }

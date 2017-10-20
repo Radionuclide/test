@@ -2075,6 +2075,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following plugins are missing: .
+        /// </summary>
+        internal static string missingPlugins {
+            get {
+                return ResourceManager.GetString("missingPlugins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Script Task.
         /// </summary>
         internal static string NewBatchfileTitle {
@@ -2582,6 +2591,15 @@ namespace iba.Properties {
         internal static string PluginCopyFailed {
             get {
                 return ResourceManager.GetString("PluginCopyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin &quot;{0}&quot; not installed, please contact iba Support.
+        /// </summary>
+        internal static string PluginNotInstalled {
+            get {
+                return ResourceManager.GetString("PluginNotInstalled", resourceCulture);
             }
         }
         
@@ -3753,6 +3771,15 @@ namespace iba.Properties {
         internal static string UpdateHappened {
             get {
                 return ResourceManager.GetString("UpdateHappened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an issue uploading the file to the server :.
+        /// </summary>
+        internal static string uploadFileProblem {
+            get {
+                return ResourceManager.GetString("uploadFileProblem", resourceCulture);
             }
         }
         
