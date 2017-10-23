@@ -205,8 +205,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.m_gbApp);
+            this.MaximizeBox = false;
             this.Name = "StatusForm";
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.m_gbApp.ResumeLayout(false);

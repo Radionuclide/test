@@ -73,6 +73,10 @@ namespace iba.DatCoordinator.Status
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (WindowState == FormWindowState.Minimized)
+                Hide();
+
             UpdateServerStatus(true);
             m_timer.Enabled = true;
             m_iconEx.Visible = true;
@@ -218,6 +222,7 @@ namespace iba.DatCoordinator.Status
                 {
                     WindowState = FormWindowState.Minimized;
                     ShowInTaskbar = false;
+                    Hide();
                     e.Cancel = true;
                 }
                 return;
