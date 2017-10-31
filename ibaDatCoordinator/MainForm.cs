@@ -24,6 +24,7 @@ using Microsoft.Win32;
 using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
 using iba.Remoting;
+using System.Globalization;
 // ReSharper disable RedundantNameQualifier
 
 namespace iba
@@ -123,6 +124,8 @@ namespace iba
             statImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             statImageList.Images.Add(iba.Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
+
+            CreateLanguageMenuItems();
 
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
@@ -3031,6 +3034,98 @@ namespace iba
             }
         }
 
+        #endregion
+
+        #region Language
+
+        private void CreateLanguageMenuItems()
+        {
+            //Add system
+            ToolStripMenuItem mi = new ToolStripMenuItem(iba.Properties.Resources.LangSystem, null, OnChangeLanguage);
+            mi.Name = "do not translate";
+            mi.Tag = null;
+            languageToolStripMenuItem.DropDownItems.Add(mi);
+
+
+            IList<CultureInfo> supportedCultures = new List<CultureInfo>();
+            //hardcoded languages, datco has never been translated in 12  years to other languages so unlikely they ever will in the future
+            supportedCultures.Add(CultureInfo.GetCultureInfo("de"));
+            supportedCultures.Add(CultureInfo.GetCultureInfo("en"));
+            supportedCultures.Add(CultureInfo.GetCultureInfo("fr"));
+
+            foreach (var supportedCulture in supportedCultures)
+            {
+                mi = new ToolStripMenuItem(supportedCulture.NativeName, null, OnChangeLanguage)
+                {
+                    Name = "do not translate",
+                    Tag = supportedCulture
+                };
+                languageToolStripMenuItem.DropDownItems.Add(mi);
+            }
+        }
+
+        private void OnChangeLanguage(object sender, EventArgs e)
+        {
+            var item = sender as ToolStripMenuItem;
+            if (item == null)
+                return;
+
+            var culture = item.Tag as System.Globalization.CultureInfo;
+            if (culture == null)
+            {
+                Program.SelectedLanguage = "";
+                culture = System.Globalization.CultureInfo.InstalledUICulture;
+            }
+            else
+            {
+                Program.SelectedLanguage = culture.Name;
+            }
+
+            Profiler.ProfileString(false, "Client", "Language", ref Program.SelectedLanguage, "");
+            if (culture.Name != System.Globalization.CultureInfo.CurrentUICulture.Name)
+            {
+                string message;
+                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                    message = iba.Properties.Resources.SwitchLanguageRestartRequiredStandAlone;
+                else
+                    message = iba.Properties.Resources.SwitchLanguageRestartRequired;
+                if (MessageBox.Show(this, message, languageToolStripMenuItem.Text, MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                {
+                    Application.Restart(); //should close ourselves
+                    return;
+                }
+            }
+        }
+
+
+        private void languageToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            string selectedLang = Program.SelectedLanguage;
+            bool bFound = false;
+            foreach (ToolStripMenuItem item in languageToolStripMenuItem.DropDownItems)
+            {
+                System.Globalization.CultureInfo culture = (System.Globalization.CultureInfo)item.Tag;
+                if (culture != null)
+                    item.Checked = selectedLang == culture.Name;
+                else
+                    item.Checked = selectedLang == "";
+
+                if (item.Checked)
+                    bFound = true;
+            }
+
+            if (!bFound)
+            {
+                //Add item for current culture
+                System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentUICulture;
+                ToolStripMenuItem mi = new ToolStripMenuItem(culture.NativeName, null, new EventHandler(OnChangeLanguage));
+                mi.Name = "do not translate";
+                mi.Tag = culture;
+                mi.Checked = true;
+                languageToolStripMenuItem.DropDownItems.Add(mi);
+            }
+        }
         #endregion
     }
     #endregion

@@ -1406,4 +1406,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="missingPlugins" xml:space="preserve">
     <value>The following plugins are missing: </value>
   </data>
+  <data name="LangSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SwitchLanguageRestartRequired" xml:space="preserve">
+    <value>The new language setting will only work after the ibaDatCoordinator client is restarted. Do you wish to restart it now?</value>
+  </data>
+  <data name="SwitchLanguageRestartRequiredStandAlone" xml:space="preserve">
+    <value>The new language setting will only work after ibaDatCoordinator is restarted. Do you wish to restart it now?</value>
+  </data>
 </root>

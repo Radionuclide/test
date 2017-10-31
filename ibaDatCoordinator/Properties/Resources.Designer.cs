@@ -1154,6 +1154,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string LangSystem {
+            get {
+                return ResourceManager.GetString("LangSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last.
         /// </summary>
         internal static string Last {
@@ -3449,6 +3458,24 @@ namespace iba.Properties {
         internal static string SupportFileSuccess {
             get {
                 return ResourceManager.GetString("SupportFileSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The new language setting will only work after the ibaDatCoordinator client is restarted. Do you wish to restart it now?.
+        /// </summary>
+        internal static string SwitchLanguageRestartRequired {
+            get {
+                return ResourceManager.GetString("SwitchLanguageRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The new language setting will only work after ibaDatCoordinator is restarted. Do you wish to restart it now?.
+        /// </summary>
+        internal static string SwitchLanguageRestartRequiredStandAlone {
+            get {
+                return ResourceManager.GetString("SwitchLanguageRestartRequiredStandAlone", resourceCulture);
             }
         }
         
