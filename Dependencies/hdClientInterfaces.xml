@@ -616,11 +616,6 @@
             Show asterisk nodes or not
             </summary>
         </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowVectors">
-            <summary>
-            Show vector nodes or not
-            </summary>
-        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.SelectedSignalId">
             <summary>
             Gets or sets the selected signal id
