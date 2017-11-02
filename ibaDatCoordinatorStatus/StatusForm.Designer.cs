@@ -38,6 +38,7 @@
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_gbApp = new System.Windows.Forms.GroupBox();
+            this.m_btnClient = new System.Windows.Forms.Button();
             this.m_btChange = new System.Windows.Forms.Button();
             this.m_tbPort = new System.Windows.Forms.TextBox();
             this.m_btnRestart = new System.Windows.Forms.Button();
@@ -94,6 +95,7 @@
             // m_gbApp
             // 
             resources.ApplyResources(this.m_gbApp, "m_gbApp");
+            this.m_gbApp.Controls.Add(this.m_btnClient);
             this.m_gbApp.Controls.Add(this.m_btChange);
             this.m_gbApp.Controls.Add(this.m_tbPort);
             this.m_gbApp.Controls.Add(this.m_btnRestart);
@@ -108,6 +110,15 @@
             this.m_gbApp.Controls.Add(this.m_cbAutoStart);
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
+            // 
+            // m_btnClient
+            // 
+            resources.ApplyResources(this.m_btnClient, "m_btnClient");
+            this.m_btnClient.Image = global::iba.DatCoordinator.Status.Properties.Resources._default;
+            this.m_btnClient.Name = "m_btnClient";
+            this.m_toolTip.SetToolTip(this.m_btnClient, resources.GetString("m_btnClient.ToolTip"));
+            this.m_btnClient.UseVisualStyleBackColor = true;
+            this.m_btnClient.Click += new System.EventHandler(this.m_btnClient_Click);
             // 
             // m_btChange
             // 
@@ -241,5 +252,6 @@
         private System.Windows.Forms.Timer m_timer;
         private System.Windows.Forms.Button m_btChange;
         private System.Windows.Forms.TextBox m_tbPort;
+        private System.Windows.Forms.Button m_btnClient;
     }
 }

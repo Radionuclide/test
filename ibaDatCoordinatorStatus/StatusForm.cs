@@ -798,5 +798,17 @@ namespace iba.DatCoordinator.Status
                 }
             }
         }
+
+        private void m_btnClient_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+            procInfo.UseShellExecute = true;
+            procInfo.ErrorDialog = true;
+            string dir = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+            procInfo.WorkingDirectory = dir;
+            procInfo.FileName = Path.Combine(dir,"ibaDatCoordinator.exe");
+            procInfo.Arguments = "/service";
+            System.Diagnostics.Process.Start(procInfo);
+        }
     }
 }
