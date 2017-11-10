@@ -3829,11 +3829,29 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain infofield &apos;{0}&apos; from the event. The file will be placed in the &apos;unresolved&apos; subdirectory..
+        /// </summary>
+        internal static string WarningInfofieldDirFailed2 {
+            get {
+                return ResourceManager.GetString("WarningInfofieldDirFailed2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to obtain infofield &apos;{0}&apos; from the .dat file. The .dat file filename will be used as output filename..
         /// </summary>
         internal static string WarningInfofieldFailed {
             get {
                 return ResourceManager.GetString("WarningInfofieldFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain infofield &apos;{0}&apos; from the event. The standard name will be used as output filename..
+        /// </summary>
+        internal static string WarningInfofieldFailed2 {
+            get {
+                return ResourceManager.GetString("WarningInfofieldFailed2", resourceCulture);
             }
         }
         

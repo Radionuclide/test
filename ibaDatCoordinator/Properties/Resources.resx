@@ -1415,4 +1415,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="SwitchLanguageRestartRequiredStandAlone" xml:space="preserve">
     <value>The new language setting will only work after ibaDatCoordinator is restarted. Do you wish to restart it now?</value>
   </data>
+  <data name="WarningInfofieldDirFailed2" xml:space="preserve">
+    <value>Failed to obtain infofield '{0}' from the event. The file will be placed in the 'unresolved' subdirectory.</value>
+  </data>
+  <data name="WarningInfofieldFailed2" xml:space="preserve">
+    <value>Failed to obtain infofield '{0}' from the event. The standard name will be used as output filename.</value>
+  </data>
 </root>

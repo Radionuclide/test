@@ -3073,15 +3073,15 @@ namespace iba
             var culture = item.Tag as System.Globalization.CultureInfo;
             if (culture == null)
             {
-                Program.SelectedLanguage = "";
+                LanguageHelper.SelectedLanguage = "";
                 culture = System.Globalization.CultureInfo.InstalledUICulture;
             }
             else
             {
-                Program.SelectedLanguage = culture.Name;
+                LanguageHelper.SelectedLanguage = culture.Name;
             }
 
-            Profiler.ProfileString(false, "Client", "Language", ref Program.SelectedLanguage, "");
+            Profiler.ProfileString(false, "Client", "Language", ref LanguageHelper.SelectedLanguage, "");
             if (culture.Name != System.Globalization.CultureInfo.CurrentUICulture.Name)
             {
                 string message;
@@ -3101,7 +3101,7 @@ namespace iba
 
         private void languageToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            string selectedLang = Program.SelectedLanguage;
+            string selectedLang = LanguageHelper.SelectedLanguage;
             bool bFound = false;
             foreach (ToolStripMenuItem item in languageToolStripMenuItem.DropDownItems)
             {

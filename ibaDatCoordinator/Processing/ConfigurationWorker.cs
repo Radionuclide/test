@@ -3197,47 +3197,82 @@ namespace iba.Processing
         {
             if (task.UseInfoFieldForOutputFile)
             {
-                IbaFile ibaDatFile = new IbaFileClass();
-                string outputfile;
-                try
-                {
-                    ibaDatFile.Open(filename);
-                    outputfile = ibaDatFile.QueryInfoByName(task.InfoFieldForOutputFile);
-                    if (task.InfoFieldForOutputFileLength == 0)
-                    {
-                        if (task.InfoFieldForOutputFileStart != 0)
-                        {
-                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
-                        }
-                    }
-                    else
-                        outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
-                    if (task.InfoFieldForOutputFileRemoveBlanksAll)
-                        outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
-                    else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
-                        outputfile = outputfile.TrimEnd(null);
-                    outputfile = CPathCleaner.CleanFile(outputfile);
-                }
-                catch
-                {
-                    outputfile = "";
-                }
-                finally
-                {
+                if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled )
+                { //
+                    string outputfile;
+                    IniParser iniParser;
                     try
                     {
-                        ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        iniParser = new IniParser(filename);
+                        iniParser.Read();
+                        var Section = iniParser.Sections["HDQ file"];
+                        outputfile = Section[task.InfoFieldForOutputFile];
+                        if (task.InfoFieldForOutputFileLength == 0)
+                        {
+                            if (task.InfoFieldForOutputFileStart != 0)
+                            {
+                                outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+                            }
+                        }
+                        else
+                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                        outputfile = CPathCleaner.CleanFile(outputfile);
+                        if (!string.IsNullOrEmpty(outputfile)) return outputfile;
+                        //warn that we failed getting the infofield
+                        string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed2, task.InfoFieldForOutputFile);
+                        Log(iba.Logging.Level.Warning, message, filename, task);
                     }
                     catch
                     {
-
+                        string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed2, task.InfoFieldForOutputFile);
+                        Log(iba.Logging.Level.Warning, message, filename, task);
+                        return Path.GetFileNameWithoutExtension(filename);
                     }
                 }
-                if (!string.IsNullOrEmpty(outputfile)) return outputfile;
-                //warn that we failed getting the infofield
-                string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed, task.InfoFieldForOutputFile);
-                Log(iba.Logging.Level.Warning, message, filename, task);
+                else
+                {
+                    IbaFile ibaDatFile = new IbaFileClass();
+                    string outputfile;
+                    try
+                    {
+                        ibaDatFile.Open(filename);
+                        outputfile = ibaDatFile.QueryInfoByName(task.InfoFieldForOutputFile);
+                        if (task.InfoFieldForOutputFileLength == 0)
+                        {
+                            if (task.InfoFieldForOutputFileStart != 0)
+                            {
+                                outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+                            }
+                        }
+                        else
+                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                        if (task.InfoFieldForOutputFileRemoveBlanksAll)
+                            outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                        else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
+                            outputfile = outputfile.TrimEnd(null);
+                        outputfile = CPathCleaner.CleanFile(outputfile);
+                    }
+                    catch
+                    {
+                        outputfile = "";
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            ibaDatFile.Close();
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(outputfile)) return outputfile;
+                    //warn that we failed getting the infofield
+                    string message = string.Format(iba.Properties.Resources.WarningInfofieldFailed, task.InfoFieldForOutputFile);
+                    Log(iba.Logging.Level.Warning, message, filename, task);
+                }
             }
             return Path.GetFileNameWithoutExtension(filename);
         }
@@ -3271,40 +3306,70 @@ namespace iba.Processing
 
         private String InfoFieldBasedSubFolder(TaskDataUNC task, String filename)
         {
-            IbaFile ibaDatFile = new IbaFileClass();
             string Subdir = "";
-            try
-            {
-                ibaDatFile.Open(filename);
-                Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
-                if(task.InfoFieldForSubdirLength == 0)
-                {
-                    if(task.InfoFieldForSubdirStart != 0)
-                    {
-                        Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
-                    }
-                }
-                else
-                    Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
-                if(task.InfoFieldForSubdirRemoveBlanksAll)
-                    Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
-                else if(task.InfoFieldForSubdirRemoveBlanksEnd)
-                    Subdir = Subdir.TrimEnd(null);
-            }
-            catch
-            {
-                Subdir = "";
-            }
-            finally
+            if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
             {
                 try
                 {
-                    ibaDatFile.Close();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                    IniParser iniParser = new IniParser(filename);
+                    iniParser.Read();
+                    var Section = iniParser.Sections["HDQ file"];
+                    Subdir = Section[task.InfoFieldForSubdir];
+                    if (task.InfoFieldForSubdirLength == 0)
+                    {
+                        if (task.InfoFieldForSubdirStart != 0)
+                        {
+                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                        }
+                    }
+                    else
+                        Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                    if (task.InfoFieldForSubdirRemoveBlanksAll)
+                        Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                    else if (task.InfoFieldForSubdirRemoveBlanksEnd)
+                        Subdir = Subdir.TrimEnd(null);
                 }
                 catch
                 {
+                    Subdir = "";
+                }
+            }
+            else
+            {
+                IbaFile ibaDatFile = new IbaFileClass();
+                try
+                {
+                    ibaDatFile.Open(filename);
+                    Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
+                    if (task.InfoFieldForSubdirLength == 0)
+                    {
+                        if (task.InfoFieldForSubdirStart != 0)
+                        {
+                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                        }
+                    }
+                    else
+                        Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                    if (task.InfoFieldForSubdirRemoveBlanksAll)
+                        Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+                    else if (task.InfoFieldForSubdirRemoveBlanksEnd)
+                        Subdir = Subdir.TrimEnd(null);
+                }
+                catch
+                {
+                    Subdir = "";
+                }
+                finally
+                {
+                    try
+                    {
+                        ibaDatFile.Close();
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                    }
+                    catch
+                    {
 
+                    }
                 }
             }
             if(!string.IsNullOrEmpty(Subdir))
@@ -3314,7 +3379,7 @@ namespace iba.Processing
             }
             Subdir = "unresolved";
             //warn that we failed getting the infofield
-            string message = string.Format(iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
+            string message = string.Format(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled?iba.Properties.Resources.WarningInfofieldDirFailed2:iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
             Log(iba.Logging.Level.Warning, message, filename, task);
             return Subdir;
         }
