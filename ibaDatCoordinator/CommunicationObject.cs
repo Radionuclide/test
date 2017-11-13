@@ -208,6 +208,10 @@ namespace iba
             {
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
             }
+            finally
+            {
+                myBar.Finished = true;
+            }
         }
 
 
@@ -226,6 +230,10 @@ namespace iba
             catch (Exception ex)
             {
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
+            }
+            finally
+            {
+                myBar.Finished = true;
             }
         }
 
@@ -262,6 +270,11 @@ namespace iba
             {
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
             }
+            finally
+            {
+                myBar.Finished = true;
+            }
+
         }
 
 

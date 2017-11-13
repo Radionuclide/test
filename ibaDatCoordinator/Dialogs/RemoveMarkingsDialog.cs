@@ -103,7 +103,7 @@ namespace iba.Dialogs
                         Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_files, pb);
                     while (!pb.Finished)
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000);
                     }
                 }
                 catch (Exception) //try old way in case of server client discrepancy

@@ -53,17 +53,24 @@ namespace iba.Processing
 
         public void RemoveMarkings(List<string> files, FileProcessingProgressBar myBar)
         {
-            if(!String.IsNullOrEmpty(m_error) || files.Count == 0) return;
-
-            IbaFile ibaDatFile = new IbaFileClass();
-            bool stop = false;
-            for (int count = 0; count < files.Count && !stop; count++)
+            try
             {
-                string filename = files[count];
-                stop = myBar.UpdateProgress(filename,count);
-                RemoveMarkingsFromFile(filename, ibaDatFile);
+                if (!String.IsNullOrEmpty(m_error) || files.Count == 0)
+                    return;
+
+                IbaFile ibaDatFile = new IbaFileClass();
+                bool stop = false;
+                for (int count = 0; count < files.Count && !stop; count++)
+                {
+                    string filename = files[count];
+                    stop = myBar.UpdateProgress(filename, count);
+                    RemoveMarkingsFromFile(filename, ibaDatFile);
+                }
             }
-            myBar.Finished = true;
+            finally
+            {
+                myBar.Finished = true;
+            }
         }
 
         public static string RemoveMarkingsFromFile(string filename, IbaFile ibaDatFile = null)
