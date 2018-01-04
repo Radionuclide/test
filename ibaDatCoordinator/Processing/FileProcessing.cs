@@ -99,9 +99,7 @@ namespace iba.Processing
                 {
                     ibaDatFile.OpenForUpdate(filename);
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                    ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
-                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
-                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");
+                    ConfigurationWorker.ClearFields(ref ibaDatFile);
                 }
             }
             catch(Exception ex)//updating didn't work, forget about it

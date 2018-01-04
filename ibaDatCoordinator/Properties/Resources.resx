@@ -1421,4 +1421,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="WarningInfofieldFailed2" xml:space="preserve">
     <value>Failed to obtain infofield '{0}' from the event. The standard name will be used as output filename.</value>
   </data>
+  <data name="TasksCountExceeded" xml:space="preserve">
+    <value>Cannot add the requested task, the maximum amount of tasks for this job has been reached.</value>
+  </data>
 </root>

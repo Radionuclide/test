@@ -306,16 +306,16 @@ namespace iba.Utility
 
         private void GetServerZipFile(string target)
         {
-            if (Program.ServiceIsLocal)
-            {
-                using (WaitCursor wait = new WaitCursor())
-                {
-                    GenerateServerZipFile(target);
-                }
-                return;
-            }
-            else
-            {
+            //if (Program.ServiceIsLocal)
+            //{
+            //    using (WaitCursor wait = new WaitCursor())
+            //    {
+            //        GenerateServerZipFile(target);
+            //    }
+            //    return;
+            //}
+            //else
+            //{
                 ServerFileInfo inf;
                 using (WaitCursor wait = new WaitCursor())
                 {
@@ -327,7 +327,7 @@ namespace iba.Utility
                     downloadForm.ShowDialog(parent);
                 }
                 Program.CommunicationObject.DeleteFile(inf.LocalFileName);
-            }
+            //}
         }
 
         public static void GenerateServerZipFile(string target)

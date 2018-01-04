@@ -139,8 +139,9 @@ namespace iba.Dialogs
                         {
                             ibaDatFile.OpenForUpdate(filename);
                             ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                            ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", "");
-                            ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                            if (!string.IsNullOrEmpty(ibaDatFile.QueryInfoByName("$DATCOOR_times_tried")))
+                                ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                            iba.Processing.ConfigurationWorker.ClearFields(ref ibaDatFile);
                         }
                         backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));
                     }

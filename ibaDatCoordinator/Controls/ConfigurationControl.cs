@@ -338,9 +338,20 @@ namespace iba.Controls
             m_stopButton.Enabled = false;
             if(t != null) t.UpdateButtons();
         }
-        
+        private bool TestTaskCount()
+        {
+            if (m_data.Tasks.Count >= 1000)
+            {
+                MessageBox.Show(iba.Properties.Resources.TasksCountExceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
         private void m_newReportButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
+
             ReportData report = new ReportData(m_data);
             new SetNextName(report);
             m_data.Tasks.Add(report);
@@ -354,8 +365,12 @@ namespace iba.Controls
             m_manager.LeftTree.SelectedNode = newNode;
         }
 
-        private void m_newExtractButton_Click(object sender, EventArgs e)
+
+
+private void m_newExtractButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             ExtractData extract = new ExtractData(m_data);
             new SetNextName(extract);
             m_data.Tasks.Add(extract);
@@ -371,6 +386,9 @@ namespace iba.Controls
 
         private void m_newBatchfileButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
+
             BatchFileData batchfile = new BatchFileData(m_data);
             new SetNextName(batchfile);
             m_data.Tasks.Add(batchfile);
@@ -386,6 +404,8 @@ namespace iba.Controls
 
         private void m_newCopyTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             CopyMoveTaskData copy = new CopyMoveTaskData(m_data);
             new SetNextName(copy);
             m_data.Tasks.Add(copy);
@@ -401,6 +421,8 @@ namespace iba.Controls
 
         private void m_newIfTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             IfTaskData condo = new IfTaskData(m_data);
             new SetNextName(condo);
             m_data.Tasks.Add(condo);
@@ -416,6 +438,8 @@ namespace iba.Controls
 
         private void m_newUpdateDataTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             bool IsLicensed = false;
             try
             {
@@ -447,6 +471,8 @@ namespace iba.Controls
 
         private void m_newPauseTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             PauseTaskData pause = new PauseTaskData(m_data);
             new SetNextName(pause);
             m_data.Tasks.Add(pause);
@@ -462,6 +488,8 @@ namespace iba.Controls
 
         private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             TaskWithTargetDirData cleanup = new CleanupTaskData(m_data);
             new SetNextName(cleanup);
             m_data.Tasks.Add(cleanup);
@@ -477,6 +505,8 @@ namespace iba.Controls
 
         private void m_newSplitterTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             SplitterTaskData Splitter = new SplitterTaskData(m_data);
             new SetNextName(Splitter);
             m_data.Tasks.Add(Splitter);
@@ -492,6 +522,8 @@ namespace iba.Controls
 
         void newCustomTaskButton_Click(object sender, EventArgs e)
         {
+            if (!TestTaskCount())
+                return;
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton)sender).Tag);
             TaskData cust;
             if (info is PluginTaskInfoUNC)

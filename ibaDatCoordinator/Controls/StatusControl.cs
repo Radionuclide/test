@@ -21,6 +21,7 @@ namespace iba.Controls
         public StatusControl()
         {
             InitializeComponent();
+            this.DatFiles.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.m_gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             InitializeIcons();
         }
@@ -200,7 +201,11 @@ namespace iba.Controls
             {
                 m_gridView.ColumnCount = 2;
                 DataGridViewImageColumn [] cols = new DataGridViewImageColumn[count];
-                for(int i = 0; i < cols.Length;i++) cols[i] = new DataGridViewImageColumn();
+                for (int i = 0; i < cols.Length; i++)
+                {
+                    cols[i] = new DataGridViewImageColumn();
+                    cols[i].FillWeight = 1;
+                }
                 m_gridView.Columns.AddRange(cols);
             }
             foreach (TaskData task in m_cd.Tasks)

@@ -1967,6 +1967,12 @@ namespace iba.Processing
                                 guidstring = ibaDatFile.QueryInfoByName("$DATCOOR_TasksDone");
                                 if (string.IsNullOrEmpty(guidstring))
                                     throw new Exception("no info field present");
+                                for (int index = 1; true; index++)
+                                {
+                                    string t = ibaDatFile.QueryInfoByName("$DATCOOR_TasksDone_"+index.ToString());
+                                    if (string.IsNullOrEmpty(t)) break;
+                                    guidstring += t;
+                                }
                             }
                             catch //old way
                             {
@@ -1994,6 +2000,12 @@ namespace iba.Processing
                         try
                         {
                             outputfilesString = ibaDatFile.QueryInfoByName("$DATCOOR_OutputFiles");
+                            for (int index = 1; true; index++)
+                            {
+                                string t = ibaDatFile.QueryInfoByName("$DATCOOR_OutputFiles_" + index.ToString());
+                                if (string.IsNullOrEmpty(t)) break;
+                                outputfilesString += t;
+                            }
                         }
                         catch (ArgumentException)
                         {
@@ -2598,6 +2610,22 @@ namespace iba.Processing
         }
         // added by kolesnik - end
 
+        public static void ClearFields(ref IbaFile ibaDatFile)
+        {
+            string[] fields = new string[] { "$DATCOOR_TasksDone", "$DATCOOR_OutputFiles" };
+            for (int i = 0; i < 2; i++)
+            {
+                if (!string.IsNullOrEmpty(ibaDatFile.QueryInfoByName(fields[i])))
+                {
+                    ibaDatFile.WriteInfoField(fields[i], "");
+                    for (int index = 1; !string.IsNullOrEmpty(ibaDatFile.QueryInfoByName(fields[i] + "_" + index.ToString())); index++)
+                        ibaDatFile.WriteInfoField(fields[i] + "_" + index.ToString(), "");
+                }
+            }
+        }
+
+
+
 
         private void WriteStateInDatFile(string InputFile, bool completeSucces)
         {
@@ -2625,25 +2653,70 @@ namespace iba.Processing
                 if(completeSucces)
                 {
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
-                    ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", "");//erase any previous outputfiles;
+                    //empty out guid infofields
+                    ClearFields(ref ibaDatFile);
                 }
                 else
                 {
                     ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
-                    //write GUIDs of those that were succesfull
-                    lock(m_sd.DatFileStates)
+                    //write GUIDs of those that were succesful
+                    ClearFields(ref ibaDatFile);
+                    lock (m_sd.DatFileStates)
                     {
                         string guids = "";
                         string outputfiles = "";
-                        foreach(KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
-                            if(stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
+                        int cnt = 0;
+                        int fieldIndex = 0;
+                        int cntF = 0;
+                        int fieldIndexF = 0;
+                        int maxCount = 20;
+                        foreach (KeyValuePair<TaskData, DatFileStatus.State> stat in m_sd.DatFileStates[InputFile].States)
+                        {
+                            if (stat.Value == DatFileStatus.State.COMPLETED_SUCCESFULY)
                             {
                                 guids += stat.Key.Guid.ToString() + ";";
-                                if(m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
+                                cnt++;
+                                if (cnt >= maxCount)
+                                {
+                                    if (fieldIndex == 0)
+                                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                                    else
+                                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone_" + fieldIndex.ToString(), guids);
+                                    cnt = 0;
+                                    guids = "";
+                                    fieldIndex++;
+                                }
+                                if (m_sd.DatFileStates[InputFile].OutputFiles.ContainsKey(stat.Key))
+                                {
                                     outputfiles += stat.Key.Guid.ToString() + "|" + m_sd.DatFileStates[InputFile].OutputFiles[stat.Key] + ";";
+                                    cntF++;
+                                    if (cntF >= maxCount)
+                                    {
+                                        if (fieldIndexF == 0)
+                                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                                        else
+                                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles_" + fieldIndexF.ToString(), outputfiles);
+                                        cntF = 0;
+                                        outputfiles = "";
+                                        fieldIndexF++;
+                                    }
+                                }
                             }
-                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
-                        ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                        }
+                        if (cnt != 0)
+                        {
+                            if (fieldIndex == 0)
+                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                            else
+                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone_" + fieldIndex.ToString(), guids);
+                        }
+                        if (cntF != 0)
+                        {
+                            if (fieldIndexF == 0)
+                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                            else
+                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles_" + fieldIndexF.ToString(), outputfiles);
+                        }
                     }
                 }
 

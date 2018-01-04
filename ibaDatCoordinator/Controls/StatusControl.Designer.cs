@@ -80,7 +80,6 @@ namespace iba.Controls
             // 
             // DatFiles
             // 
-            this.DatFiles.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             resources.ApplyResources(this.DatFiles, "DatFiles");
             this.DatFiles.Name = "DatFiles";
             this.DatFiles.ReadOnly = true;

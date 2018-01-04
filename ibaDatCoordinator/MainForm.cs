@@ -1063,6 +1063,8 @@ namespace iba
             {
                 SaveRightPaneControl();
                 ConfigurationData origData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+                if (!TestTaskCount(origData))
+                    return;
                 m_task_copy.ParentConfigurationData = origData;
                 new SetNextName(m_task_copy);
                 origData.Tasks.Add(m_task_copy);
@@ -1149,6 +1151,8 @@ namespace iba
                 SaveRightPaneControl();
                 ConfigurationData origData = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
                 m_task_copy.ParentConfigurationData = origData;
+                if (!TestTaskCount(origData))
+                    return;
                 TreeNode taskNode = null;
                 new SetNextName(m_task_copy);
                 if (m_task_copy is ReportData)
@@ -1461,11 +1465,26 @@ namespace iba
             m_configTreeView.SelectedNode = node;
         }
 
+
+        private bool TestTaskCount(ConfigurationData confData)
+        {
+            if (confData == null) return true;
+            if (confData.Tasks.Count >= 1000)
+            {
+                MessageBox.Show(iba.Properties.Resources.TasksCountExceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+
         private void OnNewReportMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             ReportData report = new ReportData(confData);
             new SetNextName(report);
             confData.Tasks.Add(report);
@@ -1483,6 +1502,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             ExtractData extract = new ExtractData(confData);
             new SetNextName(extract);
             confData.Tasks.Add(extract);
@@ -1500,6 +1521,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             BatchFileData bat = new BatchFileData(confData);
             new SetNextName(bat);
             confData.Tasks.Add(bat);
@@ -1517,6 +1540,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             IfTaskData condo = new IfTaskData(confData);
             new SetNextName(condo);
             confData.Tasks.Add(condo);
@@ -1552,6 +1577,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             UpdateDataTaskData udt = new UpdateDataTaskData(confData);
             new SetNextName(udt);
             confData.Tasks.Add(udt);
@@ -1569,6 +1596,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             CopyMoveTaskData cop = new CopyMoveTaskData(confData);
             new SetNextName(cop);
             confData.Tasks.Add(cop);
@@ -1586,6 +1615,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             PauseTaskData pause = new PauseTaskData(confData);
             new SetNextName(pause);
             confData.Tasks.Add(pause);
@@ -1603,6 +1634,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             SplitterTaskData Splitter = new SplitterTaskData(confData);
             new SetNextName(Splitter);
             confData.Tasks.Add(Splitter);
@@ -1620,6 +1653,8 @@ namespace iba
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
             TreeNode node = mc.Tag as TreeNode;
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             CleanupTaskData cleanup = new CleanupTaskData(confData);
             new SetNextName(cleanup);
             confData.Tasks.Add(cleanup);
@@ -1641,6 +1676,8 @@ namespace iba
             
             PluginTaskInfo info = PluginManager.Manager.PluginInfos[index];
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
             TaskData cust;
             if (info is PluginTaskInfoUNC)
                 cust = new CustomTaskDataUNC(confData, info);

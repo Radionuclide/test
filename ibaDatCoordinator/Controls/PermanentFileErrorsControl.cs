@@ -228,6 +228,7 @@ namespace iba.Controls
                 {
                     cols[i] = new DataGridViewImageColumn();
                     cols[i].ReadOnly = true;
+                    cols[i].FillWeight = 1;
                 }
                 m_gridView.Columns.AddRange(cols);
             }
