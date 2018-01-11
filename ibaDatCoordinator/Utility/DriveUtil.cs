@@ -1,10 +1,10 @@
-﻿namespace iba.Utility
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+
+namespace iba.Utility
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.IO;
 
     public static class DriveUtil
     {
@@ -12,21 +12,26 @@
 
         public static IEnumerable<DriveInfo> LocalDrives()
         {
-            return DriveInfo.GetDrives().OrderBy(d => d.Name).Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Removable);
+            return DriveInfo.GetDrives().OrderBy(d => d.Name).Where(d => d.DriveType == DriveType.Fixed);
         }
 
-        public static bool IsSystemDrive(string driveName)
+        public static bool IsSystemDrive(this DriveInfo drive)
         {
-            return (driveName == systemDriveName);
+            return (drive.Name == systemDriveName);
         }
 
         public static bool IsDriveReady(string driveName)
         {
-            var drive = new DriveInfo(driveName);
-            return IsDriveReady(drive);
+            try
+            {
+                return new DriveInfo(driveName).IsDriveReady();
+            }
+            catch (Exception)
+            { }
+            return false; 
         }
 
-        public static bool IsDriveReady(DriveInfo drive)
+        public static bool IsDriveReady(this DriveInfo drive)
         {
             try
             {

@@ -1,19 +1,19 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Collections.Concurrent;
+
+using iba.Data;
+using iba.Utility;
+using iba.Properties;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
+using System.IO;
+
 namespace iba.Processing
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Concurrent;
-
-    using iba.Data;
-    using iba.Utility;
-    using iba.Properties;
-    using System.Threading.Tasks;
-    using System.Threading;
-    using System.Diagnostics;
-    using System.IO;
 
     public class GlobalCleanupManager
     {
@@ -24,23 +24,24 @@ namespace iba.Processing
         {
             m_globalCleanupWorker = new ConcurrentDictionary<string, TaskControl>();
             m_globalCleanupDataList = new List<GlobalCleanupData>();
+            UpdateGlobalCleanupData();
         }
 
         public List<GlobalCleanupData> GlobalCleanupDataList
         {
             get
             {
-                SyncGlobalCleanupDataList();
+                UpdateGlobalCleanupData();
                 return m_globalCleanupDataList;
             }
             set
             {
                 m_globalCleanupDataList = value;
-                SyncGlobalCleanupDataList();
+                UpdateGlobalCleanupData();
             }
         }
 
-        private void SyncGlobalCleanupDataList()
+        private void UpdateGlobalCleanupData()
         {
             foreach (var drive in DriveUtil.LocalDrives())
             {
@@ -50,15 +51,13 @@ namespace iba.Processing
                     gcd = new GlobalCleanupData() { DriveName = drive.Name };
                     m_globalCleanupDataList.Add(gcd);
                 }
+
+                gcd.VolumeLabel = drive.VolumeLabel;
+                gcd.TotalSize = drive.TotalSize;
+                gcd.TotalFreeSpace = drive.TotalFreeSpace;
+                gcd.IsReady = drive.IsReady;
+                gcd.IsSystemDrive = drive.IsSystemDrive();
             }
-
-            DisableCleanupForNonexistingDrives();
-        }
-
-        private void DisableCleanupForNonexistingDrives()
-        {
-            var localDriveNames = new HashSet<string>(DriveUtil.LocalDrives().Select(d => d.Name));
-            m_globalCleanupDataList.ForEach(gcd => gcd.Active = gcd.Active && localDriveNames.Contains(gcd.DriveName));
         }
 
         public void StartAllEnabledGlobalCleanups()
@@ -141,6 +140,7 @@ namespace iba.Processing
             taskData.OutputLimitChoice = TaskDataUNC.OutputLimitChoiceEnum.SaveFreeSpace;
 
             var globalQuota = new FileQuotaGlobalCleanup(taskData, ".dat", ct);
+            var waitTimeSpan = TimeSpan.FromMinutes(data.RescanTime);
 
             bool cancelled = ct.IsCancellationRequested;
             while (!cancelled)
@@ -160,7 +160,7 @@ namespace iba.Processing
                 Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupFinished, sw.ElapsedMilliseconds / 1000.0), taskData.DestinationMapUNC, taskData);
 
                 Log(Logging.Level.Info, String.Format(Resources.logGlobalCleanupNextCleanup, System.DateTime.Now.AddMinutes(data.RescanTime)), taskData.DestinationMapUNC, taskData);
-                cancelled = ct.WaitHandle.WaitOne(data.RescanTime * 60000);
+                cancelled = ct.WaitHandle.WaitOne(waitTimeSpan);
             }
         }
 
@@ -214,7 +214,7 @@ namespace iba.Processing
             Log(message, iba.Logging.Level.Debug, cleanupPath);
         }
 
-        private void Log(string message, iba.Logging.Level level, string cleanupPath)
+        private void Log(string message, Logging.Level level, string cleanupPath)
         {
             if (!String.IsNullOrEmpty(cleanupPath))
                 message = String.Concat(cleanupPath, " - ", message);

@@ -282,13 +282,11 @@ namespace iba.Controls
 
             foreach (var gcd in m_globalCleanupData.OrderBy(gc => gc.DriveName))
             {
-                var drive = new DriveInfo(gcd.DriveName);
-
-                string driveName = drive.Name;
-                if (drive.IsReady)
+                var drive = gcd;
+                string driveName = gcd.DriveName;
+                if (gcd.IsReady)
                 {
-                    driveName = String.Format("{0} - [{1}]", drive.Name, drive.VolumeLabel);
-                    gcd.VolumeLabel = drive.VolumeLabel;
+                    driveName = String.Format("{0} - [{1}]", drive.DriveName, drive.VolumeLabel);
                 }
 
                 rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -357,16 +355,18 @@ namespace iba.Controls
             btn.Left = lbl.Left + lbl.Width + 5;
             btn.Size = new Size(24, 24);
             btn.Image = global::iba.Properties.Resources.open;
+            btn.Enabled = (Program.RunsWithService == Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal);
             btn.Click += (s, e) =>
             {
-                m_folderBrowserDialog.ShowNewFolderButton = false;
-                m_folderBrowserDialog.SelectedPath = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
-                DialogResult result = m_folderBrowserDialog.ShowDialog();
-                if (result == DialogResult.OK && m_folderBrowserDialog.SelectedPath.StartsWith(gcd.DriveName))
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                    BrowseFolderRemote(gcd);
+                else
+                    BrowseFolderLocal(gcd);
+
+                if (!String.IsNullOrEmpty(gcd.WorkingFolder))
                 {
-                    lbl.Text = CompactDisplayFolder(m_folderBrowserDialog.SelectedPath, volumeLabel, lbl);
+                    lbl.Text = CompactDisplayFolder(gcd.WorkingFolder, volumeLabel, lbl);
                     btn.Left = lbl.Left + lbl.Width + 5;
-                    gcd.WorkingFolder = m_folderBrowserDialog.SelectedPath;
                 }
 
             };
@@ -375,6 +375,40 @@ namespace iba.Controls
 
             tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
         }
+
+        private void BrowseFolderRemote(GlobalCleanupData gcd)
+        {
+            using (ServerFolderBrowser fd = new ServerFolderBrowser())
+            {
+                fd.FixedDrivesOnly = true;
+                fd.ShowFiles = false;
+
+                fd.SelectedPath = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
+
+                DialogResult result = fd.ShowDialog(this);
+
+                if (result == DialogResult.OK && fd.SelectedPath.StartsWith(gcd.DriveName))
+                    gcd.WorkingFolder = fd.SelectedPath;
+                else
+                    gcd.WorkingFolder = String.Empty;
+            }
+            
+        }
+
+        private void BrowseFolderLocal(GlobalCleanupData gcd)
+        {
+            m_folderBrowserDialog.ShowNewFolderButton = false;
+            m_folderBrowserDialog.SelectedPath = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
+            DialogResult result = m_folderBrowserDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK && m_folderBrowserDialog.SelectedPath.StartsWith(gcd.DriveName))
+                gcd.WorkingFolder = m_folderBrowserDialog.SelectedPath;
+            else
+                gcd.WorkingFolder = String.Empty;
+
+        }
+
+
 
         private string CompactDisplayFolder(string cleanupFolder, string volumeLabel, Label lbl)
         {
