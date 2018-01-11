@@ -26,7 +26,10 @@ namespace iba.Controls
 
         protected override void UpdateEditText()
         {
-            Text = Value.ToString(String.Format("f{0}", DecimalPlaces)) + "%";
+            base.UpdateEditText();
+
+            ChangingText = true;
+            Text += "%";
         }
 
     }
