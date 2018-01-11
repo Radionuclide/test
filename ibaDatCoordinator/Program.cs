@@ -11,6 +11,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using Microsoft.Win32;
 using System.Threading;
+using System.Net;
 
 namespace iba
 {
@@ -188,10 +189,35 @@ namespace iba
             get
             {
 //#if DEBUG
-  //              return false;
+//              return false;
 //#else
-                string serviceHost = ServiceHost;
-                return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower() ;
+                try
+                { // get host IP addresses
+                    IPAddress[] hostIPs = Dns.GetHostAddresses(ServiceHost);
+                    // get local IP addresses
+                    IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+
+                    // test if any host IP equals to any local IP or to localhost
+                    foreach (IPAddress hostIP in hostIPs)
+                    {
+                        // is localhost
+                        if (IPAddress.IsLoopback(hostIP))
+                            return true;
+
+                        // is local address
+                        foreach (IPAddress localIP in localIPs)
+                        {
+                            // use IPAddress.Equals() to handle IPv6 addresses also
+                            if (hostIP.Equals(localIP))
+                                return true;
+                        }
+                    }
+                }
+                catch { }
+                return false;
+
+                //string serviceHost = ServiceHost;
+                //return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower() ;
 //#endif
             }
         }
