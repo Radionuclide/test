@@ -217,6 +217,11 @@
               Looks up a localized string similar to Write event based store data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEventNoop">
+            <summary>
+              Looks up a localized string similar to Write no event data.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEventVariable">
             <summary>
               Looks up a localized string similar to Write variable amount of event fields.
@@ -225,6 +230,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterLength">
             <summary>
               Looks up a localized string similar to Write length based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterLog">
+            <summary>
+              Looks up a localized string similar to Write log messages.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterOffline">
@@ -821,6 +831,11 @@
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,System.Collections.Generic.List{System.String},iba.HD.Common.HdNotificationType)" -->
+        <member name="T:iba.HD.Common.DynValueSettings">
+            <remarks>
+            Not used or tested at the moment
+            </remarks>
+        </member>
         <member name="T:iba.HD.Common.HdWriterSolution">
             <summary>
             Solution to writer conflict
@@ -956,7 +971,7 @@
             Writes data to the store
             </summary>
             <returns>
-            Write buffer input percentage
+            Buffer percentage
             </returns>
             <remarks>
             Make sure byte size is small enough
@@ -967,7 +982,7 @@
             Writes data to the store using protocol buffer serialization
             </summary>
             <returns>
-            Write buffer input percentage
+            Buffer percentage
             </returns>
             <remarks>
             Make sure total byte size is small enough
@@ -975,7 +990,12 @@
         </member>
         <member name="M:iba.HD.Common.IHdWriterContract.GetBufferPct">
             <summary>
-            Write buffer input percentage
+            Get buffer percentage
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.Log(iba.HD.Common.HdValidationMessage)">
+            <summary>
+            Write message to server log
             </summary>
         </member>
         <member name="F:iba.HD.Common.TimeLevelInfo.LevelFactor">
@@ -1183,6 +1203,11 @@
         <member name="P:iba.HD.Common.HdValidationMessage.Type">
             <summary>
             Message type
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Level">
+            <summary>
+            Message type converted to logger level
             </summary>
         </member>
         <member name="P:iba.HD.Common.HdValidationMessage.Text">

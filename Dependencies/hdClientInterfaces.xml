@@ -924,8 +924,16 @@
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.Disconnect">
             <summary>
-            Disconnects from server if currently connected
+            Disconnects from server if currently connected and disables auto-reconnect
             </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.StartAutoReconnect">
+            <summary>
+            Start auto-reconnect after disconnecting
+            </summary>
+            <returns>
+            True upon success
+            </returns>
         </member>
         <member name="P:iba.HD.Client.Interfaces.IHdReader.TimeSynchronizer">
             <summary>
