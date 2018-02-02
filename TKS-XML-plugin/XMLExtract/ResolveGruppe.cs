@@ -6,21 +6,16 @@ namespace XmlExtract
     using System.Collections.Generic;
     using System.Text;
     using System.Diagnostics;
-
+    using System.Text.RegularExpressions;
 
     internal class ResolveGruppe
     {
-        private static List<string> _suffixList = new List<string>() { "__IR__S", "__GR__S" };
+        //private static List<string> _suffixList = new List<string>() { "__IR__S", "__GR__S" };
+        private static Regex _regex = new Regex("^(.*?)(__[A-Za-z0-9]+__[A-Za-z0-9]*)$");
 
         public static string Resolve(string signalName)
         {
-            foreach (string suffix in _suffixList)
-            {
-                if (signalName.EndsWith(suffix))
-                    return signalName.Substring(0, signalName.Length - suffix.Length);
-            }
-            return signalName;
-
+            return _regex.Replace(signalName, "$1");
         }
 
         public void Process(string signalName)
