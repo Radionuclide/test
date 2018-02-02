@@ -117,8 +117,7 @@ namespace XmlExtract
             mes.Gruppe = ResolveGruppe.Resolve(signalId);
             mes.LetzteMsgAmDurchsatz = false;
 
-            //mes.Messgroesse = ResolveMessgroesse.Resolve(channel.Unit());
-            mes.IDMessgeraet = String.Format("MI_{0}", signalId);
+            mes.IDMessgeraet = String.Format("MI__{0}", signalId);
 
             var spur = new SpurType();
             spur.Bezeichner = signalId;
