@@ -83,7 +83,7 @@ namespace XmlExtract
             {
 
                 var signalId = channel.ResolveSignalId(data.IdField);
-                if (channel.Name.Contains("__IE__") || channel.Name.Contains("__SE__"))
+                if (signalId.Contains("__IE__") || signalId.Contains("__SE__"))
                 {
                     EinzelwertType ew = GetEinzelWert(channel, signalId);
                     met.Einzelwerte.Einzelwert.Add(ew);
