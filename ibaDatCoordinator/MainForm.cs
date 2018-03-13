@@ -65,7 +65,7 @@ namespace iba
             ToolStripManager.VisualStylesEnabled = true;
             ToolStripManager.Renderer = new ibaToolstripRenderer();
 
-            this.Text += " v" + GetType().Assembly.GetName().Version.ToString(3);
+            this.Text = "ibaDatCoordinator v" + DatCoVersion.GetVersion();
 
             //Initialize logger
             LogControl theLogControl; 
@@ -1920,7 +1920,7 @@ namespace iba
             if (m_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 m_filename = m_saveFileDialog.FileName;
-                this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
+                this.Text = m_filename + " - ibaDatCoordinator v" + DatCoVersion.GetVersion();
                 saveToolStripMenuItem_Click(null, e);
             }
         }
@@ -1969,7 +1969,7 @@ namespace iba
                     List<ConfigurationData> confs = data.ApplyToManager(TaskManager.Manager, Program.ClientName); ;
 
                     m_filename = filename;
-                    this.Text = m_filename + " - ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
+                    this.Text = m_filename + " - ibaDatCoordinator v" + DatCoVersion.GetVersion();
                     foreach (ConfigurationData dat in confs)
                     {
                         dat.relinkChildData();
@@ -2038,7 +2038,7 @@ namespace iba
             }
             m_filename = null;
             clearAllConfigurations();
-            this.Text = "ibaDatCoordinator v" + GetType().Assembly.GetName().Version.ToString(3);
+            this.Text = "ibaDatCoordinator v" + DatCoVersion.GetVersion();
             m_navBar.SelectedPane = m_configPane;
         }
 

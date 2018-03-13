@@ -17,7 +17,7 @@ namespace iba
         {
             InitializeComponent();
             //set various versions
-            m_vDATC.Text = "v" + GetType().Assembly.GetName().Version.ToString(3);
+            m_vDATC.Text = "v" + DatCoVersion.GetVersion();
             string fileName = PathUtil.GetAbsolutePath("ibaLogger.dll");
             System.Reflection.AssemblyName asName = System.Reflection.AssemblyName.GetAssemblyName(fileName);
             m_vLogger.Text = "v" + asName.Version.ToString();
