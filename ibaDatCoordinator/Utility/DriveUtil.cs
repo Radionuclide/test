@@ -12,7 +12,7 @@ namespace iba.Utility
 
         public static IEnumerable<DriveInfo> LocalDrives()
         {
-            return DriveInfo.GetDrives().OrderBy(d => d.Name).Where(d => d.DriveType == DriveType.Fixed);
+            return DriveInfo.GetDrives().Where(d => d.DriveType == DriveType.Fixed).OrderBy(d => d.Name);
         }
 
         public static bool IsSystemDrive(this DriveInfo drive)

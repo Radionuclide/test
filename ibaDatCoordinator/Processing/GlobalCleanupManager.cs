@@ -17,7 +17,7 @@ namespace iba.Processing
 
     public class GlobalCleanupManager
     {
-        private ConcurrentDictionary<string, TaskControl> m_globalCleanupWorker;
+        private readonly ConcurrentDictionary<string, TaskControl> m_globalCleanupWorker;
         private List<GlobalCleanupData> m_globalCleanupDataList;
 
         public GlobalCleanupManager()
@@ -52,11 +52,21 @@ namespace iba.Processing
                     m_globalCleanupDataList.Add(gcd);
                 }
 
-                gcd.VolumeLabel = drive.VolumeLabel;
-                gcd.TotalSize = drive.TotalSize;
-                gcd.TotalFreeSpace = drive.TotalFreeSpace;
-                gcd.IsReady = drive.IsReady;
                 gcd.IsSystemDrive = drive.IsSystemDrive();
+                gcd.IsReady = drive.IsReady;
+
+                try
+                {
+                    gcd.VolumeLabel = drive.VolumeLabel;
+                    gcd.TotalSize = drive.TotalSize;
+                    gcd.TotalFreeSpace = drive.TotalFreeSpace;
+                }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Debug, Resources.logGlobalCleanupDriveNotReadyForCleanup, gcd.DriveName);
+                    Log(Logging.Level.Debug, ex.Message, gcd.DriveName);
+                    gcd.IsReady = false;
+                }
             }
         }
 
@@ -221,13 +231,13 @@ namespace iba.Processing
             LogData.Data.Log(level, message);
         }
 
-        internal void Log(Logging.Level level, string message)
+        private void Log(Logging.Level level, string message)
         {
             LogExtraData data = new LogExtraData(String.Empty, null, null);
             LogData.Data.Log(level, message, (object)data);
         }
 
-        internal void Log(Logging.Level level, string message, string datfile)
+        private void Log(Logging.Level level, string message, string datfile)
         {
             LogExtraData data = new LogExtraData(datfile, null, null);
             LogData.Data.Log(level, message, (object)data);
@@ -240,7 +250,7 @@ namespace iba.Processing
             }
         }
 
-        internal void Log(Logging.Level level, string message, string datfile, TaskData task)
+        private void Log(Logging.Level level, string message, string datfile, TaskData task)
         {
             LogExtraData data = new LogExtraData(datfile, task, task.ParentConfigurationData);
             LogData.Data.Log(level, message, (object)data);

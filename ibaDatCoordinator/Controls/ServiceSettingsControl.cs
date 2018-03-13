@@ -282,42 +282,48 @@ namespace iba.Controls
 
             foreach (var gcd in m_globalCleanupData.OrderBy(gc => gc.DriveName))
             {
-                var drive = gcd;
-                string driveName = gcd.DriveName;
-                if (gcd.IsReady)
-                {
-                    driveName = String.Format("{0} - [{1}]", drive.DriveName, drive.VolumeLabel);
-                }
-
                 rowIdx = tbl_GlobalCleanup.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tbl_GlobalCleanup.RowCount++;
 
 
                 if (gcd.IsSystemDrive)
-                    AddSystemToTableLayout(gcd, 0, rowIdx, ContentAlignment.MiddleCenter);
+                    AddSystemDriveToTableLayout(gcd, 0, rowIdx, ContentAlignment.MiddleCenter);
                 else
-                    AddTextToTableLayout(driveName, 0, rowIdx, ContentAlignment.TopLeft);
+                    AddDriveToTableLayout(gcd, 0, rowIdx, ContentAlignment.TopLeft);
 
-                if (drive.IsReady)
+                if (gcd.IsReady)
                 {
-                    AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalSize), 1, rowIdx, ContentAlignment.TopRight);
-                    AddTextToTableLayout(PathUtil.GetSizeReadable(drive.TotalFreeSpace), 2, rowIdx, ContentAlignment.TopRight);
+                    AddSizeToPanelLayout(gcd.TotalSize, 1, rowIdx, ContentAlignment.TopRight);
+                    AddSizeToPanelLayout(gcd.TotalFreeSpace, 2, rowIdx, ContentAlignment.TopRight);
 
-                    AddQuotaToTableLayout(gcd, drive.TotalSize, 3, rowIdx);
+                    AddQuotaToTableLayout(gcd, gcd.TotalSize, 3, rowIdx);
                     AddRescanTimeToTableLayout(gcd, 4, rowIdx);
                 }
-                AddIsActiveToTableLayout(gcd, 5, rowIdx, drive.IsReady);
-
-                //if (gcd.IsSystemDrive)
-                //    ChangeEnabledStateforRowControls(false, rowIdx);
+                AddIsActiveToTableLayout(gcd, 5, rowIdx);
             }
 
             gb_GlobalCleanup.Height = (rowIdx + 1) * 32;
         }
 
-        private void AddTextToTableLayout(string displayValue, int colIdx, int rowIdx, ContentAlignment textAlign)
+        private void AddDriveToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx, ContentAlignment textAlignment)
         {
+            string driveName = $"{data.DriveName} - [{data.VolumeLabel}]";
+            if (!data.IsReady)
+                driveName = data.DriveName;
 
+            var pnl = AddTextToPanel(driveName, textAlignment);
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+        }
+
+        private void AddSizeToPanelLayout(long size, int colIdx, int rowIdx, ContentAlignment textAlignment)
+        {
+            var pnl = AddTextToPanel(PathUtil.GetSizeReadable(size), textAlignment);
+            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+        }
+
+
+        private Panel AddTextToPanel(string displayValue, ContentAlignment textAlign)
+        {
             Panel pnl = new Panel();
             pnl.Dock = DockStyle.Fill;
             pnl.AutoSize = true;
@@ -329,11 +335,10 @@ namespace iba.Controls
             lbl.TextAlign = textAlign;
 
             pnl.Controls.Add(lbl);
-
-            tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
+            return pnl;
         }
 
-        private void AddSystemToTableLayout(GlobalCleanupData gcd, int colIdx, int rowIdx, ContentAlignment textAlign)
+        private void AddSystemDriveToTableLayout(GlobalCleanupData gcd, int colIdx, int rowIdx, ContentAlignment textAlign)
         {
             string cleanupFolder = String.IsNullOrEmpty(gcd.WorkingFolder) ? gcd.DriveName : gcd.WorkingFolder;
             string volumeLabel = String.Format(" - [{0}]", gcd.VolumeLabel);
@@ -494,7 +499,7 @@ namespace iba.Controls
             lbl.Location = new Point(nud.Location.X + nud.Size.Width + 5, nud.Location.Y + 2);
         }
 
-        private void AddIsActiveToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx, bool isReady)
+        private void AddIsActiveToTableLayout(GlobalCleanupData data, int colIdx, int rowIdx)
         {
             var lblHeader = tbl_GlobalCleanup.GetControlFromPosition(colIdx, 0);
 
@@ -505,14 +510,14 @@ namespace iba.Controls
             CheckBox cb = new CheckBox();
             cb.Location = new Point(lblHeader.Width / 2 - 15 / 2, 0);
             cb.Checked = data.Active;
-            cb.Enabled = isReady; // && !data.IsSystemDrive
+            cb.Enabled = data.IsReady;
 
-            ChangeEnabledStateforRowControls(!data.Active, rowIdx);
+            ChangeEnabledStateforRowControls(data, rowIdx);
 
             cb.CheckedChanged += (s, e) =>
             {
                 data.Active = cb.Checked;
-                ChangeEnabledStateforRowControls(!data.Active, rowIdx);
+                ChangeEnabledStateforRowControls(data, rowIdx);
 
                 TaskManager.Manager.ReplaceGlobalCleanupData(data);
             };
@@ -522,8 +527,9 @@ namespace iba.Controls
             tbl_GlobalCleanup.Controls.Add(pnl, colIdx, rowIdx);
         }
 
-        private void ChangeEnabledStateforRowControls(bool enabled, int rowIdx)
+        private void ChangeEnabledStateforRowControls(GlobalCleanupData data, int rowIdx)
         {
+            var enabled = (!data.Active && data.IsReady);
             for (int i = 0; i < tbl_GlobalCleanup.ColumnCount - 1; i++)
             {
                 Control ctl = tbl_GlobalCleanup.GetControlFromPosition(i, rowIdx);
