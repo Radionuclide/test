@@ -155,9 +155,13 @@ namespace iba.Utility
 
                 //HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{ C4B00861 - 0324 - 11D3 - A677 - 000000000001}\LocalServer32
                 string t = key.GetValue("").ToString();
-                int quoteFirst = t.IndexOf('\"');
-                int quoteLast = t.LastIndexOf('\"');
-                t = t.Substring(quoteFirst + 1, quoteLast - quoteFirst-1);
+                while (true)
+                {
+                    int quoteFirst = t.IndexOf('\"');
+                    int quoteLast = t.LastIndexOf('\"');
+                    if (quoteFirst < 0 || quoteLast < 0) break;
+                    t = t.Substring(quoteFirst + 1, quoteLast - quoteFirst - 1);
+                }
                 output = Path.GetFullPath(t);
             }
             catch

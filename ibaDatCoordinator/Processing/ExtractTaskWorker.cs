@@ -206,7 +206,7 @@ namespace iba.Processing
             }
             if (!SharesHandler.Handler.TestTargetDirAvailable(m_task)) //will also try reconnect
             {
-                m_confWorker.Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, m_task);
+                m_confWorker.Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, m_task);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;

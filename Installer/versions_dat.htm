@@ -43,7 +43,7 @@
 				<tr><th class="head" colspan="3">Current version</th></tr>
 				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="11">v2.0.3</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
+				<tr><th rowspan="11">v2.0.5</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
 				<tr><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64)</td><td></td></tr>
 				<tr><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
 
@@ -52,7 +52,7 @@
 				<tr><td>ibaRoh v2.1.0</td><td></td></tr>
 				<tr><td>ibaAM-OSPC v2.0.0</td><td></td></tr>
 				<tr><td>ibaS7-Writer v2.0.1</td><td></td></tr>
-				<tr><td>ibaTksXml v2.0.0</td><td></td></tr>
+				<tr><td>ibaTksXml v2.1.0</td><td></td></tr>
 				<tr><td>ibaDBSync v1.0.5</td><td></td></tr>
 				<tr><td>ibaDatawyzer-ICC v1.17.3</td><td></td></tr>
 
@@ -90,21 +90,31 @@
 
 	<div id="hist">
 		<div class="box">
-			<P class="header1">Version 2.0.4 - xx/xx/2018</P>
-			<P class="header2">New features (N)</P>
+			<P class="header1">Version 2.0.5 - 26/03/2018</P>
+			<P class="header2">Bugfixes(B)</P>
 			<OL>
-			</OL>
-			<P class="header2">Improvements (I)</P>
-			<OL>
-				<!--<li>ibaDongleViewer updated to version 1.7.1.</li>-->
-			</OL>
-			<P class="header2">Bugfixes (B)</P>
-			<OL>
-				<li>Import of ibaHD camera signals didn't work in 2.0.3 release version</li>
-				<li>Global cleanup showed the local disks instead of the ones from the connected remote machine. #12125</li>
+				<li>Global cleanup caused crash on startup due to drives that were not (yet) accessible. #12449</li>
+				<li>Scheduled jobs did not work on some systems because something appeared to interfere with the creation of the temporary folder to store HD configuration files in. #12467</li>
+				<li>Status program showed "no ibaAnalyzer registered" for ibaAnalyzer versions 6.10.0, 6.10.1 and 6.10.2</li>
 			</OL>
 			<p>&nbsp; </p>
-
+			
+			<P class="header1">Version 2.0.4 - 09/02/2018</P>
+			<P class="header2">Improvements(I)</P>
+			<OL>
+				<li>ibaDongleViewer updated to version 1.7.2</li>
+			</OL>
+			<P class="header2">Bugfixes(B)</P>
+			<OL>
+				<li>Support file did not contain the server log files when the server was installed locally.</li>
+				<li>Issues with jobs that have a large amount of tasks. 
+				Issues with GUI adressed and with the infofields written into the .dat files to keep track of the succesfully processed tasks. 
+				Currently up to 1000 tasks per job are supported.</li>
+				<li>Import of ibaHD camera signals didn't work in 2.0.3 release version</li>
+				<li>Global cleanup showed the local disks instead of the ones from the connected remote machine. #12125</li>
+				<li>When ibaAnalyzer crashes while opening a .dat file, it caused the entire application/service to halt.</li>
+			</OL>
+			<p>&nbsp; </p>
 			<P class="header1">Version 2.0.3 - 28/11/2017</P>
 			<P class="header2">New features (N)</P>
 			<OL>

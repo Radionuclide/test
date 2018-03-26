@@ -476,6 +476,8 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime trigger, String path)
         {
+            string dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using(StreamWriter sw = new StreamWriter(path, false))
             {
                 sw.WriteLine("[HDQ file]");
@@ -495,7 +497,9 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
         {
-            using(StreamWriter sw = new StreamWriter(path, false))
+            string dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            using (StreamWriter sw = new StreamWriter(path, false))
             {
                 sw.WriteLine("[HDQ file]");
                 sw.WriteLine("type=time");

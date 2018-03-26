@@ -2456,6 +2456,7 @@ namespace iba.Processing
                     catch
                     {
                         Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, InputFile);
+                        StopIbaAnalyzer();
                     }
                     return;
                 }
@@ -2623,9 +2624,6 @@ namespace iba.Processing
                 }
             }
         }
-
-
-
 
         private void WriteStateInDatFile(string InputFile, bool completeSucces)
         {
@@ -3495,7 +3493,7 @@ namespace iba.Processing
                     if(dir == null) return;
                     if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
                     {
-                        Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                        Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                         lock (m_sd.DatFileStates)
                         {
                             m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -3561,7 +3559,7 @@ namespace iba.Processing
 
                 if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -3768,7 +3766,7 @@ namespace iba.Processing
                 if (dir == null) return;
                 if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -4063,7 +4061,7 @@ namespace iba.Processing
                 }
                 if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -4519,7 +4517,7 @@ namespace iba.Processing
             }
             if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -4671,7 +4669,7 @@ namespace iba.Processing
                 if (dir == null) return;
                 if (!SharesHandler.Handler.TestTargetDirAvailable(task)) //will also try reconnect
                 {
-                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + ": " + dir, filename, task);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.cannotAccessTargetSystem + " " + dir, filename, task);
                     lock (m_sd.DatFileStates)
                     {
                         m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;

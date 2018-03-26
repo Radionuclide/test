@@ -624,33 +624,33 @@ namespace iba.DatCoordinator.Status
             updatingAutoStart = false;
         }
 
-        private void m_registerButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                procInfo.UseShellExecute = true;
-                procInfo.ErrorDialog = true;
+        //private void m_registerButton_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+        //        procInfo.UseShellExecute = true;
+        //        procInfo.ErrorDialog = true;
 
-                procInfo.FileName = m_tbAnalyzerExe.Text;
+        //        procInfo.FileName = m_tbAnalyzerExe.Text;
 
-                procInfo.Arguments = "/register";
-                procInfo.Verb = "runas";
+        //        procInfo.Arguments = "/register";
+        //        procInfo.Verb = "runas";
 
-                try
-                {
-                    System.Diagnostics.Process.Start(procInfo);
-                }
-                catch
-                {
-                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //        try
+        //        {
+        //            System.Diagnostics.Process.Start(procInfo);
+        //        }
+        //        catch
+        //        {
+        //            MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
@@ -669,21 +669,21 @@ namespace iba.DatCoordinator.Status
             }
         }
 
-        private void m_browseIbaAnalyzerButton_Click(object sender, EventArgs e)
-        {
-            m_openFileDialog.Filter = "ibaAnalyzer Executable (*.exe)|*.exe";
-            try
-            {
-                if (File.Exists(m_tbAnalyzerExe.Text))
-                    m_openFileDialog.FileName = m_tbAnalyzerExe.Text;
-            }
-            catch
-            {
-            }
-            DialogResult result = m_openFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-                m_tbAnalyzerExe.Text = m_openFileDialog.FileName;
-        }
+        //private void m_browseIbaAnalyzerButton_Click(object sender, EventArgs e)
+        //{
+        //    m_openFileDialog.Filter = "ibaAnalyzer Executable (*.exe)|*.exe";
+        //    try
+        //    {
+        //        if (File.Exists(m_tbAnalyzerExe.Text))
+        //            m_openFileDialog.FileName = m_tbAnalyzerExe.Text;
+        //    }
+        //    catch
+        //    {
+        //    }
+        //    DialogResult result = m_openFileDialog.ShowDialog();
+        //    if (result == DialogResult.OK)
+        //        m_tbAnalyzerExe.Text = m_openFileDialog.FileName;
+        //}
 
         //private void m_tbAnalyzerExe_TextChanged(object sender, EventArgs e)
         //{
