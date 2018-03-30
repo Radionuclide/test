@@ -318,7 +318,7 @@ namespace iba
                             }
                         }
                 }
-                if (m_configTreeView.SelectedNode == null)
+                if (m_configTreeView.SelectedNode == null || m_configTreeView.SelectedNode.Parent==null) //no node selected or root node (i.e. parentnode of jobs, which has no data)...
                 {
                     SetRightPaneControl(null, m_configPane.Text, null);
                 }
