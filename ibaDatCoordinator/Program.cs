@@ -63,9 +63,7 @@ namespace iba
 
             //Check if not already running
             if (args.Length > 0 && String.Compare(args[0], "/service", true) == 0)
-            {
                 RunsWithService = ServiceEnum.DISCONNECTED;
-            }
             else
                 RunsWithService = ServiceEnum.NOSERVICE;
 
@@ -191,7 +189,6 @@ namespace iba
                 //#if DEBUG
                 //              return false;
                 //#else
-                if (Program.RunsWithService == ServiceEnum.NOSERVICE) return false; //
                 try
                 { // get host IP addresses
                     IPAddress[] hostIPs = Dns.GetHostAddresses(ServiceHost);

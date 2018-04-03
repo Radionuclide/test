@@ -360,7 +360,7 @@ namespace iba.Controls
             btn.Left = lbl.Left + lbl.Width + 5;
             btn.Size = new Size(24, 24);
             btn.Image = global::iba.Properties.Resources.open;
-            btn.Enabled = (Program.RunsWithService == Program.ServiceEnum.CONNECTED || Program.ServiceIsLocal);
+            btn.Enabled = (Program.RunsWithService == Program.ServiceEnum.CONNECTED || Program.RunsWithService == Program.ServiceEnum.NOSERVICE);
             btn.Click += (s, e) =>
             {
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
