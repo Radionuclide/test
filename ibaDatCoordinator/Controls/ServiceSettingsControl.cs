@@ -373,7 +373,6 @@ namespace iba.Controls
                     lbl.Text = CompactDisplayFolder(gcd.WorkingFolder, volumeLabel, lbl);
                     btn.Left = lbl.Left + lbl.Width + 5;
                 }
-
             };
 
             pnl.Controls.Add(btn);

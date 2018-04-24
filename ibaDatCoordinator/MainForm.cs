@@ -1842,6 +1842,7 @@ namespace iba
                 catch (Exception ex)
                 {
                     MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LogData.Data.Logger.Log(Logging.Level.Debug, "Saving, serialization failed (step1): " + ex.ToString());
                     return;
                 }
 
@@ -1858,7 +1859,7 @@ namespace iba
                 catch (Exception ex)
                 {
                     MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    LogData.Data.Logger.Log(Logging.Level.Debug, "Saving, serialization failed (step2):" + ex.ToString());
                 }
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();

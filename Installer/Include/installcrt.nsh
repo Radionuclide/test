@@ -7,9 +7,9 @@
   Push $R1
   Push $R2
   Push $R3
-  
-  ; Do explicit IfFileExists and do not rely on error flag of GetDLLVersion because this gives unexpected results with WOW redirection
+    
   ClearErrors
+  IfFileExists "$SYSDIR\mfc140u.dll" 0 notinstalled_${UniqueID} ;Do explicit check for MFC dll as well since some installers don't add it
   IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
   GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
   IfErrors notinstalled_${UniqueID}
@@ -51,17 +51,12 @@
   Push $R2
   Push $R3
   
-  ; Do explicit IfFileExists and do not rely on error flag of GetDLLVersion because this gives unexpected results with WOW redirection
-  ${If} $Is64Bit == 1
-    ${DisableX64FSRedirection}
-    ClearErrors
-    IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
-    GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
-    IfErrors notinstalled_${UniqueID}
-    ${EnableX64FSRedirection}
-  ${Else}
-    Goto notinstalled_${UniqueID}
-  ${EndIf}
+  ${DisableX64FSRedirection}
+  ClearErrors
+  IfFileExists "$SYSDIR\mfc140u.dll" 0 notinstalled_${UniqueID} ;Do explicit check for MFC dll as well since some installers don't add it
+  IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
+  GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
+  IfErrors notinstalled_${UniqueID}
   
   IntOp $R0 $R2 / 0x00010000
   IntOp $R1 $R2 & 0x0000FFFF
@@ -82,6 +77,7 @@
     Push 0
 
   end_${UniqueID}:
+  ${EnableX64FSRedirection}
   !undef UniqueID
   ClearErrors
   

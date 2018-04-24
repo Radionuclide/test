@@ -7,8 +7,8 @@
 ;!define UNINSTALLER_ONLY use this to generate the uninstaller
 
 !ifndef PRODUCT_VERSION
-!define PRODUCT_VERSION "2.0.0 TEST"
-!define PRODUCT_FILE_VERSION "2.0.0.0"
+!define PRODUCT_VERSION "2.0.5"
+!define PRODUCT_FILE_VERSION "2.0.5.0"
 !endif
 
 !define PRODUCT_KEYWORDS "ibaDatCoordinator, data post processing"
@@ -100,24 +100,6 @@ SetCompressor /SOLID lzma
 !define MUI_LANGDLL_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
-Function OnEnd
-  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
-  ${If} $0 == "1"
-  ${OrIf} $0 == "2"
-    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe" /service'
-  ${Else}
-    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe"'
-  ${EndIf}
-
-  nsSCMEx::RunAsNonElevatedUser /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" $1 "$INSTDIR"
-
-  Pop $R0
-  ${If} $R0 != "success"
-    ;ibaPDA couldn't be started non-elevated so let's start it normally
-    Exec $1
-  ${EndIf}
-
-  FunctionEnd
 
 ;--------------------------------
 ; Install pages
@@ -135,6 +117,9 @@ Page custom ServiceAccountPage
 !define MUI_FINISHPAGE_TITLE_3LINES
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_FUNCTION "OnEnd"
+!define MUI_FINISHPAGE_LINK "$(TEXT_UPDATEINFO)"
+!define MUI_FINISHPAGE_LINK_LOCATION "$(TEXT_UPDATEINFO_LINK)"
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW FinishShow 
 !insertmacro MUI_PAGE_FINISH
 
 !ifndef DO_UNINSTALLER_SIGNING
@@ -1161,6 +1146,49 @@ Function ServiceAccountPage
 
 FunctionEnd
 
+Function OnEnd
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  ${If} $0 == "1"
+  ${OrIf} $0 == "2"
+    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe" /service'
+  ${Else}
+    strcpy $1 '"$INSTDIR\ibaDatCoordinator.exe"'
+  ${EndIf}
+
+  nsSCMEx::RunAsNonElevatedUser /NOUNLOAD "$INSTDIR\ibaDatCoordinator.exe" $1 "$INSTDIR"
+
+  Pop $R0
+  ${If} $R0 != "success"
+    ;ibaPDA couldn't be started non-elevated so let's start it normally
+    Exec $1
+  ${EndIf}
+
+  FunctionEnd
+
+Function FinishShow 
+  GetDlgItem $0 $MUI_HWND 0x4b4 
+# $MUI_HWND contains the window handle for MUI's welcome/finish pages 
+# 0x4b4 is the link control 
+
+# remove the center alignment style
+# System::Call USER32::GetWindowLong(ir0,i-16)i.r1
+# IntOp $1 $1 - 1
+# System::Call USER32::SetWindowLong(ir0s,i-16,ir1s) 
+  
+#set window postition for two lines...
+  System::Call "User32::SetWindowPos(i, i, i, i, i, i, i) b ( $0, 0, 180, 264, 293, 37, 0x244)"
+  
+# ^Font and ^FontSize are LangString vars containing 
+# the installer's set font and font size 
+# Create a new font based on it that is underlined 
+# ( Font 'weight' of 400 = regular ) 
+  
+  CreateFont $1 "$(^Font)" "$(^FontSize)" "400" /UNDERLINE 
+# and set the font 
+  SendMessage $0 ${WM_SETFONT} $1 1 
+  
+  
+FunctionEnd
 
 ;--------------------------------
 ; String resources
@@ -1203,6 +1231,8 @@ LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaDatCoordinator ser
 LangString TEXT_STATUS_STOP               ${LANG_ENGLISH} "Stopping ibaDatCoordinator server status"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_ENGLISH} "Configuring firewall"
 LangString TEXT_CLOSE_CLIENT              ${LANG_ENGLISH} "ibaDatCoordinator client is running. Please close the ibaDatCoordinator client before continuing the installation."
+LangString TEXT_UPDATEINFO				  ${LANG_ENGLISH} "Please register here for regular information about product updates"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_ENGLISH} "https://www.iba-ag.com/en/germany/products/subscribe-to-regular-product-information/"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
@@ -1242,6 +1272,8 @@ LangString TEXT_CLOSE_STATUS              ${LANG_GERMAN}  "ibaDatCoordinator Ser
 LangString TEXT_STATUS_STOP               ${LANG_GERMAN}  "ibaDatCoordinator Server Status wird angehalten"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_GERMAN}  "Firewall wird konfiguriert"
 LangString TEXT_CLOSE_CLIENT              ${LANG_GERMAN}  "Der ibaDatCoordinator-Client läuft. Bitte schließen Sie den ibaDatCoordinator-Client, bevor Sie mit der Installation fortfahren."
+LangString TEXT_UPDATEINFO				  ${LANG_GERMAN} "Registrieren Sie sich hier für regelmäßige Informationen über Produkt-Updates"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_GERMAN} "https://www.iba-ag.com/de/germany/produkte/anmeldung-zu-regelmaessigen-produkt-informationen/"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
@@ -1281,3 +1313,5 @@ LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de s
 LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" 
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_FRENCH}  "Configuration du pare-fue"
 LangString TEXT_CLOSE_CLIENT              ${LANG_FRENCH}  "Le client d'ibaDatCoordinator est en cours d'exécution. Veuillez fermer le client d'ibaDatCoordinator avant de continuer l'installation."
+LangString TEXT_UPDATEINFO				  ${LANG_FRENCH} "Please register here for regular information about product updates"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_FRENCH} "https://www.iba-ag.com/en/germany/products/subscribe-to-regular-product-information/"

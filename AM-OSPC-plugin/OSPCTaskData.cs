@@ -161,19 +161,22 @@ namespace AM_OSPC_plugin
             public string Expression
             {
                 get { return m_expression; }
-                set { m_expression = value; }
+                set
+                {
+                    m_expression = value ?? "";
+                }
             }
             private string m_processName;
             public string ProcessName
             {
                 get { return m_processName; }
-                set { m_processName = value; }
+                set { m_processName = value ?? ""; }
             }
             private string m_variableName;
             public string VariableName
             {
                 get { return m_variableName; }
-                set { m_variableName = value; }
+                set { m_variableName = value ?? ""; }
             }
             private double m_testValue;
             public double TestValue

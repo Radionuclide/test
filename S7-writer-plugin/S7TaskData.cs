@@ -161,7 +161,7 @@ namespace S7_writer_plugin
             public string Expression
             {
                 get { return m_expression; }
-                set { m_expression = value; }
+                set { m_expression = value ?? ""; }
             }
 
             private int m_dbNr;
@@ -197,6 +197,9 @@ namespace S7_writer_plugin
                 get { return S7.DataTypes[(int)m_dataType].name; }
                 set
                 {
+                    if (value == null)
+                        return;
+
                     string newVal = value.ToUpper();
                     for(int i=0; i<S7.DataTypes.Length; i++)
                     {

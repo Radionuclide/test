@@ -50,8 +50,6 @@ namespace iba.Controls
             m_splitIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
-
-
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
 
             m_reportIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
@@ -235,7 +233,7 @@ namespace iba.Controls
         public void OnChangedData(object sender, EventArgs e)
         {
             m_refreshTimer.Enabled = false;
-            if (sender != null) //refresh
+            if (sender != null && m_data != null) //refresh
                m_data = TaskManager.Manager.GetMinimalStatus(m_data.CorrConfigurationGuid,false);
             if (m_data==null) //returned zero, try again other time
             {
