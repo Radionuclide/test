@@ -3829,8 +3829,21 @@ namespace iba.Processing
             List<double> points = worker.GetPoints(filename);
             if (points != null)
             {
-               if (worker.Split(filename, dir))
-                   Log(Logging.Level.Info, iba.Properties.Resources.logSplitSuccess, filename, task);
+                if (worker.Split(filename, dir))
+                {
+                    Log(Logging.Level.Info, iba.Properties.Resources.logSplitSuccess, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    }
+                }
+                else
+                {
+                    lock (m_sd.DatFileStates)
+                    { //reason is logged by splitter itself
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    }
+                }
             }
         }
 
