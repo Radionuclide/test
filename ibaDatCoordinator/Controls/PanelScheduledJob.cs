@@ -33,9 +33,11 @@ namespace iba.Controls
             m_dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + "  " + System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
+
             m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
             m_hdStorePicker.Dock = DockStyle.Fill;
             this.gbHD.Controls.Add(this.m_hdStorePicker);
+            m_hdStorePicker.StoreMultiSelect = true;
             m_hdStorePicker.SelectedPort = 9180;
             m_hdStorePicker.SelectedServer = "localhost";
             m_hdStorePicker.SelectedStoreName = "";
@@ -112,12 +114,16 @@ namespace iba.Controls
             //hdStore
             m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
             m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
-            m_hdStorePicker.SelectedStoreName = m_scheduleData.HDStores.Length>0?m_scheduleData.HDStores[0]:"";
+            m_hdStorePicker.SelectedStoreNames = m_scheduleData.HDStores;
             //timeSelection
-            m_scheduleData.UsePreviousTriggerAsStart = m_cbUseTriggerAsStart.Checked; //must come first, otherwise eventhandlers caused by assignments below don't work
+            bIgnoreTriggerChanged = true;
+            m_cbUseTriggerAsStart.Checked = m_scheduleData.UsePreviousTriggerAsStart;
             Start = m_scheduleData.StartRangeFromTrigger;
             Stop = m_scheduleData.StopRangeFromTrigger;
-            if(m_scheduleData.PreferredTimeBaseIsAuto)
+            bIgnoreTriggerChanged = false;
+
+            UpdateQueryRange();
+            if (m_scheduleData.PreferredTimeBaseIsAuto)
                 m_cbTimeBase.SelectedIndex = 0;
             else
                 m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
@@ -154,7 +160,7 @@ namespace iba.Controls
             //hdStore
             m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
             m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
-            m_scheduleData.HDStores = new string[]{m_hdStorePicker.SelectedStoreName};
+            m_scheduleData.HDStores = m_hdStorePicker.SelectedStoreNames;// new string[]{m_hdStorePicker.SelectedStoreName};
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
             m_scheduleData.StopRangeFromTrigger = Stop;
@@ -258,7 +264,9 @@ namespace iba.Controls
         bool DisableStartChangedEvent;
         private void OnStartChanged(object sender, EventArgs e)
         {
-            if(DisableStartChangedEvent) return;
+            if(DisableStartChangedEvent)
+                return;
+
             try
             {
                 DisableStartChangedEvent = true;
@@ -315,7 +323,9 @@ namespace iba.Controls
 
         private void OnStopChanged(object sender, EventArgs e)
         {
-            if(DisableStopChangedEvent) return;
+            if(DisableStopChangedEvent)
+                return;
+
             try
             {
                 DisableStopChangedEvent = true;
@@ -360,8 +370,9 @@ namespace iba.Controls
 
         private void m_cbTimeBase_DrawItem(object sender, DrawItemEventArgs e)
         {
-            e.DrawBackground();
-            if (e.Index < 0) return;
+            if (e.Index < 0)
+                return;
+
             string tooltipText = null;
             Brush brush = null;
             bool unknowntba = false;
@@ -384,6 +395,7 @@ namespace iba.Controls
                     tooltipText = iba.Properties.Resources.TooltipRed;
                     break;
             }
+
             string text = ((ComboBox)sender).Items[e.Index].ToString();
             if(e.Index == 0)
             {
@@ -392,12 +404,14 @@ namespace iba.Controls
                 else
                     text = String.Format(text, GetAutoItem());
             }
-            if ((e.State & DrawItemState.Focus) == DrawItemState.Focus)
-            {
+
+            if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.Selected))
                 e.Graphics.FillRectangle(new SolidBrush(Color.Lavender), e.Bounds);
-            }
+            else
+                e.DrawBackground();
+
             e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected && tooltipText != null && m_cbTimeBase.DroppedDown)
+            if (e.State.HasFlag(DrawItemState.Selected) && tooltipText != null && m_cbTimeBase.DroppedDown)
             {
                 m_toolTip.Show(tooltipText, m_cbTimeBase, e.Bounds.Right, e.Bounds.Bottom + m_cbTimeBase.Height);
             }
@@ -456,12 +470,19 @@ namespace iba.Controls
                 duration = m_queryRangeUseTriggerAsStart.Ticks;
             else
                 duration = Start.Ticks - Stop.Ticks;
-            if (duration <= 0) return TimeBaseAcceptability.Unknown;
-            if (item.m_timebaseLength == 0) return TimeBaseAcceptability.Allowed; //auto
+            if (duration <= 0)
+                return TimeBaseAcceptability.Unknown;
+
+            if (item.m_timebaseLength == 0)
+                return TimeBaseAcceptability.Allowed; //auto
+
             double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
-            if (samples > 1.0e9) return TimeBaseAcceptability.Forbidden;
-            else if (samples > 1.0e7) return TimeBaseAcceptability.Questionable;
-            else return TimeBaseAcceptability.Allowed;
+            if (samples > 1.0e9)
+                return TimeBaseAcceptability.Forbidden;
+            else if (samples > 1.0e7)
+                return TimeBaseAcceptability.Questionable;
+            else
+                return TimeBaseAcceptability.Allowed;
         }
 
         private void m_btShowTrigger_Click(object sender, EventArgs e)
@@ -536,14 +557,28 @@ namespace iba.Controls
         bool DisableRepeatChanged;
         private void m_nudRepeat_ValueChanged(object sender, EventArgs e)
         {
-            if(DisableRepeatChanged) return;
+            if(DisableRepeatChanged)
+                return;
+
             DisableRepeatChanged = true;
             RepeatInterval = TimeSpan.FromHours((int)(m_nudRepeatHours.Value)).Add(TimeSpan.FromMinutes(((int)(m_nudRepeatMinutes.Value))));
             DisableRepeatChanged = false;
+
+            if(m_cbUseTriggerAsStart.Checked)
+            {
+                m_scheduleData.RepeatEvery = RepeatInterval;
+                UpdateQueryRange();
+                m_cbTimeBase.Invalidate();
+                m_cbTimeBase_SelectedIndexChanged(null, null);
+            }
         }
 
+        bool bIgnoreTriggerChanged;
         private void m_cbUseTriggerAsStart_CheckedChanged(object sender, EventArgs e)
         {
+            if (bIgnoreTriggerChanged)
+                return;
+
             //Control[] toHide = new Control[] {label5,label6,label7,label8,label9, m_nudStartDays, m_nudStartHours, m_nudRepeatMinutes, m_nudStartSeconds };
             //foreach(Control ctrl in toHide)
             //{
@@ -559,20 +594,30 @@ namespace iba.Controls
 
         private void OnTriggerControlValidated(object sender, EventArgs e)
         {
-            if(!m_cbUseTriggerAsStart.Checked) 
+            if (!m_cbUseTriggerAsStart.Checked)
                 return; //not interested in case of fixed query range
+
             ScheduledJobData oldData = m_scheduleData.Clone() as ScheduledJobData;
             SaveData();
-            if(oldData.IsSame(m_scheduleData))
+            if (oldData.IsSame(m_scheduleData))
                 return; //nothing relevant changed
+
+            UpdateQueryRange();
+            m_cbTimeBase.Invalidate();
+        }
+
+        private void UpdateQueryRange()
+        {
+            if (!m_cbUseTriggerAsStart.Checked)
+                return;
+
             TriggerCalculator c = new TriggerCalculator(m_scheduleData);
             m_queryRangeUseTriggerAsStart = c.MaxQueryRange();
             long correct = Start.Ticks - Stop.Ticks;
-            if(m_queryRangeUseTriggerAsStart.Ticks <= 0 || m_queryRangeUseTriggerAsStart.Ticks+correct <= 0)
+            if (m_queryRangeUseTriggerAsStart.Ticks <= 0 || m_queryRangeUseTriggerAsStart.Ticks + correct <= 0)
                 m_queryRangeUseTriggerAsStart = TimeSpan.Zero;
             else
                 m_queryRangeUseTriggerAsStart += TimeSpan.FromTicks(correct);
-            m_cbTimeBase.Invalidate();
         }
 
         private void AddEventsToTriggerControls(Control ctrl)

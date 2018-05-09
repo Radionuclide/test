@@ -11,9 +11,13 @@ namespace iba.Utility
         {
             get
             {
-                if (!ContainsKey(key))
-                    Add(key, new Value());
-                return base[key];
+                Value val;
+                if(!TryGetValue(key, out val))
+                {
+                    val = new Value();
+                    Add(key, val);
+                }
+                return val;
             }
             set { base[key] = value; }
         }
@@ -25,9 +29,13 @@ namespace iba.Utility
         {
             get
             {
-                if(!ContainsKey(key))
-                    Add(key, "");
-                return base[key];
+                string val;
+                if (!TryGetValue(key, out val))
+                {
+                    val = "";
+                    Add(key, val);
+                }
+                return val;
             }
             set { base[key] = value; }
         }

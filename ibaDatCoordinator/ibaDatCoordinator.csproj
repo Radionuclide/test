@@ -67,22 +67,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v16.1">
-      
     </Reference>
     <Reference Include="DevExpress.Utils.v16.1">
-      
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      
     </Reference>
     <Reference Include="DotNetMagic2005, Version=6.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -196,6 +191,7 @@
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
       <SubType>Form</SubType>
@@ -713,9 +709,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(SolutionDir)Dependencies\\hd*.dll $(TargetDir)
-copy $(SolutionDir)Dependencies\PowerCollections.dll $(TargetDir)
-copy $(SolutionDir)Dependencies\ibaFilesLiteDotNet.dll $(TargetDir)
+    <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
+move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
+copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
+copy "$(SolutionDir)Dependencies\ibaFilesLiteDotNet.dll" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

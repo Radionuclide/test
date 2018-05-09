@@ -74,6 +74,7 @@ namespace iba.Processing
                     }
                     else
                     {
+                        ibaAnalyzer = new ibaAnalyzerWrapper(ibaAnalyzer);
                         m_callCounts.Add(ibaAnalyzer, 0);
                         return ibaAnalyzer;
                     }
@@ -147,7 +148,15 @@ namespace iba.Processing
                 catch
                 {
                 }
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+
+                ibaAnalyzerWrapper wrapper = ibaAnalyzer as ibaAnalyzerWrapper;
+                if (wrapper != null)
+                    wrapper.Release();
+                else
+                {
+                    System.Diagnostics.Debug.Assert(false, "We should be only handling ibaAnalyzer wrappers.");
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                }
             }
             catch (Exception ex)
             {
@@ -176,7 +185,8 @@ namespace iba.Processing
             {
                 ibaAnalyzer = ClaimIbaAnalyzer(cd); //try claiming
             }
-            else ibaAnalyzer = newIbaAnalyzer;
+            else
+                ibaAnalyzer = new ibaAnalyzerWrapper(newIbaAnalyzer);
         }
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };
@@ -188,7 +198,7 @@ namespace iba.Processing
             LogData.Data.Log(level, message, (object)data);
         }
 
-        internal IbaAnalyzer.IbaAnalyzer StartIbaAnalyzer(ConfigurationData cd)
+        IbaAnalyzer.IbaAnalyzer StartIbaAnalyzer(ConfigurationData cd)
         {
              //start the com object
             IbaAnalyzer.IbaAnalyzer analyzer = null;

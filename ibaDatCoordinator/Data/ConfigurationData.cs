@@ -476,23 +476,9 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime trigger, String path)
         {
-            string dir = Path.GetDirectoryName(path);
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            using(StreamWriter sw = new StreamWriter(path, false))
-            {
-                sw.WriteLine("[HDQ file]");
-                sw.WriteLine("type=time");
-                sw.WriteLine("server=" + ScheduleData.HDServer);
-                sw.WriteLine("portnumber=" + ScheduleData.HDPort);
-                sw.WriteLine("store=" + ScheduleData.HDStores[0]);
-                DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
-                DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
-                String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                sw.WriteLine("starttime=" + temp);
-                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                sw.WriteLine("stoptime=" + temp);
-                sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
-            }
+            DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
+            DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
+            GenerateHDQFile(startTime, stopTime, path);
         }
 
         public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
@@ -501,35 +487,42 @@ namespace iba.Data
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using (StreamWriter sw = new StreamWriter(path, false))
             {
-                sw.WriteLine("[HDQ file]");
-                sw.WriteLine("type=time");
-                sw.WriteLine("server=" + ScheduleData.HDServer);
-                sw.WriteLine("portnumber=" + ScheduleData.HDPort);
-                sw.WriteLine("store=" + ScheduleData.HDStores[0]);
-                String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                sw.WriteLine("starttime=" + temp);
-                temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                sw.WriteLine("stoptime=" + temp);
-
-                if (!ScheduleData.PreferredTimeBaseIsAuto)
-                    sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
-                else
+                //Add a section per store because ibaAnalyzer can't handle multiple stores in one hdq file
+                for (int i = 0; i < ScheduleData.HDStores.Length; i++)
                 {
-                    long ms = 10000; //10000 * 100 nanosec = 1 ms
-                    long s = 1000 * ms;
-                    long[] timeBases = new long[] { 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
-                    long duration = stopTime.Ticks - startTime.Ticks;
-                    TimeSpan tb = TimeSpan.FromDays(1);
-                    foreach(long tBase in timeBases)
+                    if (i == 0)
+                        sw.WriteLine("[HDQ file]");
+                    else
+                        sw.WriteLine($"[HDQ file{i}]");
+                    sw.WriteLine("type=time");
+                    sw.WriteLine("server=" + ScheduleData.HDServer);
+                    sw.WriteLine("portnumber=" + ScheduleData.HDPort);
+                    sw.WriteLine("store=" + ScheduleData.HDStores[i]);
+                    String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    sw.WriteLine("starttime=" + temp);
+                    temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    sw.WriteLine("stoptime=" + temp);
+
+                    if (!ScheduleData.PreferredTimeBaseIsAuto)
+                        sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+                    else
                     {
-                        double samples = ((double)(duration)) / ((double)(tBase)) * Math.Sqrt(40.0);
-                        if(samples < 1.0e9)
+                        long ms = 10000; //10000 * 100 nanosec = 1 ms
+                        long s = 1000 * ms;
+                        long[] timeBases = new long[] { 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
+                        long duration = stopTime.Ticks - startTime.Ticks;
+                        TimeSpan tb = TimeSpan.FromDays(1);
+                        foreach (long tBase in timeBases)
                         {
-                            tb = TimeSpan.FromTicks(tBase);
-                            break;
+                            double samples = ((double)(duration)) / ((double)(tBase)) * Math.Sqrt(40.0);
+                            if (samples < 1.0e9)
+                            {
+                                tb = TimeSpan.FromTicks(tBase);
+                                break;
+                            }
                         }
+                        sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
                     }
-                    sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
                 }
             }
         }

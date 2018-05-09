@@ -133,7 +133,13 @@ namespace iba.Data
         public string[] HDStores
         {
             get { return m_HDStores; }
-            set { m_HDStores = value; }
+            set
+            {
+                if ((value == null) || (value.Length == 0))
+                    m_HDStores = new string[] { "" };
+                else
+                    m_HDStores = value;
+            }
         }
 
         private static DateTime Round(DateTime dateTime, TimeSpan interval)
