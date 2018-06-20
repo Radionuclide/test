@@ -189,7 +189,7 @@ namespace iba.Processing
                 }
                 else if (res != 0.0f)
                 {
-                    System.Diagnostics.Debug.WriteLine(res);
+                    //System.Diagnostics.Debug.WriteLine(res);
                     if (i == 0)
                         result.Add(0.0);
                     result.Add(res);

@@ -326,5 +326,17 @@ namespace iba.Processing
         {
             analyzer.SaveGraphImage(graphIndex, filename, width, height);
         }
+
+        public int GetZoomAreaBegin(int XType)
+        {
+            return 0;
+           // return analyzer.GetZoomAreaBegin(XType);
+        }
+
+        public int GetZoomAreaEnd(int XType)
+        {
+            return 0;
+            // return analyzer.GetZoomAreaEnd(XType);
+        }
     }
 }
