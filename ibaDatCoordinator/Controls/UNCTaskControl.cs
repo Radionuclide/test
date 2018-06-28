@@ -40,6 +40,7 @@ namespace iba.Controls
             m_rbDay.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.DAY;
             m_rbWeek.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.WEEK;
             m_rbInfofieldForDir.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD;
+
             m_cbSplitSubdirs.Checked = m_data.SplitSubdirs;
             m_cbUse4Numbers.Checked = m_data.Year4Chars;
 
@@ -70,7 +71,9 @@ namespace iba.Controls
             m_cbInfoEndBlanks.Checked = m_data.InfoFieldForOutputFileRemoveBlanksEnd;
             m_cbInfoAllBlanks.Checked = m_data.InfoFieldForOutputFileRemoveBlanksAll;
 
+            this.m_tbInfoFieldDir.TextChanged -= new System.EventHandler(this.m_tbInfoFieldDir_TextChanged);
             m_tbInfoFieldDir.Text = m_data.InfoFieldForSubdir;
+            this.m_tbInfoFieldDir.TextChanged += new System.EventHandler(this.m_tbInfoFieldDir_TextChanged);
             m_nudInfoStartDir.Value = m_data.InfoFieldForSubdirStart;
             m_nudInfoLengthDir.Value = m_data.InfoFieldForSubdirLength;
             m_cbInfoEndBlanksDir.Checked = m_data.InfoFieldForSubdirRemoveBlanksEnd;
@@ -127,6 +130,7 @@ namespace iba.Controls
             m_data.InfoFieldForOutputFileRemoveBlanksEnd = m_cbInfoEndBlanks.Checked;
             m_data.InfoFieldForOutputFileRemoveBlanksAll = m_cbInfoAllBlanks.Checked;
 
+            
             m_data.InfoFieldForSubdir = m_tbInfoFieldDir.Text;
             m_data.InfoFieldForSubdirStart = (int) m_nudInfoStartDir.Value;
             m_data.InfoFieldForSubdirLength = (int) m_nudInfoLengthDir.Value;
