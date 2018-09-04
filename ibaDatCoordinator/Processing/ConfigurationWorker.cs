@@ -92,7 +92,7 @@ namespace iba.Processing
         public DateTime TimestampJobStarted { get; private set; } = DateTime.MinValue;
 
         /// <summary> When job's last execution has started. 
-        /// This is used for Scheduled jobs only to show it via SNMP. </summary>
+        /// This is used for Scheduled and Event jobs only to show it via SNMP. </summary>
         public DateTime TimestampJobLastExecution { get; private set; } = DateTime.MinValue;
         // added by kolesnik - end
 
@@ -268,6 +268,9 @@ namespace iba.Processing
                             reprocessErrorsTimer = null;
                         }
                     }
+
+                    if (m_toUpdate.JobType == ConfigurationData.JobTypeEnum.Event)
+                        m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData);
 
                     if (m_sd.Started)
                     {
@@ -595,7 +598,7 @@ namespace iba.Processing
                     initialScanThread.Priority = ThreadPriority.BelowNormal;
                     initialScanThread.Start();
                 }
-                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                 {
                     //try to delete all previous hdq files
                     String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
@@ -631,21 +634,28 @@ namespace iba.Processing
                     reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
                     reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
 
-                    if(m_cd.JobType != ConfigurationData.JobTypeEnum.Scheduled)
-                    {
-                        retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
-                        retryAccessTimer.Period = TimeSpan.FromSeconds(1);
-                    }
-                    else
+                    if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
                     {
                         m_delayedHDQStop = false;
                         ScheduleNextEvent();
-                        if(m_delayedHDQStop)
+                        if (m_delayedHDQStop)
                         {
                             m_delayedHDQStop = false;
                             Log(Logging.Level.Exception, iba.Properties.Resources.ErrorScheduleNextTrigger);
                             Stop = true;
                         }
+                    }
+                    else if ( m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+                    {
+                        m_hdEventMonitor = new HDEventMonitor();
+                        m_hdEventMonitor.UpdateConfiguration(m_cd.EventData);
+                        m_hdEventMonitor.Start();
+                        m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
+                    }
+                    else
+                    {
+                        retryAccessTimer = new SafeTimer(OnAddNewDatFileTimerTick);
+                        retryAccessTimer.Period = TimeSpan.FromSeconds(1);
                     }
 
                     if (!m_cd.NotificationData.NotifyImmediately)
@@ -755,6 +765,18 @@ namespace iba.Processing
                     {
                         retryAccessTimer.Dispose();
                         retryAccessTimer = null;
+                    }
+                    System.Threading.Timer lTimer = m_processNewEventsTimer;
+                    m_processNewEventsTimer = null;
+                    if (lTimer != null)
+                    {
+                        lTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        lTimer.Dispose();
+                    }
+                    if (m_hdEventMonitor != null)
+                    {
+                        m_hdEventMonitor.Dispose();
+                        m_hdEventMonitor = null;
                     }
                     if (NextEventTimer != null)
                     {
@@ -1506,7 +1528,7 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || !IsInvalidOrProcessed(filename)) //hdq files will be deleted.
+                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event || !IsInvalidOrProcessed(filename)) //hdq files will be deleted.
                 {
                     lock (m_candidateNewFiles)
                     {
@@ -1770,7 +1792,7 @@ namespace iba.Processing
                             lock (m_sd.DatFileStates)
                             {
                                 m_sd.DatFileStates[filename] = new DatFileStatus();
-                                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                                     m_sd.DatFileStates[filename].AlternativeFileDescription = m_cd.CreateHDQFileDescription(filename);
                             }
                             break;
@@ -2588,7 +2610,7 @@ namespace iba.Processing
                 {
                     WriteStateInDatFile(InputFile, completeSucces);
                 }
-                else if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                else if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                 {
                     WriteStateInHDQFile(InputFile, completeSucces);
                 }
@@ -3268,7 +3290,7 @@ namespace iba.Processing
         {
             if (task.UseInfoFieldForOutputFile)
             {
-                if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled )
+                if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                 { //
                     string outputfile;
                     IniParser iniParser;
@@ -3378,7 +3400,7 @@ namespace iba.Processing
         private String InfoFieldBasedSubFolder(TaskDataUNC task, String filename)
         {
             string Subdir = "";
-            if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
             {
                 try
                 {
@@ -3450,7 +3472,7 @@ namespace iba.Processing
             }
             Subdir = "unresolved";
             //warn that we failed getting the infofield
-            string message = string.Format(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled?iba.Properties.Resources.WarningInfofieldDirFailed2:iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
+            string message = string.Format(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event ? iba.Properties.Resources.WarningInfofieldDirFailed2:iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
             Log(iba.Logging.Level.Warning, message, filename, task);
             return Subdir;
         }
@@ -4989,6 +5011,82 @@ namespace iba.Processing
             m_sd.MergeProcessedAndToProcessLists();
         }
 
-        
+        const int intervalProcessNewEvents = 1000;
+        System.Threading.Timer m_processNewEventsTimer;
+        HDEventMonitor m_hdEventMonitor;
+
+        void OnProcessNewEventsTick(object state)
+        {
+            if (m_bTimersstopped || m_stop || m_hdEventMonitor == null || m_processNewEventsTimer == null)
+                return;
+
+            List<HD.Common.EventReaderData> newEvents = m_hdEventMonitor.GetNewEvents();
+            if (newEvents == null || newEvents.Count <= 0)
+                m_processNewEventsTimer?.Change(intervalProcessNewEvents, Timeout.Infinite);
+
+            List<string> fileNames = new List<string>();
+            foreach (var evt in newEvents)
+            {
+                DateTime dtEvent = new DateTime(evt.UtcTicks);
+                DateTime dtLocalEvent = dtEvent.ToLocalTime();
+                if (TimestampJobLastExecution < dtLocalEvent)
+                    TimestampJobLastExecution = dtLocalEvent;
+
+                int duplicateCounter = 0;
+                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), dtEvent));
+                while (m_toProcessFiles.Contains(filename) || m_processedFiles.Contains(filename) || fileNames.Contains(filename))
+                {
+                    if (duplicateCounter == 0)
+                        filename = filename.Substring(0, filename.Length - 4) + "_" + (++duplicateCounter).ToString() + ".hdq";
+                    else
+                        filename = filename.Substring(0, filename.Length - (4 + duplicateCounter.ToString().Length)) + (++duplicateCounter).ToString() + ".hdq";
+                }
+
+                try
+                {
+                    m_cd.GenerateHDQFile(dtEvent, filename);
+                    fileNames.Add(filename);
+                }
+                catch (Exception ex)
+                {
+                    Log(Logging.Level.Exception, "Failure creating HDQ file:" + ex.Message, filename);
+                }
+            }
+
+            if (fileNames.Count <= 0)
+            {
+                m_processNewEventsTimer?.Change(intervalProcessNewEvents, Timeout.Infinite);
+                return;
+            }
+
+            m_sd.UpdatingFileList = true;
+            lock (m_processedFiles)
+            {
+                lock (m_toProcessFiles)
+                {
+                    bool bSetWaitEvent = false;
+                    foreach (var filename in fileNames)
+                    {
+                        if (!m_toProcessFiles.Contains(filename) && !m_processedFiles.Contains(filename))
+                        {
+                            bSetWaitEvent = true;
+                            m_toProcessFiles.Add(filename);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename] = new DatFileStatus();
+                                m_sd.DatFileStates[filename].AlternativeFileDescription = m_cd.CreateHDQFileDescription(filename);
+                            }
+                        }
+                        m_sd.Changed = true;
+                    }
+
+                    if (bSetWaitEvent)
+                        m_waitEvent.Set();
+                }
+            }
+            m_sd.UpdatingFileList = false;
+            m_sd.MergeProcessedAndToProcessLists();
+            m_processNewEventsTimer?.Change(intervalProcessNewEvents, Timeout.Infinite);
+        }
     }
 }

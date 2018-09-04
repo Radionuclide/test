@@ -1138,7 +1138,7 @@
   <data name="ErrorScheduleNextTrigger" xml:space="preserve">
     <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
   </data>
-  <data name="DeleteDialogTitleHDQ" xml:space="preserve">
+  <data name="DeleteDialogTitleScheduled" xml:space="preserve">
     <value>Deleting triggers</value>
   </data>
   <data name="logGlobalCleanupStartCleanup" xml:space="preserve">
@@ -1147,16 +1147,16 @@
   <data name="PermErrorsColumnHeaderDat" xml:space="preserve">
     <value>iba .Dat-files</value>
   </data>
-  <data name="PermErrorsColumnHeaderHDQ" xml:space="preserve">
+  <data name="PermErrorsColumnHeaderScheduled" xml:space="preserve">
     <value>triggers</value>
   </data>
   <data name="PermErrorsLabelDat" xml:space="preserve">
     <value>The following files have been attempted the maximum amount of attempts for job</value>
   </data>
-  <data name="PermErrorsLabelHDQ" xml:space="preserve">
+  <data name="PermErrorsLabelScheduled" xml:space="preserve">
     <value>The following triggers have been attempted the maximum amount of attempts for job</value>
   </data>
-  <data name="UnmarkDialogTitleHDQ" xml:space="preserve">
+  <data name="UnmarkDialogTitleScheduled" xml:space="preserve">
     <value>Unmarking triggers</value>
   </data>
   <data name="logGlobalCleanupDetermineSizeFinished" xml:space="preserve">
@@ -1423,5 +1423,47 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="TasksCountExceeded" xml:space="preserve">
     <value>Cannot add the requested task, the maximum amount of tasks for this job has been reached.</value>
+  </data>
+  <data name="img_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EventJobsNodeParent" xml:space="preserve">
+    <value>Event Jobs</value>
+  </data>
+  <data name="eventJob_AutoSelect" xml:space="preserve">
+    <value>Auto-select all</value>
+  </data>
+  <data name="addEventConfigurationText" xml:space="preserve">
+    <value>Add Event Job</value>
+  </data>
+  <data name="event_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="event_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FromEventTextForLabel" xml:space="preserve">
+    <value>an event occurred</value>
+  </data>
+  <data name="DeleteDialogTitleEvent" xml:space="preserve">
+    <value>Deleting event occurences</value>
+  </data>
+  <data name="PermErrorsColumnHeaderEvent" xml:space="preserve">
+    <value>event occurences</value>
+  </data>
+  <data name="PermErrorsLabelEvent" xml:space="preserve">
+    <value>The following event occurences have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="UnmarkDialogTitleEvent" xml:space="preserve">
+    <value>Unmarking event occurences</value>
+  </data>
+  <data name="EventJobTrigger_Both" xml:space="preserve">
+    <value>Both</value>
+  </data>
+  <data name="EventJobTrigger_Incoming" xml:space="preserve">
+    <value>Incoming event</value>
+  </data>
+  <data name="EventJobTrigger_Outgoing" xml:space="preserve">
+    <value>Outgoing event</value>
   </data>
 </root>

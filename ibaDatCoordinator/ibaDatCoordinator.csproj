@@ -160,6 +160,12 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PanelEventJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelEventJob.designer.cs">
+      <DependentUpon>PanelEventJob.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ServerFolderBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,13 +190,16 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
+    <Compile Include="Data\IHDQGenerator.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\ServerSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="Processing\HDEventMonitor.cs" />
     <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
@@ -456,6 +465,10 @@
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\PanelEventJob.resx">
+      <DependentUpon>PanelEventJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ServerFolderBrowser.resx">
       <DependentUpon>ServerFolderBrowser.cs</DependentUpon>
     </EmbeddedResource>
@@ -651,6 +664,9 @@
   <ItemGroup>
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <Content Include="Resources\event_configuration.ico" />
+    <Content Include="Resources\event_configuration_new.ico" />
+    <Content Include="Resources\img_error.png" />
     <None Include="Resources\snmp_icon.png" />
     <None Include="Resources\snmp_images.png" />
     <None Include="Resources\Toolbars16.bmp" />

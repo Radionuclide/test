@@ -27,7 +27,7 @@ namespace iba.Controls
 
             m_sourcePanel.Visible = false;
 
-            if(m_jobType != ConfigurationData.JobTypeEnum.Scheduled)
+            if(m_jobType != ConfigurationData.JobTypeEnum.Scheduled && m_jobType != ConfigurationData.JobTypeEnum.Event)
             {
                 m_panelDatFilesJob = new PanelDatFilesJob(m_jobType == ConfigurationData.JobTypeEnum.OneTime);
                 m_panel = m_panelDatFilesJob;
@@ -47,18 +47,30 @@ namespace iba.Controls
             }
             else
             {
-                m_panelScheduledJob = new PanelScheduledJob();
-                m_panel = m_panelScheduledJob;
-                int diff = m_panelScheduledJob.Size.Height - m_sourcePanel.Size.Height;
-                m_panelScheduledJob.Location = m_sourcePanel.Location;
-                m_panelScheduledJob.Width = m_sourcePanel.Width;
-                m_panelScheduledJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                UserControl lPanel = null;
+                if (m_jobType == ConfigurationData.JobTypeEnum.Event)
+                {
+                    m_panelEventJob = new PanelEventJob();
+                    m_panel = m_panelEventJob;
+                    lPanel = m_panelEventJob;
+                }
+                else
+                {
+                    m_panelScheduledJob = new PanelScheduledJob();
+                    m_panel = m_panelScheduledJob;
+                    lPanel = m_panelScheduledJob;
+                }
+                
+                int diff = lPanel.Size.Height - m_sourcePanel.Size.Height;
+                lPanel.Location = m_sourcePanel.Location;
+                lPanel.Width = m_sourcePanel.Width;
+                lPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                 this.AutoScrollMinSize = new Size(0, this.AutoScrollMinSize.Height + diff);
                 groupBox4.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + diff);
                 groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 groupBox6.Location = new Point(groupBox6.Location.X, groupBox6.Location.Y + diff);
                 groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                this.Controls.Add(m_panelScheduledJob);
+                this.Controls.Add(lPanel);
             }
 
             ((Bitmap)m_testNotification.Image).MakeTransparent(Color.Magenta);
@@ -97,6 +109,15 @@ namespace iba.Controls
                 m_enableCheckBox = m_panelDatFilesJob.m_enableCheckBox;
                 m_undoChangesBtn = m_panelDatFilesJob.m_undoChangesBtn;
             }
+            else if (m_panelEventJob != null)
+            {
+                m_stopButton = m_panelEventJob.m_stopButton;
+                m_startButton = m_panelEventJob.m_startButton;
+                m_applyToRunningBtn = m_panelEventJob.m_applyToRunningBtn;
+                m_autoStartCheckBox = m_panelEventJob.m_autoStartCheckBox;
+                m_enableCheckBox = m_panelEventJob.m_enableCheckBox;
+                m_undoChangesBtn = m_panelEventJob.m_undoChangesBtn;
+            }
             else
             {
                 m_stopButton = m_panelScheduledJob.m_stopButton;
@@ -133,6 +154,8 @@ namespace iba.Controls
             m_ceManager.AddElement(groupBox2);
             if(m_panelDatFilesJob != null)
                 m_ceManager.AddSubManagerFromControl(m_panelDatFilesJob);
+            else if (m_panelEventJob != null)
+                m_ceManager.AddSubManagerFromControl(m_panelEventJob);
             else
                 m_ceManager.AddSubManagerFromControl(m_panelScheduledJob);
             m_ceManager.AddElement(groupBox4);
@@ -157,6 +180,7 @@ namespace iba.Controls
 
         private PanelDatFilesJob m_panelDatFilesJob;
         private PanelScheduledJob m_panelScheduledJob;
+        private PanelEventJob m_panelEventJob;
         private IPropertyPane m_panel;
 
         #region IPropertyPane Members

@@ -29,6 +29,8 @@ namespace iba.Controls
             m_rbDatFileTime.Checked = m_data.MeasureFromFileTime;
             if (m_data.ParentConfigurationData.JobType == ConfigurationData.JobTypeEnum.Scheduled)
                 m_rbDatFileTime.Text = iba.Properties.Resources.FromTriggerTextForLabel;
+            else if (m_data.ParentConfigurationData.JobType == ConfigurationData.JobTypeEnum.Event)
+                m_rbDatFileTime.Text = iba.Properties.Resources.FromEventTextForLabel;
             else
                 m_rbDatFileTime.Text = iba.Properties.Resources.FromDatFileTextForLabel;
         }

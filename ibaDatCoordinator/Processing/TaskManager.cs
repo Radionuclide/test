@@ -626,6 +626,10 @@ namespace iba.Processing
                             SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
                             break;
 
+                        case ConfigurationData.JobTypeEnum.Event:
+                            SnmpRefreshEventJobInfo(jobInfo as SnmpObjectsData.EventBasedJobInfo, cfg);
+                            break;
+
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -716,6 +720,30 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshOneTimeJobInfo(): " + ex.Message);
+            }
+
+        }
+
+        private void SnmpRefreshEventJobInfo(SnmpObjectsData.EventBasedJobInfo jobInfo, ConfigurationData cfg)
+        {
+            jobInfo.Reset();
+
+            try
+            {
+                ConfigurationWorker worker = m_workers[cfg];
+                StatusData s = worker.Status;
+
+                SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+                jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+
+                jobInfo.PutTimeStamp();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshEventJobInfo(): " + ex.Message);
             }
 
         }
@@ -957,6 +985,13 @@ namespace iba.Processing
                                     od.OneTimeJobs.Add(otJobInfo);
                                     // fill the data
                                     SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
+                                    break;
+
+                                case ConfigurationData.JobTypeEnum.Event:
+                                    var evtJobInfo = new SnmpObjectsData.EventBasedJobInfo { Guid = cfg.Guid };
+                                    od.EventBasedJobs.Add(evtJobInfo);
+                                    // fill the data
+                                    SnmpRefreshEventJobInfo(evtJobInfo, cfg);
                                     break;
 
                                 default:

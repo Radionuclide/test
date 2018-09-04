@@ -480,6 +480,9 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.4 - One time jobs
                     BuildSectionOneTimeJobs();
 
+                    // ibaRoot.DatCoord.Product.5 - Event jobs
+                    BuildSectionEventJobs();
+
                     return true; // rebuilt successfully
                 }
                 finally
@@ -764,6 +767,66 @@ namespace iba.Processing
                         CreateUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
                             @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
                             @"Time when the last execution was started. " +
+                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
+                            JobInfoItemRequested, jobInfo);
+                    }
+                }
+                catch
+                {
+                    // ReSharper disable once RedundantJumpStatement
+                    continue;
+                    // go on with other items 
+                    // even if current one has failed 
+                }
+            }
+        }
+
+        private void BuildSectionEventJobs()
+        {
+            var oidSection = new IbaSnmpOid(SnmpObjectsData.EventBasedJobsOid);
+
+            AddMetadataForOidSuffix(oidSection, @"Event jobs", @"eventJobs",
+                @"List of all event jobs.");
+
+            for (int i = 0; i < ObjectsData.EventBasedJobs.Count; i++)
+            {
+                try
+                {
+                    var jobInfo = ObjectsData.EventBasedJobs[i];
+
+                    // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
+                    IbaSnmpOid oidJob = oidSection + (uint)(i + 1);
+                    string mibNameJob = $@"eventJob{oidJob.GetLeastSignificantSubId()}";
+                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
+                        $@"Properties of event job '{jobInfo.JobName}'.");
+
+                    // create objects that are common for all the job types
+                    IbaSnmpOid oidJobGen;
+                    string mibNameJobGen;
+                    BuildCommonGeneralJobSubsection(
+                        oidJob, out oidJobGen,
+                        mibNameJob, out mibNameJobGen,
+                        jobInfo);
+
+                    // create all the rest of general job objects
+                    // ibaRoot.DatCoord.Product.EvtJobs.Job xxx
+                    {
+                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.PermFailedCountOid, jobInfo.PermFailedCount,
+                            @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
+                            @"Number of files with persistent errors.",
+                            JobInfoItemRequested, jobInfo);
+
+                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampJobStartedOid, jobInfo.TimestampJobStarted,
+                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
+                            @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
+                            @"For a stopped job, it relates to the last start of the job.  " +
+                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
+                            JobInfoItemRequested, jobInfo);
+
+                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
+                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
+                            @"Time when the job was last executed. " +
+                            @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
                             @"If job was never executed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
                     }
@@ -1199,6 +1262,7 @@ namespace iba.Processing
                     var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
                     var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
                     var otJi = jobInfo as SnmpObjectsData.OneTimeJobInfo;
+                    var evtJi = jobInfo as SnmpObjectsData.EventBasedJobInfo;
                     if (stdJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
@@ -1220,6 +1284,12 @@ namespace iba.Processing
                     else if (otJi != null)
                     {
                         IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
+                    }
+                    else if (evtJi != null)
+                    {
+                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
+                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
+                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
                     }
                     else
                     {

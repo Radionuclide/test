@@ -415,6 +415,32 @@ namespace iba.Data
             }
         }
 
+        internal class EventBasedJobInfo : JobInfoBase
+        {
+            /// <summary> Oid 6 </summary>
+            public uint PermFailedCount;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint PermFailedCountOid = 6;
+
+            /// <summary> Oid 7 </summary>
+            public DateTime TimestampJobStarted;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampJobStartedOid = 7;
+
+            /// <summary> Oid 8 </summary>
+            public DateTime TimestampLastExecution;
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public const uint TimestampLastExecutionOid = 8;
+
+            public override void Reset()
+            {
+                base.Reset();
+                PermFailedCount = 0;
+                TimestampJobStarted = DateTime.MinValue;
+                TimestampLastExecution = DateTime.MinValue;
+            }
+        }
+
         internal class OneTimeJobInfo : JobInfoBase
         {
             /// <summary> Oid 6 </summary>
@@ -428,12 +454,6 @@ namespace iba.Data
                 TimestampLastExecution = DateTime.MinValue;
             }
         }
-
-        /// <summary> reserved for future </summary> 
-        internal class EventBasedJobInfo : JobInfoBase
-        {
-        }
-
         #endregion
         
     }

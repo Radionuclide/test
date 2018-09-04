@@ -310,7 +310,7 @@ namespace iba.Data
                                 DatFileStatus dfs = m_datFileStates[file];
                                 MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
-                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cf.JobType == ConfigurationData.JobTypeEnum.Event)
                                     newdfs.Description = dfs.AlternativeFileDescription;
                                 newdfs.TimesTried = dfs.TimesTried;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
@@ -348,7 +348,7 @@ namespace iba.Data
                                 MinimalDatFileStatus newdfs = new MinimalDatFileStatus(m_cf.Tasks.Count);
                                 newdfs.Filename = file;
                                 newdfs.TimesTried = dfs.TimesTried;
-                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                                if(m_cf.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cf.JobType == ConfigurationData.JobTypeEnum.Event)
                                     newdfs.Description = dfs.AlternativeFileDescription;
                                 foreach (KeyValuePair<TaskData,DatFileStatus.State> pair in dfs.States)
                                 {
