@@ -191,7 +191,9 @@ namespace iba.Controls
             m_data = datasource as MinimalStatusData;
             m_cd = TaskManager.Manager.GetConfigurationFromWorker(m_data.CorrConfigurationGuid);
             if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderHDQ;
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderScheduled;
+            else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderEvent;
 
             m_confNameLinkLabel.Text = m_cd.Name;
             int count = m_cd.Tasks.Count;

@@ -458,12 +458,12 @@ namespace iba.Controls
             m_toolTip.Hide(m_cbTimeBase);
         }
 
-        public double ReqTimeBaseFactor()
+        double ReqTimeBaseFactor()
         {
             return Math.Sqrt(40.0); //in the future we might need to ask the reader
         }
 
-        public TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
+        TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
         {
             long duration = 0;
             if(m_cbUseTriggerAsStart.Checked)
@@ -650,7 +650,7 @@ namespace iba.Controls
         Unknown
     }
 
-    public class TimeCbItem
+    internal class TimeCbItem
     {
         private string m_title;
         public long m_timebaseLength;

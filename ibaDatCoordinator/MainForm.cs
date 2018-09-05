@@ -34,21 +34,23 @@ namespace iba
     {
         public static readonly int CONFIGURATION_INDEX = 0;
         public static readonly int SCHEDULED_CONFIGURATION_INDEX = 1;
-        public static readonly int ONETIME_CONFIGURATION_INDEX = 2;
-        public static readonly int REPORTTASK_INDEX = 3;
-        public static readonly int EXTRACTTASK_INDEX = 4;
-        public static readonly int BATCHFILETASK_INDEX = 5;
-        public static readonly int COPYTASK_INDEX = 6;
-        public static readonly int IFTASK_INDEX = 7;
-        public static readonly int UPDATEDATATASK_INDEX = 8;
-        public static readonly int PAUSETASK_INDEX = 9;
-        public static readonly int CLEANUPTASK_INDEX = 10;
-        public static readonly int SPLITTERTASK_INDEX = 11;
+        public static readonly int EVENT_CONFIGURATION_INDEX = 2;
+        public static readonly int ONETIME_CONFIGURATION_INDEX = 3;
+        public static readonly int REPORTTASK_INDEX = 4;
+        public static readonly int EXTRACTTASK_INDEX = 5;
+        public static readonly int BATCHFILETASK_INDEX = 6;
+        public static readonly int COPYTASK_INDEX = 7;
+        public static readonly int IFTASK_INDEX = 8;
+        public static readonly int UPDATEDATATASK_INDEX = 9;
+        public static readonly int PAUSETASK_INDEX = 10;
+        public static readonly int CLEANUPTASK_INDEX = 11;
+        public static readonly int SPLITTERTASK_INDEX = 12;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int NEWCONF_INDEX = 12;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 13;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 14;
-        public static readonly int CUSTOMTASK_INDEX = 15;
+        public static readonly int NEWCONF_INDEX = 13;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 14;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 15;
+        public static readonly int NEW_EVENT_CONF_INDEX = 16;
+        public static readonly int CUSTOMTASK_INDEX = 17;
         public static readonly int NR_TASKS = 9;
 
         private QuitForm m_quitForm;
@@ -97,6 +99,7 @@ namespace iba
             ImageList confsImageList = new ImageList();
             confsImageList.Images.Add(iba.Properties.Resources.configuration);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration.ToBitmap()));
+            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration.ToBitmap()));
             confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             confsImageList.Images.Add(iba.Properties.Resources.report_running);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.extract_running.ToBitmap()));
@@ -110,6 +113,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
+            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration_new.ToBitmap()));
             m_configTreeView.ImageList = confsImageList;
             UpdateImageListConfTree();
                         
@@ -120,7 +124,8 @@ namespace iba
             m_configTreeView.StateImageList = confsImageList2;
             ImageList statImageList = new ImageList();
             statImageList.Images.Add(iba.Properties.Resources.configuration);
-            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
+            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration.ToBitmap()));
+            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration.ToBitmap()));
             statImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
             statImageList.Images.Add(iba.Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
@@ -503,6 +508,7 @@ namespace iba
                 case ConfigurationData.JobTypeEnum.DatTriggered: cindex = CONFIGURATION_INDEX; break;
                 case ConfigurationData.JobTypeEnum.OneTime: cindex = ONETIME_CONFIGURATION_INDEX; break;
                 case ConfigurationData.JobTypeEnum.Scheduled: cindex = SCHEDULED_CONFIGURATION_INDEX; break;
+                case ConfigurationData.JobTypeEnum.Event: cindex = EVENT_CONFIGURATION_INDEX; break;
             }
             confNode = new TreeNode(confIt.Name, cindex, cindex);
             MainForm.strikeOutNodeText(confNode, ! confIt.Enabled);
@@ -616,6 +622,7 @@ namespace iba
             //add three top nodes
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.StandardJobsNodeParent, CONFIGURATION_INDEX, CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
+            m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.EventJobsNodeParent, EVENT_CONFIGURATION_INDEX, EVENT_CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
 
             //add the new Configuration node
@@ -630,11 +637,17 @@ namespace iba
             newSConfNode.Tag = new NewScheduledConfigurationTreeItemData(this);
             m_configTreeView.Nodes[1].Nodes.Add(newSConfNode);
 
+            //add the event Configuration node
+            TreeNode newEConfNode = new TreeNode(iba.Properties.Resources.addEventConfigurationText, NEW_EVENT_CONF_INDEX, NEW_EVENT_CONF_INDEX);
+            newEConfNode.ForeColor = Color.Blue;
+            newEConfNode.Tag = new NewEventConfigurationTreeItemData(this);
+            m_configTreeView.Nodes[2].Nodes.Add(newEConfNode);
+
             //add the new one time Configuration node
             TreeNode new1ConfNode = new TreeNode(iba.Properties.Resources.addOneTimeConfigurationText, NEW_ONETIME_CONF_INDEX, NEW_ONETIME_CONF_INDEX);
             new1ConfNode.ForeColor = Color.Blue;
             new1ConfNode.Tag = new NewOneTimeConfigurationTreeItemData(this);
-            m_configTreeView.Nodes[2].Nodes.Add(new1ConfNode);
+            m_configTreeView.Nodes[3].Nodes.Add(new1ConfNode);
 
             TreeNode firstNode = null;
 
@@ -651,6 +664,13 @@ namespace iba
             {
                 TreeNode node = InsertNewConf(confIt);
                 if(firstNode == null) firstNode = node;
+            }
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.Event));
+            confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach (ConfigurationData confIt in confs)
+            {
+                TreeNode node = InsertNewConf(confIt);
+                if (firstNode == null) firstNode = node;
             }
             confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.OneTime));
             confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
@@ -679,13 +699,15 @@ namespace iba
             m_statusTreeView.Nodes.Clear();
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.StandardJobsNodeParent, CONFIGURATION_INDEX, CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
+            m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.EventJobsNodeParent, EVENT_CONFIGURATION_INDEX, EVENT_CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
             List<ConfigurationData> allconfs = TaskManager.Manager.Configurations;
             List<ConfigurationData>[] splitconfs = {new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.DatTriggered)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Scheduled)),
+                                                    new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Event)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.OneTime)),
                                                         };
-            for(int jobtypeindex = 0; jobtypeindex < 3; jobtypeindex++)
+            for(int jobtypeindex = 0; jobtypeindex < 4; jobtypeindex++)
             {
                 splitconfs[jobtypeindex].Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
                 foreach(ConfigurationData confIt in splitconfs[jobtypeindex])
@@ -823,7 +845,8 @@ namespace iba
                 bool c1 = node.Tag is NewConfigurationTreeItemData;
                 bool c2 = node.Tag is NewOneTimeConfigurationTreeItemData;
                 bool c3 = node.Tag is NewScheduledConfigurationTreeItemData;
-                if (c1 || c2 || c3)
+                bool c4 = node.Tag is NewEventConfigurationTreeItemData;
+                if (c1 || c2 || c3 || c4)
                 {
                     if (!Utility.Crypt.CheckPassword(this)) return;
                     SaveRightPaneControl();
@@ -833,6 +856,8 @@ namespace iba
                         type = ConfigurationData.JobTypeEnum.OneTime;
                     else if (c3)
                         type = ConfigurationData.JobTypeEnum.Scheduled;
+                    else if (c4)
+                        type = ConfigurationData.JobTypeEnum.Event;
                     ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, type);
                     new SetNextName(newData);
                     TaskManager.Manager.AddConfiguration(newData);
@@ -1719,7 +1744,8 @@ namespace iba
             {
                 case ConfigurationData.JobTypeEnum.DatTriggered: return 0;
                 case ConfigurationData.JobTypeEnum.Scheduled: return 1;
-                case ConfigurationData.JobTypeEnum.OneTime: return 2;
+                case ConfigurationData.JobTypeEnum.Event: return 2;
+                case ConfigurationData.JobTypeEnum.OneTime: return 3;
             }
             return 0;
         }

@@ -70,6 +70,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Event Job.
+        /// </summary>
+        internal static string addEventConfigurationText {
+            get {
+                return ResourceManager.GetString("addEventConfigurationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add One Time Job.
         /// </summary>
         internal static string addOneTimeConfigurationText {
@@ -605,11 +614,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting event occurences.
+        /// </summary>
+        internal static string DeleteDialogTitleEvent {
+            get {
+                return ResourceManager.GetString("DeleteDialogTitleEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleting triggers.
         /// </summary>
-        internal static string DeleteDialogTitleHDQ {
+        internal static string DeleteDialogTitleScheduled {
             get {
-                return ResourceManager.GetString("DeleteDialogTitleHDQ", resourceCulture);
+                return ResourceManager.GetString("DeleteDialogTitleScheduled", resourceCulture);
             }
         }
         
@@ -851,6 +869,80 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon event_configuration {
+            get {
+                object obj = ResourceManager.GetObject("event_configuration", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon event_configuration_new {
+            get {
+                object obj = ResourceManager.GetObject("event_configuration_new", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-select all.
+        /// </summary>
+        internal static string EventJob_AutoSelect {
+            get {
+                return ResourceManager.GetString("EventJob_AutoSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot connect to server.
+        /// </summary>
+        internal static string EventJob_DefaultHDConnectionErr {
+            get {
+                return ResourceManager.GetString("EventJob_DefaultHDConnectionErr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Jobs.
+        /// </summary>
+        internal static string EventJobsNodeParent {
+            get {
+                return ResourceManager.GetString("EventJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Both.
+        /// </summary>
+        internal static string EventJobTrigger_Both {
+            get {
+                return ResourceManager.GetString("EventJobTrigger_Both", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoming event.
+        /// </summary>
+        internal static string EventJobTrigger_Incoming {
+            get {
+                return ResourceManager.GetString("EventJobTrigger_Incoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outgoing event.
+        /// </summary>
+        internal static string EventJobTrigger_Outgoing {
+            get {
+                return ResourceManager.GetString("EventJobTrigger_Outgoing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E.g. &apos;{0}&apos;.
         /// </summary>
         internal static string ExampleFolder {
@@ -958,6 +1050,15 @@ namespace iba.Properties {
         internal static string FromDatFileTextForLabel {
             get {
                 return ResourceManager.GetString("FromDatFileTextForLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to an event occurred.
+        /// </summary>
+        internal static string FromEventTextForLabel {
+            get {
+                return ResourceManager.GetString("FromEventTextForLabel", resourceCulture);
             }
         }
         
@@ -1096,6 +1197,16 @@ namespace iba.Properties {
         internal static string IfTestPositiveEvaluation {
             get {
                 return ResourceManager.GetString("IfTestPositiveEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_error {
+            get {
+                object obj = ResourceManager.GetObject("img_error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -2568,11 +2679,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to event occurences.
+        /// </summary>
+        internal static string PermErrorsColumnHeaderEvent {
+            get {
+                return ResourceManager.GetString("PermErrorsColumnHeaderEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to triggers.
         /// </summary>
-        internal static string PermErrorsColumnHeaderHDQ {
+        internal static string PermErrorsColumnHeaderScheduled {
             get {
-                return ResourceManager.GetString("PermErrorsColumnHeaderHDQ", resourceCulture);
+                return ResourceManager.GetString("PermErrorsColumnHeaderScheduled", resourceCulture);
             }
         }
         
@@ -2586,11 +2706,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following event occurences have been attempted the maximum amount of attempts for job.
+        /// </summary>
+        internal static string PermErrorsLabelEvent {
+            get {
+                return ResourceManager.GetString("PermErrorsLabelEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The following triggers have been attempted the maximum amount of attempts for job.
         /// </summary>
-        internal static string PermErrorsLabelHDQ {
+        internal static string PermErrorsLabelScheduled {
             get {
-                return ResourceManager.GetString("PermErrorsLabelHDQ", resourceCulture);
+                return ResourceManager.GetString("PermErrorsLabelScheduled", resourceCulture);
             }
         }
         
@@ -3756,11 +3885,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unmarking event occurences.
+        /// </summary>
+        internal static string UnmarkDialogTitleEvent {
+            get {
+                return ResourceManager.GetString("UnmarkDialogTitleEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unmarking triggers.
         /// </summary>
-        internal static string UnmarkDialogTitleHDQ {
+        internal static string UnmarkDialogTitleScheduled {
             get {
-                return ResourceManager.GetString("UnmarkDialogTitleHDQ", resourceCulture);
+                return ResourceManager.GetString("UnmarkDialogTitleScheduled", resourceCulture);
             }
         }
         

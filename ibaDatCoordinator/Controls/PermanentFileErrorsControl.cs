@@ -209,8 +209,13 @@ namespace iba.Controls
             m_cd = TaskManager.Manager.GetConfigurationFromWorker(m_data.CorrConfigurationGuid);
             if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
             {
-                m_infoLabel.Text = Properties.Resources.PermErrorsLabelHDQ;
-                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderHDQ;
+                m_infoLabel.Text = Properties.Resources.PermErrorsLabelScheduled;
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderScheduled;
+            }
+            else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+            {
+                m_infoLabel.Text = Properties.Resources.PermErrorsLabelEvent;
+                DatFiles.HeaderText = Properties.Resources.PermErrorsColumnHeaderEvent;
             }
             else
             {
@@ -379,7 +384,9 @@ namespace iba.Controls
             using (DeleteDatFilesDialog dlg = new DeleteDatFilesDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles))
             {
                 if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-                    dlg.Text = iba.Properties.Resources.DeleteDialogTitleHDQ;
+                    dlg.Text = iba.Properties.Resources.DeleteDialogTitleScheduled;
+                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+                    dlg.Text = iba.Properties.Resources.DeleteDialogTitleEvent;
                 dlg.StartPosition = FormStartPosition.CenterParent;
                 dlg.ShowDialog(this);
                 TaskManager.Manager.AlterPermanentFileErrorList(TaskManager.AlterPermanentFileErrorListWhatToDo.AFTERDELETE, m_data.CorrConfigurationGuid, m_checkedFiles);
@@ -402,7 +409,9 @@ namespace iba.Controls
             using (RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles))
             {
                 if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-                    dlg.Text = iba.Properties.Resources.UnmarkDialogTitleHDQ;
+                    dlg.Text = iba.Properties.Resources.UnmarkDialogTitleScheduled;
+                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+                    dlg.Text = iba.Properties.Resources.UnmarkDialogTitleEvent;
 
                 dlg.StartPosition = FormStartPosition.CenterParent;
                 dlg.ShowDialog(this);

@@ -18,7 +18,8 @@ namespace iba.Data
         {
             DatTriggered,
             Scheduled,
-            OneTime
+            OneTime,
+            Event
         }
 
         private JobTypeEnum m_jobType;
@@ -47,7 +48,7 @@ namespace iba.Data
         {
             get 
             {
-                if(m_jobType == JobTypeEnum.Scheduled)
+                if(m_jobType == JobTypeEnum.Scheduled || m_jobType == JobTypeEnum.Event)
                     return HDQDirectory;
                 return m_datDirectory;
             }
@@ -95,7 +96,7 @@ namespace iba.Data
         {
             get 
             {
-                if(m_jobType == JobTypeEnum.Scheduled)
+                if(m_jobType == JobTypeEnum.Scheduled || m_jobType == JobTypeEnum.Event)
                     return HDQDirectory;
                 return m_datdirectoryUNC; 
             }
@@ -289,10 +290,18 @@ namespace iba.Data
 		    set { m_scheduleData = value; }
 	    }
 
+        private EventJobData m_eventData;
+        public iba.Data.EventJobData EventData
+        {
+            get { return m_eventData; }
+            set { m_eventData = value; }
+        }
+
         public ConfigurationData(string name, JobTypeEnum jobType)
         {
             m_jobType = jobType;
             if (m_jobType == JobTypeEnum.Scheduled) m_scheduleData = new ScheduledJobData();
+            if (m_jobType == JobTypeEnum.Event) m_eventData = new EventJobData();
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
@@ -341,6 +350,8 @@ namespace iba.Data
                 cd.m_tasks.Add(task.Clone() as TaskData);
             if(m_jobType == JobTypeEnum.Scheduled)
                 cd.m_scheduleData = m_scheduleData.Clone() as ScheduledJobData;
+            if (m_jobType == JobTypeEnum.Event)
+                cd.m_eventData = m_eventData.Clone() as EventJobData;
             cd.relinkChildData();
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
@@ -378,6 +389,7 @@ namespace iba.Data
             }
             if(m_jobType != other.m_jobType) return false;
             if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
+            if (m_jobType == JobTypeEnum.Event && !m_eventData.IsSame(other.m_eventData)) return false;
             return
                 other.m_enabled == m_enabled &&
                 other.m_autoStart == m_autoStart &&
@@ -476,35 +488,43 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime trigger, String path)
         {
-            DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
-            DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
+            IHDQGenerator lHDQGenerator = ScheduleData;
+            if (JobType == JobTypeEnum.Event)
+                lHDQGenerator = EventData;
+
+            DateTime startTime = trigger - lHDQGenerator.StartRangeFromTrigger;
+            DateTime stopTime = trigger - lHDQGenerator.StopRangeFromTrigger;
             GenerateHDQFile(startTime, stopTime, path);
         }
 
         public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
         {
+            IHDQGenerator lHDQGenerator = ScheduleData;
+            if (JobType == JobTypeEnum.Event)
+                lHDQGenerator = EventData;
+
             string dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using (StreamWriter sw = new StreamWriter(path, false))
             {
                 //Add a section per store because ibaAnalyzer can't handle multiple stores in one hdq file
-                for (int i = 0; i < ScheduleData.HDStores.Length; i++)
+                for (int i = 0; i < lHDQGenerator.HDStores.Length; i++)
                 {
                     if (i == 0)
                         sw.WriteLine("[HDQ file]");
                     else
                         sw.WriteLine($"[HDQ file{i}]");
                     sw.WriteLine("type=time");
-                    sw.WriteLine("server=" + ScheduleData.HDServer);
-                    sw.WriteLine("portnumber=" + ScheduleData.HDPort);
-                    sw.WriteLine("store=" + ScheduleData.HDStores[i]);
+                    sw.WriteLine("server=" + lHDQGenerator.HDServer);
+                    sw.WriteLine("portnumber=" + lHDQGenerator.HDPort);
+                    sw.WriteLine("store=" + lHDQGenerator.HDStores[i]);
                     String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("starttime=" + temp);
                     temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("stoptime=" + temp);
 
-                    if (!ScheduleData.PreferredTimeBaseIsAuto)
-                        sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+                    if (!lHDQGenerator.PreferredTimeBaseIsAuto)
+                        sw.WriteLine("timebase=" + lHDQGenerator.PreferredTimeBase.TotalSeconds.ToString());
                     else
                     {
                         long ms = 10000; //10000 * 100 nanosec = 1 ms

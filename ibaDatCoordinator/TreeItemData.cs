@@ -70,7 +70,18 @@ namespace iba
     }
     #endregion
 
-	#region ConfigurationTreeItemData
+    #region NewEventConfigurationTreeItemData
+    public class NewEventConfigurationTreeItemData : NewConfigurationTreeItemDataBase
+    {
+        public NewEventConfigurationTreeItemData(IPropertyPaneManager propManager) : base(propManager) { }
+        public override string What
+        {
+            get { return "NewEventConfigurationTreeItemData"; }
+        }
+    }
+    #endregion
+
+    #region ConfigurationTreeItemData
     public class ConfigurationTreeItemData : TreeItemData
 	{
 		public ConfigurationTreeItemData(IPropertyPaneManager propManager, ConfigurationData conf) 
@@ -121,7 +132,8 @@ namespace iba
                     what = "OneTimeConfigurationControl"; break;
                 case Data.ConfigurationData.JobTypeEnum.Scheduled:
                     what = "ScheduledConfigurationControl"; break;
-
+                case Data.ConfigurationData.JobTypeEnum.Event:
+                    what = "EventConfigurationControl"; break;
             }
             Control ctrl = manager.PropertyPanes[what] as Control;
             if (ctrl == null)
