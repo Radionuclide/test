@@ -26,20 +26,6 @@ namespace iba.Data
             set { m_jobTrigger = (int)value; }
         }
 
-        private string m_eventHDServer;
-        public string EventHDServer
-        {
-            get { return m_eventHDServer; }
-            set { m_eventHDServer = value; }
-        }
-
-        private int m_eventHDPort;
-        public int EventHDPort
-        {
-            get { return m_eventHDPort; }
-            set { m_eventHDPort = value; }
-        }
-
         private bool m_monitorAllEvents;
         public bool MonitorAllEvents
         {
@@ -86,8 +72,6 @@ namespace iba.Data
         public EventJobData()
         {
             m_jobTrigger = (int)JobTrigger.Incoming;
-            m_eventHDServer = "localhost";
-            m_eventHDPort = 9180;
             m_monitorAllEvents = false;
             m_eventIDs = new List<string>();
 
@@ -152,8 +136,6 @@ namespace iba.Data
         {
             EventJobData nejd = new EventJobData();
             nejd.m_jobTrigger = m_jobTrigger;
-            nejd.EventHDServer = m_eventHDServer;
-            nejd.EventHDPort = m_eventHDPort;
             nejd.MonitorAllEvents = m_monitorAllEvents;
             nejd.EventIDs = new List<string>(m_eventIDs);
             nejd.HDServer = m_HDServer;
@@ -172,8 +154,6 @@ namespace iba.Data
         {
             return
             other.m_jobTrigger == m_jobTrigger &&
-            other.m_eventHDServer == m_eventHDServer &&
-            other.m_eventHDPort == m_eventHDPort &&
             other.m_monitorAllEvents == m_monitorAllEvents &&
             other.m_eventIDs.SequenceEqual(m_eventIDs) &&
             other.m_HDServer == m_HDServer &&

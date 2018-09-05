@@ -5,14 +5,7 @@
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        static PanelEventJob()
-        {
-            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
-            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
-            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
-        }
+        private System.ComponentModel.IContainer components = null;        
 
         #region Component Designer generated code
 
@@ -25,16 +18,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.gbEvent = new iba.Utility.CollapsibleGroupBox();
-            this.gbSelection = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.m_cbJobTrigger = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
-            this.tbEventServer = new System.Windows.Forms.TextBox();
-            this.btnEventServer = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tbEventServerPort = new System.Windows.Forms.TextBox();
+            this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
             this.m_undoChangesBtn = new System.Windows.Forms.Button();
@@ -48,7 +32,6 @@
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.gbHD = new iba.Utility.CollapsibleGroupBox();
             this.gbTimeSelection = new iba.Utility.CollapsibleGroupBox();
             this.m_lblTimebase = new System.Windows.Forms.Label();
             this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
@@ -70,8 +53,21 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.gbEvent.SuspendLayout();
-            this.gbSelection.SuspendLayout();
+            this.gbHD = new iba.Utility.CollapsibleGroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_tbEventServer = new System.Windows.Forms.TextBox();
+            this.btnEventServer = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.m_lvStores = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.m_cbJobTrigger = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
+            this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.gbTimeSelection.SuspendLayout();
@@ -83,87 +79,28 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
+            this.gbHD.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // gbEvent
+            // gbGeneral
             // 
-            resources.ApplyResources(this.gbEvent, "gbEvent");
-            this.gbEvent.Controls.Add(this.gbSelection);
-            this.gbEvent.Controls.Add(this.m_cbRepErr);
-            this.gbEvent.Controls.Add(this.m_cbInitialScanEnabled);
-            this.gbEvent.Controls.Add(this.m_undoChangesBtn);
-            this.gbEvent.Controls.Add(this.m_cbRetry);
-            this.gbEvent.Controls.Add(this.m_retryUpDown);
-            this.gbEvent.Controls.Add(this.label14);
-            this.gbEvent.Controls.Add(this.m_stopButton);
-            this.gbEvent.Controls.Add(this.m_applyToRunningBtn);
-            this.gbEvent.Controls.Add(this.m_startButton);
-            this.gbEvent.Controls.Add(this.m_autoStartCheckBox);
-            this.gbEvent.Controls.Add(this.m_enableCheckBox);
-            this.gbEvent.Controls.Add(this.m_failTimeUpDown);
-            this.gbEvent.Controls.Add(this.label10);
-            this.gbEvent.Name = "gbEvent";
-            this.gbEvent.TabStop = false;
-            // 
-            // gbSelection
-            // 
-            this.gbSelection.Controls.Add(this.label11);
-            this.gbSelection.Controls.Add(this.m_cbJobTrigger);
-            this.gbSelection.Controls.Add(this.label1);
-            this.gbSelection.Controls.Add(this.fpnlEvent);
-            this.gbSelection.Controls.Add(this.tbEventServer);
-            this.gbSelection.Controls.Add(this.btnEventServer);
-            this.gbSelection.Controls.Add(this.label2);
-            this.gbSelection.Controls.Add(this.tbEventServerPort);
-            resources.ApplyResources(this.gbSelection, "gbSelection");
-            this.gbSelection.Name = "gbSelection";
-            this.gbSelection.TabStop = false;
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            // 
-            // m_cbJobTrigger
-            // 
-            this.m_cbJobTrigger.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_cbJobTrigger.FormattingEnabled = true;
-            resources.ApplyResources(this.m_cbJobTrigger, "m_cbJobTrigger");
-            this.m_cbJobTrigger.Name = "m_cbJobTrigger";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // fpnlEvent
-            // 
-            resources.ApplyResources(this.fpnlEvent, "fpnlEvent");
-            this.fpnlEvent.Name = "fpnlEvent";
-            // 
-            // tbEventServer
-            // 
-            resources.ApplyResources(this.tbEventServer, "tbEventServer");
-            this.tbEventServer.Name = "tbEventServer";
-            this.tbEventServer.ReadOnly = true;
-            // 
-            // btnEventServer
-            // 
-            resources.ApplyResources(this.btnEventServer, "btnEventServer");
-            this.btnEventServer.Name = "btnEventServer";
-            this.btnEventServer.UseVisualStyleBackColor = true;
-            this.btnEventServer.Click += new System.EventHandler(this.btnEventServer_Click);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // tbEventServerPort
-            // 
-            resources.ApplyResources(this.tbEventServerPort, "tbEventServerPort");
-            this.tbEventServerPort.Name = "tbEventServerPort";
-            this.tbEventServerPort.ReadOnly = true;
+            resources.ApplyResources(this.gbGeneral, "gbGeneral");
+            this.gbGeneral.Controls.Add(this.m_cbRepErr);
+            this.gbGeneral.Controls.Add(this.m_cbInitialScanEnabled);
+            this.gbGeneral.Controls.Add(this.m_undoChangesBtn);
+            this.gbGeneral.Controls.Add(this.m_cbRetry);
+            this.gbGeneral.Controls.Add(this.m_retryUpDown);
+            this.gbGeneral.Controls.Add(this.label14);
+            this.gbGeneral.Controls.Add(this.m_stopButton);
+            this.gbGeneral.Controls.Add(this.m_applyToRunningBtn);
+            this.gbGeneral.Controls.Add(this.m_startButton);
+            this.gbGeneral.Controls.Add(this.m_autoStartCheckBox);
+            this.gbGeneral.Controls.Add(this.m_enableCheckBox);
+            this.gbGeneral.Controls.Add(this.m_failTimeUpDown);
+            this.gbGeneral.Controls.Add(this.label10);
+            this.gbGeneral.Name = "gbGeneral";
+            this.gbGeneral.TabStop = false;
             // 
             // m_cbRepErr
             // 
@@ -270,12 +207,6 @@
             // 
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
-            // 
-            // gbHD
-            // 
-            resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Name = "gbHD";
-            this.gbHD.TabStop = false;
             // 
             // gbTimeSelection
             // 
@@ -488,18 +419,113 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
+            // gbHD
+            // 
+            resources.ApplyResources(this.gbHD, "gbHD");
+            this.gbHD.Controls.Add(this.tableLayoutPanel1);
+            this.gbHD.Name = "gbHD";
+            this.gbHD.TabStop = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.m_tbEventServer, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnEventServer, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_lvStores, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_tbEventServerPort, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label11, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.m_cbJobTrigger, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label16, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label17, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.fpnlEvent, 0, 7);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // m_tbEventServer
+            // 
+            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
+            this.m_tbEventServer.Name = "m_tbEventServer";
+            this.m_tbEventServer.ReadOnly = true;
+            // 
+            // btnEventServer
+            // 
+            resources.ApplyResources(this.btnEventServer, "btnEventServer");
+            this.btnEventServer.Name = "btnEventServer";
+            this.btnEventServer.UseVisualStyleBackColor = true;
+            this.btnEventServer.Click += new System.EventHandler(this.btnEventServer_Click);
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // m_lvStores
+            // 
+            this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.tableLayoutPanel1.SetColumnSpan(this.m_lvStores, 5);
+            this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            resources.ApplyResources(this.m_lvStores, "m_lvStores");
+            this.m_lvStores.Name = "m_lvStores";
+            this.m_lvStores.UseCompatibleStateImageBehavior = false;
+            this.m_lvStores.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            resources.ApplyResources(this.columnHeader1, "columnHeader1");
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // m_tbEventServerPort
+            // 
+            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
+            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
+            this.m_tbEventServerPort.ReadOnly = true;
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // m_cbJobTrigger
+            // 
+            resources.ApplyResources(this.m_cbJobTrigger, "m_cbJobTrigger");
+            this.m_cbJobTrigger.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbJobTrigger.FormattingEnabled = true;
+            this.m_cbJobTrigger.Name = "m_cbJobTrigger";
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.tableLayoutPanel1.SetColumnSpan(this.label16, 5);
+            this.label16.Name = "label16";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.tableLayoutPanel1.SetColumnSpan(this.label17, 5);
+            this.label17.Name = "label17";
+            // 
+            // fpnlEvent
+            // 
+            resources.ApplyResources(this.fpnlEvent, "fpnlEvent");
+            this.tableLayoutPanel1.SetColumnSpan(this.fpnlEvent, 5);
+            this.fpnlEvent.Name = "fpnlEvent";
+            // 
             // PanelEventJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gbEvent);
-            this.Controls.Add(this.gbHD);
+            this.Controls.Add(this.gbGeneral);
             this.Controls.Add(this.gbTimeSelection);
+            this.Controls.Add(this.gbHD);
             this.Name = "PanelEventJob";
-            this.gbEvent.ResumeLayout(false);
-            this.gbEvent.PerformLayout();
-            this.gbSelection.ResumeLayout(false);
-            this.gbSelection.PerformLayout();
+            this.gbGeneral.ResumeLayout(false);
+            this.gbGeneral.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.gbTimeSelection.ResumeLayout(false);
@@ -512,13 +538,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).EndInit();
+            this.gbHD.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private iba.Utility.CollapsibleGroupBox gbEvent;
+        private iba.Utility.CollapsibleGroupBox gbGeneral;
         public System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.CheckBox m_cbRetry;
         private System.Windows.Forms.NumericUpDown m_retryUpDown;
@@ -557,12 +586,16 @@
         private System.Windows.Forms.CheckBox m_cbRepErr;
         private System.Windows.Forms.Button btnEventServer;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbEventServerPort;
-        private System.Windows.Forms.TextBox tbEventServer;
+        private System.Windows.Forms.TextBox m_tbEventServerPort;
+        private System.Windows.Forms.TextBox m_tbEventServer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel fpnlEvent;
-        private System.Windows.Forms.GroupBox gbSelection;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox m_cbJobTrigger;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ListView m_lvStores;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }

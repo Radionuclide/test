@@ -124,13 +124,13 @@ namespace iba.Processing
             if (lHdReader == null)
                 return;
 
-            if (bFirstTime || m_ejd.EventHDServer != lHdReader.ServerHost || m_ejd.EventHDPort != lHdReader.ServerPort)
+            if (bFirstTime || m_ejd.HDServer != lHdReader.ServerHost || m_ejd.HDPort != lHdReader.ServerPort)
             {
                 if (lHdReader.IsConnected())
                     lHdReader.Disconnect();
 
                 m_liveData.Clear();
-                lHdReader.Connect(m_ejd.EventHDServer, m_ejd.EventHDPort);
+                lHdReader.Connect(m_ejd.HDServer, m_ejd.HDPort);
             }
 
             m_startTimeTicks = DateTime.UtcNow.Ticks;

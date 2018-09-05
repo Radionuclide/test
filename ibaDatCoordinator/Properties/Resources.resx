@@ -1430,7 +1430,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="EventJobsNodeParent" xml:space="preserve">
     <value>Event Jobs</value>
   </data>
-  <data name="eventJob_AutoSelect" xml:space="preserve">
+  <data name="EventJob_AutoSelect" xml:space="preserve">
     <value>Auto-select all</value>
   </data>
   <data name="addEventConfigurationText" xml:space="preserve">
@@ -1465,5 +1465,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="EventJobTrigger_Outgoing" xml:space="preserve">
     <value>Outgoing event</value>
+  </data>
+  <data name="EventJob_DefaultHDConnectionErr" xml:space="preserve">
+    <value>Cannot connect to server</value>
   </data>
 </root>

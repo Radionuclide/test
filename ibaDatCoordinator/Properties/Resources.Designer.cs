@@ -891,9 +891,18 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Auto-select all.
         /// </summary>
-        internal static string eventJob_AutoSelect {
+        internal static string EventJob_AutoSelect {
             get {
-                return ResourceManager.GetString("eventJob_AutoSelect", resourceCulture);
+                return ResourceManager.GetString("EventJob_AutoSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot connect to server.
+        /// </summary>
+        internal static string EventJob_DefaultHDConnectionErr {
+            get {
+                return ResourceManager.GetString("EventJob_DefaultHDConnectionErr", resourceCulture);
             }
         }
         
