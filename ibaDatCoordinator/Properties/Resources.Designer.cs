@@ -889,15 +889,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto-select all.
-        /// </summary>
-        internal static string EventJob_AutoSelect {
-            get {
-                return ResourceManager.GetString("EventJob_AutoSelect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot connect to server.
         /// </summary>
         internal static string EventJob_DefaultHDConnectionErr {
@@ -907,38 +898,29 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate an HDQ test file.
+        /// </summary>
+        internal static string EventJob_GenerateTestFile {
+            get {
+                return ResourceManager.GetString("EventJob_GenerateTestFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HDQ file|*.hdq.
+        /// </summary>
+        internal static string EventJob_GenerateTestFile_Filter {
+            get {
+                return ResourceManager.GetString("EventJob_GenerateTestFile_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event Jobs.
         /// </summary>
         internal static string EventJobsNodeParent {
             get {
                 return ResourceManager.GetString("EventJobsNodeParent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Both.
-        /// </summary>
-        internal static string EventJobTrigger_Both {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Both", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incoming event.
-        /// </summary>
-        internal static string EventJobTrigger_Incoming {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Incoming", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outgoing event.
-        /// </summary>
-        internal static string EventJobTrigger_Outgoing {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Outgoing", resourceCulture);
             }
         }
         

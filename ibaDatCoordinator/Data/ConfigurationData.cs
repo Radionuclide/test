@@ -488,43 +488,51 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime trigger, String path)
         {
-            IHDQGenerator lHDQGenerator = ScheduleData;
-            if (JobType == JobTypeEnum.Event)
-                lHDQGenerator = EventData;
-
-            DateTime startTime = trigger - lHDQGenerator.StartRangeFromTrigger;
-            DateTime stopTime = trigger - lHDQGenerator.StopRangeFromTrigger;
+            DateTime startTime = trigger - ScheduleData.StartRangeFromTrigger;
+            DateTime stopTime = trigger - ScheduleData.StopRangeFromTrigger;
             GenerateHDQFile(startTime, stopTime, path);
         }
 
         public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
         {
-            IHDQGenerator lHDQGenerator = ScheduleData;
+            string lServer = string.Empty;
+            int lPort = -1;
+            string[] lStores = new string[0];
             if (JobType == JobTypeEnum.Event)
-                lHDQGenerator = EventData;
+            {
+                lServer = m_eventData.HDServer;
+                lPort = m_eventData.HDPort;
+                lStores = m_eventData.HDStores;
+            }
+            else if (JobType == JobTypeEnum.Scheduled)
+            {
+                lServer = ScheduleData.HDServer;
+                lPort = ScheduleData.HDPort;
+                lStores = ScheduleData.HDStores;
+            }
 
             string dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using (StreamWriter sw = new StreamWriter(path, false))
             {
                 //Add a section per store because ibaAnalyzer can't handle multiple stores in one hdq file
-                for (int i = 0; i < lHDQGenerator.HDStores.Length; i++)
+                for (int i = 0; i < lStores.Length; i++)
                 {
                     if (i == 0)
                         sw.WriteLine("[HDQ file]");
                     else
                         sw.WriteLine($"[HDQ file{i}]");
                     sw.WriteLine("type=time");
-                    sw.WriteLine("server=" + lHDQGenerator.HDServer);
-                    sw.WriteLine("portnumber=" + lHDQGenerator.HDPort);
-                    sw.WriteLine("store=" + lHDQGenerator.HDStores[i]);
+                    sw.WriteLine("server=" + lServer);
+                    sw.WriteLine("portnumber=" + lPort);
+                    sw.WriteLine("store=" + lStores[i]);
                     String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("starttime=" + temp);
                     temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("stoptime=" + temp);
 
-                    if (!lHDQGenerator.PreferredTimeBaseIsAuto)
-                        sw.WriteLine("timebase=" + lHDQGenerator.PreferredTimeBase.TotalSeconds.ToString());
+                    if (JobType == JobTypeEnum.Scheduled && !ScheduleData.PreferredTimeBaseIsAuto)
+                        sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
                     else
                     {
                         long ms = 10000; //10000 * 100 nanosec = 1 ms

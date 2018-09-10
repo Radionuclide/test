@@ -192,7 +192,6 @@
     </Compile>
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
-    <Compile Include="Data\IHDQGenerator.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\ServerSelectionForm.cs">
       <SubType>Form</SubType>

@@ -15,9 +15,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.gbOutput = new iba.Utility.CollapsibleGroupBox();
+            this.m_btGenerateTest = new System.Windows.Forms.Button();
+            this.m_lvStores = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label31 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.m_nudSecsPost = new System.Windows.Forms.NumericUpDown();
+            this.label28 = new System.Windows.Forms.Label();
+            this.m_nudMinsPost = new System.Windows.Forms.NumericUpDown();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.m_nudHoursPost = new System.Windows.Forms.NumericUpDown();
+            this.m_nudDaysPost = new System.Windows.Forms.NumericUpDown();
+            this.m_cbPostTrigger = new System.Windows.Forms.CheckBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.m_nudSecsPre = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
+            this.m_nudMinsPre = new System.Windows.Forms.NumericUpDown();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
+            this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
+            this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.m_nudSecsMax = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.m_nudMinsMax = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.m_nudHoursMax = new System.Windows.Forms.NumericUpDown();
+            this.m_nudDaysMax = new System.Windows.Forms.NumericUpDown();
+            this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.btnEventServer = new System.Windows.Forms.Button();
+            this.m_tbEventServer = new System.Windows.Forms.TextBox();
+            this.m_fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
+            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -32,56 +71,388 @@
             this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.gbTimeSelection = new iba.Utility.CollapsibleGroupBox();
-            this.m_lblTimebase = new System.Windows.Forms.Label();
-            this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.m_nudStopSeconds = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_nudStopMinutes = new System.Windows.Forms.NumericUpDown();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.m_nudStopHours = new System.Windows.Forms.NumericUpDown();
-            this.m_nudStopDays = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.m_nudStartSeconds = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.m_nudStartMinutes = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
-            this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.gbHD = new iba.Utility.CollapsibleGroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.m_tbEventServer = new System.Windows.Forms.TextBox();
-            this.btnEventServer = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.m_lvStores = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label2 = new System.Windows.Forms.Label();
-            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.m_cbJobTrigger = new System.Windows.Forms.ComboBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
+            this.gbOutput.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).BeginInit();
+            this.gbTriggers.SuspendLayout();
             this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
-            this.gbTimeSelection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopMinutes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopHours)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopDays)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartSeconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
-            this.gbHD.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // gbOutput
+            // 
+            resources.ApplyResources(this.gbOutput, "gbOutput");
+            this.gbOutput.Controls.Add(this.m_btGenerateTest);
+            this.gbOutput.Controls.Add(this.m_lvStores);
+            this.gbOutput.Controls.Add(this.label31);
+            this.gbOutput.Controls.Add(this.label26);
+            this.gbOutput.Controls.Add(this.label27);
+            this.gbOutput.Controls.Add(this.m_nudSecsPost);
+            this.gbOutput.Controls.Add(this.label28);
+            this.gbOutput.Controls.Add(this.m_nudMinsPost);
+            this.gbOutput.Controls.Add(this.label29);
+            this.gbOutput.Controls.Add(this.label30);
+            this.gbOutput.Controls.Add(this.m_nudHoursPost);
+            this.gbOutput.Controls.Add(this.m_nudDaysPost);
+            this.gbOutput.Controls.Add(this.m_cbPostTrigger);
+            this.gbOutput.Controls.Add(this.label21);
+            this.gbOutput.Controls.Add(this.label22);
+            this.gbOutput.Controls.Add(this.m_nudSecsPre);
+            this.gbOutput.Controls.Add(this.label23);
+            this.gbOutput.Controls.Add(this.m_nudMinsPre);
+            this.gbOutput.Controls.Add(this.label24);
+            this.gbOutput.Controls.Add(this.label25);
+            this.gbOutput.Controls.Add(this.m_nudHoursPre);
+            this.gbOutput.Controls.Add(this.m_nudDaysPre);
+            this.gbOutput.Controls.Add(this.m_cbPreTrigger);
+            this.gbOutput.Controls.Add(this.label20);
+            this.gbOutput.Controls.Add(this.label11);
+            this.gbOutput.Controls.Add(this.m_nudSecsMax);
+            this.gbOutput.Controls.Add(this.label16);
+            this.gbOutput.Controls.Add(this.m_nudMinsMax);
+            this.gbOutput.Controls.Add(this.label18);
+            this.gbOutput.Controls.Add(this.label19);
+            this.gbOutput.Controls.Add(this.m_nudHoursMax);
+            this.gbOutput.Controls.Add(this.m_nudDaysMax);
+            this.gbOutput.Name = "gbOutput";
+            this.gbOutput.TabStop = false;
+            // 
+            // m_btGenerateTest
+            // 
+            resources.ApplyResources(this.m_btGenerateTest, "m_btGenerateTest");
+            this.m_btGenerateTest.Name = "m_btGenerateTest";
+            this.m_btGenerateTest.UseVisualStyleBackColor = true;
+            this.m_btGenerateTest.Click += new System.EventHandler(this.m_btGenerateTest_Click);
+            // 
+            // m_lvStores
+            // 
+            this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            resources.ApplyResources(this.m_lvStores, "m_lvStores");
+            this.m_lvStores.Name = "m_lvStores";
+            this.m_lvStores.UseCompatibleStateImageBehavior = false;
+            this.m_lvStores.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            resources.ApplyResources(this.columnHeader1, "columnHeader1");
+            // 
+            // label31
+            // 
+            resources.ApplyResources(this.label31, "label31");
+            this.label31.Name = "label31";
+            // 
+            // label26
+            // 
+            resources.ApplyResources(this.label26, "label26");
+            this.label26.Name = "label26";
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
+            // 
+            // m_nudSecsPost
+            // 
+            resources.ApplyResources(this.m_nudSecsPost, "m_nudSecsPost");
+            this.m_nudSecsPost.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudSecsPost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudSecsPost.Name = "m_nudSecsPost";
+            // 
+            // label28
+            // 
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.Name = "label28";
+            // 
+            // m_nudMinsPost
+            // 
+            resources.ApplyResources(this.m_nudMinsPost, "m_nudMinsPost");
+            this.m_nudMinsPost.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudMinsPost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudMinsPost.Name = "m_nudMinsPost";
+            // 
+            // label29
+            // 
+            resources.ApplyResources(this.label29, "label29");
+            this.label29.Name = "label29";
+            // 
+            // label30
+            // 
+            resources.ApplyResources(this.label30, "label30");
+            this.label30.Name = "label30";
+            // 
+            // m_nudHoursPost
+            // 
+            resources.ApplyResources(this.m_nudHoursPost, "m_nudHoursPost");
+            this.m_nudHoursPost.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudHoursPost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudHoursPost.Name = "m_nudHoursPost";
+            // 
+            // m_nudDaysPost
+            // 
+            resources.ApplyResources(this.m_nudDaysPost, "m_nudDaysPost");
+            this.m_nudDaysPost.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudDaysPost.Name = "m_nudDaysPost";
+            // 
+            // m_cbPostTrigger
+            // 
+            resources.ApplyResources(this.m_cbPostTrigger, "m_cbPostTrigger");
+            this.m_cbPostTrigger.Name = "m_cbPostTrigger";
+            this.m_cbPostTrigger.UseVisualStyleBackColor = true;
+            this.m_cbPostTrigger.CheckedChanged += new System.EventHandler(this.m_cbPostTrigger_CheckedChanged);
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // label22
+            // 
+            resources.ApplyResources(this.label22, "label22");
+            this.label22.Name = "label22";
+            // 
+            // m_nudSecsPre
+            // 
+            resources.ApplyResources(this.m_nudSecsPre, "m_nudSecsPre");
+            this.m_nudSecsPre.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudSecsPre.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudSecsPre.Name = "m_nudSecsPre";
+            // 
+            // label23
+            // 
+            resources.ApplyResources(this.label23, "label23");
+            this.label23.Name = "label23";
+            // 
+            // m_nudMinsPre
+            // 
+            resources.ApplyResources(this.m_nudMinsPre, "m_nudMinsPre");
+            this.m_nudMinsPre.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudMinsPre.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudMinsPre.Name = "m_nudMinsPre";
+            // 
+            // label24
+            // 
+            resources.ApplyResources(this.label24, "label24");
+            this.label24.Name = "label24";
+            // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
+            // 
+            // m_nudHoursPre
+            // 
+            resources.ApplyResources(this.m_nudHoursPre, "m_nudHoursPre");
+            this.m_nudHoursPre.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudHoursPre.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudHoursPre.Name = "m_nudHoursPre";
+            // 
+            // m_nudDaysPre
+            // 
+            resources.ApplyResources(this.m_nudDaysPre, "m_nudDaysPre");
+            this.m_nudDaysPre.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudDaysPre.Name = "m_nudDaysPre";
+            // 
+            // m_cbPreTrigger
+            // 
+            resources.ApplyResources(this.m_cbPreTrigger, "m_cbPreTrigger");
+            this.m_cbPreTrigger.Name = "m_cbPreTrigger";
+            this.m_cbPreTrigger.UseVisualStyleBackColor = true;
+            this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // m_nudSecsMax
+            // 
+            resources.ApplyResources(this.m_nudSecsMax, "m_nudSecsMax");
+            this.m_nudSecsMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudSecsMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudSecsMax.Name = "m_nudSecsMax";
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
+            // 
+            // m_nudMinsMax
+            // 
+            resources.ApplyResources(this.m_nudMinsMax, "m_nudMinsMax");
+            this.m_nudMinsMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudMinsMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudMinsMax.Name = "m_nudMinsMax";
+            // 
+            // label18
+            // 
+            resources.ApplyResources(this.label18, "label18");
+            this.label18.Name = "label18";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
+            // 
+            // m_nudHoursMax
+            // 
+            resources.ApplyResources(this.m_nudHoursMax, "m_nudHoursMax");
+            this.m_nudHoursMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudHoursMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudHoursMax.Name = "m_nudHoursMax";
+            // 
+            // m_nudDaysMax
+            // 
+            resources.ApplyResources(this.m_nudDaysMax, "m_nudDaysMax");
+            this.m_nudDaysMax.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudDaysMax.Name = "m_nudDaysMax";
+            // 
+            // gbTriggers
+            // 
+            resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.btnEventServer);
+            this.gbTriggers.Controls.Add(this.m_tbEventServer);
+            this.gbTriggers.Controls.Add(this.m_fpnlEvent);
+            this.gbTriggers.Controls.Add(this.m_tbEventServerPort);
+            this.gbTriggers.Controls.Add(this.label2);
+            this.gbTriggers.Controls.Add(this.label1);
+            this.gbTriggers.Name = "gbTriggers";
+            this.gbTriggers.TabStop = false;
+            // 
+            // btnEventServer
+            // 
+            resources.ApplyResources(this.btnEventServer, "btnEventServer");
+            this.btnEventServer.Name = "btnEventServer";
+            this.btnEventServer.UseVisualStyleBackColor = true;
+            this.btnEventServer.Click += new System.EventHandler(this.btnEventServer_Click);
+            // 
+            // m_tbEventServer
+            // 
+            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
+            this.m_tbEventServer.Name = "m_tbEventServer";
+            this.m_tbEventServer.ReadOnly = true;
+            // 
+            // m_fpnlEvent
+            // 
+            resources.ApplyResources(this.m_fpnlEvent, "m_fpnlEvent");
+            this.m_fpnlEvent.Name = "m_fpnlEvent";
+            // 
+            // m_tbEventServerPort
+            // 
+            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
+            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
+            this.m_tbEventServerPort.ReadOnly = true;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // gbGeneral
             // 
@@ -208,339 +579,34 @@
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
             // 
-            // gbTimeSelection
-            // 
-            resources.ApplyResources(this.gbTimeSelection, "gbTimeSelection");
-            this.gbTimeSelection.Controls.Add(this.m_lblTimebase);
-            this.gbTimeSelection.Controls.Add(this.m_cbTimeBase);
-            this.gbTimeSelection.Controls.Add(this.label3);
-            this.gbTimeSelection.Controls.Add(this.m_nudStopSeconds);
-            this.gbTimeSelection.Controls.Add(this.label4);
-            this.gbTimeSelection.Controls.Add(this.m_nudStopMinutes);
-            this.gbTimeSelection.Controls.Add(this.label12);
-            this.gbTimeSelection.Controls.Add(this.label13);
-            this.gbTimeSelection.Controls.Add(this.m_nudStopHours);
-            this.gbTimeSelection.Controls.Add(this.m_nudStopDays);
-            this.gbTimeSelection.Controls.Add(this.label15);
-            this.gbTimeSelection.Controls.Add(this.label5);
-            this.gbTimeSelection.Controls.Add(this.m_nudStartSeconds);
-            this.gbTimeSelection.Controls.Add(this.label6);
-            this.gbTimeSelection.Controls.Add(this.m_nudStartMinutes);
-            this.gbTimeSelection.Controls.Add(this.label7);
-            this.gbTimeSelection.Controls.Add(this.label8);
-            this.gbTimeSelection.Controls.Add(this.m_nudStartHours);
-            this.gbTimeSelection.Controls.Add(this.m_nudStartDays);
-            this.gbTimeSelection.Controls.Add(this.label9);
-            this.gbTimeSelection.Name = "gbTimeSelection";
-            this.gbTimeSelection.TabStop = false;
-            // 
-            // m_lblTimebase
-            // 
-            resources.ApplyResources(this.m_lblTimebase, "m_lblTimebase");
-            this.m_lblTimebase.Name = "m_lblTimebase";
-            // 
-            // m_cbTimeBase
-            // 
-            this.m_cbTimeBase.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.m_cbTimeBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_cbTimeBase.FormattingEnabled = true;
-            resources.ApplyResources(this.m_cbTimeBase, "m_cbTimeBase");
-            this.m_cbTimeBase.Name = "m_cbTimeBase";
-            this.m_cbTimeBase.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.m_cbTimeBase_DrawItem);
-            this.m_cbTimeBase.SelectedIndexChanged += new System.EventHandler(this.m_cbTimeBase_SelectedIndexChanged);
-            this.m_cbTimeBase.DropDownClosed += new System.EventHandler(this.m_cbTimeBase_DropDownClosed);
-            this.m_cbTimeBase.MouseLeave += new System.EventHandler(this.m_cbTimeBase_DropDownClosed);
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // m_nudStopSeconds
-            // 
-            resources.ApplyResources(this.m_nudStopSeconds, "m_nudStopSeconds");
-            this.m_nudStopSeconds.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStopSeconds.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStopSeconds.Name = "m_nudStopSeconds";
-            this.m_nudStopSeconds.ValueChanged += new System.EventHandler(this.OnStopChanged);
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // m_nudStopMinutes
-            // 
-            resources.ApplyResources(this.m_nudStopMinutes, "m_nudStopMinutes");
-            this.m_nudStopMinutes.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStopMinutes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStopMinutes.Name = "m_nudStopMinutes";
-            this.m_nudStopMinutes.ValueChanged += new System.EventHandler(this.OnStopChanged);
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            // 
-            // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
-            // 
-            // m_nudStopHours
-            // 
-            resources.ApplyResources(this.m_nudStopHours, "m_nudStopHours");
-            this.m_nudStopHours.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStopHours.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStopHours.Name = "m_nudStopHours";
-            this.m_nudStopHours.ValueChanged += new System.EventHandler(this.OnStopChanged);
-            // 
-            // m_nudStopDays
-            // 
-            resources.ApplyResources(this.m_nudStopDays, "m_nudStopDays");
-            this.m_nudStopDays.Maximum = new decimal(new int[] {
-            50000,
-            0,
-            0,
-            0});
-            this.m_nudStopDays.Name = "m_nudStopDays";
-            this.m_nudStopDays.ValueChanged += new System.EventHandler(this.OnStopChanged);
-            // 
-            // label15
-            // 
-            resources.ApplyResources(this.label15, "label15");
-            this.label15.Name = "label15";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // m_nudStartSeconds
-            // 
-            resources.ApplyResources(this.m_nudStartSeconds, "m_nudStartSeconds");
-            this.m_nudStartSeconds.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStartSeconds.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStartSeconds.Name = "m_nudStartSeconds";
-            this.m_nudStartSeconds.ValueChanged += new System.EventHandler(this.OnStartChanged);
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // m_nudStartMinutes
-            // 
-            resources.ApplyResources(this.m_nudStartMinutes, "m_nudStartMinutes");
-            this.m_nudStartMinutes.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStartMinutes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStartMinutes.Name = "m_nudStartMinutes";
-            this.m_nudStartMinutes.ValueChanged += new System.EventHandler(this.OnStartChanged);
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
-            // m_nudStartHours
-            // 
-            resources.ApplyResources(this.m_nudStartHours, "m_nudStartHours");
-            this.m_nudStartHours.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudStartHours.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudStartHours.Name = "m_nudStartHours";
-            this.m_nudStartHours.ValueChanged += new System.EventHandler(this.OnStartChanged);
-            // 
-            // m_nudStartDays
-            // 
-            resources.ApplyResources(this.m_nudStartDays, "m_nudStartDays");
-            this.m_nudStartDays.Maximum = new decimal(new int[] {
-            50000,
-            0,
-            0,
-            0});
-            this.m_nudStartDays.Name = "m_nudStartDays";
-            this.m_nudStartDays.ValueChanged += new System.EventHandler(this.OnStartChanged);
-            // 
-            // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
-            // gbHD
-            // 
-            resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Controls.Add(this.tableLayoutPanel1);
-            this.gbHD.Name = "gbHD";
-            this.gbHD.TabStop = false;
-            // 
-            // tableLayoutPanel1
-            // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.m_tbEventServer, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnEventServer, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_lvStores, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_tbEventServerPort, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label11, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.m_cbJobTrigger, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.label16, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label17, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.fpnlEvent, 0, 7);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // m_tbEventServer
-            // 
-            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
-            this.m_tbEventServer.Name = "m_tbEventServer";
-            this.m_tbEventServer.ReadOnly = true;
-            // 
-            // btnEventServer
-            // 
-            resources.ApplyResources(this.btnEventServer, "btnEventServer");
-            this.btnEventServer.Name = "btnEventServer";
-            this.btnEventServer.UseVisualStyleBackColor = true;
-            this.btnEventServer.Click += new System.EventHandler(this.btnEventServer_Click);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // m_lvStores
-            // 
-            this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.tableLayoutPanel1.SetColumnSpan(this.m_lvStores, 5);
-            this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            resources.ApplyResources(this.m_lvStores, "m_lvStores");
-            this.m_lvStores.Name = "m_lvStores";
-            this.m_lvStores.UseCompatibleStateImageBehavior = false;
-            this.m_lvStores.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            resources.ApplyResources(this.columnHeader1, "columnHeader1");
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // m_tbEventServerPort
-            // 
-            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
-            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
-            this.m_tbEventServerPort.ReadOnly = true;
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            // 
-            // m_cbJobTrigger
-            // 
-            resources.ApplyResources(this.m_cbJobTrigger, "m_cbJobTrigger");
-            this.m_cbJobTrigger.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_cbJobTrigger.FormattingEnabled = true;
-            this.m_cbJobTrigger.Name = "m_cbJobTrigger";
-            // 
-            // label16
-            // 
-            resources.ApplyResources(this.label16, "label16");
-            this.tableLayoutPanel1.SetColumnSpan(this.label16, 5);
-            this.label16.Name = "label16";
-            // 
-            // label17
-            // 
-            resources.ApplyResources(this.label17, "label17");
-            this.tableLayoutPanel1.SetColumnSpan(this.label17, 5);
-            this.label17.Name = "label17";
-            // 
-            // fpnlEvent
-            // 
-            resources.ApplyResources(this.fpnlEvent, "fpnlEvent");
-            this.tableLayoutPanel1.SetColumnSpan(this.fpnlEvent, 5);
-            this.fpnlEvent.Name = "fpnlEvent";
-            // 
             // PanelEventJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.gbOutput);
+            this.Controls.Add(this.gbTriggers);
             this.Controls.Add(this.gbGeneral);
-            this.Controls.Add(this.gbTimeSelection);
-            this.Controls.Add(this.gbHD);
             this.Name = "PanelEventJob";
+            this.gbOutput.ResumeLayout(false);
+            this.gbOutput.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).EndInit();
+            this.gbTriggers.ResumeLayout(false);
+            this.gbTriggers.PerformLayout();
             this.gbGeneral.ResumeLayout(false);
             this.gbGeneral.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
-            this.gbTimeSelection.ResumeLayout(false);
-            this.gbTimeSelection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopMinutes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopHours)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStopDays)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartMinutes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).EndInit();
-            this.gbHD.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -559,29 +625,6 @@
         public System.Windows.Forms.CheckBox m_enableCheckBox;
         private System.Windows.Forms.NumericUpDown m_failTimeUpDown;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ToolTip m_toolTip;
-        private iba.Utility.CollapsibleGroupBox gbHD;
-        private iba.Utility.CollapsibleGroupBox gbTimeSelection;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown m_nudStopSeconds;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown m_nudStopMinutes;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown m_nudStopHours;
-        private System.Windows.Forms.NumericUpDown m_nudStopDays;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown m_nudStartSeconds;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown m_nudStartMinutes;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.NumericUpDown m_nudStartHours;
-        private System.Windows.Forms.NumericUpDown m_nudStartDays;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label m_lblTimebase;
-        private System.Windows.Forms.ComboBox m_cbTimeBase;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
         private System.Windows.Forms.CheckBox m_cbRepErr;
         private System.Windows.Forms.Button btnEventServer;
@@ -589,13 +632,41 @@
         private System.Windows.Forms.TextBox m_tbEventServerPort;
         private System.Windows.Forms.TextBox m_tbEventServer;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.FlowLayoutPanel fpnlEvent;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox m_cbJobTrigger;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.FlowLayoutPanel m_fpnlEvent;
         private System.Windows.Forms.ListView m_lvStores;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private Utility.CollapsibleGroupBox gbTriggers;
+        private Utility.CollapsibleGroupBox gbOutput;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.NumericUpDown m_nudSecsPost;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.NumericUpDown m_nudMinsPost;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.NumericUpDown m_nudHoursPost;
+        private System.Windows.Forms.NumericUpDown m_nudDaysPost;
+        private System.Windows.Forms.CheckBox m_cbPostTrigger;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.NumericUpDown m_nudSecsPre;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.NumericUpDown m_nudMinsPre;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.NumericUpDown m_nudHoursPre;
+        private System.Windows.Forms.NumericUpDown m_nudDaysPre;
+        private System.Windows.Forms.CheckBox m_cbPreTrigger;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown m_nudSecsMax;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown m_nudMinsMax;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown m_nudHoursMax;
+        private System.Windows.Forms.NumericUpDown m_nudDaysMax;
+        private System.Windows.Forms.Button m_btGenerateTest;
     }
 }

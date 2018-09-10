@@ -7,32 +7,10 @@ using System.Xml.Serialization;
 
 namespace iba.Data
 {
-    public enum JobTrigger
-    {
-        Incoming,
-        Outgoing,
-        Both
-    }
-
     [Serializable]
-    public class EventJobData : ICloneable, IHDQGenerator
+    public class EventJobData : ICloneable
     {
         #region ICloneable Members
-        private int m_jobTrigger;
-        [XmlIgnore]
-        public JobTrigger JobTriggerEvent
-        {
-            get { return (JobTrigger)m_jobTrigger; }
-            set { m_jobTrigger = (int)value; }
-        }
-
-        private bool m_monitorAllEvents;
-        public bool MonitorAllEvents
-        {
-            get { return m_monitorAllEvents; }
-            set { m_monitorAllEvents = value; }
-        }
-
         private List<string> m_eventIDs;
         public List<string> EventIDs
         {
@@ -71,80 +49,83 @@ namespace iba.Data
         //triggering events
         public EventJobData()
         {
-            m_jobTrigger = (int)JobTrigger.Incoming;
-            m_monitorAllEvents = false;
             m_eventIDs = new List<string>();
 
             m_HDPort = 9180;
             m_HDStores = new string[] { "" };
             m_HDServer = "";
-            m_startRangeFromTrigger = TimeSpan.FromHours(1);
-            m_stopRangeFromTrigger = TimeSpan.Zero;
-            m_preferredTimeBaseTicks = 0;
-            m_bPreferredTimeBaseIsAuto = true;
+            m_maxTriggerRange = TimeSpan.FromHours(1.0);
+            m_preTriggerRange = TimeSpan.Zero;
+            m_postTriggerRange = TimeSpan.Zero;
+            m_enablePreTrigger = false;
+            m_enablePostTrigger = false;
         }
 
-        private TimeSpan m_startRangeFromTrigger;
+        private bool m_enablePreTrigger;
+        public bool EnablePreTriggerRange
+        {
+            get { return m_enablePreTrigger; }
+            set { m_enablePreTrigger = value; }
+        }
+
+        private TimeSpan m_preTriggerRange;
         [XmlIgnore]
-        public System.TimeSpan StartRangeFromTrigger
+        public System.TimeSpan PreTriggerRange
         {
-            get { return m_startRangeFromTrigger; }
-            set { m_startRangeFromTrigger = value; }
+            get { return m_preTriggerRange; }
+            set { m_preTriggerRange = value; }
         }
-        public long StartRangeFromTriggerTicks
+        public long PreTriggerRangeTicks
         {
-            get { return m_startRangeFromTrigger.Ticks; }
-            set { m_startRangeFromTrigger = TimeSpan.FromTicks(value); }
+            get { return m_preTriggerRange.Ticks; }
+            set { m_preTriggerRange = TimeSpan.FromTicks(value); }
         }
-        private TimeSpan m_stopRangeFromTrigger;
+
+        private bool m_enablePostTrigger;
+        public bool EnablePostTriggerRange
+        {
+            get { return m_enablePostTrigger; }
+            set { m_enablePostTrigger = value; }
+        }
+
+        private TimeSpan m_postTriggerRange;
         [XmlIgnore]
-        public System.TimeSpan StopRangeFromTrigger
+        public System.TimeSpan PostTriggerRange
         {
-            get { return m_stopRangeFromTrigger; }
-            set { m_stopRangeFromTrigger = value; }
+            get { return m_postTriggerRange; }
+            set { m_postTriggerRange = value; }
         }
-        public long StopRangeFromTriggerTicks
+        public long PostTriggerRangeTicks
         {
-            get { return m_stopRangeFromTrigger.Ticks; }
-            set { m_stopRangeFromTrigger = TimeSpan.FromTicks(value); }
-        }
-
-        public bool UsePreviousTriggerAsStart { get { return false; } }
-
-        private long m_preferredTimeBaseTicks; //in ticks
-        public long PreferredTimeBaseTicks
-        {
-            get { return m_preferredTimeBaseTicks; }
-            set { m_preferredTimeBaseTicks = value; }
+            get { return m_postTriggerRange.Ticks; }
+            set { m_postTriggerRange = TimeSpan.FromTicks(value); }
         }
 
+        private TimeSpan m_maxTriggerRange;
         [XmlIgnore]
-        public System.TimeSpan PreferredTimeBase
+        public System.TimeSpan MaxTriggerRange
         {
-            get { return TimeSpan.FromTicks(m_preferredTimeBaseTicks); }
-            set { m_preferredTimeBaseTicks = value.Ticks; }
+            get { return m_maxTriggerRange; }
+            set { m_maxTriggerRange = value; }
         }
-
-        private bool m_bPreferredTimeBaseIsAuto;
-        public bool PreferredTimeBaseIsAuto
+        public long MaxTriggerRangeTicks
         {
-            get { return m_bPreferredTimeBaseIsAuto; }
-            set { m_bPreferredTimeBaseIsAuto = value; }
+            get { return m_maxTriggerRange.Ticks; }
+            set { m_maxTriggerRange = TimeSpan.FromTicks(value); }
         }
 
         public object Clone()
         {
             EventJobData nejd = new EventJobData();
-            nejd.m_jobTrigger = m_jobTrigger;
-            nejd.MonitorAllEvents = m_monitorAllEvents;
             nejd.EventIDs = new List<string>(m_eventIDs);
             nejd.HDServer = m_HDServer;
             nejd.m_HDStores = (string[])m_HDStores.Clone();
             nejd.m_HDPort = m_HDPort;
-            nejd.m_startRangeFromTrigger = m_startRangeFromTrigger;
-            nejd.m_stopRangeFromTrigger = m_stopRangeFromTrigger;
-            nejd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
-            nejd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
+            nejd.m_maxTriggerRange = m_maxTriggerRange;
+            nejd.m_preTriggerRange = m_preTriggerRange;
+            nejd.m_postTriggerRange = m_postTriggerRange;
+            nejd.m_enablePreTrigger = m_enablePreTrigger;
+            nejd.m_enablePostTrigger = m_enablePostTrigger;
             return nejd;
         }
 
@@ -153,16 +134,15 @@ namespace iba.Data
         public bool IsSame(EventJobData other)
         {
             return
-            other.m_jobTrigger == m_jobTrigger &&
-            other.m_monitorAllEvents == m_monitorAllEvents &&
             other.m_eventIDs.SequenceEqual(m_eventIDs) &&
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
-            other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
-            other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
-            other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks &&
-            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
+            other.m_maxTriggerRange == m_maxTriggerRange &&
+            other.m_preTriggerRange == m_preTriggerRange &&
+            other.m_postTriggerRange == m_postTriggerRange &&
+            other.m_enablePreTrigger == m_enablePreTrigger &&
+            other.m_enablePostTrigger == m_enablePostTrigger;
         }
     }
 }

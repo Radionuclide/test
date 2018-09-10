@@ -8,7 +8,7 @@ namespace iba.Data
 {
 
     [Serializable]
-    public class ScheduledJobData : ICloneable, IHDQGenerator
+    public class ScheduledJobData : ICloneable
     {
         private DateTime m_baseTriggerTime;
         public System.DateTime BaseTriggerTime

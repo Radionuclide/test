@@ -1430,9 +1430,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="EventJobsNodeParent" xml:space="preserve">
     <value>Event Jobs</value>
   </data>
-  <data name="EventJob_AutoSelect" xml:space="preserve">
-    <value>Auto-select all</value>
-  </data>
   <data name="addEventConfigurationText" xml:space="preserve">
     <value>Add Event Job</value>
   </data>
@@ -1457,16 +1454,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="UnmarkDialogTitleEvent" xml:space="preserve">
     <value>Unmarking event occurences</value>
   </data>
-  <data name="EventJobTrigger_Both" xml:space="preserve">
-    <value>Both</value>
-  </data>
-  <data name="EventJobTrigger_Incoming" xml:space="preserve">
-    <value>Incoming event</value>
-  </data>
-  <data name="EventJobTrigger_Outgoing" xml:space="preserve">
-    <value>Outgoing event</value>
-  </data>
   <data name="EventJob_DefaultHDConnectionErr" xml:space="preserve">
     <value>Cannot connect to server</value>
+  </data>
+  <data name="EventJob_GenerateTestFile" xml:space="preserve">
+    <value>Generate an HDQ test file</value>
+  </data>
+  <data name="EventJob_GenerateTestFile_Filter" xml:space="preserve">
+    <value>HDQ file|*.hdq</value>
   </data>
 </root>

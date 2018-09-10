@@ -22,9 +22,14 @@ namespace iba.Processing
         const int intervalSetCleanup = 10 * 60 * 1000;
         Timer m_tmrSetCleanup;
 
+        object m_matchedEventsLock;
+        Dictionary<string, List<MatchedEventData>> m_dictMatchedEvents;
+        const int intervalMatchChecker = 1000;
+        Timer m_tmrMatchChecker;
+
         long m_startTimeTicks;
         object m_queueLock;
-        List<EventReaderData> m_eventQueue;
+        List<Tuple<DateTime, DateTime>> m_eventQueue;
 
         const int intervalAdvance = 1000;
         Timer m_tmrAdvance;
@@ -48,15 +53,20 @@ namespace iba.Processing
 
             m_startTimeTicks = DateTime.MaxValue.Ticks;
             m_queueLock = new object();
-            m_eventQueue = new List<EventReaderData>();
+            m_eventQueue = new List<Tuple<DateTime, DateTime>>();
 
             m_tmrAdvance = new Timer(OnAdvanceTimerTick);
+
+            m_dictMatchedEvents = new Dictionary<string, List<MatchedEventData>>();
+            m_matchedEventsLock = new object();
+            m_tmrMatchChecker = new Timer(OnMatchCheckerTick);
         }
 
         public void Start()
         {
             m_startTimeTicks = DateTime.UtcNow.Ticks;
             m_tmrAdvance?.Change(intervalAdvance, Timeout.Infinite);
+            m_tmrMatchChecker?.Change(intervalMatchChecker, Timeout.Infinite);
             m_tmrSetCleanup?.Change(intervalSetCleanup, Timeout.Infinite);
         }
         #endregion
@@ -66,6 +76,14 @@ namespace iba.Processing
         {
             Timer lTimer = m_tmrAdvance;
             m_tmrAdvance = null;
+            if (lTimer != null)
+            {
+                lTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                lTimer.Dispose();
+            }
+
+            lTimer = m_tmrMatchChecker;
+            m_tmrMatchChecker = null;
             if (lTimer != null)
             {
                 lTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -117,7 +135,13 @@ namespace iba.Processing
             if (!bFirstTime && ejd.IsSame(m_ejd))
                 return;
 
-            bool bDifferentJobTrigger = (m_ejd?.JobTriggerEvent ?? JobTrigger.Incoming) != ejd.JobTriggerEvent;
+            bool bRangesChanged = m_ejd == null ||
+                                m_ejd.EnablePreTriggerRange != ejd.EnablePreTriggerRange ||
+                                m_ejd.EnablePostTriggerRange != ejd.EnablePostTriggerRange ||
+                                m_ejd.PreTriggerRange != ejd.PreTriggerRange ||
+                                m_ejd.PostTriggerRange != ejd.PostTriggerRange ||
+                                m_ejd.MaxTriggerRange != ejd.MaxTriggerRange;
+
             m_ejd = ejd.Clone() as EventJobData;
 
             IHdReader lHdReader = m_hdReader;
@@ -134,9 +158,13 @@ namespace iba.Processing
             }
 
             m_startTimeTicks = DateTime.UtcNow.Ticks;
-            if (UpdateLiveSubsets() || bDifferentJobTrigger)
+            if (UpdateLiveSubsets() || bRangesChanged)
             {
-                lock(m_eventQueue)
+                lock (m_dictMatchedEvents)
+                {
+                    m_dictMatchedEvents.Clear();
+                }
+                lock (m_eventQueue)
                 {
                     m_eventQueue.Clear();
                 }
@@ -150,26 +178,18 @@ namespace iba.Processing
             List<string> subIds;
             var idsPerStore = new Dictionary<string, List<string>>();
 
-            if (m_ejd.MonitorAllEvents)
+            foreach (string hdId in m_ejd.EventIDs)
             {
-                foreach (string name in m_hdReader.EventManager.GetStoreNames())
-                    idsPerStore.Add(name, null);
-            }
-            else
-            {
-                foreach (string hdId in m_ejd.EventIDs)
+                storeName = HdId.GetStoreName(hdId);
+                subId = HdId.GetSubId(hdId);
+
+                if (!idsPerStore.TryGetValue(storeName, out subIds))
                 {
-                    storeName = HdId.GetStoreName(hdId);
-                    subId = HdId.GetSubId(hdId);
-
-                    if (!idsPerStore.TryGetValue(storeName, out subIds))
-                    {
-                        subIds = new List<string>();
-                        idsPerStore.Add(storeName, subIds);
-                    }
-
-                    subIds.Add(subId);
+                    subIds = new List<string>();
+                    idsPerStore.Add(storeName, subIds);
                 }
+
+                subIds.Add(subId);
             }
 
             LiveStoreData storeData;
@@ -281,20 +301,21 @@ namespace iba.Processing
         #endregion
 
         #region Event buffer
-        void Enqueue(List<EventReaderData> newEvents)
+        void Enqueue(List<MatchedEventData> matchedEvents)
         {
-            if (newEvents == null || newEvents.Count <= 0)
+            if (matchedEvents == null || matchedEvents.Count <= 0)
                 return;
 
             lock (m_queueLock)
             {
-                m_eventQueue.AddRange(newEvents);
+                foreach (var matchedEvent in matchedEvents)
+                    m_eventQueue.Add(Tuple.Create(matchedEvent.StartTime, matchedEvent.StopTime));
             }
         }
 
-        public List<EventReaderData> GetNewEvents()
+        public List<Tuple<DateTime,DateTime>> GetNewEvents()
         {
-            List<EventReaderData> res = new List<EventReaderData>();
+            List<Tuple<DateTime, DateTime>> res = new List<Tuple<DateTime, DateTime>>();
 
             if (m_eventQueue.Count <= 0)
                 return res;
@@ -302,7 +323,7 @@ namespace iba.Processing
             lock (m_queueLock)
             {
                 res = m_eventQueue;
-                m_eventQueue = new List<EventReaderData>();
+                m_eventQueue = new List<Tuple<DateTime, DateTime>>();
             }
 
             return res;
@@ -328,6 +349,31 @@ namespace iba.Processing
             }
 
             m_tmrSetCleanup?.Change(intervalSetCleanup, Timeout.Infinite);
+        }
+
+        void OnMatchCheckerTick(object state)
+        {
+            List<MatchedEventData> matchedEvents = new List<MatchedEventData>();
+
+            lock (m_matchedEventsLock)
+            {
+                foreach (var kvp in m_dictMatchedEvents)
+                {
+                    List<MatchedEventData> lValues = new List<MatchedEventData>(kvp.Value);
+                    foreach (var evt in lValues)
+                    {
+                        if (evt.IsMatched)
+                        {
+                            matchedEvents.Add(evt);
+                            kvp.Value.Remove(evt);
+                        }
+                    }
+                }
+            }
+
+            Enqueue(matchedEvents);
+
+            m_tmrMatchChecker?.Change(intervalMatchChecker, Timeout.Infinite);
         }
 
         void OnAdvanceTimerTick(object state)
@@ -400,29 +446,54 @@ namespace iba.Processing
                     {
                         long receiveTime = storeData.ReceiveTime;
 
+                        // Incoming events should be processed before outgoing
+                        response.Events.Sort((a, b) => {
+                            if (b.UtcTicks == a.UtcTicks)
+                            {
+                                if (b.TriggerIn && a.TriggerOut)
+                                    return 1;
+                                if (b.TriggerOut && a.TriggerIn)
+                                    return -1;
+
+                                return 0;
+                            }
+
+                            return a.UtcTicks.CompareTo(b.UtcTicks);
+                        });
+
                         lock (m_dataSetLock)
                         {
-                            foreach (var data in response.Events)
+                            lock (m_matchedEventsLock)
                             {
-                                if (data.UtcTicks < m_startTimeTicks)
-                                    continue;
-
-                                switch (m_ejd.JobTriggerEvent)
+                                foreach (var data in response.Events)
                                 {
-                                    case JobTrigger.Incoming:
-                                        if (!data.TriggerIn)
-                                            continue;
-                                        break;
-                                    case JobTrigger.Outgoing:
-                                        if (!data.TriggerOut)
-                                            continue;
-                                        break;
-                                }
+                                    if (data.UtcTicks < m_startTimeTicks)
+                                        continue;
 
-                                if (m_liveDataSet.Add(data))
-                                {
-                                    newEvents.Add(data);
-                                    receiveTime = Math.Max(receiveTime, data.UtcTicks);
+                                    if (m_liveDataSet.Add(data))
+                                    {
+                                        string id = $"store:{data.Store};event:{data.Id};";
+                                        List<MatchedEventData> lMatchedEvents = null;
+                                        if (!m_dictMatchedEvents.TryGetValue(id, out lMatchedEvents))
+                                        {
+                                            if (!data.TriggerIn)
+                                            {
+                                                //Outgoing events can be skipped if there are no incoming available to be matched with
+                                                receiveTime = Math.Max(receiveTime, data.UtcTicks);
+                                                continue;
+                                            }
+
+                                            lMatchedEvents = new List<MatchedEventData>();
+                                            m_dictMatchedEvents[id] = lMatchedEvents;
+                                        }
+
+                                        if (data.TriggerIn)
+                                            lMatchedEvents.Add(new MatchedEventData(data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
+                                        else if (data.TriggerOut && lMatchedEvents.Count > 0)
+                                            lMatchedEvents[lMatchedEvents.Count - 1].Match(data.UtcTicks);
+
+                                        receiveTime = Math.Max(receiveTime, data.UtcTicks);
+                                    }
                                 }
                             }
                         }
@@ -440,8 +511,6 @@ namespace iba.Processing
 
             if (!string.IsNullOrEmpty(response.Error))
                 ibaLogger.Log(Level.Warning, response.Error);
-
-            Enqueue(newEvents);
         }
         #endregion
 
@@ -462,6 +531,57 @@ namespace iba.Processing
                 ReceiveTime = DateTime.MinValue.Ticks;
                 AdvanceTime = DateTime.MaxValue.Ticks;
             }
+        }
+        #endregion
+
+        #region EventData
+        class MatchedEventData
+        {
+            #region Members
+            TimeSpan preRange, postRange, maxRange;
+            DateTime dtIncoming, dtOutgoing, dtExpiration;
+            bool bMatched;
+            #endregion
+
+            #region Properties
+            public bool IsMatched { get { return bMatched || dtExpiration <= DateTime.UtcNow; } }
+
+            public DateTime StartTime { get { return dtIncoming.Subtract(preRange); } }
+            public DateTime StopTime
+            {
+                get
+                {
+                    DateTime dtMax = StartTime.Add(maxRange);
+                    DateTime dtPost = dtOutgoing.Add(postRange);
+                    return dtMax <= dtPost ? dtMax : dtPost;
+                }
+            }
+            #endregion
+
+            #region Initialize
+            internal MatchedEventData(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
+            {
+                dtIncoming = new DateTime(utcTicksIncoming);
+                this.preRange = preRange;
+                this.postRange = postRange;
+                this.maxRange = maxRange;
+
+                TimeSpan diffRange = maxRange - preRange;
+                if (diffRange < TimeSpan.Zero)
+                    diffRange = TimeSpan.Zero;
+
+                dtOutgoing = dtIncoming.Add(diffRange);
+                dtExpiration = dtOutgoing.AddSeconds(5.0); // 5 second reserve for delayed responses (to be safe)
+            }
+            #endregion
+
+            #region Matching
+            public void Match(long utcTicksOutgoing)
+            {
+                dtOutgoing = new DateTime(utcTicksOutgoing);
+                bMatched = true;
+            }
+            #endregion
         }
         #endregion
     }
