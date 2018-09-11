@@ -362,7 +362,7 @@ namespace iba.Processing
                     List<MatchedEventData> lValues = new List<MatchedEventData>(kvp.Value);
                     foreach (var evt in lValues)
                     {
-                        if (evt.IsMatched)
+                        if (evt.CanBeProcessed)
                         {
                             matchedEvents.Add(evt);
                             kvp.Value.Remove(evt);
@@ -544,7 +544,7 @@ namespace iba.Processing
             #endregion
 
             #region Properties
-            public bool IsMatched { get { return bMatched || dtExpiration <= DateTime.UtcNow; } }
+            public bool CanBeProcessed { get { return (bMatched || dtExpiration <= DateTime.UtcNow) && StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
 
             public DateTime StartTime { get { return dtIncoming.Subtract(preRange); } }
             public DateTime StopTime
@@ -578,6 +578,9 @@ namespace iba.Processing
             #region Matching
             public void Match(long utcTicksOutgoing)
             {
+                if (bMatched)
+                    return;
+
                 dtOutgoing = new DateTime(utcTicksOutgoing);
                 bMatched = true;
             }
