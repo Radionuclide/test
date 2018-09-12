@@ -435,6 +435,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
   File "License_Agreement_DatCoordinator.pdf"
+  File "Support.htm"
   
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
@@ -525,6 +526,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
   File "versions_dat.htm"
   File "License_Agreement_DatCoordinator.pdf"
+  File "Support.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
   ; runtime
@@ -658,6 +660,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
   File "License_Agreement_DatCoordinator.pdf"
+  File "Support.htm"
   
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
@@ -888,6 +891,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
+  Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
   ; runtime

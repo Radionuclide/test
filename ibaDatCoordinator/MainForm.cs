@@ -2142,15 +2142,28 @@ namespace iba
                 MessageBox.Show(ex.Message + " " + readmeFile);
             };
         }
-    
 
-    #endregion
+        private void supportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string readmeFile = "";
+            try
+            {
+                readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "support.htm");
+                System.Diagnostics.Process.Start(readmeFile);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + readmeFile);
+            };
+        }
 
-    #endregion
+        #endregion
 
-    #region IPropertyPaneManager Members
+        #endregion
 
-    private Hashtable propertyPanes = new Hashtable();
+        #region IPropertyPaneManager Members
+
+        private Hashtable propertyPanes = new Hashtable();
         public Hashtable PropertyPanes
         {
             get { return propertyPanes; }
@@ -3191,6 +3204,8 @@ namespace iba
             }
         }
         #endregion
+
+
     }
     #endregion
 

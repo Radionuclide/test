@@ -75,6 +75,7 @@ namespace iba.Controls
             m_cbPostpone.Checked = TaskManager.Manager.DoPostponeProcessing;
             m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Enabled = m_cbPostpone.Checked;
+            m_nudResourceCritical.Value = TaskManager.Manager.MaxResourceIntensiveTasks;
 
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {

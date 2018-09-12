@@ -74,35 +74,42 @@ namespace AM_OSPC_plugin
                 }
                 m_monitor.Execute(delegate() { m_analyzer.OpenAnalysis(m_data.AnalysisFile); });
             }
-
-            using (AMOSPCprotocol.OSPCConnector connector = new AMOSPCprotocol.OSPCConnector())
+            try
             {
-                int validCount = 0;
-                for(int i = 0; i < count; i++)
+                using (AMOSPCprotocol.OSPCConnector connector = new AMOSPCprotocol.OSPCConnector())
                 {
-                    OSPCTaskData.Record record = m_data.Records[i];
-                    double f = double.NaN;
-                    if(!string.IsNullOrEmpty(record.Expression))
+                    int validCount = 0;
+                    for (int i = 0; i < count; i++)
                     {
-                        if (m_bNewVersion)
-                            m_monitor.Execute(delegate() { f = m_analyzer.EvaluateDouble(record.Expression, 0); }); 
-                        else
-                            m_monitor.Execute(delegate() { f = (double)m_analyzer.Evaluate(record.Expression, 0); }); 
+                        OSPCTaskData.Record record = m_data.Records[i];
+                        double f = double.NaN;
+                        if (!string.IsNullOrEmpty(record.Expression))
+                        {
+                            if (m_bNewVersion)
+                                m_monitor.Execute(delegate () { f = m_analyzer.EvaluateDouble(record.Expression, 0); });
+                            else
+                                m_monitor.Execute(delegate () { f = (double)m_analyzer.Evaluate(record.Expression, 0); });
+                        }
+                        if (!Double.IsNaN(f) && !Double.IsInfinity(f))
+                        {
+                            validCount++;
+                        }
+                        connector.AddRecord(record.ProcessName, record.VariableName, f);
                     }
-                    if(!Double.IsNaN(f) && !Double.IsInfinity(f))
+                    if (validCount == 0)
                     {
-                        validCount++;
+                        m_error = Properties.Resources.NoValidEntriesSpecified;
+                        return false;
                     }
-                    connector.AddRecord(record.ProcessName, record.VariableName, f);
+                    connector.Connect(m_data.OspcServerHost, m_data.OspcServerUser, m_data.OspcServerPassword);
+                    connector.Send(startTime);
                 }
-                if ( validCount == 0)
-                {
-                    m_error = Properties.Resources.NoValidEntriesSpecified;
-                    return false;
-                }
-                connector.Connect(m_data.OspcServerHost, m_data.OspcServerUser, m_data.OspcServerPassword);
-                connector.Send(startTime);
             }        
+            catch (Exception ex)
+            {
+                iba.Logging.ibaLogger.Log(iba.Logging.Level.Exception, ex.ToString());
+                throw;
+            }
             return true;
         }
 

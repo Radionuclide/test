@@ -56,19 +56,21 @@ void OSPCConnector::Connect(String^ server, String^ user, String^ pass)
 	//IID id = __uuidof(IDataProcessing);
 	MULTI_QI qi = {&IID_IUnknown,0,0};
 	hr = CoCreateInstanceEx(__uuidof(SPCProcesManager),0,20,&serverInfo,1,&qi);
-
 	if (SUCCEEDED(hr) && SUCCEEDED(qi.hr))
 	{
 		m_ipDataProcessing = new _com_ptr_t<_COM_SMARTPTR_LEVEL2 <IDataProcessing, &__uuidof(IDataProcessing)> >();
 		(*m_ipDataProcessing) = qi.pItf;
-		//StartPolling();
 	}
 	else if (SUCCEEDED(hr))
 	{
+		iba::Logging::ibaLogger::DebugFormat("Cocreate instance SPCProcesManager succeeded, IDataProcessing QI failed... qi.HR {0}",qi.hr.ToString("X8"));
 		Marshal::ThrowExceptionForHR(qi.hr);
 	}
 	else
+	{
+		iba::Logging::ibaLogger::DebugFormat("Cocreate instance SPCProcesManager failed, HR {0}", hr.ToString("X8"));
 		Marshal::ThrowExceptionForHR(hr);
+	}
 }
 
 OSPCConnector::~OSPCConnector()
@@ -96,7 +98,7 @@ void OSPCConnector::Send(DateTime time)
 	double timedouble = time.ToOADate();
 	BSTR emptyString = SysAllocString(L"");
 
-	
+
 	for (int i = 0; i < counted; i++)
 	{
 		(varlist.pVar)[i].type = VARIABELE;
@@ -112,7 +114,23 @@ void OSPCConnector::Send(DateTime time)
 	HRESULT hr = (*m_ipDataProcessing)->AddData(varlist);
 	SysFreeString(emptyString);
 	::CoTaskMemFree(varlist.pVar);
-	if (!SUCCEEDED(hr) ) Marshal::ThrowExceptionForHR(hr);
+	if (!SUCCEEDED(hr))
+	{
+		iba::Logging::ibaLogger::DebugFormat("Sending failed, HR {0}", hr.ToString("X8"));
+		System::Text::StringBuilder^ sb = gcnew System::Text::StringBuilder();
+		sb->AppendLine("Attempted params:");
+		for (int i = 0; i < counted; i++)
+		{
+			sb->AppendLine(i.ToString());
+			sb->AppendLine(String::Format("\tprocesNaam: {0}",processNames[i]));
+			sb->AppendLine(String::Format("\tvariableleNaam: {0}", variableNames[i]));
+			bool status = !(System::Double::IsNaN(values[i]) || System::Double::IsInfinity(values[i]));
+			sb->AppendLine(String::Format("\tstatus: {0}", status));
+			sb->AppendLine(String::Format("\twaarde: {0}", values[i]));
+		}
+		iba::Logging::ibaLogger::DebugFormat(sb->ToString());
+		Marshal::ThrowExceptionForHR(hr);
+	}
 	//strings itself deleted by marshal_context 
 }
 

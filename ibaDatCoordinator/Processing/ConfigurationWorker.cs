@@ -3255,7 +3255,7 @@ namespace iba.Processing
 
             string maindir = dir;
 
-            if (dir == m_cd.DatDirectoryUNC)
+            if (dir == m_cd.DatDirectoryUNC && task.Extension == "*.dat")
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
                 lock (m_sd.DatFileStates)
