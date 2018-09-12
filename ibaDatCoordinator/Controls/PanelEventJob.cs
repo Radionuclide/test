@@ -17,7 +17,7 @@ using iba.Logging;
 namespace iba.Controls
 {
     //TODO embed server selection
-
+    //TODO generate test file: open in Analyzer
     public partial class PanelEventJob : UserControl, IPropertyPane
     {
         #region Members
@@ -34,6 +34,8 @@ namespace iba.Controls
         ListViewItem m_lviErrorStores;
 
         bool m_bEventServerChanged;
+
+        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 200) 
         #endregion
 
         #region Initialize
@@ -50,7 +52,6 @@ namespace iba.Controls
         public PanelEventJob()
         {
             InitializeComponent();
-            //((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
 
@@ -69,6 +70,10 @@ namespace iba.Controls
             m_treeEvents.EndStateChange();
             m_treeEvents.Control.MaximumSize = new Size(int.MaxValue, 165);
             m_fpnlEvent.Controls.Add(m_treeEvents.Control);
+
+            m_rbtIncoming.Tag = EventJobRangeCenter.Incoming;
+            m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
+            m_rbtBoth.Tag = EventJobRangeCenter.Both;
 
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
         }
@@ -116,6 +121,19 @@ namespace iba.Controls
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_confData.LimitTimesTried;
 
             //range selection
+            switch (m_eventData.RangeCenter)
+            {
+                case EventJobRangeCenter.Incoming:
+                    m_rbtIncoming.Checked = true;
+                    break;
+                case EventJobRangeCenter.Outgoing:
+                    m_rbtOutgoing.Checked = true;
+                    break;
+                case EventJobRangeCenter.Both:
+                    m_rbtBoth.Checked = true;
+                    break;
+            }
+
             m_cbPreTrigger.Checked = m_eventData.EnablePreTriggerRange;
             m_cbPostTrigger.Checked = m_eventData.EnablePostTriggerRange;
 
@@ -167,6 +185,13 @@ namespace iba.Controls
                 m_eventData.HDStores = stores.ToArray();
 
             //range selection
+            if (m_rbtIncoming.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtIncoming.Tag;
+            else if (m_rbtOutgoing.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtOutgoing.Tag;
+            else if (m_rbtBoth.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtBoth.Tag;
+
             m_eventData.EnablePreTriggerRange = m_cbPreTrigger.Checked;
             m_eventData.EnablePostTriggerRange = m_cbPostTrigger.Checked;
 
@@ -377,5 +402,55 @@ namespace iba.Controls
             }
         }
         #endregion
+
+        private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rbt = sender as RadioButton;
+            if (rbt == null)
+                return;
+
+            if (rbt.Tag == null || !(rbt.Tag is EventJobRangeCenter))
+                return;
+
+            //X constants are based on pixel distances in the images
+            //Y constants are based on designer distances of the labels
+            EventJobRangeCenter lRangeCenter = (EventJobRangeCenter)rbt.Tag;
+            if (lRangeCenter == EventJobRangeCenter.Both)
+            {
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_both;
+
+                m_lbOutgoing.Visible = true;
+                m_lbIncoming.Visible = true;
+
+                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+            }
+            else
+            {
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_single;
+
+                if (lRangeCenter == EventJobRangeCenter.Incoming)
+                {
+                    m_lbOutgoing.Visible = false;
+                    m_lbIncoming.Visible = true;
+
+                    m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+                else
+                {
+                    m_lbOutgoing.Visible = true;
+                    m_lbIncoming.Visible = false;
+
+                    m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+            }
+        }
     }
 }

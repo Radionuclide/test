@@ -121,16 +121,349 @@
   <data name="gbOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lbMaximum.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_lbMaximum.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbMaximum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbMaximum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>364, 101</value>
+  </data>
+  <data name="m_lbMaximum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 17</value>
+  </data>
+  <data name="m_lbMaximum.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lbMaximum.Text" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Name" xml:space="preserve">
+    <value>m_lbMaximum</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbPre.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbPre.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbPre.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbPre.Location" type="System.Drawing.Point, System.Drawing">
+    <value>338, 58</value>
+  </data>
+  <data name="m_lbPre.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 17</value>
+  </data>
+  <data name="m_lbPre.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_lbPre.Text" xml:space="preserve">
+    <value>Pre</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Name" xml:space="preserve">
+    <value>m_lbPre</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lbPost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbPost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbPost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbPost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>437, 58</value>
+  </data>
+  <data name="m_lbPost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 17</value>
+  </data>
+  <data name="m_lbPost.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lbPost.Text" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Name" xml:space="preserve">
+    <value>m_lbPost</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lbOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbOutgoing.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>529, 0</value>
+  </data>
+  <data name="m_lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="m_lbOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lbOutgoing.Text" xml:space="preserve">
+    <value>Outgoing</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Name" xml:space="preserve">
+    <value>m_lbOutgoing</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lbIncoming.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbIncoming.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>364, 0</value>
+  </data>
+  <data name="m_lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_lbIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lbIncoming.Text" xml:space="preserve">
+    <value>Incoming</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Name" xml:space="preserve">
+    <value>m_lbIncoming</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_pbRangeCenter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbRangeCenter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 3</value>
+  </data>
+  <data name="m_pbRangeCenter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 120</value>
+  </data>
+  <data name="m_pbRangeCenter.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Name" xml:space="preserve">
+    <value>m_pbRangeCenter</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtBoth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtBoth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 49</value>
+  </data>
+  <data name="m_rbtBoth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 17</value>
+  </data>
+  <data name="m_rbtBoth.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbtBoth.Text" xml:space="preserve">
+    <value>Intermediate range of both events</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
+    <value>m_rbtBoth</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_rbtOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 26</value>
+  </data>
+  <data name="m_rbtOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 17</value>
+  </data>
+  <data name="m_rbtOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbtOutgoing.Text" xml:space="preserve">
+    <value>Outgoing event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Name" xml:space="preserve">
+    <value>m_rbtOutgoing</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_rbtIncoming.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_rbtIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 17</value>
+  </data>
+  <data name="m_rbtIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbtIncoming.Text" xml:space="preserve">
+    <value>Incoming event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Name" xml:space="preserve">
+    <value>m_rbtIncoming</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 38</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>680, 126</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>gbOutput</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 22</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 13</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Time range center:</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>gbOutput</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_btGenerateTest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_btGenerateTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btGenerateTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>342, 167</value>
+    <value>362, 314</value>
   </data>
   <data name="m_btGenerateTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 23</value>
@@ -151,7 +484,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_btGenerateTest.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
     <value>""</value>
@@ -160,7 +493,7 @@
     <value>315</value>
   </data>
   <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 167</value>
+    <value>16, 314</value>
   </data>
   <data name="m_lvStores.Size" type="System.Drawing.Size, System.Drawing">
     <value>320, 140</value>
@@ -178,7 +511,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lvStores.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label31.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -187,7 +520,7 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 151</value>
+    <value>12, 298</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
@@ -208,7 +541,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="label26.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -217,7 +550,7 @@
     <value>NoControl</value>
   </data>
   <data name="label26.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 126</value>
+    <value>13, 270</value>
   </data>
   <data name="label26.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 13</value>
@@ -238,7 +571,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label26.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="label27.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -247,7 +580,7 @@
     <value>NoControl</value>
   </data>
   <data name="label27.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 126</value>
+    <value>454, 270</value>
   </data>
   <data name="label27.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -268,13 +601,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_nudSecsPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudSecsPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>415, 124</value>
+    <value>408, 268</value>
   </data>
   <data name="m_nudSecsPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -292,7 +625,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsPost.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="label28.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -301,7 +634,7 @@
     <value>NoControl</value>
   </data>
   <data name="label28.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 126</value>
+    <value>359, 270</value>
   </data>
   <data name="label28.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -322,13 +655,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label28.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_nudMinsPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudMinsPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 124</value>
+    <value>313, 268</value>
   </data>
   <data name="m_nudMinsPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -346,7 +679,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsPost.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="label29.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -355,7 +688,7 @@
     <value>NoControl</value>
   </data>
   <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 126</value>
+    <value>274, 270</value>
   </data>
   <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -376,7 +709,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="label30.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -385,7 +718,7 @@
     <value>NoControl</value>
   </data>
   <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 126</value>
+    <value>187, 270</value>
   </data>
   <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -406,13 +739,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_nudHoursPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudHoursPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 124</value>
+    <value>228, 268</value>
   </data>
   <data name="m_nudHoursPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -430,13 +763,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursPost.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_nudDaysPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudDaysPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 124</value>
+    <value>141, 268</value>
   </data>
   <data name="m_nudDaysPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -454,7 +787,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysPost.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_cbPostTrigger.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -463,7 +796,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbPostTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 102</value>
+    <value>16, 245</value>
   </data>
   <data name="m_cbPostTrigger.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 17</value>
@@ -484,7 +817,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_cbPostTrigger.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="label21.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -493,7 +826,7 @@
     <value>NoControl</value>
   </data>
   <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 78</value>
+    <value>13, 221</value>
   </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 13</value>
@@ -514,7 +847,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="label22.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -523,7 +856,7 @@
     <value>NoControl</value>
   </data>
   <data name="label22.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 78</value>
+    <value>454, 221</value>
   </data>
   <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -544,13 +877,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label22.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="m_nudSecsPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudSecsPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>415, 76</value>
+    <value>408, 219</value>
   </data>
   <data name="m_nudSecsPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -568,7 +901,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsPre.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="label23.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -577,7 +910,7 @@
     <value>NoControl</value>
   </data>
   <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 78</value>
+    <value>359, 221</value>
   </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -598,13 +931,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="m_nudMinsPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudMinsPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 76</value>
+    <value>313, 219</value>
   </data>
   <data name="m_nudMinsPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -622,7 +955,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsPre.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="label24.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -631,7 +964,7 @@
     <value>NoControl</value>
   </data>
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 78</value>
+    <value>274, 221</value>
   </data>
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -652,7 +985,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>20</value>
   </data>
   <data name="label25.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -661,7 +994,7 @@
     <value>NoControl</value>
   </data>
   <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 78</value>
+    <value>187, 221</value>
   </data>
   <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -682,13 +1015,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label25.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>21</value>
   </data>
   <data name="m_nudHoursPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudHoursPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 76</value>
+    <value>228, 219</value>
   </data>
   <data name="m_nudHoursPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -706,13 +1039,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursPre.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>22</value>
   </data>
   <data name="m_nudDaysPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_nudDaysPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 76</value>
+    <value>141, 219</value>
   </data>
   <data name="m_nudDaysPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -730,7 +1063,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysPre.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>23</value>
   </data>
   <data name="m_cbPreTrigger.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -739,7 +1072,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbPreTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 53</value>
+    <value>16, 196</value>
   </data>
   <data name="m_cbPreTrigger.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 17</value>
@@ -760,7 +1093,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_cbPreTrigger.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>24</value>
   </data>
   <data name="label20.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -769,7 +1102,7 @@
     <value>NoControl</value>
   </data>
   <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 30</value>
+    <value>13, 172</value>
   </data>
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 13</value>
@@ -790,7 +1123,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>25</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -799,7 +1132,7 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 30</value>
+    <value>454, 172</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -820,10 +1153,10 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>26</value>
   </data>
   <data name="m_nudSecsMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>415, 28</value>
+    <value>408, 170</value>
   </data>
   <data name="m_nudSecsMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -841,7 +1174,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsMax.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>27</value>
   </data>
   <data name="label16.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -850,7 +1183,7 @@
     <value>NoControl</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 30</value>
+    <value>359, 172</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -871,10 +1204,10 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>28</value>
   </data>
   <data name="m_nudMinsMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 28</value>
+    <value>313, 170</value>
   </data>
   <data name="m_nudMinsMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -892,7 +1225,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsMax.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>29</value>
   </data>
   <data name="label18.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -901,7 +1234,7 @@
     <value>NoControl</value>
   </data>
   <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 30</value>
+    <value>274, 172</value>
   </data>
   <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -922,7 +1255,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>30</value>
   </data>
   <data name="label19.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -931,7 +1264,7 @@
     <value>NoControl</value>
   </data>
   <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 30</value>
+    <value>187, 172</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -952,10 +1285,10 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>31</value>
   </data>
   <data name="m_nudHoursMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 28</value>
+    <value>228, 170</value>
   </data>
   <data name="m_nudHoursMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -973,10 +1306,10 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursMax.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>32</value>
   </data>
   <data name="m_nudDaysMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 28</value>
+    <value>141, 170</value>
   </data>
   <data name="m_nudDaysMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -994,13 +1327,13 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysMax.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>33</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 351</value>
+    <value>0, 345</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 314</value>
+    <value>702, 460</value>
   </data>
   <data name="gbOutput.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1030,7 +1363,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnEventServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>314, 17</value>
+    <value>313, 17</value>
   </data>
   <data name="btnEventServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 23</value>
@@ -1736,7 +2069,7 @@
     <value>0, 639</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 665</value>
+    <value>702, 805</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>

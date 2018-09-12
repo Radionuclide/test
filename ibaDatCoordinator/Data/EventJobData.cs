@@ -7,6 +7,13 @@ using System.Xml.Serialization;
 
 namespace iba.Data
 {
+    public enum EventJobRangeCenter
+    {
+        Incoming,
+        Outgoing,
+        Both
+    }
+
     [Serializable]
     public class EventJobData : ICloneable
     {
@@ -54,11 +61,20 @@ namespace iba.Data
             m_HDPort = 9180;
             m_HDStores = new string[] { "" };
             m_HDServer = "";
+            m_rangeCenter = (int)EventJobRangeCenter.Incoming;
             m_maxTriggerRange = TimeSpan.FromHours(1.0);
             m_preTriggerRange = TimeSpan.Zero;
             m_postTriggerRange = TimeSpan.Zero;
             m_enablePreTrigger = false;
             m_enablePostTrigger = false;
+        }
+
+        private int m_rangeCenter;
+        [XmlIgnore]
+        public EventJobRangeCenter RangeCenter
+        {
+            get { return (EventJobRangeCenter)m_rangeCenter; }
+            set { m_rangeCenter = (int)value; }
         }
 
         private bool m_enablePreTrigger;
@@ -121,6 +137,7 @@ namespace iba.Data
             nejd.HDServer = m_HDServer;
             nejd.m_HDStores = (string[])m_HDStores.Clone();
             nejd.m_HDPort = m_HDPort;
+            nejd.m_rangeCenter = m_rangeCenter;
             nejd.m_maxTriggerRange = m_maxTriggerRange;
             nejd.m_preTriggerRange = m_preTriggerRange;
             nejd.m_postTriggerRange = m_postTriggerRange;
@@ -138,6 +155,7 @@ namespace iba.Data
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
+            other.m_rangeCenter == m_rangeCenter &&
             other.m_maxTriggerRange == m_maxTriggerRange &&
             other.m_preTriggerRange == m_preTriggerRange &&
             other.m_postTriggerRange == m_postTriggerRange &&

@@ -17,6 +17,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
             this.gbOutput = new iba.Utility.CollapsibleGroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.m_lbMaximum = new System.Windows.Forms.Label();
+            this.m_lbPre = new System.Windows.Forms.Label();
+            this.m_lbPost = new System.Windows.Forms.Label();
+            this.m_lbOutgoing = new System.Windows.Forms.Label();
+            this.m_lbIncoming = new System.Windows.Forms.Label();
+            this.m_pbRangeCenter = new System.Windows.Forms.PictureBox();
+            this.m_rbtBoth = new System.Windows.Forms.RadioButton();
+            this.m_rbtOutgoing = new System.Windows.Forms.RadioButton();
+            this.m_rbtIncoming = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
             this.m_btGenerateTest = new System.Windows.Forms.Button();
             this.m_lvStores = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -72,6 +83,8 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbOutput.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_pbRangeCenter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).BeginInit();
@@ -93,6 +106,8 @@
             // gbOutput
             // 
             resources.ApplyResources(this.gbOutput, "gbOutput");
+            this.gbOutput.Controls.Add(this.panel1);
+            this.gbOutput.Controls.Add(this.label3);
             this.gbOutput.Controls.Add(this.m_btGenerateTest);
             this.gbOutput.Controls.Add(this.m_lvStores);
             this.gbOutput.Controls.Add(this.label31);
@@ -127,6 +142,79 @@
             this.gbOutput.Controls.Add(this.m_nudDaysMax);
             this.gbOutput.Name = "gbOutput";
             this.gbOutput.TabStop = false;
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.m_lbMaximum);
+            this.panel1.Controls.Add(this.m_lbPre);
+            this.panel1.Controls.Add(this.m_lbPost);
+            this.panel1.Controls.Add(this.m_lbOutgoing);
+            this.panel1.Controls.Add(this.m_lbIncoming);
+            this.panel1.Controls.Add(this.m_pbRangeCenter);
+            this.panel1.Controls.Add(this.m_rbtBoth);
+            this.panel1.Controls.Add(this.m_rbtOutgoing);
+            this.panel1.Controls.Add(this.m_rbtIncoming);
+            this.panel1.Name = "panel1";
+            // 
+            // m_lbMaximum
+            // 
+            resources.ApplyResources(this.m_lbMaximum, "m_lbMaximum");
+            this.m_lbMaximum.Name = "m_lbMaximum";
+            // 
+            // m_lbPre
+            // 
+            resources.ApplyResources(this.m_lbPre, "m_lbPre");
+            this.m_lbPre.Name = "m_lbPre";
+            // 
+            // m_lbPost
+            // 
+            resources.ApplyResources(this.m_lbPost, "m_lbPost");
+            this.m_lbPost.Name = "m_lbPost";
+            // 
+            // m_lbOutgoing
+            // 
+            resources.ApplyResources(this.m_lbOutgoing, "m_lbOutgoing");
+            this.m_lbOutgoing.Name = "m_lbOutgoing";
+            // 
+            // m_lbIncoming
+            // 
+            resources.ApplyResources(this.m_lbIncoming, "m_lbIncoming");
+            this.m_lbIncoming.Name = "m_lbIncoming";
+            // 
+            // m_pbRangeCenter
+            // 
+            this.m_pbRangeCenter.Image = global::iba.Properties.Resources.img_eventjob_range_single;
+            resources.ApplyResources(this.m_pbRangeCenter, "m_pbRangeCenter");
+            this.m_pbRangeCenter.Name = "m_pbRangeCenter";
+            this.m_pbRangeCenter.TabStop = false;
+            // 
+            // m_rbtBoth
+            // 
+            resources.ApplyResources(this.m_rbtBoth, "m_rbtBoth");
+            this.m_rbtBoth.Name = "m_rbtBoth";
+            this.m_rbtBoth.UseVisualStyleBackColor = true;
+            this.m_rbtBoth.CheckedChanged += new System.EventHandler(this.rbtRangeCenter_CheckedChanged);
+            // 
+            // m_rbtOutgoing
+            // 
+            resources.ApplyResources(this.m_rbtOutgoing, "m_rbtOutgoing");
+            this.m_rbtOutgoing.Name = "m_rbtOutgoing";
+            this.m_rbtOutgoing.UseVisualStyleBackColor = true;
+            this.m_rbtOutgoing.CheckedChanged += new System.EventHandler(this.rbtRangeCenter_CheckedChanged);
+            // 
+            // m_rbtIncoming
+            // 
+            resources.ApplyResources(this.m_rbtIncoming, "m_rbtIncoming");
+            this.m_rbtIncoming.Name = "m_rbtIncoming";
+            this.m_rbtIncoming.UseVisualStyleBackColor = true;
+            this.m_rbtIncoming.CheckedChanged += new System.EventHandler(this.rbtRangeCenter_CheckedChanged);
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
             // 
             // m_btGenerateTest
             // 
@@ -589,6 +677,9 @@
             this.Name = "PanelEventJob";
             this.gbOutput.ResumeLayout(false);
             this.gbOutput.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_pbRangeCenter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).EndInit();
@@ -668,5 +759,16 @@
         private System.Windows.Forms.NumericUpDown m_nudHoursMax;
         private System.Windows.Forms.NumericUpDown m_nudDaysMax;
         private System.Windows.Forms.Button m_btGenerateTest;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton m_rbtBoth;
+        private System.Windows.Forms.RadioButton m_rbtOutgoing;
+        private System.Windows.Forms.RadioButton m_rbtIncoming;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox m_pbRangeCenter;
+        private System.Windows.Forms.Label m_lbMaximum;
+        private System.Windows.Forms.Label m_lbPre;
+        private System.Windows.Forms.Label m_lbPost;
+        private System.Windows.Forms.Label m_lbOutgoing;
+        private System.Windows.Forms.Label m_lbIncoming;
     }
 }

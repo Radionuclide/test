@@ -666,6 +666,8 @@
     <Content Include="Resources\event_configuration.ico" />
     <Content Include="Resources\event_configuration_new.ico" />
     <Content Include="Resources\img_error.png" />
+    <Content Include="Resources\img_eventjob_range_both.png" />
+    <Content Include="Resources\img_eventjob_range_single.png" />
     <None Include="Resources\snmp_icon.png" />
     <None Include="Resources\snmp_images.png" />
     <None Include="Resources\Toolbars16.bmp" />

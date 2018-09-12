@@ -1193,6 +1193,26 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_eventjob_range_both {
+            get {
+                object obj = ResourceManager.GetObject("img_eventjob_range_both", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_eventjob_range_single {
+            get {
+                object obj = ResourceManager.GetObject("img_eventjob_range_single", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified password is incorrect !.
         /// </summary>
         internal static string incorrectPassword {
