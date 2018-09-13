@@ -128,8 +128,11 @@ namespace iba.Utility
                 }
 
                 //Determine start/stop time
-                DateTime startTime = m_ejd.EnablePreTriggerRange ? DateTime.UtcNow.Subtract(m_ejd.PreTriggerRange) : DateTime.UtcNow;
-                DateTime stopTime = startTime.Add(m_ejd.MaxTriggerRange);
+                DateTime dtNow = DateTime.UtcNow;
+                DateTime startTime = m_ejd.EnablePreTriggerRange ? dtNow.Subtract(m_ejd.PreTriggerRange) : dtNow;
+                DateTime dtPost = dtNow.Add(m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero);
+                DateTime dtMax = startTime.Add(m_ejd.MaxTriggerRange);
+                DateTime stopTime = dtMax < dtPost ? dtMax : dtPost;
                 if (evts == null || evts.Count <= 0)
                 {
                     StatusChanged?.Invoke(new EventJobTestStatus(Level.Warning, Properties.Resources.EventJob_TestFile_NoEventFound, false));
