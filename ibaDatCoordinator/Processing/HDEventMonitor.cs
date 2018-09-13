@@ -14,6 +14,7 @@ namespace iba.Processing
         #region Members
         EventJobData m_ejd;
         IHdReader m_hdReader;
+        bool m_bSkipChecks;
 
         Dictionary<string, LiveStoreData> m_liveData;
 
@@ -36,8 +37,9 @@ namespace iba.Processing
         #endregion
 
         #region Initialize
-        public HDEventMonitor()
+        public HDEventMonitor(bool bSkipChecks = false)
         {
+            m_bSkipChecks = bSkipChecks;
             m_ejd = null;
             m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
             m_hdReader.ShowConnectionError = false;
@@ -363,7 +365,7 @@ namespace iba.Processing
                     List<EventDataRange> lValues = new List<EventDataRange>(kvp.Value);
                     foreach (var evt in lValues)
                     {
-                        if (evt.CanBeProcessed)
+                        if (m_bSkipChecks || evt.CanBeProcessed)
                         {
                             matchedEvents.Add(evt);
                             kvp.Value.Remove(evt);
@@ -474,7 +476,7 @@ namespace iba.Processing
                                     if (m_ejd.RangeCenter == EventJobRangeCenter.Outgoing && !data.TriggerOut)
                                         continue;
 
-                                    if (data.UtcTicks < m_startTimeTicks)
+                                    if (!m_bSkipChecks && data.UtcTicks < m_startTimeTicks)
                                         continue;
 
                                     if (m_liveDataSet.Add(data))

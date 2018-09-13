@@ -463,7 +463,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btGenerateTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>362, 314</value>
+    <value>347, 314</value>
   </data>
   <data name="m_btGenerateTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 23</value>

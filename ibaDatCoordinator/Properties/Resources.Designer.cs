@@ -916,6 +916,60 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Canceled..
+        /// </summary>
+        internal static string EventJob_TestFile_Canceled {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred: {0}.
+        /// </summary>
+        internal static string EventJob_TestFile_Error {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished successfully..
+        /// </summary>
+        internal static string EventJob_TestFile_Finished {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generating test file....
+        /// </summary>
+        internal static string EventJob_TestFile_GeneratingFile {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_GeneratingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No event occurrences were found. Using current time as time range center instead..
+        /// </summary>
+        internal static string EventJob_TestFile_NoEventFound {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_NoEventFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching for event occurrences....
+        /// </summary>
+        internal static string EventJob_TestFile_SearchingEvent {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_SearchingEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event Jobs.
         /// </summary>
         internal static string EventJobsNodeParent {
@@ -2501,6 +2555,15 @@ namespace iba.Properties {
         internal static string NoTriggersAfter {
             get {
                 return ResourceManager.GetString("NoTriggersAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         

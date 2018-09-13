@@ -13,11 +13,13 @@ using iba.HD.Client.Interfaces;
 using iba.HD.Client;
 using System.Threading.Tasks;
 using iba.Logging;
+using iba.Dialogs;
+using System.Diagnostics;
+using System.IO;
 
 namespace iba.Controls
 {
     //TODO embed server selection
-    //TODO generate test file: open in Analyzer
     public partial class PanelEventJob : UserControl, IPropertyPane
     {
         #region Members
@@ -35,7 +37,7 @@ namespace iba.Controls
 
         bool m_bEventServerChanged;
 
-        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 200) 
+        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255) 
         #endregion
 
         #region Initialize
@@ -379,10 +381,9 @@ namespace iba.Controls
                 if (dtMax < dtStop)
                     dtStop = dtMax;
 
-                string filename = string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_confData.Name), dtStart);
+                string filename = string.Empty;
                 using (SaveFileDialog dlg = new SaveFileDialog())
                 {
-                    dlg.FileName = filename;
                     dlg.AddExtension = true;
                     dlg.Title = Properties.Resources.EventJob_GenerateTestFile;
                     dlg.Filter = Properties.Resources.EventJob_GenerateTestFile_Filter;
@@ -394,7 +395,30 @@ namespace iba.Controls
                     filename = dlg.FileName;
                 }
 
-                m_confData.GenerateHDQFile(dtStart, dtStop, filename);
+                if (string.IsNullOrWhiteSpace(filename))
+                    return;
+
+
+                List<string> generatedFiles = null;
+                using (GenerateEventJobTestFileDlg dlg = new GenerateEventJobTestFileDlg(m_confData, filename))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    generatedFiles = dlg.GeneratedFiles;
+                }
+
+                if (generatedFiles == null || generatedFiles.Count <= 0)
+                    return;
+
+                foreach (var file in generatedFiles)
+                {
+                    if (File.Exists(file))
+                    {
+                        ProcessStartInfo si = new ProcessStartInfo(file);
+                        Process.Start(si);
+                    }
+                }
             }
             catch (Exception ex)
             {
