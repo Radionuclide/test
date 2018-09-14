@@ -224,7 +224,6 @@ namespace iba.Controls
 
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
-
             m_bEventServerChanged = false;
         }
         #endregion
@@ -266,7 +265,6 @@ namespace iba.Controls
                     m_hdReader.Disconnect();
 
                 m_hdReader.Connect(srv, prt);
-                m_treeEvents.CheckedChanged += m_treeEvents_CheckedChanged;
                 OnHdConnectionChanged();
                 m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             }, new object[] { server, port });
@@ -274,9 +272,19 @@ namespace iba.Controls
 
         void OnHdConnectionChanged()
         {
+            //Remove handler here; otherwise selection gets reset on a reconnect
+            //Handler will be readded on reconnect in UpdateEventTree
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
+
+            UpdateTrees();
+        }
+
+        void UpdateTrees()
+        {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(OnHdConnectionChanged));
+                BeginInvoke(new Action(UpdateTrees));
                 return;
             }
 
@@ -297,7 +305,7 @@ namespace iba.Controls
 
         void UpdateStoreTree()
         {
-            if (!m_hdReader.IsConnected())
+            if (m_hdReader == null || !m_hdReader.IsConnected())
             {
                 m_lvStores.CheckBoxes = false;
                 m_lvStores.SmallImageList = imageListError;
