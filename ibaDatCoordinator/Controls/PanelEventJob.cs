@@ -19,10 +19,11 @@ using System.IO;
 
 namespace iba.Controls
 {
-    //TODO embed server selection
     public partial class PanelEventJob : UserControl, IPropertyPane
     {
         #region Members
+        HdControlStorePicker m_hdStorePicker;
+
         IPropertyPaneManager m_manager;
         ConfigurationData m_confData;
         EventJobData m_eventData;
@@ -37,7 +38,7 @@ namespace iba.Controls
 
         bool m_bEventServerChanged;
 
-        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255) 
+        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
 
         #region Initialize
@@ -61,6 +62,18 @@ namespace iba.Controls
 
             m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
             m_hdReader.ShowConnectionError = false;
+
+            m_hdStorePicker = new HdControlStorePicker();
+            m_hdStorePicker.Dock = DockStyle.Fill;
+            m_hdStorePicker.Margin = new Padding(0, 0, 0, 0);
+            m_pnlServer.Controls.Add(m_hdStorePicker);
+            m_hdStorePicker.SelectedPort = 9180;
+            m_hdStorePicker.SelectedServer = "localhost";
+            m_hdStorePicker.HideConfigureButton();
+            m_hdStorePicker.HideStoreSelection();
+            List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
+            features.AddRange(ReaderFeature.Analyzer);
+            m_hdStorePicker.SetCheckedFeatures(features, new List<WriterFeature>());
 
             m_treeEvents = m_hdReader.CreateSignalTree(false);
             m_treeEvents.BeginStateChange();
@@ -90,6 +103,9 @@ namespace iba.Controls
         {
             if (disposing)
             {
+                m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
+                m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
+
                 if (m_hdReader != null)
                 {
                     m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
@@ -156,7 +172,13 @@ namespace iba.Controls
 
             //event selection
             m_currEvents = new List<string>(m_eventData.EventIDs);
+            m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
+            m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
+            m_hdStorePicker.SelectedServer = m_eventData.HDServer;
+            m_hdStorePicker.SelectedPort = m_eventData.HDPort;
             ChangeEventServer(m_eventData.HDServer, m_eventData.HDPort);
+            m_hdStorePicker.SelectedServerChanged += OnServerChanged;
+            m_hdStorePicker.SelectedPortChanged += OnServerChanged;
         }
 
         public void SaveData()
@@ -168,9 +190,8 @@ namespace iba.Controls
             m_confData.NrTryTimes = (int)m_retryUpDown.Value;
             m_confData.LimitTimesTried = m_cbRetry.Checked;
             //hdStore
-            m_eventData.HDServer = m_tbEventServer.Text ?? string.Empty;
-            int port = 0;
-            m_eventData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_eventData.HDServer = m_hdStorePicker.SelectedServer;
+            m_eventData.HDPort = m_hdStorePicker.SelectedPort;
 
             List<string> stores = new List<string>();
             foreach (ListViewItem item in m_lvStores.Items)
@@ -216,31 +237,11 @@ namespace iba.Controls
         }
 
         #region Event HD server
-        private void btnEventServer_Click(object sender, EventArgs e)
+        void OnServerChanged()
         {
-            int port = 0;
-            if (!int.TryParse(m_tbEventServerPort.Text, out port))
-                port = 9180;
-
-            string newServer = string.Empty;
-            int newPort = 0;
-            
-            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
-            {
-                serverPicker.SetCheckedFeatures(new List<ReaderFeature>() { ReaderFeature.Event }, new List<WriterFeature>());
-                if (serverPicker.ShowDialog() != DialogResult.OK)
-                    return;
-
-                newServer = serverPicker.SelectedServer;
-                newPort = serverPicker.SelectedPort;
-            }
-
-            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
-                return;
-
             m_bEventServerChanged = true;
             m_currEvents.Clear();
-            ChangeEventServer(newServer, newPort);
+            ChangeEventServer(m_hdStorePicker.SelectedServer, m_hdStorePicker.SelectedPort);
         }
 
         void ChangeEventServer(string server, int port)
@@ -250,9 +251,6 @@ namespace iba.Controls
                 BeginInvoke(new Action<string, int>(ChangeEventServer), server, port);
                 return;
             }
-
-            m_tbEventServer.Text = server;
-            m_tbEventServerPort.Text = port.ToString();
 
             m_lvStores.Items.Clear();
 
@@ -362,6 +360,56 @@ namespace iba.Controls
         {
             m_nudDaysPost.Enabled = m_nudHoursPost.Enabled = m_nudMinsPost.Enabled = m_nudSecsPost.Enabled = m_cbPostTrigger.Checked;
         }
+
+        private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rbt = sender as RadioButton;
+            if (rbt == null)
+                return;
+
+            if (rbt.Tag == null || !(rbt.Tag is EventJobRangeCenter))
+                return;
+
+            //X constants are based on pixel distances in the images
+            //Y constants are based on designer distances of the labels
+            EventJobRangeCenter lRangeCenter = (EventJobRangeCenter)rbt.Tag;
+            if (lRangeCenter == EventJobRangeCenter.Both)
+            {
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_both;
+
+                m_lbOutgoing.Visible = true;
+                m_lbIncoming.Visible = true;
+
+                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+            }
+            else
+            {
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_single;
+
+                if (lRangeCenter == EventJobRangeCenter.Incoming)
+                {
+                    m_lbOutgoing.Visible = false;
+                    m_lbIncoming.Visible = true;
+
+                    m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+                else
+                {
+                    m_lbOutgoing.Visible = true;
+                    m_lbIncoming.Visible = false;
+
+                    m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+            }
+        }
         #endregion
 
         #region Test file
@@ -426,55 +474,5 @@ namespace iba.Controls
             }
         }
         #endregion
-
-        private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButton rbt = sender as RadioButton;
-            if (rbt == null)
-                return;
-
-            if (rbt.Tag == null || !(rbt.Tag is EventJobRangeCenter))
-                return;
-
-            //X constants are based on pixel distances in the images
-            //Y constants are based on designer distances of the labels
-            EventJobRangeCenter lRangeCenter = (EventJobRangeCenter)rbt.Tag;
-            if (lRangeCenter == EventJobRangeCenter.Both)
-            {
-                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_both;
-
-                m_lbOutgoing.Visible = true;
-                m_lbIncoming.Visible = true;
-
-                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
-            }
-            else
-            {
-                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_single;
-
-                if (lRangeCenter == EventJobRangeCenter.Incoming)
-                {
-                    m_lbOutgoing.Visible = false;
-                    m_lbIncoming.Visible = true;
-
-                    m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                }
-                else
-                {
-                    m_lbOutgoing.Visible = true;
-                    m_lbIncoming.Visible = false;
-
-                    m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                }
-
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
-            }
-        }
     }
 }

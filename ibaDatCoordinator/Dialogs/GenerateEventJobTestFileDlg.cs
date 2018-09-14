@@ -94,8 +94,8 @@ namespace iba.Dialogs
             {
                 if (status.StatusMessage != Properties.Resources.EventJob_TestFile_Canceled)
                     DialogResult = DialogResult.OK;
-
-                Close();
+                else
+                    Close();
             }
         }
 
