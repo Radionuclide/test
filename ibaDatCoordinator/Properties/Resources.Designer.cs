@@ -889,15 +889,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto-select all.
-        /// </summary>
-        internal static string EventJob_AutoSelect {
-            get {
-                return ResourceManager.GetString("EventJob_AutoSelect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot connect to server.
         /// </summary>
         internal static string EventJob_DefaultHDConnectionErr {
@@ -907,38 +898,83 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate an HDQ test file.
+        /// </summary>
+        internal static string EventJob_GenerateTestFile {
+            get {
+                return ResourceManager.GetString("EventJob_GenerateTestFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HDQ file|*.hdq.
+        /// </summary>
+        internal static string EventJob_GenerateTestFile_Filter {
+            get {
+                return ResourceManager.GetString("EventJob_GenerateTestFile_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Canceled..
+        /// </summary>
+        internal static string EventJob_TestFile_Canceled {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred: {0}.
+        /// </summary>
+        internal static string EventJob_TestFile_Error {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished successfully..
+        /// </summary>
+        internal static string EventJob_TestFile_Finished {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generating test file....
+        /// </summary>
+        internal static string EventJob_TestFile_GeneratingFile {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_GeneratingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No event occurrences were found. Using current time as time range center instead..
+        /// </summary>
+        internal static string EventJob_TestFile_NoEventFound {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_NoEventFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching for event occurrences....
+        /// </summary>
+        internal static string EventJob_TestFile_SearchingEvent {
+            get {
+                return ResourceManager.GetString("EventJob_TestFile_SearchingEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event Jobs.
         /// </summary>
         internal static string EventJobsNodeParent {
             get {
                 return ResourceManager.GetString("EventJobsNodeParent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Both.
-        /// </summary>
-        internal static string EventJobTrigger_Both {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Both", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incoming event.
-        /// </summary>
-        internal static string EventJobTrigger_Incoming {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Incoming", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outgoing event.
-        /// </summary>
-        internal static string EventJobTrigger_Outgoing {
-            get {
-                return ResourceManager.GetString("EventJobTrigger_Outgoing", resourceCulture);
             }
         }
         
@@ -1206,6 +1242,26 @@ namespace iba.Properties {
         internal static System.Drawing.Bitmap img_error {
             get {
                 object obj = ResourceManager.GetObject("img_error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_eventjob_range_both {
+            get {
+                object obj = ResourceManager.GetObject("img_eventjob_range_both", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_eventjob_range_single {
+            get {
+                object obj = ResourceManager.GetObject("img_eventjob_range_single", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2499,6 +2555,15 @@ namespace iba.Properties {
         internal static string NoTriggersAfter {
             get {
                 return ResourceManager.GetString("NoTriggersAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         

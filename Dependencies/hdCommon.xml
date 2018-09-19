@@ -4,6 +4,44 @@
         <name>hdCommon</name>
     </assembly>
     <members>
+        <member name="M:iba.HD.Common.IHdConfigContract.IsValidVersion(System.String)">
+            <summary>
+            Checks service version
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.ReloadProjectFiles">
+            <summary>
+            Reloads project files
+            </summary>
+            <returns>
+            Null upon success or error message otherwise
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.GetSupportFiles">
+            <summary>
+            Gets support files
+            </summary>
+            <returns>
+            Tuple.Item1: null if operation succeeds; error message if operation fails
+            Tuple.Item2: zipped data if operation succeeds; null if operation fails
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.GetUserNames(iba.HD.Common.HdUserType)">
+            <summary>
+            Gets names of users with given type
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.SetQueries(System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Boolean)">
+            <summary>
+            Sets the list of configured event queries
+            </summary>
+            <param name="force">
+            Skip out of date check
+            </param>
+            <returns>
+            false if config out of date
+            </returns>
+        </member>
         <member name="T:iba.HD.Common.Enumeration">
             <remarks>
             WCF cannot (de)serialize unknown enum values. Unknown
@@ -830,7 +868,11 @@
             Send notification to clients logged in as user of given type
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,System.Collections.Generic.List{System.String},iba.HD.Common.HdNotificationType)" -->
+        <member name="M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,System.Collections.Generic.List{System.String},iba.HD.Common.HdNotificationType)">
+            <summary>
+            Send notification to clients logged in as user of given type with one of the given user names
+            </summary>
+        </member>
         <member name="T:iba.HD.Common.DynValueSettings">
             <remarks>
             Not used or tested at the moment
@@ -1034,13 +1076,22 @@
             Index of largest level with a timebase smaller than or equal to the requested timebase
             </returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:iba.HD.Common.DataTypeY.#cctor" -->
+        <member name="M:iba.HD.Common.DataTypeY.#cctor">
+            <remarks>
+            Get types supported by <see cref="M:iba.HD.Common.DataTypeY.GetTypeY``1(System.Boolean)"/> at runtime because these types - defined in hdCore.dll - are obfuscated
+            </remarks>
+        </member>
         <member name="M:iba.HD.Common.DataType.CanRepresent(iba.HD.Common.LogicalType)">
             <summary>
             Determines the data types that can be used for each of the logical types
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:iba.HD.Common.HdWriterData.MaxByteSize" -->
+        <member name="F:iba.HD.Common.HdWriterData.MaxByteSize">
+            <summary>
+            Maximal size (in memory) for a single data block. Goal is to make sure that sending
+            a WCF message over a slow network doesn't cause a time-out. This is not a hard limit.
+            </summary>
+        </member>
         <member name="F:iba.HD.Common.HdWriterData.DataFormat">
             <summary>
             HD server specific

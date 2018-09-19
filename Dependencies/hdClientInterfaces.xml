@@ -395,6 +395,15 @@
             <param name="min">minimum value</param>
             <param name="max">maximum value</param>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdTimeIterator.GetValueRange(System.Int64,System.Int64,System.Double@,System.Double@)">
+            <summary>
+            Gets the min and max value as double in a given time range
+            </summary>
+            <param name="start">start of time range</param>
+            <param name="stop">end of time range</param>
+            <param name="min">minimum value</param>
+            <param name="max">maximum value</param>
+        </member>
         <member name="F:iba.HD.Client.Interfaces.ProductRangeInfo.Start">
             <summary>
             Absolute start stamp
@@ -470,7 +479,7 @@
             <summary>
             Moves to next sample with a different value
             </summary>
-            <param name="tSpan">
+            <param name="xSpan">
             Time span between resulting sample and sample before it (negative if resulting sample is same sample Next() would move to)
             </param>
             <param name="lSpan">
@@ -505,6 +514,15 @@
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdLengthIterator.GetValueRangeL(System.Int64,System.Int64,System.Single@,System.Single@)">
             <summary>
+            Gets the min and max value as double in a given length range
+            </summary>
+            <param name="start">start of length range</param>
+            <param name="stop">end of length range</param>
+            <param name="min">minimum value</param>
+            <param name="max">maximum value</param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdLengthIterator.GetValueRangeL(System.Int64,System.Int64,System.Double@,System.Double@)">
+            <summary>
             Gets the min and max value in a given length range
             </summary>
             <param name="start">start of length range</param>
@@ -515,6 +533,15 @@
         <member name="M:iba.HD.Client.Interfaces.IHdLengthIterator.GetValueRangeX(System.Int64,System.Int64,System.Single@,System.Single@)">
             <summary>
             Gets the min and max value in a given time range
+            </summary>
+            <param name="start">start of time range</param>
+            <param name="stop">end of time range</param>
+            <param name="min">minimum value</param>
+            <param name="max">maximum value</param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdLengthIterator.GetValueRangeX(System.Int64,System.Int64,System.Double@,System.Double@)">
+            <summary>
+            Gets the min and max value as double in a given time range
             </summary>
             <param name="start">start of time range</param>
             <param name="stop">end of time range</param>

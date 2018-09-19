@@ -12,54 +12,33 @@ using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
 using System.Threading.Tasks;
+using iba.Logging;
+using iba.Dialogs;
+using System.Diagnostics;
+using System.IO;
 
 namespace iba.Controls
 {
     public partial class PanelEventJob : UserControl, IPropertyPane
     {
         #region Members
-        private long[] m_timeBases;
+        HdControlStorePicker m_hdStorePicker;
 
         IPropertyPaneManager m_manager;
         ConfigurationData m_confData;
         EventJobData m_eventData;
 
+        IHdReader m_hdReader;
+
+        List<string> m_currEvents;
         IHdSignalTree m_treeEvents;
-        CheckBox m_cbAutoSelectAll;
-        Button m_lbErrorEventServer;
 
         static ImageList imageListError;
         ListViewItem m_lviErrorStores;
 
-        IHdReader m_hdReader;
-
-        bool DisableStartChangedEvent, DisableStopChangedEvent;
-
-        private TimeSpan m_tsStart, m_tsStop;
-
         bool m_bEventServerChanged;
-        #endregion
 
-        #region Properties
-        public TimeSpan Start
-        {
-            get { return m_tsStart; }
-            set
-            {
-                m_tsStart = value;
-                UpdateTimeControls(true);
-            }
-        }
-
-        public TimeSpan Stop
-        {
-            get { return m_tsStop; }
-            set
-            {
-                m_tsStop = value;
-                UpdateTimeControls(false);
-            }
-        }
+        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
 
         #region Initialize
@@ -76,30 +55,42 @@ namespace iba.Controls
         public PanelEventJob()
         {
             InitializeComponent();
-            //((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
 
+            m_currEvents = new List<string>();
+
             m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
             m_hdReader.ShowConnectionError = false;
+
+            m_hdStorePicker = new HdControlStorePicker();
+            m_hdStorePicker.Dock = DockStyle.Fill;
+            m_hdStorePicker.Margin = new Padding(0, 0, 0, 0);
+            m_pnlServer.Controls.Add(m_hdStorePicker);
+            m_hdStorePicker.SelectedPort = 9180;
+            m_hdStorePicker.SelectedServer = "localhost";
+            m_hdStorePicker.HideConfigureButton();
+            m_hdStorePicker.HideStoreSelection();
+            List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
+            features.AddRange(ReaderFeature.Analyzer);
+            m_hdStorePicker.SetCheckedFeatures(features, new List<WriterFeature>());
+
+            m_treeEvents = m_hdReader.CreateSignalTree(false);
+            m_treeEvents.BeginStateChange();
+            m_treeEvents.ShowCheckboxes = true;
+            m_treeEvents.SetComparer(new PdaSignalComparer());
+            m_treeEvents.StoreTypeFilter = HdTreeTypeFilter.Event;
+            m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event | HdTreeLogicalFilter.Annotation;
+            m_treeEvents.ContextOptions = HdTreeContextOptions.None;
+            m_treeEvents.EndStateChange();
+            m_treeEvents.Control.MaximumSize = new Size(int.MaxValue, 165);
+            m_fpnlEvent.Controls.Add(m_treeEvents.Control);
+
+            m_rbtIncoming.Tag = EventJobRangeCenter.Incoming;
+            m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
+            m_rbtBoth.Tag = EventJobRangeCenter.Both;
+
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
-
-            string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
-            long ms = 10000; //10000 * 100 nanosec = 1 ms
-            long s = 1000 * ms;
-            m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
-            int n = itemStrs.Count();
-            //Debug.Assert(n == tmpStamps.Count());
-            for (int i = 0; i < n; i++)
-                m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
-
-            JobTriggerCbItem[] jobTriggerItems = new JobTriggerCbItem[3]
-            {
-                new JobTriggerCbItem(JobTrigger.Incoming),
-                new JobTriggerCbItem(JobTrigger.Outgoing),
-                new JobTriggerCbItem(JobTrigger.Both)
-            };
-            m_cbJobTrigger.Items.AddRange(jobTriggerItems);
         }
         #endregion
 
@@ -112,6 +103,9 @@ namespace iba.Controls
         {
             if (disposing)
             {
+                m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
+                m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
+
                 if (m_hdReader != null)
                 {
                     m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
@@ -144,18 +138,47 @@ namespace iba.Controls
             m_retryUpDown.Value = (decimal)m_confData.NrTryTimes;
             m_retryUpDown.Enabled = m_cbRetry.Checked = m_confData.LimitTimesTried;
 
-            //timeSelection
-            Start = m_eventData.StartRangeFromTrigger;
-            Stop = m_eventData.StopRangeFromTrigger;
+            //range selection
+            switch (m_eventData.RangeCenter)
+            {
+                case EventJobRangeCenter.Incoming:
+                    m_rbtIncoming.Checked = true;
+                    break;
+                case EventJobRangeCenter.Outgoing:
+                    m_rbtOutgoing.Checked = true;
+                    break;
+                case EventJobRangeCenter.Both:
+                    m_rbtBoth.Checked = true;
+                    break;
+            }
 
-            if (m_eventData.PreferredTimeBaseIsAuto)
-                m_cbTimeBase.SelectedIndex = 0;
-            else
-                m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_eventData.PreferredTimeBaseTicks);
+            m_cbPreTrigger.Checked = m_eventData.EnablePreTriggerRange;
+            m_cbPostTrigger.Checked = m_eventData.EnablePostTriggerRange;
+
+            m_nudDaysMax.Value = Math.Min(m_nudDaysMax.Maximum, m_eventData.MaxTriggerRange.Days);
+            m_nudHoursMax.Value = Math.Min(m_nudHoursMax.Maximum, m_eventData.MaxTriggerRange.Hours);
+            m_nudMinsMax.Value = Math.Min(m_nudMinsMax.Maximum, m_eventData.MaxTriggerRange.Minutes);
+            m_nudSecsMax.Value = Math.Min(m_nudSecsMax.Maximum, m_eventData.MaxTriggerRange.Seconds);
+
+            m_nudDaysPre.Value = Math.Min(m_nudDaysPre.Maximum, m_eventData.PreTriggerRange.Days);
+            m_nudHoursPre.Value = Math.Min(m_nudHoursPre.Maximum, m_eventData.PreTriggerRange.Hours);
+            m_nudMinsPre.Value = Math.Min(m_nudMinsPre.Maximum, m_eventData.PreTriggerRange.Minutes);
+            m_nudSecsPre.Value = Math.Min(m_nudSecsPre.Maximum, m_eventData.PreTriggerRange.Seconds);
+
+            m_nudDaysPost.Value = Math.Min(m_nudDaysPost.Maximum, m_eventData.PostTriggerRange.Days);
+            m_nudHoursPost.Value = Math.Min(m_nudHoursPost.Maximum, m_eventData.PostTriggerRange.Hours);
+            m_nudMinsPost.Value = Math.Min(m_nudMinsPost.Maximum, m_eventData.PostTriggerRange.Minutes);
+            m_nudSecsPost.Value = Math.Min(m_nudSecsPost.Maximum, m_eventData.PostTriggerRange.Seconds);
 
             //event selection
-            m_cbJobTrigger.SelectedItem = new JobTriggerCbItem(m_eventData.JobTriggerEvent);
+            m_currEvents = new List<string>(m_eventData.EventIDs);
+            m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
+            m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
+            m_hdStorePicker.SelectedServer = m_eventData.HDServer;
+            m_hdStorePicker.SelectedPort = m_eventData.HDPort;
             ChangeEventServer(m_eventData.HDServer, m_eventData.HDPort);
+            m_hdStorePicker.SelectedServerChanged += OnServerChanged;
+            m_hdStorePicker.SelectedPortChanged += OnServerChanged;
         }
 
         public void SaveData()
@@ -167,9 +190,8 @@ namespace iba.Controls
             m_confData.NrTryTimes = (int)m_retryUpDown.Value;
             m_confData.LimitTimesTried = m_cbRetry.Checked;
             //hdStore
-            m_eventData.HDServer = m_tbEventServer.Text ?? string.Empty;
-            int port = 0;
-            m_eventData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_eventData.HDServer = m_hdStorePicker.SelectedServer;
+            m_eventData.HDPort = m_hdStorePicker.SelectedPort;
 
             List<string> stores = new List<string>();
             foreach (ListViewItem item in m_lvStores.Items)
@@ -185,45 +207,23 @@ namespace iba.Controls
             else
                 m_eventData.HDStores = stores.ToArray();
 
-            //time selection
-            m_eventData.StartRangeFromTrigger = Start;
-            m_eventData.StopRangeFromTrigger = Stop;
-            if(m_cbTimeBase.SelectedIndex == 0) //auto
-            {
-                m_eventData.PreferredTimeBaseTicks = GetAutoItem().m_timebaseLength;
-                m_eventData.PreferredTimeBaseIsAuto = true;
-            }
-            else if(m_cbTimeBase.SelectedIndex > 0)
-            {
-                m_eventData.PreferredTimeBaseTicks = m_timeBases[m_cbTimeBase.SelectedIndex];
-                m_eventData.PreferredTimeBaseIsAuto = false;
-            }
+            //range selection
+            if (m_rbtIncoming.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtIncoming.Tag;
+            else if (m_rbtOutgoing.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtOutgoing.Tag;
+            else if (m_rbtBoth.Checked)
+                m_eventData.RangeCenter = (EventJobRangeCenter)m_rbtBoth.Tag;
+
+            m_eventData.EnablePreTriggerRange = m_cbPreTrigger.Checked;
+            m_eventData.EnablePostTriggerRange = m_cbPostTrigger.Checked;
+
+            m_eventData.MaxTriggerRange = new TimeSpan((int)m_nudDaysMax.Value, (int)m_nudHoursMax.Value, (int)m_nudMinsMax.Value, (int)m_nudSecsMax.Value);
+            m_eventData.PreTriggerRange = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value);
+            m_eventData.PostTriggerRange = new TimeSpan((int)m_nudDaysPost.Value, (int)m_nudHoursPost.Value, (int)m_nudMinsPost.Value, (int)m_nudSecsPost.Value);
 
             // event selection
-            m_eventData.JobTriggerEvent = (m_cbJobTrigger.SelectedItem as JobTriggerCbItem)?.m_jobTrigger ?? JobTrigger.Incoming;
-            if (m_treeEvents != null)
-            {
-                if (m_cbAutoSelectAll.Checked)
-                {
-                    m_eventData.MonitorAllEvents = true;
-                    m_eventData.EventIDs = new List<string>();
-                }
-                else
-                {
-                    m_eventData.MonitorAllEvents = false;
-                    m_eventData.EventIDs = new List<string>(m_treeEvents.GetCheckedSignalIds());
-                }
-            }
-            else if (m_bEventServerChanged)
-            {
-                m_eventData.MonitorAllEvents = false;
-                m_eventData.EventIDs = new List<string>();
-            }
-            else
-            {
-                //Keep old settings
-            }
-
+            m_eventData.EventIDs = new List<string>(m_currEvents);
             m_bEventServerChanged = false;
         }
         #endregion
@@ -236,74 +236,11 @@ namespace iba.Controls
         }
 
         #region Event HD server
-        class JobTriggerCbItem : IEquatable<JobTriggerCbItem>
+        void OnServerChanged()
         {
-            private string m_title;
-            public JobTrigger m_jobTrigger;
-            public override string ToString()
-            {
-                return m_title;
-            }
-            public JobTriggerCbItem(JobTrigger jobTrigger)
-            {
-                m_title = "??";
-                switch (jobTrigger)
-                {
-                    case JobTrigger.Incoming:
-                        m_title = Properties.Resources.EventJobTrigger_Incoming;
-                        break;
-                    case JobTrigger.Outgoing:
-                        m_title = Properties.Resources.EventJobTrigger_Outgoing;
-                        break;
-                    case JobTrigger.Both:
-                        m_title = Properties.Resources.EventJobTrigger_Both;
-                        break;
-                }
-                m_jobTrigger = jobTrigger;
-            }
-
-            #region IEquatable
-            public override int GetHashCode()
-            {
-                return m_jobTrigger.GetHashCode();
-            }
-
-            public override bool Equals(object obj)
-            {
-                return Equals(obj as JobTriggerCbItem);
-            }
-
-            public bool Equals(JobTriggerCbItem other)
-            {
-                return other != null && other.m_jobTrigger == m_jobTrigger;
-            }
-            #endregion
-        }
-
-        private void btnEventServer_Click(object sender, EventArgs e)
-        {
-            int port = 0;
-            if (!int.TryParse(m_tbEventServerPort.Text, out port))
-                port = 9180;
-
-            string newServer = string.Empty;
-            int newPort = 0;
-            
-            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
-            {
-                serverPicker.SetCheckedFeatures(new List<ReaderFeature>() { ReaderFeature.Event }, new List<WriterFeature>());
-                if (serverPicker.ShowDialog() != DialogResult.OK)
-                    return;
-
-                newServer = serverPicker.SelectedServer;
-                newPort = serverPicker.SelectedPort;
-            }
-
-            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
-                return;
-
             m_bEventServerChanged = true;
-            ChangeEventServer(newServer, newPort);
+            m_currEvents.Clear();
+            ChangeEventServer(m_hdStorePicker.SelectedServer, m_hdStorePicker.SelectedPort);
         }
 
         void ChangeEventServer(string server, int port)
@@ -314,14 +251,6 @@ namespace iba.Controls
                 return;
             }
 
-            m_tbEventServer.Text = server;
-            m_tbEventServerPort.Text = port.ToString();
-
-            fpnlEvent.Controls.Clear();
-
-            if (m_treeEvents != null)
-                m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
-            m_treeEvents = null;
             m_lvStores.Items.Clear();
 
             Task.Factory.StartNew((stateObj) =>
@@ -331,6 +260,7 @@ namespace iba.Controls
                 int prt = (int)stateParams[1];
 
                 m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+                m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
                 if (m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
@@ -342,9 +272,19 @@ namespace iba.Controls
 
         void OnHdConnectionChanged()
         {
+            //Remove handler here; otherwise selection gets reset on a reconnect
+            //Handler will be readded on reconnect in UpdateEventTree
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
+
+            UpdateTrees();
+        }
+
+        void UpdateTrees()
+        {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(OnHdConnectionChanged));
+                BeginInvoke(new Action(UpdateTrees));
                 return;
             }
 
@@ -354,63 +294,18 @@ namespace iba.Controls
 
         void UpdateEventTree()
         {
-            fpnlEvent.Controls.Clear();
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                return;
 
-            if (!m_hdReader.IsConnected() && m_treeEvents == null)
-            {
-                if (m_lbErrorEventServer == null)
-                    m_lbErrorEventServer = CreateErrorLabel();
-
-                m_lbErrorEventServer.Text = string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
-
-                fpnlEvent.Controls.Add(m_lbErrorEventServer);
-            }
-            else if (m_treeEvents == null)
-            {
-                if (m_cbAutoSelectAll == null)
-                {
-                    m_cbAutoSelectAll = new CheckBox();
-                    m_cbAutoSelectAll.Text = Properties.Resources.EventJob_AutoSelect;
-                    m_cbAutoSelectAll.CheckedChanged += m_cbAutoSelectAll_CheckedChanged;
-                }
-
-                if (m_bEventServerChanged)
-                    m_cbAutoSelectAll.Checked = false;
-                else
-                    m_cbAutoSelectAll.Checked = m_eventData.MonitorAllEvents;
-
-                fpnlEvent.Controls.Add(m_cbAutoSelectAll);
-
-                m_treeEvents = m_hdReader.CreateSignalTree(false);
-                m_treeEvents.BeginStateChange();
-                m_treeEvents.ShowCheckboxes = true;
-                m_treeEvents.SetComparer(new PdaSignalComparer());
-                m_treeEvents.StoreTypeFilter = HdTreeTypeFilter.Event;
-                m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event | HdTreeLogicalFilter.Annotation;
-                m_treeEvents.ContextOptions = HdTreeContextOptions.None;
-                m_treeEvents.EndStateChange();
-                m_treeEvents.ExpandAll();
-                m_treeEvents.Control.MaximumSize = new Size(int.MaxValue, 165);
-
-                if (!m_bEventServerChanged && !m_cbAutoSelectAll.Checked)
-                    m_treeEvents.CheckSignalIds(m_eventData.EventIDs);
-                else if (m_cbAutoSelectAll.Checked)
-                    m_treeEvents.CheckAll();
-
-                m_treeEvents.CheckedChanged += m_treeEvents_CheckedChanged;
-
-                fpnlEvent.Controls.Add(m_treeEvents.Control);
-            }
-            else
-            {
-                fpnlEvent.Controls.Add(m_cbAutoSelectAll);
-                fpnlEvent.Controls.Add(m_treeEvents.Control);
-            }
+            m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
+            m_treeEvents.CheckSignalIds(m_currEvents);
+            m_treeEvents.ExpandAll();
+            m_treeEvents.CheckedChanged += m_treeEvents_CheckedChanged;
         }
 
         void UpdateStoreTree()
         {
-            if (!m_hdReader.IsConnected())
+            if (m_hdReader == null || !m_hdReader.IsConnected())
             {
                 m_lvStores.CheckBoxes = false;
                 m_lvStores.SmallImageList = imageListError;
@@ -454,273 +349,137 @@ namespace iba.Controls
             }
         }
 
-        Button CreateErrorLabel()
-        {
-            Button res = new Button();
-            res.FlatAppearance.BorderColor = BackColor;
-            res.FlatAppearance.BorderSize = 0;
-            res.FlatAppearance.MouseDownBackColor = BackColor;
-            res.FlatAppearance.MouseOverBackColor = BackColor;
-            res.FlatStyle = FlatStyle.Flat;
-            res.Image = Properties.Resources.img_error;
-            res.ImageAlign = ContentAlignment.MiddleLeft;
-            res.TextAlign = ContentAlignment.MiddleLeft;
-            res.TextImageRelation = TextImageRelation.ImageBeforeText;
-            res.AutoSize = true;
-            res.ForeColor = Color.Red;
-            return res;
-        }
-
         private void m_treeEvents_CheckedChanged()
         {
-            m_cbAutoSelectAll.Checked = false;
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                return;
+
+            m_currEvents = new List<string>(m_treeEvents.GetCheckedSignalIds());
+        }
+        #endregion
+
+        #region Range selection
+        private void m_cbPreTrigger_CheckedChanged(object sender, EventArgs e)
+        {
+            m_nudDaysPre.Enabled = m_nudHoursPre.Enabled = m_nudMinsPre.Enabled = m_nudSecsPre.Enabled = m_cbPreTrigger.Checked;
         }
 
-        private void m_cbAutoSelectAll_CheckedChanged(object sender, EventArgs e)
+        private void m_cbPostTrigger_CheckedChanged(object sender, EventArgs e)
         {
-            if (m_treeEvents != null && m_cbAutoSelectAll.Checked)
+            m_nudDaysPost.Enabled = m_nudHoursPost.Enabled = m_nudMinsPost.Enabled = m_nudSecsPost.Enabled = m_cbPostTrigger.Checked;
+        }
+
+        private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rbt = sender as RadioButton;
+            if (rbt == null)
+                return;
+
+            if (rbt.Tag == null || !(rbt.Tag is EventJobRangeCenter))
+                return;
+
+            //X constants are based on pixel distances in the images
+            //Y constants are based on designer distances of the labels
+            EventJobRangeCenter lRangeCenter = (EventJobRangeCenter)rbt.Tag;
+            if (lRangeCenter == EventJobRangeCenter.Both)
             {
-                m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
-                m_treeEvents.CheckAll();
-                m_treeEvents.CheckedChanged += m_treeEvents_CheckedChanged;
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_both;
+
+                m_lbOutgoing.Visible = true;
+                m_lbIncoming.Visible = true;
+
+                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+            }
+            else
+            {
+                m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_single;
+
+                if (lRangeCenter == EventJobRangeCenter.Incoming)
+                {
+                    m_lbOutgoing.Visible = false;
+                    m_lbIncoming.Visible = true;
+
+                    m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+                else
+                {
+                    m_lbOutgoing.Visible = true;
+                    m_lbIncoming.Visible = false;
+
+                    m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                }
+
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
             }
         }
         #endregion
 
-        #region Time selection
-        private void UpdateTimeControls(bool start)
+        #region Test file
+        private void m_btGenerateTest_Click(object sender, EventArgs e)
         {
-            if (start)
-            {
-                DisableStartChangedEvent = true;
-                m_nudStartDays.Value = Math.Min(m_nudStartDays.Maximum, m_tsStart.Days);
-                m_nudStartHours.Value = m_tsStart.Hours;
-                m_nudStartMinutes.Value = m_tsStart.Minutes;
-                m_nudStartSeconds.Value = m_tsStart.Seconds;
-                DisableStartChangedEvent = false;
-
-            }
-            else
-            {
-                DisableStopChangedEvent = true;
-                m_nudStopDays.Value = Math.Min(m_nudStopDays.Maximum, m_tsStop.Days);
-                m_nudStopHours.Value = m_tsStop.Hours;
-                m_nudStopMinutes.Value = m_tsStop.Minutes;
-                m_nudStopSeconds.Value = m_tsStop.Seconds;
-                DisableStopChangedEvent = false;
-            }
-            m_cbTimeBase.Invalidate();
-            m_cbTimeBase_SelectedIndexChanged(null, null);
-        }
-
-        private void OnStartChanged(object sender, EventArgs e)
-        {
-            if(DisableStartChangedEvent)
-                return;
+            SaveData();
 
             try
             {
-                DisableStartChangedEvent = true;
-                TimeSpan sp = new TimeSpan((int)m_nudStartDays.Value, (int)m_nudStartHours.Value, (int)m_nudStartMinutes.Value, (int)m_nudStartSeconds.Value);
+                DateTime dtNow = DateTime.UtcNow;
 
-                if(Control.ModifierKeys == Keys.Control)
+                TimeSpan preRange = m_eventData.EnablePreTriggerRange ? m_eventData.PreTriggerRange : TimeSpan.Zero;
+                TimeSpan postRange = m_eventData.EnablePostTriggerRange ? m_eventData.PostTriggerRange : TimeSpan.Zero;
+                DateTime dtStart = dtNow.Subtract(preRange);
+                DateTime dtMax = dtStart.Add(m_eventData.MaxTriggerRange);
+                DateTime dtStop = dtNow.Add(postRange);
+                if (dtMax < dtStop)
+                    dtStop = dtMax;
+
+                string filename = string.Empty;
+                using (SaveFileDialog dlg = new SaveFileDialog())
                 {
-                    if(sender == m_nudStartDays)
-                    {
-                        sp = TimeSpan.FromDays((int)m_nudStartDays.Value);
-                    }
-                    else if(sender == m_nudStartHours)
-                    {
-                        sp = TimeSpan.FromHours((int)m_nudStartHours.Value);
-                    }
-                    else if(sender == m_nudStartMinutes)
-                    {
-                        sp = TimeSpan.FromMinutes((int)m_nudStartMinutes.Value);
-                    }
-                    else if(sender == m_nudStartSeconds)
-                    {
-                        sp = TimeSpan.FromSeconds((int)m_nudStartSeconds.Value);
-                    }
+                    dlg.AddExtension = true;
+                    dlg.Title = Properties.Resources.EventJob_GenerateTestFile;
+                    dlg.Filter = Properties.Resources.EventJob_GenerateTestFile_Filter;
+                    dlg.DefaultExt = ".hdq";
+
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    filename = dlg.FileName;
                 }
 
-                long diff = TimeSpan.FromSeconds(1).Ticks;
-                if (sp.Ticks >= m_tsStop.Ticks + diff)
+                if (string.IsNullOrWhiteSpace(filename))
+                    return;
+
+
+                List<string> generatedFiles = null;
+                using (GenerateEventJobTestFileDlg dlg = new GenerateEventJobTestFileDlg(m_confData, filename))
                 {
-                    Start = sp;
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    generatedFiles = dlg.GeneratedFiles;
                 }
-                else if (sp.Ticks >= diff)
+
+                if (generatedFiles == null || generatedFiles.Count <= 0)
+                    return;
+
+                foreach (var file in generatedFiles)
                 {
-                    Start = sp;
-                    Stop = TimeSpan.FromTicks(sp.Ticks - diff);
-                }
-                else
-                {
-                    Stop = TimeSpan.FromTicks(0);
-                    Start = TimeSpan.FromTicks(diff);
-                }
-            }
-            finally
-            {
-                DisableStartChangedEvent = false;
-            }
-        }
-
-        private void OnStopChanged(object sender, EventArgs e)
-        {
-            if(DisableStopChangedEvent)
-                return;
-
-            try
-            {
-                DisableStopChangedEvent = true;
-
-                TimeSpan sp = new TimeSpan((int)m_nudStopDays.Value, (int)m_nudStopHours.Value, (int)m_nudStopMinutes.Value, (int)m_nudStopSeconds.Value);
-
-                if(Control.ModifierKeys == Keys.Control)
-                {
-                    if(sender == m_nudStopDays)
+                    if (File.Exists(file))
                     {
-                        sp = TimeSpan.FromDays((int)m_nudStopDays.Value);
-                    }
-                    else if(sender == m_nudStopHours)
-                    {
-                        sp = TimeSpan.FromHours((int)m_nudStopHours.Value);
-                    }
-                    else if(sender == m_nudStopMinutes)
-                    {
-                        sp = TimeSpan.FromMinutes((int)m_nudStopMinutes.Value);
-                    }
-                    else if(sender == m_nudStopSeconds)
-                    {
-                        sp = TimeSpan.FromSeconds((int)m_nudStopSeconds.Value);
+                        ProcessStartInfo si = new ProcessStartInfo(file);
+                        Process.Start(si);
                     }
                 }
-                if(sp.Ticks < 0) sp = TimeSpan.Zero;
-                Stop = sp;
-
-                long diff = TimeSpan.FromSeconds(1).Ticks;
-                if(m_tsStart.Ticks < sp.Ticks + diff)
-                {
-                    Start = TimeSpan.FromTicks(sp.Ticks + diff);
-                }
             }
-            finally
+            catch (Exception ex)
             {
-                DisableStopChangedEvent = false;
+                ibaLogger.LogFormat(Level.Exception, "Generating an HDQ test file failed: {0}", ex.Message);
             }
-        }
-
-        private void m_cbTimeBase_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (e.Index < 0)
-                return;
-
-            string tooltipText = null;
-            Brush brush = null;
-            bool unknowntba = false;
-            switch (CheckTimeBaseAcceptability(((ComboBox)sender).Items[e.Index] as TimeCbItem))
-            {
-                case TimeBaseAcceptability.Unknown:
-                    brush = new SolidBrush(SystemColors.WindowText);
-                    unknowntba = true;
-                    break;
-                case TimeBaseAcceptability.Allowed:
-                    brush = Brushes.Green;
-                    tooltipText = iba.Properties.Resources.TooltipGreen;
-                    break;
-                case TimeBaseAcceptability.Questionable:
-                    brush = Brushes.DarkOrange;
-                    tooltipText = iba.Properties.Resources.TooltipOrange;
-                    break;
-                case TimeBaseAcceptability.Forbidden:
-                    brush = Brushes.Red;
-                    tooltipText = iba.Properties.Resources.TooltipRed;
-                    break;
-            }
-
-            string text = ((ComboBox)sender).Items[e.Index].ToString();
-            if(e.Index == 0)
-            {
-                if (unknowntba)
-                    text = string.Format(text, "?");
-                else
-                    text = string.Format(text, GetAutoItem());
-            }
-
-            if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.Selected))
-                e.Graphics.FillRectangle(new SolidBrush(Color.Lavender), e.Bounds);
-            else
-                e.DrawBackground();
-
-            e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
-            if (e.State.HasFlag(DrawItemState.Selected) && tooltipText != null && m_cbTimeBase.DroppedDown)
-            {
-                m_toolTip.Show(tooltipText, m_cbTimeBase, e.Bounds.Right, e.Bounds.Bottom + m_cbTimeBase.Height);
-            }
-        }
-
-        private TimeCbItem GetAutoItem() //auto
-        {
-            for (int i = 1; i < m_cbTimeBase.Items.Count; i++)
-            {
-                TimeCbItem item = m_cbTimeBase.Items[i] as TimeCbItem;
-                if (CheckTimeBaseAcceptability(item) == TimeBaseAcceptability.Allowed)
-                    return item;
-            }
-            //none ok, return last
-            return m_cbTimeBase.Items[m_cbTimeBase.Items.Count - 1] as TimeCbItem;
-        }
-
-        private void m_cbTimeBase_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (m_cbTimeBase.SelectedItem != null)
-            {
-                switch (CheckTimeBaseAcceptability(m_cbTimeBase.SelectedItem as TimeCbItem))
-                {
-                    case TimeBaseAcceptability.Unknown:
-                        m_toolTip.SetToolTip(m_cbTimeBase, null);
-                        break;
-                    case TimeBaseAcceptability.Allowed:
-                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipGreen);
-                        break;
-                    case TimeBaseAcceptability.Questionable:
-                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipOrange);
-                        break;
-                    case TimeBaseAcceptability.Forbidden:
-                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipRed);
-                        break;
-                }
-            }
-            else
-                m_toolTip.SetToolTip(m_cbTimeBase, null);
-        }
-
-        private void m_cbTimeBase_DropDownClosed(object sender, EventArgs e)
-        {
-            m_toolTip.Hide(m_cbTimeBase);
-        }
-
-        double ReqTimeBaseFactor()
-        {
-            return Math.Sqrt(40.0); //in the future we might need to ask the reader
-        }
-
-        TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
-        {
-            long duration = Start.Ticks - Stop.Ticks;
-            if (duration <= 0)
-                return TimeBaseAcceptability.Unknown;
-
-            if (item.m_timebaseLength == 0)
-                return TimeBaseAcceptability.Allowed; //auto
-
-            double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
-            if (samples > 1.0e9)
-                return TimeBaseAcceptability.Forbidden;
-            else if (samples > 1.0e7)
-                return TimeBaseAcceptability.Questionable;
-            else
-                return TimeBaseAcceptability.Allowed;
         }
         #endregion
     }

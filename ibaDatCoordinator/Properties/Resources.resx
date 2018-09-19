@@ -1430,9 +1430,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="EventJobsNodeParent" xml:space="preserve">
     <value>Event Jobs</value>
   </data>
-  <data name="EventJob_AutoSelect" xml:space="preserve">
-    <value>Auto-select all</value>
-  </data>
   <data name="addEventConfigurationText" xml:space="preserve">
     <value>Add Event Job</value>
   </data>
@@ -1457,16 +1454,40 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="UnmarkDialogTitleEvent" xml:space="preserve">
     <value>Unmarking event occurences</value>
   </data>
-  <data name="EventJobTrigger_Both" xml:space="preserve">
-    <value>Both</value>
-  </data>
-  <data name="EventJobTrigger_Incoming" xml:space="preserve">
-    <value>Incoming event</value>
-  </data>
-  <data name="EventJobTrigger_Outgoing" xml:space="preserve">
-    <value>Outgoing event</value>
-  </data>
   <data name="EventJob_DefaultHDConnectionErr" xml:space="preserve">
     <value>Cannot connect to server</value>
+  </data>
+  <data name="EventJob_GenerateTestFile" xml:space="preserve">
+    <value>Generate an HDQ test file</value>
+  </data>
+  <data name="EventJob_GenerateTestFile_Filter" xml:space="preserve">
+    <value>HDQ file|*.hdq</value>
+  </data>
+  <data name="img_eventjob_range_both" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_eventjob_range_both.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_eventjob_range_single" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_eventjob_range_single.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EventJob_TestFile_Canceled" xml:space="preserve">
+    <value>Canceled.</value>
+  </data>
+  <data name="EventJob_TestFile_Error" xml:space="preserve">
+    <value>An error occurred: {0}</value>
+  </data>
+  <data name="EventJob_TestFile_Finished" xml:space="preserve">
+    <value>Finished successfully.</value>
+  </data>
+  <data name="EventJob_TestFile_GeneratingFile" xml:space="preserve">
+    <value>Generating test file...</value>
+  </data>
+  <data name="EventJob_TestFile_NoEventFound" xml:space="preserve">
+    <value>No event occurrences were found. Using current time as time range center instead.</value>
+  </data>
+  <data name="EventJob_TestFile_SearchingEvent" xml:space="preserve">
+    <value>Searching for event occurrences...</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>
