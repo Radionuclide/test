@@ -1196,6 +1196,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Log(Logging.Level.Exception, ex.Message);
+                Log(Logging.Level.Debug, ex.ToString());
                 RestartIbaAnalyzer();
                 return iba.Properties.Resources.IbaAnalyzerUndeterminedError;
             }
@@ -2469,6 +2470,7 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     Log(Logging.Level.Exception,ex.Message);
+                    Log(Logging.Level.Debug, ex.ToString());
                     if (!m_needIbaAnalyzer) return;
                     try
                     {
@@ -2928,6 +2930,7 @@ namespace iba.Processing
                         catch (Exception ex)
                         {
                             Log(Logging.Level.Exception, ex.Message);
+                            Log(Logging.Level.Debug, ex.ToString());
                             try
                             {
                                 m_ibaAnalyzer.CloseDataFiles();
@@ -3033,6 +3036,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Log(Logging.Level.Exception, ex.Message);
+                Log(Logging.Level.Debug, ex.ToString());
                 try
                 {
                     m_ibaAnalyzer.CloseDataFiles();

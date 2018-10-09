@@ -78,6 +78,7 @@ namespace iba.Services
                 catch (Exception ex)
                 { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
                     LogData.Data.Logger.Log(Logging.Level.Exception, ex.Message);
+                    LogData.Data.Logger.Log(Logging.Level.Debug, ex.ToString());
                 }
 
                 Remoting.ServerRemotingManager.SetupRemoting(m_communicationObject, Program.ServicePortNr);
