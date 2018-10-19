@@ -125,10 +125,40 @@
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtBoth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_rbtBoth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 49</value>
+  </data>
+  <data name="m_rbtBoth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 17</value>
+  </data>
+  <data name="m_rbtBoth.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbtBoth.Text" xml:space="preserve">
+    <value>Range between incoming and outgoing event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
+    <value>m_rbtBoth</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_lbMaximum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lbMaximum.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10pt, style=Bold</value>
   </data>
@@ -136,7 +166,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbMaximum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>364, 101</value>
+    <value>396, 101</value>
   </data>
   <data name="m_lbMaximum.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 17</value>
@@ -157,7 +187,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbMaximum.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lbPre.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -169,7 +199,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>338, 58</value>
+    <value>370, 58</value>
   </data>
   <data name="m_lbPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 17</value>
@@ -190,7 +220,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbPre.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lbPost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,7 +232,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>437, 58</value>
+    <value>469, 58</value>
   </data>
   <data name="m_lbPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 17</value>
@@ -223,7 +253,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbPost.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lbOutgoing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -235,7 +265,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>529, 0</value>
+    <value>561, 0</value>
   </data>
   <data name="m_lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 17</value>
@@ -256,7 +286,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbOutgoing.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_lbIncoming.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -268,7 +298,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>364, 0</value>
+    <value>396, 0</value>
   </data>
   <data name="m_lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 17</value>
@@ -289,13 +319,13 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbIncoming.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_pbRangeCenter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_pbRangeCenter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>255, 3</value>
+    <value>287, 3</value>
   </data>
   <data name="m_pbRangeCenter.Size" type="System.Drawing.Size, System.Drawing">
     <value>420, 120</value>
@@ -313,36 +343,6 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_pbRangeCenter.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbtBoth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbtBoth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
-  </data>
-  <data name="m_rbtBoth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 17</value>
-  </data>
-  <data name="m_rbtBoth.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_rbtBoth.Text" xml:space="preserve">
-    <value>Intermediate range of both events</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
-    <value>m_rbtBoth</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_rbtOutgoing.AutoSize" type="System.Boolean, mscorlib">
@@ -355,13 +355,13 @@
     <value>3, 26</value>
   </data>
   <data name="m_rbtOutgoing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 17</value>
+    <value>150, 17</value>
   </data>
   <data name="m_rbtOutgoing.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbtOutgoing.Text" xml:space="preserve">
-    <value>Outgoing event</value>
+    <value>Relative to outgoing event</value>
   </data>
   <data name="&gt;&gt;m_rbtOutgoing.Name" xml:space="preserve">
     <value>m_rbtOutgoing</value>
@@ -385,13 +385,13 @@
     <value>3, 3</value>
   </data>
   <data name="m_rbtIncoming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 17</value>
+    <value>151, 17</value>
   </data>
   <data name="m_rbtIncoming.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_rbtIncoming.Text" xml:space="preserve">
-    <value>Incoming event</value>
+    <value>Relative to incoming event</value>
   </data>
   <data name="&gt;&gt;m_rbtIncoming.Name" xml:space="preserve">
     <value>m_rbtIncoming</value>
@@ -409,7 +409,7 @@
     <value>16, 38</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>680, 126</value>
+    <value>712, 126</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -436,13 +436,13 @@
     <value>13, 22</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 13</value>
+    <value>63, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Time range center:</value>
+    <value>Time range:</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -1333,7 +1333,7 @@
     <value>0, 538</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 460</value>
+    <value>734, 460</value>
   </data>
   <data name="gbOutput.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1405,7 +1405,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_fpnlEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>681, 175</value>
+    <value>713, 175</value>
   </data>
   <data name="m_fpnlEvent.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -1425,6 +1425,9 @@
   <data name="&gt;&gt;m_fpnlEvent.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_pnlServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_pnlServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 19</value>
   </data>
@@ -1432,7 +1435,7 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="m_pnlServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 190</value>
+    <value>721, 190</value>
   </data>
   <data name="m_pnlServer.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -1453,7 +1456,7 @@
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 407</value>
+    <value>734, 407</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1578,7 +1581,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_undoChangesBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>608, 18</value>
+    <value>640, 18</value>
   </data>
   <data name="m_undoChangesBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1704,7 +1707,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>516, 18</value>
+    <value>548, 18</value>
   </data>
   <data name="m_stopButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1763,7 +1766,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_applyToRunningBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>562, 18</value>
+    <value>594, 18</value>
   </data>
   <data name="m_applyToRunningBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1811,7 +1814,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 18</value>
+    <value>502, 18</value>
   </data>
   <data name="m_startButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
@@ -1952,7 +1955,7 @@
     <value>0, 0</value>
   </data>
   <data name="gbGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 119</value>
+    <value>734, 119</value>
   </data>
   <data name="gbGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1982,7 +1985,7 @@
     <value>0, 639</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 1001</value>
+    <value>734, 1001</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>

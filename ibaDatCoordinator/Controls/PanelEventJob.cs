@@ -16,6 +16,7 @@ using iba.Logging;
 using iba.Dialogs;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace iba.Controls
 {
@@ -37,6 +38,9 @@ namespace iba.Controls
         ListViewItem m_lviErrorStores;
 
         bool m_bEventServerChanged;
+        System.Threading.Timer m_tmrChangeServer;
+        object m_changeServerLock;
+        Tuple<string, int> m_changeServerReq, m_prevChangeReq;
 
         const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
@@ -57,6 +61,10 @@ namespace iba.Controls
             InitializeComponent();
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
+
+            m_changeServerReq = null;
+            m_prevChangeReq = null;
+            m_changeServerLock = new object();
 
             m_currEvents = new List<string>();
 
@@ -91,6 +99,13 @@ namespace iba.Controls
             m_rbtBoth.Tag = EventJobRangeCenter.Both;
 
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
+            m_tmrChangeServer = new System.Threading.Timer(OnTmrChangeServerTick);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            m_tmrChangeServer.Change(200, Timeout.Infinite);
         }
         #endregion
 
@@ -103,14 +118,24 @@ namespace iba.Controls
         {
             if (disposing)
             {
+                IHdReader lReader = m_hdReader;
+                m_hdReader = null;
+
+                System.Threading.Timer lTimer = m_tmrChangeServer;
+                m_tmrChangeServer = null;
+                if (lTimer != null)
+                {
+                    lTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    lTimer.Dispose();
+                }
+
                 m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
                 m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
 
-                if (m_hdReader != null)
+                if (lReader != null)
                 {
-                    m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
-                    m_hdReader.Dispose();
-                    m_hdReader = null;
+                    lReader.ConnectionChanged -= OnHdConnectionChanged;
+                    lReader.Dispose();
                 }
 
                 components?.Dispose();
@@ -255,19 +280,44 @@ namespace iba.Controls
 
             Task.Factory.StartNew((stateObj) =>
             {
-                object[] stateParams = stateObj as object[];
-                string srv = stateParams[0] as string;
-                int prt = (int)stateParams[1];
+                lock (m_changeServerLock)
+                {
+                    m_changeServerReq = stateObj as Tuple<string, int>;
+                }
+            }, Tuple.Create(server, port));
+        }
 
-                m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+        private void OnTmrChangeServerTick(object state)
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (m_changeServerReq != null)
+            {
+                Tuple<string, int> currReq = null;
+                lock (m_changeServerLock)
+                {
+                    currReq = m_changeServerReq;
+                    m_changeServerReq = null;
+                }
+                m_prevChangeReq = currReq;
+
+                if (m_hdReader != null)
+                    m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+
                 m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
-                if (m_hdReader.IsConnected())
+
+                if (m_hdReader != null && m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
-                m_hdReader.Connect(srv, prt);
+                m_hdReader?.Connect(currReq.Item1, currReq.Item2);
                 OnHdConnectionChanged();
-                m_hdReader.ConnectionChanged += OnHdConnectionChanged;
-            }, new object[] { server, port });
+
+                if (m_hdReader != null)
+                    m_hdReader.ConnectionChanged += OnHdConnectionChanged;
+            }
+
+            m_tmrChangeServer?.Change(200, Timeout.Infinite);
         }
 
         void OnHdConnectionChanged()
