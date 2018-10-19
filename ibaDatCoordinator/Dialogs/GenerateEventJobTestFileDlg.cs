@@ -29,6 +29,12 @@ namespace iba.Dialogs
             m_generator = new EventJobTestGenerator(confData, fileName);
             m_generator.StatusChanged += OnStatusChanged;
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            m_generator.Start();
+        }
         #endregion
 
         #region Dispose
@@ -64,12 +70,6 @@ namespace iba.Dialogs
         #endregion
 
         #region Actions
-        public new DialogResult ShowDialog()
-        {
-            m_generator.Start();
-            return base.ShowDialog();
-        }
-
         void OnStatusChanged(EventJobTestStatus status)
         {
             if (status == null)

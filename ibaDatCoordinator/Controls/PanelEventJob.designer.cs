@@ -18,13 +18,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
             this.gbOutput = new iba.Utility.CollapsibleGroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.m_rbtBoth = new System.Windows.Forms.RadioButton();
             this.m_lbMaximum = new System.Windows.Forms.Label();
             this.m_lbPre = new System.Windows.Forms.Label();
             this.m_lbPost = new System.Windows.Forms.Label();
             this.m_lbOutgoing = new System.Windows.Forms.Label();
             this.m_lbIncoming = new System.Windows.Forms.Label();
             this.m_pbRangeCenter = new System.Windows.Forms.PictureBox();
-            this.m_rbtBoth = new System.Windows.Forms.RadioButton();
             this.m_rbtOutgoing = new System.Windows.Forms.RadioButton();
             this.m_rbtIncoming = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
@@ -144,16 +144,23 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.m_rbtBoth);
             this.panel1.Controls.Add(this.m_lbMaximum);
             this.panel1.Controls.Add(this.m_lbPre);
             this.panel1.Controls.Add(this.m_lbPost);
             this.panel1.Controls.Add(this.m_lbOutgoing);
             this.panel1.Controls.Add(this.m_lbIncoming);
             this.panel1.Controls.Add(this.m_pbRangeCenter);
-            this.panel1.Controls.Add(this.m_rbtBoth);
             this.panel1.Controls.Add(this.m_rbtOutgoing);
             this.panel1.Controls.Add(this.m_rbtIncoming);
             this.panel1.Name = "panel1";
+            // 
+            // m_rbtBoth
+            // 
+            resources.ApplyResources(this.m_rbtBoth, "m_rbtBoth");
+            this.m_rbtBoth.Name = "m_rbtBoth";
+            this.m_rbtBoth.UseVisualStyleBackColor = true;
+            this.m_rbtBoth.CheckedChanged += new System.EventHandler(this.rbtRangeCenter_CheckedChanged);
             // 
             // m_lbMaximum
             // 
@@ -186,13 +193,6 @@
             resources.ApplyResources(this.m_pbRangeCenter, "m_pbRangeCenter");
             this.m_pbRangeCenter.Name = "m_pbRangeCenter";
             this.m_pbRangeCenter.TabStop = false;
-            // 
-            // m_rbtBoth
-            // 
-            resources.ApplyResources(this.m_rbtBoth, "m_rbtBoth");
-            this.m_rbtBoth.Name = "m_rbtBoth";
-            this.m_rbtBoth.UseVisualStyleBackColor = true;
-            this.m_rbtBoth.CheckedChanged += new System.EventHandler(this.rbtRangeCenter_CheckedChanged);
             // 
             // m_rbtOutgoing
             // 

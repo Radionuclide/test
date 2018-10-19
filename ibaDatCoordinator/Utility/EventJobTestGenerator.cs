@@ -118,6 +118,7 @@ namespace iba.Utility
                             bCancelled = true;
                             return;
                         }
+                        lCounter++;
                     }
                 }
 
