@@ -124,26 +124,6 @@
   <data name="panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbtBoth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_rbtBoth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
-  </data>
-  <data name="m_rbtBoth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>241, 17</value>
-  </data>
-  <data name="m_rbtBoth.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_rbtBoth.Text" xml:space="preserve">
-    <value>Range between incoming and outgoing event</value>
-  </data>
   <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
     <value>m_rbtBoth</value>
   </data>
@@ -155,27 +135,6 @@
   </data>
   <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_lbMaximum.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbMaximum.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
-  </data>
-  <data name="m_lbMaximum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbMaximum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 101</value>
-  </data>
-  <data name="m_lbMaximum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 17</value>
-  </data>
-  <data name="m_lbMaximum.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lbMaximum.Text" xml:space="preserve">
-    <value>Maximum</value>
   </data>
   <data name="&gt;&gt;m_lbMaximum.Name" xml:space="preserve">
     <value>m_lbMaximum</value>
@@ -189,27 +148,6 @@
   <data name="&gt;&gt;m_lbMaximum.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lbPre.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbPre.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
-  </data>
-  <data name="m_lbPre.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>370, 58</value>
-  </data>
-  <data name="m_lbPre.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 17</value>
-  </data>
-  <data name="m_lbPre.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_lbPre.Text" xml:space="preserve">
-    <value>Pre</value>
-  </data>
   <data name="&gt;&gt;m_lbPre.Name" xml:space="preserve">
     <value>m_lbPre</value>
   </data>
@@ -221,27 +159,6 @@
   </data>
   <data name="&gt;&gt;m_lbPre.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_lbPost.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbPost.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
-  </data>
-  <data name="m_lbPost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>469, 58</value>
-  </data>
-  <data name="m_lbPost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 17</value>
-  </data>
-  <data name="m_lbPost.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_lbPost.Text" xml:space="preserve">
-    <value>Post</value>
   </data>
   <data name="&gt;&gt;m_lbPost.Name" xml:space="preserve">
     <value>m_lbPost</value>
@@ -255,27 +172,6 @@
   <data name="&gt;&gt;m_lbPost.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_lbOutgoing.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbOutgoing.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
-  </data>
-  <data name="m_lbOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 0</value>
-  </data>
-  <data name="m_lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 17</value>
-  </data>
-  <data name="m_lbOutgoing.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_lbOutgoing.Text" xml:space="preserve">
-    <value>Outgoing</value>
-  </data>
   <data name="&gt;&gt;m_lbOutgoing.Name" xml:space="preserve">
     <value>m_lbOutgoing</value>
   </data>
@@ -287,27 +183,6 @@
   </data>
   <data name="&gt;&gt;m_lbOutgoing.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="m_lbIncoming.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbIncoming.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
-  </data>
-  <data name="m_lbIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 0</value>
-  </data>
-  <data name="m_lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
-  </data>
-  <data name="m_lbIncoming.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_lbIncoming.Text" xml:space="preserve">
-    <value>Incoming</value>
   </data>
   <data name="&gt;&gt;m_lbIncoming.Name" xml:space="preserve">
     <value>m_lbIncoming</value>
@@ -321,18 +196,6 @@
   <data name="&gt;&gt;m_lbIncoming.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_pbRangeCenter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_pbRangeCenter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>287, 3</value>
-  </data>
-  <data name="m_pbRangeCenter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 120</value>
-  </data>
-  <data name="m_pbRangeCenter.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="&gt;&gt;m_pbRangeCenter.Name" xml:space="preserve">
     <value>m_pbRangeCenter</value>
   </data>
@@ -344,24 +207,6 @@
   </data>
   <data name="&gt;&gt;m_pbRangeCenter.ZOrder" xml:space="preserve">
     <value>6</value>
-  </data>
-  <data name="m_rbtOutgoing.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbtOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbtOutgoing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
-  </data>
-  <data name="m_rbtOutgoing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 17</value>
-  </data>
-  <data name="m_rbtOutgoing.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbtOutgoing.Text" xml:space="preserve">
-    <value>Relative to outgoing event</value>
   </data>
   <data name="&gt;&gt;m_rbtOutgoing.Name" xml:space="preserve">
     <value>m_rbtOutgoing</value>
@@ -375,24 +220,6 @@
   <data name="&gt;&gt;m_rbtOutgoing.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_rbtIncoming.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbtIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbtIncoming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="m_rbtIncoming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 17</value>
-  </data>
-  <data name="m_rbtIncoming.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rbtIncoming.Text" xml:space="preserve">
-    <value>Relative to incoming event</value>
-  </data>
   <data name="&gt;&gt;m_rbtIncoming.Name" xml:space="preserve">
     <value>m_rbtIncoming</value>
   </data>
@@ -405,12 +232,14 @@
   <data name="&gt;&gt;m_rbtIncoming.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 38</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>712, 126</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
   </data>
@@ -485,12 +314,6 @@
   </data>
   <data name="&gt;&gt;m_btGenerateTest.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="columnHeader1.Text" xml:space="preserve">
-    <value>""</value>
-  </data>
-  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
-    <value>315</value>
   </data>
   <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 314</value>
@@ -1330,7 +1153,7 @@
     <value>33</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 538</value>
+    <value>0, 364</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>734, 460</value>
@@ -1353,8 +1176,434 @@
   <data name="&gt;&gt;gbOutput.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtBoth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtBoth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 49</value>
+  </data>
+  <data name="m_rbtBoth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 17</value>
+  </data>
+  <data name="m_rbtBoth.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbtBoth.Text" xml:space="preserve">
+    <value>Range between incoming and outgoing event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
+    <value>m_rbtBoth</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbMaximum.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbMaximum.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbMaximum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbMaximum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>396, 101</value>
+  </data>
+  <data name="m_lbMaximum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 17</value>
+  </data>
+  <data name="m_lbMaximum.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lbMaximum.Text" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Name" xml:space="preserve">
+    <value>m_lbMaximum</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaximum.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lbPre.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbPre.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbPre.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbPre.Location" type="System.Drawing.Point, System.Drawing">
+    <value>370, 58</value>
+  </data>
+  <data name="m_lbPre.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 17</value>
+  </data>
+  <data name="m_lbPre.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_lbPre.Text" xml:space="preserve">
+    <value>Pre</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Name" xml:space="preserve">
+    <value>m_lbPre</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPre.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lbPost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbPost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbPost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbPost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 58</value>
+  </data>
+  <data name="m_lbPost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 17</value>
+  </data>
+  <data name="m_lbPost.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lbPost.Text" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Name" xml:space="preserve">
+    <value>m_lbPost</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPost.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lbOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbOutgoing.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>561, 0</value>
+  </data>
+  <data name="m_lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="m_lbOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lbOutgoing.Text" xml:space="preserve">
+    <value>Outgoing</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Name" xml:space="preserve">
+    <value>m_lbOutgoing</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbOutgoing.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_lbIncoming.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbIncoming.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+  </data>
+  <data name="m_lbIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>396, 0</value>
+  </data>
+  <data name="m_lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_lbIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lbIncoming.Text" xml:space="preserve">
+    <value>Incoming</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Name" xml:space="preserve">
+    <value>m_lbIncoming</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbIncoming.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_pbRangeCenter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbRangeCenter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>287, 3</value>
+  </data>
+  <data name="m_pbRangeCenter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 120</value>
+  </data>
+  <data name="m_pbRangeCenter.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Name" xml:space="preserve">
+    <value>m_pbRangeCenter</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_pbRangeCenter.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_rbtOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 26</value>
+  </data>
+  <data name="m_rbtOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 17</value>
+  </data>
+  <data name="m_rbtOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbtOutgoing.Text" xml:space="preserve">
+    <value>Relative to outgoing event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Name" xml:space="preserve">
+    <value>m_rbtOutgoing</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtOutgoing.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_rbtIncoming.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbtIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbtIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_rbtIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 17</value>
+  </data>
+  <data name="m_rbtIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbtIncoming.Text" xml:space="preserve">
+    <value>Relative to incoming event</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Name" xml:space="preserve">
+    <value>m_rbtIncoming</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_rbtIncoming.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>""</value>
+  </data>
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>315</value>
+  </data>
   <data name="gbTriggers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnHdServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnHdServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 17</value>
+  </data>
+  <data name="btnHdServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 23</value>
+  </data>
+  <data name="btnHdServer.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="btnHdServer.Text" xml:space="preserve">
+    <value>Select server...</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Name" xml:space="preserve">
+    <value>btnHdServer</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 19</value>
+  </data>
+  <data name="m_tbEventServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 20</value>
+  </data>
+  <data name="m_tbEventServer.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="m_tbEventServer.Text" xml:space="preserve">
+    <value>localhost</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Name" xml:space="preserve">
+    <value>m_tbEventServer</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>304, 19</value>
+  </data>
+  <data name="m_tbEventServerPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 20</value>
+  </data>
+  <data name="m_tbEventServerPort.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="m_tbEventServerPort.Text" xml:space="preserve">
+    <value>9180</value>
+  </data>
+  <data name="m_tbEventServerPort.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Name" xml:space="preserve">
+    <value>m_tbEventServerPort</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 22</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Port: </value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 22</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>ibaHD server:</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1363,7 +1612,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 216</value>
+    <value>13, 42</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1384,7 +1633,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="m_fpnlEvent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1399,7 +1648,7 @@
     <value>TopDown</value>
   </data>
   <data name="m_fpnlEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 229</value>
+    <value>15, 55</value>
   </data>
   <data name="m_fpnlEvent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1423,40 +1672,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_fpnlEvent.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_pnlServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_pnlServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 19</value>
-  </data>
-  <data name="m_pnlServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
-  </data>
-  <data name="m_pnlServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>721, 190</value>
-  </data>
-  <data name="m_pnlServer.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;m_pnlServer.Name" xml:space="preserve">
-    <value>m_pnlServer</value>
-  </data>
-  <data name="&gt;&gt;m_pnlServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pnlServer.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;m_pnlServer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 407</value>
+    <value>734, 233</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1478,6 +1700,186 @@
   </data>
   <data name="gbGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_cbRepErr.Name" xml:space="preserve">
+    <value>m_cbRepErr</value>
+  </data>
+  <data name="&gt;&gt;m_cbRepErr.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRepErr.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_cbRepErr.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScanEnabled.Name" xml:space="preserve">
+    <value>m_cbInitialScanEnabled</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScanEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScanEnabled.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_cbInitialScanEnabled.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_undoChangesBtn.Name" xml:space="preserve">
+    <value>m_undoChangesBtn</value>
+  </data>
+  <data name="&gt;&gt;m_undoChangesBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_undoChangesBtn.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_undoChangesBtn.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Name" xml:space="preserve">
+    <value>m_cbRetry</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Name" xml:space="preserve">
+    <value>m_retryUpDown</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Name" xml:space="preserve">
+    <value>m_stopButton</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_applyToRunningBtn.Name" xml:space="preserve">
+    <value>m_applyToRunningBtn</value>
+  </data>
+  <data name="&gt;&gt;m_applyToRunningBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_applyToRunningBtn.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_applyToRunningBtn.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_startButton.Name" xml:space="preserve">
+    <value>m_startButton</value>
+  </data>
+  <data name="&gt;&gt;m_startButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
+    <value>m_autoStartCheckBox</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
+    <value>m_enableCheckBox</value>
+  </data>
+  <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;m_failTimeUpDown.Name" xml:space="preserve">
+    <value>m_failTimeUpDown</value>
+  </data>
+  <data name="&gt;&gt;m_failTimeUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="gbGeneral.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="gbGeneral.Size" type="System.Drawing.Size, System.Drawing">
+    <value>734, 119</value>
+  </data>
+  <data name="gbGeneral.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="gbGeneral.Text" xml:space="preserve">
+    <value>General settings</value>
+  </data>
+  <data name="&gt;&gt;gbGeneral.Name" xml:space="preserve">
+    <value>gbGeneral</value>
+  </data>
+  <data name="&gt;&gt;gbGeneral.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbGeneral.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbGeneral.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_cbRepErr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1951,30 +2353,6 @@
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="gbGeneral.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="gbGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 119</value>
-  </data>
-  <data name="gbGeneral.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="gbGeneral.Text" xml:space="preserve">
-    <value>General settings</value>
-  </data>
-  <data name="&gt;&gt;gbGeneral.Name" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;gbGeneral.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gbGeneral.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbGeneral.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1985,7 +2363,7 @@
     <value>0, 639</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 1001</value>
+    <value>734, 827</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>

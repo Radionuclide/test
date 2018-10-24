@@ -62,9 +62,13 @@
             this.m_nudHoursMax = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysMax = new System.Windows.Forms.NumericUpDown();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.btnHdServer = new System.Windows.Forms.Button();
+            this.m_tbEventServer = new System.Windows.Forms.TextBox();
+            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.m_fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
-            this.m_pnlServer = new System.Windows.Forms.Panel();
             this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -229,6 +233,7 @@
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
+            this.m_lvStores.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.m_lvStores_ItemChecked);
             // 
             // columnHeader1
             // 
@@ -496,11 +501,44 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.btnHdServer);
+            this.gbTriggers.Controls.Add(this.m_tbEventServer);
+            this.gbTriggers.Controls.Add(this.m_tbEventServerPort);
+            this.gbTriggers.Controls.Add(this.label4);
+            this.gbTriggers.Controls.Add(this.label2);
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Controls.Add(this.m_fpnlEvent);
-            this.gbTriggers.Controls.Add(this.m_pnlServer);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // btnHdServer
+            // 
+            resources.ApplyResources(this.btnHdServer, "btnHdServer");
+            this.btnHdServer.Name = "btnHdServer";
+            this.btnHdServer.UseVisualStyleBackColor = true;
+            this.btnHdServer.Click += new System.EventHandler(this.btnHdServer_Click);
+            // 
+            // m_tbEventServer
+            // 
+            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
+            this.m_tbEventServer.Name = "m_tbEventServer";
+            this.m_tbEventServer.ReadOnly = true;
+            // 
+            // m_tbEventServerPort
+            // 
+            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
+            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
+            this.m_tbEventServerPort.ReadOnly = true;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
             // 
             // label1
             // 
@@ -511,11 +549,6 @@
             // 
             resources.ApplyResources(this.m_fpnlEvent, "m_fpnlEvent");
             this.m_fpnlEvent.Name = "m_fpnlEvent";
-            // 
-            // m_pnlServer
-            // 
-            resources.ApplyResources(this.m_pnlServer, "m_pnlServer");
-            this.m_pnlServer.Name = "m_pnlServer";
             // 
             // gbGeneral
             // 
@@ -740,7 +773,11 @@
         private System.Windows.Forms.Label m_lbPost;
         private System.Windows.Forms.Label m_lbOutgoing;
         private System.Windows.Forms.Label m_lbIncoming;
-        private System.Windows.Forms.Panel m_pnlServer;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnHdServer;
+        private System.Windows.Forms.TextBox m_tbEventServer;
+        private System.Windows.Forms.TextBox m_tbEventServerPort;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
     }
 }
