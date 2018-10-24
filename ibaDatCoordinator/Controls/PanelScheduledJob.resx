@@ -198,282 +198,6 @@
   <data name="gbSchedule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_cbRepErr.Name" xml:space="preserve">
-    <value>m_cbRepErr</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepErr.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepErr.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepErr.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_cbInitialScanEnabled.Name" xml:space="preserve">
-    <value>m_cbInitialScanEnabled</value>
-  </data>
-  <data name="&gt;&gt;m_cbInitialScanEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbInitialScanEnabled.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_cbInitialScanEnabled.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatTimes.Name" xml:space="preserve">
-    <value>m_nudRepeatTimes</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatTimes.Type" xml:space="preserve">
-    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatTimes.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatTimes.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label18.Name" xml:space="preserve">
-    <value>label18</value>
-  </data>
-  <data name="&gt;&gt;label18.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label18.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label16.Name" xml:space="preserve">
-    <value>label16</value>
-  </data>
-  <data name="&gt;&gt;label16.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatMinutes.Name" xml:space="preserve">
-    <value>m_nudRepeatMinutes</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatMinutes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatMinutes.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatMinutes.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label17.Name" xml:space="preserve">
-    <value>label17</value>
-  </data>
-  <data name="&gt;&gt;label17.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label17.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatHours.Name" xml:space="preserve">
-    <value>m_nudRepeatHours</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatHours.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatHours.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_nudRepeatHours.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepeat.Name" xml:space="preserve">
-    <value>m_cbRepeat</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepeat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepeat.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_cbRepeat.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Name" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_undoChangesBtn.Name" xml:space="preserve">
-    <value>m_undoChangesBtn</value>
-  </data>
-  <data name="&gt;&gt;m_undoChangesBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_undoChangesBtn.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_undoChangesBtn.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.Name" xml:space="preserve">
-    <value>m_cbRetry</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.Name" xml:space="preserve">
-    <value>m_retryUpDown</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
-  </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Name" xml:space="preserve">
-    <value>m_stopButton</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningBtn.Name" xml:space="preserve">
-    <value>m_applyToRunningBtn</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningBtn.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_applyToRunningBtn.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Name" xml:space="preserve">
-    <value>m_startButton</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Name" xml:space="preserve">
-    <value>m_autoStartCheckBox</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Name" xml:space="preserve">
-    <value>m_enableCheckBox</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Name" xml:space="preserve">
-    <value>m_failTimeUpDown</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="gbSchedule.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="gbSchedule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 307</value>
-  </data>
-  <data name="gbSchedule.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="gbSchedule.Text" xml:space="preserve">
-    <value>Schedule</value>
-  </data>
-  <data name="&gt;&gt;gbSchedule.Name" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbSchedule.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_cbRepErr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -550,7 +274,7 @@
     <value>m_nudRepeatTimes</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Type" xml:space="preserve">
-    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Parent" xml:space="preserve">
     <value>gbSchedule</value>
@@ -723,126 +447,6 @@
   <data name="gbTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_dtStart.Name" xml:space="preserve">
-    <value>m_dtStart</value>
-  </data>
-  <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
-    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_dtStart.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_gbSubProperties.Name" xml:space="preserve">
-    <value>m_gbSubProperties</value>
-  </data>
-  <data name="&gt;&gt;m_gbSubProperties.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbSubProperties.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_gbSubProperties.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonthly.Name" xml:space="preserve">
-    <value>m_rbMonthly</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonthly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonthly.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_rbMonthly.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeekly.Name" xml:space="preserve">
-    <value>m_rbWeekly</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeekly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeekly.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_rbWeekly.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_rbDaily.Name" xml:space="preserve">
-    <value>m_rbDaily</value>
-  </data>
-  <data name="&gt;&gt;m_rbDaily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbDaily.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_rbDaily.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_rbOneTime.Name" xml:space="preserve">
-    <value>m_rbOneTime</value>
-  </data>
-  <data name="&gt;&gt;m_rbOneTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbOneTime.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_rbOneTime.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="gbTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 117</value>
-  </data>
-  <data name="gbTrigger.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 154</value>
-  </data>
-  <data name="gbTrigger.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="gbTrigger.Text" xml:space="preserve">
-    <value>Trigger</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Name" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.Parent" xml:space="preserve">
-    <value>gbSchedule</value>
-  </data>
-  <data name="&gt;&gt;gbTrigger.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_dtStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 13</value>
   </data>
@@ -856,7 +460,7 @@
     <value>m_dtStart</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
-    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
     <value>gbTrigger</value>
@@ -1062,6 +666,30 @@
   <data name="&gt;&gt;m_rbOneTime.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
+  <data name="gbTrigger.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 117</value>
+  </data>
+  <data name="gbTrigger.Size" type="System.Drawing.Size, System.Drawing">
+    <value>678, 154</value>
+  </data>
+  <data name="gbTrigger.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="gbTrigger.Text" xml:space="preserve">
+    <value>Trigger</value>
+  </data>
+  <data name="&gt;&gt;gbTrigger.Name" xml:space="preserve">
+    <value>gbTrigger</value>
+  </data>
+  <data name="&gt;&gt;gbTrigger.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbTrigger.Parent" xml:space="preserve">
+    <value>gbSchedule</value>
+  </data>
+  <data name="&gt;&gt;gbTrigger.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_undoChangesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1211,16 +839,16 @@
   </data>
   <data name="m_stopButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAaFJREFUSEuVlFd2wzAMBHX/A+R06b335hQpO3paB6RImf4YEaDEXTyYcDcMQ5Wdrhta
-        yM9FipswHmxkyaS4uUm8n/gN1ExmGy2VW/xn4lt8iZJJkrSIg8UtvBKf4kPkJuugVRxsEMXfxZt4EdFk
-        fGwjDhhQPeJUjfireBaP4l7YZGtxcPWuPBe/FdcC7cSg7/uRPI/YwPmNYsTjN5fKITHgRRR2XMtpD9UT
-        Y8JqYeITrVWDnPwdOe3hRyUuGRxoTQx8EKKY9/McA3pPbANjo5lBFNiUlwzOtSJM9bsiMeADTyhxnFRy
-        rqUhR/xpim1wprVuAPoIEPWUAntUbNx74DoC8alWDPbFzGBp/D2lVO3KH4TvO6JUz805FIsGtfHnriMM
-        cZgQp/dUfyxmBv6raBn/uwl6fiUuRBQ/EvR/T4yFj6XrYZOW8XfViNMWxGkN4q7e4okB8ILqaYvFXbFb
-        AVHYlSPu4Yqa68DwAT13ry3uHzEXtXBeuUkSw4fckiiOKEIWM/Q79jxntmE4QL9pCVUjzM0oUROH4qbh
-        YAv5uX+G7g/umyRiyuMG7AAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsMAAALDAE/QCLIAAABoUlE
+        QVRIS5WUV3bDMAwEdf8D5HTpvffmFCk7eloHpEiZ/hgRoMRdPJhwNwxDlZ2uG1rIz0WKmzAebGTJpLi5
+        Sbyf+A3UTGYbLZVb/GfiW3yJkkmStIiDxS28Ep/iQ+Qm66BVHGwQxd/Fm3gR0WR8bCMOGFA94lSN+Kt4
+        Fo/iXthka3Fw9a48F78V1wLtxKDv+5E8j9jA+Y1ixOM3l8ohMeBFFHZcy2kP1RNjwmph4hOtVYOc/B05
+        7eFHJS4ZHGhNDHwQopj38xwDek9sA2OjmUEU2JSXDM61Ikz1uyIx4ANPKHGcVHKupSFH/GmKbXCmtW4A
+        +ggQ9ZQCe1Rs3HvgOgLxqVYM9sXMYGn8PaVU7cofhO87olTPzTkUiwa18eeuIwxxmBCn91R/LGYG/qto
+        Gf+7CXp+JS5EFD8S9H9PjIWPpethk5bxd9WI0xbEaQ3irt7iiQHwguppi8VdsVsBUdiVI+7hiprrwPAB
+        PXevLe4fMRe1cF65SRLDh9ySKI4oQhYz9Dv2PGe2YThAv2kJVSPMzShRE4fipuFgC/m5f4buD+6bJGLK
+        4wbsAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_stopButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -1315,19 +943,19 @@
   </data>
   <data name="m_startButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAlFJREFUSEu1lUlLXFEQhQsCSiItIYPGmEEj/h//i5uoEVGRBGIGJKCLJOJCXYibIK6k
-        t67d57d0eb56775+kx2C3YuD91bVOTXd15q7/xMzS+ZtqMe1odUIykK2vNiKckydn9BqDNH3C24r79xW
-        hbV5tw/Ceg7O2PARo9i7kjQMIQ4ZoY05t823bttv3HZeu33KwRkbPmKIFactSeUS4lQHaUvkEH3l9nnW
-        7etLt72ZDJyx4SOGWDji1pNUxdfULoHbIlDprgS+S+yHRA+m3X5NZeCMDR8xxMKBK41ykr44M6dVqvko
-        whdVSLX7Evv53O3oqdvpkwycseEjhlg4cNEo7aSfgGVRwY5mu5uLU+nhM7djiZ49dvszmYEzNnzEEAsH
-        LhrSaibgRbA02qX1/Rfe6/UqsKuJDBedql2xwYGLhrSKBCHOu2b+zJGZar5BPNYozlXtZcet+8jtejwQ
-        Pmz4FBN3dgIXDbTy76SfgNdDi99UidoOEqNQtdZ9KOExt5sHgfBhw6eYuDMquGig1UjAcmiReeqlBIl5
-        aySc4/5XsUKc6YZxKSbuvC64aKD1PwmKsdwrwYARcY77vUZUW3LqIshaaPzNl8zCky/sVH/Xkgc9U/ut
-        j+lE753XQrWMBHDGho+YQc+0SDDyD22UPxVFEmZHBcyRdpkprTNfKmXWgDM2fMQQCweuNJJ4JQGIJLwA
-        AqlmmD/XCVknSkKrkFjasP7hJEQSdsLieV0kpDOEAGds+IgpzbyOhiEBQkJ8Jy0ox9T5Ca3GOspCZdTj
-        mnC7BSd5ouM0yB4TAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsMAAALDAE/QCLIAAACUUlE
+        QVRIS7WVSUtcURCFCwJKIi0hg8aYQSP+H/+Lm6gRUZEEYgYkoIsk4kJdiJsgrqS3rt3nt3R5vnrvvn6T
+        HYLdi4P3VtU5Nd3Xmrv/EzNL5m2ox7Wh1QjKQra82IpyTJ2f0GoM0fcLbivv3FaFtXm3D8J6Ds7Y8BGj
+        2LuSNAwhDhmhjTm3zbdu22/cdl67fcrBGRs+YogVpy1J5RLiVAdpS+QQfeX2edbt60u3vZkMnLHhI4ZY
+        OOLWk1TF19QugdsiUOmuBL5L7IdED6bdfk1l4IwNHzHEwoErjXKSvjgzp1Wq+SjCF1VItfsS+/nc7eip
+        2+mTDJyx4SOGWDhw0SjtpJ+AZVHBjma7m4tT6eEzt2OJnj12+zOZgTM2fMQQCwcuGtJqJuBFsDTapfX9
+        F97r9Sqwq4kMF52qXbHBgYuGtIoEIc67Zv7MkZlqvkE81ijOVe1lx637yO16PBA+bPgUE3d2AhcNtPLv
+        pJ+A10OL31SJ2g4So1C11n0o4TG3mweB8GHDp5i4Myq4aKDVSMByaJF56qUEiXlrJJzj/lexQpzphnEp
+        Ju68LrhooPU/CYqx3CvBgBFxjvu9RlRbcuoiyFpo/M2XzMKTL+xUf9eSBz1T+62P6UTvnddCtYwEcMaG
+        j5hBz7RIMPIPbZQ/FUUSZkcFzJF2mSmtM18qZdaAMzZ8xBALB640knglAYgkvAACqWaYP9cJWSdKQquQ
+        WNqw/uEkRBJ2wuJ5XSSkM4QAZ2z4iCnNvI6GIQFCQnwnLSjH1PkJrcY6ykJl1OOacLsFJ3mi4zTIHhMA
+        AAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_startButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -1471,17 +1099,239 @@
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="gbSchedule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="gbSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 307</value>
+  </data>
+  <data name="gbSchedule.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="gbSchedule.Text" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="&gt;&gt;gbSchedule.Name" xml:space="preserve">
+    <value>gbSchedule</value>
+  </data>
+  <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbSchedule.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="gbHD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>""</value>
+  </data>
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>315</value>
+  </data>
+  <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 58</value>
+  </data>
+  <data name="m_lvStores.Size" type="System.Drawing.Size, System.Drawing">
+    <value>320, 140</value>
+  </data>
+  <data name="m_lvStores.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="&gt;&gt;m_lvStores.Name" xml:space="preserve">
+    <value>m_lvStores</value>
+  </data>
+  <data name="&gt;&gt;m_lvStores.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvStores.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;m_lvStores.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label31.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label31.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 42</value>
+  </data>
+  <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 13</value>
+  </data>
+  <data name="label31.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="label31.Text" xml:space="preserve">
+    <value>ibaHD store selection:</value>
+  </data>
+  <data name="&gt;&gt;label31.Name" xml:space="preserve">
+    <value>label31</value>
+  </data>
+  <data name="&gt;&gt;label31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label31.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnHdServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnHdServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 17</value>
+  </data>
+  <data name="btnHdServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 23</value>
+  </data>
+  <data name="btnHdServer.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="btnHdServer.Text" xml:space="preserve">
+    <value>Select server...</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Name" xml:space="preserve">
+    <value>btnHdServer</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 19</value>
+  </data>
+  <data name="m_tbEventServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 20</value>
+  </data>
+  <data name="m_tbEventServer.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="m_tbEventServer.Text" xml:space="preserve">
+    <value>localhost</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Name" xml:space="preserve">
+    <value>m_tbEventServer</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>304, 19</value>
+  </data>
+  <data name="m_tbEventServerPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 20</value>
+  </data>
+  <data name="m_tbEventServerPort.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="m_tbEventServerPort.Text" xml:space="preserve">
+    <value>9180</value>
+  </data>
+  <data name="m_tbEventServerPort.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Name" xml:space="preserve">
+    <value>m_tbEventServerPort</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 22</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 13</value>
+  </data>
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Port: </value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label19.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 22</value>
+  </data>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
+  </data>
+  <data name="label19.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="label19.Text" xml:space="preserve">
+    <value>ibaHD server:</value>
+  </data>
+  <data name="&gt;&gt;label19.Name" xml:space="preserve">
+    <value>label19</value>
+  </data>
+  <data name="&gt;&gt;label19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label19.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="gbHD.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 313</value>
   </data>
   <data name="gbHD.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 216</value>
+    <value>0, 204</value>
   </data>
   <data name="gbHD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 216</value>
+    <value>702, 204</value>
   </data>
   <data name="gbHD.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1493,7 +1343,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1504,284 +1354,11 @@
   <data name="gbTimeSelection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_cbUseTriggerAsStart.Name" xml:space="preserve">
-    <value>m_cbUseTriggerAsStart</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseTriggerAsStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseTriggerAsStart.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseTriggerAsStart.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimebase.Name" xml:space="preserve">
-    <value>m_lblTimebase</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimebase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimebase.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimebase.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cbTimeBase.Name" xml:space="preserve">
-    <value>m_cbTimeBase</value>
-  </data>
-  <data name="&gt;&gt;m_cbTimeBase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbTimeBase.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_cbTimeBase.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopSeconds.Name" xml:space="preserve">
-    <value>m_nudStopSeconds</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopSeconds.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopSeconds.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopSeconds.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopMinutes.Name" xml:space="preserve">
-    <value>m_nudStopMinutes</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopMinutes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopMinutes.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopMinutes.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;label12.Name" xml:space="preserve">
-    <value>label12</value>
-  </data>
-  <data name="&gt;&gt;label12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;label13.Name" xml:space="preserve">
-    <value>label13</value>
-  </data>
-  <data name="&gt;&gt;label13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopHours.Name" xml:space="preserve">
-    <value>m_nudStopHours</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopHours.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopHours.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopHours.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopDays.Name" xml:space="preserve">
-    <value>m_nudStopDays</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopDays.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopDays.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStopDays.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;label15.Name" xml:space="preserve">
-    <value>label15</value>
-  </data>
-  <data name="&gt;&gt;label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartSeconds.Name" xml:space="preserve">
-    <value>m_nudStartSeconds</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartSeconds.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartSeconds.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartSeconds.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartMinutes.Name" xml:space="preserve">
-    <value>m_nudStartMinutes</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartMinutes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartMinutes.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartMinutes.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartHours.Name" xml:space="preserve">
-    <value>m_nudStartHours</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartHours.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartHours.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartHours.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartDays.Name" xml:space="preserve">
-    <value>m_nudStartDays</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartDays.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartDays.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartDays.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="gbTimeSelection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 535</value>
-  </data>
-  <data name="gbTimeSelection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 101</value>
-  </data>
-  <data name="gbTimeSelection.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="gbTimeSelection.Text" xml:space="preserve">
-    <value>Time selection</value>
-  </data>
-  <data name="&gt;&gt;gbTimeSelection.Name" xml:space="preserve">
-    <value>gbTimeSelection</value>
-  </data>
-  <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbTimeSelection.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cbUseTriggerAsStart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_cbUseTriggerAsStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_cbUseTriggerAsStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>62, 50</value>
@@ -2332,20 +1909,53 @@
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="gbTimeSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 523</value>
+  </data>
+  <data name="gbTimeSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>702, 101</value>
+  </data>
+  <data name="gbTimeSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gbTimeSelection.Text" xml:space="preserve">
+    <value>Time selection</value>
+  </data>
+  <data name="&gt;&gt;gbTimeSelection.Name" xml:space="preserve">
+    <value>gbTimeSelection</value>
+  </data>
+  <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbTimeSelection.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 627</value>
+  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 639</value>
+    <value>702, 627</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
+    <value>columnHeader1</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PanelScheduledJob</value>

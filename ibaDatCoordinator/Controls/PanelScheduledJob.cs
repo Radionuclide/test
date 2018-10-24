@@ -9,18 +9,45 @@ using iba.Data;
 using iba.Utility;
 using iba.Processing;
 using iba.HD.Common;
+using iba.HD.Client;
 using iba;
+using System.Threading.Tasks;
+using iba.HD.Client.Interfaces;
 
 namespace iba.Controls
 {
     public partial class PanelScheduledJob : UserControl, IPropertyPane
     {
+        #region Members
+        IHdReader m_hdReader;
+
+        List<string> m_currStores;
+
+        static ImageList imageListError;
+        ListViewItem m_lviErrorStores;
+        #endregion
+
+        static PanelScheduledJob()
+        {
+            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+
+            imageListError = new ImageList();
+            imageListError.Images.Add(Properties.Resources.img_error);
+        }
+
         public PanelScheduledJob()
         {
             InitializeComponent();
             //((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
+
+            m_currStores = new List<string>();
+
+            m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
+            m_hdReader.ShowConnectionError = false;
 
             m_weekSettingsCtrl = new WeeklyTriggerSettingsControl();
             m_daySettingsCtrl = new DailyTriggerSettingsControl();
@@ -34,18 +61,6 @@ namespace iba.Controls
             m_dtStart.CustomFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + "  " + System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
             m_rbs = new RadioButton[] { m_rbOneTime, m_rbDaily, m_rbWeekly, m_rbMonthly };
 
-            m_hdStorePicker = new iba.HD.Client.HdControlStorePicker();
-            m_hdStorePicker.Dock = DockStyle.Fill;
-            this.gbHD.Controls.Add(this.m_hdStorePicker);
-            m_hdStorePicker.StoreMultiSelect = true;
-            m_hdStorePicker.SelectedPort = 9180;
-            m_hdStorePicker.SelectedServer = "localhost";
-            m_hdStorePicker.SelectedStoreName = "";
-            m_hdStorePicker.SelectedStoreNames = new string[0];
-            m_hdStorePicker.StoreTypeFilter = HdStoreType.Time /*| HdStoreType.Length*/;
-            m_hdStorePicker.HideConfigureButton();
-            m_hdStorePicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
-
             string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
             long ms = 10000; //10000 * 100 nanosec = 1 ms
             long s = 1000 * ms;
@@ -55,12 +70,15 @@ namespace iba.Controls
             for (int i = 0; i < n; i++)
                 m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
             AddEventsToTriggerControls(gbTrigger);
+
+            OnHdConnectionChanged();
+
+            m_hdReader.ConnectionChanged += OnHdConnectionChanged;
         }
 
         private RadioButton[] m_rbs;
         private long[] m_timeBases;
 
-        private iba.HD.Client.HdControlStorePicker m_hdStorePicker;
         IPropertyPaneManager m_manager;
         ConfigurationData m_confData;
         ScheduledJobData m_scheduleData;
@@ -68,6 +86,28 @@ namespace iba.Controls
         private WeeklyTriggerSettingsControl m_weekSettingsCtrl;
         private DailyTriggerSettingsControl m_daySettingsCtrl;
         private MonthlyTriggerSettingsControl m_monthSettingsCtrl;
+
+        #region Dispose
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (m_hdReader != null)
+                {
+                    m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+                    m_hdReader.Dispose();
+                    m_hdReader = null;
+                }
+
+                components?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+        #endregion
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -112,9 +152,7 @@ namespace iba.Controls
             m_nudRepeatHours.Enabled = m_nudRepeatMinutes.Enabled = m_nudRepeatTimes.Enabled = m_cbRepeat.Checked;
 
             //hdStore
-            m_hdStorePicker.SelectedServer = m_scheduleData.HDServer;
-            m_hdStorePicker.SelectedPort = m_scheduleData.HDPort;
-            m_hdStorePicker.SelectedStoreNames = m_scheduleData.HDStores;
+            m_currStores = new List<string>(m_scheduleData.HDStores);
             //timeSelection
             bIgnoreTriggerChanged = true;
             m_cbUseTriggerAsStart.Checked = m_scheduleData.UsePreviousTriggerAsStart;
@@ -127,6 +165,8 @@ namespace iba.Controls
                 m_cbTimeBase.SelectedIndex = 0;
             else
                 m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
+
+            ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort);
         }
 
 
@@ -158,9 +198,10 @@ namespace iba.Controls
             m_scheduleData.RepeatTimes = (int)m_nudRepeatTimes.Value;
             m_scheduleData.RepeatEvery = RepeatInterval;
             //hdStore
-            m_scheduleData.HDServer = m_hdStorePicker.SelectedServer;
-            m_scheduleData.HDPort = m_hdStorePicker.SelectedPort;
-            m_scheduleData.HDStores = m_hdStorePicker.SelectedStoreNames;// new string[]{m_hdStorePicker.SelectedStoreName};
+            m_scheduleData.HDServer = m_tbEventServer.Text ?? string.Empty;
+            int port = 0;
+            m_scheduleData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_scheduleData.HDStores = m_currStores.ToArray();
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
             m_scheduleData.StopRangeFromTrigger = Stop;
@@ -628,6 +669,130 @@ namespace iba.Controls
                 AddEventsToTriggerControls(child);
             }
         }
+
+        #region HD server
+        private void btnHdServer_Click(object sender, EventArgs e)
+        {
+            int port = 0;
+            if (!int.TryParse(m_tbEventServerPort.Text, out port))
+                port = 9180;
+
+            string newServer = string.Empty;
+            int newPort = 0;
+
+            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
+            {
+                List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
+                features.AddRange(ReaderFeature.Analyzer);
+                serverPicker.SetCheckedFeatures(features, new List<WriterFeature>());
+                if (serverPicker.ShowDialog() != DialogResult.OK)
+                    return;
+
+                newServer = serverPicker.SelectedServer;
+                newPort = serverPicker.SelectedPort;
+            }
+
+            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
+                return;
+
+            m_currStores.Clear();
+            ChangeHDServer(newServer, newPort);
+        }
+
+        void ChangeHDServer(string server, int port)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<string, int>(ChangeHDServer), server, port);
+                return;
+            }
+
+            m_tbEventServer.Text = server;
+            m_tbEventServerPort.Text = port.ToString();
+
+            m_lvStores.Items.Clear();
+
+            Task.Factory.StartNew((stateObj) =>
+            {
+                Tuple<string, int> tpl = stateObj as Tuple<string, int>;
+
+                if (m_hdReader != null)
+                    m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+
+                if (m_hdReader != null && m_hdReader.IsConnected())
+                    m_hdReader.Disconnect();
+
+                m_hdReader?.Connect(tpl.Item1, tpl.Item2);
+                OnHdConnectionChanged();
+
+                if (m_hdReader != null)
+                    m_hdReader.ConnectionChanged += OnHdConnectionChanged;
+            }, Tuple.Create(server, port));
+        }
+
+        void OnHdConnectionChanged()
+        {
+            if (IsDisposed || Disposing)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(OnHdConnectionChanged));
+                return;
+            }
+
+            m_lvStores.ItemChecked -= m_lvStores_ItemChecked;
+            m_lvStores.Items.Clear();
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+            {
+                m_lvStores.CheckBoxes = false;
+                m_lvStores.SmallImageList = imageListError;
+                if (m_lviErrorStores == null)
+                {
+                    m_lviErrorStores = new ListViewItem();
+                    m_lviErrorStores.ImageIndex = 0;
+                }
+
+                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+
+                m_lvStores.Items.Add(m_lviErrorStores);
+            }
+            else
+            {
+                m_lvStores.CheckBoxes = true;
+                m_lvStores.SmallImageList = HdTreeControl.ImageList;
+
+                foreach (var store in m_hdReader.Stores)
+                {
+                    if (store.IsEnabled() && store.Type == HdStoreType.Time && !store.Id.StoreName.Contains("<DIAGNOSTIC>"))
+                        m_lvStores.Items.Add(store.Id.StoreName, HdTreeControl.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
+                }
+
+                foreach (var name in m_currStores)
+                {
+                    foreach (ListViewItem item in m_lvStores.Items)
+                    {
+                        if (item.Text == name)
+                        {
+                            item.Checked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            m_lvStores.ItemChecked += m_lvStores_ItemChecked;
+        }
+
+        private void m_lvStores_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                return;
+
+            m_currStores = new List<string>();
+            foreach (ListViewItem item in m_lvStores.CheckedItems)
+                m_currStores.Add(item.Text);
+        }
+        #endregion
 
     }
 

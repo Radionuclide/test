@@ -23,8 +23,6 @@ namespace iba.Controls
     public partial class PanelEventJob : UserControl, IPropertyPane
     {
         #region Members
-        HdControlStorePicker m_hdStorePicker;
-
         IPropertyPaneManager m_manager;
         ConfigurationData m_confData;
         EventJobData m_eventData;
@@ -32,15 +30,11 @@ namespace iba.Controls
         IHdReader m_hdReader;
 
         List<string> m_currEvents;
+        List<string> m_currStores;
         IHdSignalTree m_treeEvents;
 
         static ImageList imageListError;
         ListViewItem m_lviErrorStores;
-
-        bool m_bEventServerChanged;
-        System.Threading.Timer m_tmrChangeServer;
-        object m_changeServerLock;
-        Tuple<string, int> m_changeServerReq, m_prevChangeReq;
 
         const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
@@ -62,26 +56,11 @@ namespace iba.Controls
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
 
-            m_changeServerReq = null;
-            m_prevChangeReq = null;
-            m_changeServerLock = new object();
-
             m_currEvents = new List<string>();
+            m_currStores = new List<string>();
 
             m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
             m_hdReader.ShowConnectionError = false;
-
-            m_hdStorePicker = new HdControlStorePicker();
-            m_hdStorePicker.Dock = DockStyle.Fill;
-            m_hdStorePicker.Margin = new Padding(0, 0, 0, 0);
-            m_pnlServer.Controls.Add(m_hdStorePicker);
-            m_hdStorePicker.SelectedPort = 9180;
-            m_hdStorePicker.SelectedServer = "localhost";
-            m_hdStorePicker.HideConfigureButton();
-            m_hdStorePicker.HideStoreSelection();
-            List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
-            features.AddRange(ReaderFeature.Analyzer);
-            m_hdStorePicker.SetCheckedFeatures(features, new List<WriterFeature>());
 
             m_treeEvents = m_hdReader.CreateSignalTree(false);
             m_treeEvents.BeginStateChange();
@@ -98,14 +77,9 @@ namespace iba.Controls
             m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
             m_rbtBoth.Tag = EventJobRangeCenter.Both;
 
-            m_hdReader.ConnectionChanged += OnHdConnectionChanged;
-            m_tmrChangeServer = new System.Threading.Timer(OnTmrChangeServerTick);
-        }
+            UpdateStoreTree();
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            m_tmrChangeServer.Change(200, Timeout.Infinite);
+            m_hdReader.ConnectionChanged += OnHdConnectionChanged;
         }
         #endregion
 
@@ -118,24 +92,11 @@ namespace iba.Controls
         {
             if (disposing)
             {
-                IHdReader lReader = m_hdReader;
-                m_hdReader = null;
-
-                System.Threading.Timer lTimer = m_tmrChangeServer;
-                m_tmrChangeServer = null;
-                if (lTimer != null)
+                if (m_hdReader != null)
                 {
-                    lTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    lTimer.Dispose();
-                }
-
-                m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
-                m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
-
-                if (lReader != null)
-                {
-                    lReader.ConnectionChanged -= OnHdConnectionChanged;
-                    lReader.Dispose();
+                    m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
+                    m_hdReader.Dispose();
+                    m_hdReader = null;
                 }
 
                 components?.Dispose();
@@ -197,13 +158,8 @@ namespace iba.Controls
 
             //event selection
             m_currEvents = new List<string>(m_eventData.EventIDs);
-            m_hdStorePicker.SelectedServerChanged -= OnServerChanged;
-            m_hdStorePicker.SelectedPortChanged -= OnServerChanged;
-            m_hdStorePicker.SelectedServer = m_eventData.HDServer;
-            m_hdStorePicker.SelectedPort = m_eventData.HDPort;
-            ChangeEventServer(m_eventData.HDServer, m_eventData.HDPort);
-            m_hdStorePicker.SelectedServerChanged += OnServerChanged;
-            m_hdStorePicker.SelectedPortChanged += OnServerChanged;
+            m_currStores = new List<string>(m_eventData.HDStores);
+            ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort);
         }
 
         public void SaveData()
@@ -215,22 +171,11 @@ namespace iba.Controls
             m_confData.NrTryTimes = (int)m_retryUpDown.Value;
             m_confData.LimitTimesTried = m_cbRetry.Checked;
             //hdStore
-            m_eventData.HDServer = m_hdStorePicker.SelectedServer;
-            m_eventData.HDPort = m_hdStorePicker.SelectedPort;
+            m_eventData.HDServer = m_tbEventServer.Text ?? string.Empty;
+            int port = 0;
+            m_eventData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
 
-            List<string> stores = new List<string>();
-            foreach (ListViewItem item in m_lvStores.Items)
-            {
-                if (item.Checked)
-                    stores.Add(item.Text);
-            }
-
-            if (!m_bEventServerChanged && m_lvStores.Items.Count == 1 && m_lvStores.Items[0] == m_lviErrorStores)
-            {
-                //Keep old settings
-            }
-            else
-                m_eventData.HDStores = stores.ToArray();
+            m_eventData.HDStores = m_currStores.ToArray();
 
             //range selection
             if (m_rbtIncoming.Checked)
@@ -249,7 +194,6 @@ namespace iba.Controls
 
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
-            m_bEventServerChanged = false;
         }
         #endregion
 
@@ -261,46 +205,51 @@ namespace iba.Controls
         }
 
         #region Event HD server
-        void OnServerChanged()
+        private void btnHdServer_Click(object sender, EventArgs e)
         {
-            m_bEventServerChanged = true;
+            int port = 0;
+            if (!int.TryParse(m_tbEventServerPort.Text, out port))
+                port = 9180;
+
+            string newServer = string.Empty;
+            int newPort = 0;
+
+            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
+            {
+                List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
+                features.AddRange(ReaderFeature.Analyzer);
+                serverPicker.SetCheckedFeatures(features, new List<WriterFeature>());
+                if (serverPicker.ShowDialog() != DialogResult.OK)
+                    return;
+
+                newServer = serverPicker.SelectedServer;
+                newPort = serverPicker.SelectedPort;
+            }
+
+            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
+                return;
+
             m_currEvents.Clear();
-            ChangeEventServer(m_hdStorePicker.SelectedServer, m_hdStorePicker.SelectedPort);
+            m_currStores.Clear();
+            ChangeHDServer(newServer, newPort);
         }
 
-        void ChangeEventServer(string server, int port)
+        void ChangeHDServer(string server, int port)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string, int>(ChangeEventServer), server, port);
+                BeginInvoke(new Action<string, int>(ChangeHDServer), server, port);
                 return;
             }
+
+            m_tbEventServer.Text = server;
+            m_tbEventServerPort.Text = port.ToString();
 
             m_lvStores.Items.Clear();
 
             Task.Factory.StartNew((stateObj) =>
             {
-                lock (m_changeServerLock)
-                {
-                    m_changeServerReq = stateObj as Tuple<string, int>;
-                }
-            }, Tuple.Create(server, port));
-        }
-
-        private void OnTmrChangeServerTick(object state)
-        {
-            if (Disposing || IsDisposed)
-                return;
-
-            if (m_changeServerReq != null)
-            {
-                Tuple<string, int> currReq = null;
-                lock (m_changeServerLock)
-                {
-                    currReq = m_changeServerReq;
-                    m_changeServerReq = null;
-                }
-                m_prevChangeReq = currReq;
+                Tuple<string, int> tpl = stateObj as Tuple<string, int>;
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
@@ -310,14 +259,12 @@ namespace iba.Controls
                 if (m_hdReader != null && m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
-                m_hdReader?.Connect(currReq.Item1, currReq.Item2);
+                m_hdReader?.Connect(tpl.Item1, tpl.Item2);
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged += OnHdConnectionChanged;
-            }
-
-            m_tmrChangeServer?.Change(200, Timeout.Infinite);
+            }, Tuple.Create(server, port));
         }
 
         void OnHdConnectionChanged()
@@ -355,6 +302,8 @@ namespace iba.Controls
 
         void UpdateStoreTree()
         {
+            m_lvStores.ItemChecked -= m_lvStores_ItemChecked;
+            m_lvStores.Items.Clear();
             if (m_hdReader == null || !m_hdReader.IsConnected())
             {
                 m_lvStores.CheckBoxes = false;
@@ -365,14 +314,12 @@ namespace iba.Controls
                     m_lviErrorStores.ImageIndex = 0;
                 }
 
-                m_lviErrorStores.Text = string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
 
-                m_lvStores.Items.Clear();
                 m_lvStores.Items.Add(m_lviErrorStores);
             }
-            else if (m_lvStores.Items.Count <= 0 || m_lvStores.Items[0] == m_lviErrorStores)
+            else
             {
-                m_lvStores.Items.Clear();
                 m_lvStores.CheckBoxes = true;
                 m_lvStores.SmallImageList = HdTreeControl.ImageList;
 
@@ -382,21 +329,19 @@ namespace iba.Controls
                         m_lvStores.Items.Add(store.Id.StoreName, HdTreeControl.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
                 }
 
-                if (!m_bEventServerChanged)
+                foreach (var name in m_currStores)
                 {
-                    foreach (var name in m_eventData.HDStores)
+                    foreach (ListViewItem item in m_lvStores.Items)
                     {
-                        foreach(ListViewItem item in m_lvStores.Items)
+                        if (item.Text == name)
                         {
-                            if (item.Text == name)
-                            {
-                                item.Checked = true;
-                                break;
-                            }
+                            item.Checked = true;
+                            break;
                         }
                     }
                 }
             }
+            m_lvStores.ItemChecked += m_lvStores_ItemChecked;
         }
 
         private void m_treeEvents_CheckedChanged()
@@ -405,6 +350,16 @@ namespace iba.Controls
                 return;
 
             m_currEvents = new List<string>(m_treeEvents.GetCheckedSignalIds());
+        }
+
+        private void m_lvStores_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (m_hdReader == null || !m_hdReader.IsConnected())
+                return;
+
+            m_currStores = new List<string>();
+            foreach (ListViewItem item in m_lvStores.CheckedItems)
+                m_currStores.Add(item.Text);
         }
         #endregion
 
@@ -531,6 +486,6 @@ namespace iba.Controls
                 ibaLogger.LogFormat(Level.Exception, "Generating an HDQ test file failed: {0}", ex.Message);
             }
         }
-        #endregion
+        #endregion        
     }
 }
