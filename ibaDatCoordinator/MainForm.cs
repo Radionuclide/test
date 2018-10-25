@@ -2884,11 +2884,12 @@ namespace iba
                         MethodInvoker m = delegate ()
                         {
                             if (MessageBox.Show(this,
-                                iba.Properties.Resources.AskSaveLocal,
-                                "ibaDatCoordinator",
-                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                                 MessageBoxDefaultButton.Button1)
-                                == DialogResult.Yes)
+                            iba.Properties.Resources.AskSaveLocal,
+                            "ibaDatCoordinator",
+                                MessageBoxButtons.YesNo, 
+                                MessageBoxIcon.Question,
+                                MessageBoxDefaultButton.Button1)
+                            == DialogResult.Yes)
                             {
                                 saveAsToolStripMenuItem_Click(null, null);
                             }
@@ -2923,11 +2924,12 @@ namespace iba
                     m_updateClientTimer = new System.Threading.Timer(UpdateClientTimerTick);
                 m_updateClientTimer.Change(TimeSpan.FromSeconds(1.0), TimeSpan.Zero); //every second now ...
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 if (IsDisposed)
                     return;
-                throw;
+
+                LogData.Data?.Logger?.Log(Logging.Level.Debug, ex.ToString());
             }
             finally
             {
@@ -2968,7 +2970,7 @@ namespace iba
         private bool IsServerClientDifference()
         {
             int count = 0;
-            for (int index = 0; index < 3; index++)
+            for (int index = 0; index < 4; index++)
             {
                 foreach (TreeNode t in m_configTreeView.Nodes[index].Nodes)
                 {
@@ -2983,7 +2985,8 @@ namespace iba
                     }
                 }
             }
-            if (TaskManager.Manager.Count != count) return true; //added or removed
+            if (TaskManager.Manager.Count != count)
+                return true; //added or removed
             return false;
         }
 

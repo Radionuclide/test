@@ -284,7 +284,7 @@ namespace iba.Data
 
         public bool IsSame(ScheduledJobData other)
         {
-            return
+            bool res =
             other.m_baseTriggerTime == m_baseTriggerTime &&
             other.m_triggerType == m_triggerType &&
             other.m_dayTriggerEveryNDay == m_dayTriggerEveryNDay &&
@@ -304,8 +304,13 @@ namespace iba.Data
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
             other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
             other.m_bUsePreviousTriggerAsStart == m_bUsePreviousTriggerAsStart &&
-            other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks &&
             other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
+            if (!res) return res;
+            if (!m_bPreferredTimeBaseIsAuto) //in case of auto, ticks is not compared
+            {
+                res = res && other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks;
+            }
+            return res;
         }
     }
 }

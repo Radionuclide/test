@@ -70,10 +70,11 @@ namespace iba.Processing
             lock (m_workers)
             {
                 ConfigurationWorker cw;
+
                 if (m_workers.TryGetValue(data, out cw))
                 {
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
-                    // new data with same ID
+                                            // new data with same ID
                     m_workers.Add(data, cw);
 
                 }
@@ -102,7 +103,6 @@ namespace iba.Processing
                     m_workers.Add(data, cw);
                 }
             }
-
             // added by kolesnik - begin
             SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
             // added by kolesnik - end
@@ -154,10 +154,12 @@ namespace iba.Processing
 
         virtual public bool CompareConfiguration(ConfigurationData data)
         {
-            foreach (ConfigurationWorker w in m_workers.Values)
+            foreach (ConfigurationData d in m_workers.Keys)
             {
-                if (w.RunningConfiguration.Guid == data.Guid)
-                    return data.IsSame(w.RunningConfiguration);
+                if (d.Guid == data.Guid)
+                {
+                    return data.IsSame(d);
+                }
             }
             return false;
         }
