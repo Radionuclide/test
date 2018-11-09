@@ -52,13 +52,13 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.m_lblMaxCaption = new System.Windows.Forms.Label();
+            this.m_lblMaxSecs = new System.Windows.Forms.Label();
             this.m_nudSecsMax = new System.Windows.Forms.NumericUpDown();
-            this.label16 = new System.Windows.Forms.Label();
+            this.m_lblMaxMins = new System.Windows.Forms.Label();
             this.m_nudMinsMax = new System.Windows.Forms.NumericUpDown();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
+            this.m_lblMaxHours = new System.Windows.Forms.Label();
+            this.m_lblMaxDays = new System.Windows.Forms.Label();
             this.m_nudHoursMax = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysMax = new System.Windows.Forms.NumericUpDown();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
@@ -114,13 +114,22 @@
             this.gbOutput.Controls.Add(this.label31);
             this.gbOutput.Controls.Add(this.label26);
             this.gbOutput.Controls.Add(this.label27);
+            this.gbOutput.Controls.Add(this.m_lblMaxCaption);
             this.gbOutput.Controls.Add(this.m_nudSecsPost);
+            this.gbOutput.Controls.Add(this.m_nudDaysMax);
             this.gbOutput.Controls.Add(this.label28);
+            this.gbOutput.Controls.Add(this.m_nudHoursMax);
             this.gbOutput.Controls.Add(this.m_nudMinsPost);
+            this.gbOutput.Controls.Add(this.m_lblMaxDays);
+            this.gbOutput.Controls.Add(this.m_lblMaxHours);
             this.gbOutput.Controls.Add(this.label29);
+            this.gbOutput.Controls.Add(this.m_nudMinsMax);
             this.gbOutput.Controls.Add(this.label30);
+            this.gbOutput.Controls.Add(this.m_lblMaxMins);
             this.gbOutput.Controls.Add(this.m_nudHoursPost);
+            this.gbOutput.Controls.Add(this.m_nudSecsMax);
             this.gbOutput.Controls.Add(this.m_nudDaysPost);
+            this.gbOutput.Controls.Add(this.m_lblMaxSecs);
             this.gbOutput.Controls.Add(this.m_cbPostTrigger);
             this.gbOutput.Controls.Add(this.label21);
             this.gbOutput.Controls.Add(this.label22);
@@ -132,15 +141,6 @@
             this.gbOutput.Controls.Add(this.m_nudHoursPre);
             this.gbOutput.Controls.Add(this.m_nudDaysPre);
             this.gbOutput.Controls.Add(this.m_cbPreTrigger);
-            this.gbOutput.Controls.Add(this.label20);
-            this.gbOutput.Controls.Add(this.label11);
-            this.gbOutput.Controls.Add(this.m_nudSecsMax);
-            this.gbOutput.Controls.Add(this.label16);
-            this.gbOutput.Controls.Add(this.m_nudMinsMax);
-            this.gbOutput.Controls.Add(this.label18);
-            this.gbOutput.Controls.Add(this.label19);
-            this.gbOutput.Controls.Add(this.m_nudHoursMax);
-            this.gbOutput.Controls.Add(this.m_nudDaysMax);
             this.gbOutput.Name = "gbOutput";
             this.gbOutput.TabStop = false;
             // 
@@ -418,15 +418,15 @@
             this.m_cbPreTrigger.UseVisualStyleBackColor = true;
             this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
             // 
-            // label20
+            // m_lblMaxCaption
             // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
+            resources.ApplyResources(this.m_lblMaxCaption, "m_lblMaxCaption");
+            this.m_lblMaxCaption.Name = "m_lblMaxCaption";
             // 
-            // label11
+            // m_lblMaxSecs
             // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
+            resources.ApplyResources(this.m_lblMaxSecs, "m_lblMaxSecs");
+            this.m_lblMaxSecs.Name = "m_lblMaxSecs";
             // 
             // m_nudSecsMax
             // 
@@ -443,10 +443,10 @@
             -2147483648});
             this.m_nudSecsMax.Name = "m_nudSecsMax";
             // 
-            // label16
+            // m_lblMaxMins
             // 
-            resources.ApplyResources(this.label16, "label16");
-            this.label16.Name = "label16";
+            resources.ApplyResources(this.m_lblMaxMins, "m_lblMaxMins");
+            this.m_lblMaxMins.Name = "m_lblMaxMins";
             // 
             // m_nudMinsMax
             // 
@@ -463,15 +463,15 @@
             -2147483648});
             this.m_nudMinsMax.Name = "m_nudMinsMax";
             // 
-            // label18
+            // m_lblMaxHours
             // 
-            resources.ApplyResources(this.label18, "label18");
-            this.label18.Name = "label18";
+            resources.ApplyResources(this.m_lblMaxHours, "m_lblMaxHours");
+            this.m_lblMaxHours.Name = "m_lblMaxHours";
             // 
-            // label19
+            // m_lblMaxDays
             // 
-            resources.ApplyResources(this.label19, "label19");
-            this.label19.Name = "label19";
+            resources.ApplyResources(this.m_lblMaxDays, "m_lblMaxDays");
+            this.m_lblMaxDays.Name = "m_lblMaxDays";
             // 
             // m_nudHoursMax
             // 
@@ -752,13 +752,13 @@
         private System.Windows.Forms.NumericUpDown m_nudHoursPre;
         private System.Windows.Forms.NumericUpDown m_nudDaysPre;
         private System.Windows.Forms.CheckBox m_cbPreTrigger;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label m_lblMaxCaption;
+        private System.Windows.Forms.Label m_lblMaxSecs;
         private System.Windows.Forms.NumericUpDown m_nudSecsMax;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label m_lblMaxMins;
         private System.Windows.Forms.NumericUpDown m_nudMinsMax;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label m_lblMaxHours;
+        private System.Windows.Forms.Label m_lblMaxDays;
         private System.Windows.Forms.NumericUpDown m_nudHoursMax;
         private System.Windows.Forms.NumericUpDown m_nudDaysMax;
         private System.Windows.Forms.Button m_btGenerateTest;
