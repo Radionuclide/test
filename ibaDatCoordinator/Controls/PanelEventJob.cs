@@ -67,7 +67,7 @@ namespace iba.Controls
             m_treeEvents.ShowCheckboxes = true;
             m_treeEvents.SetComparer(new PdaSignalComparer());
             m_treeEvents.StoreTypeFilter = HdTreeTypeFilter.Event;
-            m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event | HdTreeLogicalFilter.Annotation;
+            m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event;
             m_treeEvents.ContextOptions = HdTreeContextOptions.None;
             m_treeEvents.EndStateChange();
             m_treeEvents.Control.MaximumSize = new Size(int.MaxValue, 165);
