@@ -497,7 +497,7 @@ namespace iba.Processing
                                                 (lMatchedEvents[lMatchedEvents.Count - 1] as MatchedEventDataRange)?.Match(data.UtcTicks);
                                         }
                                         else //incorrect events are already filtered out
-                                            lMatchedEvents.Add(new SingleEventDataRange(data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
+                                            lMatchedEvents.Add(new SingleEventDataRange(data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
 
                                         receiveTime = Math.Max(receiveTime, data.UtcTicks);
                                     }
@@ -581,8 +581,8 @@ namespace iba.Processing
             public override bool CanBeProcessed { get { return StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
             #endregion
 
-            internal SingleEventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
-                : base (utcTicksIncoming, preRange, postRange, maxRange)
+            internal SingleEventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange)
+                : base (utcTicksIncoming, preRange, postRange, preRange + postRange)
             {
                 dtOutgoing = dtIncoming;
             }

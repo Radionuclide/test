@@ -364,6 +364,13 @@ namespace iba.Controls
         #endregion
 
         #region Range selection
+        void ChangeVisibilityMaxRange(bool bShow)
+        {
+            m_nudDaysMax.Visible = m_nudHoursMax.Visible = m_nudMinsMax.Visible = m_nudSecsMax.Visible = bShow;
+            m_lblMaxCaption.Visible = m_lblMaxDays.Visible = m_lblMaxHours.Visible = m_lblMaxMins.Visible = m_lblMaxSecs.Visible = bShow;
+            m_lbMaximum.Visible = bShow;
+        }
+
         private void m_cbPreTrigger_CheckedChanged(object sender, EventArgs e)
         {
             m_nudDaysPre.Enabled = m_nudHoursPre.Enabled = m_nudMinsPre.Enabled = m_nudSecsPre.Enabled = m_cbPreTrigger.Checked;
@@ -388,6 +395,7 @@ namespace iba.Controls
             EventJobRangeCenter lRangeCenter = (EventJobRangeCenter)rbt.Tag;
             if (lRangeCenter == EventJobRangeCenter.Both)
             {
+                ChangeVisibilityMaxRange(true);
                 m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_both;
 
                 m_lbOutgoing.Visible = true;
@@ -401,6 +409,7 @@ namespace iba.Controls
             }
             else
             {
+                ChangeVisibilityMaxRange(false);
                 m_pbRangeCenter.Image = Properties.Resources.img_eventjob_range_single;
 
                 if (lRangeCenter == EventJobRangeCenter.Incoming)
