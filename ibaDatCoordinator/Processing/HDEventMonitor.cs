@@ -42,6 +42,9 @@ namespace iba.Processing
             m_bSkipChecks = bSkipChecks;
             m_ejd = null;
             m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
+            object obj = m_hdReader.Authenticate(null);
+            obj = HdReaderAuthenticator.GetInfo(obj);
+            obj = m_hdReader.Authenticate(obj);
             m_hdReader.ShowConnectionError = false;
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             m_hdReader.Advance += OnHdAdvance;
