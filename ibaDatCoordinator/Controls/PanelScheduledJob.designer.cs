@@ -18,8 +18,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelScheduledJob));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_btTriggerNow = new System.Windows.Forms.Button();
-            this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -31,6 +29,8 @@
             this.m_nudRepeatHours = new System.Windows.Forms.NumericUpDown();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
+            this.m_btTriggerNow = new System.Windows.Forms.Button();
+            this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -99,22 +99,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
             this.SuspendLayout();
-            // 
-            // m_btTriggerNow
-            // 
-            resources.ApplyResources(this.m_btTriggerNow, "m_btTriggerNow");
-            this.m_btTriggerNow.Name = "m_btTriggerNow";
-            this.m_toolTip.SetToolTip(this.m_btTriggerNow, resources.GetString("m_btTriggerNow.ToolTip"));
-            this.m_btTriggerNow.UseVisualStyleBackColor = true;
-            this.m_btTriggerNow.Click += new System.EventHandler(this.m_btTriggerNow_Click);
-            // 
-            // m_btShowTrigger
-            // 
-            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
-            this.m_btShowTrigger.Name = "m_btShowTrigger";
-            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
-            this.m_btShowTrigger.UseVisualStyleBackColor = true;
-            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
             // 
             // gbSchedule
             // 
@@ -227,6 +211,22 @@
             this.gbTrigger.Controls.Add(this.m_rbOneTime);
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
+            // 
+            // m_btTriggerNow
+            // 
+            resources.ApplyResources(this.m_btTriggerNow, "m_btTriggerNow");
+            this.m_btTriggerNow.Name = "m_btTriggerNow";
+            this.m_toolTip.SetToolTip(this.m_btTriggerNow, resources.GetString("m_btTriggerNow.ToolTip"));
+            this.m_btTriggerNow.UseVisualStyleBackColor = true;
+            this.m_btTriggerNow.Click += new System.EventHandler(this.m_btTriggerNow_Click);
+            // 
+            // m_btShowTrigger
+            // 
+            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
+            this.m_btShowTrigger.Name = "m_btShowTrigger";
+            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
+            this.m_btShowTrigger.UseVisualStyleBackColor = true;
+            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
             // 
             // m_dtStart
             // 
@@ -391,10 +391,10 @@
             // 
             // m_lvStores
             // 
+            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
