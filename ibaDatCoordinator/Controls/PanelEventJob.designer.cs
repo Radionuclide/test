@@ -16,6 +16,27 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
+            this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
+            this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
+            this.m_undoChangesBtn = new System.Windows.Forms.Button();
+            this.m_cbRetry = new System.Windows.Forms.CheckBox();
+            this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.m_stopButton = new System.Windows.Forms.Button();
+            this.m_applyToRunningBtn = new System.Windows.Forms.Button();
+            this.m_startButton = new System.Windows.Forms.Button();
+            this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
+            this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
+            this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.btnHdServer = new System.Windows.Forms.Button();
+            this.m_tbEventServer = new System.Windows.Forms.TextBox();
+            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbOutput = new iba.Utility.CollapsibleGroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_rbtBoth = new System.Windows.Forms.RadioButton();
@@ -34,13 +55,22 @@
             this.label31 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
+            this.m_lblMaxCaption = new System.Windows.Forms.Label();
             this.m_nudSecsPost = new System.Windows.Forms.NumericUpDown();
+            this.m_nudDaysMax = new System.Windows.Forms.NumericUpDown();
             this.label28 = new System.Windows.Forms.Label();
+            this.m_nudHoursMax = new System.Windows.Forms.NumericUpDown();
             this.m_nudMinsPost = new System.Windows.Forms.NumericUpDown();
+            this.m_lblMaxDays = new System.Windows.Forms.Label();
+            this.m_lblMaxHours = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
+            this.m_nudMinsMax = new System.Windows.Forms.NumericUpDown();
             this.label30 = new System.Windows.Forms.Label();
+            this.m_lblMaxMins = new System.Windows.Forms.Label();
             this.m_nudHoursPost = new System.Windows.Forms.NumericUpDown();
+            this.m_nudSecsMax = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPost = new System.Windows.Forms.NumericUpDown();
+            this.m_lblMaxSecs = new System.Windows.Forms.Label();
             this.m_cbPostTrigger = new System.Windows.Forms.CheckBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
@@ -52,57 +82,199 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.m_lblMaxCaption = new System.Windows.Forms.Label();
-            this.m_lblMaxSecs = new System.Windows.Forms.Label();
-            this.m_nudSecsMax = new System.Windows.Forms.NumericUpDown();
-            this.m_lblMaxMins = new System.Windows.Forms.Label();
-            this.m_nudMinsMax = new System.Windows.Forms.NumericUpDown();
-            this.m_lblMaxHours = new System.Windows.Forms.Label();
-            this.m_lblMaxDays = new System.Windows.Forms.Label();
-            this.m_nudHoursMax = new System.Windows.Forms.NumericUpDown();
-            this.m_nudDaysMax = new System.Windows.Forms.NumericUpDown();
-            this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
-            this.btnHdServer = new System.Windows.Forms.Button();
-            this.m_tbEventServer = new System.Windows.Forms.TextBox();
-            this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.m_fpnlEvent = new System.Windows.Forms.FlowLayoutPanel();
-            this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
-            this.m_cbRepErr = new System.Windows.Forms.CheckBox();
-            this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
-            this.m_undoChangesBtn = new System.Windows.Forms.Button();
-            this.m_cbRetry = new System.Windows.Forms.CheckBox();
-            this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
-            this.m_stopButton = new System.Windows.Forms.Button();
-            this.m_applyToRunningBtn = new System.Windows.Forms.Button();
-            this.m_startButton = new System.Windows.Forms.Button();
-            this.m_autoStartCheckBox = new System.Windows.Forms.CheckBox();
-            this.m_enableCheckBox = new System.Windows.Forms.CheckBox();
-            this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
+            this.m_pnlEvents = new System.Windows.Forms.Panel();
+            this.gbGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
+            this.gbTriggers.SuspendLayout();
             this.gbOutput.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_pbRangeCenter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPre)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPre)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPre)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPre)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).BeginInit();
-            this.gbTriggers.SuspendLayout();
-            this.gbGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.SuspendLayout();
+            // 
+            // gbGeneral
+            // 
+            resources.ApplyResources(this.gbGeneral, "gbGeneral");
+            this.gbGeneral.Controls.Add(this.m_cbRepErr);
+            this.gbGeneral.Controls.Add(this.m_cbInitialScanEnabled);
+            this.gbGeneral.Controls.Add(this.m_undoChangesBtn);
+            this.gbGeneral.Controls.Add(this.m_cbRetry);
+            this.gbGeneral.Controls.Add(this.m_retryUpDown);
+            this.gbGeneral.Controls.Add(this.label14);
+            this.gbGeneral.Controls.Add(this.m_stopButton);
+            this.gbGeneral.Controls.Add(this.m_applyToRunningBtn);
+            this.gbGeneral.Controls.Add(this.m_startButton);
+            this.gbGeneral.Controls.Add(this.m_autoStartCheckBox);
+            this.gbGeneral.Controls.Add(this.m_enableCheckBox);
+            this.gbGeneral.Controls.Add(this.m_failTimeUpDown);
+            this.gbGeneral.Controls.Add(this.label10);
+            this.gbGeneral.Name = "gbGeneral";
+            this.gbGeneral.TabStop = false;
+            // 
+            // m_cbRepErr
+            // 
+            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
+            this.m_cbRepErr.Name = "m_cbRepErr";
+            this.m_cbRepErr.UseVisualStyleBackColor = true;
+            // 
+            // m_cbInitialScanEnabled
+            // 
+            resources.ApplyResources(this.m_cbInitialScanEnabled, "m_cbInitialScanEnabled");
+            this.m_cbInitialScanEnabled.Name = "m_cbInitialScanEnabled";
+            this.m_cbInitialScanEnabled.UseVisualStyleBackColor = true;
+            // 
+            // m_undoChangesBtn
+            // 
+            resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
+            this.m_undoChangesBtn.Name = "m_undoChangesBtn";
+            this.m_undoChangesBtn.UseVisualStyleBackColor = true;
+            // 
+            // m_cbRetry
+            // 
+            resources.ApplyResources(this.m_cbRetry, "m_cbRetry");
+            this.m_cbRetry.Name = "m_cbRetry";
+            this.m_cbRetry.UseVisualStyleBackColor = true;
+            this.m_cbRetry.CheckedChanged += new System.EventHandler(this.m_cbRetry_CheckedChanged);
+            // 
+            // m_retryUpDown
+            // 
+            resources.ApplyResources(this.m_retryUpDown, "m_retryUpDown");
+            this.m_retryUpDown.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.m_retryUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_retryUpDown.Name = "m_retryUpDown";
+            this.m_retryUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label14
+            // 
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // m_stopButton
+            // 
+            resources.ApplyResources(this.m_stopButton, "m_stopButton");
+            this.m_stopButton.Name = "m_stopButton";
+            this.m_stopButton.UseVisualStyleBackColor = true;
+            // 
+            // m_applyToRunningBtn
+            // 
+            resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
+            this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
+            this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
+            // 
+            // m_startButton
+            // 
+            resources.ApplyResources(this.m_startButton, "m_startButton");
+            this.m_startButton.Name = "m_startButton";
+            this.m_startButton.UseVisualStyleBackColor = true;
+            // 
+            // m_autoStartCheckBox
+            // 
+            resources.ApplyResources(this.m_autoStartCheckBox, "m_autoStartCheckBox");
+            this.m_autoStartCheckBox.Name = "m_autoStartCheckBox";
+            this.m_autoStartCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // m_enableCheckBox
+            // 
+            resources.ApplyResources(this.m_enableCheckBox, "m_enableCheckBox");
+            this.m_enableCheckBox.Name = "m_enableCheckBox";
+            this.m_enableCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // m_failTimeUpDown
+            // 
+            this.m_failTimeUpDown.DecimalPlaces = 1;
+            resources.ApplyResources(this.m_failTimeUpDown, "m_failTimeUpDown");
+            this.m_failTimeUpDown.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.m_failTimeUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.m_failTimeUpDown.Name = "m_failTimeUpDown";
+            this.m_failTimeUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // gbTriggers
+            // 
+            resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.m_pnlEvents);
+            this.gbTriggers.Controls.Add(this.btnHdServer);
+            this.gbTriggers.Controls.Add(this.m_tbEventServer);
+            this.gbTriggers.Controls.Add(this.m_tbEventServerPort);
+            this.gbTriggers.Controls.Add(this.label4);
+            this.gbTriggers.Controls.Add(this.label2);
+            this.gbTriggers.Controls.Add(this.label1);
+            this.gbTriggers.Name = "gbTriggers";
+            this.gbTriggers.TabStop = false;
+            // 
+            // btnHdServer
+            // 
+            resources.ApplyResources(this.btnHdServer, "btnHdServer");
+            this.btnHdServer.Name = "btnHdServer";
+            this.btnHdServer.UseVisualStyleBackColor = true;
+            this.btnHdServer.Click += new System.EventHandler(this.btnHdServer_Click);
+            // 
+            // m_tbEventServer
+            // 
+            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
+            this.m_tbEventServer.Name = "m_tbEventServer";
+            this.m_tbEventServer.ReadOnly = true;
+            // 
+            // m_tbEventServerPort
+            // 
+            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
+            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
+            this.m_tbEventServerPort.ReadOnly = true;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // gbOutput
             // 
@@ -254,6 +426,11 @@
             resources.ApplyResources(this.label27, "label27");
             this.label27.Name = "label27";
             // 
+            // m_lblMaxCaption
+            // 
+            resources.ApplyResources(this.m_lblMaxCaption, "m_lblMaxCaption");
+            this.m_lblMaxCaption.Name = "m_lblMaxCaption";
+            // 
             // m_nudSecsPost
             // 
             resources.ApplyResources(this.m_nudSecsPost, "m_nudSecsPost");
@@ -269,10 +446,35 @@
             -2147483648});
             this.m_nudSecsPost.Name = "m_nudSecsPost";
             // 
+            // m_nudDaysMax
+            // 
+            resources.ApplyResources(this.m_nudDaysMax, "m_nudDaysMax");
+            this.m_nudDaysMax.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.m_nudDaysMax.Name = "m_nudDaysMax";
+            // 
             // label28
             // 
             resources.ApplyResources(this.label28, "label28");
             this.label28.Name = "label28";
+            // 
+            // m_nudHoursMax
+            // 
+            resources.ApplyResources(this.m_nudHoursMax, "m_nudHoursMax");
+            this.m_nudHoursMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudHoursMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudHoursMax.Name = "m_nudHoursMax";
             // 
             // m_nudMinsPost
             // 
@@ -289,15 +491,45 @@
             -2147483648});
             this.m_nudMinsPost.Name = "m_nudMinsPost";
             // 
+            // m_lblMaxDays
+            // 
+            resources.ApplyResources(this.m_lblMaxDays, "m_lblMaxDays");
+            this.m_lblMaxDays.Name = "m_lblMaxDays";
+            // 
+            // m_lblMaxHours
+            // 
+            resources.ApplyResources(this.m_lblMaxHours, "m_lblMaxHours");
+            this.m_lblMaxHours.Name = "m_lblMaxHours";
+            // 
             // label29
             // 
             resources.ApplyResources(this.label29, "label29");
             this.label29.Name = "label29";
             // 
+            // m_nudMinsMax
+            // 
+            resources.ApplyResources(this.m_nudMinsMax, "m_nudMinsMax");
+            this.m_nudMinsMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudMinsMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudMinsMax.Name = "m_nudMinsMax";
+            // 
             // label30
             // 
             resources.ApplyResources(this.label30, "label30");
             this.label30.Name = "label30";
+            // 
+            // m_lblMaxMins
+            // 
+            resources.ApplyResources(this.m_lblMaxMins, "m_lblMaxMins");
+            this.m_lblMaxMins.Name = "m_lblMaxMins";
             // 
             // m_nudHoursPost
             // 
@@ -314,6 +546,21 @@
             -2147483648});
             this.m_nudHoursPost.Name = "m_nudHoursPost";
             // 
+            // m_nudSecsMax
+            // 
+            resources.ApplyResources(this.m_nudSecsMax, "m_nudSecsMax");
+            this.m_nudSecsMax.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.m_nudSecsMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.m_nudSecsMax.Name = "m_nudSecsMax";
+            // 
             // m_nudDaysPost
             // 
             resources.ApplyResources(this.m_nudDaysPost, "m_nudDaysPost");
@@ -323,6 +570,11 @@
             0,
             0});
             this.m_nudDaysPost.Name = "m_nudDaysPost";
+            // 
+            // m_lblMaxSecs
+            // 
+            resources.ApplyResources(this.m_lblMaxSecs, "m_lblMaxSecs");
+            this.m_lblMaxSecs.Name = "m_lblMaxSecs";
             // 
             // m_cbPostTrigger
             // 
@@ -418,294 +670,42 @@
             this.m_cbPreTrigger.UseVisualStyleBackColor = true;
             this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
             // 
-            // m_lblMaxCaption
+            // m_pnlEvents
             // 
-            resources.ApplyResources(this.m_lblMaxCaption, "m_lblMaxCaption");
-            this.m_lblMaxCaption.Name = "m_lblMaxCaption";
-            // 
-            // m_lblMaxSecs
-            // 
-            resources.ApplyResources(this.m_lblMaxSecs, "m_lblMaxSecs");
-            this.m_lblMaxSecs.Name = "m_lblMaxSecs";
-            // 
-            // m_nudSecsMax
-            // 
-            resources.ApplyResources(this.m_nudSecsMax, "m_nudSecsMax");
-            this.m_nudSecsMax.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudSecsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudSecsMax.Name = "m_nudSecsMax";
-            // 
-            // m_lblMaxMins
-            // 
-            resources.ApplyResources(this.m_lblMaxMins, "m_lblMaxMins");
-            this.m_lblMaxMins.Name = "m_lblMaxMins";
-            // 
-            // m_nudMinsMax
-            // 
-            resources.ApplyResources(this.m_nudMinsMax, "m_nudMinsMax");
-            this.m_nudMinsMax.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudMinsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudMinsMax.Name = "m_nudMinsMax";
-            // 
-            // m_lblMaxHours
-            // 
-            resources.ApplyResources(this.m_lblMaxHours, "m_lblMaxHours");
-            this.m_lblMaxHours.Name = "m_lblMaxHours";
-            // 
-            // m_lblMaxDays
-            // 
-            resources.ApplyResources(this.m_lblMaxDays, "m_lblMaxDays");
-            this.m_lblMaxDays.Name = "m_lblMaxDays";
-            // 
-            // m_nudHoursMax
-            // 
-            resources.ApplyResources(this.m_nudHoursMax, "m_nudHoursMax");
-            this.m_nudHoursMax.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudHoursMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.m_nudHoursMax.Name = "m_nudHoursMax";
-            // 
-            // m_nudDaysMax
-            // 
-            resources.ApplyResources(this.m_nudDaysMax, "m_nudDaysMax");
-            this.m_nudDaysMax.Maximum = new decimal(new int[] {
-            50000,
-            0,
-            0,
-            0});
-            this.m_nudDaysMax.Name = "m_nudDaysMax";
-            // 
-            // gbTriggers
-            // 
-            resources.ApplyResources(this.gbTriggers, "gbTriggers");
-            this.gbTriggers.Controls.Add(this.btnHdServer);
-            this.gbTriggers.Controls.Add(this.m_tbEventServer);
-            this.gbTriggers.Controls.Add(this.m_tbEventServerPort);
-            this.gbTriggers.Controls.Add(this.label4);
-            this.gbTriggers.Controls.Add(this.label2);
-            this.gbTriggers.Controls.Add(this.label1);
-            this.gbTriggers.Controls.Add(this.m_fpnlEvent);
-            this.gbTriggers.Name = "gbTriggers";
-            this.gbTriggers.TabStop = false;
-            // 
-            // btnHdServer
-            // 
-            resources.ApplyResources(this.btnHdServer, "btnHdServer");
-            this.btnHdServer.Name = "btnHdServer";
-            this.btnHdServer.UseVisualStyleBackColor = true;
-            this.btnHdServer.Click += new System.EventHandler(this.btnHdServer_Click);
-            // 
-            // m_tbEventServer
-            // 
-            resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
-            this.m_tbEventServer.Name = "m_tbEventServer";
-            this.m_tbEventServer.ReadOnly = true;
-            // 
-            // m_tbEventServerPort
-            // 
-            resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
-            this.m_tbEventServerPort.Name = "m_tbEventServerPort";
-            this.m_tbEventServerPort.ReadOnly = true;
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // m_fpnlEvent
-            // 
-            resources.ApplyResources(this.m_fpnlEvent, "m_fpnlEvent");
-            this.m_fpnlEvent.Name = "m_fpnlEvent";
-            // 
-            // gbGeneral
-            // 
-            resources.ApplyResources(this.gbGeneral, "gbGeneral");
-            this.gbGeneral.Controls.Add(this.m_cbRepErr);
-            this.gbGeneral.Controls.Add(this.m_cbInitialScanEnabled);
-            this.gbGeneral.Controls.Add(this.m_undoChangesBtn);
-            this.gbGeneral.Controls.Add(this.m_cbRetry);
-            this.gbGeneral.Controls.Add(this.m_retryUpDown);
-            this.gbGeneral.Controls.Add(this.label14);
-            this.gbGeneral.Controls.Add(this.m_stopButton);
-            this.gbGeneral.Controls.Add(this.m_applyToRunningBtn);
-            this.gbGeneral.Controls.Add(this.m_startButton);
-            this.gbGeneral.Controls.Add(this.m_autoStartCheckBox);
-            this.gbGeneral.Controls.Add(this.m_enableCheckBox);
-            this.gbGeneral.Controls.Add(this.m_failTimeUpDown);
-            this.gbGeneral.Controls.Add(this.label10);
-            this.gbGeneral.Name = "gbGeneral";
-            this.gbGeneral.TabStop = false;
-            // 
-            // m_cbRepErr
-            // 
-            resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
-            this.m_cbRepErr.Name = "m_cbRepErr";
-            this.m_cbRepErr.UseVisualStyleBackColor = true;
-            // 
-            // m_cbInitialScanEnabled
-            // 
-            resources.ApplyResources(this.m_cbInitialScanEnabled, "m_cbInitialScanEnabled");
-            this.m_cbInitialScanEnabled.Name = "m_cbInitialScanEnabled";
-            this.m_cbInitialScanEnabled.UseVisualStyleBackColor = true;
-            // 
-            // m_undoChangesBtn
-            // 
-            resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
-            this.m_undoChangesBtn.Name = "m_undoChangesBtn";
-            this.m_undoChangesBtn.UseVisualStyleBackColor = true;
-            // 
-            // m_cbRetry
-            // 
-            resources.ApplyResources(this.m_cbRetry, "m_cbRetry");
-            this.m_cbRetry.Name = "m_cbRetry";
-            this.m_cbRetry.UseVisualStyleBackColor = true;
-            this.m_cbRetry.CheckedChanged += new System.EventHandler(this.m_cbRetry_CheckedChanged);
-            // 
-            // m_retryUpDown
-            // 
-            resources.ApplyResources(this.m_retryUpDown, "m_retryUpDown");
-            this.m_retryUpDown.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.m_retryUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.m_retryUpDown.Name = "m_retryUpDown";
-            this.m_retryUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
-            // m_stopButton
-            // 
-            resources.ApplyResources(this.m_stopButton, "m_stopButton");
-            this.m_stopButton.Name = "m_stopButton";
-            this.m_stopButton.UseVisualStyleBackColor = true;
-            // 
-            // m_applyToRunningBtn
-            // 
-            resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
-            this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
-            this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
-            // 
-            // m_startButton
-            // 
-            resources.ApplyResources(this.m_startButton, "m_startButton");
-            this.m_startButton.Name = "m_startButton";
-            this.m_startButton.UseVisualStyleBackColor = true;
-            // 
-            // m_autoStartCheckBox
-            // 
-            resources.ApplyResources(this.m_autoStartCheckBox, "m_autoStartCheckBox");
-            this.m_autoStartCheckBox.Name = "m_autoStartCheckBox";
-            this.m_autoStartCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // m_enableCheckBox
-            // 
-            resources.ApplyResources(this.m_enableCheckBox, "m_enableCheckBox");
-            this.m_enableCheckBox.Name = "m_enableCheckBox";
-            this.m_enableCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // m_failTimeUpDown
-            // 
-            this.m_failTimeUpDown.DecimalPlaces = 1;
-            resources.ApplyResources(this.m_failTimeUpDown, "m_failTimeUpDown");
-            this.m_failTimeUpDown.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.m_failTimeUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.m_failTimeUpDown.Name = "m_failTimeUpDown";
-            this.m_failTimeUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
+            resources.ApplyResources(this.m_pnlEvents, "m_pnlEvents");
+            this.m_pnlEvents.Name = "m_pnlEvents";
             // 
             // PanelEventJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gbOutput);
-            this.Controls.Add(this.gbTriggers);
             this.Controls.Add(this.gbGeneral);
+            this.Controls.Add(this.gbTriggers);
+            this.Controls.Add(this.gbOutput);
             this.Name = "PanelEventJob";
+            this.gbGeneral.ResumeLayout(false);
+            this.gbGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
+            this.gbTriggers.ResumeLayout(false);
+            this.gbTriggers.PerformLayout();
             this.gbOutput.ResumeLayout(false);
             this.gbOutput.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_pbRangeCenter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsPre)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsPre)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursPre)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysPre)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudSecsMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudMinsMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudHoursMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDaysMax)).EndInit();
-            this.gbTriggers.ResumeLayout(false);
-            this.gbTriggers.PerformLayout();
-            this.gbGeneral.ResumeLayout(false);
-            this.gbGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -726,7 +726,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
         private System.Windows.Forms.CheckBox m_cbRepErr;
-        private System.Windows.Forms.FlowLayoutPanel m_fpnlEvent;
         private System.Windows.Forms.ListView m_lvStores;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private Utility.CollapsibleGroupBox gbTriggers;
@@ -779,5 +778,6 @@
         private System.Windows.Forms.TextBox m_tbEventServerPort;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel m_pnlEvents;
     }
 }

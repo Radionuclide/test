@@ -73,8 +73,9 @@ namespace iba.Controls
             m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event;
             m_treeEvents.ContextOptions = HdTreeContextOptions.None;
             m_treeEvents.EndStateChange();
-            m_treeEvents.Control.MaximumSize = new Size(int.MaxValue, 165);
-            m_fpnlEvent.Controls.Add(m_treeEvents.Control);
+            m_treeEvents.Control.Size = new Size(m_treeEvents.Control.Width, 165);
+            m_treeEvents.Control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            m_pnlEvents.Controls.Add(m_treeEvents.Control);
 
             m_rbtIncoming.Tag = EventJobRangeCenter.Incoming;
             m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
