@@ -315,7 +315,7 @@ namespace iba.Processing
             lock (m_queueLock)
             {
                 foreach (var matchedEvent in matchedEvents)
-                    m_eventQueue.Add(Tuple.Create(matchedEvent.StartTime, matchedEvent.StopTime));
+                    m_eventQueue.Add(Tuple.Create(matchedEvent.StartTime.ToLocalTime(), matchedEvent.StopTime.ToLocalTime()));
             }
         }
 
@@ -570,7 +570,7 @@ namespace iba.Processing
             #region Initialize
             internal EventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
             {
-                dtIncoming = new DateTime(utcTicksIncoming);
+                dtIncoming = new DateTime(utcTicksIncoming, DateTimeKind.Utc);
                 this.preRange = preRange;
                 this.postRange = postRange;
                 this.maxRange = maxRange;
@@ -619,7 +619,7 @@ namespace iba.Processing
                 if (bMatched)
                     return;
 
-                dtOutgoing = new DateTime(utcTicksOutgoing);
+                dtOutgoing = new DateTime(utcTicksOutgoing, DateTimeKind.Utc);
                 bMatched = true;
             }
             #endregion

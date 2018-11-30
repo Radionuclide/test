@@ -445,16 +445,6 @@ namespace iba.Controls
 
             try
             {
-                DateTime dtNow = DateTime.UtcNow;
-
-                TimeSpan preRange = m_eventData.EnablePreTriggerRange ? m_eventData.PreTriggerRange : TimeSpan.Zero;
-                TimeSpan postRange = m_eventData.EnablePostTriggerRange ? m_eventData.PostTriggerRange : TimeSpan.Zero;
-                DateTime dtStart = dtNow.Subtract(preRange);
-                DateTime dtMax = dtStart.Add(m_eventData.MaxTriggerRange);
-                DateTime dtStop = dtNow.Add(postRange);
-                if (dtMax < dtStop)
-                    dtStop = dtMax;
-
                 string filename = string.Empty;
                 using (SaveFileDialog dlg = new SaveFileDialog())
                 {
