@@ -5020,19 +5020,19 @@ namespace iba.Processing
             if (m_bTimersstopped || m_stop || m_hdEventMonitor == null || m_processNewEventsTimer == null)
                 return;
 
-            List<Tuple<DateTime, DateTime>> newEvents = m_hdEventMonitor.GetNewEvents();
+            List<HDEventMonitor.EventOccurrence> newEvents = m_hdEventMonitor.GetNewEvents();
             if (newEvents == null || newEvents.Count <= 0)
                 m_processNewEventsTimer?.Change(intervalProcessNewEvents, Timeout.Infinite);
 
             List<string> fileNames = new List<string>();
             foreach (var evt in newEvents)
             {
-                DateTime dtLocalEvent = evt.Item1.ToLocalTime();
+                DateTime dtLocalEvent = evt.StartTime.ToLocalTime();
                 if (TimestampJobLastExecution < dtLocalEvent)
                     TimestampJobLastExecution = dtLocalEvent;
 
                 int duplicateCounter = 0;
-                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), evt.Item1));
+                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1}_{2:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), evt.Name,evt.StartTime));
                 while (m_toProcessFiles.Contains(filename) || m_processedFiles.Contains(filename) || fileNames.Contains(filename))
                 {
                     if (duplicateCounter == 0)
@@ -5043,7 +5043,7 @@ namespace iba.Processing
 
                 try
                 {
-                    m_cd.GenerateHDQFile(evt.Item1, evt.Item2, filename);
+                    m_cd.GenerateHDQFile(evt.StartTime, evt.StopTime, filename);
                     fileNames.Add(filename);
                 }
                 catch (Exception ex)

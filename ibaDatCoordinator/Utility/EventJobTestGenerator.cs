@@ -99,7 +99,7 @@ namespace iba.Utility
                 StatusChanged?.Invoke(new EventJobTestStatus(Level.Info, Properties.Resources.EventJob_TestFile_SearchingEvent, false));
 
                 //Query events
-                List<Tuple<DateTime, DateTime>> evts = null;
+                List<HDEventMonitor.EventOccurrence> evts = null;
                 using (HDEventMonitor monitor = new HDEventMonitor(true))
                 {
                     monitor.UpdateConfiguration(m_ejd);
@@ -141,8 +141,8 @@ namespace iba.Utility
                 }
                 else
                 {
-                    startTime = evts[evts.Count - 1].Item1;
-                    stopTime = evts[evts.Count - 1].Item2;
+                    startTime = evts[evts.Count - 1].StartTime;
+                    stopTime = evts[evts.Count - 1].StopTime;
                 }
 
                 if (m_status == -1)
