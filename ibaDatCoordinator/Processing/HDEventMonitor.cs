@@ -30,7 +30,7 @@ namespace iba.Processing
 
         long m_startTimeTicks;
         object m_queueLock;
-        List<Tuple<DateTime, DateTime>> m_eventQueue;
+        List<EventOccurrence> m_eventQueue;
 
         const int intervalAdvance = 1000;
         Timer m_tmrAdvance;
@@ -58,7 +58,7 @@ namespace iba.Processing
 
             m_startTimeTicks = DateTime.MaxValue.Ticks;
             m_queueLock = new object();
-            m_eventQueue = new List<Tuple<DateTime, DateTime>>();
+            m_eventQueue = new List<EventOccurrence>();
 
             m_tmrAdvance = new Timer(OnAdvanceTimerTick);
 
@@ -315,13 +315,13 @@ namespace iba.Processing
             lock (m_queueLock)
             {
                 foreach (var matchedEvent in matchedEvents)
-                    m_eventQueue.Add(Tuple.Create(matchedEvent.StartTime.ToLocalTime(), matchedEvent.StopTime.ToLocalTime()));
+                    m_eventQueue.Add(new EventOccurrence(matchedEvent.Name, matchedEvent.StartTime.ToLocalTime(), matchedEvent.StopTime.ToLocalTime()));
             }
         }
 
-        public List<Tuple<DateTime,DateTime>> GetNewEvents()
+        public List<EventOccurrence> GetNewEvents()
         {
-            List<Tuple<DateTime, DateTime>> res = new List<Tuple<DateTime, DateTime>>();
+            List<EventOccurrence> res = new List<EventOccurrence>();
 
             if (m_eventQueue.Count <= 0)
                 return res;
@@ -329,11 +329,26 @@ namespace iba.Processing
             lock (m_queueLock)
             {
                 res = m_eventQueue;
-                m_eventQueue = new List<Tuple<DateTime, DateTime>>();
+                m_eventQueue = new List<EventOccurrence>();
             }
 
             return res;
         }
+
+        internal class EventOccurrence
+        {
+            public string Name { get; private set; }
+            public DateTime StartTime { get; private set; }
+            public DateTime StopTime { get; private set; }
+
+            public EventOccurrence(string name, DateTime start, DateTime stop)
+            {
+                Name = name;
+                StartTime = start;
+                StopTime = stop;
+            }
+        }
+
         #endregion
 
         #region Live data
@@ -495,12 +510,12 @@ namespace iba.Processing
                                         if (m_ejd.RangeCenter == EventJobRangeCenter.Both)
                                         {
                                             if (data.TriggerIn)
-                                                lMatchedEvents.Add(new MatchedEventDataRange(data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
+                                                lMatchedEvents.Add(new MatchedEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
                                             else if (data.TriggerOut && lMatchedEvents.Count > 0)
                                                 (lMatchedEvents[lMatchedEvents.Count - 1] as MatchedEventDataRange)?.Match(data.UtcTicks);
                                         }
                                         else //incorrect events are already filtered out
-                                            lMatchedEvents.Add(new SingleEventDataRange(data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
+                                            lMatchedEvents.Add(new SingleEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
 
                                         receiveTime = Math.Max(receiveTime, data.UtcTicks);
                                     }
@@ -555,6 +570,8 @@ namespace iba.Processing
             #region Properties
             public virtual bool CanBeProcessed { get; }
 
+            public string Name { get; private set; }
+
             public DateTime StartTime { get { return dtIncoming.Subtract(preRange); } }
             public DateTime StopTime
             {
@@ -568,8 +585,9 @@ namespace iba.Processing
             #endregion
 
             #region Initialize
-            internal EventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
+            internal EventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
             {
+                Name = name;
                 dtIncoming = new DateTime(utcTicksIncoming, DateTimeKind.Utc);
                 this.preRange = preRange;
                 this.postRange = postRange;
@@ -584,8 +602,8 @@ namespace iba.Processing
             public override bool CanBeProcessed { get { return StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
             #endregion
 
-            internal SingleEventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange)
-                : base (utcTicksIncoming, preRange, postRange, preRange + postRange)
+            internal SingleEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange)
+                : base (name, utcTicksIncoming, preRange, postRange, preRange + postRange)
             {
                 dtOutgoing = dtIncoming;
             }
@@ -602,8 +620,8 @@ namespace iba.Processing
             public override bool CanBeProcessed { get { return (bMatched || dtExpiration <= DateTime.UtcNow) && StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
             #endregion
 
-            internal MatchedEventDataRange(long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
-                : base(utcTicksIncoming, preRange, postRange, maxRange)
+            internal MatchedEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
+                : base(name, utcTicksIncoming, preRange, postRange, maxRange)
             {
                 TimeSpan diffRange = maxRange - preRange;
                 if (diffRange < TimeSpan.Zero)
