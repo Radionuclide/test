@@ -796,36 +796,6 @@ namespace iba.Controls
                 m_currStores.Add(item.Text);
         }
         #endregion
-
-        private void m_tbEventServer_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_tbEventServerPort_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label31_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_lvStores_ItemChecked_1(object sender, ItemCheckedEventArgs e)
-        {
-
-        }
     }
 
     public class CustomNumericUpDown : NumericUpDown

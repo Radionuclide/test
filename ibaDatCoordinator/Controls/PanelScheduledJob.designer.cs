@@ -398,7 +398,6 @@
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
-            this.m_lvStores.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.m_lvStores_ItemChecked_1);
             // 
             // columnHeader1
             // 
@@ -408,7 +407,6 @@
             // 
             resources.ApplyResources(this.label31, "label31");
             this.label31.Name = "label31";
-            this.label31.Click += new System.EventHandler(this.label31_Click);
             // 
             // btnHdServer
             // 
@@ -422,26 +420,22 @@
             resources.ApplyResources(this.m_tbEventServer, "m_tbEventServer");
             this.m_tbEventServer.Name = "m_tbEventServer";
             this.m_tbEventServer.ReadOnly = true;
-            this.m_tbEventServer.TextChanged += new System.EventHandler(this.m_tbEventServer_TextChanged);
             // 
             // m_tbEventServerPort
             // 
             resources.ApplyResources(this.m_tbEventServerPort, "m_tbEventServerPort");
             this.m_tbEventServerPort.Name = "m_tbEventServerPort";
             this.m_tbEventServerPort.ReadOnly = true;
-            this.m_tbEventServerPort.TextChanged += new System.EventHandler(this.m_tbEventServerPort_TextChanged);
             // 
             // label11
             // 
             resources.ApplyResources(this.label11, "label11");
             this.label11.Name = "label11";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label19
             // 
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
-            this.label19.Click += new System.EventHandler(this.label19_Click);
             // 
             // gbTimeSelection
             // 
