@@ -83,10 +83,15 @@ namespace iba.Controls
 
         private void UpdateTooltips()
         {
-            m_toolTip.SetToolTip(m_rbHour, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.HOUR, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
-            m_toolTip.SetToolTip(m_rbDay, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.DAY, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
-            m_toolTip.SetToolTip(m_rbWeek, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.WEEK, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
-            m_toolTip.SetToolTip(m_rbMonth, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(m_targetFolderTextBox.Text, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.MONTH, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+            try
+            {
+                string t = m_targetFolderTextBox.Text.Trim('\"');
+                m_toolTip.SetToolTip(m_rbHour, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(t, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.HOUR, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+                m_toolTip.SetToolTip(m_rbDay, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(t, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.DAY, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+                m_toolTip.SetToolTip(m_rbWeek, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(t, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.WEEK, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+                m_toolTip.SetToolTip(m_rbMonth, String.Format(iba.Properties.Resources.ExampleFolder, System.IO.Path.Combine(t, TaskDataUNC.GetSubDir(TaskDataUNC.SubfolderChoice.MONTH, DateTime.Now, m_cbUse4Numbers.Checked, m_cbSplitSubdirs.Checked))));
+            }
+            catch { }
         }
 
         public void SaveData()
