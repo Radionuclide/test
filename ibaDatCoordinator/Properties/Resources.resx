@@ -1260,7 +1260,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Splitter task started</value>
   </data>
   <data name="logSplitSuccess" xml:space="preserve">
-    <value>Splitter task succesfully compled</value>
+    <value>Splitter task succesfully completed</value>
   </data>
   <data name="logCleanupSkippedNonIbaDatFile" xml:space="preserve">
     <value>File cleanup: Skipped non iba .dat file  '{0}'</value>

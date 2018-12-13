@@ -2033,7 +2033,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Splitter task succesfully compled.
+        ///   Looks up a localized string similar to Splitter task succesfully completed.
         /// </summary>
         internal static string logSplitSuccess {
             get {
