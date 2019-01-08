@@ -31,6 +31,7 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.btnHdServer = new System.Windows.Forms.Button();
             this.m_tbEventServer = new System.Windows.Forms.TextBox();
             this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
@@ -82,7 +83,6 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -241,6 +241,11 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // m_pnlEvents
+            // 
+            resources.ApplyResources(this.m_pnlEvents, "m_pnlEvents");
+            this.m_pnlEvents.Name = "m_pnlEvents";
             // 
             // btnHdServer
             // 
@@ -669,11 +674,6 @@
             this.m_cbPreTrigger.Name = "m_cbPreTrigger";
             this.m_cbPreTrigger.UseVisualStyleBackColor = true;
             this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
-            // 
-            // m_pnlEvents
-            // 
-            resources.ApplyResources(this.m_pnlEvents, "m_pnlEvents");
-            this.m_pnlEvents.Name = "m_pnlEvents";
             // 
             // PanelEventJob
             // 

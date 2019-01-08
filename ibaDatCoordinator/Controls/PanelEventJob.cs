@@ -36,7 +36,7 @@ namespace iba.Controls
         static ImageList imageListError;
         ListViewItem m_lviErrorStores;
 
-        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
+        const int locationOffsetXRangeCenter = 150; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
 
         #region Initialize
@@ -405,11 +405,11 @@ namespace iba.Controls
                 m_lbOutgoing.Visible = true;
                 m_lbIncoming.Visible = true;
 
-                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 50 - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 50 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 50 - 37 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 50 + 40 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 60);
             }
             else
             {
@@ -431,9 +431,9 @@ namespace iba.Controls
                     m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
                 }
 
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 37 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 40 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                //m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 60);
             }
         }
         #endregion

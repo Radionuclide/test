@@ -881,16 +881,16 @@
     <value>True</value>
   </data>
   <data name="m_lbMaximum.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="m_lbMaximum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lbMaximum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 101</value>
+    <value>457, 65</value>
   </data>
   <data name="m_lbMaximum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 17</value>
+    <value>51, 13</value>
   </data>
   <data name="m_lbMaximum.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -914,16 +914,16 @@
     <value>True</value>
   </data>
   <data name="m_lbPre.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="m_lbPre.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lbPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>370, 58</value>
+    <value>388, 39</value>
   </data>
   <data name="m_lbPre.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 17</value>
+    <value>23, 13</value>
   </data>
   <data name="m_lbPre.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -947,16 +947,16 @@
     <value>True</value>
   </data>
   <data name="m_lbPost.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="m_lbPost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lbPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>469, 58</value>
+    <value>469, 39</value>
   </data>
   <data name="m_lbPost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 17</value>
+    <value>28, 13</value>
   </data>
   <data name="m_lbPost.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -980,16 +980,16 @@
     <value>True</value>
   </data>
   <data name="m_lbOutgoing.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="m_lbOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 0</value>
+    <value>512, 5</value>
   </data>
   <data name="m_lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 17</value>
+    <value>50, 13</value>
   </data>
   <data name="m_lbOutgoing.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1013,16 +1013,16 @@
     <value>True</value>
   </data>
   <data name="m_lbIncoming.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="m_lbIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 0</value>
+    <value>412, 5</value>
   </data>
   <data name="m_lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
+    <value>50, 13</value>
   </data>
   <data name="m_lbIncoming.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1049,7 +1049,7 @@
     <value>287, 3</value>
   </data>
   <data name="m_pbRangeCenter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 120</value>
+    <value>420, 75</value>
   </data>
   <data name="m_pbRangeCenter.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1130,7 +1130,7 @@
     <value>16, 38</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 126</value>
+    <value>712, 83</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -1184,7 +1184,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btGenerateTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>347, 314</value>
+    <value>347, 271</value>
   </data>
   <data name="m_btGenerateTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 23</value>
@@ -1214,7 +1214,7 @@
     <value>315</value>
   </data>
   <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 314</value>
+    <value>16, 271</value>
   </data>
   <data name="m_lvStores.Size" type="System.Drawing.Size, System.Drawing">
     <value>320, 140</value>
@@ -1241,7 +1241,7 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 298</value>
+    <value>12, 255</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
@@ -1271,7 +1271,7 @@
     <value>NoControl</value>
   </data>
   <data name="label26.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 244</value>
+    <value>13, 201</value>
   </data>
   <data name="label26.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 13</value>
@@ -1301,7 +1301,7 @@
     <value>NoControl</value>
   </data>
   <data name="label27.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 244</value>
+    <value>454, 201</value>
   </data>
   <data name="label27.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -1331,7 +1331,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxCaption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 270</value>
+    <value>13, 227</value>
   </data>
   <data name="m_lblMaxCaption.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 13</value>
@@ -1358,7 +1358,7 @@
     <value>False</value>
   </data>
   <data name="m_nudSecsPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 242</value>
+    <value>408, 199</value>
   </data>
   <data name="m_nudSecsPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1379,7 +1379,7 @@
     <value>8</value>
   </data>
   <data name="m_nudDaysMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>141, 268</value>
+    <value>141, 225</value>
   </data>
   <data name="m_nudDaysMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1406,7 +1406,7 @@
     <value>NoControl</value>
   </data>
   <data name="label28.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 244</value>
+    <value>359, 201</value>
   </data>
   <data name="label28.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -1430,7 +1430,7 @@
     <value>10</value>
   </data>
   <data name="m_nudHoursMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 268</value>
+    <value>228, 225</value>
   </data>
   <data name="m_nudHoursMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1454,7 +1454,7 @@
     <value>False</value>
   </data>
   <data name="m_nudMinsPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>313, 242</value>
+    <value>313, 199</value>
   </data>
   <data name="m_nudMinsPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1481,7 +1481,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxDays.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 270</value>
+    <value>187, 227</value>
   </data>
   <data name="m_lblMaxDays.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -1511,7 +1511,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxHours.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 270</value>
+    <value>274, 227</value>
   </data>
   <data name="m_lblMaxHours.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -1541,7 +1541,7 @@
     <value>NoControl</value>
   </data>
   <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 244</value>
+    <value>274, 201</value>
   </data>
   <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -1565,7 +1565,7 @@
     <value>15</value>
   </data>
   <data name="m_nudMinsMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>313, 268</value>
+    <value>313, 225</value>
   </data>
   <data name="m_nudMinsMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1592,7 +1592,7 @@
     <value>NoControl</value>
   </data>
   <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 244</value>
+    <value>187, 201</value>
   </data>
   <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -1622,7 +1622,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxMins.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 270</value>
+    <value>359, 227</value>
   </data>
   <data name="m_lblMaxMins.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -1649,7 +1649,7 @@
     <value>False</value>
   </data>
   <data name="m_nudHoursPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 242</value>
+    <value>228, 199</value>
   </data>
   <data name="m_nudHoursPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1670,7 +1670,7 @@
     <value>19</value>
   </data>
   <data name="m_nudSecsMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 268</value>
+    <value>408, 225</value>
   </data>
   <data name="m_nudSecsMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1694,7 +1694,7 @@
     <value>False</value>
   </data>
   <data name="m_nudDaysPost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>141, 242</value>
+    <value>141, 199</value>
   </data>
   <data name="m_nudDaysPost.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1721,7 +1721,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxSecs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 270</value>
+    <value>454, 227</value>
   </data>
   <data name="m_lblMaxSecs.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -1751,7 +1751,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbPostTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 219</value>
+    <value>16, 176</value>
   </data>
   <data name="m_cbPostTrigger.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 17</value>
@@ -1781,7 +1781,7 @@
     <value>NoControl</value>
   </data>
   <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 195</value>
+    <value>13, 152</value>
   </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 13</value>
@@ -1811,7 +1811,7 @@
     <value>NoControl</value>
   </data>
   <data name="label22.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 195</value>
+    <value>454, 152</value>
   </data>
   <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -1838,7 +1838,7 @@
     <value>False</value>
   </data>
   <data name="m_nudSecsPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 193</value>
+    <value>408, 150</value>
   </data>
   <data name="m_nudSecsPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1865,7 +1865,7 @@
     <value>NoControl</value>
   </data>
   <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 195</value>
+    <value>359, 152</value>
   </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -1892,7 +1892,7 @@
     <value>False</value>
   </data>
   <data name="m_nudMinsPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>313, 193</value>
+    <value>313, 150</value>
   </data>
   <data name="m_nudMinsPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -1919,7 +1919,7 @@
     <value>NoControl</value>
   </data>
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 195</value>
+    <value>274, 152</value>
   </data>
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -1949,7 +1949,7 @@
     <value>NoControl</value>
   </data>
   <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 195</value>
+    <value>187, 152</value>
   </data>
   <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -1976,7 +1976,7 @@
     <value>False</value>
   </data>
   <data name="m_nudHoursPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 193</value>
+    <value>228, 150</value>
   </data>
   <data name="m_nudHoursPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -2000,7 +2000,7 @@
     <value>False</value>
   </data>
   <data name="m_nudDaysPre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>141, 193</value>
+    <value>141, 150</value>
   </data>
   <data name="m_nudDaysPre.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 20</value>
@@ -2027,7 +2027,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbPreTrigger.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 170</value>
+    <value>16, 127</value>
   </data>
   <data name="m_cbPreTrigger.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 17</value>
@@ -2051,10 +2051,10 @@
     <value>33</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 364</value>
+    <value>3, 364</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 460</value>
+    <value>734, 417</value>
   </data>
   <data name="gbOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2081,10 +2081,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 827</value>
+    <value>0, 784</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 827</value>
+    <value>734, 784</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>
