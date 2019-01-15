@@ -477,21 +477,11 @@ namespace iba.Data
                 if (!ini.Read()) return hdqfile;
 
                 string eventName = "";
-                if (m_eventData != null)
-                {
-                    string fileName = Path.GetFileName(hdqfile);
-                    fileName = fileName.Remove(0, CPathCleaner.CleanFile(Name).Length + 1);
-                    string[] parts = fileName.Split(new char[1] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts != null && parts.Length > 2)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < parts.Length - 2; i++)
-                            sb.Append(parts[i]).Append("_");
-                        sb.Remove(sb.Length - 1, 1);
-                        sb.Append(" ");
-                        eventName = sb.ToString();
-                    }
-                }
+                string comment = ini.Sections["HDQ file"]["comment"];
+                if (!string.IsNullOrWhiteSpace(comment) && comment.StartsWith("EVENTNAME:"))
+                    eventName = comment.Substring("EVENTNAME:".Length);
+                if (!string.IsNullOrWhiteSpace(eventName))
+                    eventName += " "; 
 
                 string desc =  ini.Sections["HDQ file"]["store"] + " " + eventName + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
                 lastHDQDescription = desc;
@@ -511,7 +501,7 @@ namespace iba.Data
             GenerateHDQFile(startTime, stopTime, path);
         }
 
-        public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
+        public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path, string comment = "")
         {
             string lServer = string.Empty;
             int lPort = -1;
@@ -548,6 +538,8 @@ namespace iba.Data
                     sw.WriteLine("starttime=" + temp);
                     temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("stoptime=" + temp);
+                    if (!string.IsNullOrWhiteSpace(comment))
+                        sw.WriteLine("comment=" + comment);
 
                     if (JobType == JobTypeEnum.Scheduled && !ScheduleData.PreferredTimeBaseIsAuto)
                         sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());

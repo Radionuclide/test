@@ -5036,7 +5036,7 @@ namespace iba.Processing
                     TimestampJobLastExecution = dtLocalEvent;
 
                 int duplicateCounter = 0;
-                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1}_{2:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), evt.Name,evt.StartTime));
+                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),evt.StartTime));
                 while (m_toProcessFiles.Contains(filename) || m_processedFiles.Contains(filename) || fileNames.Contains(filename))
                 {
                     if (duplicateCounter == 0)
@@ -5047,7 +5047,7 @@ namespace iba.Processing
 
                 try
                 {
-                    m_cd.GenerateHDQFile(evt.StartTime, evt.StopTime, filename);
+                    m_cd.GenerateHDQFile(evt.StartTime, evt.StopTime, filename, $"EVENTNAME:{evt.Name}");
                     fileNames.Add(filename);
                 }
                 catch (Exception ex)
