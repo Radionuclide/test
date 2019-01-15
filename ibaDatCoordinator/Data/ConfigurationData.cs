@@ -475,7 +475,25 @@ namespace iba.Data
             {
                 IniParser ini = new IniParser(hdqfile);
                 if (!ini.Read()) return hdqfile;
-                string desc =  ini.Sections["HDQ file"]["store"] + " " + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
+
+                string eventName = "";
+                if (m_eventData != null)
+                {
+                    string fileName = Path.GetFileName(hdqfile);
+                    fileName = fileName.Remove(0, CPathCleaner.CleanFile(Name).Length + 1);
+                    string[] parts = fileName.Split(new char[1] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts != null && parts.Length > 2)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < parts.Length - 2; i++)
+                            sb.Append(parts[i]).Append("_");
+                        sb.Remove(sb.Length - 1, 1);
+                        sb.Append(" ");
+                        eventName = sb.ToString();
+                    }
+                }
+
+                string desc =  ini.Sections["HDQ file"]["store"] + " " + eventName + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
                 lastHDQDescription = desc;
                 lastHDQFile = hdqfile;
                 return desc;
