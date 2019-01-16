@@ -444,11 +444,6 @@
             0,
             0,
             0});
-            this.m_nudSecsPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsPost.Name = "m_nudSecsPost";
             // 
             // m_nudDaysMax
@@ -474,11 +469,6 @@
             0,
             0,
             0});
-            this.m_nudHoursMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursMax.Name = "m_nudHoursMax";
             // 
             // m_nudMinsPost
@@ -489,11 +479,6 @@
             0,
             0,
             0});
-            this.m_nudMinsPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsPost.Name = "m_nudMinsPost";
             // 
             // m_lblMaxDays
@@ -519,11 +504,6 @@
             0,
             0,
             0});
-            this.m_nudMinsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsMax.Name = "m_nudMinsMax";
             // 
             // label30
@@ -544,11 +524,6 @@
             0,
             0,
             0});
-            this.m_nudHoursPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursPost.Name = "m_nudHoursPost";
             // 
             // m_nudSecsMax
@@ -559,11 +534,6 @@
             0,
             0,
             0});
-            this.m_nudSecsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsMax.Name = "m_nudSecsMax";
             // 
             // m_nudDaysPost
@@ -606,11 +576,6 @@
             0,
             0,
             0});
-            this.m_nudSecsPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsPre.Name = "m_nudSecsPre";
             // 
             // label23
@@ -626,11 +591,6 @@
             0,
             0,
             0});
-            this.m_nudMinsPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsPre.Name = "m_nudMinsPre";
             // 
             // label24
@@ -651,11 +611,6 @@
             0,
             0,
             0});
-            this.m_nudHoursPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursPre.Name = "m_nudHoursPre";
             // 
             // m_nudDaysPre
