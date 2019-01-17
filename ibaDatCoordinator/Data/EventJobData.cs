@@ -18,6 +18,19 @@ namespace iba.Data
     public class EventJobData : ICloneable
     {
         #region ICloneable Members
+        private TimeSpan m_executionDelay;
+        [XmlIgnore]
+        public System.TimeSpan ExecutionDelay
+        {
+            get { return m_executionDelay; }
+            set { m_executionDelay = value; }
+        }
+        public long ExecutionDelayTicks
+        {
+            get { return m_executionDelay.Ticks; }
+            set { m_executionDelay = TimeSpan.FromTicks(value); }
+        }
+
         private List<string> m_eventIDs;
         public List<string> EventIDs
         {
@@ -57,7 +70,7 @@ namespace iba.Data
         public EventJobData()
         {
             m_eventIDs = new List<string>();
-
+            m_executionDelay = TimeSpan.FromSeconds(10.0);
             m_HDPort = 9180;
             m_HDStores = new string[] { "" };
             m_HDServer = "";
@@ -134,6 +147,7 @@ namespace iba.Data
         {
             EventJobData nejd = new EventJobData();
             nejd.EventIDs = new List<string>(m_eventIDs);
+            nejd.m_executionDelay = m_executionDelay;
             nejd.HDServer = m_HDServer;
             nejd.m_HDStores = (string[])m_HDStores.Clone();
             nejd.m_HDPort = m_HDPort;
@@ -152,6 +166,7 @@ namespace iba.Data
         {
             return
             other.m_eventIDs.SequenceEqual(m_eventIDs) &&
+            other.m_executionDelay == m_executionDelay &&
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&

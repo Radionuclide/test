@@ -510,12 +510,12 @@ namespace iba.Processing
                                         if (m_ejd.RangeCenter == EventJobRangeCenter.Both)
                                         {
                                             if (data.TriggerIn)
-                                                lMatchedEvents.Add(new MatchedEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
+                                                lMatchedEvents.Add(new MatchedEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange, m_ejd.ExecutionDelay));
                                             else if (data.TriggerOut && lMatchedEvents.Count > 0)
                                                 (lMatchedEvents[lMatchedEvents.Count - 1] as MatchedEventDataRange)?.Match(data.UtcTicks);
                                         }
                                         else //incorrect events are already filtered out
-                                            lMatchedEvents.Add(new SingleEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
+                                            lMatchedEvents.Add(new SingleEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.ExecutionDelay));
 
                                         receiveTime = Math.Max(receiveTime, data.UtcTicks);
                                     }
@@ -565,6 +565,7 @@ namespace iba.Processing
             #region Members
             TimeSpan preRange, postRange, maxRange;
             protected DateTime dtIncoming, dtOutgoing;
+            protected TimeSpan executionDelay;
             #endregion
 
             #region Properties
@@ -585,13 +586,14 @@ namespace iba.Processing
             #endregion
 
             #region Initialize
-            internal EventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
+            internal EventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange, TimeSpan executionDelay)
             {
                 Name = name;
                 dtIncoming = new DateTime(utcTicksIncoming, DateTimeKind.Utc);
                 this.preRange = preRange;
                 this.postRange = postRange;
                 this.maxRange = maxRange;
+                this.executionDelay = executionDelay;
             }
             #endregion
         }
@@ -599,11 +601,11 @@ namespace iba.Processing
         class SingleEventDataRange : EventDataRange
         {
             #region Properties
-            public override bool CanBeProcessed { get { return StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
+            public override bool CanBeProcessed { get { return StopTime.Add(executionDelay) <= DateTime.UtcNow; } }
             #endregion
 
-            internal SingleEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange)
-                : base (name, utcTicksIncoming, preRange, postRange, preRange + postRange)
+            internal SingleEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan executionDelay)
+                : base (name, utcTicksIncoming, preRange, postRange, preRange + postRange, executionDelay)
             {
                 dtOutgoing = dtIncoming;
             }
@@ -617,11 +619,11 @@ namespace iba.Processing
             #endregion
 
             #region Properties
-            public override bool CanBeProcessed { get { return (bMatched || dtExpiration <= DateTime.UtcNow) && StopTime.AddSeconds(1.0) <= DateTime.UtcNow; } }
+            public override bool CanBeProcessed { get { return (bMatched || dtExpiration <= DateTime.UtcNow) && StopTime.Add(executionDelay) <= DateTime.UtcNow; } }
             #endregion
 
-            internal MatchedEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange)
-                : base(name, utcTicksIncoming, preRange, postRange, maxRange)
+            internal MatchedEventDataRange(string name, long utcTicksIncoming, TimeSpan preRange, TimeSpan postRange, TimeSpan maxRange, TimeSpan executionDelay)
+                : base(name, utcTicksIncoming, preRange, postRange, maxRange, executionDelay)
             {
                 TimeSpan diffRange = maxRange - preRange;
                 if (diffRange < TimeSpan.Zero)
