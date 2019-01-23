@@ -161,9 +161,6 @@ namespace iba.Controls
             m_nudSecsPost.Value = Math.Min(m_nudSecsPost.Maximum, m_eventData.PostTriggerRange.Seconds);
 
             //event selection
-            m_nudDelaySec.Value = Math.Min(m_nudDelaySec.Maximum, m_eventData.ExecutionDelay.Seconds);
-            m_nudDelayMin.Value = Math.Min(m_nudDelayMin.Maximum, m_eventData.ExecutionDelay.Minutes);
-
             m_currEvents = new List<string>(m_eventData.EventIDs);
             m_currStores = new List<string>(m_eventData.HDStores);
             ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort);
@@ -201,7 +198,6 @@ namespace iba.Controls
 
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
-            m_eventData.ExecutionDelay = new TimeSpan(0, (int)m_nudDelayMin.Value, (int)m_nudDelaySec.Value);
         }
         #endregion
 

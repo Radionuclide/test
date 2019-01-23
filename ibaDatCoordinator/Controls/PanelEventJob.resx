@@ -122,64 +122,13 @@
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 121</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
-  </data>
-  <data name="label7.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Execution delay:</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_nudDelayMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>144, 119</value>
-  </data>
-  <data name="m_nudDelayMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
-  </data>
-  <data name="m_nudDelayMin.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelayMin.Name" xml:space="preserve">
-    <value>m_nudDelayMin</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelayMin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelayMin.Parent" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelayMin.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbRepErr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbRepErr.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbRepErr.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 68</value>
   </data>
@@ -202,37 +151,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_cbRepErr.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>190, 121</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>minutes</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="m_cbInitialScanEnabled.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -265,28 +184,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_cbInitialScanEnabled.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_nudDelaySec.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 119</value>
-  </data>
-  <data name="m_nudDelaySec.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
-  </data>
-  <data name="m_nudDelaySec.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelaySec.Name" xml:space="preserve">
-    <value>m_nudDelaySec</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelaySec.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelaySec.Parent" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;m_nudDelaySec.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="m_undoChangesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -349,37 +247,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_undoChangesBtn.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>285, 121</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>seconds</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>gbGeneral</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>2</value>
   </data>
   <data name="m_cbRetry.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -409,7 +277,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>3</value>
   </data>
   <data name="m_retryUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>239, 93</value>
@@ -430,7 +298,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -460,7 +328,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>5</value>
   </data>
   <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -501,7 +369,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>6</value>
   </data>
   <data name="m_applyToRunningBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -564,7 +432,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningBtn.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>7</value>
   </data>
   <data name="m_startButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -608,7 +476,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>8</value>
   </data>
   <data name="m_autoStartCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -641,7 +509,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>9</value>
   </data>
   <data name="m_enableCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -674,7 +542,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>10</value>
   </data>
   <data name="m_failTimeUpDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>239, 67</value>
@@ -695,7 +563,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>11</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -725,13 +593,13 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>12</value>
   </data>
   <data name="gbGeneral.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="gbGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 145</value>
+    <value>734, 119</value>
   </data>
   <data name="gbGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -758,10 +626,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_pnlEvents.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 58</value>
+    <value>15, 55</value>
   </data>
   <data name="m_pnlEvents.Size" type="System.Drawing.Size, System.Drawing">
-    <value>713, 165</value>
+    <value>713, 175</value>
   </data>
   <data name="m_pnlEvents.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -950,10 +818,10 @@
     <value>6</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 151</value>
+    <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 229</value>
+    <value>734, 233</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2183,7 +2051,7 @@
     <value>33</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 386</value>
+    <value>3, 364</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>734, 417</value>
@@ -2213,10 +2081,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 806</value>
+    <value>0, 784</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 806</value>
+    <value>734, 784</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>

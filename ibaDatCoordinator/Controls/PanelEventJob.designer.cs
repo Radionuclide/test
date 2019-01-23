@@ -17,14 +17,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
             this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.m_nudDelayMin = new System.Windows.Forms.NumericUpDown();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
-            this.m_nudDelaySec = new System.Windows.Forms.NumericUpDown();
             this.m_undoChangesBtn = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.m_cbRetry = new System.Windows.Forms.CheckBox();
             this.m_retryUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
@@ -89,8 +84,6 @@
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
             this.gbGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDelayMin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDelaySec)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
             this.gbTriggers.SuspendLayout();
@@ -114,14 +107,9 @@
             // gbGeneral
             // 
             resources.ApplyResources(this.gbGeneral, "gbGeneral");
-            this.gbGeneral.Controls.Add(this.label7);
-            this.gbGeneral.Controls.Add(this.m_nudDelayMin);
             this.gbGeneral.Controls.Add(this.m_cbRepErr);
-            this.gbGeneral.Controls.Add(this.label5);
             this.gbGeneral.Controls.Add(this.m_cbInitialScanEnabled);
-            this.gbGeneral.Controls.Add(this.m_nudDelaySec);
             this.gbGeneral.Controls.Add(this.m_undoChangesBtn);
-            this.gbGeneral.Controls.Add(this.label6);
             this.gbGeneral.Controls.Add(this.m_cbRetry);
             this.gbGeneral.Controls.Add(this.m_retryUpDown);
             this.gbGeneral.Controls.Add(this.label14);
@@ -135,31 +123,11 @@
             this.gbGeneral.Name = "gbGeneral";
             this.gbGeneral.TabStop = false;
             // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // m_nudDelayMin
-            // 
-            resources.ApplyResources(this.m_nudDelayMin, "m_nudDelayMin");
-            this.m_nudDelayMin.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudDelayMin.Name = "m_nudDelayMin";
-            // 
             // m_cbRepErr
             // 
             resources.ApplyResources(this.m_cbRepErr, "m_cbRepErr");
             this.m_cbRepErr.Name = "m_cbRepErr";
             this.m_cbRepErr.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
             // 
             // m_cbInitialScanEnabled
             // 
@@ -167,31 +135,11 @@
             this.m_cbInitialScanEnabled.Name = "m_cbInitialScanEnabled";
             this.m_cbInitialScanEnabled.UseVisualStyleBackColor = true;
             // 
-            // m_nudDelaySec
-            // 
-            resources.ApplyResources(this.m_nudDelaySec, "m_nudDelaySec");
-            this.m_nudDelaySec.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.m_nudDelaySec.Name = "m_nudDelaySec";
-            this.m_nudDelaySec.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
             // m_undoChangesBtn
             // 
             resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
             this.m_undoChangesBtn.Name = "m_undoChangesBtn";
             this.m_undoChangesBtn.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
             // 
             // m_cbRetry
             // 
@@ -692,8 +640,6 @@
             this.Name = "PanelEventJob";
             this.gbGeneral.ResumeLayout(false);
             this.gbGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDelayMin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_nudDelaySec)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
             this.gbTriggers.ResumeLayout(false);
@@ -788,10 +734,5 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel m_pnlEvents;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.NumericUpDown m_nudDelayMin;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown m_nudDelaySec;
-        private System.Windows.Forms.Label label6;
     }
 }
