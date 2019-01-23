@@ -76,6 +76,11 @@ namespace iba.Data
             get { return (EventJobRangeCenter)m_rangeCenter; }
             set { m_rangeCenter = (int)value; }
         }
+        public int RangeCenterInt
+        {
+            get { return m_rangeCenter; }
+            set { m_rangeCenter = value; }
+        }
 
         private bool m_enablePreTrigger;
         public bool EnablePreTriggerRange
