@@ -56,8 +56,7 @@ namespace iba.Processing
             m_liveDataSet = new HashSet<EventReaderData>();
             m_tmrSetCleanup = new Timer(OnCleanupTimerTick);
 
-            m_startTimeTicks = DateTime.MaxValue.Ticks;
-            m_queueLock = new object();
+            m_startTimeTicks = DateTime.MaxValue.Ticks;            m_queueLock = new object();
             m_eventQueue = new List<EventOccurrence>();
 
             m_tmrAdvance = new Timer(OnAdvanceTimerTick);
@@ -270,6 +269,30 @@ namespace iba.Processing
                 ibaLogger.LogFormat(Level.Info, "{0} connected", prefix);
             else
             {
+                //Update start time to prevent job executions for old event occurrences
+                //Lowest receive time is enough (rest is handled by the hashset)
+                long lowestReceiveTime = DateTime.MaxValue.Ticks;
+                Dictionary<string, LiveStoreData> lLiveData = m_liveData;
+
+                foreach (var storeData in lLiveData.Values)
+                {
+                    long lReceiveTime = storeData.ReceiveTime;
+                    if (lReceiveTime < lowestReceiveTime)
+                        lowestReceiveTime = lReceiveTime;
+                }
+
+                if (m_startTimeTicks < lowestReceiveTime && lowestReceiveTime != DateTime.MaxValue.Ticks)
+                    m_startTimeTicks = lowestReceiveTime;
+
+                m_liveData.Clear();
+                if (UpdateLiveSubsets())
+                {
+                    lock (m_matchedEventsLock)
+                    {
+                        m_dictMatchedEvents.Clear();
+                    }
+                }
+
                 string error = lHdReader.ConnectionError;
                 if (!string.IsNullOrWhiteSpace(error))
                     ibaLogger.LogFormat(Level.Warning, "{0} disconnected: {1}", prefix, error);
@@ -452,6 +475,11 @@ namespace iba.Processing
                 storeData.SubsetId = newSubsetId;
         }
 
+        string CreateEventID(string store, string subId)
+        {
+            return $"store:{store};event:{subId};".ToUpper();
+        }
+
         void Response(EventResponse response)
         {
             if (response == null)
@@ -499,7 +527,7 @@ namespace iba.Processing
 
                                     if (m_liveDataSet.Add(data))
                                     {
-                                        string id = $"store:{data.Store};event:{data.Id};";
+										string id = CreateEventID(data.Store, data.Id);
                                         List<EventDataRange> lMatchedEvents = null;
                                         if (!m_dictMatchedEvents.TryGetValue(id, out lMatchedEvents))
                                         {
