@@ -36,6 +36,8 @@ namespace iba.Controls
         static ImageList imageListError;
         ListViewItem m_lviErrorStores;
 
+        private long[] m_timeBases;
+
         const int locationOffsetXRangeCenter = 150; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
 
@@ -80,6 +82,14 @@ namespace iba.Controls
             m_rbtIncoming.Tag = EventJobRangeCenter.Incoming;
             m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
             m_rbtBoth.Tag = EventJobRangeCenter.Both;
+
+            string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
+            long ms = 10000; //10000 * 100 nanosec = 1 ms
+            long s = 1000 * ms;
+            m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
+            int n = itemStrs.Count();
+            for (int i = 0; i < n; i++)
+                m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
 
             UpdateStoreTree();
 
@@ -160,6 +170,8 @@ namespace iba.Controls
             m_nudMinsPost.Value = Math.Min(m_nudMinsPost.Maximum, m_eventData.PostTriggerRange.Minutes);
             m_nudSecsPost.Value = Math.Min(m_nudSecsPost.Maximum, m_eventData.PostTriggerRange.Seconds);
 
+            m_cbTimeBase.SelectedIndex = m_eventData.PreferredTimeBaseIsAuto ? 0 : Array.FindIndex(m_timeBases, ticks => ticks == m_eventData.PreferredTimeBaseTicks);
+
             //event selection
             m_currEvents = new List<string>(m_eventData.EventIDs);
             m_currStores = new List<string>(m_eventData.HDStores);
@@ -195,6 +207,17 @@ namespace iba.Controls
             m_eventData.MaxTriggerRange = new TimeSpan((int)m_nudDaysMax.Value, (int)m_nudHoursMax.Value, (int)m_nudMinsMax.Value, (int)m_nudSecsMax.Value);
             m_eventData.PreTriggerRange = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value);
             m_eventData.PostTriggerRange = new TimeSpan((int)m_nudDaysPost.Value, (int)m_nudHoursPost.Value, (int)m_nudMinsPost.Value, (int)m_nudSecsPost.Value);
+
+            if (m_cbTimeBase.SelectedIndex == 0) //auto
+            {
+                m_eventData.PreferredTimeBaseTicks = GetAutoItem().m_timebaseLength;
+                m_eventData.PreferredTimeBaseIsAuto = true;
+            }
+            else if (m_cbTimeBase.SelectedIndex > 0)
+            {
+                m_eventData.PreferredTimeBaseTicks = m_timeBases[m_cbTimeBase.SelectedIndex];
+                m_eventData.PreferredTimeBaseIsAuto = false;
+            }
 
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
@@ -378,11 +401,15 @@ namespace iba.Controls
         private void m_cbPreTrigger_CheckedChanged(object sender, EventArgs e)
         {
             m_nudDaysPre.Enabled = m_nudHoursPre.Enabled = m_nudMinsPre.Enabled = m_nudSecsPre.Enabled = m_cbPreTrigger.Checked;
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
         private void m_cbPostTrigger_CheckedChanged(object sender, EventArgs e)
         {
             m_nudDaysPost.Enabled = m_nudHoursPost.Enabled = m_nudMinsPost.Enabled = m_nudSecsPost.Enabled = m_cbPostTrigger.Checked;
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
         private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
@@ -435,6 +462,138 @@ namespace iba.Controls
                 m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 40 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 35);
                 //m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 60);
             }
+
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
+        }
+
+        private void m_nud_ValueChanged(object sender, EventArgs e)
+        {
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
+        }
+
+        double ReqTimeBaseFactor()
+        {
+            return Math.Sqrt(40.0); //in the future we might need to ask the reader
+        }
+
+        TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
+        {
+            long duration = 0;
+            if (m_rbtBoth.Checked)
+                duration = new TimeSpan((int)m_nudDaysMax.Value, (int)m_nudHoursMax.Value, (int)m_nudMinsMax.Value, (int)m_nudSecsMax.Value).Ticks;
+            else
+            {
+                if (m_cbPreTrigger.Checked)
+                    duration = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value).Ticks;
+                if (m_cbPostTrigger.Checked)
+                    duration += new TimeSpan((int)m_nudDaysPost.Value, (int)m_nudHoursPost.Value, (int)m_nudMinsPost.Value, (int)m_nudSecsPost.Value).Ticks;
+            }
+
+            if (duration <= 0)
+                return TimeBaseAcceptability.Unknown;
+
+            if (item.m_timebaseLength == 0)
+                return TimeBaseAcceptability.Allowed; //auto
+
+            double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
+            if (samples > 1.0e9)
+                return TimeBaseAcceptability.Forbidden;
+            else if (samples > 1.0e7)
+                return TimeBaseAcceptability.Questionable;
+            else
+                return TimeBaseAcceptability.Allowed;
+        }
+
+        TimeCbItem GetAutoItem() //auto
+        {
+            for (int i = 1; i < m_cbTimeBase.Items.Count; i++)
+            {
+                TimeCbItem item = m_cbTimeBase.Items[i] as TimeCbItem;
+                if (CheckTimeBaseAcceptability(item) == TimeBaseAcceptability.Allowed)
+                    return item;
+            }
+            //none ok, return last
+            return m_cbTimeBase.Items[m_cbTimeBase.Items.Count - 1] as TimeCbItem;
+        }
+
+        private void m_cbTimeBase_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+
+            string tooltipText = null;
+            Brush brush = null;
+            bool unknowntba = false;
+            switch (CheckTimeBaseAcceptability(((ComboBox)sender).Items[e.Index] as TimeCbItem))
+            {
+                case TimeBaseAcceptability.Unknown:
+                    brush = new SolidBrush(SystemColors.WindowText);
+                    unknowntba = true;
+                    break;
+                case TimeBaseAcceptability.Allowed:
+                    brush = Brushes.Green;
+                    tooltipText = iba.Properties.Resources.TooltipGreen;
+                    break;
+                case TimeBaseAcceptability.Questionable:
+                    brush = Brushes.DarkOrange;
+                    tooltipText = iba.Properties.Resources.TooltipOrange;
+                    break;
+                case TimeBaseAcceptability.Forbidden:
+                    brush = Brushes.Red;
+                    tooltipText = iba.Properties.Resources.TooltipRed;
+                    break;
+            }
+
+            string text = ((ComboBox)sender).Items[e.Index].ToString();
+            if (e.Index == 0)
+            {
+                if (unknowntba)
+                    text = String.Format(text, "?");
+                else
+                    text = String.Format(text, GetAutoItem());
+            }
+
+            if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.Selected))
+                e.Graphics.FillRectangle(new SolidBrush(Color.Lavender), e.Bounds);
+            else
+                e.DrawBackground();
+
+            e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
+            if (e.State.HasFlag(DrawItemState.Selected) && tooltipText != null && m_cbTimeBase.DroppedDown)
+            {
+                m_toolTip.Show(tooltipText, m_cbTimeBase, e.Bounds.Right, e.Bounds.Bottom + m_cbTimeBase.Height);
+            }
+        }
+
+        private void m_cbTimeBase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_cbTimeBase.SelectedItem != null)
+            {
+                switch (CheckTimeBaseAcceptability(m_cbTimeBase.SelectedItem as TimeCbItem))
+                {
+                    case TimeBaseAcceptability.Unknown:
+                        m_toolTip.SetToolTip(m_cbTimeBase, null);
+                        break;
+                    case TimeBaseAcceptability.Allowed:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipGreen);
+                        break;
+                    case TimeBaseAcceptability.Questionable:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipOrange);
+                        break;
+                    case TimeBaseAcceptability.Forbidden:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipRed);
+                        break;
+                }
+            }
+            else
+                m_toolTip.SetToolTip(m_cbTimeBase, null);
+        }
+
+        private void m_cbTimeBase_DropDownClosed(object sender, EventArgs e)
+        {
+            m_toolTip.Hide(m_cbTimeBase);
         }
         #endregion
 
@@ -489,6 +648,6 @@ namespace iba.Controls
                 ibaLogger.LogFormat(Level.Exception, "Generating an HDQ test file failed: {0}", ex.Message);
             }
         }
-        #endregion        
+        #endregion
     }
 }

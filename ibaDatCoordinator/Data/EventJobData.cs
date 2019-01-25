@@ -67,6 +67,8 @@ namespace iba.Data
             m_postTriggerRange = TimeSpan.Zero;
             m_enablePreTrigger = false;
             m_enablePostTrigger = false;
+            m_preferredTimeBaseTicks = 0;
+            m_bPreferredTimeBaseIsAuto = true;
         }
 
         private int m_rangeCenter;
@@ -135,6 +137,27 @@ namespace iba.Data
             set { m_maxTriggerRange = TimeSpan.FromTicks(value); }
         }
 
+        private long m_preferredTimeBaseTicks; //in ticks
+        public long PreferredTimeBaseTicks
+        {
+            get { return m_preferredTimeBaseTicks; }
+            set { m_preferredTimeBaseTicks = value; }
+        }
+
+        [XmlIgnore]
+        public System.TimeSpan PreferredTimeBase
+        {
+            get { return TimeSpan.FromTicks(m_preferredTimeBaseTicks); }
+            set { m_preferredTimeBaseTicks = value.Ticks; }
+        }
+
+        private bool m_bPreferredTimeBaseIsAuto;
+        public bool PreferredTimeBaseIsAuto
+        {
+            get { return m_bPreferredTimeBaseIsAuto; }
+            set { m_bPreferredTimeBaseIsAuto = value; }
+        }
+
         public object Clone()
         {
             EventJobData nejd = new EventJobData();
@@ -148,6 +171,8 @@ namespace iba.Data
             nejd.m_postTriggerRange = m_postTriggerRange;
             nejd.m_enablePreTrigger = m_enablePreTrigger;
             nejd.m_enablePostTrigger = m_enablePostTrigger;
+            nejd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
+            nejd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
             return nejd;
         }
 
@@ -155,8 +180,7 @@ namespace iba.Data
 
         public bool IsSame(EventJobData other)
         {
-            return
-            other.m_eventIDs.SequenceEqual(m_eventIDs) &&
+            bool res = other.m_eventIDs.SequenceEqual(m_eventIDs) &&
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
@@ -165,7 +189,16 @@ namespace iba.Data
             other.m_preTriggerRange == m_preTriggerRange &&
             other.m_postTriggerRange == m_postTriggerRange &&
             other.m_enablePreTrigger == m_enablePreTrigger &&
-            other.m_enablePostTrigger == m_enablePostTrigger;
+            other.m_enablePostTrigger == m_enablePostTrigger &&
+            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
+
+            if (!res)
+                return res;
+
+            if (!m_bPreferredTimeBaseIsAuto) //in case of auto, ticks is not compared
+                res = res && other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks;
+
+            return res;
         }
     }
 }

@@ -506,17 +506,23 @@ namespace iba.Data
             string lServer = string.Empty;
             int lPort = -1;
             string[] lStores = new string[0];
+            bool bPreferredTimeBaseIsAuto = true;
+            TimeSpan lPreferredTimeBase = new TimeSpan(0);
             if (JobType == JobTypeEnum.Event)
             {
                 lServer = m_eventData.HDServer;
                 lPort = m_eventData.HDPort;
                 lStores = m_eventData.HDStores;
+                bPreferredTimeBaseIsAuto = m_eventData.PreferredTimeBaseIsAuto;
+                lPreferredTimeBase = m_eventData.PreferredTimeBase;
             }
             else if (JobType == JobTypeEnum.Scheduled)
             {
                 lServer = ScheduleData.HDServer;
                 lPort = ScheduleData.HDPort;
                 lStores = ScheduleData.HDStores;
+                bPreferredTimeBaseIsAuto = ScheduleData.PreferredTimeBaseIsAuto;
+                lPreferredTimeBase = ScheduleData.PreferredTimeBase;
             }
 
             string dir = Path.GetDirectoryName(path);
@@ -541,8 +547,8 @@ namespace iba.Data
                     if (!string.IsNullOrWhiteSpace(comment))
                         sw.WriteLine("comment=" + comment);
 
-                    if (JobType == JobTypeEnum.Scheduled && !ScheduleData.PreferredTimeBaseIsAuto)
-                        sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+                    if (bPreferredTimeBaseIsAuto)
+                        sw.WriteLine("timebase=" + lPreferredTimeBase.TotalSeconds.ToString());
                     else
                     {
                         long ms = 10000; //10000 * 100 nanosec = 1 ms
