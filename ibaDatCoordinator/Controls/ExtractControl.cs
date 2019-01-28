@@ -92,7 +92,7 @@ namespace iba.Controls
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
             m_rbTDMS.Checked = m_data.FileType == ExtractData.ExtractFileType.TDMS;
             m_rbComtrade.Checked = m_data.FileType == ExtractData.ExtractFileType.COMTRADE;
-
+            m_rbParquet.Checked = m_data.FileType == ExtractData.ExtractFileType.PARQUET;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -121,8 +121,10 @@ namespace iba.Controls
                 m_data.FileType = ExtractData.ExtractFileType.TEXT;
             else if (m_rbComtrade.Checked)
                 m_data.FileType = ExtractData.ExtractFileType.COMTRADE;
-            else
+            else if (m_rbTDMS.Checked)
                 m_data.FileType = ExtractData.ExtractFileType.TDMS;
+            else
+                m_data.FileType = ExtractData.ExtractFileType.PARQUET;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;

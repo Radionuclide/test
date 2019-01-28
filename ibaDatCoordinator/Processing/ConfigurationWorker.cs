@@ -334,10 +334,10 @@ namespace iba.Processing
                         {
                             ExtractData.ExtractFileType[] indexToType = 
                                     {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
-                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
+                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS,ExtractData.ExtractFileType.PARQUET};
                             ed.m_bExternalVideoResultIsCached = false;
                             int index = ExtractTaskWorker.FileTypeAsInt(ed);
-                            if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
+                            if (index >= 0 && index < 5 && indexToType[index] != ed.FileType)
                             {
                                 string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
                                 Log(Logging.Level.Warning, errorMessage, string.Empty, task);

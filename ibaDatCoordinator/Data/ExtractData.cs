@@ -29,7 +29,7 @@ namespace iba.Data
             set { m_toFile = value; }
         }
 
-        public enum ExtractFileType { TEXT, BINARY, COMTRADE, TDMS};
+        public enum ExtractFileType { TEXT, BINARY, COMTRADE, TDMS, PARQUET};
         private ExtractFileType m_fileType;
         public ExtractFileType FileType
         {

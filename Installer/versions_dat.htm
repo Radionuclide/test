@@ -22,6 +22,65 @@
 		#comp td.empty{background-color: white; height:4px}
 		#comp td.sep	{background-color: white; height:20px}
 	</style>            
+	<script language="javascript" type="text/javascript">
+
+      function ShowRedmineLinks() {
+          redmineLinksVisible = !redmineLinksVisible;
+          redmineLinks.forEach(function(link) {
+              link.setAttribute('style', redmineLinksVisible ? '' : 'display: none');
+          });
+      }
+
+      function redmineLinkifyTextNode(element) {
+          var regex = /#(\d{4,6})/g ;
+          var text = element.wholeText;
+          var result = regex.exec(text);
+          if (!result) return;
+          if (result.index >= 0) {
+              var before = text.substring(0, result.index);
+              var after = text.substring(result.index + result[0].length);
+              var issue = result[1];
+
+              var beforeNode = document.createTextNode(before);
+              var link = document.createElement('a');
+              link.setAttribute('style', 'display: none');
+              link.setAttribute('href', "http://redmine.iba-ag.local/issues/" + issue);
+              link.innerHTML ='#' + issue;
+              redmineLinks.push(link);
+              var afterNode = document.createTextNode(after);
+              
+              var span = document.createElement('span');
+              span.appendChild(beforeNode);
+              span.appendChild(link);
+              span.appendChild(afterNode);
+
+              element.parentNode.replaceChild(span, element);
+              redmineLinkifyTextNode(afterNode);
+          } 
+      }
+
+      function redmineLinkify(element) {
+          if (element.nodeType == 3) {
+              redmineLinkifyTextNode(element);
+          } else {
+              var childNodes = element.childNodes;
+              for (var i = 0; i < childNodes.length; i++) {
+                  redmineLinkify(childNodes[i]);
+              }
+          }
+      }
+
+      document.addEventListener('DOMContentLoaded',
+          function() {
+              var elements = document.getElementsByTagName('li');
+              for (var i = 0; i < elements.length; i++) {
+                  redmineLinkify(elements[i]);
+              }
+          });
+
+      var redmineLinks = [];
+      var redmineLinksVisible = false;
+  </script>
 </head>	
    
 
@@ -99,6 +158,7 @@
 			<OL>
 				<li>ibaDongleViewer updated to version 1.8.2</li>
 				<li>Updated support page.</li>
+				<li>Extract file formats extended with PARQUET</li>
 			</OL>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
@@ -106,6 +166,7 @@
 				<li>Under some circumstances, jobs were mistakenly considered as altered by another client.</li>
 				<li>Splitter task did not work for files with tagged channels.</li>
 				<li>SNMPv3: Negative differences in 'msgAuthoritativeEngineTime' were not handled correctly.</li>
+				<li>ibaHD readers would cause problems in the host applications if the respective stores contained multiple signals competing for the same position in a vector signal. #14062</li>
 			</OL>
 			<p>&nbsp; </p>
 			<P class="header1">Version 2.0.7 - 14/08/2018</P>

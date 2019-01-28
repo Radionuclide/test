@@ -136,7 +136,7 @@
     <value>75, 20</value>
   </data>
   <data name="m_rbTextFile.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_rbTextFile.Text" xml:space="preserve">
     <value>ASCII (.txt)</value>
@@ -151,7 +151,7 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbTextFile.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbBinaryFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -169,7 +169,7 @@
     <value>81, 20</value>
   </data>
   <data name="m_rbBinaryFile.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_rbBinaryFile.Text" xml:space="preserve">
     <value>Binary (.dat)</value>
@@ -184,7 +184,7 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbBinaryFile.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -277,13 +277,13 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -355,7 +355,40 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tableLayoutPanel4.ColumnCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbParquet.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbParquet.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rbParquet.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbParquet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>466, 3</value>
+  </data>
+  <data name="m_rbParquet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 20</value>
+  </data>
+  <data name="m_rbParquet.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
+  </data>
+  <data name="m_rbParquet.Text" xml:space="preserve">
+    <value>PARQUET (.parquet)</value>
+  </data>
+  <data name="&gt;&gt;m_rbParquet.Name" xml:space="preserve">
+    <value>m_rbParquet</value>
+  </data>
+  <data name="&gt;&gt;m_rbParquet.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbParquet.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;m_rbParquet.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_rbTDMS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -370,10 +403,10 @@
     <value>311, 3</value>
   </data>
   <data name="m_rbTDMS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 20</value>
+    <value>149, 20</value>
   </data>
   <data name="m_rbTDMS.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>3</value>
   </data>
   <data name="m_rbTDMS.Text" xml:space="preserve">
     <value>TDMS (.tdms;.tdms_index)</value>
@@ -388,7 +421,7 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbTDMS.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_rbComtrade.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -406,7 +439,7 @@
     <value>134, 20</value>
   </data>
   <data name="m_rbComtrade.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>2</value>
   </data>
   <data name="m_rbComtrade.Text" xml:space="preserve">
     <value>COMTRADE (.dat;.cfg)</value>
@@ -421,7 +454,7 @@
     <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;m_rbComtrade.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tableLayoutPanel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -451,7 +484,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbTDMS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTextFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbComtrade" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbBinaryFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbParquet" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTDMS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTextFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbComtrade" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbBinaryFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_groupBoxFileType.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 93</value>
@@ -514,7 +547,7 @@
     <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
@@ -703,19 +736,22 @@
     <value>m_monitorGroup</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 646</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 726</value>
