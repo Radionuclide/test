@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using iba.Processing;
+using iba.ibaFilesLiteDotNet;
 using iba.Utility;
-using ibaFilesLiteLib;
 
 namespace iba
 {
@@ -23,9 +23,9 @@ namespace iba
             m_vLogger.Text = "v" + asName.Version.ToString();
             try
             {
-                IbaFileClass myIbaFile = new IbaFileClass();
+                IbaFileReader  myIbaFile = new IbaFileReader();
                 m_vFILES.Text = "v" + myIbaFile.GetVersion();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
+                myIbaFile.Dispose();
             }
             catch
             {

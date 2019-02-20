@@ -408,7 +408,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
   File "..\Dependencies\PowerCollections.dll"
-  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  File "..\Dependencies\ibaFilesLiteV7DotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
@@ -496,7 +496,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
-  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  File "..\Dependencies\ibaFilesLiteV7DotNet.dll"
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP

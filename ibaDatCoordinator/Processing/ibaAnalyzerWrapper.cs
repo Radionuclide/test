@@ -338,5 +338,32 @@ namespace iba.Processing
             return 0;
             // return analyzer.GetZoomAreaEnd(XType);
         }
+
+        public void SetFilePassword(string filename, string password )
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(password))
+                    analyzer.SetFilePassword(filename, password);
+            }
+            catch //might be other version than analyzer V7;
+            {
+
+            }
+        }
+
+        public void SetHDCredentials(string username, string password)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(username))
+                    analyzer.SetHDCredentials(username, password);
+            }
+            catch //might be other version than analyzer V7;
+            {
+
+            }
+
+        }
     }
 }

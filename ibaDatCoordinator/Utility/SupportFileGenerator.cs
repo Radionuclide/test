@@ -142,11 +142,11 @@ namespace iba.Utility
             try
             {
                 sb.Append("ibaFiles Version: ");
-                ibaFilesLiteLib.IbaFileClass myIbaFile = new ibaFilesLiteLib.IbaFileClass();
+                iba.ibaFilesLiteDotNet.IbaFileReader myIbaFile = new iba.ibaFilesLiteDotNet.IbaFileReader();
                 sb.AppendLine(myIbaFile.GetType().Assembly.GetName().Version.ToString());
                 sb.Append("ibaFiles Version (GetVersion): ");
                 sb.AppendLine(myIbaFile.GetVersion());
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(myIbaFile);
+                myIbaFile.Dispose(); 
             }
             catch
             { }

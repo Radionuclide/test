@@ -7,7 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using iba.Data;
-using ibaFilesLiteLib;
+//using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 using System.Threading;
 
 namespace iba.Dialogs
@@ -116,7 +117,7 @@ namespace iba.Dialogs
             }
             else
             {
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 m_stop = false;
                 for (int count = 0; count < m_files.Count && !m_stop; count++)
                 {
@@ -138,9 +139,9 @@ namespace iba.Dialogs
                         else
                         {
                             ibaDatFile.OpenForUpdate(filename);
-                            ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                            if (!string.IsNullOrEmpty(ibaDatFile.QueryInfoByName("$DATCOOR_times_tried")))
-                                ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                            ibaDatFile.InfoFields["$DATCOOR_status"] = "readyToProcess";
+                            if (!ibaDatFile.InfoFields.ContainsKey("$DATCOOR_times_tried"))
+                                ibaDatFile.InfoFields["$DATCOOR_times_tried"] = "0";
                             iba.Processing.ConfigurationWorker.ClearFields(ref ibaDatFile);
                         }
                         backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));

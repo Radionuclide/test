@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iba.Utility;
 using System.IO;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 
 namespace iba.Processing
 {
@@ -58,7 +58,7 @@ namespace iba.Processing
                 if (!String.IsNullOrEmpty(m_error) || files.Count == 0)
                     return;
 
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 bool stop = false;
                 for (int count = 0; count < files.Count && !stop; count++)
                 {
@@ -73,12 +73,12 @@ namespace iba.Processing
             }
         }
 
-        public static string RemoveMarkingsFromFile(string filename, IbaFile ibaDatFile = null)
+        public static string RemoveMarkingsFromFile(string filename, IbaFileReader ibaDatFile = null)
         {
             string errMessage = "";
             if(ibaDatFile == null)
             {
-                ibaDatFile = new IbaFileClass();
+                ibaDatFile = new IbaFileReader();
             }
 
             DateTime time = DateTime.Now;
@@ -98,7 +98,7 @@ namespace iba.Processing
                 else
                 {
                     ibaDatFile.OpenForUpdate(filename);
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                    ibaDatFile.InfoFields["$DATCOOR_status"] = "readyToProcess";
                     ConfigurationWorker.ClearFields(ref ibaDatFile);
                 }
             }

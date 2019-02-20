@@ -101,6 +101,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\hdCommon.dll</HintPath>
     </Reference>
+    <Reference Include="ibaFilesLiteV7DotNet">
+      <HintPath>..\Dependencies\ibaFilesLiteV7DotNet.dll</HintPath>
+    </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
@@ -668,6 +671,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
   <ItemGroup>

@@ -113,7 +113,7 @@ namespace iba.Processing
             try
             {
                 string fileNameWithoutPath = Path.GetFileName(fileName);
-                splitter = new IbaFileSplitterClass();
+                splitter = new IbaFileSplitter();
                 splitter.Open(fileName);
                 int size = points.Count / 2;
                 for (int i = 0; i < size; i++)
