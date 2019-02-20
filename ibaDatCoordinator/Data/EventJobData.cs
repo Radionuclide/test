@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iba.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,28 @@ namespace iba.Data
             set { m_HDPort = value; }
         }
 
+        private string m_HDUsername;
+        public string HDUsername
+        {
+            get { return m_HDUsername; }
+            set { m_HDUsername = value; }
+        }
+
+        private string m_HDPassword;
+
+        [XmlIgnore]
+        public string HDPassword
+        {
+            get { return m_HDPassword; }
+            set { m_HDPassword = value; }
+        }
+
+        public string HDPasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_HDPassword); }
+            set { m_HDPassword = Crypt.Decrypt(value); }
+        }
+
         private string[] m_HDStores;
         public string[] HDStores
         {
@@ -61,6 +84,8 @@ namespace iba.Data
             m_HDPort = 9180;
             m_HDStores = new string[] { "" };
             m_HDServer = "";
+            m_HDUsername = "";
+            m_HDPassword = "";
             m_rangeCenter = (int)EventJobRangeCenter.Incoming;
             m_maxTriggerRange = TimeSpan.FromHours(1.0);
             m_preTriggerRange = TimeSpan.Zero;
@@ -165,6 +190,8 @@ namespace iba.Data
             nejd.HDServer = m_HDServer;
             nejd.m_HDStores = (string[])m_HDStores.Clone();
             nejd.m_HDPort = m_HDPort;
+            nejd.m_HDUsername = m_HDUsername;
+            nejd.m_HDPassword = m_HDPassword;
             nejd.m_rangeCenter = m_rangeCenter;
             nejd.m_maxTriggerRange = m_maxTriggerRange;
             nejd.m_preTriggerRange = m_preTriggerRange;
@@ -184,6 +211,8 @@ namespace iba.Data
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
+            other.m_HDUsername == m_HDUsername &&
+            other.m_HDPassword == m_HDPassword &&
             other.m_rangeCenter == m_rangeCenter &&
             other.m_maxTriggerRange == m_maxTriggerRange &&
             other.m_preTriggerRange == m_preTriggerRange &&

@@ -270,7 +270,7 @@ namespace iba.Processing
                     }
 
                     if (m_toUpdate.JobType == ConfigurationData.JobTypeEnum.Event)
-                        m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData);
+                        m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData, m_toUpdate.Name);
 
                     if (m_sd.Started)
                     {
@@ -648,7 +648,7 @@ namespace iba.Processing
                     else if ( m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                     {
                         m_hdEventMonitor = new HDEventMonitor();
-                        m_hdEventMonitor.UpdateConfiguration(m_cd.EventData);
+                        m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }

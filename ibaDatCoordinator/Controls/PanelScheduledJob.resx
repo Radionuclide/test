@@ -274,7 +274,7 @@
     <value>m_nudRepeatTimes</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Type" xml:space="preserve">
-    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Parent" xml:space="preserve">
     <value>gbSchedule</value>
@@ -460,7 +460,7 @@
     <value>m_dtStart</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
-    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
     <value>gbTrigger</value>
@@ -1115,7 +1115,7 @@
     <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1125,6 +1125,126 @@
   </data>
   <data name="gbHD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="btnShowPwd.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnShowPwd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>484, 46</value>
+  </data>
+  <data name="btnShowPwd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="btnShowPwd.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
+  </data>
+  <data name="&gt;&gt;btnShowPwd.Name" xml:space="preserve">
+    <value>btnShowPwd</value>
+  </data>
+  <data name="&gt;&gt;btnShowPwd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnShowPwd.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;btnShowPwd.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbPwd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>339, 48</value>
+  </data>
+  <data name="m_tbPwd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 20</value>
+  </data>
+  <data name="m_tbPwd.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwd.Name" xml:space="preserve">
+    <value>m_tbPwd</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwd.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwd.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 48</value>
+  </data>
+  <data name="m_tbUsername.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 20</value>
+  </data>
+  <data name="m_tbUsername.TabIndex" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="&gt;&gt;m_tbUsername.Name" xml:space="preserve">
+    <value>m_tbUsername</value>
+  </data>
+  <data name="&gt;&gt;m_tbUsername.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbUsername.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;m_tbUsername.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 51</value>
+  </data>
+  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 13</value>
+  </data>
+  <data name="label21.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="label21.Text" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="&gt;&gt;label21.Name" xml:space="preserve">
+    <value>label21</value>
+  </data>
+  <data name="&gt;&gt;label21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label21.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 51</value>
+  </data>
+  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="label20.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="label20.Text" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="&gt;&gt;label20.Name" xml:space="preserve">
+    <value>label20</value>
+  </data>
+  <data name="&gt;&gt;label20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label20.Parent" xml:space="preserve">
+    <value>gbHD</value>
+  </data>
+  <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_lvStores.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -1136,10 +1256,10 @@
     <value>315</value>
   </data>
   <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 58</value>
+    <value>17, 87</value>
   </data>
   <data name="m_lvStores.Size" type="System.Drawing.Size, System.Drawing">
-    <value>320, 140</value>
+    <value>320, 171</value>
   </data>
   <data name="m_lvStores.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
@@ -1154,7 +1274,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;m_lvStores.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="label31.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1163,7 +1283,7 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 42</value>
+    <value>13, 71</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
@@ -1184,7 +1304,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1193,7 +1313,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnHdServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 17</value>
+    <value>484, 17</value>
   </data>
   <data name="btnHdServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 23</value>
@@ -1214,7 +1334,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 19</value>
@@ -1238,13 +1358,13 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 19</value>
+    <value>339, 19</value>
   </data>
   <data name="m_tbEventServerPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+    <value>139, 20</value>
   </data>
   <data name="m_tbEventServerPort.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -1265,7 +1385,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1295,7 +1415,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="label19.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1325,7 +1445,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="gbHD.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 313</value>
@@ -1334,7 +1454,7 @@
     <value>0, 204</value>
   </data>
   <data name="gbHD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 204</value>
+    <value>702, 264</value>
   </data>
   <data name="gbHD.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1346,7 +1466,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1913,7 +2033,7 @@
     <value>20</value>
   </data>
   <data name="gbTimeSelection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 523</value>
+    <value>0, 583</value>
   </data>
   <data name="gbTimeSelection.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 101</value>
@@ -1928,7 +2048,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1943,10 +2063,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 627</value>
+    <value>0, 687</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 627</value>
+    <value>702, 687</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

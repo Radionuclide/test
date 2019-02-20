@@ -102,7 +102,7 @@ namespace iba.Utility
                 List<HDEventMonitor.EventOccurrence> evts = null;
                 using (HDEventMonitor monitor = new HDEventMonitor(true))
                 {
-                    monitor.UpdateConfiguration(m_ejd);
+                    monitor.UpdateConfiguration(m_ejd, m_confData.Name);
                     monitor.Start();
 
                     int lCounter = 0;

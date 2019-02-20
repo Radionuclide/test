@@ -17,6 +17,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -32,6 +33,11 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.btnShowPwd = new System.Windows.Forms.Button();
+            this.m_tbPwd = new System.Windows.Forms.TextBox();
+            this.m_tbUsername = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.btnHdServer = new System.Windows.Forms.Button();
             this.m_tbEventServer = new System.Windows.Forms.TextBox();
@@ -86,7 +92,6 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -236,6 +241,11 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.btnShowPwd);
+            this.gbTriggers.Controls.Add(this.m_tbPwd);
+            this.gbTriggers.Controls.Add(this.m_tbUsername);
+            this.gbTriggers.Controls.Add(this.label20);
+            this.gbTriggers.Controls.Add(this.label6);
             this.gbTriggers.Controls.Add(this.m_pnlEvents);
             this.gbTriggers.Controls.Add(this.btnHdServer);
             this.gbTriggers.Controls.Add(this.m_tbEventServer);
@@ -245,6 +255,38 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // btnShowPwd
+            // 
+            resources.ApplyResources(this.btnShowPwd, "btnShowPwd");
+            this.btnShowPwd.Image = global::iba.Properties.Resources.Eye;
+            this.btnShowPwd.Name = "btnShowPwd";
+            this.btnShowPwd.UseVisualStyleBackColor = true;
+            this.btnShowPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseDown);
+            this.btnShowPwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseUp);
+            // 
+            // m_tbPwd
+            // 
+            resources.ApplyResources(this.m_tbPwd, "m_tbPwd");
+            this.m_tbPwd.Name = "m_tbPwd";
+            this.m_tbPwd.UseSystemPasswordChar = true;
+            this.m_tbPwd.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
+            // 
+            // m_tbUsername
+            // 
+            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
+            this.m_tbUsername.Name = "m_tbUsername";
+            this.m_tbUsername.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
             // 
             // m_pnlEvents
             // 
@@ -771,5 +813,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox m_cbTimeBase;
         private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.Button btnShowPwd;
+        private System.Windows.Forms.TextBox m_tbPwd;
+        private System.Windows.Forms.TextBox m_tbUsername;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label20;
     }
 }

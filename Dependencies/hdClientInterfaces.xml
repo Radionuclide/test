@@ -70,6 +70,11 @@
             Is the channel valid?
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdChannel.ErrorCode">
+            <summary>
+            Did an error occur?
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdChannel.Active">
             <summary>
             Is the channel being written?

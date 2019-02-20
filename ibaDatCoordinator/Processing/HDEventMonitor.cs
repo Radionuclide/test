@@ -13,9 +13,11 @@ namespace iba.Processing
     {
         #region Members
         EventJobData m_ejd;
+        string m_jobName;
         IHdReader m_hdReader;
         bool m_bSkipChecks;
 
+        int errorCode;
         Dictionary<string, LiveStoreData> m_liveData;
 
         object m_dataSetLock;
@@ -41,10 +43,12 @@ namespace iba.Processing
         {
             m_bSkipChecks = bSkipChecks;
             m_ejd = null;
-            m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
+            m_jobName = string.Empty;
+            m_hdReader = HdClient.CreateReader(HdUserType.PdaClient);
             object obj = m_hdReader.Authenticate(null);
             obj = HdReaderAuthenticator.GetInfo(obj);
             obj = m_hdReader.Authenticate(obj);
+            m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
             m_hdReader.ShowConnectionError = false;
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             m_hdReader.Advance += OnHdAdvance;
@@ -130,10 +134,12 @@ namespace iba.Processing
         #endregion
 
         #region Configuration
-        public void UpdateConfiguration(EventJobData ejd)
+        public void UpdateConfiguration(EventJobData ejd, string jobName)
         {
             if (ejd == null)
                 throw new Exception("HDEventMonitor: passed configuration cannot be null");
+
+            m_jobName = jobName ?? string.Empty;
 
             bool bFirstTime = m_ejd == null;
             if (!bFirstTime && ejd.IsSame(m_ejd))
@@ -153,10 +159,13 @@ namespace iba.Processing
             if (lHdReader == null)
                 return;
 
-            if (bFirstTime || m_ejd.HDServer != lHdReader.ServerHost || m_ejd.HDPort != lHdReader.ServerPort)
+            if (bFirstTime || m_ejd.HDServer != lHdReader.ServerHost || m_ejd.HDPort != lHdReader.ServerPort || !lHdReader.UserLoginInfo.UserName.Equals(m_ejd.HDUsername, StringComparison.CurrentCultureIgnoreCase) || lHdReader.UserLoginInfo.Password != m_ejd.HDPassword)
             {
                 if (lHdReader.IsConnected())
                     lHdReader.Disconnect();
+
+                lHdReader.UserLoginInfo.UserName = m_ejd.HDUsername;
+                lHdReader.UserLoginInfo.Password = m_ejd.HDPassword;
 
                 m_liveData.Clear();
                 lHdReader.Connect(m_ejd.HDServer, m_ejd.HDPort);
@@ -485,6 +494,21 @@ namespace iba.Processing
             if (response == null)
                 return;
 
+            if (response.ErrorCode != errorCode)
+            {
+                errorCode = response.ErrorCode;
+                if (errorCode != 0)
+                {
+                    ibaLogger.LogFormat(Level.Warning, "Event job <<{0}>>: {1} (error code: {2})", m_jobName, response.Error, response.ErrorCode);
+                    return;
+                }
+            }
+            else if (errorCode == 0 && !string.IsNullOrWhiteSpace(response.Error))
+            {
+                ibaLogger.LogFormat(Level.Warning, "Event job <<{0}>>: {1}", m_jobName, response.Error);
+                return;
+            }
+
             List<EventReaderData> newEvents = new List<EventReaderData>();
             Dictionary<string, LiveStoreData> lLiveData = m_liveData;
             foreach (var storeData in lLiveData.Values)
@@ -561,9 +585,6 @@ namespace iba.Processing
                     }
                 }
             }
-
-            if (!string.IsNullOrEmpty(response.Error))
-                ibaLogger.Log(Level.Warning, response.Error);
         }
         #endregion
 
