@@ -60,7 +60,8 @@ namespace iba.Processing
             m_liveDataSet = new HashSet<EventReaderData>();
             m_tmrSetCleanup = new Timer(OnCleanupTimerTick);
 
-            m_startTimeTicks = DateTime.MaxValue.Ticks;            m_queueLock = new object();
+            m_startTimeTicks = DateTime.MaxValue.Ticks;
+            m_queueLock = new object();
             m_eventQueue = new List<EventOccurrence>();
 
             m_tmrAdvance = new Timer(OnAdvanceTimerTick);
@@ -169,6 +170,9 @@ namespace iba.Processing
 
                 m_liveData.Clear();
                 lHdReader.Connect(m_ejd.HDServer, m_ejd.HDPort);
+
+                if (!lHdReader.IsConnected())
+                    ibaLogger.Log(Level.Warning, $"HDEventMonitor HD reader {lHdReader.ServerHost}:{lHdReader.ServerPort} could not connect: {lHdReader.ConnectionError ?? ""}");
             }
 
             m_startTimeTicks = DateTime.UtcNow.Ticks;

@@ -2428,6 +2428,27 @@ namespace iba.Processing
             new SortedDictionary<TaskData, TaskLastExecutionData>();
         // added by kolesnik - end
 
+        void TrySetHDCredentials()
+        {
+            string username = "";
+            string password = "";
+
+            if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            {
+                username = m_cd.ScheduleData.HDUsername;
+                password = m_cd.ScheduleData.HDPassword;
+            }
+            else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+            {
+                username = m_cd.EventData.HDUsername;
+                password = m_cd.EventData.HDPassword;
+            }
+            else
+                return;
+
+            m_ibaAnalyzer?.SetHDCredentials(username, password);
+        }
+
         private void ProcessDatfile(string InputFile) 
         {
             // added by kolesnik - begin
@@ -2459,6 +2480,7 @@ namespace iba.Processing
                     }
                     if(m_needIbaAnalyzer)
                     {
+                        TrySetHDCredentials();
                         m_ibaAnalyzer.OpenDataFile(0, InputFile); //works both with hdq and .dat
                         try
                         {
@@ -2937,7 +2959,11 @@ namespace iba.Processing
                     {
                         try
                         {
-                            if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                            if (m_needIbaAnalyzer)
+                            {
+                                TrySetHDCredentials();
+                                m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -3043,6 +3069,7 @@ namespace iba.Processing
                     fs.Close();
                     fs.Dispose();
                 }
+                TrySetHDCredentials();
                 m_ibaAnalyzer.OpenDataFile(0, datfile);
             }
             catch (Exception ex)
