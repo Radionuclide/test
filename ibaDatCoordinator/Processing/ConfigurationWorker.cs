@@ -1584,8 +1584,10 @@ namespace iba.Processing
                 fs.Read(myBytes, 0, 4);
                 System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
                 string str = enc.GetString(myBytes);
-                if (str != "PDA1" && str != "PDA2" && str != "QDR1")
+                if (str != "PDA1" && str != "PDA2" && str != "PDA3" && str != "QDR1")
                     return true;
+                if (str != "PDA3")
+                    return false; //don't test further for 3, header is different...
                 fs.Read(myBytes, 0, 4);
                 fs.Read(myBytes, 0, 4);
                 uint offset = System.BitConverter.ToUInt32(myBytes, 0);
@@ -1593,8 +1595,6 @@ namespace iba.Processing
                     fs.Seek(offset, SeekOrigin.Begin);
                 else
                 {
-                    fs.Close();
-                    fs.Dispose();
                     return true;
                 }
 
@@ -1624,15 +1624,16 @@ namespace iba.Processing
                         }
                     }
                 }
-                fs.Close();
-                fs.Dispose();
                 return succes;
             }
             catch
             {
+                return true; // when failing in this stage it is not a PDA file, ignore this file
+            }
+            finally
+            {
                 fs.Close();
                 fs.Dispose();
-                return true; // when failing in this stage it is not a PDA file, ignore this file
             }
         }
 
@@ -1936,7 +1937,7 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
                     //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
