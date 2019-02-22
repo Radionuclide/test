@@ -1892,7 +1892,7 @@ namespace iba.Processing
                 Nullable<DateTime> time = null;
                 try
                 {
-                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename,m_cd.FileEncryptionPassword);
                     try
                     {
                         time = File.GetLastWriteTime(filename);
@@ -1937,7 +1937,15 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (Exception ex)
+                catch (System.UnauthorizedAccessException ex)
+                {
+                    if (String.IsNullOrEmpty(m_cd.FileEncryptionPassword))
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess6, filename);
+                    else
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess7, filename);
+                    return DatFileStatus.State.NO_ACCESS;
+                }
+                catch (Exception)
                 {
                     //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
                     //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
@@ -2124,7 +2132,7 @@ namespace iba.Processing
                 catch (Exception )//no status field
                 {
                     ibaDatFile.Close();
-                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename, m_cd.FileEncryptionPassword);
 
                     String frames = null;
                     try
@@ -2350,7 +2358,7 @@ namespace iba.Processing
                 
                 string frames = null;
                 IbaFileReader ibaDatFile = new IbaFileReader();
-                ibaDatFile.Open(filename);
+                ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
                 try
                 {
                     frames = ibaDatFile.InfoFields["frames"];
@@ -2429,27 +2437,6 @@ namespace iba.Processing
             new SortedDictionary<TaskData, TaskLastExecutionData>();
         // added by kolesnik - end
 
-        void TrySetHDCredentials()
-        {
-            string username = "";
-            string password = "";
-
-            if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
-            {
-                username = m_cd.ScheduleData.HDUsername;
-                password = m_cd.ScheduleData.HDPassword;
-            }
-            else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
-            {
-                username = m_cd.EventData.HDUsername;
-                password = m_cd.EventData.HDPassword;
-            }
-            else
-                return;
-
-            m_ibaAnalyzer?.SetHDCredentials(username, password);
-        }
-
         private void ProcessDatfile(string InputFile) 
         {
             // added by kolesnik - begin
@@ -2481,7 +2468,6 @@ namespace iba.Processing
                     }
                     if(m_needIbaAnalyzer)
                     {
-                        TrySetHDCredentials();
                         m_ibaAnalyzer.OpenDataFile(0, InputFile); //works both with hdq and .dat
                         try
                         {
@@ -2692,7 +2678,7 @@ namespace iba.Processing
                 IbaFileReader ibaDatFile = new IbaFileReader();
                 try
                 {
-                    ibaDatFile.OpenForUpdate(InputFile);
+                    ibaDatFile.OpenForUpdate(InputFile, m_cd.FileEncryptionPassword);
                     time = File.GetLastWriteTime(InputFile);
                 }
                 catch (Exception ex) //happens when timed out and proc has not released its resources yet
@@ -2962,7 +2948,6 @@ namespace iba.Processing
                         {
                             if (m_needIbaAnalyzer)
                             {
-                                TrySetHDCredentials();
                                 m_ibaAnalyzer.OpenDataFile(0, DatFile);
                             }
                         }
@@ -3070,7 +3055,6 @@ namespace iba.Processing
                     fs.Close();
                     fs.Dispose();
                 }
-                TrySetHDCredentials();
                 m_ibaAnalyzer.OpenDataFile(0, datfile);
             }
             catch (Exception ex)
@@ -3372,7 +3356,7 @@ namespace iba.Processing
                     string outputfile;
                     try
                     {
-                        ibaDatFile.Open(filename);
+                        ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
                         outputfile = ibaDatFile.InfoFields[task.InfoFieldForOutputFile];
                         if (task.InfoFieldForOutputFileLength == 0)
                         {
@@ -3476,7 +3460,7 @@ namespace iba.Processing
                 IbaFileReader ibaDatFile = new IbaFileReader();
                 try
                 {
-                    ibaDatFile.Open(filename);
+                    ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
                     Subdir = ibaDatFile.InfoFields[task.InfoFieldForSubdir];
                     if (task.InfoFieldForSubdirLength == 0)
                     {

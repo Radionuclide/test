@@ -9,10 +9,11 @@ namespace iba.Processing
 {
     class FileProcessing : IDisposable
     {
-        public FileProcessing(string path, string username, string pass)
+        public FileProcessing(string path, string username, string pass, string filepass)
         {
             m_error = String.Empty;
             m_path = path;
+            m_filePass = filepass;
             SharesHandler.Handler.AddReferenceDirect(m_path, username, pass, out m_error);
         }
 
@@ -27,6 +28,7 @@ namespace iba.Processing
 
         private string m_path;
         private string m_error;
+        private string m_filePass;
 
         public string ErrorString
         {
@@ -64,7 +66,7 @@ namespace iba.Processing
                 {
                     string filename = files[count];
                     stop = myBar.UpdateProgress(filename, count);
-                    RemoveMarkingsFromFile(filename, ibaDatFile);
+                    RemoveMarkingsFromFile(filename, m_filePass, ibaDatFile);
                 }
             }
             finally
@@ -73,7 +75,7 @@ namespace iba.Processing
             }
         }
 
-        public static string RemoveMarkingsFromFile(string filename, IbaFileReader ibaDatFile = null)
+        public static string RemoveMarkingsFromFile(string filename, string filepass, IbaFileReader ibaDatFile = null)
         {
             string errMessage = "";
             if(ibaDatFile == null)
@@ -97,7 +99,7 @@ namespace iba.Processing
                 }
                 else
                 {
-                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename, filepass);
                     ibaDatFile.InfoFields["$DATCOOR_status"] = "readyToProcess";
                     ConfigurationWorker.ClearFields(ref ibaDatFile);
                 }

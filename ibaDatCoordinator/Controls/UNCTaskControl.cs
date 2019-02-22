@@ -353,5 +353,15 @@ namespace iba.Controls
             m_rbLimitFree.Checked = true;
             m_rbLimitDirectories.Checked = false;
         }
+
+        private void btnShowPwd_MouseDown(object sender, MouseEventArgs e)
+        {
+            m_tbPass.UseSystemPasswordChar = false;
+        }
+
+        private void btnShowPwd_MouseUp(object sender, MouseEventArgs e)
+        {
+            m_tbPass.UseSystemPasswordChar = true;
+        }
     }
 }

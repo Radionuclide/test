@@ -172,7 +172,6 @@ namespace iba.Processing
             m_bFileOverWritten = false;
             m_fatalError = false;
             string tempFilePath = Path.Combine(Path.GetTempPath(),"updatedatatask{" + m_udt.Guid.ToString() + "}.dat");
-
             try
             {
                 File.Copy(sourceFile, tempFilePath,true);
@@ -259,7 +258,8 @@ namespace iba.Processing
             {
                 try
                 {
-                    m_ibaFileUpdater.OpenForUpdate(tempFilePath);
+                    string filePass = m_udt.ParentConfigurationData.FileEncryptionPassword;
+                    m_ibaFileUpdater.OpenForUpdate(tempFilePath, filePass);
                 }
                 catch (Exception ex)
                 {

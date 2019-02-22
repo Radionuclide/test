@@ -2469,6 +2469,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file is password protected and no password was provided..
+        /// </summary>
+        internal static string Noaccess6 {
+            get {
+                return ResourceManager.GetString("Noaccess6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is password protected and an incorrect password was provided..
+        /// </summary>
+        internal static string Noaccess7 {
+            get {
+                return ResourceManager.GetString("Noaccess7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to no ibaAnalyzer registered.
         /// </summary>
         internal static string noIbaAnalyser {

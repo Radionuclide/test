@@ -1490,4 +1490,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Noaccess6" xml:space="preserve">
+    <value>The file is password protected and no password was provided.</value>
+  </data>
+  <data name="Noaccess7" xml:space="preserve">
+    <value>The file is password protected and an incorrect password was provided.</value>
+  </data>
 </root>

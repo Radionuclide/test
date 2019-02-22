@@ -179,10 +179,11 @@ namespace iba.Controls
             string errorMessage;
             using (new Utility.WaitCursor())
             {
+                string pass = m_data.ParentConfigurationData.FileEncryptionPassword;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
+                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
                 else
-                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
+                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
                 MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -192,7 +193,7 @@ namespace iba.Controls
                 MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        static internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        static internal float TestCondition(string expression, int index, string pdo, string datfile, string passwd, out string errorMessage)
         {
             IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             //register this
@@ -211,6 +212,8 @@ namespace iba.Controls
             try
             {
                 if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(pdo);
+                if (!String.IsNullOrEmpty(passwd))
+                    ibaAnalyzer.SetFilePassword("", passwd);
                 ibaAnalyzer.OpenDataFile(0, datfile);
                 f = ibaAnalyzer.Evaluate(expression, index);
             }

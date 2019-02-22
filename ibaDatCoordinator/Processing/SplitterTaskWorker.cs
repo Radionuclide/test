@@ -239,6 +239,7 @@ namespace iba.Processing
         {
             if (points != null) return points;
             if (filename==null) filename = m_task.TestDatFile;
+            string pass = m_task.ParentConfigurationData.FileEncryptionPassword;
             if (progress == null && m_confWorker != null)
                 progress = new ConfigurationStopListener(m_confWorker);
             try
@@ -255,11 +256,11 @@ namespace iba.Processing
                     {
                         using (WaitCursor wait = new WaitCursor())
                         {
-                            LoadStuff(filename, ref result);
+                            LoadStuff(filename, pass, ref result);
                         }
                     }
                     else
-                        LoadStuff(filename, ref result);
+                        LoadStuff(filename, pass, ref result);
 
                     for (int i = 0; progress == null || !progress.Aborted; i++)
                     {
@@ -358,8 +359,10 @@ namespace iba.Processing
             return null;
         }
 
-        private void LoadStuff(string filename, ref List<double> result)
+        private void LoadStuff(string filename, string pass, ref List<double> result)
         {
+            if (!String.IsNullOrEmpty(pass))
+                m_ibaAnalyzer.SetFilePassword("",pass);
             m_ibaAnalyzer.OpenDataFile(0, filename);
             GetStartTime();
             if (!string.IsNullOrEmpty(m_task.AnalysisFile))

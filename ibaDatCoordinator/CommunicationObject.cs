@@ -185,11 +185,11 @@ namespace iba
             return UpdateDataTaskWorker.TestConnecton(udt);
         }
 
-        public void RemoveMarkings(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        public void RemoveMarkings(string path, string username, string pass, string filepass, bool recursive, FileProcessingProgressBar myBar)
         {
             try
             {
-                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                using (FileProcessing fp = new FileProcessing(path, username, pass, filepass))
                 {
                     if (!String.IsNullOrEmpty(fp.ErrorString))
                         myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + fp.ErrorString;
@@ -215,11 +215,11 @@ namespace iba
         }
 
 
-        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        public void RemoveMarkings(string path, string username, string pass, string filepass, List<string> files, FileProcessingProgressBar myBar)
         {
             try
             {
-                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                using (FileProcessing fp = new FileProcessing(path, username, pass, filepass))
                 {
                     if (!String.IsNullOrEmpty(fp.ErrorString))
                         myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + fp.ErrorString;
@@ -237,19 +237,19 @@ namespace iba
             }
         }
 
-        public void RemoveMarkingsAsync(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        public void RemoveMarkingsAsync(string path, string username, string pass, string filepass, bool recursive, FileProcessingProgressBar myBar)
         {
             ThreadPool.QueueUserWorkItem(o =>
             {
-                RemoveMarkings(path, username, pass, recursive, myBar);
+                RemoveMarkings(path, username, pass, filepass, recursive, myBar);
             });
         }
 
-        public void RemoveMarkingsAsync(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        public void RemoveMarkingsAsync(string path, string username, string pass, string filepass, List<string> files, FileProcessingProgressBar myBar)
         {
             ThreadPool.QueueUserWorkItem(o =>
             {
-                RemoveMarkings(path, username, pass, files, myBar);
+                RemoveMarkings(path, username, pass, filepass, files, myBar);
             });
         }
 
@@ -258,7 +258,7 @@ namespace iba
         {
             try
             {
-                using (FileProcessing fp = new FileProcessing(path, username, pass))
+                using (FileProcessing fp = new FileProcessing(path, username, pass,""))
                 {
                     if (!String.IsNullOrEmpty(fp.ErrorString))
                         myBar.Error = iba.Properties.Resources.DeleteFilesProblem + fp.ErrorString;
@@ -307,9 +307,9 @@ namespace iba
             return new PdaServerFiles();
         }
 
-        internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
         {
-            return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, out errorMessage);
+            return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, pass, out errorMessage);
         }
 
         public bool FileExists(string file)
@@ -627,11 +627,11 @@ namespace iba
             }
         }
 
-        public void RemoveMarkings(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
+        public void RemoveMarkingsAsync(string path, string username, string pass, string filepass, bool recursive, FileProcessingProgressBar myBar)
         {
             try
             {
-                m_com.RemoveMarkings(path, username, pass, recursive,myBar);
+                m_com.RemoveMarkingsAsync(path, username, pass, filepass, recursive, myBar);
             }
             catch (Exception ex)
             {
@@ -639,36 +639,11 @@ namespace iba
             }
         }
 
-        public void RemoveMarkings(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
+        public void RemoveMarkingsAsync(string path, string username, string pass, string filepass, List<string> files, FileProcessingProgressBar myBar)
         {
             try
             {
-                m_com.RemoveMarkings(path, username, pass, files, myBar);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-            }
-        }
-
-
-        public void RemoveMarkingsAsync(string path, string username, string pass, bool recursive, FileProcessingProgressBar myBar)
-        {
-            try
-            {
-                m_com.RemoveMarkingsAsync(path, username, pass, recursive, myBar);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-            }
-        }
-
-        public void RemoveMarkingsAsync(string path, string username, string pass, List<string> files, FileProcessingProgressBar myBar)
-        {
-            try
-            {
-                m_com.RemoveMarkingsAsync(path, username, pass, files, myBar);
+                m_com.RemoveMarkingsAsync(path, username, pass, filepass, files, myBar);
             }
             catch (Exception ex)
             {
@@ -727,11 +702,11 @@ namespace iba
             }
         }
 
-        internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
         {
             try
             {
-                return m_com.TestCondition(expression,index,pdo,datfile,out errorMessage);
+                return m_com.TestCondition(expression,index,pdo,datfile, pass, out errorMessage);
             }
             catch (Exception ex)
             {

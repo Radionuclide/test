@@ -52,7 +52,13 @@ namespace iba.Processing
             lock (m_lock2)
             {
                 if (m_analyzers.Count > 0)
-                    return m_analyzers.Pop();
+                {
+                    var ana = m_analyzers.Pop();
+                    if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
+                        ana.SetFilePassword("", cd.FileEncryptionPassword);
+                    TrySetHDCredentials(ana, cd);
+                    return ana;
+                }
                 else //create one
                 {
                     IbaAnalyzer.IbaAnalyzer ibaAnalyzer = StartIbaAnalyzer(cd);
@@ -64,17 +70,20 @@ namespace iba.Processing
                             Leave();
                             tryAgain = true;
                             Log(iba.Logging.Level.Exception, string.Format(iba.Properties.Resources.errIbaAnalyzerDecrease, m_currentNumberOfRunningTasks), cd);
-                            
+
                         }
                         else
                         {//else catastrophic, not a single ibaAnalyzer can be created -> stop everything, handled by job because of the null ibaAnalyzer
-                            Log(iba.Logging.Level.Exception,iba.Properties.Resources.errIbaAnalyzersIsZero, cd);
+                            Log(iba.Logging.Level.Exception, iba.Properties.Resources.errIbaAnalyzersIsZero, cd);
                             return null;
                         }
                     }
                     else
                     {
                         ibaAnalyzer = new ibaAnalyzerWrapper(ibaAnalyzer);
+                        if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
+                            ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
+                        TrySetHDCredentials(ibaAnalyzer, cd);
                         m_callCounts.Add(ibaAnalyzer, 0);
                         return ibaAnalyzer;
                     }
@@ -186,7 +195,33 @@ namespace iba.Processing
                 ibaAnalyzer = ClaimIbaAnalyzer(cd); //try claiming
             }
             else
+            {
                 ibaAnalyzer = new ibaAnalyzerWrapper(newIbaAnalyzer);
+                if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
+                    ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
+                TrySetHDCredentials(ibaAnalyzer, cd);
+            }
+        }
+
+        public static void TrySetHDCredentials(IbaAnalyzer.IbaAnalyzer analyzer, ConfigurationData cd)
+        {
+            string username = "";
+            string password = "";
+
+            if (cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+            {
+                username = cd.ScheduleData.HDUsername;
+                password = cd.ScheduleData.HDPassword;
+            }
+            else if (cd.JobType == ConfigurationData.JobTypeEnum.Event)
+            {
+                username = cd.EventData.HDUsername;
+                password = cd.EventData.HDPassword;
+            }
+            else
+                return;
+
+            analyzer?.SetHDCredentials(username, password);
         }
 
         private enum IbaAnalyzerServerStatus { UNDETERMINED, NONINTERACTIVE, CLASSIC };

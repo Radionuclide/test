@@ -1410,7 +1410,7 @@ namespace iba.Processing
             string errMessage;
             try
             {
-                errMessage = FileProcessing.RemoveMarkingsFromFile(file);
+                errMessage = FileProcessing.RemoveMarkingsFromFile(file, data?.FileEncryptionPassword);
             }
             catch (System.Exception ex)
             {

@@ -158,6 +158,23 @@ namespace iba.Data
             set { m_pass = Crypt.Decrypt(value); }
         }
 
+        private string m_fileEncryptionPass;
+
+        [XmlIgnore]
+        public string FileEncryptionPassword
+        {
+            get { return m_fileEncryptionPass; }
+            set { m_fileEncryptionPass = value; }
+        }
+
+        public string FileEncryptionPasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_fileEncryptionPass); }
+            set { m_fileEncryptionPass = Crypt.Decrypt(value); }
+        }
+
+
+
         private string m_username;
         public string Username
         {
@@ -333,6 +350,7 @@ namespace iba.Data
             m_guid = Guid.NewGuid();
             m_bLimitTimesTried = false;
             m_nrTimes = 10;
+            m_fileEncryptionPass = "";
         }
 
         public void relinkChildData()
@@ -370,6 +388,7 @@ namespace iba.Data
             cd.m_bLimitTimesTried = m_bLimitTimesTried;
             cd.m_nrTimes = m_nrTimes;
             cd.m_treePosition = m_treePosition;
+            cd.m_fileEncryptionPass = m_fileEncryptionPass;
             return cd;
         }
 
@@ -402,12 +421,13 @@ namespace iba.Data
                 other.m_notify.IsSame(m_notify) &&
                 other.m_bRescanEnabled == m_bRescanEnabled &&
                 other.m_bReprocessErrors == m_bReprocessErrors &&
-                    //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
+                //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
                 other.m_username == m_username &&
                 other.m_pass == m_pass &&
                 other.m_bLimitTimesTried == m_bLimitTimesTried &&
-                    //other.m_treePosition == m_treePosition; //don't care about this one
-                other.m_nrTimes == m_nrTimes;
+                //other.m_treePosition == m_treePosition && //don't care about this one
+                other.m_nrTimes == m_nrTimes &&
+                other.m_fileEncryptionPass == m_fileEncryptionPass;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()
