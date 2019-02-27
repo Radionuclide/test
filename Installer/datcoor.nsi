@@ -427,7 +427,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
+  ;File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
@@ -515,7 +515,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\DevExpress.Utils.v16.1.dll"
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
+  ;File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
@@ -652,7 +652,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
+  ;File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
@@ -861,7 +861,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
-  Delete "$INSTDIR\ibaFilesLiteDotNet.dll"
+  Delete "$INSTDIR\ibaFilesLiteV7DotNet.dll"
   
   Delete "$INSTDIR\hdCore.dll"
   Delete "$INSTDIR\hdClient.dll"
@@ -881,7 +881,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DevExpress.Sparkline.v16.1.Core.dll"
   Delete "$INSTDIR\DevExpress.Printing.v16.1.Core.dll"
   
-  Delete "$INSTDIR\Interop.ibaFilesLiteLib.dll"
+  ;Delete "$INSTDIR\Interop.ibaFilesLiteLib.dll"
   Delete "$INSTDIR\ICSharpCode.TextEditor.dll"
   Delete "$INSTDIR\ICSharpCode.SharpZipLib.dll"
   Delete "$INSTDIR\msvcr100.dll"

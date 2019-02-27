@@ -567,7 +567,7 @@ namespace iba.Data
                     if (!string.IsNullOrWhiteSpace(comment))
                         sw.WriteLine("comment=" + comment);
 
-                    if (bPreferredTimeBaseIsAuto)
+                    if (!bPreferredTimeBaseIsAuto)
                         sw.WriteLine("timebase=" + lPreferredTimeBase.TotalSeconds.ToString());
                     else
                     {
