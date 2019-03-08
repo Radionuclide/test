@@ -85,6 +85,7 @@ SetCompressor /SOLID lzma
 
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "Graphics\MUIInstallLogo.bmp"
+!define MUI_HEADERIMAGE_RIGHT
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
 !define MUI_ABORTWARNING
 !define MUI_COMPONENTSPAGE_NODESC
