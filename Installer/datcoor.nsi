@@ -643,6 +643,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
 ;HD-stuff
+  File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
