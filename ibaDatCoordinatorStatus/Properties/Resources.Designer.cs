@@ -81,6 +81,36 @@ namespace iba.DatCoordinator.Status.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ibaDatCoordinator_server_dc {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator_server_dc", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ibaDatCoordinator_server_start {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator_server_start", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ibaDatCoordinator_server_stopp {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator_server_stopp", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         internal static string notifyIconMenuItemExit {
@@ -222,46 +252,6 @@ namespace iba.DatCoordinator.Status.Properties {
             get {
                 object obj = ResourceManager.GetObject("shield", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconDisconnected {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconDisconnected", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconNeutral {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconNeutral", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconRunning {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconRunning", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon StatusIconStopped {
-            get {
-                object obj = ResourceManager.GetObject("StatusIconStopped", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         

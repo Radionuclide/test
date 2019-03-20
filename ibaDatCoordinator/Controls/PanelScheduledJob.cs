@@ -31,9 +31,9 @@ namespace iba.Controls
 
         static PanelScheduledJob()
         {
-            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
-            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
-            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+            //DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            //defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            //defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
 
             imageListError = new ImageList();
             imageListError.Images.Add(Properties.Resources.img_error);
@@ -781,8 +781,10 @@ namespace iba.Controls
                     m_lviErrorStores = new ListViewItem();
                     m_lviErrorStores.ImageIndex = 0;
                 }
-
-                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+                if (String.IsNullOrEmpty(m_hdReader.ServerHost)) //don't show an error message if server is not specified yet
+                    m_lviErrorStores.Text = Properties.Resources.NoHDServerConnected;
+                else
+                    m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
 
                 m_lvStores.Items.Add(m_lviErrorStores);
             }

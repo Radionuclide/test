@@ -46,9 +46,9 @@ namespace iba.Controls
         #region Initialize
         static PanelEventJob()
         {
-            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
-            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
-            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+            //DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            //defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            //defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
 
             imageListError = new ImageList();
             imageListError.Images.Add(Properties.Resources.img_error);
@@ -85,7 +85,7 @@ namespace iba.Controls
             m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event;
             m_treeEvents.ContextOptions = HdTreeContextOptions.None;
             m_treeEvents.EndStateChange();
-            m_treeEvents.Control.Size = new Size(m_treeEvents.Control.Width, 165);
+            m_treeEvents.Control.Size = new Size(btnHdServer.Right-label2.Left, 165);
             m_treeEvents.Control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             m_pnlEvents.Controls.Add(m_treeEvents.Control);
 
@@ -366,8 +366,10 @@ namespace iba.Controls
                     m_lviErrorStores = new ListViewItem();
                     m_lviErrorStores.ImageIndex = 0;
                 }
-
-                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+                if (String.IsNullOrEmpty(m_hdReader.ServerHost)) //don't show an error message if server is not specified yet
+                    m_lviErrorStores.Text = Properties.Resources.NoHDServerConnected;
+                else
+                    m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
 
                 m_lvStores.Items.Add(m_lviErrorStores);
             }

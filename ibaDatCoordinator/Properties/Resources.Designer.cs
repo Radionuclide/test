@@ -2487,6 +2487,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No server connected.
+        /// </summary>
+        internal static string NoHDServerConnected {
+            get {
+                return ResourceManager.GetString("NoHDServerConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to no ibaAnalyzer registered.
         /// </summary>
         internal static string noIbaAnalyser {

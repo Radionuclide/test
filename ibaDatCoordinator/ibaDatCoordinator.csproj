@@ -679,6 +679,10 @@
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <Content Include="Resources\event_configuration.ico" />
     <Content Include="Resources\event_configuration_new.ico" />
+    <None Include="Resources\ibaDatCoordinator.ico" />
+    <None Include="Resources\ibaDatCoordinator_dc.ico" />
+    <None Include="Resources\ibaDatCoordinator_start.ico" />
+    <None Include="Resources\ibaDatCoordinator_stopp.ico" />
     <Content Include="Resources\img_error.png" />
     <Content Include="Resources\img_eventjob_range_both.png" />
     <Content Include="Resources\img_eventjob_range_single.png" />

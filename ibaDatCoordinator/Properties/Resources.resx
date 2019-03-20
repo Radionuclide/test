@@ -127,9 +127,6 @@
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disconnected.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="pasteTitle" xml:space="preserve">
     <value>Paste</value>
   </data>
@@ -268,9 +265,6 @@
   <data name="configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\running.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Failure" xml:space="preserve">
     <value>failed! (see logfile)</value>
   </data>
@@ -351,9 +345,6 @@
   </data>
   <data name="batchfile_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\batchfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\default.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ServerSaveFileProblem" xml:space="preserve">
     <value>Problem saving file at server side</value>
@@ -660,9 +651,6 @@
   </data>
   <data name="niRunning" xml:space="preserve">
     <value>ibaDatCoordinator (running)</value>
-  </data>
-  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\running1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>Application</value>
@@ -1495,5 +1483,20 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="Noaccess7" xml:space="preserve">
     <value>The file is password protected and an incorrect password was provided.</value>
+  </data>
+  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_stopp.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_dc.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoHDServerConnected" xml:space="preserve">
+    <value>No server connected</value>
+  </data>
+  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_start.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

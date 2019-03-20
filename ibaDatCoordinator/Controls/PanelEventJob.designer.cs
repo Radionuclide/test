@@ -467,10 +467,10 @@
             // 
             // m_lvStores
             // 
+            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
