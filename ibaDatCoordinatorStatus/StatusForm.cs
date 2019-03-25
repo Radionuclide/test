@@ -68,7 +68,6 @@ namespace iba.DatCoordinator.Status
             m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
             m_iconEx.Visible = false;
 
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
             Text = Text +  " " + DatCoVersion.GetVersion();
@@ -184,13 +183,13 @@ namespace iba.DatCoordinator.Status
                     m_btTransferAnalyzerSettings.Enabled = false;
                     if (bServiceError)
                     {
-                        m_iconEx.Icon = ServiceDisconnectedIcon;
-                        this.Icon = ServiceDisconnectedIconSmall;
+                        m_iconEx.Icon = ServiceDisconnectedIconSmall;
+                        this.Icon = ServiceDisconnectedIcon;
                     }
                     else
                     {
-                        m_iconEx.Icon = ServiceStoppedIcon;
-                        this.Icon = ServiceStoppedIconSmall;
+                        m_iconEx.Icon = ServiceStoppedIconSmall;
+                        this.Icon = ServiceStoppedIcon;
                     }
                     m_iconEx.Text = bServiceError ? Properties.Resources.ServiceStatusTooltipError : Properties.Resources.ServiceStatusTooltipStopped;
                 }

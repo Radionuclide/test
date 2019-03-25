@@ -93,13 +93,13 @@
     <None Include="Resources\s7.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Analyzer_001.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\open.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SychronizeList.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ibaAnalyzer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

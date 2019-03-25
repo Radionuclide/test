@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ibaDatCoordinator_server_start.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -121,25 +124,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DatCo_SrvStat_Icon_disconn.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DatCo_SrvStat_Icon_pure.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DatCo_SrvStat_Icon_run.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DatCo_SrvStat_Icon_stopped.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj">
       <Project>{03efd2fc-187d-42a5-b3a7-38232b4ff060}</Project>
       <Name>ibaDatCoordinator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\default.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ibaDatCoordinator_server_start.ico" />
@@ -151,7 +139,13 @@
     <None Include="Resources\ibaDatCoordinator_server_dc.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\default1.ico" />
+    <None Include="Resources\ibaAnalyzer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ibaDatCoordinator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ibaDatCoordinator_server_start.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -63,9 +63,9 @@ namespace iba.DatCoordinator.Status.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _default {
+        internal static System.Drawing.Bitmap ibaAnalyzer {
             get {
-                object obj = ResourceManager.GetObject("_default", resourceCulture);
+                object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace iba.DatCoordinator.Status.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Analyzer_001 {
+        internal static System.Drawing.Bitmap ibaDatCoordinator {
             get {
-                object obj = ResourceManager.GetObject("Analyzer_001", resourceCulture);
+                object obj = ResourceManager.GetObject("ibaDatCoordinator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

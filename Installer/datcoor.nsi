@@ -432,7 +432,6 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
   File "License_Agreement_DatCoordinator.pdf"
@@ -472,7 +471,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
 
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
@@ -520,8 +519,6 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\running.ico"
-  File "..\ibaDatCoordinatorStatus\Resources\DatCo_SrvStat_Icon_pure.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
@@ -604,8 +601,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinatorStatus.exe" "" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinatorStatus.exe" "" 
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" 
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
 
@@ -658,7 +655,6 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
   File "License_Agreement_DatCoordinator.pdf"
@@ -698,7 +694,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   ${EndIf}
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\default.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
@@ -889,8 +885,6 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcr100.dll"
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
-  Delete "$INSTDIR\default.ico"
-  Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
   Delete "$INSTDIR\Support.htm"
@@ -961,8 +955,6 @@ Function un.UninstallService
   IfErrors 0 +2
     Call un.waitAndDelete
 
-  Delete "$INSTDIR\running.ico"
-  Delete "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
   
   ;Remove server status from autorun
   DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status"

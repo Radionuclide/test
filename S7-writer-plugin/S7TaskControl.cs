@@ -23,7 +23,6 @@ namespace S7_writer_plugin
             InitializeComponent();
             m_datagvMessages.AutoGenerateColumns = false;
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
         }
 
         protected override void OnLoad(EventArgs e)
