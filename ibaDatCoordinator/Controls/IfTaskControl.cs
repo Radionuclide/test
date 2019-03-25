@@ -26,7 +26,6 @@ namespace iba.Controls
                 iba.Properties.Resources.XFrequency,
                 iba.Properties.Resources.XInvLength
             });
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
             WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |

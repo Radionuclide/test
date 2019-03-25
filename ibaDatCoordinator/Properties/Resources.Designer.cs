@@ -125,16 +125,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Analyzer_001 {
-            get {
-                object obj = ResourceManager.GetObject("Analyzer_001", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         internal static string Application {
@@ -1118,6 +1108,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaAnalyzer {
+            get {
+                object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified ibaAnalyzer executable does not exist: .
         /// </summary>
         internal static string IbaAnalyzerExecutableDoesNotExist {
@@ -1150,6 +1150,26 @@ namespace iba.Properties {
         internal static string IbaAnalyzerUndeterminedError {
             get {
                 return ResourceManager.GetString("IbaAnalyzerUndeterminedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaDatCoordinator {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ibaDatCoordinator_server {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator_server", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
