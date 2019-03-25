@@ -196,6 +196,12 @@
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
+    <Compile Include="Dialogs\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\About.designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -508,6 +514,9 @@
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\GenerateEventJobTestFileDlg.resx">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
     </EmbeddedResource>
@@ -678,6 +687,8 @@
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\about_background.png" />
+    <None Include="Resources\about80x80.png" />
     <Content Include="Resources\event_configuration.ico" />
     <Content Include="Resources\event_configuration_new.ico" />
     <None Include="Resources\ibaDatCoordinator.ico" />

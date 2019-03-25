@@ -129,6 +129,11 @@ namespace iba
             return DatCoVersion.CurrentVersion();
         }
 
+        public string GetVersion()
+        {
+            return DatCoVersion.GetVersion();
+        }
+
         private Process m_scriptProc;
         private ScriptTester m_testObject;
 
@@ -144,7 +149,7 @@ namespace iba
             m_scriptProc.Start();
         }
 
-        public void KillScript()
+                public void KillScript()
         {
             if (m_scriptProc != null)
             {
@@ -578,6 +583,17 @@ namespace iba
             LogData.Data.Log(Logging.Level.Exception, ex.ToString());
         }
 
+        public string GetVersion()
+        {
+            try
+            {
+                return m_com.GetVersion();
+            }
+            catch (Exception ex)
+            {
+                return "?";
+            }
+        }
         public void TestScript(string scriptfile, string arguments, ScriptTester scripObject)
         {
             try

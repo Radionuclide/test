@@ -2100,10 +2100,10 @@ namespace iba
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (AboutBox ab = new AboutBox())
+            using (About dlg = new About())
             {
-                ab.StartPosition = FormStartPosition.CenterParent;
-                ab.ShowDialog(this);
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ShowDialog(this);
             }
         }
 
@@ -2129,19 +2129,19 @@ namespace iba
             }
         }
 
-        private void licenseAgreementToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string readmeFile = "";
-            try
-            {
-                readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement_DatCoordinator.pdf");
-                System.Diagnostics.Process.Start(readmeFile);
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(ex.Message + " " + readmeFile);
-            };
-        }
+        //private void licenseAgreementToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    string readmeFile = "";
+        //    try
+        //    {
+        //        readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement_DatCoordinator.pdf");
+        //        System.Diagnostics.Process.Start(readmeFile);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message + " " + readmeFile);
+        //    };
+        //}
 
         private void supportToolStripMenuItem_Click(object sender, EventArgs e)
         {

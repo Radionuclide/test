@@ -84,13 +84,12 @@ namespace iba
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.licenseAgreementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -510,7 +509,6 @@ namespace iba
             this.helpMenuItem,
             this.saveInformationToolStripMenuItem,
             this.VersionHistoryToolStripMenuItem,
-            this.licenseAgreementToolStripMenuItem,
             this.supportToolStripMenuItem,
             this.toolStripSeparator3,
             this.aboutToolStripMenuItem});
@@ -535,11 +533,16 @@ namespace iba
             resources.ApplyResources(this.VersionHistoryToolStripMenuItem, "VersionHistoryToolStripMenuItem");
             this.VersionHistoryToolStripMenuItem.Click += new System.EventHandler(this.VersionHistoryToolStripMenuItem_Click);
             // 
-            // licenseAgreementToolStripMenuItem
+            // supportToolStripMenuItem
             // 
-            this.licenseAgreementToolStripMenuItem.Name = "licenseAgreementToolStripMenuItem";
-            resources.ApplyResources(this.licenseAgreementToolStripMenuItem, "licenseAgreementToolStripMenuItem");
-            this.licenseAgreementToolStripMenuItem.Click += new System.EventHandler(this.licenseAgreementToolStripMenuItem_Click);
+            this.supportToolStripMenuItem.Name = "supportToolStripMenuItem";
+            resources.ApplyResources(this.supportToolStripMenuItem, "supportToolStripMenuItem");
+            this.supportToolStripMenuItem.Click += new System.EventHandler(this.supportToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // aboutToolStripMenuItem
             // 
@@ -550,17 +553,6 @@ namespace iba
             // m_openFileDialog
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
-            // 
-            // supportToolStripMenuItem
-            // 
-            this.supportToolStripMenuItem.Name = "supportToolStripMenuItem";
-            resources.ApplyResources(this.supportToolStripMenuItem, "supportToolStripMenuItem");
-            this.supportToolStripMenuItem.Click += new System.EventHandler(this.supportToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -652,7 +644,6 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectServiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel m_statusBarStripLabelConnection;
-        private System.Windows.Forms.ToolStripMenuItem licenseAgreementToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem supportToolStripMenuItem;

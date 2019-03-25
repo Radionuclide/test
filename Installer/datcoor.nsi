@@ -434,6 +434,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Protected\DatCoUtil.dll"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   File "Support.htm"
   
@@ -523,6 +524,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   File "Support.htm"
   File "Copy_Printer_Settings_To_System_Account.bat"
@@ -657,6 +659,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\InstallFiles\Protected\DatCoUtil.dll"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   File "Support.htm"
   
@@ -886,6 +889,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\ibaFilesLiteInstall.exe"
   Delete "$INSTDIR\versions_dat.htm"
+  Delete "$INSTDIR\LicenseInformation.txt"
   Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
