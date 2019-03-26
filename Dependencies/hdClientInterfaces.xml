@@ -919,6 +919,14 @@
             User info (<see cref="P:iba.HD.Client.Interfaces.IHdReader.UserLoginInfo"/>) is ignored if user management is disabled or not supported on server
             </remarks>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.ConnectEx(System.String,System.Int32)">
+            <summary>
+            Connect to server located on given host and port
+            </summary>
+            <param name="serverHost"></param>
+            <param name="serverPort"></param>
+            <returns>Result of connection attempt</returns>
+        </member>
         <member name="E:iba.HD.Client.Interfaces.IHdReader.ConnectionChanged">
             <summary>
             Fired when connection is established or lost
