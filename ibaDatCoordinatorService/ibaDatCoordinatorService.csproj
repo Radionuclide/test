@@ -142,8 +142,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy $(SolutionDir)Dependencies\\hd_plugin.dll $(TargetDir)\plugins
 copy $(SolutionDir)Dependencies\\hd*.dll $(TargetDir)
-copy $(SolutionDir)Dependencies\PowerCollections.dll $(TargetDir)
-copy $(SolutionDir)Dependencies\ibaFilesLiteDotNet.dll $(TargetDir)</PostBuildEvent>
+copy $(SolutionDir)Dependencies\PowerCollections.dll $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

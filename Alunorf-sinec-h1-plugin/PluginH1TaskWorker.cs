@@ -6,10 +6,10 @@ using System.IO;
 
 using iba;
 using iba.Plugins;
-using ibaFilesLiteLib;
 using iba.Logging;
 using iba.Logging.Loggers;
 using iba.Utility;
+using iba.ibaFilesLiteDotNet;
 
 namespace Alunorf_sinec_h1_plugin
 {
@@ -317,7 +317,7 @@ namespace Alunorf_sinec_h1_plugin
 
         public bool ExecuteTask(string datFile)
         {
-            IbaFileReader reader = new IbaFileClass();
+            IbaFileReader reader = new IbaFileReader();
             try
             {
                 reader.Open(datFile);
@@ -326,7 +326,6 @@ namespace Alunorf_sinec_h1_plugin
             {
                 reader.Close();
                 m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_no_open;
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                 return false;
             }
 
@@ -370,7 +369,6 @@ namespace Alunorf_sinec_h1_plugin
                         m_logger.Log(Level.Exception, "message queue full");
                     m_error = Alunorf_sinec_h1_plugin.Properties.Resources.err_queue;
                     reader.Close();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                     return false;
                 }
                 QdtTelegram qdt = null;
@@ -388,7 +386,6 @@ namespace Alunorf_sinec_h1_plugin
                     if (m_logger != null && m_logger.IsOpen)
                         m_logger.Log(Level.Exception, m_error);
                     reader.Close();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
                     return false;
                 }
 
@@ -449,7 +446,6 @@ namespace Alunorf_sinec_h1_plugin
                 }
             }
             reader.Close();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(reader);
 
             if (UnTimelyAcknowledged.Count == 0 && NAKnowledged.Count == 0 && ErrorTelegram.Count == 0)
                 return true;

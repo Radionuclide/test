@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using iba.Data;
-//using ibaFilesLiteLib;
 using iba.ibaFilesLiteDotNet;
 using System.Threading;
 

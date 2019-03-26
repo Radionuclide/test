@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iba;
-using ibaFilesLiteLib;
 using System.Globalization;
+using iba.ibaFilesLiteDotNet;
 
 namespace Alunorf_sinec_h1_plugin 
 {
@@ -589,7 +589,9 @@ namespace Alunorf_sinec_h1_plugin
                 try
                 {
                     System.Diagnostics.Trace.WriteLine("before" + count.ToString());
-                    string data = file.QueryInfoByName(rec.Name);
+                    string data;
+                    if (!file.InfoFields.TryGetValue(rec.Name, out data))
+                        data = "";
                     int pos = rec.DataType.IndexOfAny(new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9' });
                     uint size = uint.Parse(rec.DataType.Substring(pos));
                     string type = rec.DataType.Substring(0, pos);
@@ -663,28 +665,36 @@ namespace Alunorf_sinec_h1_plugin
                     IbaChannelReader reader = file.QueryChannelByName(rec.Name) as IbaChannelReader;
                     float lengthBase, offset;
                     object data;
-                    try
-                    {
-                        reader.QueryLengthbasedData(out lengthBase, out offset, out data);
-                    }
-                    catch (Exception)
-                    {
-                        reader.QueryTimebasedData(out lengthBase, out offset, out data);
-                    }
+                    if (reader.HasXBaseType(XBaseType.LENGTH))
+                        reader.QueryData(XBaseType.LENGTH, out lengthBase, out offset, out data);
+                    else
+                        reader.QueryData(XBaseType.TIME, out lengthBase, out offset, out data);
 
-                    float[] values = data as float[];
                     int cnt = rec.SampleCount;
                     if (cnt <= 0) cnt = 400; //perhaps old style.
-                    for (int i = 0; i < cnt; i++)
+                    if (data is float[] values)
                     {
-                        if (i >= values.Length)
-                            m_stream.WriteFloat32(float.NaN);
-                        else
-                            m_stream.WriteFloat32(values[i]);
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            if (i >= values.Length)
+                                m_stream.WriteFloat32(float.NaN);
+                            else
+                                m_stream.WriteFloat32(values[i]);
+                        }
+                        //28-7-2016: Lengths not needed.
+                        //for (int i = 0; i < 400; i++)
+                        //     m_stream.WriteFloat32(offset + i * lengthBase);
                     }
-                    //28-7-2016: Lengths not needed.
-                    //for (int i = 0; i < 400; i++)
-                   //     m_stream.WriteFloat32(offset + i * lengthBase);
+                    else if (data is double[] dValues)
+                    {
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            if (i >= dValues.Length)
+                                m_stream.WriteFloat32(float.NaN);
+                            else
+                                m_stream.WriteFloat32((float)dValues[i]);
+                        }
+                    }
                 }
                 catch
                 {
