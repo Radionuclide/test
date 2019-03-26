@@ -4,6 +4,66 @@
         "ibaFilesLiteDotNet"
     </assembly>
     <members>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.PasswordProtected">
+            <summary>
+True if the file is password protected.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.FileIsBusy">
+            <summary>
+True if the file isn't finished yet.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.UtcOffsetValid">
+            <summary>
+True if the UTC offset could be read from the file.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.UtcOffset">
+            <summary>
+UTC offset in minutes. StartTimeUTC = StartTime - UtcOffset
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.ConfigId">
+            <summary>
+Configuration id. Files in the same directory with the same config id should contain the same signals.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.EndTime">
+            <summary>
+End time of the file (in local time)
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.StartTime">
+            <summary>
+Start time of the file (in local time)
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaShortFileInfo">
+            <summary>
+Auxiliary class which contains short information about dat file that can be read fast.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Size">
+            <summary>
+Size in bytes of the embedded file.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Offset">
+            <summary>
+Offset in bytes of the embedded file within the containing file.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Filename">
+            <summary>
+Filename of the embedded file.
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo">
+            <summary>
+Auxiliary class which contains information about embedded files.
+</summary>
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Name">
             <summary>
 Gets the module name
@@ -38,24 +98,9 @@ If you connected to data through an HD-server, the collection is read-only.
 Summary for IbaModuleReader
 </summary>
         </member>
-        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Size">
+        <member name="T:iba.ibaFilesLiteDotNet.IbaFileSplitter">
             <summary>
-Size in bytes of the embedded file.
-</summary>
-        </member>
-        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Offset">
-            <summary>
-Offset in bytes of the embedded file within the containing file.
-</summary>
-        </member>
-        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Filename">
-            <summary>
-Filename of the embedded file.
-</summary>
-        </member>
-        <member name="T:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo">
-            <summary>
-Auxiliary class which contains information about embedded files.
+Main class to split .dat files.
 </summary>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryNEData(System.Double[]@,System.Object@)">
@@ -549,6 +594,9 @@ Additionally the samples in the channel should be stored as either:
 Additionally raw mode data reading should not have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should not have been set to <c>true</c></description></item><item><description>single precision floating point values; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Real</c></description></item><item><description>16 bit integer values; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int16</c>.
 Additionally raw mode data reading should not have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should not have been set to <c>true</c></description></item></list></remarks>
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.Parent">
+            <inheritdoc />
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.Comment2">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed.</exception>
@@ -609,6 +657,13 @@ If the .dat file was opened in OpenForUpdate mode, you'll be able to modify the 
 Class representing a channel in the .dat file. An instance of this class exposes the info fields of the channel and the channel data can be queried from it.
 </summary>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.ReadShortFileInfo(System.String)">
+            <summary>
+Read information from a .dat file fast without parsing the complete header.
+</summary>
+            <param name="fileName">The .dat file to read the information from.</param>
+            <returns>The short file information or null in case the file couldn't be opened or wasn't a supported .dat file.</returns>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.ListEmbeddedFileInfo">
             <summary>
 Retrieves information about all embedded files in the .dat file.
@@ -645,6 +700,13 @@ Set this property BEFORE opening a .dat file.
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode">
             <inheritdoc />
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.EndTime">
+            <summary>
+Gets the end time of the file
+</summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
+            <exception cref="T:System.FormatException">Thrown if start time isn't in a valid format.</exception>
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.StartTime">
             <summary>
 Gets the start time of the file
@@ -664,11 +726,33 @@ Close the .dat file.
 </summary>
             <exception cref="T:System.InvalidOperationException">Thrown if file wasn't opened previously.</exception>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.OpenForUpdate(System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open, infofields can be added or modified when opening with this function.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to open the .dat file</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.OpenForUpdate(System.String)">
             <summary>
 Initializes a new instance of the IbaFileReader class with a specified .dat file to open, infofields can be added or modified when opening with this function.
 </summary>
             <param name="fileName">The .dat file to open</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.Open(System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open, the .dat file will be opened in read-only mode.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to open the .dat file</param>
             <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
             <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
@@ -707,6 +791,9 @@ Default constructor
             <summary>
 Main class to open .dat files. An instance of this class exposes the info fields and channels in an opened .dat file.
 </summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.Parent">
+            <inheritdoc />
         </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.Comment2">
             <inheritdoc />
@@ -1187,6 +1274,20 @@ One can use the <see cref="P:iba.ibaFilesLiteDotNet.ChannelID.Tag" /> property o
 Disconnects from the HD-Server
 </summary>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Open(System.String,System.String,System.String)">
+            <summary>
+Connects to an hd-server and sets time parameters with parameters taken from an .hdq configuration file.
+</summary>
+            <param name="hdqFileName">Path to the .hdq file</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="username">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="hdqFileName" /> is <see langword="null" /></exception>
+            <exception cref="T:System.IO.IOException">
+                <paramref name="hdqFileName" /> includes an incorrect or invalid syntax for file name, directory name, or volume label or the file is not accessible.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the .hdq file does not appear to be correctly formatted or if <paramref name="hdqFileName" /> is empty.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the .hdq file does not contain the parameters for a time-based query.</exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Open(System.String)">
             <summary>
 Connects to an hd-server and sets time parameters with parameters taken from an .hdq configuration file.
@@ -1236,6 +1337,17 @@ Method to list the stores, all types of stores are returned.
 </summary>
             <returns>A list of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDStore" /> objects, representing the available stores.</returns>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Connect(System.String,System.Int32,System.String,System.String)">
+            <summary>
+Method to connect to an HD-server
+</summary>
+            <param name="server">Hostname of the HD-server</param>
+            <param name="portNumber">Number of the port to communicate with the HD-server</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="username">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="server" /> is <see langword="null" /></exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Connect(System.String,System.Int32)">
             <summary>
 Method to connect to an HD-server
@@ -1243,6 +1355,20 @@ Method to connect to an HD-server
             <param name="server">Hostname of the HD-server</param>
             <param name="portNumber">Number of the port to communicate with the HD-server</param>
             <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="server" /> is <see langword="null" /></exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.#ctor(System.String,System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .hdq file to open.
+</summary>
+            <param name="hdqFileName">The .hdq file to open.</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="username">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="hdqFileName" /> is <see langword="null" /></exception>
+            <exception cref="T:System.IO.IOException">
+                <paramref name="hdqFileName" /> includes an incorrect or invalid syntax for file name, directory name, or volume label or the file is not accessible.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the .hdq file does not appear to be correctly formatted or if <paramref name="hdqFileName" /> is empty.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the .hdq file does not contain the parameters for a time-based query.</exception>
             <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.#ctor(System.String)">
@@ -1306,6 +1432,13 @@ Time based HD-store.
             <summary>
 All types of HD-store.
 </summary>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.GetXBase(iba.ibaFilesLiteDotNet.XBaseType)">
+            <summary>
+Gets the xbase for the requested domain. 
+</summary>
+            <param name="baseType">The domain to get the xbase for.</param>
+            <returns>The xBase for the requested domain.</returns>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryNEData(System.Double[]@,System.Object@)">
             <summary>
@@ -1770,6 +1903,11 @@ Check if the channel has data for the specified physical domain.
 Get the unique channel id.
 </summary>
             <returns>The channel id.</returns>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaChannelReader.Parent">
+            <summary>
+Parent reader that this channel belongs to.
+</summary>
         </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaChannelReader.InfoFields">
             <summary>
