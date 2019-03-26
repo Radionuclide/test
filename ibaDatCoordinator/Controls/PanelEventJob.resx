@@ -625,33 +625,6 @@
   <data name="gbTriggers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="btnShowPwd.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="btnShowPwd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnShowPwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 46</value>
-  </data>
-  <data name="btnShowPwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>22, 22</value>
-  </data>
-  <data name="btnShowPwd.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="&gt;&gt;btnShowPwd.Name" xml:space="preserve">
-    <value>btnShowPwd</value>
-  </data>
-  <data name="&gt;&gt;btnShowPwd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnShowPwd.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;btnShowPwd.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tbPwd.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 48</value>
   </data>
@@ -671,7 +644,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbPwd.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 48</value>
@@ -692,7 +665,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbUsername.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="label20.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -722,7 +695,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -752,7 +725,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_pnlEvents.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -776,7 +749,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_pnlEvents.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -806,7 +779,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 19</value>
@@ -830,7 +803,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 19</value>
@@ -857,7 +830,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -887,7 +860,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -917,7 +890,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -947,7 +920,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 125</value>

@@ -51,7 +51,6 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbHD = new iba.Utility.CollapsibleGroupBox();
-            this.btnShowPwd = new System.Windows.Forms.Button();
             this.m_tbPwd = new System.Windows.Forms.TextBox();
             this.m_tbUsername = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -384,7 +383,6 @@
             // gbHD
             // 
             resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Controls.Add(this.btnShowPwd);
             this.gbHD.Controls.Add(this.m_tbPwd);
             this.gbHD.Controls.Add(this.m_tbUsername);
             this.gbHD.Controls.Add(this.label21);
@@ -398,15 +396,6 @@
             this.gbHD.Controls.Add(this.label19);
             this.gbHD.Name = "gbHD";
             this.gbHD.TabStop = false;
-            // 
-            // btnShowPwd
-            // 
-            resources.ApplyResources(this.btnShowPwd, "btnShowPwd");
-            this.btnShowPwd.Image = global::iba.Properties.Resources.Eye;
-            this.btnShowPwd.Name = "btnShowPwd";
-            this.btnShowPwd.UseVisualStyleBackColor = true;
-            this.btnShowPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseDown);
-            this.btnShowPwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseUp);
             // 
             // m_tbPwd
             // 
@@ -797,7 +786,6 @@
         private System.Windows.Forms.ListView m_lvStores;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Button btnShowPwd;
         private System.Windows.Forms.TextBox m_tbPwd;
         private System.Windows.Forms.TextBox m_tbUsername;
         private System.Windows.Forms.Label label21;

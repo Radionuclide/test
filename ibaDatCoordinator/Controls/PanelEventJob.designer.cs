@@ -33,7 +33,6 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
-            this.btnShowPwd = new System.Windows.Forms.Button();
             this.m_tbPwd = new System.Windows.Forms.TextBox();
             this.m_tbUsername = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -241,7 +240,6 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
-            this.gbTriggers.Controls.Add(this.btnShowPwd);
             this.gbTriggers.Controls.Add(this.m_tbPwd);
             this.gbTriggers.Controls.Add(this.m_tbUsername);
             this.gbTriggers.Controls.Add(this.label20);
@@ -255,15 +253,6 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
-            // 
-            // btnShowPwd
-            // 
-            resources.ApplyResources(this.btnShowPwd, "btnShowPwd");
-            this.btnShowPwd.Image = global::iba.Properties.Resources.Eye;
-            this.btnShowPwd.Name = "btnShowPwd";
-            this.btnShowPwd.UseVisualStyleBackColor = true;
-            this.btnShowPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseDown);
-            this.btnShowPwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseUp);
             // 
             // m_tbPwd
             // 
@@ -813,7 +802,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox m_cbTimeBase;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.Button btnShowPwd;
         private System.Windows.Forms.TextBox m_tbPwd;
         private System.Windows.Forms.TextBox m_tbUsername;
         private System.Windows.Forms.Label label6;

@@ -53,10 +53,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.m_scanTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
-            this.btnShowFilePwd = new System.Windows.Forms.Button();
             this.m_tbFilePwd = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.btnShowPwd = new System.Windows.Forms.Button();
             this.m_browseDatFilesButton = new System.Windows.Forms.Button();
             this.m_tbPass = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -266,10 +264,8 @@
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.btnShowFilePwd);
             this.groupBox1.Controls.Add(this.m_tbFilePwd);
             this.groupBox1.Controls.Add(this.label21);
-            this.groupBox1.Controls.Add(this.btnShowPwd);
             this.groupBox1.Controls.Add(this.m_browseDatFilesButton);
             this.groupBox1.Controls.Add(this.m_tbPass);
             this.groupBox1.Controls.Add(this.label12);
@@ -283,15 +279,6 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
-            // btnShowFilePwd
-            // 
-            resources.ApplyResources(this.btnShowFilePwd, "btnShowFilePwd");
-            this.btnShowFilePwd.Image = global::iba.Properties.Resources.Eye;
-            this.btnShowFilePwd.Name = "btnShowFilePwd";
-            this.btnShowFilePwd.UseVisualStyleBackColor = true;
-            this.btnShowFilePwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowFilePwd_MouseDown);
-            this.btnShowFilePwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowFilePwd_MouseUp);
-            // 
             // m_tbFilePwd
             // 
             resources.ApplyResources(this.m_tbFilePwd, "m_tbFilePwd");
@@ -302,15 +289,6 @@
             // 
             resources.ApplyResources(this.label21, "label21");
             this.label21.Name = "label21";
-            // 
-            // btnShowPwd
-            // 
-            resources.ApplyResources(this.btnShowPwd, "btnShowPwd");
-            this.btnShowPwd.Image = global::iba.Properties.Resources.Eye;
-            this.btnShowPwd.Name = "btnShowPwd";
-            this.btnShowPwd.UseVisualStyleBackColor = true;
-            this.btnShowPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseDown);
-            this.btnShowPwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseUp);
             // 
             // m_browseDatFilesButton
             // 
@@ -431,8 +409,6 @@
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
         private System.Windows.Forms.CheckBox m_cbRepErr;
         internal System.Windows.Forms.Button m_browseDatFilesButton;
-        private System.Windows.Forms.Button btnShowPwd;
-        private System.Windows.Forms.Button btnShowFilePwd;
         private System.Windows.Forms.TextBox m_tbFilePwd;
         private System.Windows.Forms.Label label21;
     }

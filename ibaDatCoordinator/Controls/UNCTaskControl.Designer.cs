@@ -90,7 +90,6 @@
             this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
             this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnShowPwd = new System.Windows.Forms.Button();
             this.m_subfolderGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -593,20 +592,10 @@
             this.m_nudInfoStart.Name = "m_nudInfoStart";
             this.m_toolTip.SetToolTip(this.m_nudInfoStart, resources.GetString("m_nudInfoStart.ToolTip"));
             // 
-            // btnShowPwd
-            // 
-            resources.ApplyResources(this.btnShowPwd, "btnShowPwd");
-            this.btnShowPwd.Image = global::iba.Properties.Resources.Eye;
-            this.btnShowPwd.Name = "btnShowPwd";
-            this.btnShowPwd.UseVisualStyleBackColor = true;
-            this.btnShowPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseDown);
-            this.btnShowPwd.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnShowPwd_MouseUp);
-            // 
             // UNCTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnShowPwd);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.m_checkPathButton);
             this.Controls.Add(this.m_tbPass);
@@ -720,6 +709,5 @@
         private System.Windows.Forms.CheckBox m_cbSplitSubdirs;
         private System.Windows.Forms.ComboBox m_cbTimeDir;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnShowPwd;
     }
 }
