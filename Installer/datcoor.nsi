@@ -409,7 +409,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
   File "..\Dependencies\PowerCollections.dll"
-  File "..\Dependencies\ibaFilesLiteV7DotNet.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
@@ -491,7 +491,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
-  File "..\Dependencies\ibaFilesLiteV7DotNet.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
@@ -624,7 +624,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\msvcp100.dll"  
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
-  File "..\Dependencies\ibaFilesLiteV7DotNet.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
@@ -844,7 +844,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
-  Delete "$INSTDIR\ibaFilesLiteV7DotNet.dll"
+  Delete "$INSTDIR\ibaFilesV7LiteDotNet.dll"
   
   Delete "$INSTDIR\hdCore.dll"
   Delete "$INSTDIR\hdClient.dll"

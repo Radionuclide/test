@@ -101,8 +101,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\hdCommon.dll</HintPath>
     </Reference>
-    <Reference Include="ibaFilesLiteV7DotNet">
-      <HintPath>..\Dependencies\ibaFilesLiteV7DotNet.dll</HintPath>
+    <Reference Include="ibaFilesV7LiteDotNet">
+      <HintPath>..\Dependencies\ibaFilesV7LiteDotNet.dll</HintPath>
     </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
