@@ -680,6 +680,7 @@
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\about_background.png" />
     <None Include="Resources\about80x80.png" />
+    <None Include="Resources\dat-file.ico" />
     <Content Include="Resources\event_configuration.ico" />
     <Content Include="Resources\event_configuration_new.ico" />
     <None Include="Resources\ibaDatCoordinator.ico" />

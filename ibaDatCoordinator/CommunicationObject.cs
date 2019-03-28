@@ -149,7 +149,7 @@ namespace iba
             m_scriptProc.Start();
         }
 
-                public void KillScript()
+		public void KillScript()
         {
             if (m_scriptProc != null)
             {
