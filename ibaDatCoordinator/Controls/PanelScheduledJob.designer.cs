@@ -51,10 +51,6 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbHD = new iba.Utility.CollapsibleGroupBox();
-            this.m_tbPwd = new System.Windows.Forms.TextBox();
-            this.m_tbUsername = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.m_lvStores = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label31 = new System.Windows.Forms.Label();
@@ -383,10 +379,6 @@
             // gbHD
             // 
             resources.ApplyResources(this.gbHD, "gbHD");
-            this.gbHD.Controls.Add(this.m_tbPwd);
-            this.gbHD.Controls.Add(this.m_tbUsername);
-            this.gbHD.Controls.Add(this.label21);
-            this.gbHD.Controls.Add(this.label20);
             this.gbHD.Controls.Add(this.m_lvStores);
             this.gbHD.Controls.Add(this.label31);
             this.gbHD.Controls.Add(this.btnHdServer);
@@ -396,29 +388,6 @@
             this.gbHD.Controls.Add(this.label19);
             this.gbHD.Name = "gbHD";
             this.gbHD.TabStop = false;
-            // 
-            // m_tbPwd
-            // 
-            resources.ApplyResources(this.m_tbPwd, "m_tbPwd");
-            this.m_tbPwd.Name = "m_tbPwd";
-            this.m_tbPwd.UseSystemPasswordChar = true;
-            this.m_tbPwd.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
-            // 
-            // m_tbUsername
-            // 
-            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
-            this.m_tbUsername.Name = "m_tbUsername";
-            this.m_tbUsername.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
-            // 
-            // label21
-            // 
-            resources.ApplyResources(this.label21, "label21");
-            this.label21.Name = "label21";
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
             // 
             // m_lvStores
             // 
@@ -786,9 +755,5 @@
         private System.Windows.Forms.ListView m_lvStores;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.TextBox m_tbPwd;
-        private System.Windows.Forms.TextBox m_tbUsername;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label20;
     }
 }

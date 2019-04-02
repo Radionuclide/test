@@ -33,10 +33,6 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
-            this.m_tbPwd = new System.Windows.Forms.TextBox();
-            this.m_tbUsername = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.btnHdServer = new System.Windows.Forms.Button();
             this.m_tbEventServer = new System.Windows.Forms.TextBox();
@@ -240,10 +236,6 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
-            this.gbTriggers.Controls.Add(this.m_tbPwd);
-            this.gbTriggers.Controls.Add(this.m_tbUsername);
-            this.gbTriggers.Controls.Add(this.label20);
-            this.gbTriggers.Controls.Add(this.label6);
             this.gbTriggers.Controls.Add(this.m_pnlEvents);
             this.gbTriggers.Controls.Add(this.btnHdServer);
             this.gbTriggers.Controls.Add(this.m_tbEventServer);
@@ -253,29 +245,6 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
-            // 
-            // m_tbPwd
-            // 
-            resources.ApplyResources(this.m_tbPwd, "m_tbPwd");
-            this.m_tbPwd.Name = "m_tbPwd";
-            this.m_tbPwd.UseSystemPasswordChar = true;
-            this.m_tbPwd.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
-            // 
-            // m_tbUsername
-            // 
-            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
-            this.m_tbUsername.Name = "m_tbUsername";
-            this.m_tbUsername.TextChanged += new System.EventHandler(this.m_tb_TextChanged);
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
             // 
             // m_pnlEvents
             // 
@@ -802,9 +771,5 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox m_cbTimeBase;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private System.Windows.Forms.TextBox m_tbPwd;
-        private System.Windows.Forms.TextBox m_tbUsername;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label20;
     }
 }

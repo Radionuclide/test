@@ -20,8 +20,9 @@ namespace iba.Controls
     {
         #region Members
         IHdReader m_hdReader;
-        System.Threading.Timer m_tmrCredentials;
-        bool m_bIgnoreCredentialChanges = false;
+
+        string m_username;
+        string m_password;
 
         List<string> m_currStores;
 
@@ -48,19 +49,21 @@ namespace iba.Controls
 
             m_currStores = new List<string>();
 
+            m_username = "";
+            m_password = "";
+
             m_hdReader = HdClient.CreateReader(HdUserType.PdaClient);
             object obj = m_hdReader.Authenticate(null);
             obj = HdReaderAuthenticator.GetInfo(obj);
             obj = m_hdReader.Authenticate(obj);
             m_hdReader.ShowConnectionError = false;
 
-            m_hdReader.UserLoginInfo.UserName = "";
-            m_hdReader.UserLoginInfo.Password = "";
+            m_hdReader.UserLoginInfo.UserName = m_username;
+            m_hdReader.UserLoginInfo.Password = m_password;
             m_hdReader.UserLoginInfo.SavePassword = true;
+            m_hdReader.UserLoginInfo.AllowSavePassword = false;
 
             m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
-
-            m_tmrCredentials = new System.Threading.Timer(UpdateCredentials);
 
             m_weekSettingsCtrl = new WeeklyTriggerSettingsControl();
             m_daySettingsCtrl = new DailyTriggerSettingsControl();
@@ -109,10 +112,6 @@ namespace iba.Controls
         {
             if (disposing)
             {
-                System.Threading.Timer lTimer = m_tmrCredentials;
-                m_tmrCredentials = null;
-                lTimer?.Dispose();
-
                 if (m_hdReader != null)
                 {
                     m_hdReader.ConnectionChanged -= OnHdConnectionChanged;
@@ -218,8 +217,8 @@ namespace iba.Controls
             m_scheduleData.HDServer = m_tbEventServer.Text ?? string.Empty;
             int port = 0;
             m_scheduleData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
-            m_scheduleData.HDUsername = m_tbUsername.Text?.Trim() ?? string.Empty;
-            m_scheduleData.HDPassword = m_tbPwd.Text?.Trim() ?? string.Empty;
+            m_scheduleData.HDUsername = m_username ?? string.Empty;
+            m_scheduleData.HDPassword = m_password ?? string.Empty;
             m_scheduleData.HDStores = m_currStores.ToArray();
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
@@ -711,18 +710,15 @@ namespace iba.Controls
                 newPort = serverPicker.SelectedPort;
             }
 
-            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
-                return;
-
             m_currStores.Clear();
-            ChangeHDServer(newServer, newPort, m_tbUsername.Text, m_tbPwd.Text);
+            ChangeHDServer(newServer, newPort, m_username, m_password, true);
         }
 
-        void ChangeHDServer(string server, int port, string username, string password)
+        void ChangeHDServer(string server, int port, string username, string password, bool forceLoginForm = false)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string, int, string, string>(ChangeHDServer), server, port, username, password);
+                BeginInvoke(new Action<string, int, string, string, bool>(ChangeHDServer), server, port, username, password, forceLoginForm);
                 return;
             }
 
@@ -731,10 +727,6 @@ namespace iba.Controls
 
             m_tbEventServer.Text = server;
             m_tbEventServerPort.Text = port.ToString();
-            m_bIgnoreCredentialChanges = true;
-            m_tbUsername.Text = username;
-            m_tbPwd.Text = password;
-            m_bIgnoreCredentialChanges = false;
 
             m_lvStores.Items.Clear();
 
@@ -748,10 +740,18 @@ namespace iba.Controls
                 if (m_hdReader != null && m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
+                m_hdReader.UserLoginInfo.Parent = this;
                 m_hdReader.UserLoginInfo.UserName = username;
                 m_hdReader.UserLoginInfo.Password = password;
+                m_hdReader.UserLoginOptions = forceLoginForm ? HdUserLoginOptions.Always : HdUserLoginOptions.Failure;
 
                 m_hdReader?.Connect(tpl.Item1, tpl.Item2);
+
+                m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
+
+                m_username = m_hdReader.UserLoginInfo.UserName;
+                m_password = m_hdReader.UserLoginInfo.Password;
+
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
@@ -822,34 +822,6 @@ namespace iba.Controls
             m_currStores = new List<string>();
             foreach (ListViewItem item in m_lvStores.CheckedItems)
                 m_currStores.Add(item.Text);
-        }
-        private void btnShowPwd_MouseDown(object sender, MouseEventArgs e)
-        {
-            m_tbPwd.UseSystemPasswordChar = false;
-        }
-
-        private void btnShowPwd_MouseUp(object sender, MouseEventArgs e)
-        {
-            m_tbPwd.UseSystemPasswordChar = true;
-        }
-
-        private void m_tb_TextChanged(object sender, EventArgs e)
-        {
-            if (m_bIgnoreCredentialChanges)
-                return;
-
-            m_tmrCredentials?.Change(1000, System.Threading.Timeout.Infinite);
-        }
-
-        void UpdateCredentials(object state)
-        {
-            string newUsername = m_tbUsername.Text.Trim();
-            string newPassword = m_tbPwd.Text.Trim();
-
-            if (newUsername == m_hdReader.UserLoginInfo.UserName && newPassword == m_hdReader.UserLoginInfo.Password)
-                return;
-
-            ChangeHDServer(m_hdReader.ServerHost, m_hdReader.ServerPort, newUsername, newPassword);
         }
         #endregion        
     }

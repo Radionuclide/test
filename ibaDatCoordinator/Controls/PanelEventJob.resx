@@ -614,7 +614,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Parent" xml:space="preserve">
     <value>$this</value>
@@ -625,113 +625,11 @@
   <data name="gbTriggers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_tbPwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 48</value>
-  </data>
-  <data name="m_tbPwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
-  </data>
-  <data name="m_tbPwd.TabIndex" type="System.Int32, mscorlib">
-    <value>51</value>
-  </data>
-  <data name="&gt;&gt;m_tbPwd.Name" xml:space="preserve">
-    <value>m_tbPwd</value>
-  </data>
-  <data name="&gt;&gt;m_tbPwd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbPwd.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;m_tbPwd.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 48</value>
-  </data>
-  <data name="m_tbUsername.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
-  </data>
-  <data name="m_tbUsername.TabIndex" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="&gt;&gt;m_tbUsername.Name" xml:space="preserve">
-    <value>m_tbUsername</value>
-  </data>
-  <data name="&gt;&gt;m_tbUsername.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbUsername.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;m_tbUsername.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label20.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 51</value>
-  </data>
-  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="label20.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
-  </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>Username:</value>
-  </data>
-  <data name="&gt;&gt;label20.Name" xml:space="preserve">
-    <value>label20</value>
-  </data>
-  <data name="&gt;&gt;label20.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label20.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 51</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>gbTriggers</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_pnlEvents.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_pnlEvents.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 87</value>
+    <value>16, 59</value>
   </data>
   <data name="m_pnlEvents.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 175</value>
@@ -749,7 +647,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_pnlEvents.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -779,7 +677,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 19</value>
@@ -803,7 +701,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>2</value>
   </data>
   <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 19</value>
@@ -830,7 +728,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>3</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -860,7 +758,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>4</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -890,7 +788,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -899,7 +797,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 71</value>
+    <value>13, 43</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -920,13 +818,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>6</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 265</value>
+    <value>734, 240</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -938,7 +836,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2213,7 +2111,7 @@
     <value>35</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 396</value>
+    <value>0, 371</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>734, 437</value>
@@ -2228,7 +2126,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;gbOutput.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbOutput.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2243,10 +2141,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 836</value>
+    <value>0, 811</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 836</value>
+    <value>734, 811</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>
