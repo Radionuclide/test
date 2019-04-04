@@ -568,7 +568,7 @@ namespace iba.Data
                         sw.WriteLine("comment=" + comment);
 
                     if (!bPreferredTimeBaseIsAuto)
-                        sw.WriteLine("timebase=" + lPreferredTimeBase.TotalSeconds.ToString());
+                        sw.WriteLine("timebase=" + lPreferredTimeBase.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     else
                     {
                         long ms = 10000; //10000 * 100 nanosec = 1 ms
@@ -585,7 +585,7 @@ namespace iba.Data
                                 break;
                             }
                         }
-                        sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
+                        sw.WriteLine("timebase=" + tb.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
             }
