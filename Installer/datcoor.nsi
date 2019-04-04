@@ -57,6 +57,7 @@
 !include "LogicLib.nsh"
 !include "sections.nsh"
 !include "StrFunc.nsh"
+!include "x64.nsh"
 !include "Include\InstallHistory.nsh"
 
 !include WordFunc.nsh
@@ -709,6 +710,25 @@ Section -Post
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
+  
+  ;Refresh icons
+  DetailPrint "Clearing icon cache"
+  ${If} $Is64Bit == 1
+    ${DisableX64FSRedirection}
+    ${If} $WinVer == "10"
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${EndIf}
+    ${EnableX64FSRedirection}
+  ${Else}
+    ${If} $WinVer == "10"
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${EndIf}
+  ${EndIf}
+  
   nsSCMEx::Unload
 SectionEnd
 
