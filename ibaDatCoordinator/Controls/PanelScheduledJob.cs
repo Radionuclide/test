@@ -21,6 +21,8 @@ namespace iba.Controls
         #region Members
         IHdReader m_hdReader;
 
+        string m_server;
+        int m_port;
         string m_username;
         string m_password;
 
@@ -182,7 +184,11 @@ namespace iba.Controls
             else
                 m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
 
-            ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword);
+            m_server = m_scheduleData.HDServer;
+            m_port = m_scheduleData.HDPort;
+            m_username = m_scheduleData.HDUsername;
+            m_password = m_scheduleData.HDPassword;
+            ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword, SelectServer);
         }
 
 
@@ -214,9 +220,8 @@ namespace iba.Controls
             m_scheduleData.RepeatTimes = (int)m_nudRepeatTimes.Value;
             m_scheduleData.RepeatEvery = RepeatInterval;
             //hdStore
-            m_scheduleData.HDServer = m_tbEventServer.Text ?? string.Empty;
-            int port = 0;
-            m_scheduleData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_scheduleData.HDServer = m_server ?? string.Empty;
+            m_scheduleData.HDPort = m_port;
             m_scheduleData.HDUsername = m_username ?? string.Empty;
             m_scheduleData.HDPassword = m_password ?? string.Empty;
             m_scheduleData.HDStores = m_currStores.ToArray();
@@ -691,42 +696,59 @@ namespace iba.Controls
         #region HD server
         private void btnHdServer_Click(object sender, EventArgs e)
         {
-            int port = 0;
-            if (!int.TryParse(m_tbEventServerPort.Text, out port))
-                port = 9180;
+            SelectServer();
+        }
+
+        private void btnChangeUser_Click(object sender, EventArgs e)
+        {
+            ChangeHDServer(m_server, m_port, m_username, m_password,
+                () => { ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never); },
+                HdUserLoginOptions.Always);
+        }
+
+        void SelectServer()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(SelectServer));
+                return;
+            }
 
             string newServer = string.Empty;
             int newPort = 0;
 
-            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
+            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_server, m_port))
             {
-                List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
-                features.AddRange(ReaderFeature.Analyzer);
-                serverPicker.SetCheckedFeatures(features, new List<WriterFeature>());
+                serverPicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
                 if (serverPicker.ShowDialog() != DialogResult.OK)
+                {
+                    ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never);
                     return;
+                }
 
                 newServer = serverPicker.SelectedServer;
                 newPort = serverPicker.SelectedPort;
             }
 
-            m_currStores.Clear();
-            ChangeHDServer(newServer, newPort, m_username, m_password, true);
+            ChangeHDServer(newServer, newPort, m_username, m_password, SelectServer, HdUserLoginOptions.Always);
         }
 
-        void ChangeHDServer(string server, int port, string username, string password, bool forceLoginForm = false)
+        void ChangeHDServer(string server, int port, string username, string password, Action abortAction = null, HdUserLoginOptions showLoginForm = HdUserLoginOptions.Failure)
         {
+            if (Disposing || IsDisposed)
+                return;
+
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string, int, string, string, bool>(ChangeHDServer), server, port, username, password, forceLoginForm);
+                BeginInvoke(new Action<string, int, string, string, Action, HdUserLoginOptions>(ChangeHDServer), server, port, username, password, abortAction, showLoginForm);
                 return;
             }
 
             username = username ?? "";
             password = password ?? "";
-
-            m_tbEventServer.Text = server;
-            m_tbEventServerPort.Text = port.ToString();
 
             m_lvStores.Items.Clear();
 
@@ -743,20 +765,52 @@ namespace iba.Controls
                 m_hdReader.UserLoginInfo.Parent = this;
                 m_hdReader.UserLoginInfo.UserName = username;
                 m_hdReader.UserLoginInfo.Password = password;
-                m_hdReader.UserLoginOptions = forceLoginForm ? HdUserLoginOptions.Always : HdUserLoginOptions.Failure;
+                m_hdReader.UserLoginOptions = showLoginForm;
 
-                m_hdReader?.Connect(tpl.Item1, tpl.Item2);
-
+                HdConnectResult res = m_hdReader?.ConnectEx(tpl.Item1, tpl.Item2) ?? HdConnectResult.ConnectionFailure;
                 m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
 
+                if (res == HdConnectResult.AbortedByUser && abortAction != null)
+                {
+                    abortAction();
+                    return;
+                }
+
+                if (server != m_server || port != m_port || username != m_username || password != m_password)
+                {
+                    //also clear on new user credentials because the new user might not have read access for certain stores
+                    m_currStores.Clear();
+                }
+
+                m_server = server;
+                m_port = port;
                 m_username = m_hdReader.UserLoginInfo.UserName;
                 m_password = m_hdReader.UserLoginInfo.Password;
+
+                UpdateHDServerSettings();
 
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             }, Tuple.Create(server, port));
+        }
+
+        void UpdateHDServerSettings()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(UpdateHDServerSettings));
+                return;
+            }
+
+            m_tbEventServer.Text = m_server;
+            m_tbEventServerPort.Text = m_port.ToString();
+            m_tbUsername.Text = m_username;
+            btnChangeUser.Enabled = !string.IsNullOrWhiteSpace(m_server);
         }
 
         void OnHdConnectionChanged()
@@ -823,7 +877,7 @@ namespace iba.Controls
             foreach (ListViewItem item in m_lvStores.CheckedItems)
                 m_currStores.Add(item.Text);
         }
-        #endregion        
+        #endregion
     }
 
     public class CustomNumericUpDown : NumericUpDown
