@@ -716,6 +716,8 @@ Section -Post
   ${If} $Is64Bit == 1
     ${DisableX64FSRedirection}
     ${If} $WinVer == "10"
+    ${OrIf} $WinVer == "2016"
+    ${OrIf} $WinVer == "2019"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${Else}
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
@@ -723,6 +725,8 @@ Section -Post
     ${EnableX64FSRedirection}
   ${Else}
     ${If} $WinVer == "10"
+    ${OrIf} $WinVer == "2016"
+    ${OrIf} $WinVer == "2019"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${Else}
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
