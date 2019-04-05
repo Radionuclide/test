@@ -776,7 +776,7 @@ namespace iba.Controls
                     return;
                 }
 
-                if (server != m_server || port != m_port || username != m_username || password != m_password)
+                if (server != m_server || port != m_port || username != m_hdReader.UserLoginInfo.UserName || password != m_hdReader.UserLoginInfo.Password)
                 {
                     //also clear on new user credentials because the new user might not have read access for certain stores
                     m_currStores.Clear();
