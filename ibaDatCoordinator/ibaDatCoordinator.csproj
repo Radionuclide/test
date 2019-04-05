@@ -119,6 +119,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Opc.Ua.Configuration">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Server">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Server.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
@@ -163,6 +172,12 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\OpcUaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaControl.Designer.cs">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PanelEventJob.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -195,6 +210,7 @@
     </Compile>
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
+    <Compile Include="Data\OpcUaData.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\About.cs">
       <SubType>Form</SubType>
@@ -213,8 +229,18 @@
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="IbaOpcUa\DataTypeDitionaryUaAndVe.cs" />
+    <Compile Include="IbaOpcUa\IbaOpcUaServer.cs" />
+    <Compile Include="IbaOpcUa\ibaOpcUaUserAccount.cs" />
+    <Compile Include="IbaOpcUa\IbaUaNodeManager.cs" />
+    <Compile Include="IbaOpcUa\IbaUaNodeManagerStatus.cs" />
+    <Compile Include="IbaOpcUa\IbaVariable.cs" />
+    <Compile Include="IbaOpcUa\PmacStatusForUaServer.cs" />
+    <Compile Include="IbaOpcUa\UaNodeStateExtenstion.cs" />
+    <Compile Include="IbaOpcUa\VarCounter.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
     <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
+    <Compile Include="Processing\OpcUaWorker.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
       <SubType>Form</SubType>
@@ -480,6 +506,9 @@
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\OpcUaControl.resx">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -749,6 +778,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"

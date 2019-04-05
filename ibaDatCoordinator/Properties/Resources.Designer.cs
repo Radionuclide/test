@@ -2692,6 +2692,78 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is disabled.
+        /// </summary>
+        internal static string opcUaStatusDisabled {
+            get {
+                return ResourceManager.GetString("opcUaStatusDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the OPC UA server failed with error: {0}.
+        /// </summary>
+        internal static string opcUaStatusError {
+            get {
+                return ResourceManager.GetString("opcUaStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is not initialized..
+        /// </summary>
+        internal static string opcUaStatusNotInit {
+            get {
+                return ResourceManager.GetString("opcUaStatusNotInit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server running on port {0}.
+        /// </summary>
+        internal static string opcUaStatusRunningOnPort {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunningOnPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully restarted. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusRunningRestarted {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunningRestarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully started. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusRunningStarted {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunningStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully stopped. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusStopped {
+            get {
+                return ResourceManager.GetString("opcUaStatusStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server.
+        /// </summary>
+        internal static string opcUaTitle {
+            get {
+                return ResourceManager.GetString("opcUaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap open {

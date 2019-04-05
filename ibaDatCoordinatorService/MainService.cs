@@ -91,9 +91,10 @@ namespace iba.Services
 
                 m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
                 m_servicePublisher.PublishServiceEndpoint(serviceProps);
-               
+
                 // added by kolesnik - begin
                 m_communicationObject.Manager.SnmpWorkerInit();
+                m_communicationObject.Manager.OpcUaWorkerInit();
                 // added by kolesnik - end
             }
             catch (Exception ex)

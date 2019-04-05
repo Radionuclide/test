@@ -2,29 +2,31 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Windows.Forms;
 using iba.Data;
+using iba.ibaOPCServer;
 using iba.Logging;
-using IbaSnmpLib;
-
-// all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
-// usual strings (e.g. "General") should be localized later.
+using Opc.Ua;
+using Opc.Ua.Configuration;
+using Timer = System.Threading.Timer;
 
 namespace iba.Processing
 {
 
+
     #region Helper classes
 
-    public enum SnmpWorkerStatus
-    {
-        Started,
-        Stopped,
-        Errored
-    }
+    //public enum OpcUaWorkerStatus // todo share with snmp 
+    //{
+    //    Started,
+    //    Stopped,
+    //    Errored
+    //}
 
     [Serializable]
-    public class SnmpTreeNodeTag
+    public class OpcUaTreeNodeTag
     {
-        public IbaSnmpOid Oid { get; set; }
+        public string Id { get; set; }
 
         public bool IsFolder { get; set; }
 
@@ -41,46 +43,110 @@ namespace iba.Processing
         public bool IsExpandedByDefault { get; set; }
     }
 
-    /// <summary> Is used to send MIB file contents from Server to Client via remoting </summary>
-    [Serializable]
-    public struct SnmpMibFileContainer
-    {
-        /// <summary> Recommended filename NOT including path </summary>
-        public string FileName { get; set; }
-
-        /// <summary> String that represent file's contents. See <see cref="IbaSnmpMibGenerator"/> for details. </summary>
-        public string Contents { get; set; }
-    }
 
     #endregion
 
-
-    public class SnmpWorker
+    class OpcUaWorker
     {
-        
+        private BaseDataVariableState _lifeBeatVar;
+
+
+        public static int TmpLifebeatValue { get; private set; } = 0; // // todo. kls. only if enabled
+
         #region Construction, Destruction, Init
 
-        public SnmpWorker()
+        private string _ibaDatCoordinatorUaServerStr = "ibaDatCoordinatorUaServer";
+
+        public OpcUaWorker()
         {
             Status = SnmpWorkerStatus.Errored;
-            StatusString = iba.Properties.Resources.snmpStatusNotInit;
+            StatusString = iba.Properties.Resources.opcUaStatusNotInit;
+
+            System.Windows.Forms.Timer lifebeatTimer = new System.Windows.Forms.Timer {Enabled = true, Interval = 300};
+            lifebeatTimer.Tick += (sender, args) =>
+            {
+                try
+                {
+                    TmpLifebeatValue++;
+                    if (_lifeBeatVar != null)
+                        NodeManager?.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
+                }
+                catch { /**/ }
+            };
         }
 
         public void Init()
         {
             lock (LockObject)
             {
-                if (IbaSnmp != null)
+                if (_uaApplication != null) //todo
                 {
-                    // disable double initialisation
+                    // disable double initialization
                     return;
                 }
 
-                IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+                _uaApplication = new ApplicationInstance();
+//                IbaOpcUaServer = new IbaOpcUaServer(); 
             }
 
-            IbaSnmp.DosProtectionInternal.Enabled = false;
-            IbaSnmp.DosProtectionExternal.Config(5000, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
+            //_uaApplication?.Stop();
+            _uaApplication.ApplicationType = ApplicationType.Server;
+            _uaApplication.ConfigSectionName = $"iba_ag.{_ibaDatCoordinatorUaServerStr}";
+            //try
+            {
+                // create ua server
+                IbaOpcUaServer = new IbaOpcUaServer();
+
+                // load the application configuration.
+                _uaApplication.LoadApplicationConfiguration(false);
+                if (!string.IsNullOrEmpty(_uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
+                {
+                    _uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath =
+                        "c:\\Temp\\datCo_OpcUaServer_log.txt"; //todo
+                    _uaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
+                }
+
+                String sysName = IbaOpcUaServer.GetFQDN(); //todo
+                if ((_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Count == 0) ||
+                    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
+                        "opc.tcp://" + sysName + ":21060") ||
+                    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
+                        "http://" + sysName + ":21061"))
+                {
+                    string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
+                    //string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
+                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(base1);
+                    //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(Base2);
+                }
+
+                // check the application certificate.
+                _uaApplication.CheckApplicationInstanceCertificate(false, 0);
+
+
+                // start the server.
+                if (Environment.UserInteractive)
+                    _uaApplication.Start(IbaOpcUaServer);
+                else
+                    // todo - launch as service not tested!
+                    _uaApplication.StartAsService(IbaOpcUaServer);
+
+                //_uaServer.OnTrustModeChanged += trustModeChangedHandler;
+
+
+
+                IbaOpcUaServer.KlsInitialize(10000, null, null, false);
+
+                _opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
+
+                FolderState globalsFolder = NodeManager.KlsGetSubtreeRootFolder(SubTreeId.Globals);
+                var folderTest = NodeManager.KlsCreateFolderAndItsNode(globalsFolder, "Test");
+                _lifeBeatVar =
+                    NodeManager.KlsCreateStatusVariableAndItsNode(folderTest, "Lifebeat", BuiltInType.Int32);
+
+                NodeManager.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
+            }
+
             RestartAgent();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
@@ -123,14 +189,16 @@ namespace iba.Processing
 
         #region Configuration of SNMP agent (IbaSnmp libraray)
 
-        //private IbaSnmp IbaSnmp { get; set; }
-        public IbaSnmp IbaSnmp { get; private set; }
+        ApplicationInstance _uaApplication;
+        private IbaUaNodeManager NodeManager => IbaOpcUaServer._ibaUaNodeManager;
 
-        private SnmpData _snmpData = new SnmpData();
+        public IbaOpcUaServer IbaOpcUaServer { get; private set; }
 
-        public SnmpData SnmpData
+        private OpcUaData _opcUaData = new OpcUaData();
+
+        public OpcUaData OpcUaData
         {
-            get { return _snmpData; }
+            get { return _opcUaData; }
             set
             {
                 if (value == null)
@@ -138,23 +206,24 @@ namespace iba.Processing
                     // do not allow to set null data here
                     return;
                 }
-                if (_snmpData != null && _snmpData.Equals(value))
+                if (_opcUaData != null && _opcUaData.Equals(value))
                 {
                     // Configuration has not changed
                     // do not restart agent
                     return;
                 }
-                _snmpData = value;
+                _opcUaData = value;
 
-                if (IbaSnmp != null)
+                if (IbaOpcUaServer != null)
                 {
                     RestartAgent();
                 }
             }
         }
 
+        //public OpcUaWorkerStatus Status { get; private set; }
         public SnmpWorkerStatus Status { get; private set; }
-
+        
         public string StatusString { get; private set; }
 
         public static string GetCurrentThreadString()
@@ -172,28 +241,28 @@ namespace iba.Processing
 
             try
             {
-                IbaSnmp.Stop();
-                ApplyConfigurationToIbaSnmp();
+                //IbaOpcUaServer.Stop(); // todo. kls. 
+                ApplyConfigurationToXxxxxxxxxxx(); // todo
                 string logMessage;
 
-                if (_snmpData.Enabled)
+                if (_opcUaData.Enabled)
                 {
-                    IbaSnmp.Start();
+                    //IbaOpcUaServer.Start();
                     Status = SnmpWorkerStatus.Started;
-                    StatusString = String.Format(iba.Properties.Resources.snmpStatusRunningOnPort, _snmpData.Port);
+                    StatusString = String.Format(iba.Properties.Resources.opcUaStatusRunningOnPort, _opcUaData.Port); // todo simplify strings???
 
                     logMessage = Status == oldStatus
                         ?
                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
-                       String.Format(iba.Properties.Resources.snmpStatusRunningRestarted, StatusString)
+                       String.Format(iba.Properties.Resources.opcUaStatusRunningRestarted, StatusString)
                         :
                         // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
-                        String.Format(iba.Properties.Resources.snmpStatusRunningStarted, StatusString);
+                        String.Format(iba.Properties.Resources.opcUaStatusRunningStarted, StatusString);
                 }
                 else
                 {
                     Status = SnmpWorkerStatus.Stopped;
-                    StatusString = iba.Properties.Resources.snmpStatusDisabled;
+                    StatusString = iba.Properties.Resources.opcUaStatusDisabled;
 
                     logMessage = Status == oldStatus
                         ?
@@ -201,7 +270,7 @@ namespace iba.Processing
                         null
                         :
                         // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
-                        String.Format(iba.Properties.Resources.snmpStatusStopped, StatusString);
+                        String.Format(iba.Properties.Resources.opcUaStatusStopped, StatusString);
                 }
 
                 // log the message if it necessary
@@ -213,32 +282,29 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Status = SnmpWorkerStatus.Errored;
-                StatusString = String.Format(iba.Properties.Resources.snmpStatusError, ex.Message);
+                StatusString = String.Format(iba.Properties.Resources.opcUaStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
 
-        private void ApplyConfigurationToIbaSnmp()
+        private void ApplyConfigurationToXxxxxxxxxxx()
         {
-            if (IbaSnmp == null || SnmpData == null)
+            if (IbaOpcUaServer == null || OpcUaData == null)
             {
                 return;
             }
 
             // apply port, do not change ip addresses
-            List<IPEndPoint> eps = IbaSnmp.EndPointsToListen;
-            foreach (IPEndPoint ipe in eps)
-            {
-                ipe.Port = SnmpData.Port;
-            }
-            IbaSnmp.EndPointsToListen = eps;
+            //List<IPEndPoint> eps = IbaOpcUaServer.EndPointsToListen;
+            //foreach (IPEndPoint ipe in eps)
+            //{
+            //    ipe.Port = SnmpData.Port;
+            //}
+            //IbaOpcUaServer.EndPointsToListen = eps;
 
             // security
-            IbaSnmp.SetSecurityForV1AndV2(new List<string> {SnmpData.V1V2Security});
-            IbaSnmp.SetSecurityForV3(new List<IbaSnmpUserAccount> {SnmpData.V3Security});
+            //IbaOpcUaServer.SetSecurityForV1AndV2(new List<string> { SnmpData.V1V2Security });
         }
-
-        public bool UseSnmpV2TcForStrings => SnmpData?.UseSnmpV2TcForStrings ?? true;
 
         #endregion
 
@@ -264,31 +330,31 @@ namespace iba.Processing
 
         #region register enums
 
-        private IbaSnmpValueType _enumJobStatus;
-        private IbaSnmpValueType _enumCleanupType;
+        private string _enumJobStatus;
+        private string _enumCleanupType;
 
         private void RegisterEnums()
         {
-            _enumJobStatus = IbaSnmp.RegisterEnumDataType(
-                "JobStatus", "Current status of the job (started, stopped or disabled)",
-                new Dictionary<int, string>
-                {
-                    {(int) SnmpObjectsData.JobStatus.Disabled, "disabled"},
-                    {(int) SnmpObjectsData.JobStatus.Started, "started"},
-                    {(int) SnmpObjectsData.JobStatus.Stopped, "stopped"}
-                }
-            );
+            //_enumJobStatus = IbaOpcUaServer.RegisterEnumDataType(
+            //    "JobStatus", "Current status of the job (started, stopped or disabled)",
+            //    new Dictionary<int, string>
+            //    {
+            //        {(int) SnmpObjectsData.JobStatus.Disabled, "disabled"},
+            //        {(int) SnmpObjectsData.JobStatus.Started, "started"},
+            //        {(int) SnmpObjectsData.JobStatus.Stopped, "stopped"}
+            //    }
+            //);
 
-            _enumCleanupType = IbaSnmp.RegisterEnumDataType(
-                "LocalCleanupType", "Type of limitation of disk space usage",
-                new Dictionary<int, string>
-                {
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.None, "none"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
-                }
-            );
+            //_enumCleanupType = IbaOpcUaServer.RegisterEnumDataType(
+            //    "LocalCleanupType", "Type of limitation of disk space usage",
+            //    new Dictionary<int, string>
+            //    {
+            //        {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.None, "none"},
+            //        {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
+            //        {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
+            //        {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
+            //    }
+            //);
         }
 
         #endregion
@@ -302,41 +368,41 @@ namespace iba.Processing
         private void SetGeneralProductInformation()
         {
             // change default gui caption from "ibaDatCo" to "ibaDatCoordinator"
-            IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProduct, @"ibaDatCoordinator");
+            //IbaOpcUaServer.SetOidMetadata(IbaOpcUaServer.OidIbaProduct, @"ibaDatCoordinator");
 
-            // all the other captions can be left as is
-            // all the general objects already have gui Captions, predefined
-            // e.g.:
-            // var captionSample = IbaSnmp.GetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer).GuiCaption;
+            //// all the other captions can be left as is
+            //// all the general objects already have gui Captions, predefined
+            //// e.g.:
+            //// var captionSample = IbaSnmp.GetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer).GuiCaption;
 
-            // ibaRoot.DatCoord.General.1 - Title
-            //IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
-            IbaSnmp.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
+            //// ibaRoot.DatCoord.General.1 - Title
+            ////IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
+            //IbaOpcUaServer.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
 
-            // ibaRoot.DatCoord.General.2 - Version
-            var ver = GetType().Assembly.GetName().Version;
-            IbaSnmp.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
+            //// ibaRoot.DatCoord.General.2 - Version
+            //var ver = GetType().Assembly.GetName().Version;
+            //IbaOpcUaServer.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
 
-            // ibaRoot.DatCoord.General.Licensing.1 - IsValid
-            IbaSnmp.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.1 - IsValid
+            //IbaOpcUaServer.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.2 - Serial number
-            IbaSnmp.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.2 - Serial number
+            //IbaOpcUaServer.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
-            IbaSnmp.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
+            //IbaOpcUaServer.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.4 - Dongle type
-            IbaSnmp.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.4 - Dongle type
+            //IbaOpcUaServer.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.5 - Customer
-            IbaSnmp.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.5 - Customer
+            //IbaOpcUaServer.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.6 - Time limit
-            IbaSnmp.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.6 - Time limit
+            //IbaOpcUaServer.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
 
-            // ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
-            IbaSnmp.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
+            //// ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
+            //IbaOpcUaServer.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
         }
 
         #endregion
@@ -379,7 +445,7 @@ namespace iba.Processing
         public bool RebuildTreeIfItIsInvalid()
         {
             // here I use double thamn normal timeout to give priority over other locks
-            if (Monitor.TryEnter(LockObject, LockTimeout*2))
+            if (Monitor.TryEnter(LockObject, LockTimeout * 2))
             {
                 try
                 {
@@ -415,7 +481,7 @@ namespace iba.Processing
         public bool RebuildTree()
         {
             var man = TaskManager.Manager;
-            if (man == null || IbaSnmp == null)
+            if (man == null || IbaOpcUaServer == null)
             {
                 return false; // rebuild failed
             }
@@ -432,8 +498,7 @@ namespace iba.Processing
                     // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
                     IsStructureValid = true;
 
-                    IbaSnmp.DeleteAllUserValues();
-                    IbaSnmp.DeleteAllUserOidMetadata();
+                    //IbaOpcUaServer.DeleteAllUserValues();
 
                     if (!man.SnmpRebuildObjectsData(ObjectsData))
                     {
@@ -441,7 +506,7 @@ namespace iba.Processing
                     }
 
                     // ibaRoot.DatCoord.1 - Product-Specific
-                    IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
+                    //IbaOpcUaServer.SetOidMetadata(IbaOpcUaServer.OidIbaProductSpecific, "Product-specific");
 
                     // ibaRoot.DatCoord.Product.1 - Global cleanup
                     BuildSectionGlobalCleanup();
@@ -487,7 +552,7 @@ namespace iba.Processing
 
         private void BuildSectionGlobalCleanup()
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.GlobalCleanupOid);
+            var oidSection = "";// = new string(SnmpObjectsData.GlobalCleanupOid);
 
             AddMetadataForOidSuffix(oidSection, @"Global cleanup", @"globalCleanup",
                 "Global cleanup settings for all local drives.");
@@ -499,10 +564,10 @@ namespace iba.Processing
                     var driveInfo = ObjectsData.GlobalCleanup[i];
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive [Folder]
-                    IbaSnmpOid oidDrive = oidSection + (uint) (i + 1);
+                    string oidDrive = oidSection + (uint)(i + 1);
                     driveInfo.Oid = oidDrive;
 
-                    string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastSignificantSubId()}";
+                    string mibNameDrive = $@"globalCleanupDrive{oidDrive}";
                     AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive,
                         $@"Global cleanup settings for the drive '{driveInfo.DriveName}'.");
 
@@ -551,7 +616,7 @@ namespace iba.Processing
 
         private void BuildSectionStandardJobs()
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.StandardJobsOid);
+            var oidSection = "";//  = new string(SnmpObjectsData.StandardJobsOid);
 
             // ibaRoot.DatCoord.Product.2 - StandardJobs [Folder]
             AddMetadataForOidSuffix(oidSection, @"Standard jobs", @"standardJobs",
@@ -564,13 +629,13 @@ namespace iba.Processing
                     SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
                     // ibaRoot.DatCoord.Product.StdJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"standardJob{oidJob.GetLeastSignificantSubId()}";
+                    string oidJob = oidSection + (uint)(i + 1);
+                    string mibNameJob = $@"standardJob{oidJob}";
                     AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of standard job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
+                    string oidJobGen;
                     string mibNameJobGen;
                     BuildCommonGeneralJobSubsection(
                         oidJob, out oidJobGen,
@@ -600,7 +665,7 @@ namespace iba.Processing
                             @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, 
+                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid,
                             jobInfo.TimestampLastReprocessErrorsScan,
                             @"Timestamp last reprocess errors scan", mibNameJobGen + @"TimestampLastReprocessErrorsScan",
                             @"Time when the last reprocess scan was performed " +
@@ -609,7 +674,7 @@ namespace iba.Processing
                             JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.General.10 - LastProcessing [Folder]
-                        IbaSnmpOid oidLastProc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
+                        string oidLastProc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
                         AddMetadataForOidSuffix(oidLastProc, @"LastProcessing", mibNameJobGen + @"LastProcessing",
                             @"Information about the last successfully processed file.");
 
@@ -646,7 +711,7 @@ namespace iba.Processing
 
         private void BuildSectionScheduledJobs()
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.ScheduledJobsOid);
+            var oidSection = "";//  = new string(SnmpObjectsData.ScheduledJobsOid);
 
             AddMetadataForOidSuffix(oidSection, @"Scheduled jobs", @"scheduledJobs",
                 @"List of all scheduled jobs.");
@@ -658,13 +723,13 @@ namespace iba.Processing
                     var jobInfo = ObjectsData.ScheduledJobs[i];
 
                     // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"scheduledJob{oidJob.GetLeastSignificantSubId()}";
+                    string oidJob = oidSection + (uint)(i + 1);
+                    string mibNameJob = $@"scheduledJob{oidJob}";
                     AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of scheduled job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
+                    string oidJobGen;
                     string mibNameJobGen;
                     BuildCommonGeneralJobSubsection(
                         oidJob, out oidJobGen,
@@ -712,7 +777,7 @@ namespace iba.Processing
 
         private void BuildSectionOneTimeJobs()
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.OneTimeJobsOid);
+            var oidSection = "";//  = new string(SnmpObjectsData.OneTimeJobsOid);
 
             AddMetadataForOidSuffix(oidSection, @"One time jobs", @"oneTimeJobs",
                 @"List of all one-time jobs.");
@@ -723,13 +788,13 @@ namespace iba.Processing
                 {
                     var jobInfo = ObjectsData.OneTimeJobs[i];
                     // ibaRoot.DatCoord.Product.OtJobs.(index) - Job [folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"oneTimeJob{oidJob.GetLeastSignificantSubId()}";
+                    string oidJob = oidSection + (uint)(i + 1);
+                    string mibNameJob = $@"oneTimeJob{oidJob}";
                     AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of one-time job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
+                    string oidJobGen;
                     string mibNameJobGen;
                     BuildCommonGeneralJobSubsection(
                         oidJob, out oidJobGen,
@@ -758,7 +823,7 @@ namespace iba.Processing
 
         private void BuildSectionEventJobs()
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.EventBasedJobsOid);
+            var oidSection = "";//  = new string(SnmpObjectsData.EventBasedJobsOid);
 
             AddMetadataForOidSuffix(oidSection, @"Event jobs", @"eventJobs",
                 @"List of all event jobs.");
@@ -770,13 +835,13 @@ namespace iba.Processing
                     var jobInfo = ObjectsData.EventBasedJobs[i];
 
                     // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"eventJob{oidJob.GetLeastSignificantSubId()}";
+                    string oidJob = oidSection + (uint)(i + 1);
+                    string mibNameJob = $@"eventJob{oidJob}";
                     AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of event job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
+                    string oidJobGen;
                     string mibNameJobGen;
                     BuildCommonGeneralJobSubsection(
                         oidJob, out oidJobGen,
@@ -826,7 +891,7 @@ namespace iba.Processing
         /// <summary> Build the part that is common for all the Jobs 
         /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
         private void BuildCommonGeneralJobSubsection(
-            IbaSnmpOid oidJob, out IbaSnmpOid oidJobGen,
+            string oidJob, out string oidJobGen,
             string mibNameJob, out string mibNameJobGen,
             SnmpObjectsData.JobInfoBase jobInfo)
         {
@@ -846,7 +911,7 @@ namespace iba.Processing
                     @"The name of the job as it appears in GUI.",
                     JobInfoItemRequested, jobInfo);
 
-                CreateEnumUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, _enumJobStatus, (int) jobInfo.Status,
+                CreateEnumUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, _enumJobStatus, (int)jobInfo.Status,
                     @"Status", mibNameJobGen + @"Status",
                     @"Current status of the job (started, stopped or disabled).",
                     JobInfoItemRequested, jobInfo);
@@ -876,7 +941,7 @@ namespace iba.Processing
 
         #region Tasks subtrees
 
-        private void BuildTasks(IbaSnmpOid oidjJob, string mibNameJob, SnmpObjectsData.JobInfoBase jobInfo)
+        private void BuildTasks(string oidjJob, string mibNameJob, SnmpObjectsData.JobInfoBase jobInfo)
         {
             var tasks = jobInfo?.Tasks;
             if (tasks == null)
@@ -894,7 +959,7 @@ namespace iba.Processing
             {
                 SnmpObjectsData.TaskInfo taskInfo = tasks[i];
 
-                uint i1 = (uint) (i + 1); // index for mib
+                uint i1 = (uint)(i + 1); // index for mib
 
                 string mibNameTask = mibNameJob + $@"Task{i1}";
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.(index) - Task [Folder]
@@ -917,7 +982,7 @@ namespace iba.Processing
             }
         }
 
-        private void BuildTask(IbaSnmpOid oidTask, string mibNameTask, SnmpObjectsData.TaskInfo taskInfo)
+        private void BuildTask(string oidTask, string mibNameTask, SnmpObjectsData.TaskInfo taskInfo)
         {
             var parentJob = taskInfo.Parent;
 
@@ -959,14 +1024,14 @@ namespace iba.Processing
             }
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup [Folder]
-            IbaSnmpOid oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
+            string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
             string mibNameCleanup = mibNameTask + @"Cleanup";
             AddMetadataForOidSuffix(oidCleanup, @"Cleanup", mibNameCleanup,
                 @"Cleanup parameters of the task.");
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup ...
 
-            CreateEnumUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, _enumCleanupType, (int) ci.LimitChoice,
+            CreateEnumUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, _enumCleanupType, (int)ci.LimitChoice,
                 @"Limit choice", mibNameCleanup + @"LimitChoice",
                 @"Option selected as limit for the disk space usage. " +
                 @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
@@ -993,67 +1058,67 @@ namespace iba.Processing
 
         #region Oid metadata and CreateUserValue() overloads
 
-        private void AddMetadataForOidSuffix(IbaSnmpOid oidSuffix, string guiCaption, string mibName,
+        private void AddMetadataForOidSuffix(string oidSuffix, string guiCaption, string mibName,
             string mibDescription)
         {
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
         }
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
+        private void CreateUserValue(string oidSuffix, bool initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
+        private void CreateUserValue(string oidSuffix, string initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         // ReSharper disable once UnusedMember.Local
-        private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
+        private void CreateUserValue(string oidSuffix, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
+        private void CreateUserValue(string oidSuffix, uint initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
+        private void CreateUserValue(string oidSuffix, DateTime initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue,
-                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
-                null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue,
+            //    UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
+            //    null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
+        private void CreateEnumUserValue(string oidSuffix, object valueType, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+            EventHandler<object> handler = null,
             object tag = null)
         {
-            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+            //IbaOpcUaServer.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
+            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
         #endregion
@@ -1091,13 +1156,13 @@ namespace iba.Processing
                     // TaskManager has updated info successfully 
                     // copy it to snmp tree
 
-                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
-                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
-                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
-                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
-                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
-                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
-                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
+                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
                     return true; // data was updated
                 }
                 finally
@@ -1158,14 +1223,14 @@ namespace iba.Processing
                     // TaskManager has updated driveInfo successfully 
                     // copy it to snmp tree
 
-                    IbaSnmpOid oidDrive = driveInfo.Oid;
+                    string oidDrive = "";//driveInfo.Oid;
 
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent);
+                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime);
                     return true; // data was updated
                 }
                 finally
@@ -1226,13 +1291,13 @@ namespace iba.Processing
                     // TaskManager has updated info successfully 
                     // copy it to snmp tree
 
-                    IbaSnmpOid oidJobGen = jobInfo.Oid + SnmpObjectsData.JobInfoBase.GeneralOid;
+                    string oidJobGen = "";//jobInfo.Oid + SnmpObjectsData.JobInfoBase.GeneralOid;
 
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int) jobInfo.Status);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount);
+                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
+                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int)jobInfo.Status);
+                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount);
+                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount);
+                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount);
 
                     var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
                     var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
@@ -1240,31 +1305,31 @@ namespace iba.Processing
                     var evtJi = jobInfo as SnmpObjectsData.EventBasedJobInfo;
                     if (stdJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
-                        IbaSnmpOid oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
+                        string oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
+                        //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
+                        //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
+                        //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
                     }
                     else if (schJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
                     }
                     else if (otJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
                     }
                     else if (evtJi != null)
                     {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
+                        //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
                     }
                     else
                     {
@@ -1309,26 +1374,26 @@ namespace iba.Processing
 
         private void RefreshTaskInfo(SnmpObjectsData.TaskInfo taskInfo)
         {
-            IbaSnmpOid oidTask = taskInfo.Oid;
+            string oidTask = "";// taskInfo.Oid;
 
             try
             {
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution);
+                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName);
+                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
+                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
+                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution);
+                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution);
 
                 var ci = taskInfo.CleanupInfo;
                 // ReSharper disable once InvertIf
                 if (ci != null)
                 {
-                    IbaSnmpOid oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
+                    string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
 
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace);
+                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
+                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);
+                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace);
+                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace);
                 }
             }
             catch (Exception ex)
@@ -1343,7 +1408,7 @@ namespace iba.Processing
 
         #region XxxRequested event handlers
 
-        private void IbaSnmp_LicensingValueRequested<T>(object sender, IbaSnmpValueRequestedEventArgs<T> args)
+        private void IbaSnmp_LicensingValueRequested<T>(object sender, EventArgs args)
         {
             // refresh data if it is too old 
             RefreshLicenseInfo();
@@ -1354,7 +1419,7 @@ namespace iba.Processing
             // in another thread if multiple values are requested)
             try
             {
-                args.Value = (T) args.IbaSnmp.GetValue(args.Oid);
+                //args.Value = (T)args.IbaSnmp.GetValue(args.Oid);
             }
             catch
             {
@@ -1362,46 +1427,46 @@ namespace iba.Processing
             }
         }
 
-        private void GlobalCleanupDriveInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        private void GlobalCleanupDriveInfoItemRequested(object sender, object args)
         {
-            var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
+            var driveInfo = (object)null;// args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
 
             if (driveInfo == null)
             {
                 // should not happen
-                args.Value = null;
+                //args.Value = null;
                 return;
             }
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGlobalCleanupDriveInfo(driveInfo);
+            //RefreshGlobalCleanupDriveInfo(driveInfo);
 
             // re-read the value and send it back via args
             // (we should do re-read independently on whether above call to RefreshXxx()
             // had updated the value or not, because the value could be updated meanwhile by a similar call
             // in another thread if multiple values are requested)
-            args.Value = args.IbaSnmp.GetValue(args.Oid);
+            //args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
-        private void JobInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        private void JobInfoItemRequested(object sender, object args)
         {
-            var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
+            //var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
 
-            if (jobInfo == null)
-            {
-                // should not happen
-                args.Value = null;
-                return;
-            }
+            //if (jobInfo == null)
+            //{
+            //    // should not happen
+            //    args.Value = null;
+            //    return;
+            //}
 
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshJobInfo(jobInfo);
+            //// refresh data if it is too old (or rebuild the whole tree if necessary)
+            //RefreshJobInfo(jobInfo);
 
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            args.Value = args.IbaSnmp.GetValue(args.Oid);
+            //// re-read the value and send it back via args
+            //// (we should do re-read independently on whether above call to RefreshXxx()
+            //// had updated the value or not, because the value could be updated meanwhile by a similar call
+            //// in another thread if multiple values are requested)
+            //args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
         #endregion
@@ -1411,79 +1476,79 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        public Dictionary<IbaSnmpOid, SnmpTreeNodeTag> GetObjectTreeSnapShot()
+        public Dictionary<string, SnmpTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
                 // check tree structure before taking a snapshot
                 RebuildTreeIfItIsInvalid();
 
-                var result = new Dictionary<IbaSnmpOid, SnmpTreeNodeTag>();
-                var objList = IbaSnmp.GetListOfAllOids();
-                if (objList == null)
-                {
-                    return null;
-                }
+                //var result = new Dictionary<string, SnmpTreeNodeTag>();
+                //var objList = IbaOpcUaServer.GetListOfAllOids();
+                //if (objList == null)
+                //{
+                //    return null;
+                //}
 
-                var rootOid = IbaSnmp.OidIbaRoot;
+                //var rootOid = IbaOpcUaServer.OidIbaRoot;
 
-                // get a set of all folders and nodes starting with the root
-                var nodesSet = new HashSet<IbaSnmpOid> {rootOid};
-                foreach (var oid in objList)
-                {
-                    // skip everything that is outside selected root
-                    if (!oid.StartsWith(rootOid))
-                    {
-                        continue;
-                    }
+                //// get a set of all folders and nodes starting with the root
+                //var nodesSet = new HashSet<string> { rootOid };
+                //foreach (var oid in objList)
+                //{
+                //    // skip everything that is outside selected root
+                //    if (!oid.StartsWith(rootOid))
+                //    {
+                //        continue;
+                //    }
 
-                    // add object itself
-                    nodesSet.Add(oid);
+                //    // add object itself
+                //    nodesSet.Add(oid);
 
-                    // add object's parents (folder-nodes)
-                    var parents = oid.GetParents();
-                    foreach (var parent in parents)
-                    {
-                        if (parent.StartsWith(rootOid))
-                        {
-                            nodesSet.Add(parent);
-                        }
-                    }
-                }
+                //    // add object's parents (folder-nodes)
+                //    var parents = oid.GetParents();
+                //    foreach (var parent in parents)
+                //    {
+                //        if (parent.StartsWith(rootOid))
+                //        {
+                //            nodesSet.Add(parent);
+                //        }
+                //    }
+                //}
 
                 // retrieve information about each node
-                foreach (var oid in nodesSet)
-                {
-                    var tag = GetTreeNodeTag(oid, true);
-                    if (tag != null)
-                    {
-                        result.Add(oid, tag);
-                    }
-                }
+                //foreach (var oid in nodesSet)
+                //{
+                //    var tag = GetTreeNodeTag(oid, true);
+                //    if (tag != null)
+                //    {
+                //        result.Add(oid, tag);
+                //    }
+                //}
 
                 // mark some nodes as expanded
-                var nodesToExpand = new HashSet<IbaSnmpOid>
+                var nodesToExpand = new HashSet<string>
                 {
-                    rootOid,
-                    IbaSnmp.OidIbaRoot,
-                    IbaSnmp.OidIbaProduct,
-                    IbaSnmp.OidIbaProductSpecific,
-                    //IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.GlobalCleanupOid,// not needed
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.StandardJobsOid,
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.ScheduledJobsOid,
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.OneTimeJobsOid
+                    //rootOid,
+                    //IbaOpcUaServer.OidIbaRoot,
+                    //IbaOpcUaServer.OidIbaProduct,
+                    //IbaOpcUaServer.OidIbaProductSpecific,
+                    ////IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.GlobalCleanupOid,// not needed
+                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.StandardJobsOid,
+                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.ScheduledJobsOid,
+                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.OneTimeJobsOid
                 };
 
-                foreach (var oid in nodesToExpand)
-                {
-                    SnmpTreeNodeTag tag;
-                    if (result.TryGetValue(oid, out tag))
-                    {
-                        tag.IsExpandedByDefault = true;
-                    }
-                }
+                //foreach (var oid in nodesToExpand)
+                //{
+                //    SnmpTreeNodeTag tag;
+                //    if (result.TryGetValue(oid, out tag))
+                //    {
+                //        tag.IsExpandedByDefault = true;
+                //    }
+                //}
 
-                return result;
+                //return result;
             }
             catch (Exception ex)
             {
@@ -1492,67 +1557,68 @@ namespace iba.Processing
                 return null;
             }
 
+            return null;
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        public SnmpTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
+        public SnmpTreeNodeTag GetTreeNodeTag(string oid, bool bUpdate = false)
         {
             try
             {
-                var tag = new SnmpTreeNodeTag {Oid = oid};
+                //var tag = new SnmpTreeNodeTag { Oid = oid };
 
-                IbaSnmpOidMetadata metadata = IbaSnmp.GetOidMetadata(oid);
-                if (metadata == null)
-                {
-                    // this is inexisting node
-                    // leave all fields empty
-                    return tag;
-                }
+                //stringMetadata metadata = IbaOpcUaServer.GetOidMetadata(oid);
+                //if (metadata == null)
+                //{
+                //    // this is inexisting node
+                //    // leave all fields empty
+                //    return tag;
+                //}
 
-                // fill data common for folders and leaves
-                tag.MibName = metadata.MibName;
-                tag.MibDescription = metadata.MibDescription;
-                tag.Caption = metadata.GuiCaption;
+                //// fill data common for folders and leaves
+                //tag.MibName = metadata.MibName;
+                //tag.MibDescription = metadata.MibDescription;
+                //tag.Caption = metadata.GuiCaption;
 
-                // try to get value (applicable only to objects=leaves)
+                //// try to get value (applicable only to objects=leaves)
 
-                IbaSnmpObjectInfo objInfo;
-                try
-                {
-                    objInfo = IbaSnmp.GetObjectInfo(oid, bUpdate);
-                }
-                catch (Exception ex)
-                {
-                    // should not happen, so better to see it if it happens
-                    LogData.Data.Logger.Log(Level.Exception,
-                        $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}.({oid}). Error calling GetObjectInfo(). {ex.Message}");
-                    return null;
-                }
+                //IbaSnmpObjectInfo objInfo;
+                //try
+                //{
+                //    objInfo = IbaOpcUaServer.GetObjectInfo(oid, bUpdate);
+                //}
+                //catch (Exception ex)
+                //{
+                //    // should not happen, so better to see it if it happens
+                //    LogData.Data.Logger.Log(Level.Exception,
+                //        $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}.({oid}). Error calling GetObjectInfo(). {ex.Message}");
+                //    return null;
+                //}
 
-                // check  if this is a folder or leaf
-                // object (leaf) can miss a value but anyway should have some data type
-                if (!String.IsNullOrWhiteSpace(objInfo?.MibDataType))
-                {
-                    // this is a leaf node
-                    tag.IsFolder = false;
+                //// check  if this is a folder or leaf
+                //// object (leaf) can miss a value but anyway should have some data type
+                //if (!String.IsNullOrWhiteSpace(objInfo?.MibDataType))
+                //{
+                //    // this is a leaf node
+                //    tag.IsFolder = false;
 
-                    tag.Value = IbaSnmp.IsEnumDataTypeRegistered(objInfo.ValueType)
-                        ?
-                        // enum - format it like e.g. "1 (started)"
-                        $@"{objInfo.Value} ({IbaSnmp.GetEnumValueName(objInfo.ValueType, (int) objInfo.Value)})"
-                        :
-                        // other types - just value
-                        objInfo.Value?.ToString() ?? "";
+                //    tag.Value = IbaOpcUaServer.IsEnumDataTypeRegistered(objInfo.ValueType)
+                //        ?
+                //        // enum - format it like e.g. "1 (started)"
+                //        $@"{objInfo.Value} ({IbaOpcUaServer.GetEnumValueName(objInfo.ValueType, (int)objInfo.Value)})"
+                //        :
+                //        // other types - just value
+                //        objInfo.Value?.ToString() ?? "";
 
 
-                    tag.Type = objInfo.MibDataType;
-                }
-                else
-                {
-                    // this is a folder
-                    tag.IsFolder = true;
-                }
-                return tag;
+                //    tag.Type = objInfo.MibDataType;
+                //}
+                //else
+                //{
+                //    // this is a folder
+                //    tag.IsFolder = true;
+                //}
+                //return tag;
             }
             catch (Exception ex)
             {
@@ -1560,37 +1626,8 @@ namespace iba.Processing
                     $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}({oid}). {ex.Message}");
                 return null;
             }
-        }
 
-        public List<SnmpMibFileContainer> GenerateMibFiles()
-        {
-            try
-            {
-                IbaSnmpMibGenerator gen = new IbaSnmpMibGenerator(IbaSnmp);
-
-                gen.Generate();
-
-                var mibFiles = new List<SnmpMibFileContainer>
-                {
-                    new SnmpMibFileContainer
-                    {
-                        FileName = gen.GeneralMibFilename,
-                        Contents = gen.GeneralFileString
-                    },
-                    new SnmpMibFileContainer
-                    {
-                        FileName = gen.ProductMibFilename,
-                        Contents = gen.ProductFileString
-                    }
-                };
-
-                return mibFiles;
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpWorker)}.{nameof(GenerateMibFiles)}. {ex.Message}");
-                return null;
-            }
+            return null;
         }
 
         #endregion

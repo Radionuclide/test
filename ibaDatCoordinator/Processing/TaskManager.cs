@@ -32,7 +32,7 @@ namespace iba.Processing
                 m_workers.Add(data, cw);
             }
             // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
             // added by kolesnik - end
         }
 
@@ -61,7 +61,7 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
             // added by kolesnik - end
         }
 
@@ -82,7 +82,7 @@ namespace iba.Processing
             }
 
             // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
             // added by kolesnik - end
         }
 
@@ -104,7 +104,7 @@ namespace iba.Processing
                 }
             }
             // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
             // added by kolesnik - end
         }
 
@@ -354,7 +354,7 @@ namespace iba.Processing
         }
 
 
-        #region SNMP interface - Added by Kolesnik
+        #region SNMP interface
 
         /// <summary> 
         /// Is fired when there is a chance (yes, at least a chance) that snmp data structure (amount of jobs, tasks, etc) is changed. 
@@ -366,7 +366,7 @@ namespace iba.Processing
         /// Event is not relevant to some 'small' data changes,
         /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
         /// </summary>
-        public event EventHandler<EventArgs> SnmpConfigurationChanged;
+        public event EventHandler<EventArgs> SnmpConfigurationChanged; // todo. kls. use SNMP and UA together 
 
         private SnmpWorker SnmpWorker { get; } = new SnmpWorker();
 
@@ -1014,7 +1014,660 @@ namespace iba.Processing
 
         #endregion
 
-        
+
+        #endregion
+
+        #region OPC UA interface 
+
+        /// <summary> //todo check comment
+        /// Is fired when there is a chance (yes, at least a chance) that opcUa data structure (amount of jobs, tasks, etc) is changed. 
+        /// So, OpcUaWorker can know this, and may rebuild its objects tree accordingly.
+        /// It does not guarantee that data is really changed, but only just that it might have changed.
+        /// (SnmpWorker's handler is very lightweight, so it's better to trigger this event
+        /// more often (e.g. let even twice for each real change - no matter), than 
+        /// to miss some point (even some that happens seldom) where it is changed.
+        /// Event is not relevant to some 'small' data changes,
+        /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
+        /// </summary>
+        public event EventHandler<EventArgs> OpcUaConfigurationChanged; // todo. kls. use SNMP and UA together 
+
+        private OpcUaWorker OpcUaWorker { get; } = new OpcUaWorker();
+
+        public void OpcUaWorkerInit()
+        {
+            OpcUaWorker.Init();
+        }
+
+        #region Functionality for GUI
+
+        #region Configuration
+
+        /// <summary> Gets/sets data of SnmpWorker. 
+        /// If data is set, then restart of snmp agent is performed if necessary. </summary>
+        public virtual OpcUaData OpcUaData
+        {
+            get
+            {
+                return OpcUaWorker?.OpcUaData;
+            }
+            set
+            {
+                if (OpcUaWorker != null)
+                {
+                    OpcUaWorker.OpcUaData = value;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Objects
+
+        public virtual void OpcUaRebuildObjectTree()
+        {
+            try
+            {
+                SnmpWorker.RebuildTree();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpRebuildObjectTree)}. {ex.Message}");
+            }
+        }
+
+        public virtual Dictionary<IbaSnmpOid, SnmpTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        {
+            try
+            {
+                return null;
+//                return OpcUaWorker.GetObjectTreeSnapShot();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual SnmpTreeNodeTag OpcUaGetTreeNodeTag(IbaSnmpOid oid)
+        {
+            try
+            {
+                return null;
+                // refresh value and get information
+                //return OpcUaWorker.GetTreeNodeTag(oid, true);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
+                return null;
+            }
+        }
+
+
+        #endregion
+
+
+        #region Diagnostics
+
+        public virtual Tuple<SnmpWorkerStatus, string> OpcUaGetBriefStatus()
+        {
+            try
+            {
+                return new Tuple<SnmpWorkerStatus, string>(OpcUaWorker.Status, OpcUaWorker.StatusString + $" Lifebeat={OpcUaWorker.TmpLifebeatValue}");
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(OpcUaGetBriefStatus)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        //public virtual List<IbaSnmpDiagClient> OpcUaGetClients()
+        //{
+        //    try
+        //    {
+        //        return SnmpWorker.IbaSnmp?.GetClients();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
+        //        return null;
+        //    }
+        //}
+
+        //public virtual void SnmpClearClients()
+        //{
+        //    try
+        //    {
+        //        SnmpWorker.IbaSnmp?.ClearClients();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpClearClients)}. {ex.Message}");
+        //    }
+        //}
+
+        #endregion
+
+
+        #endregion
+
+
+        #region Internal Server functions
+
+        //internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
+        //{
+        //    licenseInfo.Reset();
+
+        //    // this feature is not licensed,
+        //    // so does not need any condition to be true
+        //    licenseInfo.IsValid = true;
+
+        //    try
+        //    {
+        //        CDongleInfo info = CDongleInfo.ReadDongle();
+        //        // ReSharper disable once RedundantBoolCompare
+        //        if (info != null && info.DongleFound == true)
+        //        {
+        //            licenseInfo.Sn = info.SerialNr;
+        //            licenseInfo.HwId = info.HwId;
+        //            licenseInfo.DongleType = info.DongleType;
+        //            licenseInfo.Customer = info.Customer;
+        //            licenseInfo.TimeLimit = info.TimeLimit;
+        //            licenseInfo.DemoTimeLimit = info.DemoTimeLimit;
+        //        }
+
+        //        licenseInfo.PutTimeStamp();
+        //    }
+        //    catch {/**/}
+
+        //    return true;
+        //}
+
+        //internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        //{
+        //    // reset values for the case of an update error
+        //    driveInfo.Reset();
+
+        //    if (String.IsNullOrEmpty(driveInfo.DriveName))
+        //    {
+        //        return false; // failed to update
+        //    }
+
+        //    try
+        //    {
+        //        lock (m_workers)
+        //        {
+        //            var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveName);
+
+        //            if (gcData == null)
+        //            {
+        //                // needed GlobalCleanupDataList not found
+        //                return false; // failed to update
+        //            }
+
+        //            // set current values
+        //            SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+        //            return true; // data was updated
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        // suppress, not critical
+        //    }
+        //    return false; // failed to update
+        //}
+
+        //private void SnmpRefreshGlobalCleanupDriveInfo(
+        //    SnmpObjectsData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
+        //{
+        //    driveInfo.Reset();
+
+        //    driveInfo.Active = gcData.Active;
+
+        //    DriveInfo drive = new DriveInfo(gcData.DriveName);
+        //    if (drive.IsReady)
+        //    {
+        //        driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20);
+        //        driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20);
+        //    }
+
+        //    // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
+        //    // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
+        //    //driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); 
+        //    driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree;
+
+        //    driveInfo.RescanTime = (uint)gcData.RescanTime;
+
+        //    driveInfo.PutTimeStamp();
+        //}
+
+        //internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        //{
+        //    jobInfo.Reset();
+
+        //    if (jobInfo.Guid == Guid.Empty)
+        //    {
+        //        return false;
+        //    }
+
+        //    try
+        //    {
+        //        lock (m_workers)
+        //        {
+        //            var cfg = Configurations.FirstOrDefault(cd => cd.Guid == jobInfo.Guid);
+
+        //            if (cfg == null)
+        //            {
+        //                // job with given GUID not found
+        //                return false; // failed to update
+        //            }
+
+        //            // ok, found needed configuration
+        //            // copy values from configuration to snmp jobInfo
+        //            switch (cfg.JobType)
+        //            {
+        //                case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+        //                    SnmpRefreshStandardJobInfo(jobInfo as SnmpObjectsData.StandardJobInfo, cfg);
+        //                    break;
+
+        //                case ConfigurationData.JobTypeEnum.Scheduled:
+        //                    SnmpRefreshScheduledJobInfo(jobInfo as SnmpObjectsData.ScheduledJobInfo, cfg);
+        //                    break;
+
+        //                case ConfigurationData.JobTypeEnum.OneTime:
+        //                    SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
+        //                    break;
+
+        //                case ConfigurationData.JobTypeEnum.Event:
+        //                    SnmpRefreshEventJobInfo(jobInfo as SnmpObjectsData.EventBasedJobInfo, cfg);
+        //                    break;
+
+        //                default:
+        //                    throw new ArgumentOutOfRangeException();
+        //            }
+
+        //            // updated successfully
+        //            return true;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        // suppress
+        //        // for the case of change of GlobalCleanupDataList 
+        //        // within forach loop by another thread
+        //    }
+
+        //    // error
+        //    return false; // failed to update
+        //}
+
+        //private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
+        //{
+        //    jobInfo.Reset();
+
+        //    try
+        //    {
+        //        ConfigurationWorker worker = m_workers[cfg];
+        //        StatusData s = worker.Status;
+
+        //        SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+        //        jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
+        //        jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
+        //        jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;
+        //        jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan;
+
+        //        jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName;
+        //        jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp;
+        //        jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp;
+
+        //        jobInfo.PutTimeStamp();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshStandardJobInfo(): " + ex.Message);
+        //    }
+        //}
+
+        //private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
+        //{
+        //    jobInfo.Reset();
+
+        //    try
+        //    {
+        //        ConfigurationWorker worker = m_workers[cfg];
+        //        StatusData s = worker.Status;
+
+        //        SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+        //        jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+        //        jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+        //        jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+        //        jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
+
+        //        jobInfo.PutTimeStamp();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshScheduledJobInfo(): " + ex.Message);
+        //    }
+
+        //}
+
+        //private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
+        //{
+        //    jobInfo.Reset();
+
+        //    try
+        //    {
+        //        ConfigurationWorker worker = m_workers[cfg];
+        //        StatusData s = worker.Status;
+
+        //        SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+        //        jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
+
+        //        jobInfo.PutTimeStamp();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshOneTimeJobInfo(): " + ex.Message);
+        //    }
+
+        //}
+
+        //private void SnmpRefreshEventJobInfo(SnmpObjectsData.EventBasedJobInfo jobInfo, ConfigurationData cfg)
+        //{
+        //    jobInfo.Reset();
+
+        //    try
+        //    {
+        //        ConfigurationWorker worker = m_workers[cfg];
+        //        StatusData s = worker.Status;
+
+        //        SnmpRefreshJobInfoBase(jobInfo, worker, s);
+
+        //        jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
+        //        jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
+        //        jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+
+        //        jobInfo.PutTimeStamp();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Debug, @"SnmpRefreshEventJobInfo(): " + ex.Message);
+        //    }
+
+        //}
+
+        //private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
+        //{
+        //    var cfg = s.CorrConfigurationData;
+        //    ji.JobName = cfg.Name;
+        //    ji.Status = !cfg.Enabled ?
+        //        SnmpObjectsData.JobStatus.Disabled :
+        //        (s.Started ?
+        //            SnmpObjectsData.JobStatus.Started :
+        //            SnmpObjectsData.JobStatus.Stopped);
+
+        //    ji.TodoCount = (uint)s.ReadFiles.Count;
+        //    ji.DoneCount = (uint)s.ProcessedFiles.Count;
+        //    ji.FailedCount = (uint)s.CountErrors();
+
+        //    SnmpRefreshTasks(ji, worker, s);
+        //}
+
+        //private void SnmpRefreshTasks(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData statusData)
+        //{
+        //    var cfg = statusData.CorrConfigurationData;
+
+        //    // on first call for the job create a list first
+        //    if (ji.Tasks == null)
+        //    {
+        //        ji.Tasks = new List<SnmpObjectsData.TaskInfo>();
+
+        //        for (int i = 0; i < cfg.Tasks.Count; i++)
+        //        {
+        //            ji.Tasks.Add(new SnmpObjectsData.TaskInfo { Parent = ji });
+        //        }
+        //    }
+
+        //    // fill task's data
+        //    if (ji.Tasks.Count != cfg.Tasks.Count)
+        //    {
+        //        ji.Tasks.Clear();
+        //        SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+        //        return;
+        //    }
+
+        //    for (int i = 0; i < cfg.Tasks.Count; i++)
+        //    {
+        //        TaskData taskData = cfg.Tasks[i];
+        //        var taskInfo = ji.Tasks[i];
+        //        taskInfo.Reset();
+
+        //        taskInfo.TaskName = taskData.Name;
+
+        //        // lask execution - success, duration, memory
+        //        try
+        //        {
+        //            ConfigurationWorker.TaskLastExecutionData lastExec;
+        //            if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+        //            {
+        //                taskInfo.Success = lastExec.Success;
+        //                taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0);
+        //                taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed;
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            worker.TaskLastExecutionDict.Clear();
+        //        }
+
+        //        // default is just a type name
+        //        string taskTypeStr = taskData.GetType().Name;
+
+        //        if (taskData is TaskDataUNC)
+        //        // Derived from TaskDataUNC (alphabetically):
+        //        //   CopyMoveTaskData
+        //        //   CustomTaskDataUNC 
+        //        //   ExtractData 
+        //        //   GlobalCleanupTaskData 
+        //        //   ReportData 
+        //        //   SplitterTaskData 
+        //        //   UpdateDataTaskData 
+        //        {
+        //            if (taskData is CopyMoveTaskData)
+        //            {
+        //                taskTypeStr = "CopyMoveDelete";
+        //                //var typedData = taskData as CopyMoveTaskData;
+        //            }
+        //            if (taskData is CustomTaskDataUNC)
+        //            {
+        //                var typedData = taskData as CustomTaskDataUNC;
+        //                taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
+        //            }
+        //            if (taskData is ExtractData)
+        //            {
+        //                taskTypeStr = "Extract";
+        //                //var typedData = taskData as ExtractData;
+        //            }
+        //            else if (taskData is GlobalCleanupTaskData)
+        //            {
+        //                taskTypeStr = "GlobalCleanup";
+        //                //var typedData = taskData as GlobalCleanupTaskData;
+        //            }
+        //            if (taskData is ReportData)
+        //            {
+        //                taskTypeStr = "Report";
+        //                //var typedData = taskData as ReportData;
+        //                //var monitorData = typedData.MonitorData;
+        //            }
+        //            if (taskData is SplitterTaskData)
+        //            {
+        //                taskTypeStr = "Splitter";
+        //                //var typedData = taskData as SplitterTaskData;
+        //            }
+        //            if (taskData is UpdateDataTaskData)
+        //            {
+        //                taskTypeStr = "UpdateData";
+        //                //var typedData = taskData as UpdateDataTaskData;
+        //            }
+        //        }
+        //        else
+        //        // NOT derived from TaskDataUNC (alphabetically):
+        //        //   BatchFileData 
+        //        //   CleanupTaskData 
+        //        //   CustomTaskData
+        //        //   IfTaskData 
+        //        //   PauseTaskData 
+        //        {
+        //            if (taskData is BatchFileData)
+        //            {
+        //                taskTypeStr = "Script";
+        //                //var typedData = taskData as BatchFileData;
+        //            }
+        //            else if (taskData is TaskWithTargetDirData)
+        //            {
+        //                taskTypeStr = "Cleanup";
+        //                //var typedData = taskData as CleanupTaskData;
+        //            }
+        //            else if (taskData is CustomTaskData)
+        //            {
+        //                var typedData = taskData as CustomTaskData;
+        //                taskTypeStr = $"Custom_{typedData.Plugin.NameInfo}";
+        //            }
+        //            else if (taskData is IfTaskData)
+        //            {
+        //                taskTypeStr = "Condition";
+        //                //var typedData = taskData as IfTaskData;
+        //            }
+        //            else if (taskData is PauseTaskData)
+        //            {
+        //                taskTypeStr = "Pause";
+        //                //var typedData = taskData as PauseTaskData;
+        //            }
+        //        }
+
+        //        taskInfo.TaskType = taskTypeStr;
+
+        //        // if cleanup info is present, add it to the task
+        //        var cleanupTaskData = taskData as TaskWithTargetDirData;
+        //        if (cleanupTaskData != null)
+        //        {
+        //            taskInfo.CleanupInfo = new SnmpObjectsData.LocalCleanupInfo
+        //            {
+        //                LimitChoice = cleanupTaskData.OutputLimitChoice,
+        //                FreeDiskSpace = cleanupTaskData.QuotaFree,
+        //                Subdirectories = cleanupTaskData.SubfoldersNumber,
+        //                UsedDiskSpace = cleanupTaskData.Quota
+        //            };
+        //        }
+        //        else
+        //        {
+        //            taskInfo.CleanupInfo = null;
+        //        }
+        //    }
+        //}
+
+        //internal bool SnmpRebuildObjectsData(SnmpObjectsData od)
+        //{
+        //    try
+        //    {
+        //        od.Reset();
+
+        //        lock (m_workers)
+        //        {
+        //            // PrGen.3. License
+        //            {
+        //                // nothing to create there
+        //                // just refresh data
+        //                SnmpRefreshLicenseInfo(od.License);
+        //            }
+
+        //            // 1. GlobalCleanup;
+        //            {
+        //                try
+        //                {
+        //                    foreach (var gcData in GlobalCleanupDataList.OrderBy(gc => gc.DriveName))
+        //                    {
+        //                        // create entry
+        //                        var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo
+        //                        {
+        //                            // set primary key
+        //                            DriveName = gcData.DriveName
+        //                        };
+        //                        od.GlobalCleanup.Add(driveInfo);
+
+        //                        // set current values
+        //                        SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
+        //                    }
+        //                }
+        //                catch
+        //                {
+        //                    // suppress, not critical
+        //                }
+        //            }
+        //            // 2...4. - Jobs
+        //            {
+        //                // get copy of configurations
+        //                List<ConfigurationData> confs = Configurations;
+        //                confs.Sort((a, b) => a.TreePosition.CompareTo(b.TreePosition));
+
+        //                foreach (ConfigurationData cfg in confs)
+        //                {
+        //                    switch (cfg.JobType)
+        //                    {
+        //                        case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
+        //                            var stdJobInfo = new SnmpObjectsData.StandardJobInfo { Guid = cfg.Guid };
+        //                            od.StandardJobs.Add(stdJobInfo);
+        //                            // fill the data
+        //                            SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
+        //                            break;
+
+        //                        case ConfigurationData.JobTypeEnum.Scheduled:
+        //                            var schJobInfo = new SnmpObjectsData.ScheduledJobInfo { Guid = cfg.Guid };
+        //                            od.ScheduledJobs.Add(schJobInfo);
+        //                            // fill the data
+        //                            SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
+        //                            break;
+
+        //                        case ConfigurationData.JobTypeEnum.OneTime:
+        //                            var otJobInfo = new SnmpObjectsData.OneTimeJobInfo { Guid = cfg.Guid };
+        //                            od.OneTimeJobs.Add(otJobInfo);
+        //                            // fill the data
+        //                            SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
+        //                            break;
+
+        //                        case ConfigurationData.JobTypeEnum.Event:
+        //                            var evtJobInfo = new SnmpObjectsData.EventBasedJobInfo { Guid = cfg.Guid };
+        //                            od.EventBasedJobs.Add(evtJobInfo);
+        //                            // fill the data
+        //                            SnmpRefreshEventJobInfo(evtJobInfo, cfg);
+        //                            break;
+
+        //                        default:
+        //                            throw new ArgumentOutOfRangeException();
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        return true; // success
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogData.Data.Logger.Log(Level.Exception,
+        //            $"SNMP. Error during rebuilding object data. {ex.Message}.");
+        //        return false; // error
+        //    }
+        //}
+
+        #endregion
+
+
         #endregion
 
 
@@ -1540,7 +2193,7 @@ namespace iba.Processing
         }
 
 
-        #region SNMP interface - Added by Kolesnik
+        #region SNMP interface
 
         /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection(ex)"/> 
         /// for <see cref="Program.CommunicationObject"/>  if it is not null. </summary>
