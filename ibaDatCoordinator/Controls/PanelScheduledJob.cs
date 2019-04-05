@@ -184,10 +184,7 @@ namespace iba.Controls
             else
                 m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
 
-            m_server = m_scheduleData.HDServer;
-            m_port = m_scheduleData.HDPort;
-            m_username = m_scheduleData.HDUsername;
-            m_password = m_scheduleData.HDPassword;
+            SetHDServerSettings(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword);
             ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword, SelectServer);
         }
 
@@ -782,18 +779,23 @@ namespace iba.Controls
                     m_currStores.Clear();
                 }
 
-                m_server = server;
-                m_port = port;
-                m_username = m_hdReader.UserLoginInfo.UserName;
-                m_password = m_hdReader.UserLoginInfo.Password;
-
-                UpdateHDServerSettings();
+                SetHDServerSettings(server, port, m_hdReader.UserLoginInfo.UserName, m_hdReader.UserLoginInfo.Password);
 
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             }, Tuple.Create(server, port));
+        }
+
+        void SetHDServerSettings(string server, int port, string username, string password)
+        {
+            m_server = server ?? "";
+            m_port = port;
+            m_username = username ?? "";
+            m_password = password ?? "";
+
+            UpdateHDServerSettings();
         }
 
         void UpdateHDServerSettings()
