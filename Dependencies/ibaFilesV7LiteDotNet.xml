@@ -2061,6 +2061,17 @@ Initializes a new instance of the IbaFileReader class with a specified .dat file
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.Finalize">
             <summary> Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open and a specified mode to open it.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to read the .dat file</param>
+            <param name="openForUpdate">If <c>true</c>, infofields can be modified or added to the .dat file; otherwise, the .dat file will be opened read-only.</param>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the file is not a valid iba .dat file.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.#ctor(System.String,System.Boolean)">
             <summary>
 Initializes a new instance of the IbaFileReader class with a specified .dat file to open and a specified mode to open it.
