@@ -21,7 +21,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>
     </StartupObject>
-    <ApplicationIcon>Resources\default.ico</ApplicationIcon>
+    <ApplicationIcon>ibaDatCoordinator.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -100,6 +100,9 @@
     <Reference Include="hdCommon, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\hdCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ibaFilesV7LiteDotNet">
+      <HintPath>..\Dependencies\ibaFilesV7LiteDotNet.dll</HintPath>
     </Reference>
     <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -193,6 +196,12 @@
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
+    <Compile Include="Dialogs\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\About.designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -505,6 +514,9 @@
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\GenerateEventJobTestFileDlg.resx">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
     </EmbeddedResource>
@@ -661,20 +673,23 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="ibaFilesLiteLib">
-      <Guid>{B0CE4DE4-8D28-4008-A826-4B1F7B1FE07F}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\about_background.png" />
+    <None Include="Resources\about80x80.png" />
+    <None Include="Resources\dat-file.ico" />
     <Content Include="Resources\event_configuration.ico" />
     <Content Include="Resources\event_configuration_new.ico" />
+    <None Include="Resources\ibaDatCoordinator.ico" />
+    <None Include="Resources\ibaDatCoordinator_dc.ico" />
+    <None Include="Resources\ibaDatCoordinator_start.ico" />
+    <None Include="Resources\ibaDatCoordinator_stopp.ico" />
+    <None Include="Resources\ibaDatCoordinator.png" />
+    <None Include="Resources\ibaDatCoordinator_server.ico" />
+    <None Include="Resources\ibaAnalyzer.png" />
     <Content Include="Resources\img_error.png" />
     <Content Include="Resources\img_eventjob_range_both.png" />
     <Content Include="Resources\img_eventjob_range_single.png" />
@@ -739,7 +754,7 @@
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
-copy "$(SolutionDir)Dependencies\ibaFilesLiteDotNet.dll" "$(TargetDir)"
+
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

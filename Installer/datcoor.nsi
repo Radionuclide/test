@@ -57,6 +57,7 @@
 !include "LogicLib.nsh"
 !include "sections.nsh"
 !include "StrFunc.nsh"
+!include "x64.nsh"
 !include "Include\InstallHistory.nsh"
 
 !include WordFunc.nsh
@@ -85,7 +86,9 @@ SetCompressor /SOLID lzma
 
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "Graphics\MUIInstallLogo.bmp"
+!define MUI_HEADERIMAGE_RIGHT
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
 !define MUI_ABORTWARNING
 !define MUI_COMPONENTSPAGE_NODESC
 !define MUI_WELCOMEFINISHPAGE_INI "welcome.ini"
@@ -398,7 +401,6 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaFilesLiteInstall.exe"
   File "..\Dependencies\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic2005.DLL"
@@ -408,7 +410,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
   File "..\Dependencies\PowerCollections.dll"
-  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
@@ -427,13 +429,12 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   
   ; runtime
@@ -461,16 +462,12 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
   
-  ;Install ibaFiles
-  DetailPrint $(TEXT_IBAFILES_INSTALL)
-  nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
-
   SetOutPath "$INSTDIR"
   ;Create uninstall shortcut
 
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe" "" "$INSTDIR\default.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
@@ -486,7 +483,6 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;MessageBox MB_OK "Debug in DATCOOR_SERVICE (2)"
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaFilesLiteInstall.exe"
   File "..\Dependencies\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic2005.DLL"
@@ -495,7 +491,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
   File "..\Dependencies\msvcp100.dll"
-  File "..\Dependencies\ibaFilesLiteDotNet.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
@@ -514,16 +510,14 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\DevExpress.Utils.v16.1.dll"
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\running.ico"
-  File "..\ibaDatCoordinatorStatus\Resources\DatCo_SrvStat_Icon_pure.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   File "Copy_Printer_Settings_To_System_Account.bat"
   File "createundoregfile.bat"
@@ -552,10 +546,6 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;plugins
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
-  
-  ;Install ibaFiles
-  DetailPrint $(TEXT_IBAFILES_INSTALL)
-  nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
   
   DetailPrint $(TEXT_SERVICE_INSTALL)
   !insertmacro MUI_INSTALLOPTIONS_READ $R0 "ServiceAccount.ini" "Field 2" "State" ;local system
@@ -601,8 +591,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   
   ;shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinatorStatus.exe" "" "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\running.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Server Status.lnk" "$INSTDIR\ibaDatCoordinatorStatus.exe" "" 
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" 
   CreateDirectory "$APPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$APPDATA\iba\ibaDatCoordinator"
 
@@ -625,7 +615,6 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   ;MessageBox MB_OK "Debug in DATCOOR_CLIENT(3)"
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaFilesLiteInstall.exe"
   File "..\Dependencies\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
   File "..\Dependencies\DotNetMagic2005.DLL"
@@ -634,12 +623,12 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\msvcp100.dll"  
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
-  File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"
+  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
 ;HD-stuff
+  File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
@@ -650,13 +639,12 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   
-  File "..\ibaDatCoordinator\bin\Release\Interop.ibaFilesLiteLib.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
   File "..\InstallFiles\Protected\DatCoUtil.dll"
-  File "..\ibaDatCoordinator\Resources\default.ico"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "versions_dat.htm"
+  File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   
   ; runtime
@@ -677,10 +665,6 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
 
-  ;Install ibaFiles
-  DetailPrint $(TEXT_IBAFILES_INSTALL)
-  nsExec::Exec '"$INSTDIR\ibaFilesLiteInstall.exe" /S'
-
   SetOutPath "$INSTDIR"
   ;Create uninstall shortcut
 
@@ -693,7 +677,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   ${EndIf}
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service" "$INSTDIR\default.ico"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service"
   CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
@@ -723,6 +707,29 @@ Section -Post
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_UNINSTALL).lnk" "$INSTDIR\uninst.exe"
+  
+  ;Refresh icons
+  DetailPrint "Clearing icon cache"
+  ${If} $Is64Bit == 1
+    ${DisableX64FSRedirection}
+    ${If} $WinVer == "10"
+    ${OrIf} $WinVer == "2016"
+    ${OrIf} $WinVer == "2019"
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${EndIf}
+    ${EnableX64FSRedirection}
+  ${Else}
+    ${If} $WinVer == "10"
+    ${OrIf} $WinVer == "2016"
+    ${OrIf} $WinVer == "2019"
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${EndIf}
+  ${EndIf}
+  
   nsSCMEx::Unload
 SectionEnd
 
@@ -858,7 +865,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
-  Delete "$INSTDIR\ibaFilesLiteDotNet.dll"
+  Delete "$INSTDIR\ibaFilesV7LiteDotNet.dll"
   
   Delete "$INSTDIR\hdCore.dll"
   Delete "$INSTDIR\hdClient.dll"
@@ -877,16 +884,13 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DevExpress.Utils.v16.1.dll"
   Delete "$INSTDIR\DevExpress.Sparkline.v16.1.Core.dll"
   Delete "$INSTDIR\DevExpress.Printing.v16.1.Core.dll"
-  
-  Delete "$INSTDIR\Interop.ibaFilesLiteLib.dll"
+
   Delete "$INSTDIR\ICSharpCode.TextEditor.dll"
   Delete "$INSTDIR\ICSharpCode.SharpZipLib.dll"
   Delete "$INSTDIR\msvcr100.dll"
   Delete "$INSTDIR\msvcp100.dll"
-  Delete "$INSTDIR\ibaFilesLiteInstall.exe"
-  Delete "$INSTDIR\default.ico"
-  Delete "$INSTDIR\default.ico"
   Delete "$INSTDIR\versions_dat.htm"
+  Delete "$INSTDIR\LicenseInformation.txt"
   Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
@@ -955,8 +959,6 @@ Function un.UninstallService
   IfErrors 0 +2
     Call un.waitAndDelete
 
-  Delete "$INSTDIR\running.ico"
-  Delete "$INSTDIR\DatCo_SrvStat_Icon_pure.ico"
   
   ;Remove server status from autorun
   DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "ibaDatCoordinator service status"
@@ -1226,13 +1228,12 @@ LangString TEXT_INSTALLSERVICE            ${LANG_ENGLISH} "Install ibaDatCoordin
 LangString TEXT_INSTALLSTANDALONE         ${LANG_ENGLISH} "Install ibaDatCoordinator as stand alone executable"
 LangString TEXT_INSTALLCLIENT         ${LANG_ENGLISH} "Install ibaDatCoordinator client only"
 LangString TEXT_LOG_FILES                 ${LANG_ENGLISH} "log files"
-LangString TEXT_IBAFILES_INSTALL          ${LANG_ENGLISH} "Installing ibaFiles"
 LangString TEXT_CLOSE_STATUS              ${LANG_ENGLISH} "ibaDatCoordinator server status is running. Please close the ibaDatCoordinator server status program before continuing the installation."
 LangString TEXT_STATUS_STOP               ${LANG_ENGLISH} "Stopping ibaDatCoordinator server status"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_ENGLISH} "Configuring firewall"
 LangString TEXT_CLOSE_CLIENT              ${LANG_ENGLISH} "ibaDatCoordinator client is running. Please close the ibaDatCoordinator client before continuing the installation."
 LangString TEXT_UPDATEINFO				  ${LANG_ENGLISH} "Please register here for regular information about product updates"
-LangString TEXT_UPDATEINFO_LINK			  ${LANG_ENGLISH} "https://www.iba-ag.com/en/germany/products/subscribe-to-regular-product-information/"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_ENGLISH} "https://www.iba-ag.com/en/subscribe-to-regular-product-information/"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
@@ -1267,13 +1268,12 @@ LangString TEXT_INSTALLSERVICE            ${LANG_GERMAN} "ibaDatCoordinator Serv
 LangString TEXT_INSTALLSTANDALONE         ${LANG_GERMAN} "ibaDatCoordinator nur als Programm installieren"
 LangString TEXT_INSTALLCLIENT         	  ${LANG_GERMAN} "Nur ibaDatCoordinator Client installieren"
 LangString TEXT_LOG_FILES                 ${LANG_GERMAN} "Log Dateien"
-LangString TEXT_IBAFILES_INSTALL          ${LANG_GERMAN}  "ibaFiles wird installiert"
 LangString TEXT_CLOSE_STATUS              ${LANG_GERMAN}  "ibaDatCoordinator Server Status läuft. Bitte schließen Sie das ibaDatCoordinator Server Status-Programm, bevor Sie mit der Installation fortfahren."
 LangString TEXT_STATUS_STOP               ${LANG_GERMAN}  "ibaDatCoordinator Server Status wird angehalten"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_GERMAN}  "Firewall wird konfiguriert"
 LangString TEXT_CLOSE_CLIENT              ${LANG_GERMAN}  "Der ibaDatCoordinator-Client läuft. Bitte schließen Sie den ibaDatCoordinator-Client, bevor Sie mit der Installation fortfahren."
 LangString TEXT_UPDATEINFO				  ${LANG_GERMAN} "Registrieren Sie sich hier für regelmäßige Informationen über Produkt-Updates"
-LangString TEXT_UPDATEINFO_LINK			  ${LANG_GERMAN} "https://www.iba-ag.com/de/germany/produkte/anmeldung-zu-regelmaessigen-produkt-informationen/"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_GERMAN} "https://www.iba-ag.com/de/anmeldung-zu-regelmaessigen-produkt-informationen/"
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
@@ -1308,10 +1308,9 @@ LangString TEXT_INSTALLSERVICE            ${LANG_FRENCH} "Installer  l'ibaDatCoo
 LangString TEXT_INSTALLSTANDALONE         ${LANG_FRENCH} "Installer l'ibaDatCoordinator comme exécutable autonome"
 LangString TEXT_INSTALLCLIENT          ${LANG_FRENCH} "Installer  l'ibaDatCoordinator comme client seulement"
 LangString TEXT_LOG_FILES                 ${LANG_FRENCH} "fichiers log"
-LangString TEXT_IBAFILES_INSTALL          ${LANG_FRENCH}  "Installation de ibaFiles"
 LangString TEXT_CLOSE_STATUS              ${LANG_FRENCH}  "Le logiciel état de serveur ibaDatCoordinator est en cours d'exécution. Veuillez fermer le logiciel état de serveur ibaDatCoordinator avant de continuer l'installation."
 LangString TEXT_STATUS_STOP               ${LANG_FRENCH}  "Arrêt du logiciel état de serveur ibaDatCoordinator" 
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_FRENCH}  "Configuration du pare-fue"
 LangString TEXT_CLOSE_CLIENT              ${LANG_FRENCH}  "Le client d'ibaDatCoordinator est en cours d'exécution. Veuillez fermer le client d'ibaDatCoordinator avant de continuer l'installation."
 LangString TEXT_UPDATEINFO				  ${LANG_FRENCH} "Please register here for regular information about product updates"
-LangString TEXT_UPDATEINFO_LINK			  ${LANG_FRENCH} "https://www.iba-ag.com/en/germany/products/subscribe-to-regular-product-information/"
+LangString TEXT_UPDATEINFO_LINK			  ${LANG_FRENCH} "https://www.iba-ag.com/en/subscribe-to-regular-product-information/"

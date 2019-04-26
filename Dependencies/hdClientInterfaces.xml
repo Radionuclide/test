@@ -70,6 +70,11 @@
             Is the channel valid?
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdChannel.ErrorCode">
+            <summary>
+            Did an error occur?
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdChannel.Active">
             <summary>
             Is the channel being written?
@@ -913,6 +918,14 @@
             <remarks>
             User info (<see cref="P:iba.HD.Client.Interfaces.IHdReader.UserLoginInfo"/>) is ignored if user management is disabled or not supported on server
             </remarks>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.ConnectEx(System.String,System.Int32)">
+            <summary>
+            Connect to server located on given host and port
+            </summary>
+            <param name="serverHost"></param>
+            <param name="serverPort"></param>
+            <returns>Result of connection attempt</returns>
         </member>
         <member name="E:iba.HD.Client.Interfaces.IHdReader.ConnectionChanged">
             <summary>

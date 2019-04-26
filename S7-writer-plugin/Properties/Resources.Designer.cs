@@ -70,21 +70,21 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Analyzer_001 {
-            get {
-                object obj = ResourceManager.GetObject("Analyzer_001", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not evaluate expression for operand {0}.
         /// </summary>
         internal static string BadEvaluate {
             get {
                 return ResourceManager.GetString("BadEvaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaAnalyzer {
+            get {
+                object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

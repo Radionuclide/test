@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,26 @@ namespace iba.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap about_background {
+            get {
+                object obj = ResourceManager.GetObject("about_background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap About_Image_80x80 {
+            get {
+                object obj = ResourceManager.GetObject("About_Image_80x80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -121,16 +141,6 @@ namespace iba.Properties {
         internal static string AnalysisFileNotFound {
             get {
                 return ResourceManager.GetString("AnalysisFileNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Analyzer_001 {
-            get {
-                object obj = ResourceManager.GetObject("Analyzer_001", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -537,6 +547,16 @@ namespace iba.Properties {
         internal static string cutTitle {
             get {
                 return ResourceManager.GetString("cutTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon dat_file {
+            get {
+                object obj = ResourceManager.GetObject("dat_file", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -1118,6 +1138,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaAnalyzer {
+            get {
+                object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified ibaAnalyzer executable does not exist: .
         /// </summary>
         internal static string IbaAnalyzerExecutableDoesNotExist {
@@ -1150,6 +1180,26 @@ namespace iba.Properties {
         internal static string IbaAnalyzerUndeterminedError {
             get {
                 return ResourceManager.GetString("IbaAnalyzerUndeterminedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaDatCoordinator {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ibaDatCoordinator_server {
+            get {
+                object obj = ResourceManager.GetObject("ibaDatCoordinator_server", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -2033,7 +2083,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Splitter task succesfully compled.
+        ///   Looks up a localized string similar to Splitter task succesfully completed.
         /// </summary>
         internal static string logSplitSuccess {
             get {
@@ -2465,6 +2515,33 @@ namespace iba.Properties {
         internal static string Noaccess5 {
             get {
                 return ResourceManager.GetString("Noaccess5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is password protected and no password was provided..
+        /// </summary>
+        internal static string Noaccess6 {
+            get {
+                return ResourceManager.GetString("Noaccess6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is password protected and an incorrect password was provided..
+        /// </summary>
+        internal static string Noaccess7 {
+            get {
+                return ResourceManager.GetString("Noaccess7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No server connected.
+        /// </summary>
+        internal static string NoHDServerConnected {
+            get {
+                return ResourceManager.GetString("NoHDServerConnected", resourceCulture);
             }
         }
         

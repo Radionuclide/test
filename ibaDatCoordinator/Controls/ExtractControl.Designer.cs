@@ -42,6 +42,7 @@ namespace iba.Controls
             this.m_panelFile = new System.Windows.Forms.Panel();
             this.m_groupBoxFileType = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_rbParquet = new System.Windows.Forms.RadioButton();
             this.m_rbTDMS = new System.Windows.Forms.RadioButton();
             this.m_rbComtrade = new System.Windows.Forms.RadioButton();
             this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
@@ -87,7 +88,7 @@ namespace iba.Controls
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.Analyzer_001;
+            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -147,11 +148,19 @@ namespace iba.Controls
             // tableLayoutPanel4
             // 
             resources.ApplyResources(this.tableLayoutPanel4, "tableLayoutPanel4");
+            this.tableLayoutPanel4.Controls.Add(this.m_rbParquet, 4, 0);
             this.tableLayoutPanel4.Controls.Add(this.m_rbTDMS, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.m_rbTextFile, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.m_rbComtrade, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.m_rbBinaryFile, 0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            // 
+            // m_rbParquet
+            // 
+            resources.ApplyResources(this.m_rbParquet, "m_rbParquet");
+            this.m_rbParquet.Name = "m_rbParquet";
+            this.m_rbParquet.TabStop = true;
+            this.m_rbParquet.UseVisualStyleBackColor = true;
             // 
             // m_rbTDMS
             // 
@@ -248,7 +257,6 @@ namespace iba.Controls
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.m_monitorGroup);
-            this.MinimumSize = new System.Drawing.Size(100, 646);
             this.Name = "ExtractControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -290,6 +298,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RadioButton m_rbComtrade;
         private System.Windows.Forms.RadioButton m_rbTDMS;
-
+        private System.Windows.Forms.RadioButton m_rbParquet;
     }
 }

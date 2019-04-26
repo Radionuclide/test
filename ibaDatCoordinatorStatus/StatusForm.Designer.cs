@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusForm));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_btnClient = new System.Windows.Forms.Button();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
@@ -38,7 +39,6 @@
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.m_gbApp = new System.Windows.Forms.GroupBox();
-            this.m_btnClient = new System.Windows.Forms.Button();
             this.m_btChange = new System.Windows.Forms.Button();
             this.m_tbPort = new System.Windows.Forms.TextBox();
             this.m_btnRestart = new System.Windows.Forms.Button();
@@ -55,6 +55,15 @@
             this.groupBox5.SuspendLayout();
             this.m_gbApp.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // m_btnClient
+            // 
+            resources.ApplyResources(this.m_btnClient, "m_btnClient");
+            this.m_btnClient.Image = global::iba.DatCoordinator.Status.Properties.Resources.ibaDatCoordinator;
+            this.m_btnClient.Name = "m_btnClient";
+            this.m_toolTip.SetToolTip(this.m_btnClient, resources.GetString("m_btnClient.ToolTip"));
+            this.m_btnClient.UseVisualStyleBackColor = true;
+            this.m_btnClient.Click += new System.EventHandler(this.m_btnClient_Click);
             // 
             // groupBox5
             // 
@@ -82,7 +91,6 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::iba.DatCoordinator.Status.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -110,15 +118,6 @@
             this.m_gbApp.Controls.Add(this.m_cbAutoStart);
             this.m_gbApp.Name = "m_gbApp";
             this.m_gbApp.TabStop = false;
-            // 
-            // m_btnClient
-            // 
-            resources.ApplyResources(this.m_btnClient, "m_btnClient");
-            this.m_btnClient.Image = global::iba.DatCoordinator.Status.Properties.Resources._default;
-            this.m_btnClient.Name = "m_btnClient";
-            this.m_toolTip.SetToolTip(this.m_btnClient, resources.GetString("m_btnClient.ToolTip"));
-            this.m_btnClient.UseVisualStyleBackColor = true;
-            this.m_btnClient.Click += new System.EventHandler(this.m_btnClient_Click);
             // 
             // m_btChange
             // 

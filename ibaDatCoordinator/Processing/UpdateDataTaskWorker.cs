@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using iba.Data;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 using System.Data.SqlClient;
 using System.Data.Common;
 using System.Data.OleDb;
@@ -32,7 +32,7 @@ namespace iba.Processing
             //second, initialize ibaFiles
             try
             {
-                m_ibaFileUpdater = new IbaFileClass();
+                m_ibaFileUpdater = new IbaFileReader();
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace iba.Processing
             return "success";
         }
 
-        private IbaFile m_ibaFileUpdater;
+        private IbaFileReader m_ibaFileUpdater;
         private DbConnection m_connection;
 
         private DateTime m_created;
@@ -172,7 +172,6 @@ namespace iba.Processing
             m_bFileOverWritten = false;
             m_fatalError = false;
             string tempFilePath = Path.Combine(Path.GetTempPath(),"updatedatatask{" + m_udt.Guid.ToString() + "}.dat");
-
             try
             {
                 File.Copy(sourceFile, tempFilePath,true);
@@ -259,7 +258,8 @@ namespace iba.Processing
             {
                 try
                 {
-                    m_ibaFileUpdater.OpenForUpdate(tempFilePath);
+                    string filePass = m_udt.ParentConfigurationData.FileEncryptionPassword;
+                    m_ibaFileUpdater.OpenForUpdate(tempFilePath, filePass);
                 }
                 catch (Exception ex)
                 {
@@ -270,11 +270,12 @@ namespace iba.Processing
                 try
                 {
                     foreach (KeyValuePair<string, string> pair in newInfoFields)
-                        m_ibaFileUpdater.WriteInfoField(pair.Key, pair.Value);
-                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_TasksDone", "");
-                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_times_tried", "0");
-                    m_ibaFileUpdater.WriteInfoField("$DATCOOR_OutputFiles", "");
+                        m_ibaFileUpdater.InfoFields[pair.Key] = pair.Value;
+
+                    m_ibaFileUpdater.InfoFields["$DATCOOR_status"] = "readyToProcess";
+                    m_ibaFileUpdater.InfoFields["$DATCOOR_TasksDone"] = "";
+                    m_ibaFileUpdater.InfoFields["$DATCOOR_times_tried"] = "0";
+                    m_ibaFileUpdater.InfoFields["$DATCOOR_OutputFiles"] = "";
                     m_ibaFileUpdater.Close();
                 }
                 catch (Exception ex)
@@ -335,7 +336,7 @@ namespace iba.Processing
         {
             if (m_ibaFileUpdater != null)
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaFileUpdater);
+                m_ibaFileUpdater.Dispose();
                 m_ibaFileUpdater = null;
 
             }

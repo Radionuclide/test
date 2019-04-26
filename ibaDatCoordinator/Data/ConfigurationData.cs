@@ -158,6 +158,23 @@ namespace iba.Data
             set { m_pass = Crypt.Decrypt(value); }
         }
 
+        private string m_fileEncryptionPass;
+
+        [XmlIgnore]
+        public string FileEncryptionPassword
+        {
+            get { return m_fileEncryptionPass; }
+            set { m_fileEncryptionPass = value; }
+        }
+
+        public string FileEncryptionPasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_fileEncryptionPass); }
+            set { m_fileEncryptionPass = Crypt.Decrypt(value); }
+        }
+
+
+
         private string m_username;
         public string Username
         {
@@ -333,6 +350,7 @@ namespace iba.Data
             m_guid = Guid.NewGuid();
             m_bLimitTimesTried = false;
             m_nrTimes = 10;
+            m_fileEncryptionPass = "";
         }
 
         public void relinkChildData()
@@ -370,6 +388,7 @@ namespace iba.Data
             cd.m_bLimitTimesTried = m_bLimitTimesTried;
             cd.m_nrTimes = m_nrTimes;
             cd.m_treePosition = m_treePosition;
+            cd.m_fileEncryptionPass = m_fileEncryptionPass;
             return cd;
         }
 
@@ -402,12 +421,13 @@ namespace iba.Data
                 other.m_notify.IsSame(m_notify) &&
                 other.m_bRescanEnabled == m_bRescanEnabled &&
                 other.m_bReprocessErrors == m_bReprocessErrors &&
-                    //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
+                //other.m_datdirectoryUNC == m_datdirectoryUNC && //don't care about this one
                 other.m_username == m_username &&
                 other.m_pass == m_pass &&
                 other.m_bLimitTimesTried == m_bLimitTimesTried &&
-                    //other.m_treePosition == m_treePosition; //don't care about this one
-                other.m_nrTimes == m_nrTimes;
+                //other.m_treePosition == m_treePosition && //don't care about this one
+                other.m_nrTimes == m_nrTimes &&
+                other.m_fileEncryptionPass == m_fileEncryptionPass;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()
@@ -475,7 +495,15 @@ namespace iba.Data
             {
                 IniParser ini = new IniParser(hdqfile);
                 if (!ini.Read()) return hdqfile;
-                string desc =  ini.Sections["HDQ file"]["store"] + " " + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
+
+                string eventName = "";
+                string comment = ini.Sections["HDQ file"]["comment"];
+                if (!string.IsNullOrWhiteSpace(comment) && comment.StartsWith("EVENTNAME:"))
+                    eventName = comment.Substring("EVENTNAME:".Length);
+                if (!string.IsNullOrWhiteSpace(eventName))
+                    eventName += " "; 
+
+                string desc =  ini.Sections["HDQ file"]["store"] + " " + eventName + ini.Sections["HDQ file"]["starttime"] + " - " + ini.Sections["HDQ file"]["stoptime"];
                 lastHDQDescription = desc;
                 lastHDQFile = hdqfile;
                 return desc;
@@ -493,22 +521,28 @@ namespace iba.Data
             GenerateHDQFile(startTime, stopTime, path);
         }
 
-        public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path)
+        public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path, string comment = "")
         {
             string lServer = string.Empty;
             int lPort = -1;
             string[] lStores = new string[0];
+            bool bPreferredTimeBaseIsAuto = true;
+            TimeSpan lPreferredTimeBase = new TimeSpan(0);
             if (JobType == JobTypeEnum.Event)
             {
                 lServer = m_eventData.HDServer;
                 lPort = m_eventData.HDPort;
                 lStores = m_eventData.HDStores;
+                bPreferredTimeBaseIsAuto = m_eventData.PreferredTimeBaseIsAuto;
+                lPreferredTimeBase = m_eventData.PreferredTimeBase;
             }
             else if (JobType == JobTypeEnum.Scheduled)
             {
                 lServer = ScheduleData.HDServer;
                 lPort = ScheduleData.HDPort;
                 lStores = ScheduleData.HDStores;
+                bPreferredTimeBaseIsAuto = ScheduleData.PreferredTimeBaseIsAuto;
+                lPreferredTimeBase = ScheduleData.PreferredTimeBase;
             }
 
             string dir = Path.GetDirectoryName(path);
@@ -530,9 +564,11 @@ namespace iba.Data
                     sw.WriteLine("starttime=" + temp);
                     temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("stoptime=" + temp);
+                    if (!string.IsNullOrWhiteSpace(comment))
+                        sw.WriteLine("comment=" + comment);
 
-                    if (JobType == JobTypeEnum.Scheduled && !ScheduleData.PreferredTimeBaseIsAuto)
-                        sw.WriteLine("timebase=" + ScheduleData.PreferredTimeBase.TotalSeconds.ToString());
+                    if (!bPreferredTimeBaseIsAuto)
+                        sw.WriteLine("timebase=" + lPreferredTimeBase.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     else
                     {
                         long ms = 10000; //10000 * 100 nanosec = 1 ms
@@ -549,7 +585,7 @@ namespace iba.Data
                                 break;
                             }
                         }
-                        sw.WriteLine("timebase=" + tb.TotalSeconds.ToString());
+                        sw.WriteLine("timebase=" + tb.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
             }

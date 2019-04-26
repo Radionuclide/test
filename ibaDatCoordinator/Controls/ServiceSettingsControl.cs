@@ -48,7 +48,6 @@ namespace iba.Controls
             }
             else
             {
-                ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
                 //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
                 m_ceManager = new CollapsibleElementManager(this);
                 CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };

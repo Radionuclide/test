@@ -13,5 +13,6 @@ namespace iba.Plugins
         string Password { get; set; }
         bool SubDirs { get; set; }
         string Username { get; set; }
+        string FileEncryptionPassword { get; }
     }
 }

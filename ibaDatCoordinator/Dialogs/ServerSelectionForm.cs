@@ -60,6 +60,7 @@ namespace iba.Dialogs
             // Required for Windows Form Designer support
             //
             InitializeComponent();
+            this.Icon = iba.Properties.Resources.ibaDatCoordinator_server;
             LoadMRUList();
 
             ckAutoConnect.Visible = false;

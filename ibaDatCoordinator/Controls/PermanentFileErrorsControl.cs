@@ -406,7 +406,7 @@ namespace iba.Controls
             if(res != DialogResult.Yes)
                 return;
             DetermineCheckedFiles();
-            using (RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_checkedFiles))
+            using (RemoveMarkingsDialog dlg = new RemoveMarkingsDialog(m_cd.DatDirectoryUNC, m_cd.Username, m_cd.Password, m_cd.FileEncryptionPassword, m_checkedFiles))
             {
                 if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
                     dlg.Text = iba.Properties.Resources.UnmarkDialogTitleScheduled;

@@ -22,7 +22,7 @@ namespace iba.Controls
             InitializeComponent();
             m_oneTimeJob = oneTimeJob;
 
-            m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.standalone.Handle);
+            m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.dat_file.Handle);
 
             if(oneTimeJob) //make this a onetime job dialog
             {
@@ -169,6 +169,7 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             m_cbDetectNewFiles.Checked = m_data.DetectNewFiles;
+            m_tbFilePwd.Text = m_data.FileEncryptionPassword;
         }
 
 
@@ -188,6 +189,7 @@ namespace iba.Controls
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
             m_data.DetectNewFiles = m_cbDetectNewFiles.Checked;
+            m_data.FileEncryptionPassword = m_tbFilePwd.Text;
         }
 
         public void LeaveCleanup() {}
@@ -565,5 +567,26 @@ namespace iba.Controls
                 }
             }
         }
+
+        private void btnShowPwd_MouseDown(object sender, MouseEventArgs e)
+        {
+            m_tbPass.UseSystemPasswordChar = false;
+        }
+
+        private void btnShowPwd_MouseUp(object sender, MouseEventArgs e)
+        {
+            m_tbPass.UseSystemPasswordChar = true;
+        }
+
+        private void btnShowFilePwd_MouseDown(object sender, MouseEventArgs e)
+        {
+            m_tbFilePwd.UseSystemPasswordChar = false;
+        }
+
+        private void btnShowFilePwd_MouseUp(object sender, MouseEventArgs e)
+        {
+            m_tbFilePwd.UseSystemPasswordChar = true;
+        }
+
     }
 }

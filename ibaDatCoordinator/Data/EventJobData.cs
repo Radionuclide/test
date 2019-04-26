@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iba.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,28 @@ namespace iba.Data
             set { m_HDPort = value; }
         }
 
+        private string m_HDUsername;
+        public string HDUsername
+        {
+            get { return m_HDUsername; }
+            set { m_HDUsername = value; }
+        }
+
+        private string m_HDPassword;
+
+        [XmlIgnore]
+        public string HDPassword
+        {
+            get { return m_HDPassword; }
+            set { m_HDPassword = value; }
+        }
+
+        public string HDPasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_HDPassword); }
+            set { m_HDPassword = Crypt.Decrypt(value); }
+        }
+
         private string[] m_HDStores;
         public string[] HDStores
         {
@@ -61,12 +84,16 @@ namespace iba.Data
             m_HDPort = 9180;
             m_HDStores = new string[] { "" };
             m_HDServer = "";
+            m_HDUsername = "";
+            m_HDPassword = "";
             m_rangeCenter = (int)EventJobRangeCenter.Incoming;
             m_maxTriggerRange = TimeSpan.FromHours(1.0);
             m_preTriggerRange = TimeSpan.Zero;
             m_postTriggerRange = TimeSpan.Zero;
             m_enablePreTrigger = false;
             m_enablePostTrigger = false;
+            m_preferredTimeBaseTicks = 0;
+            m_bPreferredTimeBaseIsAuto = true;
         }
 
         private int m_rangeCenter;
@@ -75,6 +102,11 @@ namespace iba.Data
         {
             get { return (EventJobRangeCenter)m_rangeCenter; }
             set { m_rangeCenter = (int)value; }
+        }
+        public int RangeCenterInt
+        {
+            get { return m_rangeCenter; }
+            set { m_rangeCenter = value; }
         }
 
         private bool m_enablePreTrigger;
@@ -130,6 +162,27 @@ namespace iba.Data
             set { m_maxTriggerRange = TimeSpan.FromTicks(value); }
         }
 
+        private long m_preferredTimeBaseTicks; //in ticks
+        public long PreferredTimeBaseTicks
+        {
+            get { return m_preferredTimeBaseTicks; }
+            set { m_preferredTimeBaseTicks = value; }
+        }
+
+        [XmlIgnore]
+        public System.TimeSpan PreferredTimeBase
+        {
+            get { return TimeSpan.FromTicks(m_preferredTimeBaseTicks); }
+            set { m_preferredTimeBaseTicks = value.Ticks; }
+        }
+
+        private bool m_bPreferredTimeBaseIsAuto;
+        public bool PreferredTimeBaseIsAuto
+        {
+            get { return m_bPreferredTimeBaseIsAuto; }
+            set { m_bPreferredTimeBaseIsAuto = value; }
+        }
+
         public object Clone()
         {
             EventJobData nejd = new EventJobData();
@@ -137,12 +190,16 @@ namespace iba.Data
             nejd.HDServer = m_HDServer;
             nejd.m_HDStores = (string[])m_HDStores.Clone();
             nejd.m_HDPort = m_HDPort;
+            nejd.m_HDUsername = m_HDUsername;
+            nejd.m_HDPassword = m_HDPassword;
             nejd.m_rangeCenter = m_rangeCenter;
             nejd.m_maxTriggerRange = m_maxTriggerRange;
             nejd.m_preTriggerRange = m_preTriggerRange;
             nejd.m_postTriggerRange = m_postTriggerRange;
             nejd.m_enablePreTrigger = m_enablePreTrigger;
             nejd.m_enablePostTrigger = m_enablePostTrigger;
+            nejd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
+            nejd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
             return nejd;
         }
 
@@ -150,17 +207,27 @@ namespace iba.Data
 
         public bool IsSame(EventJobData other)
         {
-            return
-            other.m_eventIDs.SequenceEqual(m_eventIDs) &&
+            bool res = other.m_eventIDs.SequenceEqual(m_eventIDs) &&
             other.m_HDServer == m_HDServer &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
+            other.m_HDUsername == m_HDUsername &&
+            other.m_HDPassword == m_HDPassword &&
             other.m_rangeCenter == m_rangeCenter &&
             other.m_maxTriggerRange == m_maxTriggerRange &&
             other.m_preTriggerRange == m_preTriggerRange &&
             other.m_postTriggerRange == m_postTriggerRange &&
             other.m_enablePreTrigger == m_enablePreTrigger &&
-            other.m_enablePostTrigger == m_enablePostTrigger;
+            other.m_enablePostTrigger == m_enablePostTrigger &&
+            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
+
+            if (!res)
+                return res;
+
+            if (!m_bPreferredTimeBaseIsAuto) //in case of auto, ticks is not compared
+                res = res && other.m_preferredTimeBaseTicks == m_preferredTimeBaseTicks;
+
+            return res;
         }
     }
 }

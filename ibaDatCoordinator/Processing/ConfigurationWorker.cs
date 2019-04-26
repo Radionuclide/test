@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using iba.Data;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 using iba.Utility;
 using iba.Plugins;
 using System.Windows.Forms;
@@ -270,7 +270,7 @@ namespace iba.Processing
                     }
 
                     if (m_toUpdate.JobType == ConfigurationData.JobTypeEnum.Event)
-                        m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData);
+                        m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData, m_toUpdate.Name);
 
                     if (m_sd.Started)
                     {
@@ -334,10 +334,10 @@ namespace iba.Processing
                         {
                             ExtractData.ExtractFileType[] indexToType = 
                                     {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT, 
-                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS};
+                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS,ExtractData.ExtractFileType.PARQUET};
                             ed.m_bExternalVideoResultIsCached = false;
                             int index = ExtractTaskWorker.FileTypeAsInt(ed);
-                            if (index >= 0 && index < 4 && indexToType[index] != ed.FileType)
+                            if (index >= 0 && index < 5 && indexToType[index] != ed.FileType)
                             {
                                 string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
                                 Log(Logging.Level.Warning, errorMessage, string.Empty, task);
@@ -648,7 +648,7 @@ namespace iba.Processing
                     else if ( m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                     {
                         m_hdEventMonitor = new HDEventMonitor();
-                        m_hdEventMonitor.UpdateConfiguration(m_cd.EventData);
+                        m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }
@@ -1582,8 +1582,10 @@ namespace iba.Processing
                 fs.Read(myBytes, 0, 4);
                 System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
                 string str = enc.GetString(myBytes);
-                if (str != "PDA1" && str != "PDA2" && str != "QDR1")
+                if (str != "PDA1" && str != "PDA2" && str != "PDA3" && str != "QDR1")
                     return true;
+                if (str != "PDA3")
+                    return false; //don't test further for 3, header is different...
                 fs.Read(myBytes, 0, 4);
                 fs.Read(myBytes, 0, 4);
                 uint offset = System.BitConverter.ToUInt32(myBytes, 0);
@@ -1591,8 +1593,6 @@ namespace iba.Processing
                     fs.Seek(offset, SeekOrigin.Begin);
                 else
                 {
-                    fs.Close();
-                    fs.Dispose();
                     return true;
                 }
 
@@ -1622,15 +1622,16 @@ namespace iba.Processing
                         }
                     }
                 }
-                fs.Close();
-                fs.Dispose();
                 return succes;
             }
             catch
             {
+                return true; // when failing in this stage it is not a PDA file, ignore this file
+            }
+            finally
+            {
                 fs.Close();
                 fs.Dispose();
-                return true; // when failing in this stage it is not a PDA file, ignore this file
             }
         }
 
@@ -1885,11 +1886,11 @@ namespace iba.Processing
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 Nullable<DateTime> time = null;
                 try
                 {
-                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename,m_cd.FileEncryptionPassword);
                     try
                     {
                         time = File.GetLastWriteTime(filename);
@@ -1934,6 +1935,14 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
+                catch (System.UnauthorizedAccessException ex)
+                {
+                    if (String.IsNullOrEmpty(m_cd.FileEncryptionPassword))
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess6, filename);
+                    else
+                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess7, filename);
+                    return DatFileStatus.State.NO_ACCESS;
+                }
                 catch (Exception)
                 {
                     //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
@@ -1947,20 +1956,22 @@ namespace iba.Processing
                     string status = "";
                     try
                     {
-                        status = ibaDatFile.QueryInfoByName("$DATCOOR_status");
-                        if (string.IsNullOrEmpty(status))
+                        if (!ibaDatFile.InfoFields.ContainsKey("$DATCOOR_status"))
                             throw new Exception("no info field present");
+                        else
+                            status = ibaDatFile.InfoFields["$DATCOOR_status"];
                     }
                     catch //old way
                     {
-                        status = ibaDatFile.QueryInfoByName("status");
-                        if (string.IsNullOrEmpty(status))
+                        if (!ibaDatFile.InfoFields.ContainsKey("status"))
                             throw new Exception("no info field present");
+                        else
+                            status = ibaDatFile.InfoFields["status"];
                     }
                     if (status == "processed")
                     {
                         ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        ibaDatFile.Dispose();
                         try{if (time != null) File.SetLastWriteTime(filename, time.Value);}catch{}
                         return DatFileStatus.State.COMPLETED_SUCCESFULY;
                     }
@@ -1969,7 +1980,7 @@ namespace iba.Processing
                         int timesProcessed = 1;
                         try
                         {
-                            string timesString = ibaDatFile.QueryInfoByName("$DATCOOR_times_tried");
+                            string timesString = ibaDatFile.InfoFields["$DATCOOR_times_tried"];
                             timesProcessed = int.Parse(timesString);
                         }
                         catch
@@ -1986,20 +1997,25 @@ namespace iba.Processing
                         {
                             try
                             {
-                                guidstring = ibaDatFile.QueryInfoByName("$DATCOOR_TasksDone");
-                                if (string.IsNullOrEmpty(guidstring))
+                                if (!ibaDatFile.InfoFields.ContainsKey("$DATCOOR_TasksDone") || String.IsNullOrEmpty(ibaDatFile.InfoFields["$DATCOOR_TasksDone"]))
                                     throw new Exception("no info field present");
+                                guidstring = ibaDatFile.InfoFields["$DATCOOR_TasksDone"];
                                 for (int index = 1; true; index++)
                                 {
-                                    string t = ibaDatFile.QueryInfoByName("$DATCOOR_TasksDone_"+index.ToString());
-                                    if (string.IsNullOrEmpty(t)) break;
-                                    guidstring += t;
+                                    string key = "$DATCOOR_TasksDone_" + index.ToString();
+                                    if (!ibaDatFile.InfoFields.ContainsKey(key) || String.IsNullOrEmpty(ibaDatFile.InfoFields[key]))
+                                        break;
+                                    guidstring += ibaDatFile.InfoFields[key];
                                 }
                             }
                             catch //old way
                             {
-                                guidstring = ibaDatFile.QueryInfoByName("TasksDone");
+                                guidstring = ibaDatFile.InfoFields["TasksDone"];
                             }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+
                         }
                         catch (ArgumentException)
                         {
@@ -2021,17 +2037,21 @@ namespace iba.Processing
                         string outputfilesString = "";
                         try
                         {
-                            outputfilesString = ibaDatFile.QueryInfoByName("$DATCOOR_OutputFiles");
+                            outputfilesString = ibaDatFile.InfoFields["$DATCOOR_OutputFiles"];
                             for (int index = 1; true; index++)
                             {
-                                string t = ibaDatFile.QueryInfoByName("$DATCOOR_OutputFiles_" + index.ToString());
-                                if (string.IsNullOrEmpty(t)) break;
-                                outputfilesString += t;
+                                string key = "$DATCOOR_OutputFiles_" + index.ToString();
+                                if (!ibaDatFile.InfoFields.ContainsKey(key) || String.IsNullOrEmpty(ibaDatFile.InfoFields[key]))
+                                    break;
+                                outputfilesString += ibaDatFile.InfoFields[key];
                             }
                         }
                         catch (ArgumentException)
                         {
                         }
+                        catch (KeyNotFoundException)
+                        {
+                        }                        
                         catch (Exception) //general exception
                         {
                             Log(Logging.Level.Exception, iba.Properties.Resources.ReadStatusError, filename);
@@ -2073,7 +2093,7 @@ namespace iba.Processing
                             }
                         }
                         ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        ibaDatFile.Dispose();
                         if (m_cd.LimitTimesTried && timesProcessed >= m_cd.NrTryTimes)
                         {
                             try { if (time != null) File.SetLastWriteTime(filename, time.Value); }
@@ -2093,7 +2113,7 @@ namespace iba.Processing
                     else if (status == "restart" || status == "readyToProcess")
                     {
                         ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        ibaDatFile.Dispose();
                         return DatFileStatus.State.NOT_STARTED;
                     }
                     else if (status == "")
@@ -2103,19 +2123,19 @@ namespace iba.Processing
                     else
                     {
                         ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        ibaDatFile.Dispose();
                         return DatFileStatus.State.COMPLETED_FAILURE;
                     }
                 }
                 catch (Exception )//no status field
                 {
                     ibaDatFile.Close();
-                    ibaDatFile.OpenForUpdate(filename);
+                    ibaDatFile.OpenForUpdate(filename, m_cd.FileEncryptionPassword);
 
                     String frames = null;
                     try
                     {
-                        frames = ibaDatFile.QueryInfoByName("frames");
+                        frames = ibaDatFile.InfoFields["frames"];
                     }
                     catch
                     {
@@ -2125,16 +2145,16 @@ namespace iba.Processing
                     {
                         try { 
                             ibaDatFile.Close();
-                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                            ibaDatFile.Dispose();
                         }
                         catch { }
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
                         //try { if (time != null) File.SetLastWriteTime(filename, time.Value); }catch {} 
                         return DatFileStatus.State.NO_ACCESS;
                     }
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
+                    ibaDatFile.InfoFields["$DATCOOR_status"] = "readyToProcess";
                     ibaDatFile.Close();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                    ibaDatFile.Dispose();
                     try 
                     { 
                         if (time != null) File.SetLastWriteTime(filename, time.Value); 
@@ -2335,29 +2355,24 @@ namespace iba.Processing
                 }
                 
                 string frames = null;
-                IbaFile ibaDatFile = new IbaFileClass();
-                ibaDatFile.Open(filename);
+                IbaFileReader ibaDatFile = new IbaFileReader();
+                ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
                 try
                 {
-                    frames = ibaDatFile.QueryInfoByName("frames");
-                    ibaDatFile.Close();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                    frames = ibaDatFile.InfoFields["frames"];
                 }
                 catch 
                 {
+                }
+                finally
+                {
+                    ibaDatFile.Close();
+                    ibaDatFile.Dispose();
                 }
 
                 //modification: do not consider an emtpy frames field as 'still busy', in QDR 1 files it could mean they are simply missing.
                 if (/*String.IsNullOrEmpty(frames)*/ frames == null || frames == "1000000000")
                 {
-                    try
-                    {
-                        ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
-                    }
-                    catch
-                    {
-                    }
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
@@ -2633,16 +2648,21 @@ namespace iba.Processing
         }
         // added by kolesnik - end
 
-        public static void ClearFields(ref IbaFile ibaDatFile)
+        public static void ClearFields(ref IbaFileReader ibaDatFile)
         {
             string[] fields = new string[] { "$DATCOOR_TasksDone", "$DATCOOR_OutputFiles" };
             for (int i = 0; i < 2; i++)
             {
-                if (!string.IsNullOrEmpty(ibaDatFile.QueryInfoByName(fields[i])))
+                if (ibaDatFile.InfoFields.ContainsKey(fields[i]) && !String.IsNullOrEmpty(ibaDatFile.InfoFields[fields[i]]))
                 {
-                    ibaDatFile.WriteInfoField(fields[i], "");
-                    for (int index = 1; !string.IsNullOrEmpty(ibaDatFile.QueryInfoByName(fields[i] + "_" + index.ToString())); index++)
-                        ibaDatFile.WriteInfoField(fields[i] + "_" + index.ToString(), "");
+                    ibaDatFile.InfoFields[fields[i]] = "";
+                    for (int index=1; true; index++)
+                    {
+                        string key = fields[i] + "_" + index.ToString();
+                        if (!ibaDatFile.InfoFields.ContainsKey(key) || String.IsNullOrEmpty(ibaDatFile.InfoFields[key]))
+                            break;
+                        ibaDatFile.InfoFields[key] = "";
+                    }
                 }
             }
         }
@@ -2652,10 +2672,10 @@ namespace iba.Processing
             Nullable<DateTime> time = null;
             try
             {
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 try
                 {
-                    ibaDatFile.OpenForUpdate(InputFile);
+                    ibaDatFile.OpenForUpdate(InputFile, m_cd.FileEncryptionPassword);
                     time = File.GetLastWriteTime(InputFile);
                 }
                 catch (Exception ex) //happens when timed out and proc has not released its resources yet
@@ -2672,13 +2692,13 @@ namespace iba.Processing
 
                 if(completeSucces)
                 {
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processed");
+                    ibaDatFile.InfoFields["$DATCOOR_status"] = "processed";
                     //empty out guid infofields
                     ClearFields(ref ibaDatFile);
                 }
                 else
                 {
-                    ibaDatFile.WriteInfoField("$DATCOOR_status", "processingfailed");
+                    ibaDatFile.InfoFields["$DATCOOR_status"] = "processingfailed";
                     //write GUIDs of those that were succesful
                     ClearFields(ref ibaDatFile);
                     lock (m_sd.DatFileStates)
@@ -2699,9 +2719,9 @@ namespace iba.Processing
                                 if (cnt >= maxCount)
                                 {
                                     if (fieldIndex == 0)
-                                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                                        ibaDatFile.InfoFields["$DATCOOR_TasksDone"] = guids;
                                     else
-                                        ibaDatFile.WriteInfoField("$DATCOOR_TasksDone_" + fieldIndex.ToString(), guids);
+                                        ibaDatFile.InfoFields["$DATCOOR_TasksDone_" + fieldIndex.ToString()] = guids;
                                     cnt = 0;
                                     guids = "";
                                     fieldIndex++;
@@ -2713,9 +2733,9 @@ namespace iba.Processing
                                     if (cntF >= maxCount)
                                     {
                                         if (fieldIndexF == 0)
-                                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                                            ibaDatFile.InfoFields["$DATCOOR_OutputFiles"] = outputfiles;
                                         else
-                                            ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles_" + fieldIndexF.ToString(), outputfiles);
+                                            ibaDatFile.InfoFields["$DATCOOR_OutputFiles_" + fieldIndexF.ToString()] = outputfiles;
                                         cntF = 0;
                                         outputfiles = "";
                                         fieldIndexF++;
@@ -2726,26 +2746,26 @@ namespace iba.Processing
                         if (cnt != 0)
                         {
                             if (fieldIndex == 0)
-                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone", guids);
+                                ibaDatFile.InfoFields["$DATCOOR_TasksDone"] = guids;
                             else
-                                ibaDatFile.WriteInfoField("$DATCOOR_TasksDone_" + fieldIndex.ToString(), guids);
+                                ibaDatFile.InfoFields["$DATCOOR_TasksDone_" + fieldIndex.ToString()] = guids;
                         }
                         if (cntF != 0)
                         {
                             if (fieldIndexF == 0)
-                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles", outputfiles);
+                                ibaDatFile.InfoFields["$DATCOOR_OutputFiles"] = outputfiles;
                             else
-                                ibaDatFile.WriteInfoField("$DATCOOR_OutputFiles_" + fieldIndexF.ToString(), outputfiles);
+                                ibaDatFile.InfoFields["$DATCOOR_OutputFiles_" + fieldIndexF.ToString()] = outputfiles;
                         }
                     }
                 }
 
                 lock(m_sd.DatFileStates)
                 {
-                    ibaDatFile.WriteInfoField("$DATCOOR_times_tried", m_sd.DatFileStates[InputFile].TimesTried.ToString());
+                    ibaDatFile.InfoFields["$DATCOOR_times_tried"] =  m_sd.DatFileStates[InputFile].TimesTried.ToString();
                 }
                 ibaDatFile.Close();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                ibaDatFile.Dispose();
             }
             catch(Exception ex)
             {
@@ -2923,7 +2943,10 @@ namespace iba.Processing
                     {
                         try
                         {
-                            if (m_needIbaAnalyzer) m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                            if (m_needIbaAnalyzer)
+                            {
+                                m_ibaAnalyzer.OpenDataFile(0, DatFile);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -3324,12 +3347,12 @@ namespace iba.Processing
                 }
                 else
                 {
-                    IbaFile ibaDatFile = new IbaFileClass();
+                    IbaFileReader ibaDatFile = new IbaFileReader();
                     string outputfile;
                     try
                     {
-                        ibaDatFile.Open(filename);
-                        outputfile = ibaDatFile.QueryInfoByName(task.InfoFieldForOutputFile);
+                        ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
+                        outputfile = ibaDatFile.InfoFields[task.InfoFieldForOutputFile];
                         if (task.InfoFieldForOutputFileLength == 0)
                         {
                             if (task.InfoFieldForOutputFileStart != 0)
@@ -3354,7 +3377,7 @@ namespace iba.Processing
                         try
                         {
                             ibaDatFile.Close();
-                            System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                            ibaDatFile.Dispose();
                         }
                         catch
                         {
@@ -3429,11 +3452,11 @@ namespace iba.Processing
             }
             else
             {
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 try
                 {
-                    ibaDatFile.Open(filename);
-                    Subdir = ibaDatFile.QueryInfoByName(task.InfoFieldForSubdir);
+                    ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
+                    Subdir = ibaDatFile.InfoFields[task.InfoFieldForSubdir];
                     if (task.InfoFieldForSubdirLength == 0)
                     {
                         if (task.InfoFieldForSubdirStart != 0)
@@ -3457,7 +3480,7 @@ namespace iba.Processing
                     try
                     {
                         ibaDatFile.Close();
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaDatFile);
+                        ibaDatFile.Dispose();
                     }
                     catch
                     {
@@ -5032,7 +5055,7 @@ namespace iba.Processing
                     TimestampJobLastExecution = dtLocalEvent;
 
                 int duplicateCounter = 0;
-                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1}_{2:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name), evt.Name,evt.StartTime));
+                string filename = Path.Combine(m_cd.HDQDirectory, string.Format("{0}_{1:yyyy-MM-dd_HH-mm-ss}.hdq", CPathCleaner.CleanFile(m_cd.Name),evt.StartTime));
                 while (m_toProcessFiles.Contains(filename) || m_processedFiles.Contains(filename) || fileNames.Contains(filename))
                 {
                     if (duplicateCounter == 0)
@@ -5043,7 +5066,7 @@ namespace iba.Processing
 
                 try
                 {
-                    m_cd.GenerateHDQFile(evt.StartTime, evt.StopTime, filename);
+                    m_cd.GenerateHDQFile(evt.StartTime, evt.StopTime, filename, $"EVENTNAME:{evt.Name}");
                     fileNames.Add(filename);
                 }
                 catch (Exception ex)

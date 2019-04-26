@@ -21,6 +21,11 @@ namespace iba.Controls
         #region Members
         IHdReader m_hdReader;
 
+        string m_server;
+        int m_port;
+        string m_username;
+        string m_password;
+
         List<string> m_currStores;
 
         static ImageList imageListError;
@@ -29,9 +34,9 @@ namespace iba.Controls
 
         static PanelScheduledJob()
         {
-            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
-            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
-            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+            //DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            //defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            //defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
 
             imageListError = new ImageList();
             imageListError.Images.Add(Properties.Resources.img_error);
@@ -46,11 +51,21 @@ namespace iba.Controls
 
             m_currStores = new List<string>();
 
-            m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
+            m_username = "";
+            m_password = "";
+
+            m_hdReader = HdClient.CreateReader(HdUserType.PdaClient);
             object obj = m_hdReader.Authenticate(null);
             obj = HdReaderAuthenticator.GetInfo(obj);
             obj = m_hdReader.Authenticate(obj);
             m_hdReader.ShowConnectionError = false;
+
+            m_hdReader.UserLoginInfo.UserName = m_username;
+            m_hdReader.UserLoginInfo.Password = m_password;
+            m_hdReader.UserLoginInfo.SavePassword = true;
+            m_hdReader.UserLoginInfo.AllowSavePassword = false;
+
+            m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
 
             m_weekSettingsCtrl = new WeeklyTriggerSettingsControl();
             m_daySettingsCtrl = new DailyTriggerSettingsControl();
@@ -169,7 +184,8 @@ namespace iba.Controls
             else
                 m_cbTimeBase.SelectedIndex = Array.FindIndex(m_timeBases, ticks => ticks == m_scheduleData.PreferredTimeBaseTicks);
 
-            ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort);
+            SetHDServerSettings(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword);
+            ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword, SelectServer);
         }
 
 
@@ -201,9 +217,10 @@ namespace iba.Controls
             m_scheduleData.RepeatTimes = (int)m_nudRepeatTimes.Value;
             m_scheduleData.RepeatEvery = RepeatInterval;
             //hdStore
-            m_scheduleData.HDServer = m_tbEventServer.Text ?? string.Empty;
-            int port = 0;
-            m_scheduleData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_scheduleData.HDServer = m_server ?? string.Empty;
+            m_scheduleData.HDPort = m_port;
+            m_scheduleData.HDUsername = m_username ?? string.Empty;
+            m_scheduleData.HDPassword = m_password ?? string.Empty;
             m_scheduleData.HDStores = m_currStores.ToArray();
             //time selection
             m_scheduleData.StartRangeFromTrigger = Start;
@@ -676,42 +693,59 @@ namespace iba.Controls
         #region HD server
         private void btnHdServer_Click(object sender, EventArgs e)
         {
-            int port = 0;
-            if (!int.TryParse(m_tbEventServerPort.Text, out port))
-                port = 9180;
+            SelectServer();
+        }
+
+        private void btnChangeUser_Click(object sender, EventArgs e)
+        {
+            ChangeHDServer(m_server, m_port, m_username, m_password,
+                () => { ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never); },
+                HdUserLoginOptions.Always);
+        }
+
+        void SelectServer()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(SelectServer));
+                return;
+            }
 
             string newServer = string.Empty;
             int newPort = 0;
 
-            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
+            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_server, m_port))
             {
-                List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
-                features.AddRange(ReaderFeature.Analyzer);
-                serverPicker.SetCheckedFeatures(features, new List<WriterFeature>());
+                serverPicker.SetCheckedFeatures(ReaderFeature.Analyzer, new List<WriterFeature>());
                 if (serverPicker.ShowDialog() != DialogResult.OK)
+                {
+                    ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never);
                     return;
+                }
 
                 newServer = serverPicker.SelectedServer;
                 newPort = serverPicker.SelectedPort;
             }
 
-            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
-                return;
-
-            m_currStores.Clear();
-            ChangeHDServer(newServer, newPort);
+            ChangeHDServer(newServer, newPort, m_username, m_password, SelectServer, HdUserLoginOptions.Always);
         }
 
-        void ChangeHDServer(string server, int port)
+        void ChangeHDServer(string server, int port, string username, string password, Action abortAction = null, HdUserLoginOptions showLoginForm = HdUserLoginOptions.Failure)
         {
+            if (Disposing || IsDisposed)
+                return;
+
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string, int>(ChangeHDServer), server, port);
+                BeginInvoke(new Action<string, int, string, string, Action, HdUserLoginOptions>(ChangeHDServer), server, port, username, password, abortAction, showLoginForm);
                 return;
             }
 
-            m_tbEventServer.Text = server;
-            m_tbEventServerPort.Text = port.ToString();
+            username = username ?? "";
+            password = password ?? "";
 
             m_lvStores.Items.Clear();
 
@@ -725,12 +759,60 @@ namespace iba.Controls
                 if (m_hdReader != null && m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
-                m_hdReader?.Connect(tpl.Item1, tpl.Item2);
+                m_hdReader.UserLoginInfo.Parent = this;
+                m_hdReader.UserLoginInfo.UserName = username;
+                m_hdReader.UserLoginInfo.Password = password;
+                m_hdReader.UserLoginOptions = showLoginForm;
+
+                HdConnectResult res = m_hdReader?.ConnectEx(tpl.Item1, tpl.Item2) ?? HdConnectResult.ConnectionFailure;
+                m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
+
+                if (res == HdConnectResult.AbortedByUser && abortAction != null)
+                {
+                    abortAction();
+                    return;
+                }
+
+                if (server != m_server || port != m_port || username != m_hdReader.UserLoginInfo.UserName || password != m_hdReader.UserLoginInfo.Password)
+                {
+                    //also clear on new user credentials because the new user might not have read access for certain stores
+                    m_currStores.Clear();
+                }
+
+                SetHDServerSettings(server, port, m_hdReader.UserLoginInfo.UserName, m_hdReader.UserLoginInfo.Password);
+
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             }, Tuple.Create(server, port));
+        }
+
+        void SetHDServerSettings(string server, int port, string username, string password)
+        {
+            m_server = server ?? "";
+            m_port = port;
+            m_username = username ?? "";
+            m_password = password ?? "";
+
+            UpdateHDServerSettings();
+        }
+
+        void UpdateHDServerSettings()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(UpdateHDServerSettings));
+                return;
+            }
+
+            m_tbEventServer.Text = m_server;
+            m_tbEventServerPort.Text = m_port.ToString();
+            m_tbUsername.Text = m_username;
+            btnChangeUser.Enabled = !string.IsNullOrWhiteSpace(m_server);
         }
 
         void OnHdConnectionChanged()
@@ -755,20 +837,22 @@ namespace iba.Controls
                     m_lviErrorStores = new ListViewItem();
                     m_lviErrorStores.ImageIndex = 0;
                 }
-
-                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+                if (String.IsNullOrEmpty(m_hdReader.ServerHost)) //don't show an error message if server is not specified yet
+                    m_lviErrorStores.Text = Properties.Resources.NoHDServerConnected;
+                else
+                    m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
 
                 m_lvStores.Items.Add(m_lviErrorStores);
             }
             else
             {
                 m_lvStores.CheckBoxes = true;
-                m_lvStores.SmallImageList = HdTreeControl.ImageList;
+                m_lvStores.SmallImageList = HdTreeNodes.ImageList;
 
                 foreach (var store in m_hdReader.Stores)
                 {
                     if (store.IsEnabled() && store.Type == HdStoreType.Time && !store.Id.StoreName.Contains("<DIAGNOSTIC>"))
-                        m_lvStores.Items.Add(store.Id.StoreName, HdTreeControl.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
+                        m_lvStores.Items.Add(store.Id.StoreName, HdTreeNodes.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
                 }
 
                 foreach (var name in m_currStores)
@@ -796,7 +880,6 @@ namespace iba.Controls
                 m_currStores.Add(item.Text);
         }
         #endregion
-
     }
 
     public class CustomNumericUpDown : NumericUpDown

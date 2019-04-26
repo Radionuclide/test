@@ -127,9 +127,6 @@
   <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disconnected.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="pasteTitle" xml:space="preserve">
     <value>Paste</value>
   </data>
@@ -268,9 +265,6 @@
   <data name="configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\running.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Failure" xml:space="preserve">
     <value>failed! (see logfile)</value>
   </data>
@@ -351,9 +345,6 @@
   </data>
   <data name="batchfile_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\batchfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\default.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ServerSaveFileProblem" xml:space="preserve">
     <value>Problem saving file at server side</value>
@@ -447,9 +438,6 @@
   </data>
   <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Analyzer_001" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Analyzer_001.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ReadStatusError" xml:space="preserve">
     <value>Could not read status of the dat-file</value>
@@ -660,9 +648,6 @@
   </data>
   <data name="niRunning" xml:space="preserve">
     <value>ibaDatCoordinator (running)</value>
-  </data>
-  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\running1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>Application</value>
@@ -1260,7 +1245,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Splitter task started</value>
   </data>
   <data name="logSplitSuccess" xml:space="preserve">
-    <value>Splitter task succesfully compled</value>
+    <value>Splitter task succesfully completed</value>
   </data>
   <data name="logCleanupSkippedNonIbaDatFile" xml:space="preserve">
     <value>File cleanup: Skipped non iba .dat file  '{0}'</value>
@@ -1489,5 +1474,44 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="Noaccess6" xml:space="preserve">
+    <value>The file is password protected and no password was provided.</value>
+  </data>
+  <data name="Noaccess7" xml:space="preserve">
+    <value>The file is password protected and an incorrect password was provided.</value>
+  </data>
+  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_stopp.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_dc.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaAnalyzer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaAnalyzer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaDatCoordinator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaDatCoordinator_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_server.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoHDServerConnected" xml:space="preserve">
+    <value>No server connected</value>
+  </data>
+  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_start.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="about_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about_background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="About_Image_80x80" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about80x80.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dat_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dat-file.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -15,7 +15,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelEventJob));
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbGeneral = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -31,6 +33,7 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.btnHdServer = new System.Windows.Forms.Button();
             this.m_tbEventServer = new System.Windows.Forms.TextBox();
             this.m_tbEventServerPort = new System.Windows.Forms.TextBox();
@@ -38,6 +41,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gbOutput = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_rbtBoth = new System.Windows.Forms.RadioButton();
             this.m_lbMaximum = new System.Windows.Forms.Label();
@@ -82,7 +87,9 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.m_pnlEvents = new System.Windows.Forms.Panel();
+            this.btnChangeUser = new System.Windows.Forms.Button();
+            this.m_tbUsername = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -232,6 +239,9 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.label6);
+            this.gbTriggers.Controls.Add(this.m_tbUsername);
+            this.gbTriggers.Controls.Add(this.btnChangeUser);
             this.gbTriggers.Controls.Add(this.m_pnlEvents);
             this.gbTriggers.Controls.Add(this.btnHdServer);
             this.gbTriggers.Controls.Add(this.m_tbEventServer);
@@ -241,6 +251,11 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // m_pnlEvents
+            // 
+            resources.ApplyResources(this.m_pnlEvents, "m_pnlEvents");
+            this.m_pnlEvents.Name = "m_pnlEvents";
             // 
             // btnHdServer
             // 
@@ -279,6 +294,8 @@
             // gbOutput
             // 
             resources.ApplyResources(this.gbOutput, "gbOutput");
+            this.gbOutput.Controls.Add(this.m_cbTimeBase);
+            this.gbOutput.Controls.Add(this.label5);
             this.gbOutput.Controls.Add(this.panel1);
             this.gbOutput.Controls.Add(this.label3);
             this.gbOutput.Controls.Add(this.m_btGenerateTest);
@@ -315,6 +332,22 @@
             this.gbOutput.Controls.Add(this.m_cbPreTrigger);
             this.gbOutput.Name = "gbOutput";
             this.gbOutput.TabStop = false;
+            // 
+            // m_cbTimeBase
+            // 
+            this.m_cbTimeBase.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.m_cbTimeBase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_cbTimeBase.FormattingEnabled = true;
+            resources.ApplyResources(this.m_cbTimeBase, "m_cbTimeBase");
+            this.m_cbTimeBase.Name = "m_cbTimeBase";
+            this.m_cbTimeBase.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.m_cbTimeBase_DrawItem);
+            this.m_cbTimeBase.SelectedIndexChanged += new System.EventHandler(this.m_cbTimeBase_SelectedIndexChanged);
+            this.m_cbTimeBase.DropDownClosed += new System.EventHandler(this.m_cbTimeBase_DropDownClosed);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
             // panel1
             // 
@@ -398,10 +431,10 @@
             // 
             // m_lvStores
             // 
+            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            resources.ApplyResources(this.m_lvStores, "m_lvStores");
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
@@ -439,12 +472,8 @@
             0,
             0,
             0});
-            this.m_nudSecsPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsPost.Name = "m_nudSecsPost";
+            this.m_nudSecsPost.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_nudDaysMax
             // 
@@ -455,6 +484,7 @@
             0,
             0});
             this.m_nudDaysMax.Name = "m_nudDaysMax";
+            this.m_nudDaysMax.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // label28
             // 
@@ -469,12 +499,8 @@
             0,
             0,
             0});
-            this.m_nudHoursMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursMax.Name = "m_nudHoursMax";
+            this.m_nudHoursMax.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_nudMinsPost
             // 
@@ -484,12 +510,8 @@
             0,
             0,
             0});
-            this.m_nudMinsPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsPost.Name = "m_nudMinsPost";
+            this.m_nudMinsPost.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_lblMaxDays
             // 
@@ -514,12 +536,8 @@
             0,
             0,
             0});
-            this.m_nudMinsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsMax.Name = "m_nudMinsMax";
+            this.m_nudMinsMax.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // label30
             // 
@@ -539,12 +557,8 @@
             0,
             0,
             0});
-            this.m_nudHoursPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursPost.Name = "m_nudHoursPost";
+            this.m_nudHoursPost.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_nudSecsMax
             // 
@@ -554,12 +568,8 @@
             0,
             0,
             0});
-            this.m_nudSecsMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsMax.Name = "m_nudSecsMax";
+            this.m_nudSecsMax.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_nudDaysPost
             // 
@@ -570,6 +580,7 @@
             0,
             0});
             this.m_nudDaysPost.Name = "m_nudDaysPost";
+            this.m_nudDaysPost.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_lblMaxSecs
             // 
@@ -601,12 +612,8 @@
             0,
             0,
             0});
-            this.m_nudSecsPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudSecsPre.Name = "m_nudSecsPre";
+            this.m_nudSecsPre.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // label23
             // 
@@ -621,12 +628,8 @@
             0,
             0,
             0});
-            this.m_nudMinsPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudMinsPre.Name = "m_nudMinsPre";
+            this.m_nudMinsPre.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // label24
             // 
@@ -646,12 +649,8 @@
             0,
             0,
             0});
-            this.m_nudHoursPre.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.m_nudHoursPre.Name = "m_nudHoursPre";
+            this.m_nudHoursPre.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_nudDaysPre
             // 
@@ -662,6 +661,7 @@
             0,
             0});
             this.m_nudDaysPre.Name = "m_nudDaysPre";
+            this.m_nudDaysPre.ValueChanged += new System.EventHandler(this.m_nud_ValueChanged);
             // 
             // m_cbPreTrigger
             // 
@@ -670,10 +670,23 @@
             this.m_cbPreTrigger.UseVisualStyleBackColor = true;
             this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
             // 
-            // m_pnlEvents
+            // btnChangeUser
             // 
-            resources.ApplyResources(this.m_pnlEvents, "m_pnlEvents");
-            this.m_pnlEvents.Name = "m_pnlEvents";
+            resources.ApplyResources(this.btnChangeUser, "btnChangeUser");
+            this.btnChangeUser.Name = "btnChangeUser";
+            this.btnChangeUser.UseVisualStyleBackColor = true;
+            this.btnChangeUser.Click += new System.EventHandler(this.btnChangeUser_Click);
+            // 
+            // m_tbUsername
+            // 
+            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
+            this.m_tbUsername.Name = "m_tbUsername";
+            this.m_tbUsername.ReadOnly = true;
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
             // 
             // PanelEventJob
             // 
@@ -779,5 +792,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel m_pnlEvents;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox m_cbTimeBase;
+        private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.Button btnChangeUser;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox m_tbUsername;
     }
 }

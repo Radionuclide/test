@@ -22,6 +22,65 @@
 		#comp td.empty{background-color: white; height:4px}
 		#comp td.sep	{background-color: white; height:20px}
 	</style>            
+	<script language="javascript" type="text/javascript">
+
+      function ShowRedmineLinks() {
+          redmineLinksVisible = !redmineLinksVisible;
+          redmineLinks.forEach(function(link) {
+              link.setAttribute('style', redmineLinksVisible ? '' : 'display: none');
+          });
+      }
+
+      function redmineLinkifyTextNode(element) {
+          var regex = /#(\d{4,6})/g ;
+          var text = element.wholeText;
+          var result = regex.exec(text);
+          if (!result) return;
+          if (result.index >= 0) {
+              var before = text.substring(0, result.index);
+              var after = text.substring(result.index + result[0].length);
+              var issue = result[1];
+
+              var beforeNode = document.createTextNode(before);
+              var link = document.createElement('a');
+              link.setAttribute('style', 'display: none');
+              link.setAttribute('href', "http://redmine.iba-ag.local/issues/" + issue);
+              link.innerHTML ='#' + issue;
+              redmineLinks.push(link);
+              var afterNode = document.createTextNode(after);
+              
+              var span = document.createElement('span');
+              span.appendChild(beforeNode);
+              span.appendChild(link);
+              span.appendChild(afterNode);
+
+              element.parentNode.replaceChild(span, element);
+              redmineLinkifyTextNode(afterNode);
+          } 
+      }
+
+      function redmineLinkify(element) {
+          if (element.nodeType == 3) {
+              redmineLinkifyTextNode(element);
+          } else {
+              var childNodes = element.childNodes;
+              for (var i = 0; i < childNodes.length; i++) {
+                  redmineLinkify(childNodes[i]);
+              }
+          }
+      }
+
+      document.addEventListener('DOMContentLoaded',
+          function() {
+              var elements = document.getElementsByTagName('li');
+              for (var i = 0; i < elements.length; i++) {
+                  redmineLinkify(elements[i]);
+              }
+          });
+
+      var redmineLinks = [];
+      var redmineLinksVisible = false;
+  </script>
 </head>	
    
 
@@ -43,9 +102,9 @@
 				<tr><th class="head" colspan="3">Current version</th></tr>
 				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="11">v2.0.6</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
-				<tr><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64)</td><td></td></tr>
-				<tr><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
+				<tr><th rowspan="11">v2.2.0</th><td>.NET framework v4.5.2</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
+				<tr><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64), Windows Server 2016, Windows Server 2019</td><td></td></tr>
+				<tr><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
 				<tr><td>ibaSinecH1 v2.3.0</td><td></td></tr>
@@ -60,6 +119,11 @@
 				<tr><td class="sep" /></tr>
 				<tr><th class="head" colspan="3">History</th></tr>
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
+				
+				<tr><th rowspan="1">v2.2.0</th><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
+				<tr><th rowspan="1">v2.1.0</th><td>ibaAnalyzer v6.12.0</td><td>Required for PARQUET extract</td></tr>
+				
+				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="3">v2.0.0</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
 				<tr><td>ibaS7-Writer v2.0.0</td><td></td></tr>
@@ -76,6 +140,10 @@
 				<tr><td>ibaDatawyzer-ICC v1.17.1</td><td></td></tr>
 								
 				<tr><td class="empty" /></tr>
+				
+				<tr><th rowspan="1">v1.25.0</th><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
+				
+				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="1">v1.24.0</th><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64) and Windows 2012 Server R2 (x64)</td><td>Windows XP (x86) and Windows 2003 Server (x86) are no longer supported</td></tr>
 				<tr><td class="empty" /></tr>
@@ -90,16 +158,32 @@
 
 	<div id="hist">
 		<div class="box">
-			<P class="header1">Version 2.1.0 - 22/11/2018</P>
+		<P class="header1">Version 2.2.0 - 26/03/2019</P>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<li>Support for processing new dat file format from ibaPDA v7.0.0</li>
+				<li>Support for ibaHD user management. #10629</li>
+			</OL>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<li>ibaHD server discovery sometimes caused the GUI to hang temporarily. #14087</li>
+				<li>A DLL was missing if only the ibaDatCoodinator client was installed. #14290</li>
+				<li>Preferred timebase field of event and scheduled jobs not respected.</li>
+			</OL>
+			<P class="header1">Version 2.1.0 - 28/01/2019</P>
 			<p class="header2">New features (N)</p>
             <ol>
 				<li>Addition of event-triggered jobs. #12737</li>
 				<li>Updated support page.</li>
+				<li>Extract file formats extended with PARQUET</li>
 			</OL>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
 				<li>For files with many channels, the files written by the splitter task were too large.</li>
 				<li>Under some circumstances, jobs were mistakenly considered as altered by another client.</li>
+				<li>Splitter task did not work for files with tagged channels.</li>
+				<li>SNMPv3: Negative differences in 'msgAuthoritativeEngineTime' were not handled correctly.</li>
+				<li>ibaHD servers with vectors in a timebased store could lead to disconnects of ibaDatCoodinator. #14062</li>
 			</OL>
 			<p>&nbsp; </p>
 		

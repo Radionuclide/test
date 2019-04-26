@@ -120,24 +120,54 @@
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>397, 17</value>
   </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btnClient.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnClient.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_btnClient.Location" type="System.Drawing.Point, System.Drawing">
+    <value>366, 85</value>
+  </data>
+  <data name="m_btnClient.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btnClient.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_btnClient.ToolTip" xml:space="preserve">
+    <value>Start or focus ibaDatCoordinator Client</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Name" xml:space="preserve">
+    <value>m_btnClient</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>503, 17</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 53</value>
+    <value>16, 53</value>
   </data>
   <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>208, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
@@ -182,6 +212,28 @@
   </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_executeIBAAButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAA7hJREFUWEft
+        l/tPzWEcx8+/0C/+D9eZLko3kkKRxFqXKaFFRUZhSTvJML/YzA81ZWn9wMaEWsvYMhGppE6idBHdTLqe
+        t+f94fvdOTzquHT6xbO9tvN9Ps95vu/v5/bssXAs9vT0UFgVNoVdgXmkX3FJsch4+SJFu0K3eD7hOz0o
+        gGp0C9yBlQLoEp3RHdgoQGdwF/aFFoD/AlwSsMTLCyEREVrb3+KSgIwjR9DV3Y3lPj5O84FhYYhNSsL2
+        +Hh4BwU52VxlTgExCQkYHhmB7fVr0wsHs7PR/PIl7HY7jDEzM4O6x4+xKzX1pz1mY1YBaYcOYfTTJ+Ra
+        rVjq7Y2Vfn64U1WFqakpVFy/jvjdu+EXEiKeSM3MRFVNjYi6UlYmYdPt+SNaAStWr0ZRaSlGRkdlY85x
+        w5r79/F+YAA7EhN/+o8BRY+NjaGopERr/xGtgBfNzXjW2IjQyEhz7lRhoWwcuXOn01od+5UIeoL5obM7
+        ohWQlZMjLjeel6nk45dfuHgRK3x9kXLggGm7XFQkglf5+5tzhN6qrq11mtMxZxKShJQUTE9Pw3fdOsSp
+        uPf09kqY6JWPg4OSfPSYZ0AA9mVkSLLuz8rCl/FxqZyVa9Zo9yUuCThZUIDON2/M55bWVjQ8f47BoSEp
+        weVKzMO6Orzt6sLQ8DCi4+IQsnmzVAfDmJ2bKyJ1vWRWAYePH4d/aKh8aZvNJnM3bt3CpKoCeiR82zaZ
+        Y6wLz59Hwblz8Fu/XuYCNmwQAWFbt2JTdDSO5eWJUGNvA62A2/fuobevT6CAvenp+KwSkLkQFB4OX1V6
+        jHv+mTOyvr6hAQMfPsBn7VpzD4aN5crSpTD2E8PmiFbAUeUybsAX8tkrMFDiaZQk4e++/n5kqi7JBK19
+        8EB6g2EvuXYNj+rr5TdDYD171rQ54lIOkLKKCrS2tUnyGXONTU0Yn5iQHAneuBFPVV7QzeFRUSKYPcFx
+        Dx0uC6B73/X0oFKFx4hlXHIyblZWmp4iFNLR2Ym71dXm3Gy4LIAw6SiCVbBH9QLHXrFKlSA9MajKkoNn
+        xRYXmtZvCSA+wcG4Wl4uXZHnRFNLC161t2NiclJywtbRIQI4mBtzHeO/LcCAX5ycloYT+fmSZDwf6JG8
+        06e/v/7bYDjYwHR7kD8W8Ct4aDH+jqNBdclfdcN/LoDwZU9Ub3Acl4uLtWspYF6uYgxHREwMomJjBfYS
+        3ToK4H1Qa3QD/RTAS6nO6A4uUQBvxgt1OXW6IfOSOt/3ROYbQ06ve1gsFstXqQSMGnlydTQAAAAASUVO
+        RK5CYII=
+</value>
   </data>
   <data name="m_executeIBAAButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -266,36 +318,6 @@
   </data>
   <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="m_btnClient.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnClient.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnClient.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 85</value>
-  </data>
-  <data name="m_btnClient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_btnClient.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_btnClient.ToolTip" xml:space="preserve">
-    <value>Start or focus ibaDatCoordinator Client</value>
-  </data>
-  <data name="&gt;&gt;m_btnClient.Name" xml:space="preserve">
-    <value>m_btnClient</value>
-  </data>
-  <data name="&gt;&gt;m_btnClient.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnClient.Parent" xml:space="preserve">
-    <value>m_gbApp</value>
-  </data>
-  <data name="&gt;&gt;m_btnClient.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_btChange.Location" type="System.Drawing.Point, System.Drawing">
     <value>230, 100</value>

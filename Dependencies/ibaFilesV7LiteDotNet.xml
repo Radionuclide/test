@@ -4,6 +4,12 @@
         "ibaFilesLiteDotNet"
     </assembly>
     <members>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.Parent">
+            <inheritdoc />
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.GetXBase(iba.ibaFilesLiteDotNet.XBaseType)">
+            <inheritdoc />
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.Comment2">
             <inheritdoc />
         </member>
@@ -166,7 +172,7 @@ This method is currently not implemented as currently no non-equidistant analog 
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.SkipIncrementalRead(System.Int32@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.SkipIncrementalRead(System.Int32)">
             <inheritdoc />
             <summary>
 While doing an incremental read of a channel, skip a number of samples.
@@ -175,7 +181,7 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Object@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Object@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the signal data as an <see cref="T:System.Object" />.
@@ -191,7 +197,7 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
             <see cref="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" />
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Boolean[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Boolean[]@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the digital signal data as an array of <see cref="T:System.Boolean" /> values.
@@ -200,7 +206,7 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Int32[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Int32" /> values.
@@ -209,7 +215,7 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Int16[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Int16[]@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Int16" /> values.
@@ -218,7 +224,7 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Double[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Double[]@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Double" /> values.
@@ -227,7 +233,7 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32@,System.Single[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Single[]@)">
             <inheritdoc />
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Single" /> values.
@@ -272,10 +278,19 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
             <see cref="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" />
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(System.Single@,System.Single@,System.Int64[]@)">
+            <inheritdoc />
+            <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values. See remarks.</exception>
+            <remarks> 
+The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
+<para /><para />The samples in the channel should be stored as 64 bit integer values, additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" /> should have been set to <c>true</c>.
+</remarks>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(System.Single@,System.Single@,System.Int32[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int32" /> values. See remarks.</exception>
             <remarks> 
 The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
 <para /><para />The samples in the channel should be stored as 32 bit integer values, additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" /> should have been set to <c>true</c>.
@@ -284,7 +299,7 @@ The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are ret
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(System.Single@,System.Single@,System.Int16[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int16" /> values. See remarks.</exception>
             <remarks> 
 The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
 <para /><para />The samples in the channel should be stored as 16 bit integer values, additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" /> should have been set to <c>true</c>.
@@ -293,7 +308,7 @@ The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are ret
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(System.Single@,System.Single@,System.Boolean[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Boolean" /> values. See remarks.</exception>
             <remarks> 
 The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
 <para /><para />The signal should be digital, additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" /> should have been set to <c>true</c>.
@@ -336,10 +351,20 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
             <see cref="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" />
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int64[]@)">
+            <inheritdoc />
+            <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values. See remarks.</exception>
+            <remarks> 
+Currently no other domains than <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" />.<c>TIME</c> are supported for the HD-server,
+the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
+<para /><para />The samples in the channel should be stored as 64 bit integer values, additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaHDReader.RawMode" /> should have been set to <c>true</c>.
+</remarks>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int32[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int32" /> values. See remarks.</exception>
             <remarks> 
 Currently no other domains than <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" />.<c>TIME</c> are supported for the HD-server,
 the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
@@ -349,7 +374,7 @@ the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are ret
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int16[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int16" /> values. See remarks.</exception>
             <remarks> 
 Currently no other domains than <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" />.<c>TIME</c> are supported for the HD-server,
 the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
@@ -359,7 +384,7 @@ the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are ret
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Boolean[]@)">
             <inheritdoc />
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Boolean" /> values. See remarks.</exception>
             <remarks> 
 Currently no other domains than <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" />.<c>TIME</c> are supported for the HD-server,
 the parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned in seconds.
@@ -483,6 +508,20 @@ One can use the <see cref="P:iba.ibaFilesLiteDotNet.ChannelID.Tag" /> property o
 Disconnects from the HD-Server
 </summary>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Open(System.String,System.String,System.String)">
+            <summary>
+Connects to an hd-server and sets time parameters with parameters taken from an .hdq configuration file.
+</summary>
+            <param name="hdqFileName">Path to the .hdq file</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="password">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="hdqFileName" /> is <see langword="null" /></exception>
+            <exception cref="T:System.IO.IOException">
+                <paramref name="hdqFileName" /> includes an incorrect or invalid syntax for file name, directory name, or volume label or the file is not accessible.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the .hdq file does not appear to be correctly formatted or if <paramref name="hdqFileName" /> is empty.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the .hdq file does not contain the parameters for a time-based query.</exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Open(System.String)">
             <summary>
 Connects to an hd-server and sets time parameters with parameters taken from an .hdq configuration file.
@@ -532,6 +571,17 @@ Method to list the stores, all types of stores are returned.
 </summary>
             <returns>A list of <see cref="T:iba.ibaFilesLiteDotNet.IbaHDStore" /> objects, representing the available stores.</returns>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Connect(System.String,System.Int32,System.String,System.String)">
+            <summary>
+Method to connect to an HD-server
+</summary>
+            <param name="server">Hostname of the HD-server</param>
+            <param name="portNumber">Number of the port to communicate with the HD-server</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="password">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="server" /> is <see langword="null" /></exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.Connect(System.String,System.Int32)">
             <summary>
 Method to connect to an HD-server
@@ -539,6 +589,20 @@ Method to connect to an HD-server
             <param name="server">Hostname of the HD-server</param>
             <param name="portNumber">Number of the port to communicate with the HD-server</param>
             <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="server" /> is <see langword="null" /></exception>
+            <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.#ctor(System.String,System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .hdq file to open.
+</summary>
+            <param name="hdqFileName">The .hdq file to open.</param>
+            <param name="username">ibaHD username used for authorization.</param>
+            <param name="password">ibaHD password used for authorization.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="hdqFileName" /> is <see langword="null" /></exception>
+            <exception cref="T:System.IO.IOException">
+                <paramref name="hdqFileName" /> includes an incorrect or invalid syntax for file name, directory name, or volume label or the file is not accessible.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the .hdq file does not appear to be correctly formatted or if <paramref name="hdqFileName" /> is empty.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the .hdq file does not contain the parameters for a time-based query.</exception>
             <exception cref="T:System.Exception">Thrown if no connection to the HD-server could be established.</exception>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDReader.#ctor(System.String)">
@@ -603,39 +667,68 @@ Time based HD-store.
 All types of HD-store.
 </summary>
         </member>
-        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Name">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.PasswordProtected">
             <summary>
-Gets the module name
+True if the file is password protected.
 </summary>
         </member>
-        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.IconIndex">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.FileIsBusy">
             <summary>
-Gets the index of the module icon in imagelists (<see cref="!:System::Windows::Forms::ImageList" /> ) used in iba products.
+True if the file isn't finished yet.
 </summary>
         </member>
-        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.ModuleNumber">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.UtcOffsetValid">
             <summary>
-Gets the module number
+True if the UTC offset could be read from the file.
 </summary>
         </member>
-        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Channels">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.UtcOffset">
             <summary>
-Gets a list of all available channels, represented as instances of <see cref="T:iba.ibaFilesLiteDotNet.IbaChannelReader" />. The list is read-only.
+UTC offset in minutes. StartTimeUTC = StartTime - UtcOffset
 </summary>
-            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open. (.dat file mode</exception>
-            <exception cref="T:System.Exception">Thrown if the connection to the HD-server was not established or has been lost (HD mode)</exception>
         </member>
-        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.InfoFields">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.ConfigId">
             <summary>
-A dictionary collection containing the infofields of the module. If you opened the .dat file in OpenForUpdate mode, you'll be able to modify the collection; otherwise, the collection is read-only.
-If you connected to data through an HD-server, the collection is read-only.
+Configuration id. Files in the same directory with the same config id should contain the same signals.
 </summary>
-            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
         </member>
-        <member name="T:iba.ibaFilesLiteDotNet.IbaModuleReader">
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.EndTime">
             <summary>
-Summary for IbaModuleReader
+End time of the file (in local time)
 </summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.StartTime">
+            <summary>
+Start time of the file (in local time)
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaShortFileInfo">
+            <summary>
+Auxiliary class which contains short information about dat file that can be read fast.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Size">
+            <summary>
+Size in bytes of the embedded file.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Offset">
+            <summary>
+Offset in bytes of the embedded file within the containing file.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo.Filename">
+            <summary>
+Filename of the embedded file.
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaEmbeddedFileInfo">
+            <summary>
+Auxiliary class which contains information about embedded files.
+</summary>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.GetXBase(iba.ibaFilesLiteDotNet.XBaseType)">
+            <inheritdoc />
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryNEData(System.Double[]@,System.Object@)">
             <inheritdoc />
@@ -844,12 +937,12 @@ Otherwise the method will fail by throwing a <see cref="T:System.NotSupportedExc
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead">
             <inheritdoc />
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.SkipIncrementalRead(System.Int32@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.SkipIncrementalRead(System.Int32)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Object@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Object@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -860,7 +953,7 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
             <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Int32[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -871,7 +964,7 @@ For this method to succeed the samples in the channel should be stored as 32 bit
 Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
 </remarks>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Int16[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Int16[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -882,7 +975,7 @@ For this method to succeed the samples in the channel should be stored as 16 bit
 Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
 </remarks>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Boolean[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Boolean[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -893,7 +986,7 @@ For this method to succeed the channel should be a digital signal, <see cref="P:
 Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
 </remarks>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Double[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Double[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -906,7 +999,7 @@ Additionally the samples in the channel should be stored as either:
 Additionally raw mode data reading should not have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should not have been set to <c>true</c></description></item></list>
 Otherwise the method will fail by throwing a <see cref="T:System.NotSupportedException" /></remarks>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32@,System.Single[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Single[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
@@ -958,6 +1051,20 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
 </remarks>
             <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryData(System.Single@,System.Single@,System.Int64[]@)">
+            <inheritdoc />
+            <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of <see cref="T:System.Int32" /> values. See remarks.</exception>
+            <remarks> 
+The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned 
+in seconds if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" />  is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.TIME</c>, in length units if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.LENGTH</c>, 
+in hertz if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.FREQUENCY</c> and in 1/length-unit if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.INVLENGTH</c>.
+<para /><para />For this method to succeed the data samples present in the signal need to be equidistantly sampled; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.NonEquidistant" /> should return <c>false</c>.
+Additionally the samples in the channel should be stored as 64 bit integer values, <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int64</c>.
+Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
+<para />For channels who have data for multiple domains (e.g. QDRv1 files with both length and time-based data), the default domain is used (Use <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> to determine the default domain).
+</remarks>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryData(System.Single@,System.Single@,System.Int32[]@)">
             <inheritdoc />
@@ -1043,9 +1150,22 @@ in seconds if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXB
 in hertz if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.FREQUENCY</c> and in 1/length-unit if <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.DefaultXBaseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.INVLENGTH</c>.
 <para /><para />For this method to succeed the data samples present in the signal need to be equidistantly sampled; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.NonEquidistant" /> should return <c>false</c>.
 The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be an array of <c>DataType</c>, where <c>DataType</c> is determined by the following table:
-<para /><list type="table"><listheader><term><see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> returns</term><term>Raw mode data reading (<see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />) is set on the parent <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" /> instance</term><term>Raw mode data reading is not set on the parent <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" /> instance</term></listheader><item><term><c>Digital</c></term><term><see cref="T:System.Boolean" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Real</c></term><term><see cref="T:System.Single" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Double</c></term><term><see cref="T:System.Double" /></term><term><see cref="T:System.Double" /></term></item><item><term><c>Int16</c></term><term><see cref="T:System.Int16" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Int32</c></term><term><see cref="T:System.Int32" /></term><term><see cref="T:System.Double" /></term></item></list></remarks>
+<para /><list type="table"><listheader><term><see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> returns</term><term>Raw mode data reading (<see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />) is set on the parent <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" /> instance</term><term>Raw mode data reading is not set on the parent <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" /> instance</term></listheader><item><term><c>Digital</c></term><term><see cref="T:System.Boolean" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Real</c></term><term><see cref="T:System.Single" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Double</c></term><term><see cref="T:System.Double" /></term><term><see cref="T:System.Double" /></term></item><item><term><c>Int16</c></term><term><see cref="T:System.Int16" /></term><term><see cref="T:System.Single" /></term></item><item><term><c>Int32</c></term><term><see cref="T:System.Int32" /></term><term><see cref="T:System.Double" /></term></item><item><term><c>Int64</c></term><term><see cref="T:System.Int64" /></term><term><see cref="T:System.Double" /></term></item></list></remarks>
             <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int64[]@)">
+            <inheritdoc />
+            <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values. See remarks.</exception>
+            <remarks> 
+The parameters <paramref name="xBase" /> and <paramref name="xOffset" /> are returned 
+in seconds if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.TIME</c>, in length units if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.LENGTH</c>, 
+in hertz if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.FREQUENCY</c> and in 1/length-unit if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.INVLENGTH</c>.
+<para /><para />For this method to succeed the data samples present in the signal need to be equidistantly sampled; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.NonEquidistant" /> should return <c>false</c>.
+Additionally the samples in the channel should be stored as 64 bit integer values, <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int64</c>.
+Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
+</remarks>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int32[]@)">
             <inheritdoc />
@@ -1115,6 +1235,9 @@ Additionally the samples in the channel should be stored as either:
 Additionally raw mode data reading should not have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should not have been set to <c>true</c></description></item><item><description>single precision floating point values; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Real</c></description></item><item><description>16 bit integer values; i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int16</c>.
 Additionally raw mode data reading should not have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should not have been set to <c>true</c></description></item></list></remarks>
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.Parent">
+            <inheritdoc />
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.Comment2">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed.</exception>
@@ -1174,6 +1297,17 @@ If the .dat file was opened in OpenForUpdate mode, you'll be able to modify the 
             <summary>
 Class representing a channel in the .dat file. An instance of this class exposes the info fields of the channel and the channel data can be queried from it.
 </summary>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.GetXBase(iba.ibaFilesLiteDotNet.XBaseType)">
+            <summary>
+Gets the xbase for the requested domain. 
+</summary>
+            <param name="baseType">The domain to get the xbase for.</param>
+            <returns>The xBase for the requested domain.</returns>
+            <remarks>
+The return value is expressed in seconds if <paramref name="baseType" />  is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.TIME</c>, in length units if <paramref name="baseType" />  is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.LENGTH</c>, 
+in hertz if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.FREQUENCY</c> and in 1/length-unit if <paramref name="baseType" /> is <see cref="T:iba.ibaFilesLiteDotNet.XBaseType" /><c>.INVLENGTH</c>.
+</remarks>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryNEData(System.Double[]@,System.Object@)">
             <summary>
@@ -1355,91 +1489,84 @@ On return, the timestamps in seconds of the sample values, relative to the start
 Use this method to inform the instance that no further incremental reads will happen, so the instance can release the resources necessary for the incremental read.
 </summary>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.SkipIncrementalRead(System.Int32@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.SkipIncrementalRead(System.Int32)">
             <summary>
 While doing an incremental read of a channel, skip a number of samples.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to skip. On return this value contains the number of samples that were actually skipped. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to skip.</param>
+            <returns>The number of samples actually skipped. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Object@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Object@)">
             <summary>
 Read an incremental part of the signal data as an <see cref="T:System.Object" />.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, the signal samples as an <see cref="T:System.Object" />. The <see cref="T:System.Object" /> will be an array of values, 
 the data type of the values depends on how the data is internally stored and on how the property <see cref="P:iba.ibaFilesLiteDotNet.IbaReader.RawMode" /> is set, see implementing classes.
 </param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Boolean[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Boolean[]@)">
             <summary>
 Read an incremental part of the digital signal data as an array of <see cref="T:System.Boolean" /> values.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
             <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Boolean" /> values.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Int32[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Int32" /> values.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" />  has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
             <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int32" /> values. </exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Int16[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Int16[]@)">
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Int16" /> values.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" />  has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
             <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int16" /> values. </exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Double[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Double[]@)">
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Double" /> values.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" />  has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
             <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Double" /> values.</exception>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32@,System.Single[]@)">
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Single[]@)">
             <summary>
 Read an incremental part of the signal data as an array of <see cref="T:System.Single" /> values.
 </summary>
-            <param name="numberOfSamples">On input, the desired number of samples to read. On return this value contains the number of samples that were actually read. 
-If the returned value is lower than the input value, the end of the channel was reached.
-</param>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
             <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" />  has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
@@ -1469,6 +1596,15 @@ Gets the signal data as an <see cref="T:System.Object" />.
             <param name="data"> On return, the signal samples as an <see cref="T:System.Object" />. The <see cref="T:System.Object" /> will be an array of values, 
 the data type of the values depends on how the data is internally stored and on how the property <see cref="P:iba.ibaFilesLiteDotNet.IbaReader.RawMode" /> is set, see implementing classes.
 </param>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryData(System.Single@,System.Single@,System.Int64[]@)">
+            <summary>
+Gets a signal data as an array of <see cref="T:System.Int64" /> values.
+</summary>
+            <param name="xBase"> On return, the sample interval.</param>
+            <param name="xOffset"> On return, the offset of the channel data from the start of the file or query range.</param>
+            <param name="data"> On return, the signal samples as an array</param>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values.</exception>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryData(System.Single@,System.Single@,System.Int32[]@)">
             <summary>
@@ -1526,6 +1662,17 @@ Gets the signal data as an <see cref="T:System.Object" />.
 the data type of the values depends on how the data is internally stored and on how the property <see cref="P:iba.ibaFilesLiteDotNet.IbaReader.RawMode" /> is set, see implementing classes.
 </param>
             <exception cref="T:System.ArgumentException">Thrown if the channel has no data in the domain specified by <paramref name="baseType" />.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int64[]@)">
+            <summary>
+Gets a signal data as an array of <see cref="T:System.Int64" /> values.
+</summary>
+            <param name="baseType">The domain to get the data for.</param>
+            <param name="xBase"> On return, the sample interval.</param>
+            <param name="xOffset"> On return, the offset of the channel data from the start of the file or query range.</param>
+            <param name="data"> On return, the signal samples as an array</param>
+            <exception cref="T:System.ArgumentException">Thrown if the channel has no data in the domain specified by <paramref name="baseType" />.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int32" /> values.</exception>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.QueryData(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@,System.Int32[]@)">
             <summary>
@@ -1646,6 +1793,11 @@ Get the unique channel id.
 </summary>
             <returns>The channel id.</returns>
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaChannelReader.Parent">
+            <summary>
+Parent reader that this channel belongs to.
+</summary>
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaChannelReader.InfoFields">
             <summary>
 A dictionary collection containing the info fields of the channel.
@@ -1699,6 +1851,11 @@ Digital, non-equidistantly sampled.
         <member name="F:iba.ibaFilesLiteDotNet.ChannelTypeEnum.Double">
             <summary>
 Analog represented by double precision floating point values, equidistantly sampled.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.ChannelTypeEnum.Int64">
+            <summary>
+Analog represented by 64-bit scaled integer values, equidistantly sampled.
 </summary>
         </member>
         <member name="F:iba.ibaFilesLiteDotNet.ChannelTypeEnum.Int32">
@@ -1756,6 +1913,54 @@ length domain
 time domain
 </summary>
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Name">
+            <summary>
+Gets the module name
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.IconIndex">
+            <summary>
+Gets the index of the module icon in imagelists (System.Windows.Forms.ImageList) used in iba products.
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.ModuleNumber">
+            <summary>
+Gets the module number
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Channels">
+            <summary>
+Gets a list of all available channels, represented as instances of <see cref="T:iba.ibaFilesLiteDotNet.IbaChannelReader" />. The list is read-only.
+</summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open. (.dat file mode</exception>
+            <exception cref="T:System.Exception">Thrown if the connection to the HD-server was not established or has been lost (HD mode)</exception>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.InfoFields">
+            <summary>
+A dictionary collection containing the infofields of the module. If you opened the .dat file in OpenForUpdate mode, you'll be able to modify the collection; otherwise, the collection is read-only.
+If you connected to data through an HD-server, the collection is read-only.
+</summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaModuleReader">
+            <summary>
+Summary for IbaModuleReader
+</summary>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.ReadShortFileInfo(System.String)">
+            <summary>
+Read information from a .dat file fast without parsing the complete header.
+</summary>
+            <param name="fileName">The .dat file to read the information from.</param>
+            <returns>The short file information or null in case the file couldn't be opened or wasn't a supported .dat file.</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.ListEmbeddedFileInfo">
+            <summary>
+Retrieves information about all embedded files in the .dat file.
+</summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
+            <returns>A list containing information about the embedded files. If no embedded files were found, the returned list is empty.</returns>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.GetVersion">
             <inheritdoc />
         </member>
@@ -1785,6 +1990,13 @@ Set this property BEFORE opening a .dat file.
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode">
             <inheritdoc />
         </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.EndTime">
+            <summary>
+Gets the end time of the file
+</summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
+            <exception cref="T:System.FormatException">Thrown if start time isn't in a valid format.</exception>
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.StartTime">
             <summary>
 Gets the start time of the file
@@ -1804,11 +2016,33 @@ Close the .dat file.
 </summary>
             <exception cref="T:System.InvalidOperationException">Thrown if file wasn't opened previously.</exception>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.OpenForUpdate(System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open, infofields can be added or modified when opening with this function.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to open the .dat file</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.OpenForUpdate(System.String)">
             <summary>
 Initializes a new instance of the IbaFileReader class with a specified .dat file to open, infofields can be added or modified when opening with this function.
 </summary>
             <param name="fileName">The .dat file to open</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.Open(System.String,System.String)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open, the .dat file will be opened in read-only mode.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to open the .dat file</param>
             <exception cref="T:System.InvalidOperationException">Thrown if a previous file was opened without it being closed.</exception>
             <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="fileName" /> is empty or <see langword="null" />.</exception>
@@ -1827,8 +2061,18 @@ Initializes a new instance of the IbaFileReader class with a specified .dat file
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.Finalize">
             <summary> Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+Initializes a new instance of the IbaFileReader class with a specified .dat file to open and a specified mode to open it.
+</summary>
+            <param name="fileName">The .dat file to open</param>
+            <param name="password">The password required to read the .dat file</param>
+            <param name="openForUpdate">If <c>true</c>, infofields can be modified or added to the .dat file; otherwise, the .dat file will be opened read-only.</param>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown if the file could not be opened because the file does not exist or an operating system error happened.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the file is not a valid iba .dat file.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the file is in an unsupported format.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.#ctor(System.String,System.Boolean)">
-            <inheritdoc />
             <summary>
 Initializes a new instance of the IbaFileReader class with a specified .dat file to open and a specified mode to open it.
 </summary>
@@ -1911,6 +2155,68 @@ Get version information.
             <summary>
 Main interface to read iba data.
 </summary>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_LessThanOrEqual(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether instance <paramref name="a" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> comes before instance <paramref name="b" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> in the sort order or they are equal.
+</summary>
+            <param name="a">The first id to compare.</param>
+            <param name="b">The second id to compare.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> comes before <paramref name="b" /> in the sort order or they are equal, <c>false</c> otherwise.
+</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_GreaterThanOrEqual(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether instance <paramref name="a" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> comes after instance <paramref name="b" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> in the sort order or they are equal.
+</summary>
+            <param name="a">The first id to compare.</param>
+            <param name="b">The second id to compare.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> comes after <paramref name="b" /> in the sort order or they are equal, <c>false</c> otherwise.
+</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_GreaterThan(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether instance <paramref name="a" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> comes after instance <paramref name="b" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> in the sort order.
+</summary>
+            <param name="a">The first id to compare.</param>
+            <param name="b">The second id to compare.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> comes after <paramref name="b" /> in the sort order, <c>false</c> otherwise.
+</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_LessThan(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether instance <paramref name="a" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> comes before instance <paramref name="b" /> of <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> in the sort order.
+</summary>
+            <param name="a">The first id to compare.</param>
+            <param name="b">The second id to compare.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> comes before <paramref name="b" /> in the sort order, <c>false</c> otherwise.
+</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_Inequality(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether the specified <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> instances identify different channels.
+</summary>
+            <param name="a">The first id to compare, or <see langword="null" />.</param>
+            <param name="b">The second id to compare, or <see langword="null" />.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> identifies another channel than <paramref name="b" />; otherwise, <c>false</c>.
+If both <paramref name="a" /> and <paramref name="b" /> are <see langword="null" />, the method returns <c>false</c>.
+</returns>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.op_Equality(iba.ibaFilesLiteDotNet.ChannelID,iba.ibaFilesLiteDotNet.ChannelID)">
+            <summary>
+Determines whether the specified <see cref="T:iba.ibaFilesLiteDotNet.ChannelID" /> instances identify the same channel.
+</summary>
+            <param name="a">The first id to compare, or <see langword="null" />.</param>
+            <param name="b">The second id to compare, or <see langword="null" />.</param>
+            <returns>
+                <c>true</c> if <paramref name="a" /> identifies the same channel as <paramref name="b" />; otherwise, <c>false</c>.
+If both <paramref name="a" /> and <paramref name="b" /> are <see langword="null" />, the method returns <c>true</c>.
+</returns>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.ChannelID.CompareTo(iba.ibaFilesLiteDotNet.ChannelID)">
             <summary>

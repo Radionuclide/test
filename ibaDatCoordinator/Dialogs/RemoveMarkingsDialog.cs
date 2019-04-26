@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using iba.Data;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 using System.Threading;
 
 namespace iba.Dialogs
@@ -18,6 +18,7 @@ namespace iba.Dialogs
         string m_username;
         string m_pass;
         string m_path;
+        string m_filePass;
         private bool runswithservice;
         private bool m_bRecursive;
 
@@ -28,6 +29,7 @@ namespace iba.Dialogs
             m_path = data.DatDirectoryUNC;
             m_username = data.Username;
             m_pass = data.Password;
+            m_filePass = data.FileEncryptionPassword;
             m_bRecursive = data.SubDirs;
             if (!runswithservice)
             {
@@ -38,7 +40,7 @@ namespace iba.Dialogs
                 m_files = null;
         }
 
-        public RemoveMarkingsDialog(string path, string username, string pass, List<string> files)
+        public RemoveMarkingsDialog(string path, string username, string pass, string filepass, List<string> files)
         {
             InitializeComponent();
             m_username = username;
@@ -46,6 +48,7 @@ namespace iba.Dialogs
             m_path = path;
             m_files = files;
             m_bRecursive = false;
+            m_filePass = filepass;
             runswithservice = (Program.RunsWithService == Program.ServiceEnum.CONNECTED);
         }
 
@@ -95,28 +98,28 @@ namespace iba.Dialogs
             if (runswithservice)
             {
                 var pb = new RemoveMarkingsProgressBar(this);
-                try
-                {
+                //try
+                //{
                     if (m_files == null)
-                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_bRecursive, pb);
+                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_filePass, m_bRecursive, pb);
                     else
-                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_files, pb);
+                        Program.CommunicationObject.RemoveMarkingsAsync(m_path, m_username, m_pass, m_filePass, m_files, pb);
                     while (!pb.Finished)
                     {
                         Thread.Sleep(1000);
                     }
-                }
+                /*}
                 catch (Exception) //try old way in case of server client discrepancy
                 {
                     if (m_files == null)
                         Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_bRecursive, pb);
                     else
                         Program.CommunicationObject.RemoveMarkings(m_path, m_username, m_pass, m_files, pb);
-                }
+                }*/
             }
             else
             {
-                IbaFile ibaDatFile = new IbaFileClass();
+                IbaFileReader ibaDatFile = new IbaFileReader();
                 m_stop = false;
                 for (int count = 0; count < m_files.Count && !m_stop; count++)
                 {
@@ -137,10 +140,10 @@ namespace iba.Dialogs
                         }
                         else
                         {
-                            ibaDatFile.OpenForUpdate(filename);
-                            ibaDatFile.WriteInfoField("$DATCOOR_status", "readyToProcess");
-                            if (!string.IsNullOrEmpty(ibaDatFile.QueryInfoByName("$DATCOOR_times_tried")))
-                                ibaDatFile.WriteInfoField("$DATCOOR_times_tried", "0");
+                            ibaDatFile.OpenForUpdate(filename, m_filePass);
+                            ibaDatFile.InfoFields["$DATCOOR_status"] = "readyToProcess";
+                            if (!ibaDatFile.InfoFields.ContainsKey("$DATCOOR_times_tried"))
+                                ibaDatFile.InfoFields["$DATCOOR_times_tried"] = "0";
                             iba.Processing.ConfigurationWorker.ClearFields(ref ibaDatFile);
                         }
                         backgroundWorker1.ReportProgress(0, new ProgressData(count, filename));

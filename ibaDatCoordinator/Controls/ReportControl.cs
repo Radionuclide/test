@@ -38,7 +38,6 @@ namespace iba.Controls
                 "bmp",
                 "xml"
             });
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             m_uncControl = new UNCTaskControl();
             m_panelFile.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;

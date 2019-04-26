@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iba.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -129,6 +130,28 @@ namespace iba.Data
             set { m_HDPort = value; }
         }
 
+        private string m_HDUsername;
+        public string HDUsername
+        {
+            get { return m_HDUsername; }
+            set { m_HDUsername = value; }
+        }
+
+        private string m_HDPassword;
+
+        [XmlIgnore]
+        public string HDPassword
+        {
+            get { return m_HDPassword; }
+            set { m_HDPassword = value; }
+        }
+
+        public string HDPasswordCrypted
+        {
+            get { return Crypt.Encrypt(m_HDPassword); }
+            set { m_HDPassword = Crypt.Decrypt(value); }
+        }
+
         private string[] m_HDStores;
         public string[] HDStores
         {
@@ -185,6 +208,8 @@ namespace iba.Data
             m_HDPort = 9180;
             m_HDStores = new string[] {""};
             m_HDServer = "";
+            m_HDUsername = "";
+            m_HDPassword = "";
             m_startRangeFromTrigger = TimeSpan.FromHours(1);
             m_stopRangeFromTrigger = TimeSpan.Zero;
             m_bUsePreviousTriggerAsStart = false;
@@ -269,7 +294,9 @@ namespace iba.Data
             nsjd.m_doRepeat = m_doRepeat;
             nsjd.m_repeatEvery = m_repeatEvery;
             nsjd.m_repeatTimes = m_repeatTimes;
-            nsjd.HDServer = m_HDServer;
+            nsjd.m_HDServer = m_HDServer;
+            nsjd.m_HDUsername = m_HDUsername;
+            nsjd.m_HDPassword = m_HDPassword;
             nsjd.m_HDStores = (string[]) m_HDStores.Clone();
             nsjd.m_HDPort = m_HDPort;
             nsjd.m_startRangeFromTrigger = m_startRangeFromTrigger;
@@ -299,6 +326,8 @@ namespace iba.Data
             other.m_repeatEvery == m_repeatEvery &&
             other.m_repeatTimes == m_repeatTimes &&
             other.m_HDServer == m_HDServer &&
+            other.m_HDUsername == m_HDUsername &&
+            other.m_HDPassword == m_HDPassword &&
             other.m_HDStores.SequenceEqual(m_HDStores) &&
             other.m_HDPort == m_HDPort &&
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&

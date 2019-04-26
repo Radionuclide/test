@@ -29,6 +29,11 @@ namespace iba.Controls
 
         IHdReader m_hdReader;
 
+        string m_server;
+        int m_port;
+        string m_username;
+        string m_password;
+
         List<string> m_currEvents;
         List<string> m_currStores;
         IHdSignalTree m_treeEvents;
@@ -36,15 +41,17 @@ namespace iba.Controls
         static ImageList imageListError;
         ListViewItem m_lviErrorStores;
 
-        const int locationOffsetXRangeCenter = 145; //400 - m_pbRangeCenter.Location.X(= 255)
+        private long[] m_timeBases;
+
+        const int locationOffsetXRangeCenter = 150; //400 - m_pbRangeCenter.Location.X(= 255)
         #endregion
 
         #region Initialize
         static PanelEventJob()
         {
-            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
-            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
-            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+            //DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            //defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            //defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
 
             imageListError = new ImageList();
             imageListError.Images.Add(Properties.Resources.img_error);
@@ -59,11 +66,21 @@ namespace iba.Controls
             m_currEvents = new List<string>();
             m_currStores = new List<string>();
 
-            m_hdReader = HdClient.CreateReader(HdUserType.Analyzer);
+            m_username = "";
+            m_password = "";
+
+            m_hdReader = HdClient.CreateReader(HdUserType.PdaClient);
             object obj = m_hdReader.Authenticate(null);
             obj = HdReaderAuthenticator.GetInfo(obj);
             obj = m_hdReader.Authenticate(obj);
             m_hdReader.ShowConnectionError = false;
+
+            m_hdReader.UserLoginInfo.UserName = m_username;
+            m_hdReader.UserLoginInfo.Password = m_password;
+            m_hdReader.UserLoginInfo.AllowSavePassword = false;
+            m_hdReader.UserLoginInfo.SavePassword = true;
+
+            m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
 
             m_treeEvents = m_hdReader.CreateSignalTree(false);
             m_treeEvents.BeginStateChange();
@@ -73,13 +90,21 @@ namespace iba.Controls
             m_treeEvents.LogicalFilter = HdTreeLogicalFilter.Event;
             m_treeEvents.ContextOptions = HdTreeContextOptions.None;
             m_treeEvents.EndStateChange();
-            m_treeEvents.Control.Size = new Size(m_treeEvents.Control.Width, 165);
+            m_treeEvents.Control.Size = new Size(btnHdServer.Right-label2.Left, 165);
             m_treeEvents.Control.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             m_pnlEvents.Controls.Add(m_treeEvents.Control);
 
             m_rbtIncoming.Tag = EventJobRangeCenter.Incoming;
             m_rbtOutgoing.Tag = EventJobRangeCenter.Outgoing;
             m_rbtBoth.Tag = EventJobRangeCenter.Both;
+
+            string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
+            long ms = 10000; //10000 * 100 nanosec = 1 ms
+            long s = 1000 * ms;
+            m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
+            int n = itemStrs.Count();
+            for (int i = 0; i < n; i++)
+                m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
 
             UpdateStoreTree();
 
@@ -160,10 +185,13 @@ namespace iba.Controls
             m_nudMinsPost.Value = Math.Min(m_nudMinsPost.Maximum, m_eventData.PostTriggerRange.Minutes);
             m_nudSecsPost.Value = Math.Min(m_nudSecsPost.Maximum, m_eventData.PostTriggerRange.Seconds);
 
+            m_cbTimeBase.SelectedIndex = m_eventData.PreferredTimeBaseIsAuto ? 0 : Array.FindIndex(m_timeBases, ticks => ticks == m_eventData.PreferredTimeBaseTicks);
+
             //event selection
             m_currEvents = new List<string>(m_eventData.EventIDs);
             m_currStores = new List<string>(m_eventData.HDStores);
-            ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort);
+            SetHDServerSettings(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword);
+            ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword, SelectServer);
         }
 
         public void SaveData()
@@ -175,9 +203,10 @@ namespace iba.Controls
             m_confData.NrTryTimes = (int)m_retryUpDown.Value;
             m_confData.LimitTimesTried = m_cbRetry.Checked;
             //hdStore
-            m_eventData.HDServer = m_tbEventServer.Text ?? string.Empty;
-            int port = 0;
-            m_eventData.HDPort = int.TryParse(m_tbEventServerPort.Text, out port) ? port : -1;
+            m_eventData.HDServer = m_server ?? string.Empty;
+            m_eventData.HDPort = m_port;
+            m_eventData.HDUsername = m_username ?? string.Empty;
+            m_eventData.HDPassword = m_password ?? string.Empty;
 
             m_eventData.HDStores = m_currStores.ToArray();
 
@@ -196,6 +225,17 @@ namespace iba.Controls
             m_eventData.PreTriggerRange = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value);
             m_eventData.PostTriggerRange = new TimeSpan((int)m_nudDaysPost.Value, (int)m_nudHoursPost.Value, (int)m_nudMinsPost.Value, (int)m_nudSecsPost.Value);
 
+            if (m_cbTimeBase.SelectedIndex == 0) //auto
+            {
+                m_eventData.PreferredTimeBaseTicks = GetAutoItem().m_timebaseLength;
+                m_eventData.PreferredTimeBaseIsAuto = true;
+            }
+            else if (m_cbTimeBase.SelectedIndex > 0)
+            {
+                m_eventData.PreferredTimeBaseTicks = m_timeBases[m_cbTimeBase.SelectedIndex];
+                m_eventData.PreferredTimeBaseIsAuto = false;
+            }
+
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
         }
@@ -211,43 +251,61 @@ namespace iba.Controls
         #region Event HD server
         private void btnHdServer_Click(object sender, EventArgs e)
         {
-            int port = 0;
-            if (!int.TryParse(m_tbEventServerPort.Text, out port))
-                port = 9180;
+            SelectServer();
+        }
+
+        private void btnChangeUser_Click(object sender, EventArgs e)
+        {
+            ChangeHDServer(m_server, m_port, m_username, m_password,
+                () => { ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never); },
+                HdUserLoginOptions.Always);
+        }
+
+        void SelectServer()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(SelectServer));
+                return;
+            }
 
             string newServer = string.Empty;
             int newPort = 0;
 
-            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_tbEventServer.Text, port))
+            using (HdFormServerPicker serverPicker = new HdFormServerPicker(m_server, m_port))
             {
                 List<ReaderFeature> features = new List<ReaderFeature>() { ReaderFeature.Event };
                 features.AddRange(ReaderFeature.Analyzer);
                 serverPicker.SetCheckedFeatures(features, new List<WriterFeature>());
                 if (serverPicker.ShowDialog() != DialogResult.OK)
+                {
+                    ChangeHDServer(m_server, m_port, m_username, m_password, null, HdUserLoginOptions.Never);
                     return;
+                }
 
                 newServer = serverPicker.SelectedServer;
                 newPort = serverPicker.SelectedPort;
             }
 
-            if (m_tbEventServer.Text == newServer && m_tbEventServerPort.Text == newPort.ToString())
-                return;
-
-            m_currEvents.Clear();
-            m_currStores.Clear();
-            ChangeHDServer(newServer, newPort);
+            ChangeHDServer(newServer, newPort, m_username, m_password, SelectServer, HdUserLoginOptions.Always);
         }
 
-        void ChangeHDServer(string server, int port)
+        void ChangeHDServer(string server, int port, string username, string password, Action abortAction = null, HdUserLoginOptions showLoginForm = HdUserLoginOptions.Failure)
         {
+            if (Disposing || IsDisposed)
+                return;
+
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string, int>(ChangeHDServer), server, port);
+                BeginInvoke(new Action<string, int, string, string, Action, HdUserLoginOptions>(ChangeHDServer), server, port, username, password, abortAction, showLoginForm);
                 return;
             }
 
-            m_tbEventServer.Text = server;
-            m_tbEventServerPort.Text = port.ToString();
+            username = username ?? "";
+            password = password ?? "";
 
             m_lvStores.Items.Clear();
 
@@ -263,12 +321,61 @@ namespace iba.Controls
                 if (m_hdReader != null && m_hdReader.IsConnected())
                     m_hdReader.Disconnect();
 
-                m_hdReader?.Connect(tpl.Item1, tpl.Item2);
+                m_hdReader.UserLoginInfo.Parent = this;
+                m_hdReader.UserLoginInfo.UserName = username;
+                m_hdReader.UserLoginInfo.Password = password;
+                m_hdReader.UserLoginOptions = showLoginForm;
+
+                HdConnectResult res = m_hdReader?.ConnectEx(tpl.Item1, tpl.Item2) ?? HdConnectResult.ConnectionFailure;
+                m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
+
+                if (res == HdConnectResult.AbortedByUser && abortAction != null)
+                {
+                    abortAction();
+                    return;
+                }
+
+                if (server != m_server || port != m_port || username != m_hdReader.UserLoginInfo.UserName || password != m_hdReader.UserLoginInfo.Password)
+                {
+                    //also clear on new user credentials because the new user might not have read access for certain stores
+                    m_currEvents.Clear();
+                    m_currStores.Clear();
+                }
+
+                SetHDServerSettings(server, port, m_hdReader.UserLoginInfo.UserName, m_hdReader.UserLoginInfo.Password);
+
                 OnHdConnectionChanged();
 
                 if (m_hdReader != null)
                     m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             }, Tuple.Create(server, port));
+        }
+
+        void SetHDServerSettings(string server, int port, string username, string password)
+        {
+            m_server = server ?? "";
+            m_port = port;
+            m_username = username ?? "";
+            m_password = password ?? "";
+
+            UpdateHDServerSettings();
+        }
+
+        void UpdateHDServerSettings()
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(UpdateHDServerSettings));
+                return;
+            }
+
+            m_tbEventServer.Text = m_server;
+            m_tbEventServerPort.Text = m_port.ToString();
+            m_tbUsername.Text = m_username;
+            btnChangeUser.Enabled = !string.IsNullOrWhiteSpace(m_server);
         }
 
         void OnHdConnectionChanged()
@@ -317,20 +424,22 @@ namespace iba.Controls
                     m_lviErrorStores = new ListViewItem();
                     m_lviErrorStores.ImageIndex = 0;
                 }
-
-                m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
+                if (String.IsNullOrEmpty(m_hdReader.ServerHost)) //don't show an error message if server is not specified yet
+                    m_lviErrorStores.Text = Properties.Resources.NoHDServerConnected;
+                else
+                    m_lviErrorStores.Text = m_hdReader == null || string.IsNullOrWhiteSpace(m_hdReader.ConnectionError) ? Properties.Resources.EventJob_DefaultHDConnectionErr : m_hdReader.ConnectionError;
 
                 m_lvStores.Items.Add(m_lviErrorStores);
             }
             else
             {
                 m_lvStores.CheckBoxes = true;
-                m_lvStores.SmallImageList = HdTreeControl.ImageList;
+                m_lvStores.SmallImageList = HdTreeNodes.ImageList;
 
                 foreach (var store in m_hdReader.Stores)
                 {
                     if (store.IsEnabled() && store.Type == HdStoreType.Time && !store.Id.StoreName.Contains("<DIAGNOSTIC>"))
-                        m_lvStores.Items.Add(store.Id.StoreName, HdTreeControl.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
+                        m_lvStores.Items.Add(store.Id.StoreName, HdTreeNodes.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
                 }
 
                 foreach (var name in m_currStores)
@@ -378,11 +487,15 @@ namespace iba.Controls
         private void m_cbPreTrigger_CheckedChanged(object sender, EventArgs e)
         {
             m_nudDaysPre.Enabled = m_nudHoursPre.Enabled = m_nudMinsPre.Enabled = m_nudSecsPre.Enabled = m_cbPreTrigger.Checked;
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
         private void m_cbPostTrigger_CheckedChanged(object sender, EventArgs e)
         {
             m_nudDaysPost.Enabled = m_nudHoursPost.Enabled = m_nudMinsPost.Enabled = m_nudSecsPost.Enabled = m_cbPostTrigger.Checked;
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
         }
 
         private void rbtRangeCenter_CheckedChanged(object sender, EventArgs e)
@@ -405,11 +518,11 @@ namespace iba.Controls
                 m_lbOutgoing.Visible = true;
                 m_lbIncoming.Visible = true;
 
-                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 53 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 120 + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 60 - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+                m_lbIncoming.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 50 - m_lbIncoming.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 50 - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 50 - 37 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 50 + 40 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 60);
             }
             else
             {
@@ -431,10 +544,142 @@ namespace iba.Controls
                     m_lbOutgoing.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbOutgoing.Width / 2), m_pbRangeCenter.Location.Y - 3);
                 }
 
-                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 52 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 52 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 55);
-                m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 94);
+                m_lbPre.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - 37 - m_lbPre.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                m_lbPost.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter + 40 - m_lbPost.Width / 2), m_pbRangeCenter.Location.Y + 35);
+                //m_lbMaximum.Location = new Point(m_pbRangeCenter.Location.X + (locationOffsetXRangeCenter - m_lbMaximum.Width / 2), m_pbRangeCenter.Location.Y + 60);
             }
+
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
+        }
+
+        private void m_nud_ValueChanged(object sender, EventArgs e)
+        {
+            m_cbTimeBase.Invalidate();
+            m_cbTimeBase_SelectedIndexChanged(null, null);
+        }
+
+        double ReqTimeBaseFactor()
+        {
+            return Math.Sqrt(40.0); //in the future we might need to ask the reader
+        }
+
+        TimeBaseAcceptability CheckTimeBaseAcceptability(TimeCbItem item)
+        {
+            long duration = 0;
+            if (m_rbtBoth.Checked)
+                duration = new TimeSpan((int)m_nudDaysMax.Value, (int)m_nudHoursMax.Value, (int)m_nudMinsMax.Value, (int)m_nudSecsMax.Value).Ticks;
+            else
+            {
+                if (m_cbPreTrigger.Checked)
+                    duration = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value).Ticks;
+                if (m_cbPostTrigger.Checked)
+                    duration += new TimeSpan((int)m_nudDaysPost.Value, (int)m_nudHoursPost.Value, (int)m_nudMinsPost.Value, (int)m_nudSecsPost.Value).Ticks;
+            }
+
+            if (duration <= 0)
+                return TimeBaseAcceptability.Unknown;
+
+            if (item.m_timebaseLength == 0)
+                return TimeBaseAcceptability.Allowed; //auto
+
+            double samples = ((double)(duration)) / ((double)(item.m_timebaseLength)) * ReqTimeBaseFactor();
+            if (samples > 1.0e9)
+                return TimeBaseAcceptability.Forbidden;
+            else if (samples > 1.0e7)
+                return TimeBaseAcceptability.Questionable;
+            else
+                return TimeBaseAcceptability.Allowed;
+        }
+
+        TimeCbItem GetAutoItem() //auto
+        {
+            for (int i = 1; i < m_cbTimeBase.Items.Count; i++)
+            {
+                TimeCbItem item = m_cbTimeBase.Items[i] as TimeCbItem;
+                if (CheckTimeBaseAcceptability(item) == TimeBaseAcceptability.Allowed)
+                    return item;
+            }
+            //none ok, return last
+            return m_cbTimeBase.Items[m_cbTimeBase.Items.Count - 1] as TimeCbItem;
+        }
+
+        private void m_cbTimeBase_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+
+            string tooltipText = null;
+            Brush brush = null;
+            bool unknowntba = false;
+            switch (CheckTimeBaseAcceptability(((ComboBox)sender).Items[e.Index] as TimeCbItem))
+            {
+                case TimeBaseAcceptability.Unknown:
+                    brush = new SolidBrush(SystemColors.WindowText);
+                    unknowntba = true;
+                    break;
+                case TimeBaseAcceptability.Allowed:
+                    brush = Brushes.Green;
+                    tooltipText = iba.Properties.Resources.TooltipGreen;
+                    break;
+                case TimeBaseAcceptability.Questionable:
+                    brush = Brushes.DarkOrange;
+                    tooltipText = iba.Properties.Resources.TooltipOrange;
+                    break;
+                case TimeBaseAcceptability.Forbidden:
+                    brush = Brushes.Red;
+                    tooltipText = iba.Properties.Resources.TooltipRed;
+                    break;
+            }
+
+            string text = ((ComboBox)sender).Items[e.Index].ToString();
+            if (e.Index == 0)
+            {
+                if (unknowntba)
+                    text = String.Format(text, "?");
+                else
+                    text = String.Format(text, GetAutoItem());
+            }
+
+            if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.Selected))
+                e.Graphics.FillRectangle(new SolidBrush(Color.Lavender), e.Bounds);
+            else
+                e.DrawBackground();
+
+            e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
+            if (e.State.HasFlag(DrawItemState.Selected) && tooltipText != null && m_cbTimeBase.DroppedDown)
+            {
+                m_toolTip.Show(tooltipText, m_cbTimeBase, e.Bounds.Right, e.Bounds.Bottom + m_cbTimeBase.Height);
+            }
+        }
+
+        private void m_cbTimeBase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_cbTimeBase.SelectedItem != null)
+            {
+                switch (CheckTimeBaseAcceptability(m_cbTimeBase.SelectedItem as TimeCbItem))
+                {
+                    case TimeBaseAcceptability.Unknown:
+                        m_toolTip.SetToolTip(m_cbTimeBase, null);
+                        break;
+                    case TimeBaseAcceptability.Allowed:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipGreen);
+                        break;
+                    case TimeBaseAcceptability.Questionable:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipOrange);
+                        break;
+                    case TimeBaseAcceptability.Forbidden:
+                        m_toolTip.SetToolTip(m_cbTimeBase, iba.Properties.Resources.TooltipRed);
+                        break;
+                }
+            }
+            else
+                m_toolTip.SetToolTip(m_cbTimeBase, null);
+        }
+
+        private void m_cbTimeBase_DropDownClosed(object sender, EventArgs e)
+        {
+            m_toolTip.Hide(m_cbTimeBase);
         }
         #endregion
 
@@ -489,6 +734,6 @@ namespace iba.Controls
                 ibaLogger.LogFormat(Level.Exception, "Generating an HDQ test file failed: {0}", ex.Message);
             }
         }
-        #endregion        
+        #endregion
     }
 }

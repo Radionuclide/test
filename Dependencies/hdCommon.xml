@@ -290,6 +290,11 @@
               Looks up a localized string similar to Write time based store data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterUserAuthentication">
+            <summary>
+              Looks up a localized string similar to User authentication.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FolderAnnotations">
             <summary>
               Looks up a localized string similar to Annotations.
@@ -489,6 +494,11 @@
             <param name="signalId">
             Asterisk wildcard supported
             </param>
+        </member>
+        <member name="F:iba.HD.Common.TimeRequest.GetLastValue">
+            <summary>
+            When true the server will return the last valid value in case no data is found for the requested time range
+            </summary>
         </member>
         <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
             <summary>

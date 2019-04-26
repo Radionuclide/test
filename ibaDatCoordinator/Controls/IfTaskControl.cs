@@ -26,7 +26,6 @@ namespace iba.Controls
                 iba.Properties.Resources.XFrequency,
                 iba.Properties.Resources.XInvLength
             });
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
             WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
@@ -179,10 +178,11 @@ namespace iba.Controls
             string errorMessage;
             using (new Utility.WaitCursor())
             {
+                string pass = m_data.ParentConfigurationData.FileEncryptionPassword;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
+                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
                 else
-                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, out errorMessage);
+                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
                 MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -192,7 +192,7 @@ namespace iba.Controls
                 MessageBox.Show(iba.Properties.Resources.IfTestNegativeEvaluation, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        static internal float TestCondition(string expression, int index, string pdo, string datfile, out string errorMessage)
+        static internal float TestCondition(string expression, int index, string pdo, string datfile, string passwd, out string errorMessage)
         {
             IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             //register this
@@ -211,6 +211,8 @@ namespace iba.Controls
             try
             {
                 if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(pdo);
+                if (!String.IsNullOrEmpty(passwd))
+                    ibaAnalyzer.SetFilePassword("", passwd);
                 ibaAnalyzer.OpenDataFile(0, datfile);
                 f = ibaAnalyzer.Evaluate(expression, index);
             }

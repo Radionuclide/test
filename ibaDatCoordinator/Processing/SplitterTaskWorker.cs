@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using iba.Data;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 using System.IO;
 using iba.Utility;
 
@@ -109,35 +109,33 @@ namespace iba.Processing
                 progress = new ConfigurationStopListener(m_confWorker);
             if (points == null) return false; //failed and logged
             generatedFiles = new List<String>();
-            IbaFileSplitter splitter = null;
+            
             try
             {
                 string fileNameWithoutPath = Path.GetFileName(fileName);
-                splitter = new IbaFileSplitterClass();
-                splitter.Open(fileName);
-                int size = points.Count / 2;
-                for (int i = 0; i < size; i++)
+                using (IbaFileSplitter splitter = new IbaFileSplitter())
                 {
-                    string newFile = Path.Combine(outputFolder,GetName(i, fileNameWithoutPath));
-                    if (progress != null)
+                    splitter.Open(fileName, m_task.ParentConfigurationData.FileEncryptionPassword);
+                    int size = points.Count / 2;
+                    for (int i = 0; i < size; i++)
                     {
-                        if (progress.Aborted) break;
-                        progress.Update(newFile, i);
+                        string newFile = Path.Combine(outputFolder, GetName(i, fileNameWithoutPath));
+                        if (progress != null)
+                        {
+                            if (progress.Aborted) break;
+                            progress.Update(newFile, i);
+                        }
+                        splitter.Split(newFile, points[2 * i], points[2 * i + 1]);
+                        generatedFiles.Add(newFile);
                     }
-                    splitter.Split(newFile, points[2 * i], points[2 * i + 1]);
-                    generatedFiles.Add(newFile);
+                    splitter.Close();
+                    return true;
                 }
-                splitter.Close();
-                return true;
             }
             catch (Exception ex)
             {
                 LogError(Logging.Level.Exception, ex.Message, fileName);
                 return false;
-            }
-            finally
-            {
-                if (splitter != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(splitter);
             }
         }
 
@@ -239,6 +237,7 @@ namespace iba.Processing
         {
             if (points != null) return points;
             if (filename==null) filename = m_task.TestDatFile;
+            string pass = m_task.ParentConfigurationData.FileEncryptionPassword;
             if (progress == null && m_confWorker != null)
                 progress = new ConfigurationStopListener(m_confWorker);
             try
@@ -255,11 +254,11 @@ namespace iba.Processing
                     {
                         using (WaitCursor wait = new WaitCursor())
                         {
-                            LoadStuff(filename, ref result);
+                            LoadStuff(filename, pass, ref result);
                         }
                     }
                     else
-                        LoadStuff(filename, ref result);
+                        LoadStuff(filename, pass, ref result);
 
                     for (int i = 0; progress == null || !progress.Aborted; i++)
                     {
@@ -358,8 +357,10 @@ namespace iba.Processing
             return null;
         }
 
-        private void LoadStuff(string filename, ref List<double> result)
+        private void LoadStuff(string filename, string pass, ref List<double> result)
         {
+            if (!String.IsNullOrEmpty(pass))
+                m_ibaAnalyzer.SetFilePassword("",pass);
             m_ibaAnalyzer.OpenDataFile(0, filename);
             GetStartTime();
             if (!string.IsNullOrEmpty(m_task.AnalysisFile))

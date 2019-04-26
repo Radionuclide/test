@@ -30,8 +30,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
+[assembly: AssemblyVersion("2.2.0.0")]
+[assembly: AssemblyFileVersion("2.2.0.0")]
 
 [assembly: InternalsVisibleTo("ibaDatCoordinatorStatus")]
 
@@ -43,7 +43,7 @@ namespace iba
         public static string GetVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            //ver = ver + " BETA4";
+            //ver = ver + " BETA5";
             return ver;
         }
 

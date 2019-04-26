@@ -137,7 +137,7 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::AM_OSPC_plugin.Properties.Resources.Analyzer_001;
+            this.m_executeIBAAButton.Image = global::AM_OSPC_plugin.Properties.Resources.ibaAnalyzer;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_toolTip.SetToolTip(this.m_executeIBAAButton, resources.GetString("m_executeIBAAButton.ToolTip"));
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;

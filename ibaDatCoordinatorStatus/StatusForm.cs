@@ -21,9 +21,13 @@ namespace iba.DatCoordinator.Status
 {
     public partial class StatusForm : Form, IExternalCommand
     {
-        private static Icon ServiceRunningIcon = Properties.Resources.StatusIconRunning;
-        private static Icon ServiceStoppedIcon = Properties.Resources.StatusIconStopped;
-        private static Icon ServiceDisconnectedIcon = Properties.Resources.StatusIconDisconnected;
+        private static Icon ServiceRunningIcon = Properties.Resources.ibaDatCoordinator_server_start;
+        private static Icon ServiceStoppedIcon = Properties.Resources.ibaDatCoordinator_server_stopp;
+        private static Icon ServiceDisconnectedIcon = Properties.Resources.ibaDatCoordinator_server_dc;
+
+        private static Icon ServiceRunningIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_start,SystemInformation.SmallIconSize);
+        private static Icon ServiceStoppedIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_stopp, SystemInformation.SmallIconSize);
+        private static Icon ServiceDisconnectedIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_dc, SystemInformation.SmallIconSize);
 
         public StatusForm()
         {
@@ -64,7 +68,6 @@ namespace iba.DatCoordinator.Status
             m_iconEx.DoubleClick += new EventHandler(iconEx_DoubleClick);
             m_iconEx.Visible = false;
 
-            ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
             Text = Text +  " " + DatCoVersion.GetVersion();
@@ -161,7 +164,8 @@ namespace iba.DatCoordinator.Status
                     m_btnRestart.Enabled = true;
                     m_btnOptimize.Enabled = true;
                     m_btTransferAnalyzerSettings.Enabled = true;
-                    m_iconEx.Icon = this.Icon = ServiceRunningIcon;
+                    m_iconEx.Icon = ServiceRunningIconSmall;
+                    this.Icon = ServiceRunningIcon;
                     m_iconEx.Text = Properties.Resources.ServiceStatusTooltipRunning;
                 }
             }
@@ -177,7 +181,16 @@ namespace iba.DatCoordinator.Status
                     m_btnRestart.Enabled = false;
                     m_btnOptimize.Enabled = false;
                     m_btTransferAnalyzerSettings.Enabled = false;
-                    m_iconEx.Icon = this.Icon = bServiceError?ServiceDisconnectedIcon:ServiceStoppedIcon;
+                    if (bServiceError)
+                    {
+                        m_iconEx.Icon = ServiceDisconnectedIconSmall;
+                        this.Icon = ServiceDisconnectedIcon;
+                    }
+                    else
+                    {
+                        m_iconEx.Icon = ServiceStoppedIconSmall;
+                        this.Icon = ServiceStoppedIcon;
+                    }
                     m_iconEx.Text = bServiceError ? Properties.Resources.ServiceStatusTooltipError : Properties.Resources.ServiceStatusTooltipStopped;
                 }
             }

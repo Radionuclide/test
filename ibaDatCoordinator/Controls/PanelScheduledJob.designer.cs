@@ -81,6 +81,9 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.m_tbUsername = new System.Windows.Forms.TextBox();
+            this.btnChangeUser = new System.Windows.Forms.Button();
             this.gbSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
@@ -379,6 +382,9 @@
             // gbHD
             // 
             resources.ApplyResources(this.gbHD, "gbHD");
+            this.gbHD.Controls.Add(this.btnChangeUser);
+            this.gbHD.Controls.Add(this.m_tbUsername);
+            this.gbHD.Controls.Add(this.label20);
             this.gbHD.Controls.Add(this.m_lvStores);
             this.gbHD.Controls.Add(this.label31);
             this.gbHD.Controls.Add(this.btnHdServer);
@@ -397,7 +403,7 @@
             this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
-            this.m_lvStores.View = System.Windows.Forms.View.Details;
+            this.m_lvStores.View = System.Windows.Forms.View.List;
             // 
             // columnHeader1
             // 
@@ -656,6 +662,24 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // m_tbUsername
+            // 
+            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
+            this.m_tbUsername.Name = "m_tbUsername";
+            this.m_tbUsername.ReadOnly = true;
+            // 
+            // btnChangeUser
+            // 
+            resources.ApplyResources(this.btnChangeUser, "btnChangeUser");
+            this.btnChangeUser.Name = "btnChangeUser";
+            this.btnChangeUser.UseVisualStyleBackColor = true;
+            this.btnChangeUser.Click += new System.EventHandler(this.btnChangeUser_Click);
+            // 
             // PanelScheduledJob
             // 
             resources.ApplyResources(this, "$this");
@@ -755,5 +779,8 @@
         private System.Windows.Forms.ListView m_lvStores;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Button btnChangeUser;
+        private System.Windows.Forms.TextBox m_tbUsername;
+        private System.Windows.Forms.Label label20;
     }
 }

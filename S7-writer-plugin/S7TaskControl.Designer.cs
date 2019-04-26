@@ -165,7 +165,6 @@
             // m_browsePDOFileButton
             // 
             resources.ApplyResources(this.m_browsePDOFileButton, "m_browsePDOFileButton");
-            this.m_browsePDOFileButton.Image = global::S7_writer_plugin.Properties.Resources.open;
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_toolTip.SetToolTip(this.m_browsePDOFileButton, resources.GetString("m_browsePDOFileButton.ToolTip"));
             this.m_browsePDOFileButton.UseVisualStyleBackColor = true;
@@ -174,7 +173,6 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::S7_writer_plugin.Properties.Resources.Analyzer_001;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_toolTip.SetToolTip(this.m_executeIBAAButton, resources.GetString("m_executeIBAAButton.ToolTip"));
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
@@ -183,7 +181,6 @@
             // m_browseDatFileButton
             // 
             resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-            this.m_browseDatFileButton.Image = global::S7_writer_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_toolTip.SetToolTip(this.m_browseDatFileButton, resources.GetString("m_browseDatFileButton.ToolTip"));
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
@@ -203,7 +200,6 @@
             // m_testButton
             // 
             resources.ApplyResources(this.m_testButton, "m_testButton");
-            this.m_testButton.Image = global::S7_writer_plugin.Properties.Resources.select;
             this.m_testButton.Name = "m_testButton";
             this.m_toolTip.SetToolTip(this.m_testButton, resources.GetString("m_testButton.ToolTip"));
             this.m_testButton.UseVisualStyleBackColor = true;

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using iba.Utility;
 
-using ibaFilesLiteLib;
 using IbaAnalyzer;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;

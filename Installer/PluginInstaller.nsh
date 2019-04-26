@@ -24,6 +24,7 @@ Var StandAlone
 !define MUI_UNICON  "Graphics\ibaUnInstall.ico"
 
 !define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "Graphics\MUIInstallLogo.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\ibaWizard.bmp"
 
