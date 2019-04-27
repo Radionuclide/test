@@ -1030,6 +1030,8 @@ namespace iba.Processing
 
         private OpcUaWorker OpcUaWorker { get; } = new OpcUaWorker();
 
+        internal OpcUaWorker Tst___OpcUaWorker => OpcUaWorker; // todo. kls. delete
+
         public void OpcUaWorkerInit()
         {
             OpcUaWorker.Init();

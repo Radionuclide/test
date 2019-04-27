@@ -314,13 +314,13 @@ namespace iba.ibaOPCServer
         /// <summary>
         /// Root folder for all iba-specific data
         /// </summary>
-        private FolderState _folderIbaRoot;
+        private FolderState _folderIbaRoot; // todo. kls. to get-property
         /// <summary>
         /// contains iba-ua-server-status nodes
         /// </summary>
         private FolderState _folderIbaStatus;
         /// <summary>
-        /// Contains gloabl ibaLogic off-task connectors e.g. "Globals.OTC_Result"
+        /// Contains global ibaLogic off-task connectors e.g. "Globals.OTC_Result"
         /// </summary>
         private FolderState _folderIbaGlobals; // contains 
         /// <summary>
@@ -707,6 +707,8 @@ namespace iba.ibaOPCServer
             }
             return null;
         }
+
+        public FolderState GetIbaRootFolder() => _folderIbaRoot;
 
         /// <summary>
         /// By Kolesnik. 

@@ -483,7 +483,7 @@ namespace iba.Controls
             //    }
             //}
 
-            tvObjects.SelectedNode = FindSingleNodeById(_lastId);
+            //tvObjects.SelectedNode = FindSingleNodeById(_lastId);
 
             //tvObjects.Select();
             //            tvObjects.Focus();
@@ -568,17 +568,6 @@ namespace iba.Controls
 
         #endregion
 
-
-        private void buttonInit1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //NodeManager.KlsSetValueScalar(_intGeneratorVar1, _intGeneratorValue);
-        }
 
         // todo. kls. delete
         private void buttonCopyToClipboard_Click(object sender, EventArgs e)
@@ -786,6 +775,12 @@ namespace iba.Controls
             //// set data to manager and restart snmp agent if necessary
             //TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
+        }
+
+        private OpcUaWorker Tst__Worker => TaskManager.Manager.Tst___OpcUaWorker; // todo. kls. delete
+
+        private void buttonTest2_Click(object sender, EventArgs e)
+        {
         }
     }
 }

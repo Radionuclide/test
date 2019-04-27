@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Root");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.dgvClients = new System.Windows.Forms.DataGridView();
@@ -64,17 +64,16 @@
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
             this.cbSecurityNone = new System.Windows.Forms.CheckBox();
             this.gbEndpoints = new System.Windows.Forms.GroupBox();
+            this.buttonCopyToClipboard = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
             this.buttonEndpointDelete = new System.Windows.Forms.Button();
-            this.buttonCopyToClipboard = new System.Windows.Forms.Button();
             this.dgvEndpoints = new System.Windows.Forms.DataGridView();
             this.dgvColumnHost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
-            this.buttonTest1 = new System.Windows.Forms.Button();
-            this.buttonTest2 = new System.Windows.Forms.Button();
+            this.buttonTest = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbDiagnostics.SuspendLayout();
@@ -301,10 +300,10 @@
             this.tvObjects.Location = new System.Drawing.Point(18, 46);
             this.tvObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tvObjects.Name = "tvObjects";
-            treeNode4.Name = "NodeRoot";
-            treeNode4.Text = "Root";
+            treeNode1.Name = "NodeRoot";
+            treeNode1.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4});
+            treeNode1});
             this.tvObjects.Size = new System.Drawing.Size(654, 83);
             this.tvObjects.TabIndex = 0;
             // 
@@ -315,8 +314,7 @@
             this.gbConfiguration.Controls.Add(this.splitContainerSecurity);
             this.gbConfiguration.Controls.Add(this.gbEndpoints);
             this.gbConfiguration.Controls.Add(this.cbEnabled);
-            this.gbConfiguration.Controls.Add(this.buttonTest1);
-            this.gbConfiguration.Controls.Add(this.buttonTest2);
+            this.gbConfiguration.Controls.Add(this.buttonTest);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
             this.gbConfiguration.Location = new System.Drawing.Point(15, 3);
@@ -515,6 +513,21 @@
             this.gbEndpoints.TabStop = false;
             this.gbEndpoints.Text = "Endpoints";
             // 
+            // buttonCopyToClipboard
+            // 
+            this.buttonCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonCopyToClipboard.AutoSize = true;
+            this.buttonCopyToClipboard.BackColor = System.Drawing.Color.Linen;
+            this.buttonCopyToClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonCopyToClipboard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonCopyToClipboard.Location = new System.Drawing.Point(63, -1);
+            this.buttonCopyToClipboard.Name = "buttonCopyToClipboard";
+            this.buttonCopyToClipboard.Size = new System.Drawing.Size(76, 19);
+            this.buttonCopyToClipboard.TabIndex = 14;
+            this.buttonCopyToClipboard.Text = "Copy to clipboard";
+            this.buttonCopyToClipboard.UseVisualStyleBackColor = false;
+            this.buttonCopyToClipboard.Click += new System.EventHandler(this.buttonCopyToClipboard_Click);
+            // 
             // buttonEndpointCopy
             // 
             this.buttonEndpointCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -542,21 +555,6 @@
             this.buttonEndpointDelete.TabStop = false;
             this.buttonEndpointDelete.UseVisualStyleBackColor = true;
             this.buttonEndpointDelete.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
-            // 
-            // buttonCopyToClb
-            // 
-            this.buttonCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCopyToClipboard.AutoSize = true;
-            this.buttonCopyToClipboard.BackColor = System.Drawing.Color.Linen;
-            this.buttonCopyToClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCopyToClipboard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonCopyToClipboard.Location = new System.Drawing.Point(63, -1);
-            this.buttonCopyToClipboard.Name = "buttonCopyToClipboard";
-            this.buttonCopyToClipboard.Size = new System.Drawing.Size(76, 19);
-            this.buttonCopyToClipboard.TabIndex = 14;
-            this.buttonCopyToClipboard.Text = "Copy to clipboard";
-            this.buttonCopyToClipboard.UseVisualStyleBackColor = false;
-            this.buttonCopyToClipboard.Click += new System.EventHandler(this.buttonCopyToClipboard_Click);
             // 
             // dgvEndpoints
             // 
@@ -632,30 +630,18 @@
             this.cbEnabled.Text = "Enabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
             // 
-            // buttonTest1
+            // buttonTest
             // 
-            this.buttonTest1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTest1.BackColor = System.Drawing.Color.Linen;
-            this.buttonTest1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonTest1.Location = new System.Drawing.Point(408, 312);
-            this.buttonTest1.Name = "buttonTest1";
-            this.buttonTest1.Size = new System.Drawing.Size(102, 23);
-            this.buttonTest1.TabIndex = 12;
-            this.buttonTest1.Text = "Set Sample Cfg1";
-            this.buttonTest1.UseVisualStyleBackColor = false;
-            this.buttonTest1.Click += new System.EventHandler(this.buttonTest1_Click);
-            // 
-            // buttonTest2
-            // 
-            this.buttonTest2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTest2.BackColor = System.Drawing.Color.Linen;
-            this.buttonTest2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonTest2.Location = new System.Drawing.Point(245, 312);
-            this.buttonTest2.Name = "buttonTest2";
-            this.buttonTest2.Size = new System.Drawing.Size(75, 23);
-            this.buttonTest2.TabIndex = 12;
-            this.buttonTest2.Text = "Test2";
-            this.buttonTest2.UseVisualStyleBackColor = false;
+            this.buttonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTest.BackColor = System.Drawing.Color.Linen;
+            this.buttonTest.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonTest.Location = new System.Drawing.Point(245, 312);
+            this.buttonTest.Name = "buttonTest";
+            this.buttonTest.Size = new System.Drawing.Size(75, 23);
+            this.buttonTest.TabIndex = 12;
+            this.buttonTest.Text = "Test";
+            this.buttonTest.UseVisualStyleBackColor = false;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest2_Click);
             // 
             // buttonConfigurationReset
             // 
@@ -737,8 +723,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button buttonTest1;
-        private System.Windows.Forms.Button buttonTest2;
+        private System.Windows.Forms.Button buttonTest;
         private Utility.CollapsibleGroupBox gbDiagnostics;
         private System.Windows.Forms.DataGridView dgvClients;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColAddress;

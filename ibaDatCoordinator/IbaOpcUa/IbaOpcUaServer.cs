@@ -51,8 +51,8 @@ namespace iba.ibaOPCServer
             List<INodeManager> nodeManagers = new List<INodeManager>();
 
             // create the custom node managers.
-            _ibaUaNodeManager = new IbaUaNodeManager(this, server, configuration);
-            nodeManagers.Add(_ibaUaNodeManager);
+            IbaUaNodeManager = new IbaUaNodeManager(this, server, configuration);
+            nodeManagers.Add(IbaUaNodeManager);
             
             // create master node manager.
             return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());
@@ -199,8 +199,8 @@ namespace iba.ibaOPCServer
         }
         #endregion
 
-        // todo make private
-        public IbaUaNodeManager _ibaUaNodeManager;
+        
+        public IbaUaNodeManager IbaUaNodeManager; // todo. kls. make private??
 
         // todo protect by lock for safe thread access? or not so important?
         public string KlsStrEndpoints { get; private set; }
@@ -596,15 +596,15 @@ namespace iba.ibaOPCServer
 
         public bool KlsAddWatch(string sVarName)
         {
-            KlsStrMonitoredItems = _ibaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
-            KlsStrMonitoredItems2 = _ibaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
+            KlsStrMonitoredItems = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
+            KlsStrMonitoredItems2 = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
             //return _onlineServer.AddWatchVariable(sVarName);
             return false;
         }
         public bool KlsRemoveWatch(string sVarName)
         {
-            KlsStrMonitoredItems = _ibaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
-            KlsStrMonitoredItems2 = _ibaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
+            KlsStrMonitoredItems = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
+            KlsStrMonitoredItems2 = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
 //            return _onlineServer.AddRemoveWatch(sVarName);
             return false;
         }

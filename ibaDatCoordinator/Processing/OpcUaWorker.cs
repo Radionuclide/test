@@ -47,12 +47,12 @@ namespace iba.Processing
 
     #endregion
 
-    class OpcUaWorker
+    class OpcUaWorker : IDisposable
     {
         private BaseDataVariableState _lifeBeatVar;
+        private readonly System.Windows.Forms.Timer _lifebeatTimer = new System.Windows.Forms.Timer {Enabled = false, Interval = 300};
 
-
-        public static int TmpLifebeatValue { get; private set; } = 0; // // todo. kls. only if enabled
+        public static int TmpLifebeatValue { get; private set; } = 0; // todo. kls. only if enabled
 
         #region Construction, Destruction, Init
 
@@ -63,8 +63,9 @@ namespace iba.Processing
             Status = SnmpWorkerStatus.Errored;
             StatusString = iba.Properties.Resources.opcUaStatusNotInit;
 
-            System.Windows.Forms.Timer lifebeatTimer = new System.Windows.Forms.Timer {Enabled = true, Interval = 300};
-            lifebeatTimer.Tick += (sender, args) =>
+            _lifebeatTimer.Enabled = true;
+
+            _lifebeatTimer.Tick += (sender, args) =>
             {
                 try
                 {
@@ -72,9 +73,19 @@ namespace iba.Processing
                     if (_lifeBeatVar != null)
                         NodeManager?.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
                 }
-                catch { /**/ }
+                catch
+                {
+                    TmpLifebeatValue = 0;
+                    /**/
+                }
             };
         }
+
+        public void Dispose()
+        {
+            _lifebeatTimer.Stop(); // todo. kls. 
+        }
+
 
         public void Init()
         {
@@ -142,12 +153,7 @@ namespace iba.Processing
 
                 //_opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
 
-                FolderState globalsFolder = NodeManager.KlsGetSubtreeRootFolder(SubTreeId.Globals);
-                var folderTest = NodeManager.KlsCreateFolderAndItsNode(globalsFolder, "Test");
-                _lifeBeatVar =
-                    NodeManager.KlsCreateStatusVariableAndItsNode(folderTest, "Lifebeat", BuiltInType.Int32);
-
-                NodeManager.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
+                Tst__CreateTestTree();
             }
 
             RestartServer();
@@ -167,7 +173,7 @@ namespace iba.Processing
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why it's needed
-                // 1. setup SNMP manager to monitor some yet inexisting job. it will show "no such instance". ok.
+                // 1. setup SNMP manager to monitor some yet non-existing job. it will show "no such instance". ok.
                 // 2. Add one ore several jobs to fit the requested OID area. 
                 //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
             };
@@ -177,14 +183,19 @@ namespace iba.Processing
             RebuildTree();
         }
 
-        private void ApplyEndpoints()
+        public void Tst__CreateTestTree()
         {
-            _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-            foreach (var ep in _opcUaData.Endpoints)
-                _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
+            FolderState parentFolder = NodeManager.GetIbaRootFolder();
+            //FolderState parentFolder = NodeManager.KlsGetSubtreeRootFolder(SubTreeId.Globals);
+            //var folderTest = NodeManager.KlsCreateFolderAndItsNode(parentFolder, "Test");
+
+            _lifeBeatVar =
+                NodeManager.KlsCreateStatusVariableAndItsNode(parentFolder, "Lifebeat", BuiltInType.Int32);
+
+            NodeManager.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
         }
 
-        public string Tmp____GetInternalEndpoints()
+        public string Tst__GetInternalEndpoints()
         {
             string str = "";
             foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
@@ -213,7 +224,7 @@ namespace iba.Processing
         #region Configuration of SNMP agent (IbaSnmp libraray)
 
         ApplicationInstance _uaApplication;
-        private IbaUaNodeManager NodeManager => IbaOpcUaServer._ibaUaNodeManager;
+        private IbaUaNodeManager NodeManager => IbaOpcUaServer.IbaUaNodeManager;
 
         public IbaOpcUaServer IbaOpcUaServer { get; private set; }
 
@@ -262,21 +273,22 @@ namespace iba.Processing
             Status = SnmpWorkerStatus.Errored;
             StatusString = @"";
 
+
+
             try
             {
-                IbaOpcUaServer.Stop(); // todo. kls. 
-                ApplyConfigurationToXxxxxxxxxxx(); // todo
+                IbaOpcUaServer.Stop(); 
+                ApplyConfigurationToUaServer(); // todo
                 string logMessage;
+
+                //_uaApplication.Stop();
+                //_uaApplication.Start(IbaOpcUaServer);
+
 
                 if (_opcUaData.Enabled)
                 {
-                    var uri = new Uri(_opcUaData.Endpoints[0].Uri);
-                    //ApplyEndpoints(); // todo. kls. 
-                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-                    foreach (var ep in _opcUaData.Endpoints)
-                        _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
-                    _uaApplication.Stop();
-                    _uaApplication.Start(IbaOpcUaServer);
+                    IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration);
+                    Tst__CreateTestTree();
 
                     //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
                     Status = SnmpWorkerStatus.Started;
@@ -318,12 +330,16 @@ namespace iba.Processing
             }
         }
 
-        private void ApplyConfigurationToXxxxxxxxxxx()
+        private void ApplyConfigurationToUaServer()
         {
             if (IbaOpcUaServer == null || OpcUaData == null)
             {
                 return;
             }
+
+            _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+            foreach (var ep in _opcUaData.Endpoints)
+                _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
 
             // apply port, do not change ip addresses
             //List<IPEndPoint> eps = IbaOpcUaServer.EndPointsToListen;
@@ -475,7 +491,7 @@ namespace iba.Processing
         /// <value>false</value> if it is valid and has not been modified by this call.</returns>
         public bool RebuildTreeIfItIsInvalid()
         {
-            // here I use double thamn normal timeout to give priority over other locks
+            // here I use double than normal timeout to give priority over other locks
             if (Monitor.TryEnter(LockObject, LockTimeout * 2))
             {
                 try
@@ -1662,6 +1678,5 @@ namespace iba.Processing
         }
 
         #endregion
-
     }
 }
