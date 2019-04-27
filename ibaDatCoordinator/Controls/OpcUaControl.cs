@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
-using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Processing;
+using iba.Properties;
 using iba.Utility;
-using Opc.Ua;
-using Opc.Ua.Configuration;
 
 namespace iba.Controls
 {
@@ -51,10 +43,10 @@ namespace iba.Controls
             buttonShowPassword.Tag = tbPassword;
 
             ImageList pdaList = new ImageList();
-            pdaList.ImageSize = new System.Drawing.Size(16, 16);
+            pdaList.ImageSize = new Size(16, 16);
             pdaList.TransparentColor = Color.Magenta;
             pdaList.ColorDepth = ColorDepth.Depth24Bit;
-            pdaList.Images.AddStrip(iba.Properties.Resources.snmp_images);
+            pdaList.Images.AddStrip(Resources.snmp_images);
 
             // image list for objects TreeView
             ImageList tvObjectsImageList = new ImageList();
@@ -64,11 +56,16 @@ namespace iba.Controls
             tvObjectsImageList.Images.Add(pdaList.Images[2]);
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
+
+            // set up DataGridView
+            dgvColumnHost.ValueType = typeof(string);
+            dgvColumnPort.ValueType = typeof(int);
+            dgvColumnUri.ValueType = typeof(string);
         }
 
         #endregion
 
-        
+
         #region IPropertyPane Members
 
         private OpcUaData _data;
@@ -114,11 +111,11 @@ namespace iba.Controls
             {
                 ConfigurationFromControlsToData();
                 // set data to manager and restart snmp agent if necessary
-                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+                TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, @"SnmpControl.SaveData() exception: " + ex.Message);
+                LogData.Data.Logger.Log(Level.Exception, @"OpcUaControl.SaveData() exception: " + ex.Message);
             }
         }
 
@@ -142,10 +139,10 @@ namespace iba.Controls
             {
                 ConfigurationFromControlsToData();
                 // set data to manager and restart snmp agent if necessary
-                TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
+                TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-                // rebuild the tree because probabaly textual conventions were changed
-                TaskManager.Manager.SnmpRebuildObjectTree();
+                // rebuild the tree because probably textual conventions were changed
+                //TaskManager.Manager.SnmpRebuildObjectTree();// todo. kls. 
 
                 // rebuild GUI tree
                 RebuildObjectsTree();
@@ -160,19 +157,20 @@ namespace iba.Controls
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(this,
-                    iba.Properties.Resources.snmpQuestionReset,
-                    iba.Properties.Resources.snmpQuestionResetTitle,
+                    Resources.snmpQuestionReset, /*snmp string here is ok for opc ua also*/
+                    Resources.snmpQuestionResetTitle, /*snmp string here is ok for opc ua also*/
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }
 
-            OpcUaData defData = new OpcUaData();
-
-            // copy default data to current data
-            // but not all data, just configuration data
-            // and do not reset enabled/disabled
-            _data.Port = defData.Port;
+            // copy default data to current data except enabled/disabled
+            bool bOriginalEnabledState = _data.Enabled;
+            _data = (new OpcUaData()).Clone() as OpcUaData;
+            Debug.Assert(_data != null);
+            if (_data == null)
+                return;
+            _data.Enabled = bOriginalEnabledState;
 
             try
             {
@@ -180,7 +178,7 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-                // rebuild the tree because probabaly textual conventions were changed
+                // rebuild the tree because probably textual conventions were changed
                 TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild GUI tree
@@ -192,14 +190,32 @@ namespace iba.Controls
                     @"OpcUaControl.buttonConfigurationReset_Click() exception: " + ex.Message);
             }
         }
-        
+
         private void ConfigurationFromControlsToData()
         {
             // general
             _data.Enabled = cbEnabled.Checked;
-            _data.Port = (int)numPort.Value;
-            // misc
 
+            // logon
+            _data.UserName = tbUserName.Text;
+            _data.Password = tbPassword.Text;
+            _data.HasUserCertificate = cbLogonCertificate.Checked;
+
+            // security policies
+            _data.HasSecurityNone = cbSecurityNone.Checked;
+            _data.HasSecurityBasic128 = cbSecurity128.Checked;
+            _data.HasSecurityBasic256 = cbSecurity256.Checked;
+
+            _data.SecurityBasic128Level = (OpcUaData.OpcUaSecurityLevel)comboBoxSecurity128.SelectedIndex;
+            _data.SecurityBasic256Level = (OpcUaData.OpcUaSecurityLevel)comboBoxSecurity256.SelectedIndex;
+
+            // endpoints
+            _data.Endpoints.Clear();
+            for (int i = 0; i < dgvEndpoints.RowCount; i++)
+            {
+                OpcUaData.OpcUaEndPoint ep = RowToEndpoint(dgvEndpoints.Rows[i]);
+                _data.Endpoints.Add(ep);
+            }
         }
 
         private void ConfigurationFromDataToControls(OpcUaData data = null)
@@ -208,12 +224,35 @@ namespace iba.Controls
             {
                 data = _data;
             }
+
             // general
             cbEnabled.Checked = data.Enabled;
-            numPort.Value = data.Port;
-            // misc
 
-            tbServer.Text = data.EndPointString;
+            // logon
+            tbUserName.Text = data.UserName;
+            tbPassword.Text = data.Password;
+            cbLogonCertificate.Checked = data.HasUserCertificate;
+
+            // security policies
+            cbSecurityNone.Checked = data.HasSecurityNone;
+            cbSecurity128.Checked = data.HasSecurityBasic128;
+            cbSecurity256.Checked = data.HasSecurityBasic256;
+
+            comboBoxSecurity128.SelectedIndex = (int)data.SecurityBasic128Level;
+            comboBoxSecurity256.SelectedIndex = (int)data.SecurityBasic256Level;
+
+            // endpoints
+            dgvEndpoints.Rows.Clear();
+            if (_data.Endpoints != null)
+            {
+                foreach (var ep in _data.Endpoints)
+                    //dgvEndpoints.Rows.Add("a",1,"bb");
+                                    dgvEndpoints.Rows.Add(EndpointToRow(ep));
+            }
+
+            // show/hide elements
+            cbSecurity128_CheckedChanged(null, null);
+            cbSecurity256_CheckedChanged(null, null);
         }
 
         /// <summary>
@@ -247,6 +286,15 @@ namespace iba.Controls
             tb.PasswordChar = '*';
         }
 
+        private void cbSecurity128_CheckedChanged(object sender, EventArgs e)
+        {
+            comboBoxSecurity128.Enabled = cbSecurity128.Checked;
+        }
+
+        private void cbSecurity256_CheckedChanged(object sender, EventArgs e)
+        {
+            comboBoxSecurity256.Enabled = cbSecurity256.Checked;
+        }
         #endregion
 
 
@@ -450,7 +498,7 @@ namespace iba.Controls
             }
 
             // check if exists
-            TreeNode[] nodes = tvObjects.Nodes.Find(id.ToString(), true);
+            TreeNode[] nodes = tvObjects.Nodes.Find(id, true);
 
             if (nodes.Length == 1)
             {
@@ -532,9 +580,212 @@ namespace iba.Controls
             //NodeManager.KlsSetValueScalar(_intGeneratorVar1, _intGeneratorValue);
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        // todo. kls. delete
+        private void buttonCopyToClipboard_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(tbServer.Text);
+            if (dgvEndpoints.RowCount < 1)
+                return;
+
+            string uri = dgvEndpoints.Rows[0].Cells[2].Value as string;
+            if (string.IsNullOrWhiteSpace(uri))
+                MessageBox.Show("err");
+            else
+                Clipboard.SetText(uri);
+        }
+
+        private void buttonEndpointAdd_Click(object sender, EventArgs e)
+        {
+            var dep = OpcUaData.DefaultEndPoint;
+
+            int r = dgvEndpoints.Rows.Add(dep.Hostname, dep.Port, dep.Uri);
+
+            var x = dgvEndpoints.ReadOnly;
+            var y = dgvEndpoints.Rows[r].ReadOnly;
+
+            OpcUaData.OpcUaEndPoint ep = new OpcUaData.OpcUaEndPoint(IPAddress.None, 80);
+        }
+
+        // todo. kls. 
+        private void RefreshEndpoints()
+        {
+            try
+            {
+                dgvEndpoints.Rows.Clear();
+                if (_data.Endpoints == null)
+                    return;
+                foreach (var ep in _data.Endpoints)
+                {
+                    dgvClients.Rows.Add(ep.AddressOrHostName, ep.Port, ep.Uri);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
+            }
+        }
+
+        private void dgvEndpoints_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!(sender is DataGridView view))
+                return;
+            DataGridViewRow row = view.Rows[e.RowIndex];
+            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            //cell.
+        }
+
+        private void dgvEndpoints_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (!(sender is DataGridView view))
+                return;
+            DataGridViewRow row = view.Rows[e.RowIndex];
+            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            string val = cell.EditedFormattedValue as string;
+            if (val is null)
+                return;
+
+            switch (e.ColumnIndex)
+            {
+                case 0: // host
+
+                    break;
+                case 1: // port
+                    //var x = cell.EditedFormattedValue;
+                    if (int.TryParse(val, out int intVal))
+                    {
+                        if (intVal < 0) intVal = 0;
+                        if (intVal > 65535) intVal = 65535;
+                        e.Value = intVal;
+                    }
+                    else
+                        e.Value = 0;
+                    e.ParsingApplied = true;
+                    break;
+            }
+        }
+
+        private static OpcUaData.OpcUaEndPoint RowToEndpoint(DataGridViewRow row)
+        {
+            try
+            {
+                // todo. kls. reuse cell parsing
+                string hostVal = row.Cells[0].Value as string;
+                int port = (int)row.Cells[1].Value;
+
+                if (string.IsNullOrWhiteSpace(hostVal))
+                    return OpcUaData.DefaultEndPoint;
+
+                var ep = IPAddress.TryParse(hostVal, out IPAddress address) ?
+                    new OpcUaData.OpcUaEndPoint(address, port) :
+                    new OpcUaData.OpcUaEndPoint(hostVal /*treat it as hostname*/, port);
+
+                return ep;
+            }
+            catch
+            {
+                return OpcUaData.DefaultEndPoint;
+            }
+        }
+
+        private static object[] EndpointToRow(OpcUaData.OpcUaEndPoint ep)
+        {
+            return new object[] { ep.AddressOrHostName, ep.Port, ep.Uri };
+        }
+
+        private void UpdateRowUri(DataGridViewRow row)
+        {
+            OpcUaData.OpcUaEndPoint ep = RowToEndpoint(row);
+            row.Cells[2].Value = ep.Uri;
+        }
+
+        private void dgvEndpoints_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (!(sender is DataGridView view))
+                return;
+            DataGridViewRow row = view.Rows[e.RowIndex];
+            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            e.ThrowException = false;
+        }
+
+        private void dgvEndpoints_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!(sender is DataGridView view))
+                return;
+            if (e.RowIndex < 0)
+                return;
+
+            // update URI only if host or port is changed
+            if (e.ColumnIndex < 0 || e.ColumnIndex > 1)
+                return;
+
+            DataGridViewRow row = view.Rows[e.RowIndex];
+            UpdateRowUri(row);
+        }
+
+        private void buttonEndpointCopy_Click(object sender, EventArgs e)
+        {
+            if (dgvEndpoints.SelectedRows.Count < 1)
+            {
+                // todo. kls. handle single cell selection
+                DataGridViewSelectedCellCollection sc = dgvEndpoints.SelectedCells;
+                if (sc.Count != 1)
+                    return;
+                dgvEndpoints.SelectedRows.Insert(0, dgvEndpoints.Rows[sc[0].RowIndex]);
+            }
+
+            for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
+            {
+                DataGridViewRow row = dgvEndpoints.SelectedRows[i];
+
+                OpcUaData.OpcUaEndPoint ep = RowToEndpoint(row);
+                dgvEndpoints.Rows.Add(EndpointToRow(ep));
+            }
+        }
+
+        private void buttonEndpointDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvEndpoints.SelectedRows.Count < 1)
+            {
+                // todo. kls. handle single cell selection
+                return;
+            }
+
+            for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
+            {
+                DataGridViewRow row = dgvEndpoints.SelectedRows[i];
+                dgvEndpoints.Rows.Remove(row);
+            }
+        }
+
+        private void buttonTest1_Click(object sender, EventArgs e)
+        {
+            // copy default data to current data except enabled/disabled
+            _data = (new OpcUaData()).Clone() as OpcUaData;
+            Debug.Assert(_data != null);
+            if (_data == null)
+                return;
+
+            _data.UserName = "Anonymous2";
+            _data.Password = "123456";
+
+            _data.HasSecurityBasic128 = true;
+            _data.SecurityBasic128Level = OpcUaData.OpcUaSecurityLevel.SignSignEncrypt;
+
+            OpcUaData.OpcUaEndPoint ep = new OpcUaData.OpcUaEndPoint("LsWork", 21060);
+            _data.Endpoints.Clear();
+            _data.Endpoints.Add(ep);
+            _data.Endpoints.Add(OpcUaData.DefaultEndPoint);
+
+
+            ConfigurationFromDataToControls();
+
+            buttonCopyToClipboard_Click(null,null);
+            
+            //// set data to manager and restart snmp agent if necessary
+            //TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
+
         }
     }
 }

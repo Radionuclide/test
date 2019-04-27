@@ -27,7 +27,6 @@ namespace iba.ibaOPCServer
         public IbaOpcUaServer()
         {
             KlsStrEndpoints = "";
-            KlsStrEndpointHttp = "";
             KlsStrEndpointTcp = "";
             KlsStrSessions = "";
             KlsStrSubscriptions = "";
@@ -205,7 +204,6 @@ namespace iba.ibaOPCServer
 
         // todo protect by lock for safe thread access? or not so important?
         public string KlsStrEndpoints { get; private set; }
-        public string KlsStrEndpointHttp {get; private set;}
         public string KlsStrEndpointTcp { get; private set; }
         public string KlsStrSessions { get; private set; }
         public string KlsStrSubscriptions { get; private set; }
@@ -447,8 +445,7 @@ namespace iba.ibaOPCServer
         }
 
         #endregion //UserAcccounts
-        public void KlsInitialize(int maxDongleItems,
-            IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
+        public void KlsInitialize(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
             bool passwordEncryptionForTcpNoneEndpoint)
         {
             // build var tree
@@ -457,7 +454,6 @@ namespace iba.ibaOPCServer
             // prepare endpoint strings for quick use
             KlsStrEndpoints = String.Join(", ", ServerInternal.EndpointAddresses);
             KlsStrEndpointTcp = GetEndpointAddress("opc.tcp");
-            KlsStrEndpointHttp = GetEndpointAddress("http");
             // if there is something inside, let's delete last comma
 
             // set info that we do not have sessions yet

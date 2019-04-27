@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
@@ -107,16 +108,18 @@ namespace iba.Processing
                 }
 
                 String sysName = IbaOpcUaServer.GetFQDN(); //todo
-                if ((_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Count == 0) ||
-                    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
-                        "opc.tcp://" + sysName + ":21060") ||
-                    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
-                        "http://" + sysName + ":21061"))
+                //if ((_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Count == 0) ||
+                //    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
+                //        "opc.tcp://" + sysName + ":21060") ||
+                //    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
+                //        "http://" + sysName + ":21061"))
                 {
-                    string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
-                    //string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
+                    // todo. kls. default EP?
+
+                    //string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
+                    ////string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
                     _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(base1);
+                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint.Uri);
                     //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(Base2);
                 }
 
@@ -135,9 +138,9 @@ namespace iba.Processing
 
 
 
-                IbaOpcUaServer.KlsInitialize(10000, null, null, false);
+                IbaOpcUaServer.KlsInitialize(null, null, false);
 
-                _opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
+                //_opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
 
                 FolderState globalsFolder = NodeManager.KlsGetSubtreeRootFolder(SubTreeId.Globals);
                 var folderTest = NodeManager.KlsCreateFolderAndItsNode(globalsFolder, "Test");
@@ -147,7 +150,7 @@ namespace iba.Processing
                 NodeManager.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
             }
 
-            RestartAgent();
+            RestartServer();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
             SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
@@ -174,6 +177,26 @@ namespace iba.Processing
             RebuildTree();
         }
 
+        private void ApplyEndpoints()
+        {
+            _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+            foreach (var ep in _opcUaData.Endpoints)
+                _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
+        }
+
+        public string Tmp____GetInternalEndpoints()
+        {
+            string str = "";
+            foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
+            {
+                str +=  adr + "; ";
+            }
+
+            return str.Trim(' ', ';');
+
+            //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+        }
+
         public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
         {
             // we do not need to lock something here
@@ -198,7 +221,7 @@ namespace iba.Processing
 
         public OpcUaData OpcUaData
         {
-            get { return _opcUaData; }
+            get => _opcUaData;
             set
             {
                 if (value == null)
@@ -216,7 +239,7 @@ namespace iba.Processing
 
                 if (IbaOpcUaServer != null)
                 {
-                    RestartAgent();
+                    RestartServer();
                 }
             }
         }
@@ -233,7 +256,7 @@ namespace iba.Processing
             return $"thr=[{thrNameOrId}]";
         }
 
-        public void RestartAgent()
+        public void RestartServer()
         {
             var oldStatus = Status;
             Status = SnmpWorkerStatus.Errored;
@@ -241,15 +264,23 @@ namespace iba.Processing
 
             try
             {
-                //IbaOpcUaServer.Stop(); // todo. kls. 
+                IbaOpcUaServer.Stop(); // todo. kls. 
                 ApplyConfigurationToXxxxxxxxxxx(); // todo
                 string logMessage;
 
                 if (_opcUaData.Enabled)
                 {
-                    //IbaOpcUaServer.Start();
+                    var uri = new Uri(_opcUaData.Endpoints[0].Uri);
+                    //ApplyEndpoints(); // todo. kls. 
+                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+                    foreach (var ep in _opcUaData.Endpoints)
+                        _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
+                    _uaApplication.Stop();
+                    _uaApplication.Start(IbaOpcUaServer);
+
+                    //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
                     Status = SnmpWorkerStatus.Started;
-                    StatusString = String.Format(iba.Properties.Resources.opcUaStatusRunningOnPort, _opcUaData.Port); // todo simplify strings???
+                    StatusString = String.Format(iba.Properties.Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
 
                     logMessage = Status == oldStatus
                         ?

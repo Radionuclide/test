@@ -383,10 +383,7 @@ namespace iba.Processing
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
         public virtual SnmpData SnmpData
         {
-            get
-            {
-                return SnmpWorker?.SnmpData;
-            }
+            get => SnmpWorker?.SnmpData;
             set
             {
                 if (SnmpWorker != null)
@@ -1027,7 +1024,7 @@ namespace iba.Processing
         /// more often (e.g. let even twice for each real change - no matter), than 
         /// to miss some point (even some that happens seldom) where it is changed.
         /// Event is not relevant to some 'small' data changes,
-        /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
+        /// i.e changes that do not alter the structure (hierarchy) of the snmp tree (e.g. status of the job, or some other value).
         /// </summary>
         public event EventHandler<EventArgs> OpcUaConfigurationChanged; // todo. kls. use SNMP and UA together 
 
@@ -1046,10 +1043,7 @@ namespace iba.Processing
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
         public virtual OpcUaData OpcUaData
         {
-            get
-            {
-                return OpcUaWorker?.OpcUaData;
-            }
+            get => OpcUaWorker?.OpcUaData;
             set
             {
                 if (OpcUaWorker != null)

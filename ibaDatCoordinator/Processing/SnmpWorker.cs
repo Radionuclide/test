@@ -72,7 +72,7 @@ namespace iba.Processing
             {
                 if (IbaSnmp != null)
                 {
-                    // disable double initialisation
+                    // disable double initialization
                     return;
                 }
 
@@ -99,7 +99,7 @@ namespace iba.Processing
 
                 // best option to test why it's needed
                 // 1. setup SNMP manager to monitor some yet inexisting job. it will show "no such instance". ok.
-                // 2. Add one ore several jobs to fit the requested OID area. 
+                // 2. Add one or several jobs to fit the requested OID area. 
                 //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
             };
 
@@ -130,7 +130,7 @@ namespace iba.Processing
 
         public SnmpData SnmpData
         {
-            get { return _snmpData; }
+            get => _snmpData;
             set
             {
                 if (value == null)
