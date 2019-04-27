@@ -1064,7 +1064,7 @@ namespace iba.Processing
         {
             try
             {
-                SnmpWorker.RebuildTree();
+                OpcUaWorker.RebuildTree();
             }
             catch (Exception ex)
             {
@@ -1077,7 +1077,7 @@ namespace iba.Processing
             try
             {
                 return null;
-//                return OpcUaWorker.GetObjectTreeSnapShot();
+                //return OpcUaWorker.GetObjectTreeSnapShot();
             }
             catch (Exception ex)
             {

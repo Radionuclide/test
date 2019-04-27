@@ -62,45 +62,45 @@ namespace ibaOpcServer.IbaOpcUa
             // we do not need to keep references to them.
             // outside the function we will not have easy access to folders
             // but we will have access to underlying nodes. that's enough
-            FolderState folderPmac = _mgr.KlsCreateFolderAndItsNode(statusRootFolder, "PMAC");
-            _folderMessages = _mgr.KlsCreateFolderAndItsNode(statusRootFolder, "Messages");
-            FolderState folderVars = _mgr.KlsCreateFolderAndItsNode(statusRootFolder, "DataVariables");
+            FolderState folderPmac = _mgr.CreateFolderAndItsNode(statusRootFolder, "PMAC", null);
+            _folderMessages = _mgr.CreateFolderAndItsNode(statusRootFolder, "Messages", null);
+            FolderState folderVars = _mgr.CreateFolderAndItsNode(statusRootFolder, "DataVariables", null);
 
             // create status elements
             // PMAC information
             _nodePmacIsOnline =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderPmac,  "OnlineStatus", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac,  "OnlineStatus", BuiltInType.String);
 
             _nodePmacIsRunning =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderPmac,  "RunningStatus", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac,  "RunningStatus", BuiltInType.String);
 
             _nodePmacMaxDongleItems =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderPmac,  "License_MaxItems", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderPmac,  "License_MaxItems", BuiltInType.Int32);
 
             _nodePmacProjectName =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderPmac,  "ProjectName", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac,  "ProjectName", BuiltInType.String);
 
             _nodePmacVariablesCount =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderPmac,  "AvailableVariables", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderPmac,  "AvailableVariables", BuiltInType.Int32);
 
             // variable nodes information
             _nodeLastTreeUpdateTime =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "LastTreeUpdateTime", BuiltInType.DateTime);
+                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateTime", BuiltInType.DateTime);
             _nodeLastTreeUpdateAdded =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "LastTreeUpdateVarsAdded", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsAdded", BuiltInType.Int32);
             _nodeLastTreeUpdateDeleted =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "LastTreeUpdateVarsDeleted", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsDeleted", BuiltInType.Int32);
             _nodeLastTreeUpdateReplaced =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "LastTreeUpdateVarsReplaced", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsReplaced", BuiltInType.Int32);
             _nodeLastTreeUpdateInvalidated =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "LastTreeUpdateVarsInvalidated", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsInvalidated", BuiltInType.Int32);
 
             _nodeVarsCountTotal =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "VariablesCountTotal", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountTotal", BuiltInType.Int32);
             _nodeVarsCountGlobal =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "VariablesCountGlobal", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountGlobal", BuiltInType.Int32);
             _nodeVarsCountTask =
-                _mgr.KlsCreateStatusVariableAndItsNode(folderVars,  "VariablesCountTask", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountTask", BuiltInType.Int32);
         }
 
         #endregion
@@ -169,31 +169,31 @@ namespace ibaOpcServer.IbaOpcUa
             { }
 
             // Ovarall amount of variables in our address space
-            _mgr.KlsSetValueScalar(_nodeVarsCountTotal, VarsTotalCount);
-            _mgr.KlsSetValueScalar(_nodeVarsCountGlobal, VarsGlobal.Count);
-            _mgr.KlsSetValueScalar(_nodeVarsCountTask, VarsTask.Count);
+            _mgr.SetValueScalar(_nodeVarsCountTotal, VarsTotalCount);
+            _mgr.SetValueScalar(_nodeVarsCountGlobal, VarsGlobal.Count);
+            _mgr.SetValueScalar(_nodeVarsCountTask, VarsTask.Count);
 
             // news about last tree update
-            _mgr.KlsSetValueScalar(_nodeLastTreeUpdateAdded, TreeUpdateAdded.Count);
-            _mgr.KlsSetValueScalar(_nodeLastTreeUpdateDeleted, TreeUpdateDeleted.Count);
-            _mgr.KlsSetValueScalar(_nodeLastTreeUpdateReplaced, TreeUpdateReplaced.Count);
-            _mgr.KlsSetValueScalar(_nodeLastTreeUpdateInvalidated, TreeUpdateInvalidated.Count);
-            _mgr.KlsSetValueScalar(_nodeLastTreeUpdateTime, DateTime.Now);
+            _mgr.SetValueScalar(_nodeLastTreeUpdateAdded, TreeUpdateAdded.Count);
+            _mgr.SetValueScalar(_nodeLastTreeUpdateDeleted, TreeUpdateDeleted.Count);
+            _mgr.SetValueScalar(_nodeLastTreeUpdateReplaced, TreeUpdateReplaced.Count);
+            _mgr.SetValueScalar(_nodeLastTreeUpdateInvalidated, TreeUpdateInvalidated.Count);
+            _mgr.SetValueScalar(_nodeLastTreeUpdateTime, DateTime.Now);
         }
 
         private void UpdatePmacNodes(PmacStatusForUaServer pmacStatus)
         {
             if (pmacStatus.IsOnline)
             {
-                _mgr.KlsSetValueScalar(_nodePmacIsOnline, "Online");
-                _mgr.KlsSetValueScalar(_nodePmacIsRunning, pmacStatus.IsRunning ? "Running" : "Stopped");
-                _mgr.KlsSetValueScalar(_nodePmacMaxDongleItems, pmacStatus.MaxDongleItems);
-                _mgr.KlsSetValueScalar(_nodePmacProjectName, pmacStatus.ProjectName);
-                _mgr.KlsSetValueScalar(_nodePmacVariablesCount, pmacStatus.AvailableVariablesCount);
+                _mgr.SetValueScalar(_nodePmacIsOnline, "Online");
+                _mgr.SetValueScalar(_nodePmacIsRunning, pmacStatus.IsRunning ? "Running" : "Stopped");
+                _mgr.SetValueScalar(_nodePmacMaxDongleItems, pmacStatus.MaxDongleItems);
+                _mgr.SetValueScalar(_nodePmacProjectName, pmacStatus.ProjectName);
+                _mgr.SetValueScalar(_nodePmacVariablesCount, pmacStatus.AvailableVariablesCount);
             }
             else
             {
-                _mgr.KlsSetValueScalar(_nodePmacIsOnline, "Offline");
+                _mgr.SetValueScalar(_nodePmacIsOnline, "Offline");
 
                 // all the other info has no real meaning
                 // do not touch the value but set bad status
@@ -223,7 +223,7 @@ namespace ibaOpcServer.IbaOpcUa
             // create new message node
             string errName = string.Format("Msg_{0}_{1}", ++_msgCounter, messageType);
             BaseDataVariableState msg =
-                _mgr.KlsCreateStatusVariableAndItsNode(_folderMessages, errName, BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(_folderMessages, errName, BuiltInType.String);
 
             // fill value with message
             string fullMessage = string.Format("{0}. {1}", DateTime.Now, message);

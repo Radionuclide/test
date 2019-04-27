@@ -71,7 +71,7 @@ namespace iba.Processing
                 {
                     TmpLifebeatValue++;
                     if (_lifeBeatVar != null)
-                        NodeManager?.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
+                        NodeManager?.SetValueScalar(_lifeBeatVar, TmpLifebeatValue);
                 }
                 catch
                 {
@@ -190,9 +190,9 @@ namespace iba.Processing
             //var folderTest = NodeManager.KlsCreateFolderAndItsNode(parentFolder, "Test");
 
             _lifeBeatVar =
-                NodeManager.KlsCreateStatusVariableAndItsNode(parentFolder, "Lifebeat", BuiltInType.Int32);
+                NodeManager.CreateVariableAndItsNode(parentFolder, "Lifebeat", BuiltInType.Int32);
 
-            NodeManager.KlsSetValueScalar(_lifeBeatVar, TmpLifebeatValue);
+            NodeManager.SetValueScalar(_lifeBeatVar, TmpLifebeatValue);
         }
 
         public string Tst__GetInternalEndpoints()
@@ -269,21 +269,18 @@ namespace iba.Processing
 
         public void RestartServer()
         {
-            var oldStatus = Status;
-            Status = SnmpWorkerStatus.Errored;
-            StatusString = @"";
-
-
-
             try
             {
+                var oldStatus = Status;
+                Status = SnmpWorkerStatus.Errored;
+                StatusString = @"";
+
                 IbaOpcUaServer.Stop(); 
                 ApplyConfigurationToUaServer(); // todo
                 string logMessage;
 
                 //_uaApplication.Stop();
                 //_uaApplication.Start(IbaOpcUaServer);
-
 
                 if (_opcUaData.Enabled)
                 {
@@ -599,59 +596,49 @@ namespace iba.Processing
 
         private void BuildSectionGlobalCleanup()
         {
-            var oidSection = "";// = new string(SnmpObjectsData.GlobalCleanupOid);
+            var sectionFolder = NodeManager.CreateFolderAndItsNode(NodeManager.GetIbaRootFolder(), "Global cleanup",
+                "Global cleanup settings for all local drives");
 
-            AddMetadataForOidSuffix(oidSection, @"Global cleanup", @"globalCleanup",
-                "Global cleanup settings for all local drives.");
-
-            for (int i = 0; i < ObjectsData.GlobalCleanup.Count; i++)
+            foreach (var driveInfo in ObjectsData.GlobalCleanup)
             {
                 try
                 {
-                    var driveInfo = ObjectsData.GlobalCleanup[i];
-
                     // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive [Folder]
-                    string oidDrive = oidSection + (uint)(i + 1);
-                    driveInfo.Oid = oidDrive;
+                    //driveInfo.Oid = null;//oidDrive;// todo. kls. set feedback here
 
-                    string mibNameDrive = $@"globalCleanupDrive{oidDrive}";
-                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive,
-                        $@"Global cleanup settings for the drive '{driveInfo.DriveName}'.");
+                    // create a folder for the drive
+                    var itemFolder = NodeManager.CreateFolderAndItsNode(sectionFolder, driveInfo.DriveName, 
+                        $@"Global cleanup settings for the drive '{driveInfo.DriveName}'");
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName,
-                            @"Drive Name", mibNameDrive + @"Name",
-                            @"Drive name like it appears in operating system.",
+                        CreateUserValue(itemFolder, driveInfo.DriveName,
+                            @"Drive Name", @"Drive name like it appears in operating system.",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active,
-                            @"Active", mibNameDrive + @"Active",
-                            @"Whether or not the global cleanup is enabled for the drive.",
+                        CreateUserValue(itemFolder, driveInfo.Active,
+                            @"Active", @"Whether or not the global cleanup is enabled for the drive.",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb,
-                            @"Size", mibNameDrive + @"Size",
-                            @"Size of the drive (in megabytes).",
+                        CreateUserValue(itemFolder,driveInfo.SizeInMb,
+                            @"Size", @"Size of the drive (in megabytes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb,
-                            @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
-                            @"Current free space of the drive (in megabytes).",
+                        CreateUserValue(itemFolder, driveInfo.CurrentFreeSpaceInMb,
+                            @"Current free space", @"Current free space of the drive (in megabytes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent,
-                            @"Min free space", mibNameDrive + @"MinFreeSpace",
+                        CreateUserValue(itemFolder, driveInfo.MinFreeSpaceInPercent,
+                            @"Min free space", 
                             @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime,
-                            @"Rescan time", mibNameDrive + @"RescanTime",
-                            @"How often the application rescans the drive parameters (in minutes).",
+                        CreateUserValue(itemFolder, driveInfo.RescanTime,
+                            @"Rescan time", @"How often the application rescans the drive parameters (in minutes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     // ReSharper disable once RedundantJumpStatement
                     continue;
@@ -725,11 +712,11 @@ namespace iba.Processing
                         AddMetadataForOidSuffix(oidLastProc, @"LastProcessing", mibNameJobGen + @"LastProcessing",
                             @"Information about the last successfully processed file.");
 
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid,
-                            jobInfo.LastProcessingLastDatFileProcessed,
-                            @"Last dat-file processed", mibNameJobGen + @"LastFile",
-                            @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                            JobInfoItemRequested, jobInfo);
+                        //CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid,
+                        //    jobInfo.LastProcessingLastDatFileProcessed,
+                        //    @"Last dat-file processed", mibNameJobGen + @"LastFile",
+                        //    @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
+                        //    JobInfoItemRequested, jobInfo);
 
                         CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid,
                             jobInfo.LastProcessingStartTimeStamp,
@@ -953,10 +940,10 @@ namespace iba.Processing
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.General ...
             {
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName,
-                    @"Job Name", mibNameJobGen + @"Name",
-                    @"The name of the job as it appears in GUI.",
-                    JobInfoItemRequested, jobInfo);
+                //CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName,
+                //    @"Job Name", mibNameJobGen + @"Name",
+                //    @"The name of the job as it appears in GUI.",
+                //    JobInfoItemRequested, jobInfo);
 
                 CreateEnumUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, _enumJobStatus, (int)jobInfo.Status,
                     @"Status", mibNameJobGen + @"Status",
@@ -1037,15 +1024,15 @@ namespace iba.Processing
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ ... 
 
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName,
-                @"Task name", mibNameTask + @"Name",
-                @"The name of the task as it appears in GUI.",
-                JobInfoItemRequested, parentJob);
+            //CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName,
+            //    @"Task name", mibNameTask + @"Name",
+            //    @"The name of the task as it appears in GUI.",
+            //    JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType,
-                @"Task type", mibNameTask + @"Type",
-                @"The type of the task (copy, extract, report, etc.).",
-                JobInfoItemRequested, parentJob);
+            //CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType,
+            //    @"Task type", mibNameTask + @"Type",
+            //    @"The type of the task (copy, extract, report, etc.).",
+            //    JobInfoItemRequested, parentJob);
 
             CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success,
                 @"Success", mibNameTask + @"Success",
@@ -1120,11 +1107,23 @@ namespace iba.Processing
             //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        private void CreateUserValue(string oidSuffix, string initialValue,
-            string caption, string mibName = null, string mibDescription = null,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="initialValue"></param>
+        /// <param name="name">Will be used for both BrowseName and Display name (should not contain a dot '.')</param>
+        /// <param name="description"></param>
+        /// <param name="handler"></param>
+        /// <param name="tag"></param>
+        private void CreateUserValue(NodeState parent, object initialValue,
+            string name, string description = null,
             EventHandler<object> handler = null,
             object tag = null)
         {
+            var varState = NodeManager.CreateVariableAndItsNode(parent, name, BuiltInType.String, description); // todo. kls. type auto
+
+            NodeManager.SetValueScalar(varState, initialValue);
             //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
             //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }

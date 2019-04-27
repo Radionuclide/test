@@ -73,14 +73,17 @@
             this.dgvColumnUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
+            this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
+            this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.gbDiagnostics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             this.gbObjects.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
+            this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerSecurity)).BeginInit();
@@ -244,6 +247,10 @@
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
             this.splitContainerObjectsFooter.Panel1.Margin = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            // 
+            // splitContainerObjectsFooter.Panel2
+            // 
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.buttonRebuildTree);
             this.splitContainerObjectsFooter.Size = new System.Drawing.Size(678, 85);
             this.splitContainerObjectsFooter.SplitterDistance = 310;
             this.splitContainerObjectsFooter.TabIndex = 2;
@@ -314,6 +321,7 @@
             this.gbConfiguration.Controls.Add(this.splitContainerSecurity);
             this.gbConfiguration.Controls.Add(this.gbEndpoints);
             this.gbConfiguration.Controls.Add(this.cbEnabled);
+            this.gbConfiguration.Controls.Add(this.buttonTestCfg);
             this.gbConfiguration.Controls.Add(this.buttonTest);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
@@ -630,6 +638,19 @@
             this.cbEnabled.Text = "Enabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
             // 
+            // buttonTestCfg
+            // 
+            this.buttonTestCfg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTestCfg.BackColor = System.Drawing.Color.Linen;
+            this.buttonTestCfg.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonTestCfg.Location = new System.Drawing.Point(417, 312);
+            this.buttonTestCfg.Name = "buttonTestCfg";
+            this.buttonTestCfg.Size = new System.Drawing.Size(75, 23);
+            this.buttonTestCfg.TabIndex = 12;
+            this.buttonTestCfg.Text = "Set Test Cfg";
+            this.buttonTestCfg.UseVisualStyleBackColor = false;
+            this.buttonTestCfg.Click += new System.EventHandler(this.buttonSetTestCfg_Click);
+            // 
             // buttonTest
             // 
             this.buttonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -668,6 +689,19 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
+            // buttonRebuildTree
+            // 
+            this.buttonRebuildTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRebuildTree.BackColor = System.Drawing.Color.Linen;
+            this.buttonRebuildTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonRebuildTree.Location = new System.Drawing.Point(6, 3);
+            this.buttonRebuildTree.Name = "buttonRebuildTree";
+            this.buttonRebuildTree.Size = new System.Drawing.Size(93, 23);
+            this.buttonRebuildTree.TabIndex = 12;
+            this.buttonRebuildTree.Text = "Rebuild Tree";
+            this.buttonRebuildTree.UseVisualStyleBackColor = false;
+            this.buttonRebuildTree.Click += new System.EventHandler(this.buttonRebuildTree_Click);
+            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -686,6 +720,7 @@
             this.gbObjects.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
+            this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
             this.gbConfiguration.ResumeLayout(false);
@@ -753,5 +788,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnHost;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnPort;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnUri;
+        private System.Windows.Forms.Button buttonTestCfg;
+        private System.Windows.Forms.Button buttonRebuildTree;
     }
 }

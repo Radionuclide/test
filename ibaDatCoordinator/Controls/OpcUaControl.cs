@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using iba.Data;
@@ -8,6 +10,7 @@ using iba.Logging;
 using iba.Processing;
 using iba.Properties;
 using iba.Utility;
+using IbaSnmpLib;
 
 namespace iba.Controls
 {
@@ -399,78 +402,78 @@ namespace iba.Controls
 
         public void RebuildObjectsTree()
         {
-            //if (!IsConnectedOrLocal)
-            //{
-            //    return;
-            //}
+            if (!IsConnectedOrLocal)
+            {
+                return;
+            }
 
-            //tvObjects.Nodes.Clear();
+            tvObjects.Nodes.Clear();
 
-            //try
-            //{
-            //    var objSnapshot = TaskManager.Manager.SnmpGetObjectTreeSnapShot();
+            try
+            {
+                var objSnapshot = TaskManager.Manager.SnmpGetObjectTreeSnapShot();
 
-            //    if (objSnapshot == null)
-            //    {
-            //        return;
-            //    }
+                if (objSnapshot == null)
+                {
+                    return;
+                }
 
-            //    // get sorted oids, to ensure we create nodes according to depth-first search order
-            //    var sortedOids = objSnapshot.Keys.ToList();
-            //    sortedOids.Sort();
+                // get sorted oids, to ensure we create nodes according to depth-first search order
+                var sortedOids = objSnapshot.Keys.ToList();
+                sortedOids.Sort();
 
 
-            //    var nodesToExpand = new List<TreeNode>();
+                var nodesToExpand = new List<TreeNode>();
 
-            //    foreach (var oid in sortedOids)
-            //    {
-            //        var tag = objSnapshot[oid];
+                foreach (var oid in sortedOids)
+                {
+                    var tag = objSnapshot[oid];
 
-            //        // get parent node
-            //        var parentOid = oid.GetParent();
-            //        var parentNode = FindSingleNodeById(parentOid);
+                    // get parent node
+                    var parentOid = oid.GetParent();
+                    var parentNode = FindSingleNodeById(null /*parentOid*/);
 
-            //        // if parent node exists, add item there.
-            //        // otherwise add directly to the root
-            //        var placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
+                    // if parent node exists, add item there.
+                    // otherwise add directly to the root
+                    var placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
 
-            //        // for all but root nodes add least subId before string caption
-            //        string leastIdPrefix = parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
+                    // for all but root nodes add least subId before string caption
+                    string leastIdPrefix = parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
 
-            //        string captionWithSubid = leastIdPrefix + tag.Caption;
+                    string captionWithSubid = leastIdPrefix + tag.Caption;
 
-            //        int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+                    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
 
-            //        // add this item to parent node
-            //        var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
-            //        node.Tag = tag;
+                    // add this item to parent node
+                    var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
+                    node.Tag = tag;
 
-            //        // mark for expanding
-            //        if (tag.IsExpandedByDefault)
-            //        {
-            //            nodesToExpand.Add(node);
-            //        }
-            //    }
+                    // mark for expanding
+                    if (tag.IsExpandedByDefault)
+                    {
+                        nodesToExpand.Add(node);
+                    }
+                }
 
-            //    // expand those which are marked for
-            //    foreach (var treeNode in nodesToExpand)
-            //    {
-            //        treeNode.Expand();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogData.Data.Logger.Log(Level.Exception,
-            //        $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
-            //}
+                // expand those which are marked for
+                foreach (var treeNode in nodesToExpand)
+                {
+                    treeNode.Expand();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception,
+                    $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
+            }
 
-            //// navigate to last selected oid if possible
-            //if (_lastId == null)
-            //{
-            //    return;
-            //}
+            // navigate to last selected oid if possible
+            if (_lastId == null)
+            {
+                return;
+            }
 
-            //var parents = _lastId.GetParents();
+            //var parents = null;//_lastId.GetParents();
             //foreach (IbaSnmpOid oid in parents)
             //{
             //    try
@@ -483,10 +486,10 @@ namespace iba.Controls
             //    }
             //}
 
-            //tvObjects.SelectedNode = FindSingleNodeById(_lastId);
+            tvObjects.SelectedNode = FindSingleNodeById(_lastId);
 
-            //tvObjects.Select();
-            //            tvObjects.Focus();
+            tvObjects.Select();
+            tvObjects.Focus();
         }
 
         private TreeNode FindSingleNodeById(string id)
@@ -748,7 +751,7 @@ namespace iba.Controls
             }
         }
 
-        private void buttonTest1_Click(object sender, EventArgs e)
+        private void buttonSetTestCfg_Click(object sender, EventArgs e)
         {
             // copy default data to current data except enabled/disabled
             _data = (new OpcUaData()).Clone() as OpcUaData;
@@ -777,10 +780,22 @@ namespace iba.Controls
 
         }
 
-        private OpcUaWorker Tst__Worker => TaskManager.Manager.Tst___OpcUaWorker; // todo. kls. delete
+        private OpcUaWorker Tst__Worker => Manager.Tst___OpcUaWorker; // todo. kls. delete
 
         private void buttonTest2_Click(object sender, EventArgs e)
         {
+        }
+
+        private void buttonTest1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        static TaskManager Manager => TaskManager.Manager;
+
+        private void buttonRebuildTree_Click(object sender, EventArgs e)
+        {
+            Manager.OpcUaRebuildObjectTree();
         }
     }
 }
