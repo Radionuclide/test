@@ -79,7 +79,7 @@ namespace ibaOpcServer.IbaOpcUa
             v.DataType = (uint)dataType;
             v.ValueRank = ValueRanks.OneDimension;
             // currently we support only one dimension
-            // todo implement arbitary dimensions
+            // todo implement arbitrary dimensions
             v.ArrayDimensions = new[] { itemsCount };
 
         }

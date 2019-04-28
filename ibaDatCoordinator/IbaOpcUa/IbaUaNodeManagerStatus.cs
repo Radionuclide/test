@@ -128,26 +128,14 @@ namespace ibaOpcServer.IbaOpcUa
             TreeUpdateInvalidated.Reset();
         }
 
-        private void AlterVarCounter(SubTreeId id, int delta)
+        private void AlterVarCounter(int delta)
         {
-            // ReSharper disable once SwitchStatementMissingSomeCases - we are not interested in anything but Globals and Tasks
-            switch (id)
-            {
-                case SubTreeId.Globals:
                     VarsGlobal.AlterBy(delta);
-                    break;
-                case SubTreeId.Tasks:
-                    VarsTask.AlterBy(delta);
-                    break;
-                //default:
-                //    // we do not have statistics for status-node count or unknown nodes
-                //    break;
-            }
         }
-        public void IncrementVarCounter(SubTreeId id)
-        { AlterVarCounter(id, 1); }
-        public void DecrementVarCounter(SubTreeId id)
-        { AlterVarCounter(id, -1); }
+
+        public void IncrementVarCounter() => AlterVarCounter( 1);
+
+        public void DecrementVarCounter() => AlterVarCounter( -1);
 
         #endregion
 

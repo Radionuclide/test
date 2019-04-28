@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Windows.Forms;
 using iba.Data;
@@ -10,6 +13,7 @@ using iba.Logging;
 using Opc.Ua;
 using Opc.Ua.Configuration;
 using Timer = System.Threading.Timer;
+using TypeInfo = System.Reflection.TypeInfo;
 
 namespace iba.Processing
 {
@@ -594,10 +598,33 @@ namespace iba.Processing
 
         #region Building tree Sections 1...4 (from 'GlobalCleanup' to 'OneTimeJobs')
 
+
+        private FolderState CreateUaFolder(FolderState parent, string displayName, string description)
+            => NodeManager.CreateFolderAndItsNode(parent ?? NodeManager.GetIbaRootFolder(), displayName, description);
+
+        private FolderState CreateUaFolder(object parent1, string displayName, string mibName, string description)
+        {
+            var parent = parent1 as FolderState ?? NodeManager.GetIbaRootFolder();
+
+            return NodeManager.CreateFolderAndItsNode(parent, displayName, description);
+        }
+
         private void BuildSectionGlobalCleanup()
         {
-            var sectionFolder = NodeManager.CreateFolderAndItsNode(NodeManager.GetIbaRootFolder(), "Global cleanup",
+            var sectionFolder = CreateUaFolder(null, "Global cleanup",
                 "Global cleanup settings for all local drives");
+
+            // uniqueness test // todo. kls. remove
+            //CreateUaFolder(sectionFolder, null, "null");
+            //CreateUaFolder(sectionFolder, "", "empty");
+            //CreateUaFolder(sectionFolder, " ", "wh1");
+            //CreateUaFolder(sectionFolder, " ", "wh1");
+            //CreateUaFolder(sectionFolder, "  ", "wh2");
+            //CreateUaFolder(sectionFolder, "Abc", " ");
+            //CreateUaFolder(sectionFolder, "Abc", " ");
+            //CreateUaFolder(sectionFolder, "Abc", " ");
+            //CreateUaFolder(sectionFolder, "A.B", " ");
+            //CreateUaFolder(sectionFolder, "A.B", " ");
 
             foreach (var driveInfo in ObjectsData.GlobalCleanup)
             {
@@ -607,33 +634,33 @@ namespace iba.Processing
                     //driveInfo.Oid = null;//oidDrive;// todo. kls. set feedback here
 
                     // create a folder for the drive
-                    var itemFolder = NodeManager.CreateFolderAndItsNode(sectionFolder, driveInfo.DriveName, 
+                    var driveFolder = CreateUaFolder(sectionFolder, $@"Drive '{driveInfo.DriveName}'", 
                         $@"Global cleanup settings for the drive '{driveInfo.DriveName}'");
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
-                        CreateUserValue(itemFolder, driveInfo.DriveName,
+                        CreateUserValue(driveFolder, driveInfo.DriveName,
                             @"Drive Name", @"Drive name like it appears in operating system.",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(itemFolder, driveInfo.Active,
+                        CreateUserValue(driveFolder, driveInfo.Active,
                             @"Active", @"Whether or not the global cleanup is enabled for the drive.",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(itemFolder,driveInfo.SizeInMb,
+                        CreateUserValue(driveFolder,driveInfo.SizeInMb,
                             @"Size", @"Size of the drive (in megabytes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(itemFolder, driveInfo.CurrentFreeSpaceInMb,
+                        CreateUserValue(driveFolder, driveInfo.CurrentFreeSpaceInMb,
                             @"Current free space", @"Current free space of the drive (in megabytes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(itemFolder, driveInfo.MinFreeSpaceInPercent,
+                        CreateUserValue(driveFolder, driveInfo.MinFreeSpaceInPercent,
                             @"Min free space", 
                             @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(itemFolder, driveInfo.RescanTime,
+                        CreateUserValue(driveFolder, driveInfo.RescanTime,
                             @"Rescan time", @"How often the application rescans the drive parameters (in minutes).",
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
                     }
@@ -650,11 +677,8 @@ namespace iba.Processing
 
         private void BuildSectionStandardJobs()
         {
-            var oidSection = "";//  = new string(SnmpObjectsData.StandardJobsOid);
-
             // ibaRoot.DatCoord.Product.2 - StandardJobs [Folder]
-            AddMetadataForOidSuffix(oidSection, @"Standard jobs", @"standardJobs",
-                @"List of all standard jobs.");
+            var sectionFolder = CreateUaFolder(null, @"Standard jobs", @"List of all standard jobs.");
 
             for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
             {
@@ -662,72 +686,60 @@ namespace iba.Processing
                 {
                     SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
-                    // ibaRoot.DatCoord.Product.StdJobs.(index) - Job [Folder]
-                    string oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"standardJob{oidJob}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
+                    //string mibNameJob = $@"standardJob{oidJob}";
+                    var jobFolder = CreateUaFolder(sectionFolder, $@"Job '{jobInfo.JobName}'", 
                         $@"Properties of standard job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    string oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
+                    BuildCommonGeneralJobSubsection(jobFolder, out FolderState jobGeneralFolder, jobInfo);
 
                     // create all the rest of general job objects
                     // ibaRoot.DatCoord.Product.StdJobs.Job.General ...
                     {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid,
+                        CreateUserValue(jobGeneralFolder,
                             jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailed",
-                            @"Number of files with persistent errors.",
+                            @"Perm. Failed #", @"Number of files with persistent errors.",
                             JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid,
+                        CreateUserValue(jobGeneralFolder,
                             jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
+                            @"Timestamp job started", 
                             @"Time when the job was started. For a stopped job, it relates to the last start of the job. " +
                             @"If job was never started, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid,
+                        CreateUserValue(jobGeneralFolder,
                             jobInfo.TimestampLastDirectoryScan,
-                            @"Timestamp last directory scan", mibNameJobGen + @"TimestampLastDirectoryScan",
+                            @"Timestamp last directory scan",
                             @"Time when the last scan for new (unprocessed) .dat files was performed. " +
                             @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid,
+                        CreateUserValue(jobGeneralFolder,
                             jobInfo.TimestampLastReprocessErrorsScan,
-                            @"Timestamp last reprocess errors scan", mibNameJobGen + @"TimestampLastReprocessErrorsScan",
+                            @"Timestamp last reprocess errors scan", 
                             @"Time when the last reprocess scan was performed " +
                             @"(reprocess scan is a scan for .dat files that previously were processed with errors).  " +
                             @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
 
                         // ibaRoot.DatCoord.Product.StdJobs.Job.General.10 - LastProcessing [Folder]
-                        string oidLastProc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                        AddMetadataForOidSuffix(oidLastProc, @"LastProcessing", mibNameJobGen + @"LastProcessing",
+                        var lastProcFolder = CreateUaFolder(jobGeneralFolder, @"LastProcessing", 
                             @"Information about the last successfully processed file.");
 
-                        //CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid,
-                        //    jobInfo.LastProcessingLastDatFileProcessed,
-                        //    @"Last dat-file processed", mibNameJobGen + @"LastFile",
-                        //    @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                        //    JobInfoItemRequested, jobInfo);
+                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingLastDatFileProcessed,
+                            @"Last dat-file processed", 
+                            @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
+                            JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid,
-                            jobInfo.LastProcessingStartTimeStamp,
-                            @"Start timestamp", mibNameJobGen + @"StartStamp",
+                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingStartTimeStamp,
+                            @"Start timestamp", 
                             @"Time when processing of the last successfully processed file was started. " +
                             @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
 
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid,
-                            jobInfo.LastProcessingFinishTimeStamp,
-                            @"Finish timestamp", mibNameJobGen + @"FinishStamp",
+                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingFinishTimeStamp,
+                            @"Finish timestamp",
                             @"Time when processing of the last successfully processed file was finished. " +
                             @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                             JobInfoItemRequested, jobInfo);
@@ -747,7 +759,7 @@ namespace iba.Processing
         {
             var oidSection = "";//  = new string(SnmpObjectsData.ScheduledJobsOid);
 
-            AddMetadataForOidSuffix(oidSection, @"Scheduled jobs", @"scheduledJobs",
+            CreateUaFolder(oidSection, @"Scheduled jobs", @"scheduledJobs",
                 @"List of all scheduled jobs.");
 
             for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
@@ -759,12 +771,12 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
                     string oidJob = oidSection + (uint)(i + 1);
                     string mibNameJob = $@"scheduledJob{oidJob}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
+                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of scheduled job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
-                    string oidJobGen;
-                    string mibNameJobGen;
+                    string oidJobGen = "";
+                    string mibNameJobGen = "";
                     BuildCommonGeneralJobSubsection(
                         oidJob, out oidJobGen,
                         mibNameJob, out mibNameJobGen,
@@ -813,7 +825,7 @@ namespace iba.Processing
         {
             var oidSection = "";//  = new string(SnmpObjectsData.OneTimeJobsOid);
 
-            AddMetadataForOidSuffix(oidSection, @"One time jobs", @"oneTimeJobs",
+            CreateUaFolder(oidSection, @"One time jobs", @"oneTimeJobs",
                 @"List of all one-time jobs.");
 
             for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
@@ -824,7 +836,7 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.OtJobs.(index) - Job [folder]
                     string oidJob = oidSection + (uint)(i + 1);
                     string mibNameJob = $@"oneTimeJob{oidJob}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
+                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of one-time job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
@@ -859,7 +871,7 @@ namespace iba.Processing
         {
             var oidSection = "";//  = new string(SnmpObjectsData.EventBasedJobsOid);
 
-            AddMetadataForOidSuffix(oidSection, @"Event jobs", @"eventJobs",
+            CreateUaFolder(oidSection, @"Event jobs", @"eventJobs",
                 @"List of all event jobs.");
 
             for (int i = 0; i < ObjectsData.EventBasedJobs.Count; i++)
@@ -871,7 +883,7 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
                     string oidJob = oidSection + (uint)(i + 1);
                     string mibNameJob = $@"eventJob{oidJob}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
+                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
                         $@"Properties of event job '{jobInfo.JobName}'.");
 
                     // create objects that are common for all the job types
@@ -922,52 +934,55 @@ namespace iba.Processing
 
         #region Common for all the jobs
 
-        /// <summary> Build the part that is common for all the Jobs 
-        /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
         private void BuildCommonGeneralJobSubsection(
-            string oidJob, out string oidJobGen,
+            object oidJob, out string oidJobGen,
             string mibNameJob, out string mibNameJobGen,
             SnmpObjectsData.JobInfoBase jobInfo)
         {
+            oidJobGen = null;
+            mibNameJobGen = null;
+        }
+        /// <summary> Build the part that is common for all the Jobs 
+        /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
+        private void BuildCommonGeneralJobSubsection(
+            FolderState jobFolder, out FolderState jobGeneralFolder,
+            SnmpObjectsData.JobInfoBase jobInfo)
+        {
 
-            jobInfo.Oid = oidJob;
+            //jobInfo.Oid = oidJob; // todo. kls. set feedback here
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.1 - General [Folder]
-            oidJobGen = oidJob + SnmpObjectsData.JobInfoBase.GeneralOid;
-            mibNameJobGen = mibNameJob + @"General";
-            AddMetadataForOidSuffix(oidJobGen, @"General", mibNameJobGen,
+            jobGeneralFolder = CreateUaFolder(jobFolder, @"General", 
                 $@"General properties of job '{jobInfo.JobName}'.");
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.General ...
             {
-                //CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName,
-                //    @"Job Name", mibNameJobGen + @"Name",
-                //    @"The name of the job as it appears in GUI.",
+                CreateUserValue(jobGeneralFolder, jobInfo.JobName,
+                    @"Job Name", 
+                    @"The name of the job as it appears in GUI.",
+                    JobInfoItemRequested, jobInfo);
+
+                // todo. kls. 
+                //CreateEnumUserValue(jobGeneralFolder, _enumJobStatus, (int)jobInfo.Status,
+                //    @"Status", mibNameJobGen + @"Status",
+                //    @"Current status of the job (started, stopped or disabled).",
                 //    JobInfoItemRequested, jobInfo);
 
-                CreateEnumUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, _enumJobStatus, (int)jobInfo.Status,
-                    @"Status", mibNameJobGen + @"Status",
-                    @"Current status of the job (started, stopped or disabled).",
+                CreateUserValue(jobGeneralFolder, jobInfo.TodoCount,
+                    @"Todo #", @"Number of dat files to be processed.",
                     JobInfoItemRequested, jobInfo);
 
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount,
-                    @"Todo #", mibNameJobGen + @"Todo",
-                    @"Number of dat files to be processed.",
+                CreateUserValue(jobGeneralFolder, jobInfo.DoneCount,
+                    @"Done #", @"Number of processed files.",
                     JobInfoItemRequested, jobInfo);
 
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount,
-                    @"Done #", mibNameJobGen + @"Done",
-                    @"Number of processed files.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount,
-                    @"Failed #", mibNameJobGen + @"Failed",
-                    @"Number of errors occurred during processing.",
+                CreateUserValue(jobGeneralFolder, jobInfo.FailedCount,
+                    @"Failed #", @"Number of errors occurred during processing.",
                     JobInfoItemRequested, jobInfo);
             }
 
-            // create tasks
-            BuildTasks(oidJob, mibNameJob, jobInfo);
+            // create tasks 
+            BuildTasks(jobFolder, jobInfo);
         }
 
         #endregion
@@ -975,7 +990,7 @@ namespace iba.Processing
 
         #region Tasks subtrees
 
-        private void BuildTasks(string oidjJob, string mibNameJob, SnmpObjectsData.JobInfoBase jobInfo)
+        private void BuildTasks(FolderState jobFolder, SnmpObjectsData.JobInfoBase jobInfo)
         {
             var tasks = jobInfo?.Tasks;
             if (tasks == null)
@@ -983,10 +998,8 @@ namespace iba.Processing
                 return;
             }
 
-            var oidTasks = oidjJob + SnmpObjectsData.JobInfoBase.TasksOid;
-
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.2 - Tasks [Folder]
-            AddMetadataForOidSuffix(oidTasks, @"Tasks", mibNameJob + @"Tasks",
+            var tasksFolder = CreateUaFolder(jobFolder, @"Tasks", 
                 $@"Information about all tasks of the job '{jobInfo.JobName}'.");
 
             for (int i = 0; i < tasks.Count; i++)
@@ -995,16 +1008,16 @@ namespace iba.Processing
 
                 uint i1 = (uint)(i + 1); // index for mib
 
-                string mibNameTask = mibNameJob + $@"Task{i1}";
+                //string mibNameTask = mibNameJob + $@"Task{i1}";
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.(index) - Task [Folder]
-                AddMetadataForOidSuffix(oidTasks + i1, $@"Task '{taskInfo.TaskName}'", mibNameTask,
+                var taskFolder = CreateUaFolder(tasksFolder, $@"Task '{taskInfo.TaskName}'", 
                     $@"Information about task '{taskInfo.TaskName}' of the job '{jobInfo.JobName}'.");
 
                 // create task contents
                 // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.TaskZ ...
                 try
                 {
-                    BuildTask(oidTasks + i1, mibNameTask, taskInfo);
+                    BuildTask(taskFolder, taskInfo);
                 }
                 catch
                 {
@@ -1016,37 +1029,37 @@ namespace iba.Processing
             }
         }
 
-        private void BuildTask(string oidTask, string mibNameTask, SnmpObjectsData.TaskInfo taskInfo)
+        private void BuildTask(FolderState taskFolder, SnmpObjectsData.TaskInfo taskInfo)
         {
             var parentJob = taskInfo.Parent;
 
-            taskInfo.Oid = oidTask;
+            // taskInfo.Oid = taskFolder;// todo. kls. feedback
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ ... 
 
-            //CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName,
-            //    @"Task name", mibNameTask + @"Name",
-            //    @"The name of the task as it appears in GUI.",
-            //    JobInfoItemRequested, parentJob);
+            CreateUserValue(taskFolder, taskInfo.TaskName,
+                @"Task name",
+                @"The name of the task as it appears in GUI.",
+                JobInfoItemRequested, parentJob);
 
-            //CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType,
-            //    @"Task type", mibNameTask + @"Type",
-            //    @"The type of the task (copy, extract, report, etc.).",
-            //    JobInfoItemRequested, parentJob);
+            CreateUserValue(taskFolder, taskInfo.TaskType,
+                @"Task type", 
+                @"The type of the task (copy, extract, report, etc.).",
+                JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success,
-                @"Success", mibNameTask + @"Success",
+            CreateUserValue(taskFolder, taskInfo.Success,
+                @"Success", 
                 @"Whether or not the last executed task was completed successfully, i.e. without errors. " +
                 @"For Condition task this means that the expression was successfully evaluated as TRUE or FALSE - both results are treated as success.",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution,
-                @"Duration of last execution", mibNameTask + @"DurationOfLastExecution",
+            CreateUserValue(taskFolder , taskInfo.DurationOfLastExecution,
+                @"Duration of last execution",
                 @"Duration of the last task execution (in seconds).",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution,
-                @"Memory used for last execution", mibNameTask + @"LastMemoryUsed",
+            CreateUserValue(taskFolder, taskInfo.MemoryUsedForLastExecution,
+                @"Memory used for last execution", 
                 @"Amount of memory used during the last execution of the task (in megabytes). " +
                 @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., Condition, Report, Extract and some custom tasks.",
                 JobInfoItemRequested, parentJob);
@@ -1058,31 +1071,29 @@ namespace iba.Processing
             }
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup [Folder]
-            string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
-            string mibNameCleanup = mibNameTask + @"Cleanup";
-            AddMetadataForOidSuffix(oidCleanup, @"Cleanup", mibNameCleanup,
-                @"Cleanup parameters of the task.");
+            var oidCleanup = CreateUaFolder(taskFolder, @"Cleanup", @"Cleanup parameters of the task.");
 
             // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup ...
 
-            CreateEnumUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, _enumCleanupType, (int)ci.LimitChoice,
-                @"Limit choice", mibNameCleanup + @"LimitChoice",
-                @"Option selected as limit for the disk space usage. " +
-                @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
-                JobInfoItemRequested, parentJob);
+            // todo. kls. enum
+            //CreateEnumUserValue(oidCleanup, _enumCleanupType, (int)ci.LimitChoice,
+            //    @"Limit choice", 
+            //    @"Option selected as limit for the disk space usage. " +
+            //    @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
+            //    JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories,
-                @"Subdirectories", mibNameCleanup + @"Subdirectories",
+            CreateUserValue(oidCleanup , ci.Subdirectories,
+                @"Subdirectories", 
                 @"Maximum count of directories the task can use.",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace,
-                @"Used disk space", mibNameCleanup + @"UsedDiskSpace",
+            CreateUserValue(oidCleanup , ci.UsedDiskSpace,
+                @"Used disk space", 
                 @"Maximum disk space that can be used by the task (in megabytes).",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace,
-                @"Free disk space", mibNameCleanup + @"FreeDiskSpace",
+            CreateUserValue(oidCleanup , ci.FreeDiskSpace,
+                @"Free disk space", 
                 @"Minimum disk space that is kept free (in megabytes).",
                 JobInfoItemRequested, parentJob);
         }
@@ -1090,12 +1101,46 @@ namespace iba.Processing
         #endregion
 
 
-        #region Oid metadata and CreateUserValue() overloads
+        #region CreateUserValue() overloads
 
-        private void AddMetadataForOidSuffix(string oidSuffix, string guiCaption, string mibName,
-            string mibDescription)
+        // todo. kls. move to elsewhere
+        private static readonly Dictionary<Type, BuiltInType> _typeDict = new Dictionary<Type, BuiltInType>
         {
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
+            {typeof(string), BuiltInType.String},
+            {typeof(bool), BuiltInType.Boolean},
+            {typeof(DateTime), BuiltInType.DateTime},
+            {typeof(int), BuiltInType.Int32},
+            {typeof(uint), BuiltInType.UInt32},
+            {typeof(float), BuiltInType.Float},
+            {typeof(double), BuiltInType.Double},
+        };
+        private static BuiltInType GetOpcUaType(object value)
+        {
+            return _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="initialValue"></param>
+        /// <param name="name">Will be used for both BrowseName and DisplayName (should not contain a dot '.')</param>
+        /// <param name="description"></param>
+        /// <param name="handler"></param>
+        /// <param name="tag"></param>
+        private void CreateUserValue(FolderState parent, object initialValue,
+            string name, string description = null,
+            EventHandler<object> handler = null, object tag = null)
+        {
+            // get uaType automatically from initial value
+            var uaType = GetOpcUaType(initialValue);
+            Debug.Assert(uaType != BuiltInType.Null);
+            //if (uaType == BuiltInType.Null)
+            //    throw new NotSupportedException($"Type '{initialValue.GetType()}' of item '{initialValue}' is not supported");
+
+            var varState = NodeManager.CreateVariableAndItsNode(parent, name, uaType, description);
+
+            NodeManager.SetValueScalar(varState, initialValue);
         }
 
         private void CreateUserValue(string oidSuffix, bool initialValue,
@@ -1107,30 +1152,8 @@ namespace iba.Processing
             //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="initialValue"></param>
-        /// <param name="name">Will be used for both BrowseName and Display name (should not contain a dot '.')</param>
-        /// <param name="description"></param>
-        /// <param name="handler"></param>
-        /// <param name="tag"></param>
-        private void CreateUserValue(NodeState parent, object initialValue,
-            string name, string description = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            var varState = NodeManager.CreateVariableAndItsNode(parent, name, BuiltInType.String, description); // todo. kls. type auto
-
-            NodeManager.SetValueScalar(varState, initialValue);
-            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        // ReSharper disable once UnusedMember.Local
         private void CreateUserValue(string oidSuffix, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
+        string caption, string mibName = null, string mibDescription = null,
             EventHandler<object> handler = null,
             object tag = null)
         {

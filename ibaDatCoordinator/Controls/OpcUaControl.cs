@@ -93,7 +93,7 @@ namespace iba.Controls
                 //TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild gui-tree
-                //RebuildObjectsTree();
+                //RebuildObjectsTree(); // todo. kls. 
 
                 // user has selected the control, 
                 // enable clients monitoring

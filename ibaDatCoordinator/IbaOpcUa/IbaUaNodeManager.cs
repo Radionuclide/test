@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Opc.Ua;
 using Opc.Ua.Server;
 using ibaOpcServer.IbaOpcUa;
@@ -11,14 +9,6 @@ using ibaOpcServer.IbaOpcUa;
 
 namespace iba.ibaOPCServer
 {
-    public enum SubTreeId
-    {
-        Unknown,
-        Globals,
-        Tasks
-    }
-
-
     /// <summary>
     /// A node manager for a server that exposes several variables.
     /// </summary>
@@ -119,7 +109,7 @@ namespace iba.ibaOPCServer
                 // create additional folders
                 _folderIbaStatus = CreateFolderAndItsNode(_folderIbaRoot, FolderIbaStatusName, "Status of ibaDatCoordinator's OPC UA monitoring system");
                 //_folderIbaGlobals = CreateFolderAndItsNode(_folderIbaRoot, FolderIbaGlobalsName);
-                // do not create Tasks now; it will be created if needed on update of vartree
+                // do not create Tasks now; it will be created if needed on update of varTree
                 ////_folderIbaTask = KlsCreateFolderAndItsNode(_folderIbaRoot, _folderIbaTasksName);
 
                 // create status nodes
@@ -318,14 +308,6 @@ namespace iba.ibaOPCServer
         /// contains iba-ua-server-status nodes
         /// </summary>
         private FolderState _folderIbaStatus;
-        /// <summary>
-        /// Contains global ibaLogic off-task connectors e.g. "Globals.OTC_Result"
-        /// </summary>
-        private FolderState _folderIbaGlobals; // contains 
-        /// <summary>
-        /// Contains non-global ibaLogic variables if ibaLogic is in the mode when everything is enabled for reading
-        /// </summary>
-        private FolderState _folderIbaTask;
 
         #region prefixes for "Tasks" and "Globals" varialbes
 
@@ -395,16 +377,6 @@ namespace iba.ibaOPCServer
             }
         }
 
-        public void KlsTst___ForceDeleteTree()
-        {
-            lock (Lock)
-            {
-                KlsDeleteNodeAndSubtreeAndRemoveFromParent(_folderIbaGlobals, false);
-                KlsDeleteNodeAndSubtreeAndRemoveFromParent(_folderIbaTask, false);
-                
-            }
-        }
-        
         /// <summary>
         /// By Kolesnik. 
         /// Update varTree structure based on supplied VarInfo data.
@@ -506,11 +478,11 @@ namespace iba.ibaOPCServer
 #if DEBUG
 
             List<IbaVariable> vars = new List<IbaVariable>();
-            if (_folderIbaGlobals != null)
-                vars.AddRange(_folderIbaGlobals.GetFlatListOfIbaVariableChildren(SystemContext));
+            //if (_folderIbaGlobals != null)
+            //    vars.AddRange(_folderIbaGlobals.GetFlatListOfIbaVariableChildren(SystemContext));
             
-            if (_folderIbaTask!=null)
-                vars.AddRange(_folderIbaTask.GetFlatListOfIbaVariableChildren(SystemContext));
+            //if (_folderIbaTask!=null)
+            //    vars.AddRange(_folderIbaTask.GetFlatListOfIbaVariableChildren(SystemContext));
 
             if (vars.Count == 0)
                 return "<none>";
@@ -688,25 +660,6 @@ namespace iba.ibaOPCServer
             }
         }
         
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        /// <param name="subTreeId"></param>
-        /// <returns></returns>
-        public FolderState KlsGetSubtreeRootFolder(SubTreeId subTreeId)
-        {
-            switch (subTreeId)
-            {
-                case SubTreeId.Globals:
-                    return _folderIbaGlobals;
-                case SubTreeId.Tasks:
-                    return _folderIbaTask;
-                case SubTreeId.Unknown:
-                    return null;
-            }
-            return null;
-        }
-
         public FolderState GetIbaRootFolder() => _folderIbaRoot;
 
         /// <summary>
@@ -735,27 +688,9 @@ namespace iba.ibaOPCServer
         private string KlsConvertVeNameToUaName(string veName, bool includeIbaRootNodeName)
         {
             // declare prefixes for better code readability 
-            string internalPrefix, externalPrefix;
+            string internalPrefix = "", externalPrefix;
 
             // determine variable group Globals or Tasks
-            SubTreeId id = KlsGetSubtreeForGivenVeName(veName);
-
-            switch (id)
-            {
-                case SubTreeId.Globals:
-                    // variable name is from Gloabal group
-                    internalPrefix = InternalPrefixForGlobalVariables;
-                    //externalPrefix = VariableInformation.PrefixGlobalsDot;
-                    break;
-                case SubTreeId.Tasks:
-                    // variable name is from Tasks group
-                    internalPrefix = InternalPrefixForTaskVariables;
-                    //externalPrefix = VariableInformation.PrefixTasksDot;
-                    break;
-                default:
-                    // cannot identify variable group 
-                    return "";
-            }
 
             // replace pmac prefix with internal prefix
             string uaName = internalPrefix;// + veName.Substring(externalPrefix.Length);
@@ -778,24 +713,6 @@ namespace iba.ibaOPCServer
                 uaName = uaName.Substring(prefix.Length);
 
             return uaName;
-        }
-
-
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        /// <param name="veName"></param>
-        /// <returns></returns>
-        public static SubTreeId KlsGetSubtreeForGivenVeName(string veName)
-        {
-            //if (veName.StartsWith(VariableInformation.PrefixGlobalsDot)) return SubTreeId.Globals;
-            
-            //// currently will always return true since PmacPrefixForTaskVariables == "";
-            //// is added here for compatibility if PmacPrefixForTaskVariables will be non-empty
-            //if (veName.StartsWith(VariableInformation.PrefixTasksDot)) return SubTreeId.Tasks;
-
-            // unknown prefix - unknown subtree
-            return SubTreeId.Unknown;
         }
 
 
@@ -1134,7 +1051,7 @@ namespace iba.ibaOPCServer
             // if parent is one of roots, then don't touch it
             // (though _folderIbaTask should be deleted if we have no task-nodes, we do not delete it automatically here; 
             // we do in the UpdateVarTree function)
-            if (parent == _folderIbaRoot || parent == _folderIbaGlobals || parent == _folderIbaTask)
+            if (parent == _folderIbaRoot) //|| parent == _folderIbaGlobals || parent == _folderIbaTask)
                 return;
 
             // if it is not-root folder and is empty now, then also delete it
@@ -1375,18 +1292,52 @@ namespace iba.ibaOPCServer
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
         private bool IsNodeIdUnique(string fullNodeId) => Find(fullNodeId) == null;
 
+        private string GetUniqueNodeName(FolderState parent, string nodeName)
+        {
+            if (!IsValidBrowseName(nodeName))
+                nodeName = GetAdaptedBrowseName(nodeName);
+
+            Debug.Assert(!string.IsNullOrEmpty(nodeName));
+            
+            if (IsNodeIdUnique(parent, nodeName))
+                return nodeName; // ok, original name is unique
+
+            for (int i = 1; i < 1000; i++)
+            {
+                string nameCandidate = $"{nodeName}_{i}";
+                if (IsNodeIdUnique(parent, nameCandidate))
+                    return nameCandidate; // ok, suggested candidate is unique
+            }
+
+            // almost impossible 
+            throw new Exception($"Cannot generate a unique name based on {parent?.NodeId}.{nodeName}") ; 
+        }
+
         /// <summary> Finds the node by its string Node ID in a current namespace </summary>
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
         private NodeState Find(string fullNodeId) => Find(new NodeId(fullNodeId, NamespaceIndex));
 
         public bool IsNodeIdUnique(FolderState parent, string nodeName) =>
-            IsNodeIdUnique(GetExpectedStringNodeId(parent, nodeName));
+            // parent.FindChild() // todo. kls. use this instead of global search? (performance?)
+            IsNodeIdUnique(GetFullNodeId(parent, nodeName));
 
-        /// <summary> It's not allowed that a browse name is null is empty, is a totally whitespace or contains dots ('.').
+        /// <summary> It's not allowed that a browse name is null, is empty or contains dots ('.').
         /// Anything else is ok, including whitespaces, slashes, semicolons, etc. </summary>
         public static bool IsValidBrowseName(string browseName)
         {
-            return !string.IsNullOrWhiteSpace(browseName) && !browseName.Contains('.');
+            return !string.IsNullOrEmpty(browseName) && !browseName.Contains('.');
+        }
+
+        /// <summary>
+        /// // todo. kls. comment 
+        /// </summary>
+        /// <param name="browseName"></param>
+        /// <returns></returns>
+        public static string GetAdaptedBrowseName(string browseName)
+        {
+            return string.IsNullOrWhiteSpace(browseName) ?
+                "Node" /* a default name if no name was supplied at all */: 
+                browseName.Replace('.', '_');
         }
 
         /// <summary> This function returns
@@ -1398,13 +1349,16 @@ namespace iba.ibaOPCServer
         /// <param name="parent">Parent folder for the node to be created in</param>
         /// <param name="nodeName">Browse name of the node that is going to be created</param>
         /// <returns></returns>
-        public string GetExpectedStringNodeId(NodeState parent, string nodeName)
+        public string GetFullNodeId(NodeState parent, string nodeName)
         {
-            if (parent == null || !(parent.NodeId.Identifier is string strId /*we use string IDs only*/))
-                throw new ArgumentException(nameof(parent));
+            if (parent == null)
+                throw new ArgumentException("Trying to get an id for a parent==null", nameof(parent));
+
+            if (!(parent.NodeId.Identifier is string strId /*we use string IDs only*/))
+                throw new ArgumentException("Trying to get a string id for non-string parent id", nameof(parent));
 
             if (!IsValidBrowseName(nodeName))
-                throw new ArgumentException(nameof(nodeName));
+                throw new ArgumentException($"'{nodeName}' is not a valid browse name", nameof(nodeName));
 
             return $"{strId}.{nodeName}";
         }
@@ -1416,43 +1370,39 @@ namespace iba.ibaOPCServer
             if (!IsValidBrowseName(name))
                 throw new ArgumentException($"'{name}' is not a valid browse name",nameof(name));
 
-            string expectedId = GetExpectedStringNodeId(parent, name);
+            string expectedId = GetFullNodeId(parent, name);
 
             if (!IsNodeIdUnique(expectedId))
                 throw new ArgumentException($"NodeId '{expectedId}' already exists (is not unique)", nameof(name));
         }
 
-        /// <summary>  Creates a folder in the default address space.  </summary>
+        /// <summary> Creates a folder in the default address space.  </summary>
         /// <param name="parent">Parent folder to create a node in</param>
-        /// <param name="name">BrowseName, that will be also used for creation of NodeId and a default Display name;
+        /// <param name="displayName"> // todo. kls. BrowseName, that will be also used for creation of NodeId and a default Display name;
         /// All characters (including whitespace) except dot are allowed. For example, 'My variable'</param>
         /// <param name="description">OPC UA node description - any string or null</param>
         /// <returns>Returns a created Folder</returns>
-        public FolderState CreateFolderAndItsNode(NodeState parent, string name, string description) // todo. kls. make description optional
+        public FolderState CreateFolderAndItsNode(FolderState parent, string displayName, string description) // todo. kls. make description optional
         {
-            AssertNameCorrectnessAndUniqueness(parent, name);
+            //AssertNameCorrectnessAndUniqueness(parent, name);
 
             var folder = new FolderState(parent);
-            var browseName = new QualifiedName(name, NamespaceIndex);
+            string browseName = GetUniqueNodeName(parent, displayName);
 
+            if (browseName != displayName)
+                ;
+
+            var qualifiedName = new QualifiedName(browseName, NamespaceIndex);
             
-            string expectedId = GetExpectedStringNodeId(parent, name); // todo. kls. remove after testing
-
-            CreateNode(SystemContext, parent.NodeId, ReferenceTypeIds.Organizes, browseName, folder);
-
-            // ensure expected ID was generated correctly
-            Debug.Assert(expectedId == folder.NodeId.Identifier as string); // todo. kls. remove after testing
+            CreateNode(SystemContext, parent.NodeId, ReferenceTypeIds.Organizes, qualifiedName, folder);
 
             folder.TypeDefinitionId = ObjectTypeIds.FolderType;
             folder.ReferenceTypeId = ReferenceTypes.Organizes;
 
-            // set display name and description
-            // folder.DisplayName = browseName.Name; // setting of DisplayName is not required; it's already done automatically by CreateNode
-            folder.Description = description; // no check for null, because null is also allowed
-
-            // todo. kls. do we need writable props?
-            folder.WriteMask = AttributeWriteMask.DisplayName | AttributeWriteMask.Description;
-            folder.UserWriteMask = AttributeWriteMask.DisplayName | AttributeWriteMask.Description;
+            // set display name and description;
+            // no check for null, empty, whitespace, because anything is allowed here
+            folder.DisplayName = displayName; // by default DisplayName is set to BrowseName automatically, but let's set our value
+            folder.Description = description; 
 
             return folder;
         }
@@ -1461,24 +1411,29 @@ namespace iba.ibaOPCServer
         /// By Kolesnik. 
         /// </summary>
         /// <param name="parent"></param>
-        /// <param name="name"></param>
+        /// <param name="displayName"></param>
         /// <param name="dataType"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public BaseDataVariableState CreateVariableAndItsNode(NodeState parent, string name, BuiltInType dataType, string description = null)
+        public BaseDataVariableState CreateVariableAndItsNode(FolderState parent, string displayName, BuiltInType dataType, string description = null)
         {
-            AssertNameCorrectnessAndUniqueness(parent, name);
+            //            AssertNameCorrectnessAndUniqueness(parent, name);
+            string browseName = GetUniqueNodeName(parent, displayName);
+
+            if (browseName != displayName)
+                ;
 
             BaseDataVariableState v = new BaseDataVariableState(parent);
 
             // create node for given instance
-            CreateNodeForDataVariable(v, name);
+            CreateNodeForDataVariable(v, browseName);
 
             v.Description = description;
+            v.DisplayName = displayName;
 
             // set access type to readonly
             v.SetAccessLevel(true, false);
-            v.SetupAsScalar(BuiltInType.String);
+            v.SetupAsScalar(dataType);
             return v;
         }
 
@@ -1490,9 +1445,9 @@ namespace iba.ibaOPCServer
         /// <param name="subTreeId"></param>
         /// <param name="ve"></param>
         /// <returns></returns>
-        private IbaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, SubTreeId subTreeId, object ve)
+        private IbaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, object ve)
         {
-            IbaVariable v = new IbaVariable(parent, subTreeId, null, this); // todo. kls. use for feedback
+            IbaVariable v = new IbaVariable(parent, null, this); // todo. kls. use for feedback
 
             // create node for given instance
             CreateNodeForDataVariable(v, name);
@@ -1502,13 +1457,13 @@ namespace iba.ibaOPCServer
             return v;
         }
         
-        private NodeId CreateNodeForDataVariable(BaseDataVariableState v, string name)
+        private NodeId CreateNodeForDataVariable(BaseDataVariableState v, string browseName)
         {
             // compose browse name
-            QualifiedName browseName = new QualifiedName(name, NamespaceIndex);
+            QualifiedName qualifiedName = new QualifiedName(browseName, NamespaceIndex);
 
             // create node for given instance
-            NodeId nodeId = CreateNode(SystemContext, v.Parent.NodeId, ReferenceTypeIds.Organizes, browseName, v);
+            NodeId nodeId = CreateNode(SystemContext, v.Parent.NodeId, ReferenceTypeIds.Organizes, qualifiedName, v);
 
             // set up attributes to defaults
             {

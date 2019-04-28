@@ -6,8 +6,6 @@ namespace ibaOpcServer.IbaOpcUa
 
     public class IbaVariable : BaseDataVariableState
     {
-        public readonly SubTreeId SubTreeId;
-
         public bool IsMarkedForDeleting = false;
         public bool IsMonitored = false;
         public bool IsAvailableInPmacWatchlist = false;
@@ -31,11 +29,9 @@ namespace ibaOpcServer.IbaOpcUa
         /// </summary>
         public readonly string VeName;
 
-        public IbaVariable(NodeState parent, SubTreeId subTreeId, object ve, IbaUaNodeManager mgr)
+        public IbaVariable(NodeState parent, object ve, IbaUaNodeManager mgr)
             : base(parent)
         {
-            SubTreeId = subTreeId;
-
             // add references to each other
             //VariableElement = ve;
             //ve.UaVariable = this;
@@ -64,7 +60,7 @@ namespace ibaOpcServer.IbaOpcUa
         protected override void OnAfterCreate(ISystemContext context, NodeState node)
         {
             // take this into account in statistics
-            _mgr.Status.IncrementVarCounter(SubTreeId);
+            _mgr.Status.IncrementVarCounter();
             
             base.OnAfterCreate(context, node);
         }
@@ -72,7 +68,7 @@ namespace ibaOpcServer.IbaOpcUa
         protected override void OnBeforeDelete(ISystemContext context)
         {
             // take this into account in statistics
-            _mgr.Status.DecrementVarCounter(SubTreeId);
+            _mgr.Status.DecrementVarCounter();
             
             // set this flag; it will be checked when user will try to monitor it
             IsDeleted = true;
