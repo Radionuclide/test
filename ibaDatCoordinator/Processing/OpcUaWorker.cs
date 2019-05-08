@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Threading;
-using System.Windows.Forms;
 using iba.Data;
 using iba.ibaOPCServer;
 using iba.Logging;
+using iba.Properties;
 using Opc.Ua;
 using Opc.Ua.Configuration;
-using Timer = System.Threading.Timer;
-using TypeInfo = System.Reflection.TypeInfo;
 
 namespace iba.Processing
 {
@@ -56,7 +50,7 @@ namespace iba.Processing
         private BaseDataVariableState _lifeBeatVar;
         private readonly System.Windows.Forms.Timer _lifebeatTimer = new System.Windows.Forms.Timer {Enabled = false, Interval = 300};
 
-        public static int TmpLifebeatValue { get; private set; } = 0; // todo. kls. only if enabled
+        public static int TmpLifebeatValue { get; private set; } // todo. kls. only if enabled
 
         #region Construction, Destruction, Init
 
@@ -65,7 +59,7 @@ namespace iba.Processing
         public OpcUaWorker()
         {
             Status = SnmpWorkerStatus.Errored;
-            StatusString = iba.Properties.Resources.opcUaStatusNotInit;
+            StatusString = Resources.opcUaStatusNotInit;
 
             _lifebeatTimer.Enabled = true;
 
@@ -141,6 +135,7 @@ namespace iba.Processing
                 // check the application certificate.
                 _uaApplication.CheckApplicationInstanceCertificate(false, 0);
 
+                // todo. kls. Test exceptions on init
 
                 // start the server.
                 if (Environment.UserInteractive)
@@ -293,20 +288,20 @@ namespace iba.Processing
 
                     //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
                     Status = SnmpWorkerStatus.Started;
-                    StatusString = String.Format(iba.Properties.Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
+                    StatusString = String.Format(Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
 
                     logMessage = Status == oldStatus
                         ?
                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
-                       String.Format(iba.Properties.Resources.opcUaStatusRunningRestarted, StatusString)
+                       String.Format(Resources.opcUaStatusRunningRestarted, StatusString)
                         :
                         // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
-                        String.Format(iba.Properties.Resources.opcUaStatusRunningStarted, StatusString);
+                        String.Format(Resources.opcUaStatusRunningStarted, StatusString);
                 }
                 else
                 {
                     Status = SnmpWorkerStatus.Stopped;
-                    StatusString = iba.Properties.Resources.opcUaStatusDisabled;
+                    StatusString = Resources.opcUaStatusDisabled;
 
                     logMessage = Status == oldStatus
                         ?
@@ -314,7 +309,7 @@ namespace iba.Processing
                         null
                         :
                         // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
-                        String.Format(iba.Properties.Resources.opcUaStatusStopped, StatusString);
+                        String.Format(Resources.opcUaStatusStopped, StatusString);
                 }
 
                 // log the message if it necessary
@@ -326,7 +321,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Status = SnmpWorkerStatus.Errored;
-                StatusString = String.Format(iba.Properties.Resources.opcUaStatusError, ex.Message);
+                StatusString = String.Format(Resources.opcUaStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
@@ -1112,7 +1107,7 @@ namespace iba.Processing
             {typeof(int), BuiltInType.Int32},
             {typeof(uint), BuiltInType.UInt32},
             {typeof(float), BuiltInType.Float},
-            {typeof(double), BuiltInType.Double},
+            {typeof(double), BuiltInType.Double}
         };
         private static BuiltInType GetOpcUaType(object value)
         {
@@ -1504,7 +1499,6 @@ namespace iba.Processing
             {
                 // should not happen
                 //args.Value = null;
-                return;
             }
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
@@ -1545,21 +1539,21 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        public Dictionary<string, SnmpTreeNodeTag> GetObjectTreeSnapShot()
+        public Dictionary<NodeId, SnmpTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
                 // check tree structure before taking a snapshot
                 RebuildTreeIfItIsInvalid();
 
-                //var result = new Dictionary<string, SnmpTreeNodeTag>();
+                var result = new Dictionary<NodeId, SnmpTreeNodeTag>();
                 //var objList = IbaOpcUaServer.GetListOfAllOids();
                 //if (objList == null)
                 //{
                 //    return null;
                 //}
 
-                //var rootOid = IbaOpcUaServer.OidIbaRoot;
+                //var rootOid = IbaOpcUaServer.KlsStrVarTree.OidIbaRoot;
 
                 //// get a set of all folders and nodes starting with the root
                 //var nodesSet = new HashSet<string> { rootOid };
@@ -1596,17 +1590,7 @@ namespace iba.Processing
                 //}
 
                 // mark some nodes as expanded
-                var nodesToExpand = new HashSet<string>
-                {
-                    //rootOid,
-                    //IbaOpcUaServer.OidIbaRoot,
-                    //IbaOpcUaServer.OidIbaProduct,
-                    //IbaOpcUaServer.OidIbaProductSpecific,
-                    ////IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.GlobalCleanupOid,// not needed
-                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.StandardJobsOid,
-                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.ScheduledJobsOid,
-                    //IbaOpcUaServer.OidIbaProductSpecific + SnmpObjectsData.OneTimeJobsOid
-                };
+                var nodesToExpand = new HashSet<string>();
 
                 //foreach (var oid in nodesToExpand)
                 //{

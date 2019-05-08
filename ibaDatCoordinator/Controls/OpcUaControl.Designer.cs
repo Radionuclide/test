@@ -42,6 +42,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
+            this.buttonRefreshGuiTree = new System.Windows.Forms.Button();
+            this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
             this.labelObjType = new System.Windows.Forms.Label();
             this.tbObjType = new System.Windows.Forms.TextBox();
@@ -64,20 +66,23 @@
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
             this.cbSecurityNone = new System.Windows.Forms.CheckBox();
             this.gbEndpoints = new System.Windows.Forms.GroupBox();
-            this.buttonCopyToClipboard = new System.Windows.Forms.Button();
-            this.buttonEndpointCopy = new System.Windows.Forms.Button();
-            this.buttonEndpointDelete = new System.Windows.Forms.Button();
             this.dgvEndpoints = new System.Windows.Forms.DataGridView();
             this.dgvColumnHost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonCopyToClipboard = new System.Windows.Forms.Button();
+            this.buttonEndpointCopy = new System.Windows.Forms.Button();
+            this.buttonEndpointDelete = new System.Windows.Forms.Button();
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
-            this.buttonRebuildTree = new System.Windows.Forms.Button();
+            this.labelObjDescription = new System.Windows.Forms.Label();
+            this.labelObjNodeId = new System.Windows.Forms.Label();
+            this.tbObjDescription = new System.Windows.Forms.TextBox();
+            this.tbObjNodeId = new System.Windows.Forms.TextBox();
             this.gbDiagnostics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             this.gbObjects.SuspendLayout();
@@ -110,7 +115,7 @@
             this.gbDiagnostics.Controls.Add(this.buttonClearClients);
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 582);
+            this.gbDiagnostics.Location = new System.Drawing.Point(15, 696);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
@@ -222,22 +227,50 @@
             // 
             this.gbObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
+            this.gbObjects.Controls.Add(this.buttonRebuildTree);
             this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
             this.gbObjects.Controls.Add(this.tvObjects);
             this.gbObjects.Location = new System.Drawing.Point(15, 350);
             this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(690, 226);
+            this.gbObjects.Size = new System.Drawing.Size(690, 340);
             this.gbObjects.TabIndex = 3;
             this.gbObjects.TabStop = false;
             this.gbObjects.Text = "Objects";
+            // 
+            // buttonRefreshGuiTree
+            // 
+            this.buttonRefreshGuiTree.BackColor = System.Drawing.Color.Linen;
+            this.buttonRefreshGuiTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonRefreshGuiTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonRefreshGuiTree.Location = new System.Drawing.Point(171, -1);
+            this.buttonRefreshGuiTree.Name = "buttonRefreshGuiTree";
+            this.buttonRefreshGuiTree.Size = new System.Drawing.Size(92, 19);
+            this.buttonRefreshGuiTree.TabIndex = 12;
+            this.buttonRefreshGuiTree.Text = "Force Refresh GUI";
+            this.buttonRefreshGuiTree.UseVisualStyleBackColor = false;
+            this.buttonRefreshGuiTree.Click += new System.EventHandler(this.buttonRefreshGuiTree_Click);
+            // 
+            // buttonRebuildTree
+            // 
+            this.buttonRebuildTree.BackColor = System.Drawing.Color.Linen;
+            this.buttonRebuildTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonRebuildTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonRebuildTree.Location = new System.Drawing.Point(73, -1);
+            this.buttonRebuildTree.Name = "buttonRebuildTree";
+            this.buttonRebuildTree.Size = new System.Drawing.Size(92, 19);
+            this.buttonRebuildTree.TabIndex = 12;
+            this.buttonRebuildTree.Text = "Force Rebuild Tree";
+            this.buttonRebuildTree.UseVisualStyleBackColor = false;
+            this.buttonRebuildTree.Click += new System.EventHandler(this.buttonRebuildTree_Click);
             // 
             // splitContainerObjectsFooter
             // 
             this.splitContainerObjectsFooter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainerObjectsFooter.IsSplitterFixed = true;
-            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(6, 135);
+            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(6, 279);
             this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
             // 
             // splitContainerObjectsFooter.Panel1
@@ -250,16 +283,19 @@
             // 
             // splitContainerObjectsFooter.Panel2
             // 
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.buttonRebuildTree);
-            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(678, 85);
-            this.splitContainerObjectsFooter.SplitterDistance = 310;
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjNodeId);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjNodeId);
+            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(678, 55);
+            this.splitContainerObjectsFooter.SplitterDistance = 249;
             this.splitContainerObjectsFooter.TabIndex = 2;
             // 
             // labelObjType
             // 
             this.labelObjType.AutoSize = true;
             this.labelObjType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjType.Location = new System.Drawing.Point(9, 58);
+            this.labelObjType.Location = new System.Drawing.Point(9, 32);
             this.labelObjType.Name = "labelObjType";
             this.labelObjType.Size = new System.Drawing.Size(34, 13);
             this.labelObjType.TabIndex = 9;
@@ -269,11 +305,11 @@
             // 
             this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjType.Location = new System.Drawing.Point(71, 55);
+            this.tbObjType.Location = new System.Drawing.Point(67, 29);
             this.tbObjType.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tbObjType.Name = "tbObjType";
             this.tbObjType.ReadOnly = true;
-            this.tbObjType.Size = new System.Drawing.Size(232, 20);
+            this.tbObjType.Size = new System.Drawing.Size(171, 20);
             this.tbObjType.TabIndex = 1;
             this.tbObjType.TabStop = false;
             // 
@@ -281,7 +317,7 @@
             // 
             this.labelObjValue.AutoSize = true;
             this.labelObjValue.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjValue.Location = new System.Drawing.Point(9, 32);
+            this.labelObjValue.Location = new System.Drawing.Point(9, 6);
             this.labelObjValue.Name = "labelObjValue";
             this.labelObjValue.Size = new System.Drawing.Size(37, 13);
             this.labelObjValue.TabIndex = 9;
@@ -291,10 +327,10 @@
             // 
             this.tbObjValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjValue.Location = new System.Drawing.Point(71, 29);
+            this.tbObjValue.Location = new System.Drawing.Point(67, 3);
             this.tbObjValue.Name = "tbObjValue";
             this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.Size = new System.Drawing.Size(232, 20);
+            this.tbObjValue.Size = new System.Drawing.Size(171, 20);
             this.tbObjValue.TabIndex = 1;
             this.tbObjValue.TabStop = false;
             // 
@@ -304,15 +340,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tvObjects.HideSelection = false;
-            this.tvObjects.Location = new System.Drawing.Point(18, 46);
+            this.tvObjects.Location = new System.Drawing.Point(18, 19);
             this.tvObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tvObjects.Name = "tvObjects";
             treeNode1.Name = "NodeRoot";
             treeNode1.Text = "Root";
             this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.tvObjects.Size = new System.Drawing.Size(654, 83);
+            this.tvObjects.Size = new System.Drawing.Size(654, 254);
             this.tvObjects.TabIndex = 0;
+            this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
             // gbConfiguration
             // 
@@ -509,10 +546,10 @@
             this.gbEndpoints.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbEndpoints.Controls.Add(this.dgvEndpoints);
             this.gbEndpoints.Controls.Add(this.buttonCopyToClipboard);
             this.gbEndpoints.Controls.Add(this.buttonEndpointCopy);
             this.gbEndpoints.Controls.Add(this.buttonEndpointDelete);
-            this.gbEndpoints.Controls.Add(this.dgvEndpoints);
             this.gbEndpoints.Controls.Add(this.buttonEndpointAdd);
             this.gbEndpoints.Location = new System.Drawing.Point(9, 152);
             this.gbEndpoints.Name = "gbEndpoints";
@@ -520,49 +557,6 @@
             this.gbEndpoints.TabIndex = 16;
             this.gbEndpoints.TabStop = false;
             this.gbEndpoints.Text = "Endpoints";
-            // 
-            // buttonCopyToClipboard
-            // 
-            this.buttonCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCopyToClipboard.AutoSize = true;
-            this.buttonCopyToClipboard.BackColor = System.Drawing.Color.Linen;
-            this.buttonCopyToClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCopyToClipboard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonCopyToClipboard.Location = new System.Drawing.Point(63, -1);
-            this.buttonCopyToClipboard.Name = "buttonCopyToClipboard";
-            this.buttonCopyToClipboard.Size = new System.Drawing.Size(76, 19);
-            this.buttonCopyToClipboard.TabIndex = 14;
-            this.buttonCopyToClipboard.Text = "Copy to clipboard";
-            this.buttonCopyToClipboard.UseVisualStyleBackColor = false;
-            this.buttonCopyToClipboard.Click += new System.EventHandler(this.buttonCopyToClipboard_Click);
-            // 
-            // buttonEndpointCopy
-            // 
-            this.buttonEndpointCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEndpointCopy.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonEndpointCopy.Image = global::iba.Properties.Resources.copy;
-            this.buttonEndpointCopy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointCopy.Location = new System.Drawing.Point(646, 48);
-            this.buttonEndpointCopy.Name = "buttonEndpointCopy";
-            this.buttonEndpointCopy.Size = new System.Drawing.Size(23, 23);
-            this.buttonEndpointCopy.TabIndex = 16;
-            this.buttonEndpointCopy.TabStop = false;
-            this.buttonEndpointCopy.UseVisualStyleBackColor = true;
-            this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
-            // 
-            // buttonEndpointDelete
-            // 
-            this.buttonEndpointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonEndpointDelete.Image = global::iba.Properties.Resources.img_error;
-            this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointDelete.Location = new System.Drawing.Point(646, 125);
-            this.buttonEndpointDelete.Name = "buttonEndpointDelete";
-            this.buttonEndpointDelete.Size = new System.Drawing.Size(23, 23);
-            this.buttonEndpointDelete.TabIndex = 16;
-            this.buttonEndpointDelete.TabStop = false;
-            this.buttonEndpointDelete.UseVisualStyleBackColor = true;
-            this.buttonEndpointDelete.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
             // 
             // dgvEndpoints
             // 
@@ -610,6 +604,48 @@
             this.dgvColumnUri.MinimumWidth = 50;
             this.dgvColumnUri.Name = "dgvColumnUri";
             this.dgvColumnUri.ReadOnly = true;
+            // 
+            // buttonCopyToClipboard
+            // 
+            this.buttonCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonCopyToClipboard.BackColor = System.Drawing.Color.Linen;
+            this.buttonCopyToClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonCopyToClipboard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonCopyToClipboard.Location = new System.Drawing.Point(64, -1);
+            this.buttonCopyToClipboard.Name = "buttonCopyToClipboard";
+            this.buttonCopyToClipboard.Size = new System.Drawing.Size(92, 19);
+            this.buttonCopyToClipboard.TabIndex = 14;
+            this.buttonCopyToClipboard.Text = "Copy to clipboard";
+            this.buttonCopyToClipboard.UseVisualStyleBackColor = false;
+            this.buttonCopyToClipboard.Click += new System.EventHandler(this.buttonCopyToClipboard_Click);
+            // 
+            // buttonEndpointCopy
+            // 
+            this.buttonEndpointCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEndpointCopy.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
+            this.buttonEndpointCopy.Image = global::iba.Properties.Resources.copy;
+            this.buttonEndpointCopy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonEndpointCopy.Location = new System.Drawing.Point(646, 48);
+            this.buttonEndpointCopy.Name = "buttonEndpointCopy";
+            this.buttonEndpointCopy.Size = new System.Drawing.Size(23, 23);
+            this.buttonEndpointCopy.TabIndex = 16;
+            this.buttonEndpointCopy.TabStop = false;
+            this.buttonEndpointCopy.UseVisualStyleBackColor = true;
+            this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
+            // 
+            // buttonEndpointDelete
+            // 
+            this.buttonEndpointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
+            this.buttonEndpointDelete.Image = global::iba.Properties.Resources.img_error;
+            this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonEndpointDelete.Location = new System.Drawing.Point(646, 125);
+            this.buttonEndpointDelete.Name = "buttonEndpointDelete";
+            this.buttonEndpointDelete.Size = new System.Drawing.Size(23, 23);
+            this.buttonEndpointDelete.TabIndex = 16;
+            this.buttonEndpointDelete.TabStop = false;
+            this.buttonEndpointDelete.UseVisualStyleBackColor = true;
+            this.buttonEndpointDelete.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
             // 
             // buttonEndpointAdd
             // 
@@ -689,18 +725,48 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
-            // buttonRebuildTree
+            // labelObjDescription
             // 
-            this.buttonRebuildTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRebuildTree.BackColor = System.Drawing.Color.Linen;
-            this.buttonRebuildTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonRebuildTree.Location = new System.Drawing.Point(6, 3);
-            this.buttonRebuildTree.Name = "buttonRebuildTree";
-            this.buttonRebuildTree.Size = new System.Drawing.Size(93, 23);
-            this.buttonRebuildTree.TabIndex = 12;
-            this.buttonRebuildTree.Text = "Rebuild Tree";
-            this.buttonRebuildTree.UseVisualStyleBackColor = false;
-            this.buttonRebuildTree.Click += new System.EventHandler(this.buttonRebuildTree_Click);
+            this.labelObjDescription.AutoSize = true;
+            this.labelObjDescription.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelObjDescription.Location = new System.Drawing.Point(3, 32);
+            this.labelObjDescription.Name = "labelObjDescription";
+            this.labelObjDescription.Size = new System.Drawing.Size(63, 13);
+            this.labelObjDescription.TabIndex = 12;
+            this.labelObjDescription.Text = "Description:";
+            // 
+            // labelObjNodeId
+            // 
+            this.labelObjNodeId.AutoSize = true;
+            this.labelObjNodeId.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelObjNodeId.Location = new System.Drawing.Point(3, 6);
+            this.labelObjNodeId.Name = "labelObjNodeId";
+            this.labelObjNodeId.Size = new System.Drawing.Size(50, 13);
+            this.labelObjNodeId.TabIndex = 13;
+            this.labelObjNodeId.Text = "Node ID:";
+            // 
+            // tbObjDescription
+            // 
+            this.tbObjDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjDescription.Location = new System.Drawing.Point(84, 29);
+            this.tbObjDescription.Multiline = true;
+            this.tbObjDescription.Name = "tbObjDescription";
+            this.tbObjDescription.ReadOnly = true;
+            this.tbObjDescription.Size = new System.Drawing.Size(329, 20);
+            this.tbObjDescription.TabIndex = 10;
+            this.tbObjDescription.TabStop = false;
+            // 
+            // tbObjNodeId
+            // 
+            this.tbObjNodeId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbObjNodeId.Location = new System.Drawing.Point(84, 3);
+            this.tbObjNodeId.Name = "tbObjNodeId";
+            this.tbObjNodeId.ReadOnly = true;
+            this.tbObjNodeId.Size = new System.Drawing.Size(329, 20);
+            this.tbObjNodeId.TabIndex = 11;
+            this.tbObjNodeId.TabStop = false;
             // 
             // OpcUaControl
             // 
@@ -712,7 +778,7 @@
             this.Controls.Add(this.gbConfiguration);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "OpcUaControl";
-            this.Size = new System.Drawing.Size(720, 761);
+            this.Size = new System.Drawing.Size(720, 863);
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
@@ -721,6 +787,7 @@
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
             this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
+            this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
             this.gbConfiguration.ResumeLayout(false);
@@ -734,7 +801,6 @@
             this.gbSecurity.ResumeLayout(false);
             this.gbSecurity.PerformLayout();
             this.gbEndpoints.ResumeLayout(false);
-            this.gbEndpoints.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEndpoints)).EndInit();
             this.ResumeLayout(false);
 
@@ -790,5 +856,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnUri;
         private System.Windows.Forms.Button buttonTestCfg;
         private System.Windows.Forms.Button buttonRebuildTree;
+        private System.Windows.Forms.Button buttonRefreshGuiTree;
+        private System.Windows.Forms.Label labelObjDescription;
+        private System.Windows.Forms.Label labelObjNodeId;
+        private System.Windows.Forms.TextBox tbObjDescription;
+        private System.Windows.Forms.TextBox tbObjNodeId;
     }
 }

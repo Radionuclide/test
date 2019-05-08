@@ -4,7 +4,9 @@ using System.Net;
 using System.Threading;
 using iba.Data;
 using iba.Logging;
+using iba.Properties;
 using IbaSnmpLib;
+using Timer = System.Timers.Timer;
 
 // all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
 // usual strings (e.g. "General") should be localized later.
@@ -63,7 +65,7 @@ namespace iba.Processing
         public SnmpWorker()
         {
             Status = SnmpWorkerStatus.Errored;
-            StatusString = iba.Properties.Resources.snmpStatusNotInit;
+            StatusString = Resources.snmpStatusNotInit;
         }
 
         public void Init()
@@ -87,7 +89,7 @@ namespace iba.Processing
             SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
-            _treeValidatorTimer = new System.Timers.Timer
+            _treeValidatorTimer = new Timer
             {
                 Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
                 AutoReset = false // do not repeat
@@ -98,7 +100,7 @@ namespace iba.Processing
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why it's needed
-                // 1. setup SNMP manager to monitor some yet inexisting job. it will show "no such instance". ok.
+                // 1. setup SNMP manager to monitor some yet non-existent job. it will show "no such instance". ok.
                 // 2. Add one or several jobs to fit the requested OID area. 
                 //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
             };
@@ -180,20 +182,20 @@ namespace iba.Processing
                 {
                     IbaSnmp.Start();
                     Status = SnmpWorkerStatus.Started;
-                    StatusString = String.Format(iba.Properties.Resources.snmpStatusRunningOnPort, _snmpData.Port);
+                    StatusString = String.Format(Resources.snmpStatusRunningOnPort, _snmpData.Port);
 
                     logMessage = Status == oldStatus
                         ?
                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
-                       String.Format(iba.Properties.Resources.snmpStatusRunningRestarted, StatusString)
+                       String.Format(Resources.snmpStatusRunningRestarted, StatusString)
                         :
                         // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
-                        String.Format(iba.Properties.Resources.snmpStatusRunningStarted, StatusString);
+                        String.Format(Resources.snmpStatusRunningStarted, StatusString);
                 }
                 else
                 {
                     Status = SnmpWorkerStatus.Stopped;
-                    StatusString = iba.Properties.Resources.snmpStatusDisabled;
+                    StatusString = Resources.snmpStatusDisabled;
 
                     logMessage = Status == oldStatus
                         ?
@@ -201,7 +203,7 @@ namespace iba.Processing
                         null
                         :
                         // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
-                        String.Format(iba.Properties.Resources.snmpStatusStopped, StatusString);
+                        String.Format(Resources.snmpStatusStopped, StatusString);
                 }
 
                 // log the message if it necessary
@@ -213,7 +215,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 Status = SnmpWorkerStatus.Errored;
-                StatusString = String.Format(iba.Properties.Resources.snmpStatusError, ex.Message);
+                StatusString = String.Format(Resources.snmpStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
@@ -368,7 +370,7 @@ namespace iba.Processing
             }
         }
 
-        private System.Timers.Timer _treeValidatorTimer;
+        private Timer _treeValidatorTimer;
 
         /// <summary>
         /// Rebuilds a tree completely if its <see cref="IsStructureValid"/> flag is set to false. 

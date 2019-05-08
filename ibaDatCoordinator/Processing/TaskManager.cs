@@ -11,6 +11,7 @@ using iba.Plugins;
 using System.IO;
 using iba.Logging;
 using IbaSnmpLib;
+using Opc.Ua;
 
 namespace iba.Processing
 {
@@ -1072,12 +1073,11 @@ namespace iba.Processing
             }
         }
 
-        public virtual Dictionary<IbaSnmpOid, SnmpTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        public virtual Dictionary<NodeId, SnmpTreeNodeTag> OpcUaGetObjectTreeSnapShot()
         {
             try
             {
-                return null;
-                //return OpcUaWorker.GetObjectTreeSnapShot();
+                return OpcUaWorker.GetObjectTreeSnapShot();
             }
             catch (Exception ex)
             {

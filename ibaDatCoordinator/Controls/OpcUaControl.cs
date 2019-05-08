@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using iba.Data;
+using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Processing;
 using iba.Properties;
 using iba.Utility;
 using IbaSnmpLib;
+using Opc.Ua;
 
 namespace iba.Controls
 {
@@ -400,6 +402,58 @@ namespace iba.Controls
 
         #region Objects
 
+        public void AddNodeRecursively(NodeState uaNode, TreeNodeCollection parentGuiNode)
+        {
+            if (uaNode == null)
+                return;
+            if (parentGuiNode == null)
+                parentGuiNode = tvObjects.Nodes; // add to root by default
+
+            int imageIndex = uaNode is FolderState ? ImageIndexFolder : ImageIndexLeaf;
+
+            var guiNode = parentGuiNode.Add(uaNode.NodeId.ToString(), uaNode.DisplayName.ToString(), imageIndex, imageIndex);
+
+            // attach a tag
+            {
+                var tag = new SnmpTreeNodeTag();
+                tag.Value = string.Empty;
+                tag.Type = string.Empty;
+                tag.MibName = uaNode.NodeId?.ToString() ?? string.Empty;
+                tag.MibDescription = uaNode.Description?.ToString() ?? string.Empty;
+
+                if (uaNode is BaseDataVariableState varState)
+                {
+                    tag.Value = varState.Value?.ToString() ?? string.Empty;
+                    tag.Type = varState.Value?.GetType().ToString() ?? string.Empty;
+                }
+                guiNode.Tag = tag;
+            }
+
+            var children = TstNodeMan.GetChildren(uaNode as FolderState);
+
+            if (children == null)
+                return;
+
+            foreach (var child in children)
+            {
+                AddNodeRecursively(child, guiNode.Nodes);
+            }
+
+            //// if parent node exists, add item there.
+            //// otherwise add directly to the root
+            //TreeNodeCollection placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
+
+            //// for all but root nodes add least subId before string caption
+            //string leastIdPrefix = "";//parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
+
+            //string captionWithSubid = leastIdPrefix + tag.Caption;
+
+
+            //// add this item to parent node
+            //var node = placeToAddTo.Add(id.ToString(), captionWithSubid, imageindex, imageindex);
+            //node.Tag = tag;
+        }
+
         public void RebuildObjectsTree()
         {
             if (!IsConnectedOrLocal)
@@ -411,49 +465,62 @@ namespace iba.Controls
 
             try
             {
-                var objSnapshot = TaskManager.Manager.SnmpGetObjectTreeSnapShot();
+                var objSnapshot = TaskManager.Manager.OpcUaGetObjectTreeSnapShot();
 
-                if (objSnapshot == null)
-                {
-                    return;
-                }
+                //if (objSnapshot == null)
+                //{
+                //    return;
+                //}
 
                 // get sorted oids, to ensure we create nodes according to depth-first search order
-                var sortedOids = objSnapshot.Keys.ToList();
-                sortedOids.Sort();
+                //var sortedNodeId = objSnapshot.Keys.ToList();
+                //sortedNodeId.Sort();
 
 
                 var nodesToExpand = new List<TreeNode>();
 
-                foreach (var oid in sortedOids)
-                {
-                    var tag = objSnapshot[oid];
 
-                    // get parent node
-                    var parentOid = oid.GetParent();
-                    var parentNode = FindSingleNodeById(null /*parentOid*/);
+                var root = TstNodeMan.GetIbaRootFolder();
 
-                    // if parent node exists, add item there.
-                    // otherwise add directly to the root
-                    var placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
+                TreeNodeCollection placeToAddTo1 = tvObjects.Nodes;
 
-                    // for all but root nodes add least subId before string caption
-                    string leastIdPrefix = parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
+                placeToAddTo1.Add("Abc", "abc", 0, 0);
 
-                    string captionWithSubid = leastIdPrefix + tag.Caption;
+                AddNodeRecursively(TstNodeMan.GetIbaRootFolder(), null);
 
-                    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+                return;
 
-                    // add this item to parent node
-                    var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
-                    node.Tag = tag;
+                //foreach (var id in sortedNodeId)
+                //{
+                //    SnmpTreeNodeTag tag = objSnapshot[id];
 
-                    // mark for expanding
-                    if (tag.IsExpandedByDefault)
-                    {
-                        nodesToExpand.Add(node);
-                    }
-                }
+
+
+                //    // get parent node
+                //    //var parentOid = id.GetParent();
+                //    var parentNode = FindSingleNodeById(null /*parentOid*/);
+
+                //    // if parent node exists, add item there.
+                //    // otherwise add directly to the root
+                //    TreeNodeCollection placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
+
+                //    // for all but root nodes add least subId before string caption
+                //    string leastIdPrefix = "";//parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
+
+                //    string captionWithSubid = leastIdPrefix + tag.Caption;
+
+                //    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+
+                //    // add this item to parent node
+                //    var node = placeToAddTo.Add(id.ToString(), captionWithSubid, imageindex, imageindex);
+                //    node.Tag = tag;
+
+                //    // mark for expanding
+                //    if (tag.IsExpandedByDefault)
+                //    {
+                //        nodesToExpand.Add(node);
+                //    }
+                //}
 
                 // expand those which are marked for
                 foreach (var treeNode in nodesToExpand)
@@ -535,31 +602,37 @@ namespace iba.Controls
                 _lastId = null;
 
                 // reset all fields
-                //tbObjOid.Text = String.Empty;
                 tbObjValue.Text = String.Empty;
                 tbObjType.Text = String.Empty;
+                tbObjNodeId.Text = String.Empty;
+                tbObjDescription.Text = String.Empty;
 
                 // get existing node's tag
                 var tag = (SnmpTreeNodeTag)e.Node.Tag;
 
+                if (tag == null)
+                    return;
                 // try to refresh node's tag
-                try
-                {
-                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
-                }
-                catch (Exception)
-                {
-                    // reset value that we know that something is wrong
-                    tag.Value = String.Empty;
-                    tag.Type = String.Empty;
-                }
+                // todo. kls. 
+                //try
+                //{
+                //    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
+                //}
+                //catch (Exception)
+                //{
+                //    // reset value that we know that something is wrong
+                //    tag.Value = String.Empty;
+                //    tag.Type = String.Empty;
+                //}
 
                 //tbObjOid.Text = tag.Oid?.ToString();
                 tbObjValue.Text = tag.Value;
                 tbObjType.Text = tag.Type;
+                tbObjNodeId.Text = tag.MibName;
+                tbObjDescription.Text = tag.MibDescription; // todo. kls. rename/reuse SnmpTreeNodeTag
 
                 // remember last selected oid
-                _lastId = null;// tag.Oid;
+                _lastId = null;// tag.Oid; // todo. kls. 
             }
             catch (Exception ex)
             {
@@ -575,14 +648,25 @@ namespace iba.Controls
         // todo. kls. delete
         private void buttonCopyToClipboard_Click(object sender, EventArgs e)
         {
-            if (dgvEndpoints.RowCount < 1)
-                return;
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetText("Hello");
 
-            string uri = dgvEndpoints.Rows[0].Cells[2].Value as string;
-            if (string.IsNullOrWhiteSpace(uri))
-                MessageBox.Show("err");
-            else
-                Clipboard.SetText(uri);
+                if (dgvEndpoints.RowCount < 1)
+                    return;
+
+                string uri = dgvEndpoints.Rows[0].Cells[2].Value as string;
+                if (string.IsNullOrWhiteSpace
+                    (uri))
+                    MessageBox.Show("err");
+                else
+                    Clipboard.SetText(uri);
+            }
+            catch 
+            {
+                MessageBox.Show("Clipboard err");
+            }
         }
 
         private void buttonEndpointAdd_Click(object sender, EventArgs e)
@@ -780,15 +864,12 @@ namespace iba.Controls
 
         }
 
-        private OpcUaWorker Tst__Worker => Manager.Tst___OpcUaWorker; // todo. kls. delete
+        private OpcUaWorker TstWorker => Manager.Tst___OpcUaWorker; // todo. kls. delete
+        private IbaOpcUaServer TstServer => TstWorker.IbaOpcUaServer; // todo. kls. delete
+        private IbaUaNodeManager TstNodeMan => TstServer.IbaUaNodeManager; // todo. kls. delete
 
         private void buttonTest2_Click(object sender, EventArgs e)
         {
-        }
-
-        private void buttonTest1_Click(object sender, EventArgs e)
-        {
-
         }
 
         static TaskManager Manager => TaskManager.Manager;
@@ -796,6 +877,11 @@ namespace iba.Controls
         private void buttonRebuildTree_Click(object sender, EventArgs e)
         {
             Manager.OpcUaRebuildObjectTree();
+        }
+
+        private void buttonRefreshGuiTree_Click(object sender, EventArgs e)
+        {
+            this.RebuildObjectsTree();
         }
     }
 }

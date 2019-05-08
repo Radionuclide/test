@@ -683,13 +683,22 @@ namespace iba.ibaOPCServer
             ExtensionObject userIdentityToken, SignatureData userTokenSignature, out byte[] serverNonce,
             out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos)
         {
-            ResponseHeader responseHeader = 
-                base.ActivateSession(
-                requestHeader, clientSignature, clientSoftwareCertificates, localeIds, userIdentityToken, userTokenSignature, out serverNonce, out results, out diagnosticInfos);
+            try
+            {
+                ResponseHeader responseHeader = base.ActivateSession(requestHeader, clientSignature, clientSoftwareCertificates,
+                    localeIds, userIdentityToken, userTokenSignature, out serverNonce, out results, out diagnosticInfos);
 
-            KlsUpdateSessionsList();
+                KlsUpdateSessionsList();
 
-            return responseHeader;
+                return responseHeader;
+            }
+            catch (Exception e)
+            {
+                // todo. kls. 
+                //Console.WriteLine(e);
+                throw;
+            }
+
         }
 
         public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)
