@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using DevExpress.Utils;
 using Opc.Ua;
 using Opc.Ua.Server;
 using ibaOpcServer.IbaOpcUa;
@@ -65,8 +67,8 @@ namespace iba.ibaOPCServer
 
                 if (id != null)
                 {
-                    // changed by kolesnik: replaced underline (_) with dot (.) delimiter
-                    return new NodeId(id + "." + instance.SymbolicName, instance.Parent.NodeId.NamespaceIndex);
+                    // Replaced underline (_) with our own NODE_ID_DELIMITER
+                    return new NodeId(ComposeNodeId(id,  instance.SymbolicName), instance.Parent.NodeId.NamespaceIndex);
                     
                     // todo. kls. check uniqueness here??
                 }
@@ -98,25 +100,25 @@ namespace iba.ibaOPCServer
                     externalReferences[ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
 
-                _folderIbaRoot = CreateFolder(null, FolderIbaRootName, FolderIbaRootName);
+                FolderIbaRoot = CreateFolder(null, FolderIbaRootName, FolderIbaRootName);
 
-                _folderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
-                references.Add(new NodeStateReference(ReferenceTypes.Organizes, false, _folderIbaRoot.NodeId));
-                _folderIbaRoot.EventNotifier = EventNotifiers.SubscribeToEvents;
-                AddRootNotifier(_folderIbaRoot);
+                FolderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
+                references.Add(new NodeStateReference(ReferenceTypes.Organizes, false, FolderIbaRoot.NodeId));
+                FolderIbaRoot.EventNotifier = EventNotifiers.SubscribeToEvents;
+                AddRootNotifier(FolderIbaRoot);
 
-                AddPredefinedNode(SystemContext, _folderIbaRoot);
+                AddPredefinedNode(SystemContext, FolderIbaRoot);
 
 
                 // create additional folders
-                _folderIbaStatus = CreateFolderAndItsNode(_folderIbaRoot, FolderIbaStatusName, "Status of ibaDatCoordinator's OPC UA monitoring system");
+                FolderIbaStatus = CreateFolderAndItsNode(FolderIbaRoot, FolderIbaStatusName, "Status of ibaDatCoordinator's OPC UA monitoring system");
                 //_folderIbaGlobals = CreateFolderAndItsNode(_folderIbaRoot, FolderIbaGlobalsName);
                 // do not create Tasks now; it will be created if needed on update of varTree
                 ////_folderIbaTask = KlsCreateFolderAndItsNode(_folderIbaRoot, _folderIbaTasksName);
 
                 // create status nodes
                 // this can be done only here, not in constructor
-                Status.CreateStatusTree(_folderIbaStatus);
+                Status.CreateStatusTree(FolderIbaStatus);
 
             }
         }
@@ -293,38 +295,48 @@ namespace iba.ibaOPCServer
             // TBD
             return null;
         }
-        
+
         #endregion
 
         #region kolesnik  test
 
+        public static readonly char NODE_ID_DELIMITER = '\\';
+        public static readonly char NODE_ID_DEFAULT_REPLACEMENT_CHARACTER = '_';
+
+        /// <summary>
+        /// // todo. kls. fix comment
+        /// "abc\de" + "fgh" -> "abc\de\fgh"
+        /// </summary>
+        /// <param name="parentFullId"></param>
+        /// <param name="nodeBrowseName"></param>
+        /// <returns></returns>
+        public string ComposeNodeId(string parentFullId, string nodeBrowseName) 
+            => parentFullId + NODE_ID_DELIMITER + GetAdaptedBrowseName(nodeBrowseName);
+
         private readonly IbaOpcUaServer _ibaUaServer;
 
         public readonly IbaUaNodeManagerStatus Status;
-        
+
         /// <summary>
         /// Root folder for all iba-specific data
         /// </summary>
-        private FolderState _folderIbaRoot; // todo. kls. to get-property
+        public FolderState FolderIbaRoot { get; private set; }
+
         /// <summary>
         /// contains iba-ua-server-status nodes
         /// </summary>
-        private FolderState _folderIbaStatus;
+        public FolderState FolderIbaStatus { get; private set; }
 
         #region prefixes for "Tasks" and "Globals" varialbes
 
         private const string FolderIbaRootName = "Root";
         private const string FolderIbaStatusName = "Status";
-        private const string FolderIbaGlobalsName = "Globals";
-        private const string FolderIbaTasksName = "Tasks";
-        public const string InternalPrefixForGlobalVariables = FolderIbaRootName + "." + FolderIbaGlobalsName + ".";
-        public const string InternalPrefixForTaskVariables = FolderIbaRootName + "." + FolderIbaTasksName + ".";
 
         #endregion
 
-        private IbaVariable _temporaryWatch;
+        private IbaOpcUaVariable _temporaryWatch;
 
-        // todo delete tmp varialbes
+        // todo delete tmp variables
         public static int TmpKls___ReadCounter;
         public static int TmpKls___SearchCountFast;
         public static int TmpKls___SearchCountSlow;
@@ -348,9 +360,9 @@ namespace iba.ibaOPCServer
                 // in main cycle below those which are really available will be marked as true
                 foreach (KeyValuePair<NodeId, MonitoredNode2> kvp in MonitoredNodes)
                 {
-                    IbaVariable monitoredIbaVar = kvp.Value.Node as IbaVariable;
-                    if (monitoredIbaVar == null) continue;
-                    monitoredIbaVar.IsAvailableInPmacWatchlist = false;
+                    IbaOpcUaVariable monitoredIbaOpcUaVar = kvp.Value.Node as IbaOpcUaVariable;
+                    if (monitoredIbaOpcUaVar == null) continue;
+                    monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist = false;
                 }
 
                 // set values and mark with IsAvailableInPmacWatchlist flag 
@@ -360,14 +372,14 @@ namespace iba.ibaOPCServer
                 // those monitored items which are not available in PMAC should be invalidated
                 foreach (KeyValuePair<NodeId, MonitoredNode2> kvp in MonitoredNodes)
                 {
-                    IbaVariable monitoredIbaVar = kvp.Value.Node as IbaVariable;
-                    if (monitoredIbaVar == null) continue;
-                    if (monitoredIbaVar.IsAvailableInPmacWatchlist) continue;
+                    IbaOpcUaVariable monitoredIbaOpcUaVar = kvp.Value.Node as IbaOpcUaVariable;
+                    if (monitoredIbaOpcUaVar == null) continue;
+                    if (monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist) continue;
                     
                     // here is a monitored but unavailable variable
-                    monitoredIbaVar.StatusCode = StatusCodes.BadNoDataAvailable;
+                    monitoredIbaOpcUaVar.StatusCode = StatusCodes.BadNoDataAvailable;
                     // call state-change handlers
-                    monitoredIbaVar.ClearChangeMasks(SystemContext, false);
+                    monitoredIbaOpcUaVar.ClearChangeMasks(SystemContext, false);
                 }
             }
             catch (Exception e)
@@ -479,7 +491,7 @@ namespace iba.ibaOPCServer
             // by now in release show only number
 #if DEBUG
 
-            List<IbaVariable> vars = new List<IbaVariable>();
+            List<IbaOpcUaVariable> vars = new List<IbaOpcUaVariable>();
             //if (_folderIbaGlobals != null)
             //    vars.AddRange(_folderIbaGlobals.GetFlatListOfIbaVariableChildren(SystemContext));
             
@@ -541,7 +553,7 @@ namespace iba.ibaOPCServer
             }
             foreach (KeyValuePair<NodeId, MonitoredNode2> item in MonitoredNodes)
             {
-                IbaVariable monitoredVar = item.Value.Node as IbaVariable;
+                IbaOpcUaVariable monitoredVar = item.Value.Node as IbaOpcUaVariable;
                 if (monitoredVar != null)
                     s += string.Format("{0}, ", monitoredVar.BrowseName.Name);
                 
@@ -567,9 +579,9 @@ namespace iba.ibaOPCServer
 
             try
             {
-                List<IbaVariable> allIbaVariableChildren = _folderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
+                List<IbaOpcUaVariable> allIbaVariableChildren = FolderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
 
-                foreach (IbaVariable iv in allIbaVariableChildren)
+                foreach (IbaOpcUaVariable iv in allIbaVariableChildren)
                 {
                     if (!iv.IsMonitored) continue;
                     if (s == ("<n" + "one>")) s = "";
@@ -579,32 +591,32 @@ namespace iba.ibaOPCServer
             catch
             {
                 // suppress collection-changed-exception
-                // can happen uder multithreaded access
+                // can happen under multi-threaded access
             }
             // remove last ", "
             s = s.TrimEnd(' ', ',');
             return s;
         }
 
-        public void KlsCheckMonitoredItemsConsistency(List<IbaVariable> allIbaVariables)
+        public void KlsCheckMonitoredItemsConsistency(List<IbaOpcUaVariable> allIbaVariables)
         {
             lock (Lock)
             {
                 int count1 = 0;
                 int count2 = 0;
 
-                foreach (IbaVariable iv in allIbaVariables)
+                foreach (IbaOpcUaVariable iv in allIbaVariables)
                     if (iv.IsMonitored)
                         count1++;
 
                 foreach (KeyValuePair<NodeId, MonitoredNode2> kvp in MonitoredNodes)
                 {
-                    IbaVariable monitoredIbaVar = kvp.Value.Node as IbaVariable;
-                    if (monitoredIbaVar == null) continue;
-                    if (monitoredIbaVar.IsDeleted) continue;
+                    IbaOpcUaVariable monitoredIbaOpcUaVar = kvp.Value.Node as IbaOpcUaVariable;
+                    if (monitoredIbaOpcUaVar == null) continue;
+                    if (monitoredIbaOpcUaVar.IsDeleted) continue;
                     count2++;
-                    if (!monitoredIbaVar.IsMonitored)
-                        Status.AddNewError(string.Format("Monitored list inconcistency. Item {0}.", monitoredIbaVar));
+                    if (!monitoredIbaOpcUaVar.IsMonitored)
+                        Status.AddNewError(string.Format("Monitored list inconcistency. Item {0}.", monitoredIbaOpcUaVar));
                 }                
 
                 if (count1 != count2)
@@ -615,12 +627,12 @@ namespace iba.ibaOPCServer
         }
         /// <summary>
         /// By Kolesnik. 
-        /// For all variables marked for deleting do either: deleting or seting bad QC.
+        /// For all variables marked for deleting do either: deleting or setting bad QC.
         /// </summary>
         public void KlsDeleteUnneededNodes()
         {
             // get all variables
-            List<IbaVariable> allIbaVariables = _folderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
+            List<IbaOpcUaVariable> allIbaVariables = FolderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
 
             // for better reliability we could refresh IsMonitored flag
             // on the case if some inconsistencies appeared
@@ -640,7 +652,7 @@ namespace iba.ibaOPCServer
             KlsCheckMonitoredItemsConsistency(allIbaVariables);
 
             // delete or mark as bad
-            foreach (IbaVariable v in allIbaVariables.Where(v => v.IsMarkedForDeleting))
+            foreach (IbaOpcUaVariable v in allIbaVariables.Where(v => v.IsMarkedForDeleting))
             {
                 // what is marked for deleting should be either deleted or marked as bad
                 if (v.IsMonitored)
@@ -655,14 +667,12 @@ namespace iba.ibaOPCServer
                 else
                 {
                     // not monitored, so can be deleted
-                    KlsDeleteNodeAndSubtreeAndRemoveFromParent(v, true);
+                    DeleteNodeRecursively(v, true);
                     // add this change to statistics
                     Status.TreeUpdateDeleted.Increment();
                 }
             }
         }
-        
-        public FolderState GetIbaRootFolder() => _folderIbaRoot;
 
         /// <summary>
         /// By Kolesnik. 
@@ -701,7 +711,7 @@ namespace iba.ibaOPCServer
 
             // paranoic check
             // path should always start with "ibaRoot."
-            string prefix = string.Format("{0}.", _folderIbaRoot.BrowseName.Name);
+            string prefix = string.Format("{0}.", FolderIbaRoot.BrowseName.Name);
             if (!uaName.StartsWith(prefix))
             {
                 Status.AddNewError(string.Format("Found uaName '{0}' not starting with ibaRootFolder name.", uaName));
@@ -994,7 +1004,7 @@ namespace iba.ibaOPCServer
                     // we should replace var with the folder
                     // (otherwise we will have name conflict)
                     // so, delete subelement without check of usage, because we have to
-                    KlsDeleteNodeAndSubtreeAndRemoveFromParent(subElemet, false);
+                    DeleteNodeRecursively(subElemet, false);
                     // subfolder with this name will be created in next statement
                 }
             }
@@ -1019,14 +1029,13 @@ namespace iba.ibaOPCServer
         }
 
         /// <summary>
-        /// By Kolesnik. 
-        /// 1. Recursively destroys the subtree of given node.
+        /// 1. Recursively destroys the node a its children.
         /// 2. Removes node from its parent.
         /// 3. Destroys parent (and all superparents) if it is empty, unless the parent is a global root
         /// </summary>
         /// <param name="node">instance to be deleted</param>
         /// <param name="enableDeletingOfEmptyParents"></param>
-        public void KlsDeleteNodeAndSubtreeAndRemoveFromParent(BaseInstanceState node, bool enableDeletingOfEmptyParents)
+        public void DeleteNodeRecursively(BaseInstanceState node, bool enableDeletingOfEmptyParents)
         {
             // remember node's parent to destroy it later if necessary
             NodeState parent = node.Parent;
@@ -1038,12 +1047,12 @@ namespace iba.ibaOPCServer
             DeleteNode(SystemContext, node.NodeId);
             
             // mark node as deleted
-            IbaVariable iv = node as IbaVariable;
-            if (iv != null)
+            if (node is IbaOpcUaVariable iv)
             {
                 iv.StatusCode = StatusCodes.BadObjectDeleted;
                 iv.ClearChangeMasks(SystemContext, false);
             }
+
             // go on with deleting of our parent (and superparents) if it is empty
             if (!enableDeletingOfEmptyParents) return;
 
@@ -1051,21 +1060,31 @@ namespace iba.ibaOPCServer
             if (!(parent is FolderState)) return;
             
             // if parent is one of roots, then don't touch it
-            // (though _folderIbaTask should be deleted if we have no task-nodes, we do not delete it automatically here; 
-            // we do in the UpdateVarTree function)
-            if (parent == _folderIbaRoot) //|| parent == _folderIbaGlobals || parent == _folderIbaTask)
+            if (parent == FolderIbaRoot) 
                 return;
 
             // if it is not-root folder and is empty now, then also delete it
-            List<BaseInstanceState> children = new List<BaseInstanceState>();
-            parent.GetChildren(SystemContext, children);
+            var children = GetChildren(parent as FolderState);
             if (children.Count == 0)
             {
                 // parent has no children, we do not need an empty folder
                 // ReSharper disable once TailRecursiveCall - for better readability (recursion depth should not be big)
-                KlsDeleteNodeAndSubtreeAndRemoveFromParent(parent as FolderState, true);
+                DeleteNodeRecursively(parent as FolderState, true);
             }
         }
+
+        public void DeleteAllUserValues()
+        {
+            // delete all children of iba root folder
+            foreach (var node in GetChildren(FolderIbaRoot))
+            {
+                if (node == FolderIbaStatus)
+                    continue;
+                DeleteNodeRecursively(node, false);
+            }
+        }
+
+
 
         ///// <summary>
         ///// By Kolesnik. 
@@ -1246,6 +1265,14 @@ namespace iba.ibaOPCServer
             // call state-change handlers
             varState.ClearChangeMasks(SystemContext, false);
         }
+        
+        /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
+        public void SetValueScalar(string nodeId, object value)
+        {
+            if (!(Find(nodeId) is BaseDataVariableState variable))
+                return;
+            SetValueScalar(variable, value);
+        }
 
 
         ///// <summary>
@@ -1320,7 +1347,7 @@ namespace iba.ibaOPCServer
 
         /// <summary> Finds the node by its string Node ID in a current namespace </summary>
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
-        private NodeState Find(string fullNodeId) => Find(new NodeId(fullNodeId, NamespaceIndex));
+        public NodeState Find(string fullNodeId) => Find(new NodeId(fullNodeId, NamespaceIndex));
 
         public bool IsNodeIdUnique(FolderState parent, string nodeName) =>
             // parent.FindChild() // todo. kls. use this instead of global search? (performance?)
@@ -1342,7 +1369,7 @@ namespace iba.ibaOPCServer
         {
             return string.IsNullOrWhiteSpace(browseName) ?
                 "Node" /* a default name if no name was supplied at all */: 
-                browseName.Replace('.', '_');
+                browseName.Replace(NODE_ID_DELIMITER, NODE_ID_DEFAULT_REPLACEMENT_CHARACTER);
         }
 
         /// <summary> Returns string NodeId for given parent and node name.
@@ -1394,6 +1421,7 @@ namespace iba.ibaOPCServer
             var folder = new FolderState(parent);
             string browseName = GenerateUniqueNodeName(parent, displayName);
 
+            // todo. kls. 
             if (browseName != displayName)
                 ;
 
@@ -1420,16 +1448,16 @@ namespace iba.ibaOPCServer
         /// <param name="dataType"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public BaseDataVariableState CreateVariableAndItsNode(FolderState parent, string displayName, BuiltInType dataType, string description = null)
+        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, string displayName, BuiltInType dataType, string description = null)
         {
             //            AssertNameCorrectnessAndUniqueness(parent, name); // todo. kls. test and del
-            string browseName = GenerateUniqueNodeName(parent, displayName);
+            string browseName = GenerateUniqueNodeName(parent, displayName); // todo. kls. move to overridden function
 
             // todo. kls. test and del
             //if (browseName != displayName)
             //    ;
 
-            BaseDataVariableState v = new BaseDataVariableState(parent);
+            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, null, null);
 
             // create node for given instance
             CreateNodeForDataVariable(v, browseName);
@@ -1451,9 +1479,9 @@ namespace iba.ibaOPCServer
         /// <param name="subTreeId"></param>
         /// <param name="ve"></param>
         /// <returns></returns>
-        private IbaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, object ve)
+        private IbaOpcUaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, object ve)
         {
-            IbaVariable v = new IbaVariable(parent, null, this); // todo. kls. use for feedback
+            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, null, this); // todo. kls. use for feedback
 
             // create node for given instance
             CreateNodeForDataVariable(v, name);
@@ -1494,12 +1522,12 @@ namespace iba.ibaOPCServer
             return nodeId;
         }
 
-        public List<BaseInstanceState> GetChildren(FolderState ns)
+        public List<BaseInstanceState> GetChildren(FolderState folder)
         {
-            if (ns == null)
+            if (folder == null)
                 return null;
             var list = new List<BaseInstanceState>();
-            ns.GetChildren(SystemContext, list);
+            folder.GetChildren(SystemContext, list);
             return list;
         }
 
@@ -1507,15 +1535,15 @@ namespace iba.ibaOPCServer
         /// By Kolesnik. 
         /// Remove variable from PMAC's watch list if this variable is not monitored (e.g. by someone else)
         /// </summary>
-        private void KlsRemoveWatchIfUnused(IbaVariable ibaVariableToRemove)
+        private void KlsRemoveWatchIfUnused(IbaOpcUaVariable ibaOpcUaVariableToRemove)
         {
-            if (ibaVariableToRemove == null) return;
+            if (ibaOpcUaVariableToRemove == null) return;
             //lock (Lock)
             {
                 if (MonitoredNodes == null) return;
                 foreach (var item in MonitoredNodes)
                 {
-                    if (ibaVariableToRemove.NodeId == item.Key)
+                    if (ibaOpcUaVariableToRemove.NodeId == item.Key)
                         // our var is still monitored by someone else,
                         // so, do NOT remove it from watch list
                         return;
@@ -1523,8 +1551,8 @@ namespace iba.ibaOPCServer
             }
 
             // it is not used, remove it
-            ibaVariableToRemove.IsMonitored = false;
-            _ibaUaServer.KlsRemoveWatch(ibaVariableToRemove.VeName);
+            ibaOpcUaVariableToRemove.IsMonitored = false;
+            _ibaUaServer.KlsRemoveWatch(ibaOpcUaVariableToRemove.VeName);
         }
 
         #endregion
@@ -1542,7 +1570,7 @@ namespace iba.ibaOPCServer
             // big switch here is not good
 
 
-            IbaVariable iv = node as IbaVariable;
+            IbaOpcUaVariable iv = node as IbaOpcUaVariable;
 
             // paranoic check
             if (iv == null)
@@ -1646,10 +1674,10 @@ namespace iba.ibaOPCServer
             var x = monitoredItem.MonitoringMode;
 
             // we do not do additional actions if user monitors non-iba node
-            if (handle == null || !(handle.Node is IbaVariable)) return;
+            if (handle == null || !(handle.Node is IbaOpcUaVariable)) return;
 
             // user monitors iba-node
-            IbaVariable iv = (IbaVariable) (handle.Node);
+            IbaOpcUaVariable iv = (IbaOpcUaVariable) (handle.Node);
 
             // if node was deleted, do not try to watch it
             if (iv.IsDeleted) return;
@@ -1676,7 +1704,7 @@ namespace iba.ibaOPCServer
 
             // we are interested in non-null iba data variables
             // ignore anything else
-            if (handle == null || !(handle.Node is IbaVariable))
+            if (handle == null || !(handle.Node is IbaOpcUaVariable))
                 return;
 
             // several monitored items can point to one and the same node
@@ -1684,7 +1712,7 @@ namespace iba.ibaOPCServer
             // MonitoredNodes list is rebuilt automatically by OPC Kit
             // we need just to look for the handle inside MonitoredNodes list
             // if this handle is still inside Monitored nodes, then we should avoid removing it from PMAC's wathlist
-            KlsRemoveWatchIfUnused(handle.Node as IbaVariable);
+            KlsRemoveWatchIfUnused(handle.Node as IbaOpcUaVariable);
         }
 
         public override void Read(OperationContext context, double maxAge, IList<ReadValueId> nodesToRead, IList<DataValue> values, IList<ServiceResult> errors)
@@ -1696,7 +1724,7 @@ namespace iba.ibaOPCServer
                 if (valueId.AttributeId != Attributes.Value) continue;
 
                 NodeState foundNode = Find(valueId.NodeId);
-                IbaVariable v = foundNode as IbaVariable;
+                IbaOpcUaVariable v = foundNode as IbaOpcUaVariable;
 
                 if (v == null) continue;
 

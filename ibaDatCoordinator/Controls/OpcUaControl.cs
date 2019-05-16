@@ -134,8 +134,6 @@ namespace iba.Controls
         #endregion
 
 
-
-
         #region Configuration
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
@@ -480,13 +478,13 @@ namespace iba.Controls
                 var nodesToExpand = new List<TreeNode>();
 
 
-                var root = TstNodeMan.GetIbaRootFolder();
+                var root = TstNodeMan.FolderIbaRoot;
 
                 TreeNodeCollection placeToAddTo1 = tvObjects.Nodes;
 
                 placeToAddTo1.Add("Abc", "abc", 0, 0);
 
-                AddNodeRecursively(TstNodeMan.GetIbaRootFolder(), null);
+                AddNodeRecursively(TstNodeMan.FolderIbaRoot, null);
 
                 return;
 
@@ -870,6 +868,7 @@ namespace iba.Controls
 
         private void buttonTest2_Click(object sender, EventArgs e)
         {
+            TstNodeMan.SetValueScalar(TstWorker._lifeBeatReactive, (int)DateTime.Now.Second);
         }
 
         static TaskManager Manager => TaskManager.Manager;

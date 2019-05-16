@@ -197,6 +197,7 @@ namespace iba.ibaOPCServer
                 Configuration.ApplicationUri,
                 new LocalizedText(info)));
         }
+        
         #endregion
 
         
@@ -213,6 +214,7 @@ namespace iba.ibaOPCServer
         public string KlsStrWriteActions { get; private set; }
 
         private int _klsWriteActionsCount;
+
 
         #region trust functionality
         private IbaOpcUaServerCertificateTrustMode _trustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
@@ -445,6 +447,8 @@ namespace iba.ibaOPCServer
         }
 
         #endregion //UserAcccounts
+
+
         public void KlsInitialize(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
             bool passwordEncryptionForTcpNoneEndpoint)
         {
@@ -503,6 +507,7 @@ namespace iba.ibaOPCServer
 
             return String.Empty;
         }
+
         public void KlsUninitialize()
         {
             // delete var tree

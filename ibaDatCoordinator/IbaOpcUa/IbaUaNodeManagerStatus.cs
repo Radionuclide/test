@@ -225,7 +225,7 @@ namespace ibaOpcServer.IbaOpcUa
             // delete old error
             if (_nodesMessage.Count > maxMessagesCount)
             {
-                _mgr.KlsDeleteNodeAndSubtreeAndRemoveFromParent(_nodesMessage[0], false);
+                _mgr.DeleteNodeRecursively(_nodesMessage[0], false);
                 _nodesMessage.RemoveAt(0);
             }
 

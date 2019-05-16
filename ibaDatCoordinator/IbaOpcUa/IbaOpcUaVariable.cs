@@ -1,14 +1,18 @@
-﻿using iba.ibaOPCServer;
+﻿using iba.Data;
+using iba.ibaOPCServer;
 using Opc.Ua;
 
 namespace ibaOpcServer.IbaOpcUa
 {
 
-    public class IbaVariable : BaseDataVariableState
+    public class IbaOpcUaVariable : BaseDataVariableState
     {
         public bool IsMarkedForDeleting = false;
         public bool IsMonitored = false;
         public bool IsAvailableInPmacWatchlist = false;
+
+        public object Tag; // todo. kls. 
+        internal SnmpObjectsData.ExtMonVariableBase TagVar; // todo. kls. 
 
         /// <summary>
         /// This flag is created for quick check.
@@ -29,7 +33,7 @@ namespace ibaOpcServer.IbaOpcUa
         /// </summary>
         public readonly string VeName;
 
-        public IbaVariable(NodeState parent, object ve, IbaUaNodeManager mgr)
+        public IbaOpcUaVariable(NodeState parent, object ve, IbaUaNodeManager mgr)
             : base(parent)
         {
             // add references to each other
@@ -48,19 +52,19 @@ namespace ibaOpcServer.IbaOpcUa
             IsDeleted = false;
         }
 
-        public bool IsReadable
-        {
-            get { return (UserAccessLevel & AccessLevels.CurrentRead) != 0; }
-        }
-        public bool IsWtitable
-        {
-            get { return (UserAccessLevel & AccessLevels.CurrentWrite) != 0; }
-        }
+        //public bool IsReadable
+        //{
+        //    get { return (UserAccessLevel & AccessLevels.CurrentRead) != 0; }
+        //}
+        //public bool IsWritable
+        //{
+        //    get { return (UserAccessLevel & AccessLevels.CurrentWrite) != 0; }
+        //}
 
         protected override void OnAfterCreate(ISystemContext context, NodeState node)
         {
             // take this into account in statistics
-            _mgr.Status.IncrementVarCounter();
+            _mgr?.Status.IncrementVarCounter();
             
             base.OnAfterCreate(context, node);
         }

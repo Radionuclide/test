@@ -570,7 +570,10 @@ namespace iba.Processing
         {
             driveInfo.Reset();
 
-            driveInfo.Active = gcData.Active; 
+            driveInfo.DriveName2.Value = driveInfo.DriveName;// todo. kls. 
+
+            driveInfo.Active = gcData.Active;
+            driveInfo.Active2.Value = gcData.Active; // todo. kls. 
 
             DriveInfo drive = new DriveInfo(gcData.DriveName);
             if (drive.IsReady)

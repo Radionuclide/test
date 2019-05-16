@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ibaOpcServer.IbaOpcUa;
 using IbaSnmpLib;
 
 namespace iba.Data
@@ -52,9 +53,14 @@ namespace iba.Data
 
         #region Common
 
-        internal abstract class SnmpObjectWithATimeStamp
+
+        internal abstract class SnmpObjectWithATimeStamp // todo. kls. Rename to ExtMonXXX object
         {
+            /// <summary> Full OID of corresponding SNMP object </summary>
             public IbaSnmpOid Oid;
+            /// <summary> Full OPC UA NodeId (path) of the current drive folder in UA address space</summary>
+            public string UaId;
+
 
             /// <summary> A measure to tell whether data is fresh or outdated </summary>
             public static TimeSpan AgeThreshold { get; set; }
@@ -128,6 +134,27 @@ namespace iba.Data
 
         #region Global Cleanup
 
+        internal abstract class ExtMonVariableBase
+        {
+            public readonly string Caption;
+
+            public ExtMonVariableBase(string caption, uint snmpOid)
+            { }
+            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            public readonly uint SnmpOid = uint.MaxValue;
+            public IbaOpcUaVariable UaVar = null;
+
+        }
+
+        internal class ExtMonVariable<T> : ExtMonVariableBase
+        {
+            public T Value;
+            
+            public ExtMonVariable(string caption, uint snmpOid) : base(caption, snmpOid)
+            {
+            }
+        }
+
         internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
             /// <summary> Oid 1 </summary>
@@ -135,10 +162,15 @@ namespace iba.Data
             /// <summary> Least significant (rightmost) subid for corresponding object </summary>
             public const uint DriveNameOid = 1;
 
+            public readonly ExtMonVariable<string> DriveName2 = new ExtMonVariable<string>("Drive Name", 1); // todo. kls. sample
+
+
             /// <summary> Oid 2 </summary>
             public bool Active;
             /// <summary> Least significant (rightmost) subid for corresponding object </summary>
             public const uint ActiveOid = 2;
+
+            public readonly ExtMonVariable<bool> Active2 = new ExtMonVariable<bool>("Drive Name", 2); // todo. kls. sample
 
             /// <summary> Oid 3 </summary>
             public uint SizeInMb;
