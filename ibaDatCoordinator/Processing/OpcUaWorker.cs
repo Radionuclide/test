@@ -254,9 +254,9 @@ namespace iba.Processing
             //var folderTest = NodeManager.KlsCreateFolderAndItsNode(parentFolder, "Test");
 
             _lifeBeatVar =
-                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, "Lifebeat", BuiltInType.Int32);
+                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat");
             _lifeBeatReactive =
-                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, "Lifebeat reactive", BuiltInType.Int32);
+                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat reactive");
 
             _lifeBeatReactive.OnReadValue += OnReadValue1; // todo. kls. 
             //IbaVariable iv;
@@ -698,7 +698,7 @@ namespace iba.Processing
 
             // uniqueness test // todo. kls. remove
             _lifeBeatVar2 =
-                NodeManager.CreateVariableAndItsNode(sectionFolder, "Lifebeat2", BuiltInType.Int32);
+                NodeManager.CreateVariableAndItsNode(sectionFolder, BuiltInType.Int32, "Lifebeat2");
 
             //CreateUaFolder(sectionFolder, null, "null");
             //CreateUaFolder(sectionFolder, "", "empty");
@@ -716,38 +716,29 @@ namespace iba.Processing
                 try
                 {
                     // create a folder for the drive
-                    var driveFolder = CreateUaFolder(sectionFolder, $@"Drive '{driveInfo.DriveName}'", 
-                        $@"Global cleanup settings for the drive '{driveInfo.DriveName}'");
+                    var driveFolder = CreateUaFolder(sectionFolder, driveInfo.Caption, driveInfo.Description);
 
                     driveInfo.UaId = driveFolder.NodeId.Identifier as string;
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
-                        CreateUserValue2(driveFolder, driveInfo.DriveName2, driveInfo.DriveName,
-                            @"Drive Name", @"Drive name like it appears in operating system.",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder, driveInfo.DriveName, GlobalCleanupDriveInfoItemRequested);
 
 
-                        CreateUserValue2(driveFolder, driveInfo.Active2, driveInfo.Active,
-                            @"Active", @"Whether or not the global cleanup is enabled for the drive.",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder, driveInfo.Active,
+                            GlobalCleanupDriveInfoItemRequested);
 
-                        CreateUserValue(driveFolder,driveInfo.SizeInMb,
-                            @"Size", @"Size of the drive (in megabytes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder,driveInfo.SizeInMb,
+                            GlobalCleanupDriveInfoItemRequested);
 
-                        CreateUserValue(driveFolder, driveInfo.CurrentFreeSpaceInMb,
-                            @"Current free space", @"Current free space of the drive (in megabytes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder, driveInfo.CurrentFreeSpaceInMb,
+                            GlobalCleanupDriveInfoItemRequested);
 
-                        CreateUserValue(driveFolder, driveInfo.MinFreeSpaceInPercent,
-                            @"Min free space", 
-                            @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder, driveInfo.MinFreeSpaceInPercent,
+                            GlobalCleanupDriveInfoItemRequested);
 
-                        CreateUserValue(driveFolder, driveInfo.RescanTime,
-                            @"Rescan time", @"How often the application rescans the drive parameters (in minutes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        CreateUserValue2(driveFolder, driveInfo.RescanTime,
+                            GlobalCleanupDriveInfoItemRequested);
                     }
                 }
                 catch (Exception ex)
@@ -1188,22 +1179,6 @@ namespace iba.Processing
 
         #region CreateUserValue() overloads
 
-        // todo. kls. move to elsewhere
-        private static readonly Dictionary<Type, BuiltInType> _typeDict = new Dictionary<Type, BuiltInType>
-        {
-            {typeof(string), BuiltInType.String},
-            {typeof(bool), BuiltInType.Boolean},
-            {typeof(DateTime), BuiltInType.DateTime},
-            {typeof(int), BuiltInType.Int32},
-            {typeof(uint), BuiltInType.UInt32},
-            {typeof(float), BuiltInType.Float},
-            {typeof(double), BuiltInType.Double}
-        };
-        private static BuiltInType GetOpcUaType(object value)
-        {
-            return _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
-        }
-
         /// <summary> </summary>
         /// <param name="parent"></param>
         /// <param name="initialValue"></param>
@@ -1216,44 +1191,26 @@ namespace iba.Processing
             EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null, object tag = null)
         {
             // get uaType automatically from initial value
-            var uaType = GetOpcUaType(initialValue);
+            var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
-            //if (uaType == BuiltInType.Null)
-            //    throw new NotSupportedException($"Type '{initialValue.GetType()}' of item '{initialValue}' is not supported");
 
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, name, uaType, description);
-            iv.Tag = tag;
+            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, uaType, name, description);
 
             NodeManager.SetValueScalar(iv, initialValue);
             iv.OnReadValue += OnReadDriveInfoValue;
             return iv;
         }
 
-        /// <summary> </summary>
-        /// <param name="parent"></param>
-        /// <param name="initialValue"></param>
-        /// <param name="name">Will be used for both BrowseName and DisplayName (should not contain a dot '.')</param>
-        /// <param name="description"></param>
-        /// <param name="handler"></param>
-        /// <param name="tag"></param>
-        private IbaOpcUaVariable CreateUserValue2(FolderState parent, SnmpObjectsData.ExtMonVariableBase xmv, object initialValue,
-            string name, string description = null,
-            EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null,  object tag = null)
+        private IbaOpcUaVariable CreateUserValue2(FolderState parent, SnmpObjectsData.ExtMonVariableBase xmv, 
+            EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null)
         {
-            // get uaType automatically from initial value
-            var uaType = GetOpcUaType(initialValue);
-            Debug.Assert(uaType != BuiltInType.Null);
-            //if (uaType == BuiltInType.Null)
-            //    throw new NotSupportedException($"Type '{initialValue.GetType()}' of item '{initialValue}' is not supported");
-
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, name, uaType, description);
-            iv.Tag = tag;
-
+            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, xmv.ObjValue, xmv.Caption, xmv.Description);
+            
             // keep cross reference between internal variable and UA variable for instant access
             xmv.UaVar = iv;
-            iv.TagVar = xmv;
+            iv.ExtMonVar = xmv;
 
-            NodeManager.SetValueScalar(iv, initialValue);
+            // add handler
             iv.OnReadValue += OnReadDriveInfoValue;
             return iv;
         }
@@ -1406,20 +1363,14 @@ namespace iba.Processing
                     }
 
                     // TaskManager has updated driveInfo successfully 
-                    // copy it to snmp tree
+                    // copy it to UA tree
 
+                    foreach (var xmv in driveInfo.Variables)
+                    {
+                        NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+                    }
 
-                    //string id1 = NodeManager.ComposeNodeId(driveInfo.UaId, "Drive Name");
-                    //string id2 = NodeManager.ComposeNodeId(driveInfo.UaId, "Active");
-
-                    //NodeManager.SetValueScalar(id1, driveInfo.DriveName);
-                    //NodeManager.SetValueScalar(id2, driveInfo.Active);
-
-                    NodeManager.SetValueScalar(driveInfo.Active2.UaVar, driveInfo.Active2.Value);
-                    NodeManager.SetValueScalar(driveInfo.Active2.UaVar, driveInfo.Active2.Value);
-                    
-                    // todo. kls. foreach???
-
+                    //NodeManager.SetValueScalar(driveInfo.Active.UaVar, driveInfo.Active.Value);
                     //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
                     //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
                     //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
@@ -1439,7 +1390,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveName}, {GetCurrentThreadString()}.");
+                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveKey}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -1639,8 +1590,8 @@ namespace iba.Processing
         private ServiceResult OnReadDriveInfoValue(ISystemContext context,
             NodeState node, NumericRange indexrange, QualifiedName dataencoding, ref object value, ref StatusCode statuscode, ref DateTime timestamp)
         {
-            if (!(node is IbaOpcUaVariable iv) || 
-                !(iv.Tag is SnmpObjectsData.GlobalCleanupDriveInfo driveInfo))
+            if (!(node is IbaOpcUaVariable iv) /*we handle only iba variables here*/|| 
+                !(iv.ExtMonVar.Parent is SnmpObjectsData.GlobalCleanupDriveInfo driveInfo))
             {
                 value = null;
                 statuscode = StatusCodes.Bad;
@@ -1664,6 +1615,7 @@ namespace iba.Processing
             // had updated the value or not, because the value could be updated meanwhile by a similar call
             // in another thread if multiple values are requested)
             value = iv.Value;
+            statuscode = iv.StatusCode;
 
             return ServiceResult.Good;
         }

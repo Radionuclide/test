@@ -54,12 +54,18 @@ namespace iba.Data
         #region Common
 
 
-        internal abstract class SnmpObjectWithATimeStamp // todo. kls. Rename to ExtMonXXX object
+        internal abstract class SnmpObjectWithATimeStamp // todo. kls. Rename to ExternalMonitoringGroup 
         {
             /// <summary> Full OID of corresponding SNMP object </summary>
             public IbaSnmpOid Oid;
             /// <summary> Full OPC UA NodeId (path) of the current drive folder in UA address space</summary>
             public string UaId;
+
+
+            public string Caption { set; get; } // todo. kls. to comment
+            public string Description { set; get; }// todo. kls. to comment
+
+            public readonly List<ExtMonVariableBase> Variables = new List<ExtMonVariableBase>();
 
 
             /// <summary> A measure to tell whether data is fresh or outdated </summary>
@@ -136,13 +142,43 @@ namespace iba.Data
 
         internal abstract class ExtMonVariableBase
         {
-            public readonly string Caption;
+            public readonly SnmpObjectWithATimeStamp Parent;
 
-            public ExtMonVariableBase(string caption, uint snmpOid)
-            { }
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public readonly uint SnmpOid = uint.MaxValue;
+            public readonly string Caption;
+            public readonly string Description;
+
+            /// <summary> Gets contained data as untyped <see cref="object"/> </summary>
+            public abstract object ObjValue { get; }
+            protected ExtMonVariableBase(SnmpObjectWithATimeStamp parent, string caption, string description, uint snmpLeastId)
+            {
+                Parent = parent;
+                Caption = caption;
+                Description = description;
+                SnmpLeastId = snmpLeastId;
+                //SnmpOid = snmpOid;
+            }
+
+            public override string ToString()
+            {
+                return $@"'{Caption}', OID={SnmpOid}, UA={UaVar?.BrowseName}";
+            }
+
+            #region SNMP - specific
+
+            /// <summary> Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
+            public readonly uint SnmpLeastId;
+
+            /// <summary> SNMP OID for corresponding object </summary>
+            public IbaSnmpOid SnmpOid => Parent == null ? null : Parent.Oid + SnmpLeastId;
+            //public readonly IbaSnmpOid SnmpOid;
+
+            #endregion
+
+            #region OPC UA - specific
+
             public IbaOpcUaVariable UaVar = null;
+            
+            #endregion
 
         }
 
@@ -150,62 +186,122 @@ namespace iba.Data
         {
             public T Value;
             
-            public ExtMonVariable(string caption, uint snmpOid) : base(caption, snmpOid)
+            public ExtMonVariable(SnmpObjectWithATimeStamp parent, string caption, string description, uint snmpLeastId) 
+                : base(parent, caption, description, snmpLeastId)
             {
+            }
+
+            public override object ObjValue => Value;
+
+            public override string ToString()
+            {
+                return $@"({typeof(T).Name}){Value}: " + base.ToString();
             }
         }
 
         internal class GlobalCleanupDriveInfo : SnmpObjectWithATimeStamp
         {
-            /// <summary> Oid 1 </summary>
-            public string DriveName;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint DriveNameOid = 1;
+            /// <summary> Primary key for the drive info collection </summary>
+            public string DriveKey
+            {
+                get => DriveName.Value;
+                set => DriveName.Value = value;
+            }
 
-            public readonly ExtMonVariable<string> DriveName2 = new ExtMonVariable<string>("Drive Name", 1); // todo. kls. sample
+            public readonly ExtMonVariable<string> DriveName;
+            public readonly ExtMonVariable<bool> Active;
 
 
-            /// <summary> Oid 2 </summary>
-            public bool Active;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint ActiveOid = 2;
+            public readonly ExtMonVariable<uint> SizeInMb;
+            public readonly ExtMonVariable<uint> CurrentFreeSpaceInMb;
+            public readonly ExtMonVariable<uint> MinFreeSpaceInPercent;
+            public readonly ExtMonVariable<uint> RescanTime;
 
-            public readonly ExtMonVariable<bool> Active2 = new ExtMonVariable<bool>("Drive Name", 2); // todo. kls. sample
+            public GlobalCleanupDriveInfo(string driveName)
+            {
+                DriveName = new ExtMonVariable<string>(this, "Drive Name",
+                    @"Drive name like it appears in operating system.", 1)
+                {
+                    Value = driveName /*set primary key*/
+                };
+                
+                // set Caption and Description
+                Caption = $@"Drive '{driveName}'";
+                Description = $@"Global cleanup settings for the drive '{DriveKey}'";
 
-            /// <summary> Oid 3 </summary>
-            public uint SizeInMb;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint SizeInMbOid = 3;
+                // set other values
+                {
+                    Active = new ExtMonVariable<bool>(this, "Active",
+                        @"Whether or not the global cleanup is enabled for the drive.", 2);
 
-            /// <summary> Oid 4 </summary>
-            public uint CurrentFreeSpaceInMb;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint CurrentFreeSpaceInMbOid = 4;
+                    SizeInMb = new ExtMonVariable<uint>(this, "Size",
+                        @"Size of the drive (in megabytes).", 3);
 
-            /// <summary> Oid 5 </summary>
-            public uint MinFreeSpaceInPercent;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint MinFreeSpaceInPercentOid = 5;
+                    CurrentFreeSpaceInMb = new ExtMonVariable<uint>(this, "Current free space",
+                        @"Current free space of the drive (in megabytes).", 4);
 
-            /// <summary> Oid 6 </summary>
-            public uint RescanTime;
-            /// <summary> Least significant (rightmost) subid for corresponding object </summary>
-            public const uint RescanTimeOid = 6;
+                    MinFreeSpaceInPercent = new ExtMonVariable<uint>(this, "Min free space",
+                        @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
+                        5);
+
+                    RescanTime = new ExtMonVariable<uint>(this, "Rescan time",
+                        @"How often the application rescans the drive parameters (in minutes).", 6);
+                }
+
+                // add all variables to collection to be able to use foreach
+                Variables.Add(DriveName);
+                Variables.Add(Active);
+                Variables.Add(SizeInMb);
+                Variables.Add(CurrentFreeSpaceInMb);
+                Variables.Add(MinFreeSpaceInPercent);
+                Variables.Add(RescanTime);
+
+                // set default values
+                Reset();
+
+            }
+
+
+            ///// <summary> Oid 2 </summary>
+            //public bool Active;
+            ///// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            //public const uint ActiveOid = 2;
+
+
+            ///// <summary> Oid 3 </summary>
+            //public uint SizeInMb;
+            ///// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            //public const uint SizeInMbOid = 3;
+
+            ///// <summary> Oid 4 </summary>
+            //public uint CurrentFreeSpaceInMb;
+            ///// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            //public const uint CurrentFreeSpaceInMbOid = 4;
+
+            ///// <summary> Oid 5 </summary>
+            //public uint MinFreeSpaceInPercent;
+            ///// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            //public const uint MinFreeSpaceInPercentOid = 5;
+
+            ///// <summary> Oid 6 </summary>
+            //public uint RescanTime;
+            ///// <summary> Least significant (rightmost) subid for corresponding object </summary>
+            //public const uint RescanTimeOid = 6;
 
             /// <summary> Resets to default values everything except DriveName (its key) </summary>
             public void Reset()
             {
                 // DriveName =; // do NOT reset primary key
-                Active = false;
-                SizeInMb = 0;
-                CurrentFreeSpaceInMb = 0;
-                MinFreeSpaceInPercent = 0;
-                RescanTime = 0;
+                Active.Value = false;
+                SizeInMb.Value = 0;
+                CurrentFreeSpaceInMb.Value = 0;
+                MinFreeSpaceInPercent.Value = 0;
+                RescanTime.Value = 0;
             }
 
             public override string ToString()
             {
-                return $@"{DriveName} [A:{Active}, {CurrentFreeSpaceInMb}/{SizeInMb}";
+                return $@"{DriveKey} [A:{Active.Value}, {CurrentFreeSpaceInMb.Value}/{SizeInMb.Value}";
             }
         }
 

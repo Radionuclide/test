@@ -1252,10 +1252,32 @@ namespace iba.ibaOPCServer
         //        KlsSetValueScalar(ibaVar, value.data);
         //}
 
+        // todo. kls. move to elsewhere
+        private static readonly Dictionary<Type, BuiltInType> _typeDict = new Dictionary<Type, BuiltInType>
+        {
+            {typeof(string), BuiltInType.String},
+            {typeof(bool), BuiltInType.Boolean},
+            {typeof(DateTime), BuiltInType.DateTime},
+            {typeof(int), BuiltInType.Int32},
+            {typeof(uint), BuiltInType.UInt32},
+            {typeof(float), BuiltInType.Float},
+            {typeof(double), BuiltInType.Double}
+        };
+
+        public static BuiltInType GetOpcUaType(object value)
+        {
+            return _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
+        }
+
 
         /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
         public void SetValueScalar(BaseDataVariableState varState, object value)
         {
+            // todo. kls. perform type-check if necessary
+#if DEBUG 
+            var uaType = GetOpcUaType(value);
+            Debug.Assert((NodeId)(uint)uaType == varState.DataType);
+#endif
             // set value
             varState.Value = value;
 
@@ -1440,15 +1462,21 @@ namespace iba.ibaOPCServer
             return folder;
         }
 
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="displayName"></param>
-        /// <param name="dataType"></param>
-        /// <param name="description"></param>
-        /// <returns></returns>
-        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, string displayName, BuiltInType dataType, string description = null)
+        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, object initialValue, string displayName,
+            string description = null)
+        {
+            // get uaType automatically from initial value
+            var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
+            Debug.Assert(uaType != BuiltInType.Null);
+
+            var v = CreateVariableAndItsNode(parent, uaType, displayName, description);
+            SetValueScalar(v, initialValue);
+            return v;
+        }
+
+        // todo. kls. remove! (merge with previous overload)
+        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, BuiltInType dataType, string displayName,
+            string description = null)
         {
             //            AssertNameCorrectnessAndUniqueness(parent, name); // todo. kls. test and del
             string browseName = GenerateUniqueNodeName(parent, displayName); // todo. kls. move to overridden function

@@ -505,39 +505,48 @@ namespace iba.Processing
                     driveInfo.Oid = oidDrive;
 
                     string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive,
-                        $@"Global cleanup settings for the drive '{driveInfo.DriveName}'.");
+                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveKey}'", mibNameDrive,
+                        $@"Global cleanup settings for the drive '{driveInfo.DriveKey}'.");
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName,
-                            @"Drive Name", mibNameDrive + @"Name",
-                            @"Drive name like it appears in operating system.",
+                        SnmpObjectsData.ExtMonVariableBase emv;
+
+                        // todo. kls. to simplify calls
+                        emv = driveInfo.DriveName; 
+                        CreateUserValue(emv.SnmpOid, driveInfo.DriveName.Value,
+                            emv.Caption, mibNameDrive + @"Name",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active,
-                            @"Active", mibNameDrive + @"Active",
-                            @"Whether or not the global cleanup is enabled for the drive.",
+                        emv = driveInfo.Active;
+                        CreateUserValue(emv.SnmpOid, driveInfo.Active.Value,
+                            emv.Caption, mibNameDrive + @"Active",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb,
-                            @"Size", mibNameDrive + @"Size",
-                            @"Size of the drive (in megabytes).",
+                        emv = driveInfo.SizeInMb;
+                        CreateUserValue(emv.SnmpOid, driveInfo.SizeInMb.Value,
+                            emv.Caption, mibNameDrive + @"Size",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb,
-                            @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
-                            @"Current free space of the drive (in megabytes).",
+                        emv = driveInfo.CurrentFreeSpaceInMb;
+                        CreateUserValue(emv.SnmpOid, driveInfo.CurrentFreeSpaceInMb.Value,
+                            emv.Caption, mibNameDrive + @"CurrFreeSpace",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent,
-                            @"Min free space", mibNameDrive + @"MinFreeSpace",
-                            @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
+                        emv = driveInfo.MinFreeSpaceInPercent;
+                        CreateUserValue(emv.SnmpOid, driveInfo.MinFreeSpaceInPercent.Value,
+                            emv.Caption, mibNameDrive + @"MinFreeSpace",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
 
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime,
-                            @"Rescan time", mibNameDrive + @"RescanTime",
-                            @"How often the application rescans the drive parameters (in minutes).",
+                        emv = driveInfo.RescanTime;
+                        CreateUserValue(emv.SnmpOid, driveInfo.RescanTime.Value,
+                            emv.Caption, mibNameDrive + @"RescanTime",
+                            emv.Description,
                             GlobalCleanupDriveInfoItemRequested, driveInfo);
                     }
                 }
@@ -1162,12 +1171,13 @@ namespace iba.Processing
 
                     IbaSnmpOid oidDrive = driveInfo.Oid;
 
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime);
+                    IbaSnmp.SetUserValue(driveInfo.DriveName.SnmpOid, driveInfo.DriveName.Value); 
+                    IbaSnmp.SetUserValue(driveInfo.Active.SnmpOid, driveInfo.Active.Value); // todo. kls. simplify calls
+                    IbaSnmp.SetUserValue(driveInfo.SizeInMb.SnmpOid, driveInfo.SizeInMb.Value);
+                    IbaSnmp.SetUserValue(driveInfo.CurrentFreeSpaceInMb.SnmpOid, driveInfo.CurrentFreeSpaceInMb.Value);
+                    IbaSnmp.SetUserValue(driveInfo.MinFreeSpaceInPercent.SnmpOid, driveInfo.MinFreeSpaceInPercent.Value);
+                    IbaSnmp.SetUserValue(driveInfo.RescanTime.SnmpOid, driveInfo.RescanTime.Value);
+
                     return true; // data was updated
                 }
                 finally
@@ -1182,7 +1192,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveName}, {GetCurrentThreadString()}.");
+                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveKey}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {

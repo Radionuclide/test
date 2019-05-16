@@ -69,38 +69,38 @@ namespace ibaOpcServer.IbaOpcUa
             // create status elements
             // PMAC information
             _nodePmacIsOnline =
-                _mgr.CreateVariableAndItsNode(folderPmac,  "OnlineStatus", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac, BuiltInType.String, "OnlineStatus");
 
             _nodePmacIsRunning =
-                _mgr.CreateVariableAndItsNode(folderPmac,  "RunningStatus", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac, BuiltInType.String, "RunningStatus");
 
             _nodePmacMaxDongleItems =
-                _mgr.CreateVariableAndItsNode(folderPmac,  "License_MaxItems", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderPmac, BuiltInType.Int32, "License_MaxItems");
 
             _nodePmacProjectName =
-                _mgr.CreateVariableAndItsNode(folderPmac,  "ProjectName", BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(folderPmac, BuiltInType.String, "ProjectName");
 
             _nodePmacVariablesCount =
-                _mgr.CreateVariableAndItsNode(folderPmac,  "AvailableVariables", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderPmac, BuiltInType.Int32, "AvailableVariables");
 
             // variable nodes information
             _nodeLastTreeUpdateTime =
-                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateTime", BuiltInType.DateTime);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.DateTime, "LastTreeUpdateTime");
             _nodeLastTreeUpdateAdded =
-                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsAdded", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "LastTreeUpdateVarsAdded");
             _nodeLastTreeUpdateDeleted =
-                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsDeleted", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "LastTreeUpdateVarsDeleted");
             _nodeLastTreeUpdateReplaced =
-                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsReplaced", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "LastTreeUpdateVarsReplaced");
             _nodeLastTreeUpdateInvalidated =
-                _mgr.CreateVariableAndItsNode(folderVars,  "LastTreeUpdateVarsInvalidated", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "LastTreeUpdateVarsInvalidated");
 
             _nodeVarsCountTotal =
-                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountTotal", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "VariablesCountTotal");
             _nodeVarsCountGlobal =
-                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountGlobal", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "VariablesCountGlobal");
             _nodeVarsCountTask =
-                _mgr.CreateVariableAndItsNode(folderVars,  "VariablesCountTask", BuiltInType.Int32);
+                _mgr.CreateVariableAndItsNode(folderVars, BuiltInType.Int32, "VariablesCountTask");
         }
 
         #endregion
@@ -211,7 +211,7 @@ namespace ibaOpcServer.IbaOpcUa
             // create new message node
             string errName = string.Format("Msg_{0}_{1}", ++_msgCounter, messageType);
             BaseDataVariableState msg =
-                _mgr.CreateVariableAndItsNode(_folderMessages, errName, BuiltInType.String);
+                _mgr.CreateVariableAndItsNode(_folderMessages, BuiltInType.String, errName);
 
             // fill value with message
             string fullMessage = string.Format("{0}. {1}", DateTime.Now, message);

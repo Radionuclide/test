@@ -536,7 +536,7 @@ namespace iba.Processing
             // reset values for the case of an update error
             driveInfo.Reset();
 
-            if (String.IsNullOrEmpty(driveInfo.DriveName))
+            if (String.IsNullOrEmpty(driveInfo.DriveKey))
             {
                 return false; // failed to update
             }
@@ -545,7 +545,7 @@ namespace iba.Processing
             {
                 lock (m_workers)
                 {
-                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveName);
+                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveKey);
 
                     if (gcData == null)
                     {
@@ -570,24 +570,21 @@ namespace iba.Processing
         {
             driveInfo.Reset();
 
-            driveInfo.DriveName2.Value = driveInfo.DriveName;// todo. kls. 
-
-            driveInfo.Active = gcData.Active;
-            driveInfo.Active2.Value = gcData.Active; // todo. kls. 
+            driveInfo.Active.Value = gcData.Active;
 
             DriveInfo drive = new DriveInfo(gcData.DriveName);
             if (drive.IsReady)
             {
-                driveInfo.SizeInMb = (uint)(drive.TotalSize >> 20); 
-                driveInfo.CurrentFreeSpaceInMb = (uint)(drive.TotalFreeSpace >> 20); 
+                driveInfo.SizeInMb.Value = (uint)(drive.TotalSize >> 20);
+                driveInfo.CurrentFreeSpaceInMb.Value = (uint)(drive.TotalFreeSpace >> 20); 
             }
 
             // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
             // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
             //driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); 
-            driveInfo.MinFreeSpaceInPercent = (uint)gcData.PercentageFree; 
+            driveInfo.MinFreeSpaceInPercent.Value = (uint)gcData.PercentageFree; 
 
-            driveInfo.RescanTime = (uint)gcData.RescanTime; 
+            driveInfo.RescanTime.Value = (uint)gcData.RescanTime; 
 
             driveInfo.PutTimeStamp();
         }
@@ -943,11 +940,7 @@ namespace iba.Processing
                             foreach (var gcData in GlobalCleanupDataList.OrderBy(gc => gc.DriveName))
                             {
                                 // create entry
-                                var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo
-                                {
-                                    // set primary key
-                                    DriveName = gcData.DriveName
-                                };
+                                var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo(gcData.DriveName);
                                 od.GlobalCleanup.Add(driveInfo);
 
                                 // set current values

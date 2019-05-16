@@ -11,8 +11,7 @@ namespace ibaOpcServer.IbaOpcUa
         public bool IsMonitored = false;
         public bool IsAvailableInPmacWatchlist = false;
 
-        public object Tag; // todo. kls. 
-        internal SnmpObjectsData.ExtMonVariableBase TagVar; // todo. kls. 
+        internal SnmpObjectsData.ExtMonVariableBase ExtMonVar; // todo. kls. 
 
         /// <summary>
         /// This flag is created for quick check.
