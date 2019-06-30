@@ -518,9 +518,9 @@ namespace iba.Processing
 
         private void SetOidMetadata(SnmpObjectsData.ExtMonFolder xmf)
         {
-            Debug.Assert(xmf.SnmpAutoOid != null);
-            Debug.Assert(xmf.SnmpFullOid == null || xmf.SnmpFullOid == xmf.SnmpAutoOid);
-            SetOidMetadata(xmf.SnmpAutoOid, xmf.Caption, xmf.SnmpFullMibName, xmf.Description);
+            Debug.Assert(xmf.SnmpFullOid != null);
+            Debug.Assert(xmf.SnmpFullOid == null || xmf.SnmpFullOid == xmf.SnmpFullOid);
+            SetOidMetadata(xmf.SnmpFullOid, xmf.Caption, xmf.SnmpFullMibName, xmf.Description);
         }
 
         private void SetOidMetadata(IbaSnmpOid oidSuffix, string guiCaption, string mibName,
@@ -557,7 +557,7 @@ namespace iba.Processing
         private void CreateUserValue2(SnmpObjectsData.ExtMonVariableBase xmv)
         {
             Debug.Assert(xmv.Parent != null);
-            Debug.Assert(xmv.SnmpAutoOid != null);
+            Debug.Assert(xmv.SnmpFullOid != null);
 
             if (xmv.ObjValue.GetType().IsEnum)
                 return; // todo. kls. enum
@@ -565,9 +565,9 @@ namespace iba.Processing
             IbaSnmpValueType type = GetSnmpType(xmv.ObjValue);
             Debug.Assert(type != IbaSnmpValueType.Unknown);
 
-            IbaSnmp.CreateUserValue(xmv.SnmpAutoOid, xmv.ObjValue, type, null, null,
+            IbaSnmp.CreateUserValue(xmv.SnmpFullOid, xmv.ObjValue, type, null, null,
                 ProductSpecificItemRequested, xmv.GetGroup() /*// todo. kls. test*/);
-            IbaSnmp.SetUserOidMetadata(xmv.SnmpAutoOid, xmv.SnmpAutoMibName, xmv.Description, xmv.Caption);
+            IbaSnmp.SetUserOidMetadata(xmv.SnmpFullOid, xmv.SnmpFullMibName, xmv.Description, xmv.Caption);
         }
 
         private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
@@ -730,12 +730,12 @@ namespace iba.Processing
                     IbaSnmpOid oidDrive = driveInfo.SnmpFullOid;
 
                     // todo. kls. simplify calls
-                    IbaSnmp.SetUserValue(driveInfo.DriveName.SnmpAutoOid, driveInfo.DriveName.Value);
-                    IbaSnmp.SetUserValue(driveInfo.Active.SnmpAutoOid, driveInfo.Active.Value); 
-                    IbaSnmp.SetUserValue(driveInfo.SizeInMb.SnmpAutoOid, driveInfo.SizeInMb.Value);
-                    IbaSnmp.SetUserValue(driveInfo.CurrentFreeSpaceInMb.SnmpAutoOid, driveInfo.CurrentFreeSpaceInMb.Value);
-                    IbaSnmp.SetUserValue(driveInfo.MinFreeSpaceInPercent.SnmpAutoOid, driveInfo.MinFreeSpaceInPercent.Value);
-                    IbaSnmp.SetUserValue(driveInfo.RescanTime.SnmpAutoOid, driveInfo.RescanTime.Value);
+                    IbaSnmp.SetUserValue(driveInfo.DriveName.SnmpFullOid, driveInfo.DriveName.Value);
+                    IbaSnmp.SetUserValue(driveInfo.Active.SnmpFullOid, driveInfo.Active.Value); 
+                    IbaSnmp.SetUserValue(driveInfo.SizeInMb.SnmpFullOid, driveInfo.SizeInMb.Value);
+                    IbaSnmp.SetUserValue(driveInfo.CurrentFreeSpaceInMb.SnmpFullOid, driveInfo.CurrentFreeSpaceInMb.Value);
+                    IbaSnmp.SetUserValue(driveInfo.MinFreeSpaceInPercent.SnmpFullOid, driveInfo.MinFreeSpaceInPercent.Value);
+                    IbaSnmp.SetUserValue(driveInfo.RescanTime.SnmpFullOid, driveInfo.RescanTime.Value);
 
                     return true; // data was updated
                 }
@@ -797,13 +797,13 @@ namespace iba.Processing
                     // TaskManager has updated info successfully 
                     // copy it to snmp tree
 
-                    IbaSnmpOid oidJobGen = jobInfo.FolderGeneral.SnmpAutoOid;
+                    IbaSnmpOid oidJobGen = jobInfo.FolderGeneral.SnmpFullOid;
 
-                    IbaSnmp.SetUserValue(jobInfo.JobName.SnmpAutoOid, jobInfo.JobName.Value);
-                    //IbaSnmp.SetUserValue(jobInfo.Status.SnmpAutoOid, (int)jobInfo.Status.Value); // todo. kls. enum
-                    IbaSnmp.SetUserValue(jobInfo.TodoCount.SnmpAutoOid, jobInfo.TodoCount.Value);
-                    IbaSnmp.SetUserValue(jobInfo.DoneCount.SnmpAutoOid, jobInfo.DoneCount.Value);
-                    IbaSnmp.SetUserValue(jobInfo.FailedCount.SnmpAutoOid, jobInfo.FailedCount.Value);
+                    IbaSnmp.SetUserValue(jobInfo.JobName.SnmpFullOid, jobInfo.JobName.Value);
+                    //IbaSnmp.SetUserValue(jobInfo.Status.SnmpFullOid, (int)jobInfo.Status.Value); // todo. kls. enum
+                    IbaSnmp.SetUserValue(jobInfo.TodoCount.SnmpFullOid, jobInfo.TodoCount.Value);
+                    IbaSnmp.SetUserValue(jobInfo.DoneCount.SnmpFullOid, jobInfo.DoneCount.Value);
+                    IbaSnmp.SetUserValue(jobInfo.FailedCount.SnmpFullOid, jobInfo.FailedCount.Value);
 
                     //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
                     //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int) jobInfo.Status);
@@ -891,11 +891,11 @@ namespace iba.Processing
 
             try
             {
-                IbaSnmp.SetUserValue(taskInfo.TaskName.SnmpAutoOid, taskInfo.TaskName.Value);
-                IbaSnmp.SetUserValue(taskInfo.TaskType.SnmpAutoOid, taskInfo.TaskType.Value);
-                IbaSnmp.SetUserValue(taskInfo.Success.SnmpAutoOid, taskInfo.Success.Value);
-                IbaSnmp.SetUserValue(taskInfo.DurationOfLastExecutionInSec.SnmpAutoOid, taskInfo.DurationOfLastExecutionInSec.Value);
-                IbaSnmp.SetUserValue(taskInfo.MemoryUsedForLastExecutionInMb.SnmpAutoOid, taskInfo.MemoryUsedForLastExecutionInMb.Value);
+                IbaSnmp.SetUserValue(taskInfo.TaskName.SnmpFullOid, taskInfo.TaskName.Value);
+                IbaSnmp.SetUserValue(taskInfo.TaskType.SnmpFullOid, taskInfo.TaskType.Value);
+                IbaSnmp.SetUserValue(taskInfo.Success.SnmpFullOid, taskInfo.Success.Value);
+                IbaSnmp.SetUserValue(taskInfo.DurationOfLastExecutionInSec.SnmpFullOid, taskInfo.DurationOfLastExecutionInSec.Value);
+                IbaSnmp.SetUserValue(taskInfo.MemoryUsedForLastExecutionInMb.SnmpFullOid, taskInfo.MemoryUsedForLastExecutionInMb.Value);
                 //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
                 //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
                 //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecutionInSec);

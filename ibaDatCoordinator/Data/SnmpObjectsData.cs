@@ -196,13 +196,13 @@ namespace iba.Data
             foreach (var child in children)
             {
                 // check OIDs uniqueness
-                var oid = child.SnmpAutoOid;
+                var oid = child.SnmpFullOid;
                 if (oids.Contains(oid))
                     return false;
                 oids.Add(oid);
 
                 // check mib name uniqueness
-                var mibName = child.SnmpAutoMibName;
+                var mibName = child.SnmpFullMibName;
                 if (mibNames.Contains(mibName))
                     return false;
                 mibNames.Add(mibName);
@@ -236,45 +236,54 @@ namespace iba.Data
             /// <summary> SNMP: Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
             public readonly uint SnmpLeastId;
 
-            /// <summary> SNMP: Full OID of corresponding SNMP object </summary>
-            public IbaSnmpOid SnmpFullOid;
-
-            /// <summary> SNMP OID for corresponding object </summary>
-            public IbaSnmpOid SnmpAutoOid // todo rename or make lazy
+            public IbaSnmpOid _snmpFullOid;
+            /// <summary> Can be set directly or can be evaluated dynamically from SnmpLeastId and parent's OID</summary>
+            public IbaSnmpOid SnmpFullOid
             {
                 get
                 {
-                    Debug.Assert(SnmpLeastId != 0 || SnmpFullOid != null);
-
-                    if (SnmpLeastId != 0 && SnmpFullOid != null)
-                        Debug.Assert(SnmpFullOid.GetLeastSignificantSubId() == SnmpLeastId);
-
-                    return SnmpFullOid != null
-                        ?
-                        // todo predef
-                        SnmpFullOid
-                        :
-                        // todo recurs
-                        (Parent == null || Parent.SnmpAutoOid == null)
+                    if (_snmpFullOid == null)
+                    {
+                        _snmpFullOid = Parent == null || Parent.SnmpFullOid == null
                             ? null
-                            : Parent.SnmpAutoOid + SnmpLeastId;
+                            : Parent.SnmpFullOid + SnmpLeastId;
+                    }
+
+                    Debug.Assert(SnmpLeastId == 0 || _snmpFullOid == null || SnmpLeastId == _snmpFullOid.GetLeastSignificantSubId());
+                    // calculate (and keep) full OID on first request
+                    return _snmpFullOid;
                 }
+                set => _snmpFullOid = value;
             }
 
-            public virtual string SnmpAutoMibName // todo rename
-            {
-                get
-                {
-                    Debug.Assert(Parent !=null && !string.IsNullOrWhiteSpace(Parent.SnmpAutoMibName));
-                    var name = Parent.SnmpAutoMibName + SnmpMibNameSuffix;
-                    Debug.Assert(!name.Contains(" "));
-                    return name;
-                }
-            }
-
-            //public readonly IbaSnmpOid SnmpOid;
+            /// <summary> e.g. "Status" for the item "standardJob3Task2Status" </summary>
             public readonly string SnmpMibNameSuffix;
 
+            private string _snmpFullMibName;
+
+            /// <summary> Can be set directly or can be evaluated dynamically from MibSuffix and parent's MibName </summary>
+            public string SnmpFullMibName // todo rename
+            {
+                get
+                {
+                    if (_snmpFullMibName == null)
+                    {
+                        _snmpFullMibName = Parent?.SnmpFullMibName == null
+                            ? null
+                            : Parent.SnmpFullMibName + SnmpMibNameSuffix;
+
+                    }
+
+                    Debug.Assert(SnmpMibNameSuffix == null || _snmpFullMibName == null || _snmpFullMibName.Contains(SnmpMibNameSuffix));
+                    // calculate full MIB name on first request
+                    return _snmpFullMibName;
+                }
+                set => _snmpFullMibName = value;
+            }
+
+
+            /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
+            public string UaFullId;
             // todo UaName ?? is equal to Caption??
 
 
@@ -290,7 +299,7 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Node '{Caption}', OID={SnmpAutoOid}, MIB='{SnmpAutoMibName}'";
+                return $@"Node '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
             }
         }
 
@@ -340,7 +349,7 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Variable '{Caption}', OID={SnmpAutoOid}, MIB='{SnmpAutoMibName}', G='{Group?.Caption}', UA='{UaVar?.BrowseName}'";
+                return $@"Variable '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}', G='{Group?.Caption}', UA='{UaVar?.BrowseName}'";
             }
 
             //#region SNMP - specific
@@ -379,24 +388,6 @@ namespace iba.Data
 
         internal class ExtMonFolder : ExtMonNode // todo. kls. Rename to ExternalMonitoringGroup 
         {
-            /// <summary> // todo. kls. to comment </summary>
-            public string SnmpFullMibName { set; get; }
-
-            public override string SnmpAutoMibName
-            {
-                get
-                {
-                    string s = SnmpFullMibName;
-                    if (s != null)
-                    {
-                        return s;
-                    }
-
-                    var x = base.SnmpAutoMibName;
-                    return x;
-                }
-            }
-
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
 
             public List<ExtMonNode> GetFlatListOfAllChildren()
@@ -416,9 +407,6 @@ namespace iba.Data
                 }
                 return list;
             }
-
-            /// <summary> Full OPC UA NodeId (path) of the current drive folder in UA address space</summary>
-            public string UaFullId;
 
             /// <summary>
             /// // todo. kls. to comment
@@ -446,7 +434,7 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Folder '{Caption}', OID={SnmpAutoOid}, MIB='{SnmpAutoMibName}'";
+                return $@"Folder '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
             }
         }
 
