@@ -5,6 +5,7 @@ using System.Net;
 
 namespace iba.Data
 {
+    /// <summary> OPC UA configuration data (Endpoints, Security, etc) </summary>
     [Serializable]
     public class OpcUaData : ICloneable
     {

@@ -1465,6 +1465,10 @@ namespace iba.ibaOPCServer
         public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, object initialValue, string displayName,
             string description = null)
         {
+            if (initialValue.GetType().IsEnum)
+            {
+                initialValue = $@"{(int)initialValue} ({initialValue})" ; // todo. kls. 
+            }
             // get uaType automatically from initial value
             var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);

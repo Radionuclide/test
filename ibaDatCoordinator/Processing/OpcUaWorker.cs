@@ -635,23 +635,33 @@ namespace iba.Processing
                         return false; // rebuild failed
                     }
 
-                    // ibaRoot.DatCoord.1 - Product-Specific
-                    //IbaOpcUaServer.SetOidMetadata(IbaOpcUaServer.OidIbaProductSpecific, "Product-specific");
 
                     // ibaRoot.DatCoord.Product.1 - Global cleanup
-                    //BuildSectionGlobalCleanup();
+                    BuildFolderRecursively(null, ObjectsData.FolderRoot);
 
-                    //// ibaRoot.DatCoord.Product.2 - Standard jobs
-                    //BuildSectionStandardJobs();
 
-                    //// ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                    //BuildSectionScheduledJobs();
+                    // todo. kls. remove
+                    //_lifeBeatVar2 =
+                    //    NodeManager.CreateVariableAndItsNode(ObjectsData.FolderGlobalCleanup.UaFullId, BuiltInType.Int32, "Lifebeat2");
+                    //_lifeBeatVar2 =
+                    //    NodeManager.CreateVariableAndItsNode(null, BuiltInType.Int32, "Lifebeat2");
 
-                    //// ibaRoot.DatCoord.Product.4 - One time jobs
-                    //BuildSectionOneTimeJobs();
 
-                    //// ibaRoot.DatCoord.Product.5 - Event jobs
-                    //BuildSectionEventJobs();
+                    //BuildFolderRecursively(null, ObjectsData.FolderGlobalCleanup);
+
+                    // uniqueness test 
+                    //CreateUaFolder(sectionFolder, null, "null");
+                    //CreateUaFolder(sectionFolder, "", "empty");
+                    //CreateUaFolder(sectionFolder, " ", "wh1");
+                    //CreateUaFolder(sectionFolder, " ", "wh1");
+                    //CreateUaFolder(sectionFolder, "  ", "wh2");
+                    //CreateUaFolder(sectionFolder, "Abc", " ");
+                    //CreateUaFolder(sectionFolder, "Abc", " ");
+                    //CreateUaFolder(sectionFolder, "Abc", " ");
+                    //CreateUaFolder(sectionFolder, "A.B", " ");
+                    //CreateUaFolder(sectionFolder, "A.B", " ");
+
+
 
                     return true; // rebuilt successfully
                 }
@@ -677,461 +687,50 @@ namespace iba.Processing
             }
         }
 
-
-        #region Building tree Sections 1...4 (from 'GlobalCleanup' to 'OneTimeJobs')
-
-
-        private FolderState CreateUaFolder(FolderState parent, string displayName, string description)
-            => NodeManager.CreateFolderAndItsNode(parent ?? NodeManager.FolderIbaRoot, displayName, description);
-
-        private FolderState CreateUaFolder(object parent1, string displayName, string mibName, string description)
+        private void BuildFolderRecursively(FolderState uaParentFolder, ExtMonData.ExtMonFolder startingFolder)
         {
-            var parent = parent1 as FolderState ?? NodeManager.FolderIbaRoot;
-
-            return NodeManager.CreateFolderAndItsNode(parent, displayName, description);
-        }
-
-        private void BuildSectionGlobalCleanup()
-        {
-            var sectionFolder = CreateUaFolder(null, "Global cleanup",
-                "Global cleanup settings for all local drives");
-
-            // todo. kls. remove
-            _lifeBeatVar2 =
-                NodeManager.CreateVariableAndItsNode(sectionFolder, BuiltInType.Int32, "Lifebeat2");
-            
-            // uniqueness test 
-            //CreateUaFolder(sectionFolder, null, "null");
-            //CreateUaFolder(sectionFolder, "", "empty");
-            //CreateUaFolder(sectionFolder, " ", "wh1");
-            //CreateUaFolder(sectionFolder, " ", "wh1");
-            //CreateUaFolder(sectionFolder, "  ", "wh2");
-            //CreateUaFolder(sectionFolder, "Abc", " ");
-            //CreateUaFolder(sectionFolder, "Abc", " ");
-            //CreateUaFolder(sectionFolder, "Abc", " ");
-            //CreateUaFolder(sectionFolder, "A.B", " ");
-            //CreateUaFolder(sectionFolder, "A.B", " ");
-
-            foreach (var driveInfo in ObjectsData.GlobalCleanup)
+            try
             {
-                try
+                FolderState uaFolder = CreateUaFolder(uaParentFolder, startingFolder);
+
+                foreach (var node in startingFolder.Children)
                 {
-                    // create a folder for the drive
-                    var driveFolder = CreateUaFolder(sectionFolder, driveInfo.Caption, driveInfo.Description);
-
-                    driveInfo.UaFullId = driveFolder.NodeId.Identifier as string;
-
-                    // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
+                    switch (node)
                     {
-                        foreach (var xmv in driveInfo.Children)
-                        {
-                            // todo. kls. 
-                            //CreateUserValue2(driveFolder, xmv, GlobalCleanupDriveInfoItemRequested);
-                        }
+                        case ExtMonData.ExtMonFolder xmFolder:
+                            BuildFolderRecursively(uaFolder, xmFolder);
+                            break;
+                        case ExtMonData.ExtMonVariableBase xmv:
+                            CreateUserValue2(uaFolder, xmv, GlobalCleanupDriveInfoItemRequested); // todo. kls. handler
+                            break;
+                        default:
+                            continue;
                     }
                 }
-                catch (Exception ex)
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
             }
-        }
-
-        private void BuildSectionStandardJobs()
-        {
-            // ibaRoot.DatCoord.Product.2 - StandardJobs [Folder]
-            var sectionFolder = CreateUaFolder(null, @"Standard jobs", @"List of all standard jobs.");
-
-            for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
+            catch
             {
-                try
-                {
-                    ExtMonData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
-
-
-                    //string mibNameJob = $@"standardJob{oidJob}";
-                    var jobFolder = CreateUaFolder(sectionFolder, $@"Job '{jobInfo.JobName.Value}'", 
-                        $@"Properties of standard job '{jobInfo.JobName.Value}'.");
-
-                    // create objects that are common for all the job types
-                    BuildCommonGeneralJobSubsection(jobFolder, out FolderState jobGeneralFolder, jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.StdJobs.Job.General ...
-                    {
-                        CreateUserValue(jobGeneralFolder,
-                            jobInfo.PermFailedCount,
-                            @"Perm. Failed #", @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(jobGeneralFolder,
-                            jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", 
-                            @"Time when the job was started. For a stopped job, it relates to the last start of the job. " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(jobGeneralFolder,
-                            jobInfo.TimestampLastDirectoryScan,
-                            @"Timestamp last directory scan",
-                            @"Time when the last scan for new (unprocessed) .dat files was performed. " +
-                            @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(jobGeneralFolder,
-                            jobInfo.TimestampLastReprocessErrorsScan,
-                            @"Timestamp last reprocess errors scan", 
-                            @"Time when the last reprocess scan was performed " +
-                            @"(reprocess scan is a scan for .dat files that previously were processed with errors).  " +
-                            @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        // ibaRoot.DatCoord.Product.StdJobs.Job.General.10 - LastProcessing [Folder]
-                        var lastProcFolder = CreateUaFolder(jobGeneralFolder, @"LastProcessing", 
-                            @"Information about the last successfully processed file.");
-
-                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingLastDatFileProcessed,
-                            @"Last dat-file processed", 
-                            @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingStartTimeStamp,
-                            @"Start timestamp", 
-                            @"Time when processing of the last successfully processed file was started. " +
-                            @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(lastProcFolder, jobInfo.LastProcessingFinishTimeStamp,
-                            @"Finish timestamp",
-                            @"Time when processing of the last successfully processed file was finished. " +
-                            @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
+                // go on with other items 
+                // even if current one has failed 
             }
+
         }
 
-        private void BuildSectionScheduledJobs()
+
+        #region Create Value, Create Folder helper functions
+
+        private FolderState CreateUaFolder(FolderState uaParentFolder, string displayName, string description)
+            => NodeManager.CreateFolderAndItsNode(uaParentFolder ?? NodeManager.FolderIbaRoot, displayName, description);
+
+        private FolderState CreateUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
-            var oidSection = "";//  = new string(SnmpObjectsData.ScheduledJobsOid);
-
-            CreateUaFolder(oidSection, @"Scheduled jobs", @"scheduledJobs",
-                @"List of all scheduled jobs.");
-
-            for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
-            {
-                try
-                {
-                    var jobInfo = ObjectsData.ScheduledJobs[i];
-
-                    // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    string oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"scheduledJob{oidJob}";
-                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of scheduled job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    string oidJobGen = "";
-                    string mibNameJobGen = "";
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.SchJobs.Job xxx
-                    {
-               
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
+            // create
+            FolderState folder = CreateUaFolder(uaParentFolder, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+            // keep UA id in ExtMon Node
+            xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string;
+            return folder;
         }
 
-        private void BuildSectionOneTimeJobs()
-        {
-            var oidSection = "";//  = new string(SnmpObjectsData.OneTimeJobsOid);
-
-            CreateUaFolder(oidSection, @"One time jobs", @"oneTimeJobs",
-                @"List of all one-time jobs.");
-
-            for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
-            {
-                try
-                {
-                    var jobInfo = ObjectsData.OneTimeJobs[i];
-                    // ibaRoot.DatCoord.Product.OtJobs.(index) - Job [folder]
-                    string oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"oneTimeJob{oidJob}";
-                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of one-time job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    string oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.OtJobs.Job xxx
-                    {
-
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
-        }
-
-        private void BuildSectionEventJobs()
-        {
-            var oidSection = "";//  = new string(SnmpObjectsData.EventBasedJobsOid);
-
-            CreateUaFolder(oidSection, @"Event jobs", @"eventJobs",
-                @"List of all event jobs.");
-
-            for (int i = 0; i < ObjectsData.EventBasedJobs.Count; i++)
-            {
-                try
-                {
-                    var jobInfo = ObjectsData.EventBasedJobs[i];
-
-                    // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    string oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"eventJob{oidJob}";
-                    CreateUaFolder(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of event job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    string oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.EvtJobs.Job xxx
-                    {
-      
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
-        }
-
-        #endregion
-
-
-        #region helper functions for building the tree - Common Subsections, Tasks, CreateUserValue overloads
-
-        #region Common for all the jobs
-
-        private void BuildCommonGeneralJobSubsection(
-            object oidJob, out string oidJobGen,
-            string mibNameJob, out string mibNameJobGen,
-            ExtMonData.JobInfoBase jobInfo)
-        {
-            oidJobGen = null;
-            mibNameJobGen = null;
-        }
-        /// <summary> Build the part that is common for all the Jobs 
-        /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
-        private void BuildCommonGeneralJobSubsection(
-            FolderState jobFolder, out FolderState jobGeneralFolder,
-            ExtMonData.JobInfoBase jobInfo)
-        {
-
-            //jobInfo.Oid = oidJob; // todo. kls. set feedback here
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.1 - General [Folder]
-            jobGeneralFolder = CreateUaFolder(jobFolder, @"General", 
-                $@"General properties of job '{jobInfo.JobName}'.");
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.General ...
-            {
-                CreateUserValue(jobGeneralFolder, jobInfo.JobName,
-                    @"Job Name", 
-                    @"The name of the job as it appears in GUI.",
-                    JobInfoItemRequested, jobInfo);
-
-                // todo. kls. 
-                //CreateEnumUserValue(jobGeneralFolder, _enumJobStatus, (int)jobInfo.Status,
-                //    @"Status", mibNameJobGen + @"Status",
-                //    @"Current status of the job (started, stopped or disabled).",
-                //    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(jobGeneralFolder, jobInfo.TodoCount,
-                    @"Todo #", @"Number of dat files to be processed.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(jobGeneralFolder, jobInfo.DoneCount,
-                    @"Done #", @"Number of processed files.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(jobGeneralFolder, jobInfo.FailedCount,
-                    @"Failed #", @"Number of errors occurred during processing.",
-                    JobInfoItemRequested, jobInfo);
-            }
-
-            // create tasks 
-            BuildTasks(jobFolder, jobInfo);
-        }
-
-        #endregion
-
-
-        #region Tasks subtrees
-
-        private void BuildTasks(FolderState jobFolder, ExtMonData.JobInfoBase jobInfo)
-        {
-            var tasks = jobInfo?.Tasks;
-            if (tasks == null)
-            {
-                return;
-            }
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.2 - Tasks [Folder]
-            var tasksFolder = CreateUaFolder(jobFolder, @"Tasks", 
-                $@"Information about all tasks of the job '{jobInfo.JobName}'.");
-
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                ExtMonData.TaskInfo taskInfo = tasks[i];
-
-                uint i1 = (uint)(i + 1); // index for mib
-
-                //string mibNameTask = mibNameJob + $@"Task{i1}";
-                // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.(index) - Task [Folder]
-                var taskFolder = CreateUaFolder(tasksFolder, $@"Task '{taskInfo.TaskName}'", 
-                    $@"Information about task '{taskInfo.TaskName}' of the job '{jobInfo.JobName}'.");
-
-                // create task contents
-                // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.TaskZ ...
-                try
-                {
-                    BuildTask(taskFolder, taskInfo);
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other tasks 
-                    // even if some task has failed 
-                }
-            }
-        }
-
-        private void BuildTask(FolderState taskFolder, ExtMonData.TaskInfo taskInfo)
-        {
-            var parentJob = taskInfo.ParentJob;
-
-            // taskInfo.Oid = taskFolder;// todo. kls. feedback
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ ... 
-
-            CreateUserValue(taskFolder, taskInfo.TaskName,
-                @"Task name",
-                @"The name of the task as it appears in GUI.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(taskFolder, taskInfo.TaskType,
-                @"Task type", 
-                @"The type of the task (copy, extract, report, etc.).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(taskFolder, taskInfo.Success,
-                @"Success", 
-                @"Whether or not the last executed task was completed successfully, i.e. without errors. " +
-                @"For Condition task this means that the expression was successfully evaluated as TRUE or FALSE - both results are treated as success.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(taskFolder , taskInfo.DurationOfLastExecutionInSec,
-                @"Duration of last execution",
-                @"Duration of the last task execution (in seconds).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(taskFolder, taskInfo.MemoryUsedForLastExecutionInMb,
-                @"Memory used for last execution", 
-                @"Amount of memory used during the last execution of the task (in megabytes). " +
-                @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., Condition, Report, Extract and some custom tasks.",
-                JobInfoItemRequested, parentJob);
-
-            var ci = taskInfo.CleanupInfo;
-            if (ci == null)
-            {
-                return;
-            }
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup [Folder]
-            var oidCleanup = CreateUaFolder(taskFolder, @"Cleanup", @"Cleanup parameters of the task.");
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup ...
-
-            // todo. kls. enum
-            //CreateEnumUserValue(oidCleanup, _enumCleanupType, (int)ci.LimitChoice,
-            //    @"Limit choice", 
-            //    @"Option selected as limit for the disk space usage. " +
-            //    @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
-            //    JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup , ci.Subdirectories,
-                @"Subdirectories", 
-                @"Maximum count of directories the task can use.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup , ci.UsedDiskSpace,
-                @"Used disk space", 
-                @"Maximum disk space that can be used by the task (in megabytes).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup , ci.FreeDiskSpace,
-                @"Free disk space", 
-                @"Minimum disk space that is kept free (in megabytes).",
-                JobInfoItemRequested, parentJob);
-        }
-
-        #endregion
-
-
-        #region CreateUserValue() overloads
-
-        /// <summary> </summary>
-        /// <param name="parent"></param>
-        /// <param name="initialValue"></param>
-        /// <param name="name">Will be used for both BrowseName and DisplayName (should not contain a dot '.')</param>
-        /// <param name="description"></param>
-        /// <param name="handler"></param>
-        /// <param name="tag"></param>
         private IbaOpcUaVariable CreateUserValue(FolderState parent, object initialValue,
             string name, string description = null,
             EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null, object tag = null)
@@ -1161,45 +760,8 @@ namespace iba.Processing
             return iv;
         }
 
-
-        private void CreateUserValue(string oidSuffix, bool initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(string oidSuffix, int initialValue,
-        string caption, string mibName = null, string mibDescription = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(string oidSuffix, uint initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(string oidSuffix, DateTime initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            //IbaOpcUaServer.CreateUserValue(oidSuffix, initialValue,
-            //    UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
-            //    null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
+        
+        // todo. kls. to comment
         private void CreateEnumUserValue(string oidSuffix, object valueType, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
             EventHandler<object> handler = null,
@@ -1210,9 +772,6 @@ namespace iba.Processing
         }
 
         #endregion
-
-        #endregion
-
 
         #endregion
 
@@ -1276,7 +835,7 @@ namespace iba.Processing
         }
 
         // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshGlobalCleanupDriveInfo(ExtMonData.GlobalCleanupDriveInfo driveInfo)
+        private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
@@ -1290,39 +849,51 @@ namespace iba.Processing
                         return true; // data was updated
                     }
 
-                    if (driveInfo.IsUpToDate())
+                    if (xmGroup.IsUpToDate())
                     {
                         // data is fresh, no need to change something
                         return false; // was not updated
                     }
 
                     var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
+
+                    bool bSuccess;
+                    switch (xmGroup)
+                    {
+                        case ExtMonData.GlobalCleanupDriveInfo driveInfo:
+                            bSuccess = man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
+                            break;
+                        case ExtMonData.JobInfoBase jobInfo:
+                            bSuccess = man.SnmpRefreshJobInfo(jobInfo);
+                            break;
+                        default:
+                            // should not happen
+                            Debug.Assert(false);
+                            bSuccess = false;
+                            break;
+                    }
+
+                    if (!bSuccess)
                     {
                         // should not happen
                         // failed to update data
                         // rebuild the tree
                         LogData.Data.Logger.Log(Level.Debug,
-                            "OPC UA. RefreshGlobalCleanupDriveInfo(). Failed to refresh; tree is marked invalid.");
+                            $"OPC UA. {nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
                         IsStructureValid = false;
+                        Debug.Assert(false);
                         return false; // data was NOT updated
                     }
 
                     // TaskManager has updated driveInfo successfully 
                     // copy it to UA tree
 
-                    foreach (var xmv in driveInfo.Children)
+                    foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
                         // todo. kls. 
-                        //NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+                        NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
                     }
 
-                    //NodeManager.SetValueScalar(driveInfo.Active.UaVar, driveInfo.Active.Value);
-                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
-                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
-                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
-                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent);
-                    //IbaOpcUaServer.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime);
                     return true; // data was updated
                 }
                 finally
@@ -1337,7 +908,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.ToString()/*todo*/}, {GetCurrentThreadString()}.");
+                        $"SNMP. // todo. kls. to comment Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -1346,150 +917,7 @@ namespace iba.Processing
                 return false; // data was NOT updated
             }
         }
-
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
-        {
-            if (Monitor.TryEnter(LockObject, LockTimeout))
-            {
-                try
-                {
-                    if (RebuildTreeIfItIsInvalid())
-                    {
-                        // tree was rebuilt completely
-                        // no need to update some parts of it
-                        // just return right now
-                        return true; // data was updated
-                    }
-
-                    if (jobInfo.IsUpToDate())
-                    {
-                        // data is fresh, no need to change something
-                        return false; // data was NOT updated
-                    }
-
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshJobInfo(jobInfo))
-                    {
-                        // should not happen
-                        // failed to update data
-                        // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Debug,
-                            "SNMP. RefreshJobInfo(). Failed to refresh; tree is marked invalid.");
-                        IsStructureValid = false;
-                        return false; // data was NOT updated
-                    }
-
-                    // TaskManager has updated info successfully 
-                    // copy it to snmp tree
-
-                    string oidJobGen = "";//jobInfo.Oid + SnmpObjectsData.JobInfoBase.GeneralOid;
-
-                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
-                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int)jobInfo.Status);
-                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount);
-                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount);
-                    //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount);
-
-                    switch (jobInfo)
-                    {
-                        case ExtMonData.StandardJobInfo stdJi:
-                        {
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
-                            //string oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                            //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
-                            //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
-                            //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
-                            break;
-                        }
-                        case ExtMonData.ScheduledJobInfo schJi:
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
-                            break;
-                        case ExtMonData.OneTimeJobInfo otJi:
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
-                            break;
-                        case ExtMonData.EventBasedJobInfo evtJi:
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
-                            //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
-                            break;
-                        default:
-                            // should not happen
-                            throw new Exception($"Unknown job type {jobInfo}");
-                    }
-
-                    // refresh tasks
-                    foreach (var taskInfo in jobInfo.Tasks)
-                    {
-                        RefreshTaskInfo(taskInfo);
-                    }
-                    return true; // was updated
-                }
-                catch (Exception ex)
-                {
-                    LogData.Data.Logger.Log(Level.Exception,
-                        $"SNMP. Error during refreshing job {jobInfo.JobName}. {ex.Message}.");
-                    return false; // was not updated
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {jobInfo.JobName}, {GetCurrentThreadString()}.");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-                return false; // was not updated
-            }
-        }
-
-        private void RefreshTaskInfo(ExtMonData.TaskInfo taskInfo)
-        {
-            string oidTask = "";// taskInfo.Oid;
-
-            try
-            {
-                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName);
-                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
-                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
-                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution);
-                //IbaOpcUaServer.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution);
-
-                var ci = taskInfo.CleanupInfo;
-                // ReSharper disable once InvertIf
-                if (ci != null)
-                {
-                    //string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
-
-                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
-                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);
-                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace);
-                    //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception,
-                    $"SNMP. Error during refreshing task {taskInfo.TaskName}. {ex.Message}.");
-            }
-        }
-
+       
         #endregion
 
 
@@ -1525,7 +953,7 @@ namespace iba.Processing
             }
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGlobalCleanupDriveInfo(driveInfo);
+            RefreshGroup(driveInfo);
 
             // re-read the value and send it back via args
             // (we should do re-read independently on whether above call to RefreshXxx()
@@ -1551,7 +979,7 @@ namespace iba.Processing
             var oldValue = iv.Value; // todo. kls. tmp
 
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGlobalCleanupDriveInfo(driveInfo);
+            RefreshGroup(driveInfo);
 
             if (!oldValue.Equals(iv.Value))
                 // changed
