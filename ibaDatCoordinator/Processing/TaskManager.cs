@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Linq;
@@ -536,7 +537,7 @@ namespace iba.Processing
             // reset values for the case of an update error
             driveInfo.Reset();
 
-            if (String.IsNullOrEmpty(driveInfo.DriveKey))
+            if (String.IsNullOrEmpty(driveInfo.Key))
             {
                 return false; // failed to update
             }
@@ -545,7 +546,7 @@ namespace iba.Processing
             {
                 lock (m_workers)
                 {
-                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.DriveKey);
+                    var gcData = GlobalCleanupDataList.FirstOrDefault(gc => gc.DriveName == driveInfo.Key);
 
                     if (gcData == null)
                     {
@@ -612,27 +613,7 @@ namespace iba.Processing
 
                     // ok, found needed configuration
                     // copy values from configuration to snmp jobInfo
-                    switch (cfg.JobType)
-                    {
-                        case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
-                            SnmpRefreshStandardJobInfo(jobInfo as SnmpObjectsData.StandardJobInfo, cfg);
-                            break;
-
-                        case ConfigurationData.JobTypeEnum.Scheduled:
-                            SnmpRefreshScheduledJobInfo(jobInfo as SnmpObjectsData.ScheduledJobInfo, cfg);
-                            break;
-
-                        case ConfigurationData.JobTypeEnum.OneTime:
-                            SnmpRefreshOneTimeJobInfo(jobInfo as SnmpObjectsData.OneTimeJobInfo, cfg);
-                            break;
-
-                        case ConfigurationData.JobTypeEnum.Event:
-                            SnmpRefreshEventJobInfo(jobInfo as SnmpObjectsData.EventBasedJobInfo, cfg);
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                    SnmpRefreshJobInfo(jobInfo, cfg);
 
                     // updated successfully
                     return true;
@@ -641,18 +622,38 @@ namespace iba.Processing
             catch
             {
                 // suppress
-                // for the case of change of GlobalCleanupDataList 
-                // within forach loop by another thread
+                // for the case of change of the list 
+                // within foreach loop by another thread
             }
 
             // error
             return false; // failed to update
         }
 
+        private void SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo, ConfigurationData cfg)
+        {
+            switch (jobInfo)
+            {
+                case SnmpObjectsData.StandardJobInfo stdJobInfo:
+                    SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
+                    break;
+                case SnmpObjectsData.ScheduledJobInfo schJobInfo:
+                    SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
+                    break;
+                case SnmpObjectsData.OneTimeJobInfo otJobInfo:
+                    SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
+                    break;
+                case SnmpObjectsData.EventBasedJobInfo ebJobInfo:
+                    SnmpRefreshEventJobInfo(ebJobInfo, cfg);
+                    break;
+            }
+        }
+
         private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
         {
+            Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.DatTriggered);
             jobInfo.Reset();
-
+            
             try
             {
                 ConfigurationWorker worker = m_workers[cfg];
@@ -660,14 +661,14 @@ namespace iba.Processing
 
                 SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; // 5
-                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; //6
-                jobInfo.TimestampLastDirectoryScan = worker.TimestampLastDirectoryScan;
-                jobInfo.TimestampLastReprocessErrorsScan = worker.TimestampLastReprocessErrorsScan;
+                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count;
+                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted;
+                jobInfo.TimestampLastDirectoryScan.Value = worker.TimestampLastDirectoryScan;
+                jobInfo.TimestampLastReprocessErrorsScan.Value = worker.TimestampLastReprocessErrorsScan;
 
-                jobInfo.LastProcessingLastDatFileProcessed = worker.LastSuccessfulFileName;
-                jobInfo.LastProcessingStartTimeStamp = worker.LastSuccessfulFileStartProcessingTimeStamp;
-                jobInfo.LastProcessingFinishTimeStamp = worker.LastSuccessfulFileFinishProcessingTimeStamp;
+                jobInfo.LastProcessingLastDatFileProcessed.Value = worker.LastSuccessfulFileName;
+                jobInfo.LastProcessingStartTimeStamp.Value = worker.LastSuccessfulFileStartProcessingTimeStamp;
+                jobInfo.LastProcessingFinishTimeStamp.Value = worker.LastSuccessfulFileFinishProcessingTimeStamp;
 
                 jobInfo.PutTimeStamp();
             }
@@ -679,6 +680,7 @@ namespace iba.Processing
 
         private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
         {
+            Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.Scheduled);
             jobInfo.Reset();
 
             try
@@ -688,10 +690,10 @@ namespace iba.Processing
 
                 SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
-                jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
-                jobInfo.TimestampNextExecution = worker.NextTrigger; // 8
+                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count; 
+                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted; 
+                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
+                jobInfo.TimestampNextExecution.Value = worker.NextTrigger; 
 
                 jobInfo.PutTimeStamp();
             }
@@ -701,9 +703,10 @@ namespace iba.Processing
             }
 
         }
-
+        
         private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
         {
+            Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.OneTime);
             jobInfo.Reset();
 
             try
@@ -713,7 +716,7 @@ namespace iba.Processing
 
                 SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.TimestampLastExecution = worker.TimestampJobStarted;//5
+                jobInfo.TimestampLastExecution.Value = worker.TimestampJobStarted;
 
                 jobInfo.PutTimeStamp();
             }
@@ -726,6 +729,7 @@ namespace iba.Processing
 
         private void SnmpRefreshEventJobInfo(SnmpObjectsData.EventBasedJobInfo jobInfo, ConfigurationData cfg)
         {
+            Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.Event);
             jobInfo.Reset();
 
             try
@@ -735,9 +739,9 @@ namespace iba.Processing
 
                 SnmpRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.PermFailedCount = (uint)s.PermanentErrorFiles.Count; //5
-                jobInfo.TimestampJobStarted = worker.TimestampJobStarted; // 6
-                jobInfo.TimestampLastExecution = worker.TimestampJobLastExecution; // 7
+                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count; 
+                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted; 
+                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
 
                 jobInfo.PutTimeStamp();
             }
@@ -751,16 +755,16 @@ namespace iba.Processing
         private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
         {
             var cfg = s.CorrConfigurationData;
-            ji.JobName = cfg.Name;
-            ji.Status = !cfg.Enabled ?
+            ji.JobName.Value = cfg.Name;
+            ji.Status.Value = !cfg.Enabled ?
                 SnmpObjectsData.JobStatus.Disabled :
                 (s.Started ?
                     SnmpObjectsData.JobStatus.Started :
                     SnmpObjectsData.JobStatus.Stopped);
 
-            ji.TodoCount = (uint)s.ReadFiles.Count;
-            ji.DoneCount = (uint)s.ProcessedFiles.Count;
-            ji.FailedCount = (uint)s.CountErrors();
+            ji.TodoCount.Value = (uint)s.ReadFiles.Count;
+            ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
+            ji.FailedCount.Value = (uint)s.CountErrors();
 
             SnmpRefreshTasks(ji, worker, s);
         }
@@ -776,11 +780,11 @@ namespace iba.Processing
 
                 for (int i = 0; i < cfg.Tasks.Count; i++)
                 {
-                    ji.Tasks.Add(new SnmpObjectsData.TaskInfo { Parent = ji });
+                    SnmpObjectsData.AddNewTask(ji, cfg.Tasks[i].Name);
                 }
             }
 
-            // fill task's data
+            // if task count has changed then invalidate tree structure
             if (ji.Tasks.Count != cfg.Tasks.Count)
             {
                 ji.Tasks.Clear();
@@ -788,23 +792,24 @@ namespace iba.Processing
                 return;
             }
 
+            // fill task's data
             for (int i = 0; i < cfg.Tasks.Count; i++)
             {
                 TaskData taskData = cfg.Tasks[i];
                 var taskInfo = ji.Tasks[i];
                 taskInfo.Reset();
 
-                taskInfo.TaskName = taskData.Name;
+                taskInfo.TaskName.Value = taskData.Name;
 
-                // lask execution - success, duration, memory
+                // last execution - success, duration, memory
                 try
                 {
                     ConfigurationWorker.TaskLastExecutionData lastExec;
                     if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
                     {
-                        taskInfo.Success = lastExec.Success; 
-                        taskInfo.DurationOfLastExecution = (uint)(lastExec.DurationMs / 1000.0); 
-                        taskInfo.MemoryUsedForLastExecution = lastExec.MemoryUsed; 
+                        taskInfo.Success.Value = lastExec.Success; 
+                        taskInfo.DurationOfLastExecutionInSec.Value = (uint)(lastExec.DurationMs / 1000.0); 
+                        taskInfo.MemoryUsedForLastExecutionInMb.Value = lastExec.MemoryUsed; 
                     }
                 }
                 catch
@@ -897,23 +902,20 @@ namespace iba.Processing
                     }
                 }
 
-                taskInfo.TaskType = taskTypeStr;
+                taskInfo.TaskType.Value = taskTypeStr;
 
                 // if cleanup info is present, add it to the task
-                var cleanupTaskData = taskData as TaskWithTargetDirData;
-                if (cleanupTaskData != null)
+                if (taskData is TaskWithTargetDirData cleanupTaskData)
                 {
-                    taskInfo.CleanupInfo = new SnmpObjectsData.LocalCleanupInfo
-                    {
-                        LimitChoice = cleanupTaskData.OutputLimitChoice,
-                        FreeDiskSpace = cleanupTaskData.QuotaFree,
-                        Subdirectories = cleanupTaskData.SubfoldersNumber,
-                        UsedDiskSpace = cleanupTaskData.Quota
-                    };
+                    taskInfo.AddCleanupInfo();
+                    taskInfo.CleanupInfo.LimitChoice.Value = cleanupTaskData.OutputLimitChoice;
+                    taskInfo.CleanupInfo.FreeDiskSpace.Value = cleanupTaskData.QuotaFree;
+                    taskInfo.CleanupInfo.Subdirectories.Value = cleanupTaskData.SubfoldersNumber;
+                    taskInfo.CleanupInfo.UsedDiskSpace.Value = cleanupTaskData.Quota;
                 }
                 else
                 {
-                    taskInfo.CleanupInfo = null;
+                    taskInfo.ResetCleanupInfo();
                 }
             }
         }
@@ -940,8 +942,7 @@ namespace iba.Processing
                             foreach (var gcData in GlobalCleanupDataList.OrderBy(gc => gc.DriveName))
                             {
                                 // create entry
-                                var driveInfo = new SnmpObjectsData.GlobalCleanupDriveInfo(gcData.DriveName);
-                                od.GlobalCleanup.Add(driveInfo);
+                                var driveInfo = od.AddNewGlobalCleanup(gcData.DriveName);
 
                                 // set current values
                                 SnmpRefreshGlobalCleanupDriveInfo(driveInfo, gcData);
@@ -952,7 +953,7 @@ namespace iba.Processing
                             // suppress, not critical
                         }
                     }
-                    // 2...4. - Jobs
+                    // 2...5. - Jobs
                     {
                         // get copy of configurations
                         List<ConfigurationData> confs = Configurations;
@@ -960,42 +961,12 @@ namespace iba.Processing
 
                         foreach (ConfigurationData cfg in confs)
                         {
-                            switch (cfg.JobType)
-                            {
-                                case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
-                                    var stdJobInfo = new SnmpObjectsData.StandardJobInfo { Guid = cfg.Guid };
-                                    od.StandardJobs.Add(stdJobInfo);
-                                    // fill the data
-                                    SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
-                                    break;
-
-                                case ConfigurationData.JobTypeEnum.Scheduled:
-                                    var schJobInfo = new SnmpObjectsData.ScheduledJobInfo { Guid = cfg.Guid };
-                                    od.ScheduledJobs.Add(schJobInfo);
-                                    // fill the data
-                                    SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
-                                    break;
-
-                                case ConfigurationData.JobTypeEnum.OneTime:
-                                    var otJobInfo = new SnmpObjectsData.OneTimeJobInfo { Guid = cfg.Guid };
-                                    od.OneTimeJobs.Add(otJobInfo);
-                                    // fill the data
-                                    SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
-                                    break;
-
-                                case ConfigurationData.JobTypeEnum.Event:
-                                    var evtJobInfo = new SnmpObjectsData.EventBasedJobInfo { Guid = cfg.Guid };
-                                    od.EventBasedJobs.Add(evtJobInfo);
-                                    // fill the data
-                                    SnmpRefreshEventJobInfo(evtJobInfo, cfg);
-                                    break;
-
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
+                            var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
+                            SnmpRefreshJobInfo(jobInfo, cfg);
                         }
                     }
                 }
+                Debug.Assert(od.CheckConsistency());
                 return true; // success
             }
             catch (Exception ex)

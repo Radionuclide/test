@@ -224,7 +224,7 @@ namespace iba.Processing
             RestartServer();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+            SnmpObjectsData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
             _treeValidatorTimer = new System.Timers.Timer
@@ -639,19 +639,19 @@ namespace iba.Processing
                     //IbaOpcUaServer.SetOidMetadata(IbaOpcUaServer.OidIbaProductSpecific, "Product-specific");
 
                     // ibaRoot.DatCoord.Product.1 - Global cleanup
-                    BuildSectionGlobalCleanup();
+                    //BuildSectionGlobalCleanup();
 
-                    // ibaRoot.DatCoord.Product.2 - Standard jobs
-                    BuildSectionStandardJobs();
+                    //// ibaRoot.DatCoord.Product.2 - Standard jobs
+                    //BuildSectionStandardJobs();
 
-                    // ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                    BuildSectionScheduledJobs();
+                    //// ibaRoot.DatCoord.Product.3 - Scheduled jobs
+                    //BuildSectionScheduledJobs();
 
-                    // ibaRoot.DatCoord.Product.4 - One time jobs
-                    BuildSectionOneTimeJobs();
+                    //// ibaRoot.DatCoord.Product.4 - One time jobs
+                    //BuildSectionOneTimeJobs();
 
-                    // ibaRoot.DatCoord.Product.5 - Event jobs
-                    BuildSectionEventJobs();
+                    //// ibaRoot.DatCoord.Product.5 - Event jobs
+                    //BuildSectionEventJobs();
 
                     return true; // rebuilt successfully
                 }
@@ -696,10 +696,11 @@ namespace iba.Processing
             var sectionFolder = CreateUaFolder(null, "Global cleanup",
                 "Global cleanup settings for all local drives");
 
-            // uniqueness test // todo. kls. remove
+            // todo. kls. remove
             _lifeBeatVar2 =
                 NodeManager.CreateVariableAndItsNode(sectionFolder, BuiltInType.Int32, "Lifebeat2");
-
+            
+            // uniqueness test 
             //CreateUaFolder(sectionFolder, null, "null");
             //CreateUaFolder(sectionFolder, "", "empty");
             //CreateUaFolder(sectionFolder, " ", "wh1");
@@ -718,27 +719,15 @@ namespace iba.Processing
                     // create a folder for the drive
                     var driveFolder = CreateUaFolder(sectionFolder, driveInfo.Caption, driveInfo.Description);
 
-                    driveInfo.UaId = driveFolder.NodeId.Identifier as string;
+                    driveInfo.UaFullId = driveFolder.NodeId.Identifier as string;
 
                     // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
                     {
-                        CreateUserValue2(driveFolder, driveInfo.DriveName, GlobalCleanupDriveInfoItemRequested);
-
-
-                        CreateUserValue2(driveFolder, driveInfo.Active,
-                            GlobalCleanupDriveInfoItemRequested);
-
-                        CreateUserValue2(driveFolder,driveInfo.SizeInMb,
-                            GlobalCleanupDriveInfoItemRequested);
-
-                        CreateUserValue2(driveFolder, driveInfo.CurrentFreeSpaceInMb,
-                            GlobalCleanupDriveInfoItemRequested);
-
-                        CreateUserValue2(driveFolder, driveInfo.MinFreeSpaceInPercent,
-                            GlobalCleanupDriveInfoItemRequested);
-
-                        CreateUserValue2(driveFolder, driveInfo.RescanTime,
-                            GlobalCleanupDriveInfoItemRequested);
+                        foreach (var xmv in driveInfo.Children)
+                        {
+                            // todo. kls. 
+                            //CreateUserValue2(driveFolder, xmv, GlobalCleanupDriveInfoItemRequested);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -762,9 +751,10 @@ namespace iba.Processing
                 {
                     SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
+
                     //string mibNameJob = $@"standardJob{oidJob}";
-                    var jobFolder = CreateUaFolder(sectionFolder, $@"Job '{jobInfo.JobName}'", 
-                        $@"Properties of standard job '{jobInfo.JobName}'.");
+                    var jobFolder = CreateUaFolder(sectionFolder, $@"Job '{jobInfo.JobName.Value}'", 
+                        $@"Properties of standard job '{jobInfo.JobName.Value}'.");
 
                     // create objects that are common for all the job types
                     BuildCommonGeneralJobSubsection(jobFolder, out FolderState jobGeneralFolder, jobInfo);
@@ -861,30 +851,7 @@ namespace iba.Processing
                     // create all the rest of general job objects
                     // ibaRoot.DatCoord.Product.SchJobs.Job xxx
                     {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
-                            @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
-                            @"Time when job was started (starting of the scheduled job does NOT mean that it will be executed immediately).  " +
-                            @"For a stopped job, it relates to the last start of the job.  " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the job was last executed. " +
-                            @"(This does not mean the moment when job was started, but the moment when configured trigger was fired last time); " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, jobInfo.TimestampNextExecution,
-                            @"Timestamp next execution", mibNameJobGen + @"TimestampNextExecution",
-                            @"Time of the next scheduled execution. " +
-                            @"If there is no execution scheduled, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
+               
                     }
                 }
                 catch
@@ -926,11 +893,7 @@ namespace iba.Processing
                     // create all the rest of general job objects
                     // ibaRoot.DatCoord.Product.OtJobs.Job xxx
                     {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the last execution was started. " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
+
                     }
                 }
                 catch
@@ -973,24 +936,7 @@ namespace iba.Processing
                     // create all the rest of general job objects
                     // ibaRoot.DatCoord.Product.EvtJobs.Job xxx
                     {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.PermFailedCountOid, jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
-                            @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampJobStartedOid, jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
-                            @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
-                            @"For a stopped job, it relates to the last start of the job.  " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the job was last executed. " +
-                            @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
+      
                     }
                 }
                 catch
@@ -1107,7 +1053,7 @@ namespace iba.Processing
 
         private void BuildTask(FolderState taskFolder, SnmpObjectsData.TaskInfo taskInfo)
         {
-            var parentJob = taskInfo.Parent;
+            var parentJob = taskInfo.ParentJob;
 
             // taskInfo.Oid = taskFolder;// todo. kls. feedback
 
@@ -1129,12 +1075,12 @@ namespace iba.Processing
                 @"For Condition task this means that the expression was successfully evaluated as TRUE or FALSE - both results are treated as success.",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(taskFolder , taskInfo.DurationOfLastExecution,
+            CreateUserValue(taskFolder , taskInfo.DurationOfLastExecutionInSec,
                 @"Duration of last execution",
                 @"Duration of the last task execution (in seconds).",
                 JobInfoItemRequested, parentJob);
 
-            CreateUserValue(taskFolder, taskInfo.MemoryUsedForLastExecution,
+            CreateUserValue(taskFolder, taskInfo.MemoryUsedForLastExecutionInMb,
                 @"Memory used for last execution", 
                 @"Amount of memory used during the last execution of the task (in megabytes). " +
                 @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., Condition, Report, Extract and some custom tasks.",
@@ -1365,9 +1311,10 @@ namespace iba.Processing
                     // TaskManager has updated driveInfo successfully 
                     // copy it to UA tree
 
-                    foreach (var xmv in driveInfo.Variables)
+                    foreach (var xmv in driveInfo.Children)
                     {
-                        NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+                        // todo. kls. 
+                        //NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
                     }
 
                     //NodeManager.SetValueScalar(driveInfo.Active.UaVar, driveInfo.Active.Value);
@@ -1390,7 +1337,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveKey}, {GetCurrentThreadString()}.");
+                        $"SNMP. Error acquiring lock when updating {driveInfo.ToString()/*todo*/}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -1452,7 +1399,7 @@ namespace iba.Processing
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
-                            string oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
+                            //string oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
                             //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
                             //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
                             //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
@@ -1528,7 +1475,7 @@ namespace iba.Processing
                 // ReSharper disable once InvertIf
                 if (ci != null)
                 {
-                    string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
+                    //string oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
 
                     //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
                     //IbaOpcUaServer.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);

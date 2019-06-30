@@ -71,7 +71,7 @@ namespace ibaOpcServer.IbaOpcUa
         protected override void OnBeforeDelete(ISystemContext context)
         {
             // take this into account in statistics
-            _mgr.Status.DecrementVarCounter();
+            _mgr?.Status?.DecrementVarCounter();
             
             // set this flag; it will be checked when user will try to monitor it
             IsDeleted = true;
