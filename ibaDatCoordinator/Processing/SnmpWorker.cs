@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
-using System.Xml.Schema;
 using iba.Data;
 using iba.Logging;
 using iba.Properties;
@@ -256,12 +255,12 @@ namespace iba.Processing
 
         public int LockTimeout { get; } = 50;
 
-        /// <summary> Data older than this will be trated as outdated. 
+        /// <summary> Data older than this will be treated as outdated. 
         /// When requested, such data will be refreshed first before sending via SNMP. </summary>
         public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
         /// <summary> Holds all data that is shown via SNMP. 
-        /// This data is in convenient structured format, and does not contain SNMP adresses (OIDs) explicitly.
+        /// This data is in convenient structured format, and does not contain SNMP addresses (OIDs) explicitly.
         /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
         /// </summary>
         internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData();
@@ -352,7 +351,7 @@ namespace iba.Processing
 
         public bool IsStructureValid
         {
-            get { return _isStructureValid; }
+            get => _isStructureValid;
             set
             {
                 // this implementation works properly if called from different threads
@@ -362,7 +361,7 @@ namespace iba.Processing
                 // stop current cycle
                 _treeValidatorTimer?.Stop();
 
-                // if sturcture is marked ivalid
+                // if structure is marked invalid
                 if (!value)
                 {
                     // schedule a delayed tree rebuild, 
@@ -683,8 +682,7 @@ namespace iba.Processing
             }
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        private bool RefreshGroup(SnmpObjectsData.ExtMonGroup xmGroup)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
@@ -698,91 +696,45 @@ namespace iba.Processing
                         return true; // data was updated
                     }
 
-                    if (driveInfo.IsUpToDate())
-                    {
-                        // data is fresh, no need to change something
-                        return false; // was not updated
-                    }
-
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
-                    {
-                        // should not happen
-                        // failed to update data
-                        // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Debug,
-                            "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; tree is marked invalid.");
-                        IsStructureValid = false;
-                        return false; // data was NOT updated
-                    }
-
-                    // TaskManager has updated driveInfo successfully 
-                    // copy it to snmp tree
-                    foreach (var xmv in driveInfo.GetFlatListOfAllVariables())
-                    {
-                        SetUserValue(xmv);
-                    }
-
-                    return true; // data was updated
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.Key}, {GetCurrentThreadString()}.");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-                return false; // data was NOT updated
-            }
-        }
-        
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
-        {
-            if (Monitor.TryEnter(LockObject, LockTimeout))
-            {
-                try
-                {
-                    if (RebuildTreeIfItIsInvalid())
-                    {
-                        // tree was rebuilt completely
-                        // no need to update some parts of it
-                        // just return right now
-                        return true; // data was updated
-                    }
-
-                    if (jobInfo.IsUpToDate())
+                    if (xmGroup.IsUpToDate())
                     {
                         // data is fresh, no need to change something
                         return false; // data was NOT updated
                     }
 
                     var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshJobInfo(jobInfo))
+
+                    bool bSuccess;
+                    switch (xmGroup)
+                    {
+                        case SnmpObjectsData.GlobalCleanupDriveInfo driveInfo:
+                            bSuccess = !man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
+                            break;
+                        case SnmpObjectsData.JobInfoBase jobInfo:
+                            bSuccess = !man.SnmpRefreshJobInfo(jobInfo);
+                            break;
+                        default:
+                            // should not happen
+                            Debug.Assert(false);
+                            bSuccess = false;
+                            break;
+                    }
+
+                    if (bSuccess)
                     {
                         // should not happen
                         // failed to update data
                         // rebuild the tree
                         LogData.Data.Logger.Log(Level.Debug,
-                            "SNMP. RefreshJobInfo(). Failed to refresh; tree is marked invalid.");
+                            $"SNMP. {nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
                         IsStructureValid = false;
+                        Debug.Assert(false);
                         return false; // data was NOT updated
                     }
 
                     // TaskManager has updated driveInfo successfully 
                     // copy it to snmp tree
-                    foreach (var xmv in jobInfo.GetFlatListOfAllVariables())
+                    foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
                         SetUserValue(xmv);
                     }
@@ -793,7 +745,7 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     LogData.Data.Logger.Log(Level.Exception,
-                        $"SNMP. Error during refreshing job {jobInfo.JobName.Value}. {ex.Message}.");
+                        $"SNMP. {nameof(RefreshGroup)}. Error during refreshing group {xmGroup.Caption}. {ex.Message}.");
                     return false; // was not updated
                 }
                 finally
@@ -808,7 +760,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {jobInfo.JobName}, {GetCurrentThreadString()}.");
+                        $"SNMP. {nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -845,19 +797,16 @@ namespace iba.Processing
         private void ProductSpecificItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            switch (args.Tag)
+            if (args.Tag is SnmpObjectsData.ExtMonGroup group)
             {
-                case SnmpObjectsData.GlobalCleanupDriveInfo driveInfo:
-                    RefreshGlobalCleanupDriveInfo(driveInfo);
-                    break;
-                case SnmpObjectsData.JobInfoBase jobInfo:
-                    RefreshJobInfo(jobInfo);
-                    break;
-                default:
-                    // should not happen
-                    Debug.Assert(false);
-                    args.Value = null;
-                    return;
+                RefreshGroup(group);
+            }
+            else
+            {
+                // should not happen
+                Debug.Assert(false);
+                args.Value = null;
+                return;
             }
 
             // re-read the value and send it back via args
@@ -939,8 +888,7 @@ namespace iba.Processing
 
                 foreach (var oid in nodesToExpand)
                 {
-                    SnmpTreeNodeTag tag;
-                    if (result.TryGetValue(oid, out tag))
+                    if (result.TryGetValue(oid, out SnmpTreeNodeTag tag))
                     {
                         tag.IsExpandedByDefault = true;
                     }
@@ -967,7 +915,7 @@ namespace iba.Processing
                 IbaSnmpOidMetadata metadata = IbaSnmp.GetOidMetadata(oid);
                 if (metadata == null)
                 {
-                    // this is inexisting node
+                    // this is nonexistent node
                     // leave all fields empty
                     return tag;
                 }
