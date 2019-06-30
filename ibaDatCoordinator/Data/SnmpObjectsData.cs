@@ -408,6 +408,24 @@ namespace iba.Data
                 return list;
             }
 
+            public List<ExtMonVariableBase> GetFlatListOfAllVariables()
+            {
+                var list = new List<ExtMonVariableBase>();
+                foreach (var child in Children)
+                {
+                    switch (child)
+                    {
+                        case ExtMonFolder folder:
+                            list.AddRange(folder.GetFlatListOfAllVariables());
+                            break;
+                        case ExtMonVariableBase variable:
+                            list.Add(variable);
+                            break;
+                    }
+                }
+                return list;
+            }
+
             /// <summary>
             /// // todo. kls. to comment
             /// Is used for "Big" folders - section roots.

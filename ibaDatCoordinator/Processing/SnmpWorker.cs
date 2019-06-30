@@ -495,7 +495,7 @@ namespace iba.Processing
                             BuildFolderRecursively(extMonFolder);
                             break;
                         case SnmpObjectsData.ExtMonVariableBase extMonVariableBase:
-                            CreateUserValue2(extMonVariableBase);
+                            CreateUserValue(extMonVariableBase);
                             break;
                         default:
                             continue;
@@ -511,25 +511,15 @@ namespace iba.Processing
         }
 
 
-
-
-        #region Oid metadata and CreateUserValue() overloads
-
+        #region SetOidMetadata and CreateUserValue() 
 
         private void SetOidMetadata(SnmpObjectsData.ExtMonFolder xmf)
         {
             Debug.Assert(xmf.SnmpFullOid != null);
-            Debug.Assert(xmf.SnmpFullOid == null || xmf.SnmpFullOid == xmf.SnmpFullOid);
-            SetOidMetadata(xmf.SnmpFullOid, xmf.Caption, xmf.SnmpFullMibName, xmf.Description);
+            IbaSnmp.SetUserOidMetadata(xmf.SnmpFullOid, xmf.SnmpFullMibName, xmf.Description, xmf.Caption);
         }
 
-        private void SetOidMetadata(IbaSnmpOid oidSuffix, string guiCaption, string mibName,
-            string mibDescription)
-        {
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
-        }
-
-        private static readonly Dictionary<Type, IbaSnmpValueType> _typeDict = new Dictionary<Type, IbaSnmpValueType>
+        private static readonly Dictionary<Type, IbaSnmpValueType> TYPE_DICT = new Dictionary<Type, IbaSnmpValueType>
         {
             {typeof(string), IbaSnmpValueType.String},
             {typeof(bool), IbaSnmpValueType.Bool},
@@ -547,14 +537,14 @@ namespace iba.Processing
 
         public IbaSnmpValueType GetSnmpType(object value)
         {
-            var type = _typeDict.TryGetValue(value.GetType(), out IbaSnmpValueType snmpType) ? snmpType : IbaSnmpValueType.Unknown;
+            var type = TYPE_DICT.TryGetValue(value.GetType(), out IbaSnmpValueType snmpType) ? snmpType : IbaSnmpValueType.Unknown;
             // handle a special case of possible different date formats
             if (type == IbaSnmpValueType.DateTimeStr && UseSnmpV2TcForStrings)
                 type = IbaSnmpValueType.DateTimeTc;
             return type;
         }
 
-        private void CreateUserValue2(SnmpObjectsData.ExtMonVariableBase xmv)
+        private void CreateUserValue(SnmpObjectsData.ExtMonVariableBase xmv)
         {
             Debug.Assert(xmv.Parent != null);
             Debug.Assert(xmv.SnmpFullOid != null);
@@ -582,63 +572,6 @@ namespace iba.Processing
             IbaSnmp.SetUserOidMetadata(xmv.SnmpFullOid, xmv.SnmpFullMibName, xmv.Description, xmv.Caption);
         }
 
-        //private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
-        //    string caption, string mibName = null, string mibDescription = null,
-        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-        //    object tag = null)
-        //{
-        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        //}
-
-        //private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
-        //    string caption, string mibName = null, string mibDescription = null,
-        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-        //    object tag = null)
-        //{
-        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        //}
-
-        //// ReSharper disable once UnusedMember.Local
-        //private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
-        //    string caption, string mibName = null, string mibDescription = null,
-        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-        //    object tag = null)
-        //{
-        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        //}
-
-        //private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
-        //    string caption, string mibName = null, string mibDescription = null,
-        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-        //    object tag = null)
-        //{
-        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        //}
-
-        //private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
-        //    string caption, string mibName = null, string mibDescription = null,
-        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-        //    object tag = null)
-        //{
-        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue,
-        //        UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
-        //        null, null, handler, tag);
-        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        //}
-
-        private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
         #endregion
 
 
@@ -646,6 +579,53 @@ namespace iba.Processing
 
 
         #region Value-Refresh functions  
+
+        private void SetUserValue(SnmpObjectsData.ExtMonVariableBase xmv)
+        {
+            // IbaSnmp does not have untyped version of SetUserValue(),
+            // so we have to use some workaround here.
+            // Either "type dictionary + delegate wrapping" or "switch-case".
+            // Since we have mainly only FOUR types (str, DateTime, bool, uint) in use
+            // in our current implementation, it's more efficient to use "switch-case". 
+
+            switch (xmv.ObjValue)
+            {
+                case string val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case uint val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case bool val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case DateTime val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case SnmpObjectsData.JobStatus _:
+                case TaskWithTargetDirData.OutputLimitChoiceEnum _:
+                    // ReSharper disable once PossibleInvalidCastException
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, (int)xmv.ObjValue);
+                    break;
+
+                // other types (below) are not used in current implementations
+                // and stand here for possible future additions.
+
+                case int val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case float val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case double val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                default:
+                    // should not happen
+                    Debug.Assert(false);
+                    break;
+            }
+        }
 
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshLicenseInfo()
@@ -738,16 +718,10 @@ namespace iba.Processing
 
                     // TaskManager has updated driveInfo successfully 
                     // copy it to snmp tree
-
-                    IbaSnmpOid oidDrive = driveInfo.SnmpFullOid;
-
-                    // todo. kls. simplify calls
-                    IbaSnmp.SetUserValue(driveInfo.DriveName.SnmpFullOid, driveInfo.DriveName.Value);
-                    IbaSnmp.SetUserValue(driveInfo.Active.SnmpFullOid, driveInfo.Active.Value); 
-                    IbaSnmp.SetUserValue(driveInfo.SizeInMb.SnmpFullOid, driveInfo.SizeInMb.Value);
-                    IbaSnmp.SetUserValue(driveInfo.CurrentFreeSpaceInMb.SnmpFullOid, driveInfo.CurrentFreeSpaceInMb.Value);
-                    IbaSnmp.SetUserValue(driveInfo.MinFreeSpaceInPercent.SnmpFullOid, driveInfo.MinFreeSpaceInPercent.Value);
-                    IbaSnmp.SetUserValue(driveInfo.RescanTime.SnmpFullOid, driveInfo.RescanTime.Value);
+                    foreach (var xmv in driveInfo.GetFlatListOfAllVariables())
+                    {
+                        SetUserValue(xmv);
+                    }
 
                     return true; // data was updated
                 }
@@ -772,7 +746,7 @@ namespace iba.Processing
                 return false; // data was NOT updated
             }
         }
-
+        
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
         {
@@ -806,67 +780,14 @@ namespace iba.Processing
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated info successfully 
+                    // TaskManager has updated driveInfo successfully 
                     // copy it to snmp tree
-
-                    IbaSnmpOid oidJobGen = jobInfo.FolderGeneral.SnmpFullOid;
-
-                    IbaSnmp.SetUserValue(jobInfo.JobName.SnmpFullOid, jobInfo.JobName.Value);
-                    //IbaSnmp.SetUserValue(jobInfo.Status.SnmpFullOid, (int)jobInfo.Status.Value); // todo. kls. enum
-                    IbaSnmp.SetUserValue(jobInfo.TodoCount.SnmpFullOid, jobInfo.TodoCount.Value);
-                    IbaSnmp.SetUserValue(jobInfo.DoneCount.SnmpFullOid, jobInfo.DoneCount.Value);
-                    IbaSnmp.SetUserValue(jobInfo.FailedCount.SnmpFullOid, jobInfo.FailedCount.Value);
-
-                    //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
-                    //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int) jobInfo.Status);
-                    //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount);
-                    //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount);
-                    //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount);
-
-                    var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
-                    var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
-                    var otJi = jobInfo as SnmpObjectsData.OneTimeJobInfo;
-                    var evtJi = jobInfo as SnmpObjectsData.EventBasedJobInfo;
-                    if (stdJi != null)
+                    foreach (var xmv in jobInfo.GetFlatListOfAllVariables())
                     {
-                        // todo. kls. 
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
-                        //IbaSnmpOid oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                        //IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
-                        //IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
-                        //IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
-                    }
-                    else if (schJi != null)
-                    {
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
-                    }
-                    else if (otJi != null)
-                    {
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
-                    }
-                    else if (evtJi != null)
-                    {
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
-                        //IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
-                    }
-                    else
-                    {
-                        // should not happen
-                        throw new Exception($"Unknown job type {jobInfo}");
+                        SetUserValue(xmv);
                     }
 
-                    // refresh tasks
-                    foreach (var taskInfo in jobInfo.Tasks)
-                    {
-                        RefreshTaskInfo(taskInfo);
-                    }
+
                     return true; // was updated
                 }
                 catch (Exception ex)
@@ -896,43 +817,7 @@ namespace iba.Processing
                 return false; // was not updated
             }
         }
-
-        private void RefreshTaskInfo(SnmpObjectsData.TaskInfo taskInfo)
-        {
-            IbaSnmpOid oidTask = taskInfo.SnmpFullOid;
-
-            try
-            {
-                IbaSnmp.SetUserValue(taskInfo.TaskName.SnmpFullOid, taskInfo.TaskName.Value);
-                IbaSnmp.SetUserValue(taskInfo.TaskType.SnmpFullOid, taskInfo.TaskType.Value);
-                IbaSnmp.SetUserValue(taskInfo.Success.SnmpFullOid, taskInfo.Success.Value);
-                IbaSnmp.SetUserValue(taskInfo.DurationOfLastExecutionInSec.SnmpFullOid, taskInfo.DurationOfLastExecutionInSec.Value);
-                IbaSnmp.SetUserValue(taskInfo.MemoryUsedForLastExecutionInMb.SnmpFullOid, taskInfo.MemoryUsedForLastExecutionInMb.Value);
-                //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
-                //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
-                //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecutionInSec);
-                //IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecutionInMb);
-
-                return; // todo. kls. 
-                var ci = taskInfo.CleanupInfo;
-                // ReSharper disable once InvertIf
-                if (ci != null)
-                {
-                    //IbaSnmpOid oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
-
-                    //IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
-                    //IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);
-                    //IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace);
-                    //IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception,
-                    $"SNMP. Error during refreshing task {taskInfo.TaskName.Value}. {ex.Message}.");
-            }
-        }
-
+        
         #endregion
 
 
@@ -957,37 +842,16 @@ namespace iba.Processing
             }
         }
 
-        //private void GlobalCleanupDriveInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
-        //{
-        //    var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
-
-        //    if (driveInfo == null)
-        //    {
-        //        // should not happen
-        //        args.Value = null;
-        //        return;
-        //    }
-
-        //    // refresh data if it is too old (or rebuild the whole tree if necessary)
-        //    RefreshGlobalCleanupDriveInfo(driveInfo);
-
-        //    // re-read the value and send it back via args
-        //    // (we should do re-read independently on whether above call to RefreshXxx()
-        //    // had updated the value or not, because the value could be updated meanwhile by a similar call
-        //    // in another thread if multiple values are requested)
-        //    args.Value = args.IbaSnmp.GetValue(args.Oid);
-        //}
-
         private void ProductSpecificItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
             // refresh data if it is too old (or rebuild the whole tree if necessary)
             switch (args.Tag)
             {
-                case SnmpObjectsData.JobInfoBase jobInfo:
-                    RefreshJobInfo(jobInfo);
-                    break;
                 case SnmpObjectsData.GlobalCleanupDriveInfo driveInfo:
                     RefreshGlobalCleanupDriveInfo(driveInfo);
+                    break;
+                case SnmpObjectsData.JobInfoBase jobInfo:
+                    RefreshJobInfo(jobInfo);
                     break;
                 default:
                     // should not happen
