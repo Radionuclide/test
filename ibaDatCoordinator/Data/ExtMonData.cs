@@ -189,6 +189,8 @@ namespace iba.Data
 
             // todo. kls. check tree structure (parent-child cross ref)
 
+            // todo. kls. check double-lists
+
             // get list of all nodes
             var children = GetFlatListOfAllChildren();
 
@@ -197,14 +199,21 @@ namespace iba.Data
 
             foreach (var child in children)
             {
-                // check OIDs uniqueness
                 var oid = child.SnmpFullOid;
+
+                // OID should not be too short, and should not end with 0
+                if (oid == null || oid.Count < 2 || oid.GetLeastSignificantSubId() == 0)
+                    return false;
+                // check OIDs uniqueness
                 if (oids.Contains(oid))
                     return false;
                 oids.Add(oid);
 
-                // check mib name uniqueness
                 var mibName = child.SnmpFullMibName;
+                // mib name should not be null or whitespace
+                if (string.IsNullOrWhiteSpace(mibName))
+                    return false;
+                // check mib name uniqueness
                 if (mibNames.Contains(mibName))
                     return false;
                 mibNames.Add(mibName);
