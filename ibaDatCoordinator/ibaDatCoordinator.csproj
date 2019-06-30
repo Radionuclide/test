@@ -228,7 +228,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
-    <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="Data\ExtMonData.cs" />
     <Compile Include="IbaOpcUa\DataTypeDitionaryUaAndVe.cs" />
     <Compile Include="IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="IbaOpcUa\ibaOpcUaUserAccount.cs" />

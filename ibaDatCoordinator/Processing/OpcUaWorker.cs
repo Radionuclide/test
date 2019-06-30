@@ -224,7 +224,7 @@ namespace iba.Processing
             RestartServer();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            SnmpObjectsData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+            ExtMonData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
             _treeValidatorTimer = new System.Timers.Timer
@@ -456,7 +456,7 @@ namespace iba.Processing
         /// This data is in convenient structured format, and does not contain SNMP adresses (OIDs) explicitly.
         /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
         /// </summary>
-        internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData(); // odo share data with SNMP?
+        internal ExtMonData ObjectsData { get; } = new ExtMonData(); // odo share data with SNMP?
 
         #region register enums
 
@@ -749,7 +749,7 @@ namespace iba.Processing
             {
                 try
                 {
-                    SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
+                    ExtMonData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
 
 
                     //string mibNameJob = $@"standardJob{oidJob}";
@@ -959,7 +959,7 @@ namespace iba.Processing
         private void BuildCommonGeneralJobSubsection(
             object oidJob, out string oidJobGen,
             string mibNameJob, out string mibNameJobGen,
-            SnmpObjectsData.JobInfoBase jobInfo)
+            ExtMonData.JobInfoBase jobInfo)
         {
             oidJobGen = null;
             mibNameJobGen = null;
@@ -968,7 +968,7 @@ namespace iba.Processing
         /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
         private void BuildCommonGeneralJobSubsection(
             FolderState jobFolder, out FolderState jobGeneralFolder,
-            SnmpObjectsData.JobInfoBase jobInfo)
+            ExtMonData.JobInfoBase jobInfo)
         {
 
             //jobInfo.Oid = oidJob; // todo. kls. set feedback here
@@ -1012,7 +1012,7 @@ namespace iba.Processing
 
         #region Tasks subtrees
 
-        private void BuildTasks(FolderState jobFolder, SnmpObjectsData.JobInfoBase jobInfo)
+        private void BuildTasks(FolderState jobFolder, ExtMonData.JobInfoBase jobInfo)
         {
             var tasks = jobInfo?.Tasks;
             if (tasks == null)
@@ -1026,7 +1026,7 @@ namespace iba.Processing
 
             for (int i = 0; i < tasks.Count; i++)
             {
-                SnmpObjectsData.TaskInfo taskInfo = tasks[i];
+                ExtMonData.TaskInfo taskInfo = tasks[i];
 
                 uint i1 = (uint)(i + 1); // index for mib
 
@@ -1051,7 +1051,7 @@ namespace iba.Processing
             }
         }
 
-        private void BuildTask(FolderState taskFolder, SnmpObjectsData.TaskInfo taskInfo)
+        private void BuildTask(FolderState taskFolder, ExtMonData.TaskInfo taskInfo)
         {
             var parentJob = taskInfo.ParentJob;
 
@@ -1147,7 +1147,7 @@ namespace iba.Processing
             return iv;
         }
 
-        private IbaOpcUaVariable CreateUserValue2(FolderState parent, SnmpObjectsData.ExtMonVariableBase xmv, 
+        private IbaOpcUaVariable CreateUserValue2(FolderState parent, ExtMonData.ExtMonVariableBase xmv, 
             EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null)
         {
             IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, xmv.ObjValue, xmv.Caption, xmv.Description);
@@ -1276,7 +1276,7 @@ namespace iba.Processing
         }
 
         // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        private bool RefreshGlobalCleanupDriveInfo(ExtMonData.GlobalCleanupDriveInfo driveInfo)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
@@ -1348,7 +1348,7 @@ namespace iba.Processing
         }
 
         // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        private bool RefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
@@ -1393,7 +1393,7 @@ namespace iba.Processing
 
                     switch (jobInfo)
                     {
-                        case SnmpObjectsData.StandardJobInfo stdJi:
+                        case ExtMonData.StandardJobInfo stdJi:
                         {
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
@@ -1405,16 +1405,16 @@ namespace iba.Processing
                             //IbaOpcUaServer.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
                             break;
                         }
-                        case SnmpObjectsData.ScheduledJobInfo schJi:
+                        case ExtMonData.ScheduledJobInfo schJi:
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
                             break;
-                        case SnmpObjectsData.OneTimeJobInfo otJi:
+                        case ExtMonData.OneTimeJobInfo otJi:
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
                             break;
-                        case SnmpObjectsData.EventBasedJobInfo evtJi:
+                        case ExtMonData.EventBasedJobInfo evtJi:
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
                             //IbaOpcUaServer.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
@@ -1459,7 +1459,7 @@ namespace iba.Processing
             }
         }
 
-        private void RefreshTaskInfo(SnmpObjectsData.TaskInfo taskInfo)
+        private void RefreshTaskInfo(ExtMonData.TaskInfo taskInfo)
         {
             string oidTask = "";// taskInfo.Oid;
 
@@ -1516,7 +1516,7 @@ namespace iba.Processing
 
         private void GlobalCleanupDriveInfoItemRequested(object sender, IbaOpcUaObjectValueRequestedEventArgs args)
         {
-            var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
+            var driveInfo = args.Tag as ExtMonData.GlobalCleanupDriveInfo;
 
             if (driveInfo == null)
             {
@@ -1538,7 +1538,7 @@ namespace iba.Processing
             NodeState node, NumericRange indexrange, QualifiedName dataencoding, ref object value, ref StatusCode statuscode, ref DateTime timestamp)
         {
             if (!(node is IbaOpcUaVariable iv) /*we handle only iba variables here*/|| 
-                !(iv.ExtMonVar.Parent is SnmpObjectsData.GlobalCleanupDriveInfo driveInfo))
+                !(iv.ExtMonVar.Parent is ExtMonData.GlobalCleanupDriveInfo driveInfo))
             {
                 value = null;
                 statuscode = StatusCodes.Bad;

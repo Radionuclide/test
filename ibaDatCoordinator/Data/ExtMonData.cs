@@ -8,10 +8,12 @@ using IbaSnmpLib;
 namespace iba.Data
 {
     /// <summary>
-    /// Is used for transferring information about all SNMP-visible objects between
-    /// TaskManager and SnmpWorker.
+    /// External Monitoring Data.
+    /// Contains all data that can be monitored from outside of DatCoordinator - via SNMP or OPC UA.
+    /// Is used as a middle layer between: TaskManager on the one side
+    /// and SnmpWorker or OpcUaWorker on the other side.
     /// </summary>
-    internal class SnmpObjectsData 
+    internal class ExtMonData 
     {
         #region Body
         
@@ -60,7 +62,7 @@ namespace iba.Data
 
         #region Construction and Reset
 
-        public SnmpObjectsData()
+        public ExtMonData()
         {
             FolderRoot = new ExtMonFolder(null, 0, @"Root", @"Root", @"Root")
             { SnmpFullMibName = "Root" };

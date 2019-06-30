@@ -503,7 +503,7 @@ namespace iba.Processing
 
         #region Internal Server functions
 
-        internal bool SnmpRefreshLicenseInfo(SnmpObjectsData.LicenseInfo licenseInfo)
+        internal bool SnmpRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
             licenseInfo.Reset();
 
@@ -532,7 +532,7 @@ namespace iba.Processing
             return true;
         }
 
-        internal bool SnmpRefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        internal bool SnmpRefreshGlobalCleanupDriveInfo(ExtMonData.GlobalCleanupDriveInfo driveInfo)
         {
             // reset values for the case of an update error
             driveInfo.Reset();
@@ -567,7 +567,7 @@ namespace iba.Processing
         }
 
         private void SnmpRefreshGlobalCleanupDriveInfo(
-            SnmpObjectsData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
+            ExtMonData.GlobalCleanupDriveInfo driveInfo, GlobalCleanupData gcData)
         {
             driveInfo.Reset();
 
@@ -590,7 +590,7 @@ namespace iba.Processing
             driveInfo.PutTimeStamp();
         }
 
-        internal bool SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
+        internal bool SnmpRefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
         {
             jobInfo.Reset();
 
@@ -630,26 +630,26 @@ namespace iba.Processing
             return false; // failed to update
         }
 
-        private void SnmpRefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo, ConfigurationData cfg)
+        private void SnmpRefreshJobInfo(ExtMonData.JobInfoBase jobInfo, ConfigurationData cfg)
         {
             switch (jobInfo)
             {
-                case SnmpObjectsData.StandardJobInfo stdJobInfo:
+                case ExtMonData.StandardJobInfo stdJobInfo:
                     SnmpRefreshStandardJobInfo(stdJobInfo, cfg);
                     break;
-                case SnmpObjectsData.ScheduledJobInfo schJobInfo:
+                case ExtMonData.ScheduledJobInfo schJobInfo:
                     SnmpRefreshScheduledJobInfo(schJobInfo, cfg);
                     break;
-                case SnmpObjectsData.OneTimeJobInfo otJobInfo:
+                case ExtMonData.OneTimeJobInfo otJobInfo:
                     SnmpRefreshOneTimeJobInfo(otJobInfo, cfg);
                     break;
-                case SnmpObjectsData.EventBasedJobInfo ebJobInfo:
+                case ExtMonData.EventBasedJobInfo ebJobInfo:
                     SnmpRefreshEventJobInfo(ebJobInfo, cfg);
                     break;
             }
         }
 
-        private void SnmpRefreshStandardJobInfo(SnmpObjectsData.StandardJobInfo jobInfo, ConfigurationData cfg)
+        private void SnmpRefreshStandardJobInfo(ExtMonData.StandardJobInfo jobInfo, ConfigurationData cfg)
         {
             Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.DatTriggered);
             jobInfo.Reset();
@@ -678,7 +678,7 @@ namespace iba.Processing
             }
         }
 
-        private void SnmpRefreshScheduledJobInfo(SnmpObjectsData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
+        private void SnmpRefreshScheduledJobInfo(ExtMonData.ScheduledJobInfo jobInfo, ConfigurationData cfg)
         {
             Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.Scheduled);
             jobInfo.Reset();
@@ -704,7 +704,7 @@ namespace iba.Processing
 
         }
         
-        private void SnmpRefreshOneTimeJobInfo(SnmpObjectsData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
+        private void SnmpRefreshOneTimeJobInfo(ExtMonData.OneTimeJobInfo jobInfo, ConfigurationData cfg)
         {
             Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.OneTime);
             jobInfo.Reset();
@@ -727,7 +727,7 @@ namespace iba.Processing
 
         }
 
-        private void SnmpRefreshEventJobInfo(SnmpObjectsData.EventBasedJobInfo jobInfo, ConfigurationData cfg)
+        private void SnmpRefreshEventJobInfo(ExtMonData.EventBasedJobInfo jobInfo, ConfigurationData cfg)
         {
             Debug.Assert(cfg.JobType == ConfigurationData.JobTypeEnum.Event);
             jobInfo.Reset();
@@ -752,15 +752,15 @@ namespace iba.Processing
 
         }
 
-        private void SnmpRefreshJobInfoBase(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
+        private void SnmpRefreshJobInfoBase(ExtMonData.JobInfoBase ji, ConfigurationWorker worker, StatusData s)
         {
             var cfg = s.CorrConfigurationData;
             ji.JobName.Value = cfg.Name;
             ji.Status.Value = !cfg.Enabled ?
-                SnmpObjectsData.JobStatus.Disabled :
+                ExtMonData.JobStatus.Disabled :
                 (s.Started ?
-                    SnmpObjectsData.JobStatus.Started :
-                    SnmpObjectsData.JobStatus.Stopped);
+                    ExtMonData.JobStatus.Started :
+                    ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
@@ -769,18 +769,18 @@ namespace iba.Processing
             SnmpRefreshTasks(ji, worker, s);
         }
 
-        private void SnmpRefreshTasks(SnmpObjectsData.JobInfoBase ji, ConfigurationWorker worker, StatusData statusData)
+        private void SnmpRefreshTasks(ExtMonData.JobInfoBase ji, ConfigurationWorker worker, StatusData statusData)
         {
             var cfg = statusData.CorrConfigurationData;
 
             // on first call for the job create a list first
             if (ji.Tasks == null)
             {
-                ji.Tasks = new List<SnmpObjectsData.TaskInfo>();
+                ji.Tasks = new List<ExtMonData.TaskInfo>();
 
                 for (int i = 0; i < cfg.Tasks.Count; i++)
                 {
-                    SnmpObjectsData.AddNewTask(ji, cfg.Tasks[i].Name);
+                    ExtMonData.AddNewTask(ji, cfg.Tasks[i].Name);
                 }
             }
 
@@ -920,7 +920,7 @@ namespace iba.Processing
             }
         }
 
-        internal bool SnmpRebuildObjectsData(SnmpObjectsData od)
+        internal bool SnmpRebuildObjectsData(ExtMonData od)
         {
             try
             {

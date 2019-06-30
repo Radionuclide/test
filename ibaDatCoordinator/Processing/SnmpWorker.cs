@@ -87,7 +87,7 @@ namespace iba.Processing
             RestartAgent();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            SnmpObjectsData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+            ExtMonData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
             _treeValidatorTimer = new Timer
@@ -263,7 +263,7 @@ namespace iba.Processing
         /// This data is in convenient structured format, and does not contain SNMP addresses (OIDs) explicitly.
         /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
         /// </summary>
-        internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData();
+        internal ExtMonData ObjectsData { get; } = new ExtMonData();
 
         #region register enums
 
@@ -276,9 +276,9 @@ namespace iba.Processing
                 "JobStatus", "Current status of the job (started, stopped or disabled)",
                 new Dictionary<int, string>
                 {
-                    {(int) SnmpObjectsData.JobStatus.Disabled, "disabled"},
-                    {(int) SnmpObjectsData.JobStatus.Started, "started"},
-                    {(int) SnmpObjectsData.JobStatus.Stopped, "stopped"}
+                    {(int) ExtMonData.JobStatus.Disabled, "disabled"},
+                    {(int) ExtMonData.JobStatus.Started, "started"},
+                    {(int) ExtMonData.JobStatus.Stopped, "stopped"}
                 }
             );
 
@@ -481,7 +481,7 @@ namespace iba.Processing
             }
         }
 
-        private void BuildFolderRecursively(SnmpObjectsData.ExtMonFolder startingFolder)
+        private void BuildFolderRecursively(ExtMonData.ExtMonFolder startingFolder)
         {
             try
             {
@@ -490,10 +490,10 @@ namespace iba.Processing
                 {
                     switch (node)
                     {
-                        case SnmpObjectsData.ExtMonFolder extMonFolder:
+                        case ExtMonData.ExtMonFolder extMonFolder:
                             BuildFolderRecursively(extMonFolder);
                             break;
-                        case SnmpObjectsData.ExtMonVariableBase extMonVariableBase:
+                        case ExtMonData.ExtMonVariableBase extMonVariableBase:
                             CreateUserValue(extMonVariableBase);
                             break;
                         default:
@@ -512,7 +512,7 @@ namespace iba.Processing
 
         #region SetOidMetadata and CreateUserValue() 
 
-        private void SetOidMetadata(SnmpObjectsData.ExtMonFolder xmf)
+        private void SetOidMetadata(ExtMonData.ExtMonFolder xmf)
         {
             Debug.Assert(xmf.SnmpFullOid != null);
             IbaSnmp.SetUserOidMetadata(xmf.SnmpFullOid, xmf.SnmpFullMibName, xmf.Description, xmf.Caption);
@@ -543,7 +543,7 @@ namespace iba.Processing
             return type;
         }
 
-        private void CreateUserValue(SnmpObjectsData.ExtMonVariableBase xmv)
+        private void CreateUserValue(ExtMonData.ExtMonVariableBase xmv)
         {
             Debug.Assert(xmv.Parent != null);
             Debug.Assert(xmv.SnmpFullOid != null);
@@ -552,8 +552,8 @@ namespace iba.Processing
             if (xmv.ObjValue.GetType().IsEnum)
             {   
                 //enum
-                Debug.Assert(xmv.ObjValue is SnmpObjectsData.JobStatus || xmv.ObjValue is TaskWithTargetDirData.OutputLimitChoiceEnum);
-                type = xmv.ObjValue is SnmpObjectsData.JobStatus ? _enumJobStatus : _enumCleanupType;
+                Debug.Assert(xmv.ObjValue is ExtMonData.JobStatus || xmv.ObjValue is TaskWithTargetDirData.OutputLimitChoiceEnum);
+                type = xmv.ObjValue is ExtMonData.JobStatus ? _enumJobStatus : _enumCleanupType;
 
                 IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
                     ProductSpecificItemRequested, xmv.GetGroup() );
@@ -579,7 +579,7 @@ namespace iba.Processing
 
         #region Value-Refresh functions  
 
-        private void SetUserValue(SnmpObjectsData.ExtMonVariableBase xmv)
+        private void SetUserValue(ExtMonData.ExtMonVariableBase xmv)
         {
             // IbaSnmp does not have untyped version of SetUserValue(),
             // so we have to use some workaround here.
@@ -601,7 +601,7 @@ namespace iba.Processing
                 case DateTime val:
                     IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
                     break;
-                case SnmpObjectsData.JobStatus _:
+                case ExtMonData.JobStatus _:
                 case TaskWithTargetDirData.OutputLimitChoiceEnum _:
                     // ReSharper disable once PossibleInvalidCastException
                     IbaSnmp.SetUserValue(xmv.SnmpFullOid, (int)xmv.ObjValue);
@@ -682,7 +682,7 @@ namespace iba.Processing
             }
         }
 
-        private bool RefreshGroup(SnmpObjectsData.ExtMonGroup xmGroup)
+        private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
@@ -707,11 +707,11 @@ namespace iba.Processing
                     bool bSuccess;
                     switch (xmGroup)
                     {
-                        case SnmpObjectsData.GlobalCleanupDriveInfo driveInfo:
-                            bSuccess = !man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
+                        case ExtMonData.GlobalCleanupDriveInfo driveInfo:
+                            bSuccess = man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
                             break;
-                        case SnmpObjectsData.JobInfoBase jobInfo:
-                            bSuccess = !man.SnmpRefreshJobInfo(jobInfo);
+                        case ExtMonData.JobInfoBase jobInfo:
+                            bSuccess = man.SnmpRefreshJobInfo(jobInfo);
                             break;
                         default:
                             // should not happen
@@ -720,7 +720,7 @@ namespace iba.Processing
                             break;
                     }
 
-                    if (bSuccess)
+                    if (!bSuccess)
                     {
                         // should not happen
                         // failed to update data
@@ -797,7 +797,7 @@ namespace iba.Processing
         private void ProductSpecificItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            if (args.Tag is SnmpObjectsData.ExtMonGroup group)
+            if (args.Tag is ExtMonData.ExtMonGroup group)
             {
                 RefreshGroup(group);
             }
