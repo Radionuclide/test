@@ -559,64 +559,76 @@ namespace iba.Processing
             Debug.Assert(xmv.Parent != null);
             Debug.Assert(xmv.SnmpFullOid != null);
 
+            IbaSnmpValueType type;
             if (xmv.ObjValue.GetType().IsEnum)
-                return; // todo. kls. enum
+            {   
+                //enum
+                Debug.Assert(xmv.ObjValue is SnmpObjectsData.JobStatus || xmv.ObjValue is TaskWithTargetDirData.OutputLimitChoiceEnum);
+                type = xmv.ObjValue is SnmpObjectsData.JobStatus ? _enumJobStatus : _enumCleanupType;
 
-            IbaSnmpValueType type = GetSnmpType(xmv.ObjValue);
-            Debug.Assert(type != IbaSnmpValueType.Unknown);
+                IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
+                    ProductSpecificItemRequested, xmv.GetGroup() );
 
-            IbaSnmp.CreateUserValue(xmv.SnmpFullOid, xmv.ObjValue, type, null, null,
-                ProductSpecificItemRequested, xmv.GetGroup() /*// todo. kls. test*/);
+            }
+            else // simple types
+            {
+                type = GetSnmpType(xmv.ObjValue);
+                Debug.Assert(type != IbaSnmpValueType.Unknown);
+
+                IbaSnmp.CreateUserValue(xmv.SnmpFullOid, xmv.ObjValue, type, null, null,
+                    ProductSpecificItemRequested, xmv.GetGroup() );
+            }
+
             IbaSnmp.SetUserOidMetadata(xmv.SnmpFullOid, xmv.SnmpFullMibName, xmv.Description, xmv.Caption);
         }
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
+        //private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
+        //    string caption, string mibName = null, string mibDescription = null,
+        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+        //    object tag = null)
+        //{
+        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+        //}
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
+        //private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
+        //    string caption, string mibName = null, string mibDescription = null,
+        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+        //    object tag = null)
+        //{
+        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+        //}
 
-        // ReSharper disable once UnusedMember.Local
-        private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
+        //// ReSharper disable once UnusedMember.Local
+        //private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
+        //    string caption, string mibName = null, string mibDescription = null,
+        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+        //    object tag = null)
+        //{
+        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+        //}
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
+        //private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
+        //    string caption, string mibName = null, string mibDescription = null,
+        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+        //    object tag = null)
+        //{
+        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
+        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+        //}
 
-        private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue,
-                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
-                null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
+        //private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
+        //    string caption, string mibName = null, string mibDescription = null,
+        //    EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
+        //    object tag = null)
+        //{
+        //    IbaSnmp.CreateUserValue(oidSuffix, initialValue,
+        //        UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
+        //        null, null, handler, tag);
+        //    IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
+        //}
 
         private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
