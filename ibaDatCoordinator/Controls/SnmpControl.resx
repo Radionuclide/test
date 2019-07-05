@@ -207,6 +207,9 @@
   <data name="buttonClearClients.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="buttonClearClients.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="buttonClearClients.Location" type="System.Drawing.Point, System.Drawing">
     <value>483, 45</value>
   </data>
@@ -234,6 +237,9 @@
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 22</value>
   </data>
@@ -260,6 +266,9 @@
   </data>
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 50</value>
@@ -307,7 +316,7 @@
     <value>gbDiagnostics</value>
   </data>
   <data name="&gt;&gt;gbDiagnostics.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbDiagnostics.Parent" xml:space="preserve">
     <value>$this</value>
@@ -354,6 +363,9 @@
   <data name="labelObjType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="labelObjType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="labelObjType.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 58</value>
   </data>
@@ -380,6 +392,9 @@
   </data>
   <data name="labelObjOid.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="labelObjOid.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="labelObjOid.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 6</value>
@@ -434,6 +449,9 @@
   </data>
   <data name="labelObjValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="labelObjValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="labelObjValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 32</value>
@@ -501,6 +519,9 @@
   <data name="LabObjMibDescription.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="LabObjMibDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="LabObjMibDescription.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 39</value>
   </data>
@@ -528,6 +549,9 @@ Description:</value>
   </data>
   <data name="labelObjMibName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="labelObjMibName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="labelObjMibName.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 6</value>
@@ -640,6 +664,9 @@ Description:</value>
   <data name="buttonCreateMibFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="buttonCreateMibFiles.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="buttonCreateMibFiles.Location" type="System.Drawing.Point, System.Drawing">
     <value>514, 17</value>
   </data>
@@ -672,16 +699,6 @@ Description:</value>
   </data>
   <data name="tvObjects.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>15, 3, 15, 3</value>
-  </data>
-  <data name="tvObjects.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAEVGV4dAtUb29sVGlwVGV4dAROYW1lCUlzQ2hlY2tl
-        ZApJbWFnZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNo
-        aWxkQ291bnQBAQEAAAEAAQABCAgIAgAAAAYDAAAABFJvb3QGBAAAAAAGBQAAAAhOb2RlUm9vdAD/////
-        CQQAAAD/////CQQAAAAAAAAACw==
-</value>
   </data>
   <data name="tvObjects.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 300</value>
@@ -720,7 +737,7 @@ Description:</value>
     <value>gbObjects</value>
   </data>
   <data name="&gt;&gt;gbObjects.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbObjects.Parent" xml:space="preserve">
     <value>$this</value>
@@ -733,6 +750,9 @@ Description:</value>
   </data>
   <data name="rbDateTimeStr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="rbDateTimeStr.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="rbDateTimeStr.Location" type="System.Drawing.Point, System.Drawing">
     <value>257, 209</value>
@@ -761,6 +781,9 @@ Description:</value>
   <data name="rbDateTimeTc.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="rbDateTimeTc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="rbDateTimeTc.Location" type="System.Drawing.Point, System.Drawing">
     <value>36, 209</value>
   </data>
@@ -787,6 +810,9 @@ Description:</value>
   </data>
   <data name="cbEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="cbEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 19</value>
@@ -815,6 +841,9 @@ Description:</value>
   <data name="buttonConfigurationReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="buttonConfigurationReset.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="buttonConfigurationReset.Location" type="System.Drawing.Point, System.Drawing">
     <value>516, 205</value>
   </data>
@@ -841,6 +870,9 @@ Description:</value>
   </data>
   <data name="buttonConfigurationApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="buttonConfigurationApply.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="buttonConfigurationApply.Location" type="System.Drawing.Point, System.Drawing">
     <value>597, 205</value>
@@ -872,6 +904,9 @@ Description:</value>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>138, 20</value>
   </data>
@@ -898,6 +933,9 @@ Description:</value>
   </data>
   <data name="buttonShowPassword.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial Narrow, 8.25pt</value>
+  </data>
+  <data name="buttonShowPassword.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="buttonShowPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>649, 128</value>
@@ -926,6 +964,9 @@ Description:</value>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 59</value>
   </data>
@@ -953,6 +994,9 @@ Description:</value>
   <data name="buttonShowEncryptionKey.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial Narrow, 8.25pt</value>
   </data>
+  <data name="buttonShowEncryptionKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="buttonShowEncryptionKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>448, 153</value>
   </data>
@@ -976,6 +1020,9 @@ Description:</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 81</value>
@@ -1034,6 +1081,9 @@ Description:</value>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 111</value>
   </data>
@@ -1088,6 +1138,9 @@ Description:</value>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 133</value>
   </data>
@@ -1139,6 +1192,9 @@ Description:</value>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 185</value>
   </data>
@@ -1165,6 +1221,9 @@ Description:</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 159</value>
@@ -1217,6 +1276,9 @@ Description:</value>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 133</value>
   </data>
@@ -1264,6 +1326,9 @@ Description:</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 159</value>
@@ -1318,6 +1383,9 @@ Description:</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>483, 133</value>
@@ -1383,7 +1451,7 @@ Description:</value>
     <value>gbConfiguration</value>
   </data>
   <data name="&gt;&gt;gbConfiguration.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbConfiguration.Parent" xml:space="preserve">
     <value>$this</value>

@@ -91,11 +91,11 @@ namespace iba.Controls
                 // read from data to controls
                 ConfigurationFromDataToControls();
 
-                //// force rebuild snmpworker's tree to ensure we have most recent information
+                //// force rebuild worker's tree to ensure we have most recent information
                 //TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild gui-tree
-                //RebuildObjectsTree(); // todo. kls. 
+                RebuildObjectsTree(); 
 
                 // user has selected the control, 
                 // enable clients monitoring
@@ -399,59 +399,7 @@ namespace iba.Controls
 
 
         #region Objects
-
-        public void AddNodeRecursively(NodeState uaNode, TreeNodeCollection parentGuiNode)
-        {
-            if (uaNode == null)
-                return;
-            if (parentGuiNode == null)
-                parentGuiNode = tvObjects.Nodes; // add to root by default
-
-            int imageIndex = uaNode is FolderState ? ImageIndexFolder : ImageIndexLeaf;
-
-            var guiNode = parentGuiNode.Add(uaNode.NodeId.ToString(), uaNode.DisplayName.ToString(), imageIndex, imageIndex);
-
-            // attach a tag
-            {
-                var tag = new SnmpTreeNodeTag();
-                tag.Value = string.Empty;
-                tag.Type = string.Empty;
-                tag.MibName = uaNode.NodeId?.ToString() ?? string.Empty;
-                tag.MibDescription = uaNode.Description?.ToString() ?? string.Empty;
-
-                if (uaNode is BaseDataVariableState varState)
-                {
-                    tag.Value = varState.Value?.ToString() ?? string.Empty;
-                    tag.Type = varState.Value?.GetType().ToString() ?? string.Empty;
-                }
-                guiNode.Tag = tag;
-            }
-
-            var children = TstNodeMan.GetChildren(uaNode as FolderState);
-
-            if (children == null)
-                return;
-
-            foreach (var child in children)
-            {
-                AddNodeRecursively(child, guiNode.Nodes);
-            }
-
-            //// if parent node exists, add item there.
-            //// otherwise add directly to the root
-            //TreeNodeCollection placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
-
-            //// for all but root nodes add least subId before string caption
-            //string leastIdPrefix = "";//parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
-
-            //string captionWithSubid = leastIdPrefix + tag.Caption;
-
-
-            //// add this item to parent node
-            //var node = placeToAddTo.Add(id.ToString(), captionWithSubid, imageindex, imageindex);
-            //node.Tag = tag;
-        }
-
+        
         public void RebuildObjectsTree()
         {
             if (!IsConnectedOrLocal)
@@ -465,66 +413,62 @@ namespace iba.Controls
             {
                 var objSnapshot = TaskManager.Manager.OpcUaGetObjectTreeSnapShot();
 
-                //if (objSnapshot == null)
-                //{
-                //    return;
-                //}
+                if (objSnapshot == null)
+                {
+                    Debug.Assert(false); // should not happen
+                    return;
+                }
 
-                // get sorted oids, to ensure we create nodes according to depth-first search order
-                //var sortedNodeId = objSnapshot.Keys.ToList();
-                //sortedNodeId.Sort();
+                var nodesToExpand = new List<TreeNode>(); // todo. kls. remove?
 
+                foreach (var tag in objSnapshot)
+                {
+                    if (tag == null)
+                    {
+                        Debug.Assert(false); // should not happen
+                        continue;
+                    }
 
-                var nodesToExpand = new List<TreeNode>();
+                    string parentId = IbaUaNodeManager.GetParentName(tag.OpcUaNodeId);
+                    TreeNode parentGuiNode = string.IsNullOrWhiteSpace(parentId) ? 
+                        null : FindSingleNodeById(parentId);
 
+                    TreeNodeCollection collection = parentGuiNode == null ? 
+                        tvObjects.Nodes /* add to root by default */: 
+                        parentGuiNode.Nodes;
 
-                var root = TstNodeMan.FolderIbaRoot;
+                    int imageIndex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
 
-                TreeNodeCollection placeToAddTo1 = tvObjects.Nodes;
+                    TreeNode guiNode = collection.Add(
+                        tag.OpcUaNodeId, tag.Caption, imageIndex, imageIndex);
+                    guiNode.Tag = tag;
 
-                placeToAddTo1.Add("Abc", "abc", 0, 0);
+                    // mark for expanding
+                    if (tag.IsExpandedByDefault)
+                    {
+                        // todo. kls. leave only one way of expanding
+                        //guiNode.Expand();
+                        //nodesToExpand.Add(guiNode);
+                    }
+                }
 
-                AddNodeRecursively(TstNodeMan.FolderIbaRoot, null);
-
-                return;
-
-                //foreach (var id in sortedNodeId)
-                //{
-                //    SnmpTreeNodeTag tag = objSnapshot[id];
-
-
-
-                //    // get parent node
-                //    //var parentOid = id.GetParent();
-                //    var parentNode = FindSingleNodeById(null /*parentOid*/);
-
-                //    // if parent node exists, add item there.
-                //    // otherwise add directly to the root
-                //    TreeNodeCollection placeToAddTo = parentNode?.Nodes ?? tvObjects.Nodes;
-
-                //    // for all but root nodes add least subId before string caption
-                //    string leastIdPrefix = "";//parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
-
-                //    string captionWithSubid = leastIdPrefix + tag.Caption;
-
-                //    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
-
-                //    // add this item to parent node
-                //    var node = placeToAddTo.Add(id.ToString(), captionWithSubid, imageindex, imageindex);
-                //    node.Tag = tag;
-
-                //    // mark for expanding
-                //    if (tag.IsExpandedByDefault)
-                //    {
-                //        nodesToExpand.Add(node);
-                //    }
-                //}
+                var nodesToExpand1 = new HashSet<string>
+                {
+                    "ibaDatCoordinator",
+                    "ibaDatCoordinator\\Standard jobs",
+                    "ibaDatCoordinator\\Scheduled jobs",
+                    "ibaDatCoordinator\\One time jobs",
+                    "ibaDatCoordinator\\Event jobs"
+                };
 
                 // expand those which are marked for
-                foreach (var treeNode in nodesToExpand)
+                foreach (var str in nodesToExpand1)
                 {
-                    treeNode.Expand();
+                    var treeNode = FindSingleNodeById(str);
+                    treeNode?.Expand();
                 }
+
+                return;
             }
             catch (Exception ex)
             {
@@ -568,6 +512,8 @@ namespace iba.Controls
             // check if exists
             TreeNode[] nodes = tvObjects.Nodes.Find(id, true);
 
+            Debug.Assert(nodes.Length <= 1); // should be not more than one
+
             if (nodes.Length == 1)
             {
                 // ok, found exactly one match
@@ -606,7 +552,7 @@ namespace iba.Controls
                 tbObjDescription.Text = String.Empty;
 
                 // get existing node's tag
-                var tag = (SnmpTreeNodeTag)e.Node.Tag;
+                var tag = (ExtMonData.GuiTreeNodeTag)e.Node.Tag;
 
                 if (tag == null)
                     return;
@@ -626,8 +572,8 @@ namespace iba.Controls
                 //tbObjOid.Text = tag.Oid?.ToString();
                 tbObjValue.Text = tag.Value;
                 tbObjType.Text = tag.Type;
-                tbObjNodeId.Text = tag.MibName;
-                tbObjDescription.Text = tag.MibDescription; // todo. kls. rename/reuse SnmpTreeNodeTag
+                tbObjNodeId.Text = tag.OpcUaNodeId;
+                tbObjDescription.Text = tag.Description; // todo. kls. rename/reuse SnmpTreeNodeTag
 
                 // remember last selected oid
                 _lastId = null;// tag.Oid; // todo. kls. 
@@ -862,13 +808,13 @@ namespace iba.Controls
 
         }
 
-        private OpcUaWorker TstWorker => Manager.Tst___OpcUaWorker; // todo. kls. delete
-        private IbaOpcUaServer TstServer => TstWorker.IbaOpcUaServer; // todo. kls. delete
-        private IbaUaNodeManager TstNodeMan => TstServer.IbaUaNodeManager; // todo. kls. delete
+        //private OpcUaWorker TstWorker => Manager.Tst___OpcUaWorker; // todo. kls. delete
+        //private IbaOpcUaServer TstServer => TstWorker.IbaOpcUaServer; // todo. kls. delete
+        //private IbaUaNodeManager TstNodeMan => TstServer.IbaUaNodeManager; // todo. kls. delete
 
         private void buttonTest2_Click(object sender, EventArgs e)
         {
-            TstNodeMan.SetValueScalar(TstWorker._lifeBeatReactive, (int)DateTime.Now.Second);
+            //TstNodeMan.SetValueScalar(TstWorker._lifeBeatReactive, (int)DateTime.Now.Second);
         }
 
         static TaskManager Manager => TaskManager.Manager;

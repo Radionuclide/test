@@ -281,8 +281,6 @@
             resources.ApplyResources(this.tvObjects, "tvObjects");
             this.tvObjects.HideSelection = false;
             this.tvObjects.Name = "tvObjects";
-            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvObjects.Nodes")))});
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
             // gbConfiguration

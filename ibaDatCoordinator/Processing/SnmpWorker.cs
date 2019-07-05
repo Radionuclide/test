@@ -24,25 +24,6 @@ namespace iba.Processing
         Errored
     }
 
-    [Serializable]
-    public class SnmpTreeNodeTag
-    {
-        public IbaSnmpOid Oid { get; set; }
-
-        public bool IsFolder { get; set; }
-
-        public string Caption { get; set; }
-
-        public string Value { get; set; }
-
-        public string Type { get; set; }
-
-        public string MibName { get; set; }
-
-        public string MibDescription { get; set; }
-
-        public bool IsExpandedByDefault { get; set; }
-    }
 
     /// <summary> Is used to send MIB file contents from Server to Client via remoting </summary>
     [Serializable]
@@ -823,14 +804,14 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        public Dictionary<IbaSnmpOid, SnmpTreeNodeTag> GetObjectTreeSnapShot()
+        internal Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
                 // check tree structure before taking a snapshot
                 RebuildTreeIfItIsInvalid();
 
-                var result = new Dictionary<IbaSnmpOid, SnmpTreeNodeTag>();
+                var result = new Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag>();
                 var objList = IbaSnmp.GetListOfAllOids();
                 if (objList == null)
                 {
@@ -888,7 +869,7 @@ namespace iba.Processing
 
                 foreach (var oid in nodesToExpand)
                 {
-                    if (result.TryGetValue(oid, out SnmpTreeNodeTag tag))
+                    if (result.TryGetValue(oid, out ExtMonData.GuiTreeNodeTag tag))
                     {
                         tag.IsExpandedByDefault = true;
                     }
@@ -906,11 +887,11 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        public SnmpTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
         {
             try
             {
-                var tag = new SnmpTreeNodeTag {Oid = oid};
+                var tag = new ExtMonData.GuiTreeNodeTag { SnmpOid = oid};
 
                 IbaSnmpOidMetadata metadata = IbaSnmp.GetOidMetadata(oid);
                 if (metadata == null)
@@ -921,8 +902,8 @@ namespace iba.Processing
                 }
 
                 // fill data common for folders and leaves
-                tag.MibName = metadata.MibName;
-                tag.MibDescription = metadata.MibDescription;
+                tag.SnmpMibName = metadata.MibName;
+                tag.Description = metadata.MibDescription;
                 tag.Caption = metadata.GuiCaption;
 
                 // try to get value (applicable only to objects=leaves)

@@ -83,6 +83,13 @@ namespace iba.Data
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
                 @"Event jobs", @"eventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
+
+            // todo. kls. use or remove?
+            FolderRoot.IsGuiNodeExpandedByDefault = true;
+            FolderStandardJobs.IsGuiNodeExpandedByDefault = true;
+            FolderScheduledJobs.IsGuiNodeExpandedByDefault = true;
+            FolderOneTimeJobs.IsGuiNodeExpandedByDefault = true;
+            FolderEventBasedJobs.IsGuiNodeExpandedByDefault = true;
         }
 
         public void Reset()
@@ -388,6 +395,10 @@ namespace iba.Data
             /// </summary>
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
 
+            /// <summary> Whether this node is expanded by default in GUI tree view
+            /// // todo. kls. use or remove? </summary>
+            public bool IsGuiNodeExpandedByDefault;
+
             /// <summary>
             /// Is used for "Big" folders - section roots - like "Standard Jobs".
             /// Note, that here FULL OID and FULL MIB name are used here (not suffixes).
@@ -528,6 +539,30 @@ namespace iba.Data
             {
                 TimeStamp = DateTime.Now;
             }
+        }
+
+        [Serializable]
+        public class GuiTreeNodeTag
+        {
+            /// <summary> key for SNMP </summary>
+            public IbaSnmpOid SnmpOid { get; set; }
+
+            /// <summary> key for OPC UA </summary>
+            public string OpcUaNodeId { get; set; }
+
+            public bool IsFolder { get; set; }
+
+            public string Caption { get; set; }
+
+            public string Value { get; set; }
+
+            public string Type { get; set; }
+
+            public string SnmpMibName { get; set; }
+
+            public string Description { get; set; }
+
+            public bool IsExpandedByDefault { get; set; }
         }
 
         #endregion

@@ -524,12 +524,12 @@ namespace iba.Controls
                 tbObjType.Text = String.Empty;
 
                 // get existing node's tag
-                var tag = (SnmpTreeNodeTag)e.Node.Tag;
+                var tag = (ExtMonData.GuiTreeNodeTag)e.Node.Tag;
 
                 // try to refresh node's tag
                 try
                 {
-                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
+                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.SnmpOid);
                 }
                 catch (Exception)
                 {
@@ -538,14 +538,14 @@ namespace iba.Controls
                     tag.Type = String.Empty;
                 }
 
-                tbObjOid.Text = tag.Oid?.ToString();
+                tbObjOid.Text = tag.SnmpOid?.ToString();
                 tbObjValue.Text = tag.Value;
                 tbObjType.Text = tag.Type;
-                tbObjMibName.Text = tag.MibName;
-                tbObjMibDescription.Text = tag.MibDescription;
+                tbObjMibName.Text = tag.SnmpMibName;
+                tbObjMibDescription.Text = tag.Description;
 
                 // remember last selected oid
-                _lastOid = tag.Oid;
+                _lastOid = tag.SnmpOid;
             }
             catch (Exception ex)
             {

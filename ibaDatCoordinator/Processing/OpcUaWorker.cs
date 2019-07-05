@@ -108,12 +108,13 @@ namespace iba.Processing
 
     public class OpcUaWorker : IDisposable
     {
-        private BaseDataVariableState _lifeBeatVar;
-        private BaseDataVariableState _lifeBeatVar2;
-        public BaseDataVariableState _lifeBeatReactive;
-        private readonly System.Windows.Forms.Timer _lifebeatTimer = new System.Windows.Forms.Timer {Enabled = false, Interval = 300};
+        // // todo. kls. remove
+        //private BaseDataVariableState _lifeBeatVar;
+        //private BaseDataVariableState _lifeBeatVar2;
+        //public BaseDataVariableState _lifeBeatReactive;
+        //private readonly System.Windows.Forms.Timer _lifebeatTimer = new System.Windows.Forms.Timer {Enabled = false, Interval = 300};
 
-        public static int TmpLifebeatValue { get; private set; } // todo. kls. only if enabled
+        //public static int TmpLifebeatValue { get; private set; } // todo. kls. only if enabled
 
         #region Construction, Destruction, Init
 
@@ -124,30 +125,31 @@ namespace iba.Processing
             Status = SnmpWorkerStatus.Errored;
             StatusString = Resources.opcUaStatusNotInit;
 
-            _lifebeatTimer.Enabled = true;
+            // todo. kls. remove
+            //_lifebeatTimer.Enabled = true;
 
-            _lifebeatTimer.Tick += (sender, args) =>
-            {
-                try
-                {
-                    TmpLifebeatValue++;
-                    if (_lifeBeatVar != null)
-                    {
-                        NodeManager?.SetValueScalar(_lifeBeatVar, TmpLifebeatValue + 10000);
-                        NodeManager?.SetValueScalar(_lifeBeatVar2, TmpLifebeatValue + 20000);
-                    }
-                }
-                catch
-                {
-                    TmpLifebeatValue = 0;
-                    /**/
-                }
-            };
+            //_lifebeatTimer.Tick += (sender, args) =>
+            //{
+            //    try
+            //    {
+            //        TmpLifebeatValue++;
+            //        if (_lifeBeatVar != null)
+            //        {
+            //            NodeManager?.SetValueScalar(_lifeBeatVar, TmpLifebeatValue + 10000);
+            //            NodeManager?.SetValueScalar(_lifeBeatVar2, TmpLifebeatValue + 20000);
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        TmpLifebeatValue = 0;
+            //        /**/
+            //    }
+            //};
         }
 
         public void Dispose()
         {
-            _lifebeatTimer.Stop(); // todo. kls. 
+            //_lifebeatTimer.Stop(); // todo. kls. 
         }
 
 
@@ -250,20 +252,17 @@ namespace iba.Processing
 
         public void Tst__CreateTestTree()
         {
-            FolderState ibaRootFolder = NodeManager.FolderIbaRoot;
-            //var folderTest = NodeManager.KlsCreateFolderAndItsNode(parentFolder, "Test");
+            //_lifeBeatVar =
+            //    NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat");
+            //_lifeBeatReactive =
+            //    NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat reactive");
 
-            _lifeBeatVar =
-                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat");
-            _lifeBeatReactive =
-                NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat reactive");
+            //_lifeBeatReactive.OnReadValue += OnReadValue1; // todo. kls. 
+            ////IbaVariable iv;
+            ////iv.StateChanged
 
-            _lifeBeatReactive.OnReadValue += OnReadValue1; // todo. kls. 
-            //IbaVariable iv;
-            //iv.StateChanged
-
-            NodeManager.SetValueScalar(_lifeBeatVar, 0);
-            NodeManager.SetValueScalar(_lifeBeatReactive, 0);
+            //NodeManager.SetValueScalar(_lifeBeatVar, 0);
+            //NodeManager.SetValueScalar(_lifeBeatReactive, 0);
         }
 
 
@@ -904,7 +903,7 @@ namespace iba.Processing
 
             return ServiceResult.Good;
         }
-        
+
         #endregion
 
         #endregion
@@ -912,19 +911,19 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        public Dictionary<NodeId, SnmpTreeNodeTag> GetObjectTreeSnapShot()
+        internal List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
                 // check tree structure before taking a snapshot
                 RebuildTreeIfItIsInvalid();
 
-                var result = new Dictionary<NodeId, SnmpTreeNodeTag>();
-                //var objList = IbaOpcUaServer.GetListOfAllOids();
-                //if (objList == null)
-                //{
-                //    return null;
-                //}
+                var result = new List<ExtMonData.GuiTreeNodeTag>();
+                var objList = IbaOpcUaServer.IbaUaNodeManager.GetListOfAllUserNodes();
+                if (objList == null)
+                {
+                    return null;
+                }
 
                 //var rootOid = IbaOpcUaServer.KlsStrVarTree.OidIbaRoot;
 
@@ -952,45 +951,87 @@ namespace iba.Processing
                 //    }
                 //}
 
-                // retrieve information about each node
-                //foreach (var oid in nodesSet)
+                //retrieve information about each node
+                foreach (BaseInstanceState uaNode in objList)
+                {
+                    var tag = GetTreeNodeTag(uaNode, true);
+                    if (tag != null)
+                    {
+                        try
+                        {
+                            result.Add(tag);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+                ////mark some nodes as expanded
+                //var nodesToExpand = new HashSet<string>
                 //{
-                //    var tag = GetTreeNodeTag(oid, true);
-                //    if (tag != null)
-                //    {
-                //        result.Add(oid, tag);
-                //    }
-                //}
+                //    "ibaDatCoordinator\\Standard jobs",
+                //    "ibaDatCoordinator\\Scheduled jobs",
+                //    "ibaDatCoordinator\\One time jobs",
+                //    "ibaDatCoordinator\\Event jobs",
+                //};
 
-                // mark some nodes as expanded
-                var nodesToExpand = new HashSet<string>();
-
-                //foreach (var oid in nodesToExpand)
+                //foreach (string key in nodesToExpand)
                 //{
-                //    SnmpTreeNodeTag tag;
-                //    if (result.TryGetValue(oid, out tag))
+                //    if (result.TryGetValue(key, out ExtMonData.GuiTreeNodeTag tag))
                 //    {
                 //        tag.IsExpandedByDefault = true;
                 //    }
                 //}
 
-                //return result;
+                return result;
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    $"{nameof(SnmpWorker)}.{nameof(GetObjectTreeSnapShot)}. {ex.Message}");
+                    $"{nameof(OpcUaWorker)}.{nameof(GetObjectTreeSnapShot)}. {ex.Message}");
                 return null;
             }
 
             return null;
         }
 
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(BaseInstanceState node, bool bUpdate = false)
+        {
+            // todo. kls. update value!
+
+            ExtMonData.GuiTreeNodeTag tag = new ExtMonData.GuiTreeNodeTag
+            {
+                Type = "",
+                Value = "",
+                Caption = node.DisplayName.Text,
+                Description = node.Description.Text,
+                IsFolder = true,
+                OpcUaNodeId = IbaUaNodeManager.GetNodeIdAsString(node.NodeId)
+            };
+
+            Debug.Assert(tag.OpcUaNodeId != null);
+
+            // ReSharper disable once InvertIf
+            if (node is IbaOpcUaVariable iv)
+            {
+                tag.IsFolder = false;
+                tag.Value = iv.Value.ToString();
+                tag.Type = iv.Value.GetType().Name;
+
+            }
+            // todo. kls. get IsExpanded from ExtMonFolder
+            return tag;
+        }
+
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        public SnmpTreeNodeTag GetTreeNodeTag(string oid, bool bUpdate = false)
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string oid, bool bUpdate = false)
         {
             try
             {
+                return null;
+
+                // todo. kls. get BaseState by nodeid
+            //this.IbaOpcUaServer.IbaUaNodeManager.getn(oid);
                 //var tag = new SnmpTreeNodeTag { Oid = oid };
 
                 //stringMetadata metadata = IbaOpcUaServer.GetOidMetadata(oid);

@@ -412,7 +412,7 @@ namespace iba.Processing
             }
         }
 
-        public virtual Dictionary<IbaSnmpOid, SnmpTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        internal virtual Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
         {
             try
             {
@@ -425,7 +425,7 @@ namespace iba.Processing
             }
         }
 
-        public virtual SnmpTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        internal virtual ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
         {
             try
             {
@@ -1055,7 +1055,7 @@ namespace iba.Processing
             }
         }
 
-        public virtual Dictionary<NodeId, SnmpTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        internal virtual List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
         {
             try
             {
@@ -1068,7 +1068,7 @@ namespace iba.Processing
             }
         }
 
-        public virtual SnmpTreeNodeTag OpcUaGetTreeNodeTag(IbaSnmpOid oid)
+        internal virtual ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(IbaSnmpOid oid)
         {
             try
             {
@@ -1093,7 +1093,7 @@ namespace iba.Processing
         {
             try
             {
-                return new Tuple<SnmpWorkerStatus, string>(OpcUaWorker.Status, OpcUaWorker.StatusString + $" Lifebeat={OpcUaWorker.TmpLifebeatValue}");
+                return new Tuple<SnmpWorkerStatus, string>(OpcUaWorker.Status, OpcUaWorker.StatusString);
             }
             catch (Exception ex)
             {
@@ -2228,7 +2228,7 @@ namespace iba.Processing
             }
         }
 
-        public override Dictionary<IbaSnmpOid, SnmpTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        internal override Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
         {
             try
             {
@@ -2241,7 +2241,7 @@ namespace iba.Processing
             }
         }
 
-        public override SnmpTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        internal override ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
         {
             try
             {

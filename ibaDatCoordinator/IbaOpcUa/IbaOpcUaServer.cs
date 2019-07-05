@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,8 +6,6 @@ using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using Opc.Ua;
 using Opc.Ua.Server;
-using ibaOpcServer.IbaOpcUa;
-using Opc.Ua.Configuration;
 
 // ReSharper disable once CheckNamespace
 namespace iba.ibaOPCServer

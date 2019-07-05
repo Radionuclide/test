@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.dgvClients = new System.Windows.Forms.DataGridView();
@@ -271,7 +270,7 @@
             // 
             this.labelObjNodeId.AutoSize = true;
             this.labelObjNodeId.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjNodeId.Location = new System.Drawing.Point(3, 10);
+            this.labelObjNodeId.Location = new System.Drawing.Point(3, 6);
             this.labelObjNodeId.Name = "labelObjNodeId";
             this.labelObjNodeId.Size = new System.Drawing.Size(50, 13);
             this.labelObjNodeId.TabIndex = 13;
@@ -297,10 +296,6 @@
             this.tvObjects.Location = new System.Drawing.Point(18, 19);
             this.tvObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tvObjects.Name = "tvObjects";
-            treeNode2.Name = "NodeRoot";
-            treeNode2.Text = "Root";
-            this.tvObjects.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
             this.tvObjects.Size = new System.Drawing.Size(654, 286);
             this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
