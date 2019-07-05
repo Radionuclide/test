@@ -20,6 +20,9 @@ namespace iba.Data
         
         #region Fields and Props
 
+        /// <summary> Supply this value to AddChildXxx() functions to set snmpLeastId automatically. </summary>
+        public const uint SNMP_AUTO_LEAST_ID = uint.MaxValue;
+
         public readonly ExtMonFolder FolderRoot;
 
         /// <summary> SNMP: PrGeneral.3.
@@ -65,16 +68,12 @@ namespace iba.Data
 
         public ExtMonData()
         {
-            FolderRoot = new ExtMonFolder(null, @"Root", @"Root", @"Root", 0)
-            { SnmpFullMibName = "Root" };
-            // FolderRoot.SnmpFullOid = ; // it has no SNMP OID
+            FolderRoot = new ExtMonFolder(null,
+                @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0);
+            // FolderRoot.SnmpFullMibName = ; // is not used
+            // FolderRoot.SnmpFullOid = ; // is not used
 
-            FolderRoot.Children.Add(
-                License = new LicenseInfo(FolderRoot));
-            License.Caption = @"Licensing";
-            License.Description = "License information."; // only for OPC UA (in SNMP it's predefined in ibaSnmp.dll)
-            //License.SnmpFullOid = ; // is not used. License OID is actually "PrGeneral.3", but it's handled specially
-            //License.SnmpFullMibName = ""; // it's predefined in ibaSnmp.dll
+            FolderRoot.Children.Add(License = new LicenseInfo(FolderRoot));
 
             FolderRoot.Children.Add(
                 FolderGlobalCleanup = new ExtMonFolder(FolderRoot,
@@ -132,6 +131,8 @@ namespace iba.Data
             var driveInfo = new GlobalCleanupDriveInfo(FolderGlobalCleanup, (uint)GlobalCleanup.Count + 1, driveName);
             GlobalCleanup.Add(driveInfo);
             FolderGlobalCleanup.Children.Add(driveInfo);
+            // check consistency between mib name and oid
+            Debug.Assert(driveInfo.SnmpFullMibName.Contains($"Drive{driveInfo.SnmpLeastId}"));
             return driveInfo;
         }
 
@@ -152,21 +153,18 @@ namespace iba.Data
                     folder = FolderScheduledJobs;
                     jobInfo = new ScheduledJobInfo(folder, (uint)ScheduledJobs.Count + 1, jobName);
                     ScheduledJobs.Add((ScheduledJobInfo) jobInfo);
-                    // fill the data
                     break;
 
                 case ConfigurationData.JobTypeEnum.OneTime:
                     folder = FolderOneTimeJobs;
                     jobInfo = new OneTimeJobInfo(folder, (uint)OneTimeJobs.Count + 1, jobName);
                     OneTimeJobs.Add((OneTimeJobInfo) jobInfo);
-                    // fill the data
                     break;
 
                 case ConfigurationData.JobTypeEnum.Event:
                     folder = FolderEventBasedJobs;
                     jobInfo = new EventBasedJobInfo(folder, (uint)EventBasedJobs.Count + 1, jobName);
                     EventBasedJobs.Add((EventBasedJobInfo) jobInfo);
-                    // fill the data
                     break;
 
                 default:
@@ -174,6 +172,8 @@ namespace iba.Data
             }
             jobInfo.Guid = guid;
             folder.Children.Add(jobInfo);
+            // check consistency between mib name and oid
+            Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}")); 
             return jobInfo;
         }
 
@@ -182,6 +182,8 @@ namespace iba.Data
             var taskInfo = new TaskInfo(parentJob.FolderTasks, (uint)parentJob.Tasks.Count + 1, taskName);
             parentJob.Tasks.Add(taskInfo);
             parentJob.FolderTasks.Children.Add(taskInfo);
+            // check consistency between mib name and oid
+            Debug.Assert(taskInfo.SnmpFullMibName.Contains($"Task{taskInfo.SnmpLeastId}")); 
             return taskInfo;
         }
 
@@ -197,15 +199,11 @@ namespace iba.Data
                 // ReSharper disable once InvertIf
                 if (node is ExtMonFolder xmFolder)
                 {
-                    // todo. kls. simplify
-                    var isConsistent = CheckChildParentConsistency(xmFolder);
-                    if (!isConsistent)
+                    if (!CheckChildParentConsistency(xmFolder))
                         return false;
                 }
             }
-
-            return true;
-
+            return true; // consistency is ok
         }
 
         public bool CheckConsistency()
@@ -264,7 +262,7 @@ namespace iba.Data
         /// </summary>
         internal abstract class ExtMonNode
         {
-            public readonly ExtMonFolder Parent; // todo. kls. try make readonly 
+            public readonly ExtMonFolder Parent;
 
             public string Caption; // todo. kls. try make readonly 
             public string Description; // todo. kls. try make readonly 
@@ -281,13 +279,13 @@ namespace iba.Data
                 {
                     if (_snmpFullOid == null)
                     {
+                        // calculate (and keep) full OID on first request
                         _snmpFullOid = Parent == null || Parent.SnmpFullOid == null
                             ? null
                             : Parent.SnmpFullOid + SnmpLeastId;
                     }
 
                     Debug.Assert(SnmpLeastId == 0 || _snmpFullOid == null || SnmpLeastId == _snmpFullOid.GetLeastSignificantSubId());
-                    // calculate (and keep) full OID on first request
                     return _snmpFullOid;
                 }
                 set => _snmpFullOid = value;
@@ -299,20 +297,19 @@ namespace iba.Data
             private string _snmpFullMibName;
 
             /// <summary> Can be set directly or can be evaluated dynamically from MibSuffix and parent's MibName </summary>
-            public string SnmpFullMibName // todo rename
+            public string SnmpFullMibName
             {
                 get
                 {
                     if (_snmpFullMibName == null)
                     {
+                        // calculate (and keep) full MIB name on first request
                         _snmpFullMibName = Parent?.SnmpFullMibName == null
                             ? null
                             : Parent.SnmpFullMibName + SnmpMibNameSuffix;
 
                     }
-
                     Debug.Assert(SnmpMibNameSuffix == null || _snmpFullMibName == null || _snmpFullMibName.Contains(SnmpMibNameSuffix));
-                    // calculate full MIB name on first request
                     return _snmpFullMibName;
                 }
                 set => _snmpFullMibName = value;
@@ -320,8 +317,7 @@ namespace iba.Data
 
 
             /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
-            public string UaFullId;
-            // todo UaName ?? is equal to Caption??
+            public string UaFullId; // todo try to remove ?
 
 
             protected ExtMonNode(ExtMonFolder parent, uint snmpLeastId, 
@@ -457,6 +453,10 @@ namespace iba.Data
             public ExtMonFolder AddChildFolder(string caption, string snmpMibNameSuffix,
                 string description, uint snmpLeastId)
             {
+                // set a valid id for the case of auto-numbering
+                ApplySnmpLeastIdAutoNumbering(ref snmpLeastId);
+
+                // create a child and add to collection
                 var child = new ExtMonFolder(this,caption, snmpMibNameSuffix, description, snmpLeastId);
                 Children.Add(child);
                 return child;
@@ -467,12 +467,19 @@ namespace iba.Data
             public ExtMonVariable<T> AddChildVariable<T>(string caption, string snmpMibNameSuffix,
                 string description, uint snmpLeastId)
             {
-                //if (snmpLeastId ==)// todo. kls. 
-                //    snmpLeastId = (uint)Children.Count + 1;
+                // set a valid id for the case of auto-numbering
+                ApplySnmpLeastIdAutoNumbering(ref snmpLeastId);
 
+                // create a child and add to collection
                 var child = new ExtMonVariable<T>(this, caption, snmpMibNameSuffix, description, snmpLeastId);
                 Children.Add(child);
                 return child;
+            }
+
+            private void ApplySnmpLeastIdAutoNumbering(ref uint snmpLeastId)
+            {
+                if (snmpLeastId == SNMP_AUTO_LEAST_ID)
+                    snmpLeastId = (uint)Children.Count + 1;
             }
 
 
@@ -572,44 +579,83 @@ namespace iba.Data
 
         internal class LicenseInfo : ExtMonGroup
         {
+
+            /// <summary> Oid 1 </summary>
+            public readonly ExtMonVariable<bool>  IsValid;
+            /// <summary> Oid 2 </summary>
+            public readonly ExtMonVariable<string> Sn;
+            /// <summary> Oid 3 </summary>
+            public readonly ExtMonVariable<string> HwId;
+            /// <summary> Oid 4 </summary>
+            public readonly ExtMonVariable<string> DongleType;
+            /// <summary> Oid 5 </summary>
+            public readonly ExtMonVariable<string> Customer;
+            /// <summary> Oid 6 </summary>
+            public readonly ExtMonVariable<int> TimeLimit;
+            /// <summary> Oid 7 </summary>
+            public readonly ExtMonVariable<int> DemoTimeLimit;
+
             public LicenseInfo(ExtMonFolder parent) 
                 : base(parent, 0 /*not used*/)
             {
+                // set Caption, Description, etc.
+                Caption = @"Licensing";
+                Description = "License information."; // is used only for OPC UA (in SNMP it's predefined in ibaSnmp.dll)
+                SnmpFullOid = "999999"; // is not used. License OID is actually "PrGeneral.3", but it's predefined in ibaSnmp.dll
+                SnmpFullMibName = "License"; // is not used. it's predefined in ibaSnmp.dll
+
+
+                // create variables and add them to collection
+
+                IsValid = AddChildVariable<bool>(
+                    @"Is valid", "Lic001" /*not used*/,
+                    @"Is license valid.",
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(IsValid.SnmpLeastId == 1);
+
+                Sn = AddChildVariable<string>(
+                    @"Dongle serial number", "Lic002" /*not used*/,
+                    @"Dongle serial number.",
+                    SNMP_AUTO_LEAST_ID);
+
+                HwId = AddChildVariable<string>(
+                    @"Dongle hardware ID", "Lic003" /*not used*/,
+                    @"Dongle hardware ID.",
+                    SNMP_AUTO_LEAST_ID);
+
+                DongleType = AddChildVariable<string>(
+                    @"Dongle type", "Lic004" /*not used*/,
+                    @"Dongle type.",
+                    SNMP_AUTO_LEAST_ID);
+
+                Customer = AddChildVariable<string>(
+                    @"Customer", "Lic005" /*not used*/,
+                    @"License customer.",
+                    SNMP_AUTO_LEAST_ID);
+
+                TimeLimit = AddChildVariable<int>(
+                    @"Time limit", "Lic006" /*not used*/,
+                    @"Time limit.",
+                    SNMP_AUTO_LEAST_ID);
+
+                DemoTimeLimit = AddChildVariable<int>(
+                    @"Demo time limit", "Lic007" /*not used*/,
+                    @"Demo time limit.",
+                    SNMP_AUTO_LEAST_ID);
+
+                Debug.Assert(DemoTimeLimit.SnmpLeastId == 7);
             }
-
-            // todo. kls. need captions, but don't need OIDs and MIBs
-
-            /// <summary> Oid 1 </summary>
-            public bool IsValid;
-
-            /// <summary> Oid 2 </summary>
-            public string Sn;
-
-            /// <summary> Oid 3 </summary>
-            public string HwId;
-
-            /// <summary> Oid 4 </summary>
-            public string DongleType;
-
-            /// <summary> Oid 5 </summary>
-            public string Customer;
-
-            /// <summary> Oid 6 </summary>
-            public int TimeLimit;
-
-            /// <summary> Oid 7 </summary>
-            public int DemoTimeLimit;
 
             /// <summary> Resets all the fields to default values </summary>
             public void Reset()
             {
-                IsValid = false;
-                Sn = "";
-                HwId = "";
-                DongleType = "";
-                Customer = "";
-                TimeLimit = 0;
-                DemoTimeLimit = 0;
+                IsValid.Value = false;
+                Sn.Value = "";
+                HwId.Value = "";
+                DongleType.Value = "";
+                Customer.Value = "";
+                TimeLimit.Value = 0;
+                DemoTimeLimit.Value = 0;
             }
         }
 
@@ -619,13 +665,17 @@ namespace iba.Data
             /// <summary> Primary key for the drive info collection (is uniquely identified by drive name) </summary>
             public string Key => DriveName.Value;
 
+            /// <summary> Oid 1 </summary>
             public readonly ExtMonVariable<string> DriveName;
+            /// <summary> Oid 2 </summary>
             public readonly ExtMonVariable<bool> Active;
-
-
+            /// <summary> Oid 3 </summary>
             public readonly ExtMonVariable<uint> SizeInMb;
+            /// <summary> Oid 4 </summary>
             public readonly ExtMonVariable<uint> CurrentFreeSpaceInMb;
+            /// <summary> Oid 5 </summary>
             public readonly ExtMonVariable<uint> MinFreeSpaceInPercent;
+            /// <summary> Oid 6 </summary>
             public readonly ExtMonVariable<uint> RescanTime;
 
             public GlobalCleanupDriveInfo(ExtMonFolder parent, uint snmpLeastId, string driveName) 
@@ -638,29 +688,37 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                DriveName = AddChildVariable<string>(@"Drive Name", @"Name",
+                DriveName = AddChildVariable<string>(
+                    @"Drive Name", @"Name",
                     @"Drive name like it appears in operating system.",
-                    1);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(DriveName.SnmpLeastId == 1); // ensure id has an expected value
 
-                Active = AddChildVariable<bool>(@"Active", @"Active",
+                Active = AddChildVariable<bool>(
+                    @"Active", @"Active",
                     @"Whether or not the global cleanup is enabled for the drive.",
-                    2);
+                    SNMP_AUTO_LEAST_ID);
 
-                SizeInMb = AddChildVariable<uint>(@"Size", @"Size",
+                SizeInMb = AddChildVariable<uint>(
+                    @"Size", @"Size",
                     @"Size of the drive (in megabytes).",
-                    3);
+                    SNMP_AUTO_LEAST_ID);
 
-                CurrentFreeSpaceInMb = AddChildVariable<uint>(@"Current free space", @"CurrFreeSpace",
+                CurrentFreeSpaceInMb = AddChildVariable<uint>(
+                    @"Current free space", @"CurrFreeSpace",
                     @"Current free space of the drive (in megabytes).",
-                    4);
+                    SNMP_AUTO_LEAST_ID);
 
-                MinFreeSpaceInPercent = AddChildVariable<uint>(@"Min free space", @"MinFreeSpace",
+                MinFreeSpaceInPercent = AddChildVariable<uint>(
+                    @"Min free space", @"MinFreeSpace",
                     @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
-                    5);
+                    SNMP_AUTO_LEAST_ID);
 
-                RescanTime = AddChildVariable<uint>(@"Rescan time", @"RescanTime",
-                    @"How often the application rescans the drive parameters (in minutes).", 
-                    6);
+                RescanTime = AddChildVariable<uint>(
+                    @"Rescan time", @"RescanTime",
+                    @"How often the application rescans the drive parameters (in minutes).",
+                SNMP_AUTO_LEAST_ID);
+                Debug.Assert(RescanTime.SnmpLeastId == 6); // ensure id has an expected value
 
                 // set DriveName.Value right now, because it will serve as a primary key of DriveInfo collection
                 DriveName.Value = driveName;
@@ -692,10 +750,15 @@ namespace iba.Data
         /// <summary> OID 1...n - one class instance per each task </summary>
         internal class TaskInfo : ExtMonFolder
         {
+            /// <summary> Oid 1 </summary>
             public readonly ExtMonVariable<string> TaskName;
+            /// <summary> Oid 2 </summary>
             public readonly ExtMonVariable<string> TaskType;
+            /// <summary> Oid 3 </summary>
             public readonly ExtMonVariable<bool> Success;
+            /// <summary> Oid 4 </summary>
             public readonly ExtMonVariable<uint> DurationOfLastExecutionInSec;
+            /// <summary> Oid 5 </summary>
             public readonly ExtMonVariable<uint> MemoryUsedForLastExecutionInMb;
 
             /// <summary> A Job the task belongs to </summary>
@@ -724,31 +787,33 @@ namespace iba.Data
                 TaskName = AddChildVariable<string>(
                     @"Task name", @"Name",
                     @"The name of the task as it appears in GUI.",
-                    1);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TaskName.SnmpLeastId == 1); // ensure id has an expected value
 
                 TaskType = AddChildVariable<string>(
                     @"Task type", "Type",
                     @"The type of the task (copy, extract, report, etc.).",
-                    2);
+                    SNMP_AUTO_LEAST_ID);
 
                 Success = AddChildVariable<bool>(
                     @"Success", @"Success", 
                     @"Whether or not the last executed task was completed successfully, i.e. without errors. " +
                     @"For Condition task this means that the expression was successfully evaluated as " +
                     @"TRUE or FALSE - both results are treated as success.",
-                    3);
+                    SNMP_AUTO_LEAST_ID);
 
                 DurationOfLastExecutionInSec = AddChildVariable<uint>(
                     @"Duration of last execution", @"DurationOfLastExecution",
                     @"Duration of the last task execution (in seconds).",
-                    4);
+                    SNMP_AUTO_LEAST_ID);
 
                 MemoryUsedForLastExecutionInMb = AddChildVariable<uint>(
                     @"Memory used for last execution", @"LastMemoryUsed",
                     @"Amount of memory used during the last execution of the task (in megabytes). " +
                     @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., " +
                     @"Condition, Report, Extract and some custom tasks.",
-                    5);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(MemoryUsedForLastExecutionInMb.SnmpLeastId == 5); // ensure id has an expected value
 
                 // set default values
                 Reset();
@@ -758,7 +823,6 @@ namespace iba.Data
             public LocalCleanupInfo AddCleanupInfo()
             {
                 Children.Add(CleanupInfo = new LocalCleanupInfo(this, 6));
-                Debug.Assert(CleanupInfo.SnmpLeastId == 6);
                 return CleanupInfo;
             }
             public void ResetCleanupInfo()
@@ -806,22 +870,24 @@ namespace iba.Data
                         @"Limit choice", @"LimitChoice",
                         @"Option selected as limit for the disk space usage. " +
                         @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
-                    1);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(LimitChoice.SnmpLeastId == 1); // ensure id has an expected value
 
                 Subdirectories = AddChildVariable<uint>(
                         @"Subdirectories", @"Subdirectories",
                         @"Maximum count of directories the task can use.",
-                    2);
+                        SNMP_AUTO_LEAST_ID);
 
                 UsedDiskSpace = AddChildVariable<uint>(
                         @"Used disk space", @"UsedDiskSpace",
                         @"Maximum disk space that can be used by the task (in megabytes).",
-                    3);
+                        SNMP_AUTO_LEAST_ID);
 
                 FreeDiskSpace = AddChildVariable<uint>(
                         @"Free disk space", @"FreeDiskSpace",
                         @"Minimum disk space that is kept free (in megabytes).",
-                    4);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(FreeDiskSpace.SnmpLeastId == 4); // ensure id has an expected value
             }
         }
 
@@ -870,47 +936,50 @@ namespace iba.Data
                 Caption = $@"Job '{jobName}'";
                 // SnmpFullMibName = ""; // is set in derived classes
                 // Description = ""; // is set in derived classes
-
-
+                
                 // create folders and add them to collection
 
                 // todo. kls. Do description change on Job rename (this was NOT implemented in original version also) 
                 FolderGeneral = AddChildFolder(
                     @"General", @"General",
-                    $@"General properties of job '{jobName}'.", 
-                    1);
+                    $@"General properties of job '{jobName}'.",
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(FolderGeneral.SnmpLeastId == 1); // ensure id has an expected value
 
                 FolderTasks = AddChildFolder(
                     @"Tasks", @"Tasks",
                     $@"Information about all tasks of the job '{jobName}'.",
-                    2);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(FolderTasks.SnmpLeastId == 2); // ensure id has an expected value
 
                 // create variables and add them to collection
 
                 JobName = FolderGeneral.AddChildVariable<string>(
                     @"Job Name", @"Name",
                     @"The name of the job as it appears in GUI.",
-                    1);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(JobName.SnmpLeastId == 1); // ensure id has an expected value
 
                 Status = FolderGeneral.AddChildVariable<JobStatus>(
                     @"Status", @"Status", 
                     @"Current status of the job (started, stopped or disabled).",
-                    2);
+                    SNMP_AUTO_LEAST_ID);
 
                 TodoCount = FolderGeneral.AddChildVariable<uint>(
                     @"Todo #", @"Todo",
                     @"Number of dat files to be processed.",
-                    3);
+                    SNMP_AUTO_LEAST_ID);
 
                 DoneCount = FolderGeneral.AddChildVariable<uint>(
                     @"Done #", @"Done",
                     @"Number of processed files.",
-                    4);
+                    SNMP_AUTO_LEAST_ID);
 
                 FailedCount = FolderGeneral.AddChildVariable<uint>(
                     @"Failed #", @"Failed",
                     @"Number of errors occurred during processing.",
-                    5);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(FailedCount.SnmpLeastId == 5); // ensure id has an expected value
 
                 PrivateReset();
             }
@@ -976,50 +1045,56 @@ namespace iba.Data
                 PermFailedCount = FolderGeneral.AddChildVariable<uint>(
                     @"Perm. Failed #", @"PermFailedCount",
                     @"Number of files with persistent errors.",
-                    6);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(PermFailedCount.SnmpLeastId == 6); // ensure id has an expected value
 
                 TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp job started", @"TimestampJobStarted",
                     @"Time when the job was started. For a stopped job, it relates to the last start of the job. " +
                     @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                    7);
+                    SNMP_AUTO_LEAST_ID);
 
                 TimestampLastDirectoryScan = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp last directory scan", @"TimestampLastDirectoryScan",
                     @"Time when the last scan for new (unprocessed) .dat files was performed. " +
                     @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                    8);
+                    SNMP_AUTO_LEAST_ID);
 
                 TimestampLastReprocessErrorsScan = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp last reprocess errors scan", @"TimestampLastReprocessErrorsScan",
                     @"Time when the last reprocess scan was performed " +
                     @"(reprocess scan is a scan for .dat files that previously were processed with errors).  " +
                     @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                    9);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TimestampLastReprocessErrorsScan.SnmpLeastId == 9); // ensure id has an expected value
 
                 // last processing Folder
                 FolderLastProcessing = FolderGeneral.AddChildFolder(@"LastProcessing", @"LastProcessing",
-                    @"Information about the last successfully processed file.", 10);
+                    @"Information about the last successfully processed file.",
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(FolderLastProcessing.SnmpLeastId == 10); // ensure id has an expected value
 
 
                 // last processing
 
                 LastProcessingLastDatFileProcessed = FolderLastProcessing.AddChildVariable<string>(
-                    @"Last dat-file processed", @"LastFile", // todo. kls. derive mib name from job, not from last proc ?
+                    @"Last dat-file processed", @"LastFile", 
                     @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                    1);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(LastProcessingLastDatFileProcessed.SnmpLeastId == 1); // ensure id has an expected value
 
                 LastProcessingStartTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
-                    @"Start timestamp", @"StartStamp", // todo. kls. derive mib name from job, not from last proc ?
+                    @"Start timestamp", @"StartStamp", 
                     @"Time when processing of the last successfully processed file was started. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                    2);
+                    SNMP_AUTO_LEAST_ID);
 
                 LastProcessingFinishTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
-                    @"Finish timestamp", @"FinishStamp", // todo. kls. derive mib name from job, not from last proc ?
+                    @"Finish timestamp", @"FinishStamp",
                     @"Time when processing of the last successfully processed file was finished. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                    3);
+                    SNMP_AUTO_LEAST_ID);
+                Debug.Assert(LastProcessingFinishTimeStamp.SnmpLeastId == 3); // ensure id has an expected value
 
                 PrivateReset();
             }
@@ -1066,27 +1141,29 @@ namespace iba.Data
                 PermFailedCount = FolderGeneral.AddChildVariable<uint>(
                         @"Perm. Failed #", @"PermFailedCount",
                         @"Number of files with persistent errors.",
-                        6);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(PermFailedCount.SnmpLeastId == 6); // ensure id has an expected value
 
                 TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp job started", @"TimestampJobStarted",
                         @"Time when job was started (starting of the scheduled job does NOT mean that it will be executed immediately).  " +
                         @"For a stopped job, it relates to the last start of the job.  " +
                         @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                        7);
+                        SNMP_AUTO_LEAST_ID);
 
                 TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the job was last executed. " +
                         @"(This does not mean the moment when job was started, but the moment when configured trigger was fired last time); " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        8);
+                        SNMP_AUTO_LEAST_ID);
 
                 TimestampNextExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp next execution", @"TimestampNextExecution",
                         @"Time of the next scheduled execution. " +
                         @"If there is no execution scheduled, then value is '01.01.0001 0:00:00'.",
-                        9);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TimestampNextExecution.SnmpLeastId == 9); // ensure id has an expected value
 
                 PrivateReset();
             }
@@ -1125,9 +1202,8 @@ namespace iba.Data
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the last execution was started. " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        6);
-                Debug.Assert(TimestampLastExecution.SnmpLeastId == 6);
-
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TimestampLastExecution.SnmpLeastId == 6); // ensure id has an expected value
 
                 PrivateReset();
             }
@@ -1166,21 +1242,23 @@ namespace iba.Data
                 PermFailedCount = FolderGeneral.AddChildVariable<uint>(
                         @"Perm. Failed #", @"PermFailedCount",
                         @"Number of files with persistent errors.",
-                        6);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(PermFailedCount.SnmpLeastId == 6); // ensure id has an expected value
 
                 TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp job started", @"TimestampJobStarted",
                         @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
                         @"For a stopped job, it relates to the last start of the job.  " +
                         @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                        7);
+                        SNMP_AUTO_LEAST_ID);
 
                 TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the job was last executed. " +
                         @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        8);
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TimestampLastExecution.SnmpLeastId == 8); // ensure id has an expected value
 
                 PrivateReset();
             }

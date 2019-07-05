@@ -651,13 +651,13 @@ namespace iba.Processing
                     // TaskManager has updated info successfully 
                     // copy it to snmp tree
 
-                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
-                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
-                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
-                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
-                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
-                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
-                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
+                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit.Value;
                     return true; // data was updated
                 }
                 finally

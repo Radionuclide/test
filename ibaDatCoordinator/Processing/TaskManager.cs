@@ -509,7 +509,7 @@ namespace iba.Processing
 
             // this feature is not licensed,
             // so does not need any condition to be true
-            licenseInfo.IsValid = true;
+            licenseInfo.IsValid.Value = true;
 
             try
             {
@@ -517,12 +517,12 @@ namespace iba.Processing
                 // ReSharper disable once RedundantBoolCompare
                 if (info != null && info.DongleFound == true)
                 {
-                    licenseInfo.Sn = info.SerialNr;
-                    licenseInfo.HwId = info.HwId;
-                    licenseInfo.DongleType = info.DongleType;
-                    licenseInfo.Customer = info.Customer;
-                    licenseInfo.TimeLimit = info.TimeLimit;
-                    licenseInfo.DemoTimeLimit = info.DemoTimeLimit;
+                    licenseInfo.Sn.Value = info.SerialNr;
+                    licenseInfo.HwId.Value = info.HwId;
+                    licenseInfo.DongleType.Value = info.DongleType;
+                    licenseInfo.Customer.Value = info.Customer;
+                    licenseInfo.TimeLimit.Value = info.TimeLimit;
+                    licenseInfo.DemoTimeLimit.Value = info.DemoTimeLimit;
                 }
 
                 licenseInfo.PutTimeStamp();
