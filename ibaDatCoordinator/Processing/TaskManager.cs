@@ -774,20 +774,17 @@ namespace iba.Processing
             var cfg = statusData.CorrConfigurationData;
 
             // on first call for the job create a list first
-            if (ji.Tasks == null)
+            if (ji.TaskCount == 0 && cfg.Tasks.Count != 0)
             {
-                ji.Tasks = new List<ExtMonData.TaskInfo>();
-
-                for (int i = 0; i < cfg.Tasks.Count; i++)
+                foreach (TaskData t in cfg.Tasks)
                 {
-                    ExtMonData.AddNewTask(ji, cfg.Tasks[i].Name);
+                    ji.AddTask(t.Name);
                 }
             }
-
-            // if task count has changed then invalidate tree structure
-            if (ji.Tasks.Count != cfg.Tasks.Count)
+            // if task count is nonzero and has changed then invalidate tree structure
+            else if (ji.TaskCount != cfg.Tasks.Count)
             {
-                ji.Tasks.Clear();
+                ji.ResetTasks();
                 SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -796,7 +793,7 @@ namespace iba.Processing
             for (int i = 0; i < cfg.Tasks.Count; i++)
             {
                 TaskData taskData = cfg.Tasks[i];
-                var taskInfo = ji.Tasks[i];
+                var taskInfo = ji[i];
                 taskInfo.Reset();
 
                 taskInfo.TaskName.Value = taskData.Name;
@@ -804,8 +801,7 @@ namespace iba.Processing
                 // last execution - success, duration, memory
                 try
                 {
-                    ConfigurationWorker.TaskLastExecutionData lastExec;
-                    if (worker.TaskLastExecutionDict.TryGetValue(taskData, out lastExec))
+                    if (worker.TaskLastExecutionDict.TryGetValue(taskData, out ConfigurationWorker.TaskLastExecutionData lastExec))
                     {
                         taskInfo.Success.Value = lastExec.Success; 
                         taskInfo.DurationOfLastExecutionInSec.Value = (uint)(lastExec.DurationMs / 1000.0); 

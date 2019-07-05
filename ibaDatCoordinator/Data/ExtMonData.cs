@@ -45,22 +45,6 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
-
-        /// <summary> SNMP: PrSpecific.1 </summary> // todo. kls. eliminate two lists??? Typed list as encapsulation of folder??
-        public readonly List<GlobalCleanupDriveInfo> GlobalCleanup = new List<GlobalCleanupDriveInfo>();
-
-        /// <summary> SNMP: PrSpecific.2 </summary>
-        public readonly List<StandardJobInfo> StandardJobs = new List<StandardJobInfo>();
-
-        /// <summary> SNMP: PrSpecific.3 </summary>
-        public readonly List<ScheduledJobInfo> ScheduledJobs = new List<ScheduledJobInfo>();
-
-        /// <summary> SNMP: PrSpecific.4 </summary>
-        public readonly List<OneTimeJobInfo> OneTimeJobs = new List<OneTimeJobInfo>();
-
-        /// <summary> SNMP: PrSpecific.5 </summary>
-        public readonly List<EventBasedJobInfo> EventBasedJobs = new List<EventBasedJobInfo>();
-
         #endregion
 
 
@@ -105,19 +89,10 @@ namespace iba.Data
         {
             License.Reset();
 
-            GlobalCleanup.Clear();
             FolderGlobalCleanup.ClearChildren();
-
-            StandardJobs.Clear();
             FolderStandardJobs.ClearChildren();
-
-            ScheduledJobs.Clear();
             FolderScheduledJobs.ClearChildren();
-
-            OneTimeJobs.Clear();
             FolderOneTimeJobs.ClearChildren();
-
-            EventBasedJobs.Clear();
             FolderEventBasedJobs.ClearChildren();
         }
 
@@ -128,8 +103,8 @@ namespace iba.Data
 
         public GlobalCleanupDriveInfo AddNewGlobalCleanup(string driveName)
         {
-            var driveInfo = new GlobalCleanupDriveInfo(FolderGlobalCleanup, (uint)GlobalCleanup.Count + 1, driveName);
-            GlobalCleanup.Add(driveInfo);
+            var driveInfo = new GlobalCleanupDriveInfo(
+                FolderGlobalCleanup, (uint)FolderGlobalCleanup.Children.Count + 1, driveName);
             FolderGlobalCleanup.Children.Add(driveInfo);
             // check consistency between mib name and oid
             Debug.Assert(driveInfo.SnmpFullMibName.Contains($"Drive{driveInfo.SnmpLeastId}"));
@@ -145,26 +120,22 @@ namespace iba.Data
             {
                 case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
                     folder = FolderStandardJobs;
-                    jobInfo = new StandardJobInfo(folder, (uint) StandardJobs.Count + 1, jobName);
-                    StandardJobs.Add((StandardJobInfo) jobInfo);
+                    jobInfo = new StandardJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.Scheduled:
                     folder = FolderScheduledJobs;
-                    jobInfo = new ScheduledJobInfo(folder, (uint)ScheduledJobs.Count + 1, jobName);
-                    ScheduledJobs.Add((ScheduledJobInfo) jobInfo);
+                    jobInfo = new ScheduledJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.OneTime:
                     folder = FolderOneTimeJobs;
-                    jobInfo = new OneTimeJobInfo(folder, (uint)OneTimeJobs.Count + 1, jobName);
-                    OneTimeJobs.Add((OneTimeJobInfo) jobInfo);
+                    jobInfo = new OneTimeJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.Event:
                     folder = FolderEventBasedJobs;
-                    jobInfo = new EventBasedJobInfo(folder, (uint)EventBasedJobs.Count + 1, jobName);
-                    EventBasedJobs.Add((EventBasedJobInfo) jobInfo);
+                    jobInfo = new EventBasedJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
                     break;
 
                 default:
@@ -175,16 +146,6 @@ namespace iba.Data
             // check consistency between mib name and oid
             Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}")); 
             return jobInfo;
-        }
-
-        public static TaskInfo AddNewTask(JobInfoBase parentJob, string taskName)
-        {
-            var taskInfo = new TaskInfo(parentJob.FolderTasks, (uint)parentJob.Tasks.Count + 1, taskName);
-            parentJob.Tasks.Add(taskInfo);
-            parentJob.FolderTasks.Children.Add(taskInfo);
-            // check consistency between mib name and oid
-            Debug.Assert(taskInfo.SnmpFullMibName.Contains($"Task{taskInfo.SnmpLeastId}")); 
-            return taskInfo;
         }
 
         public List<ExtMonNode> GetFlatListOfAllChildren() => FolderRoot.GetFlatListOfAllChildren();
@@ -208,12 +169,8 @@ namespace iba.Data
 
         public bool CheckConsistency()
         {
-            Debug.Assert(StandardJobs != null);
-
             // Check tree structure (parent-child) consistency
             Debug.Assert(CheckChildParentConsistency(FolderRoot));
-
-            // todo. kls. check double-lists
 
             // get list of all nodes
             var children = GetFlatListOfAllChildren();
@@ -909,12 +866,12 @@ namespace iba.Data
             /// <summary> key of the job list </summary>
             public Guid Guid;
 
-            /// <summary> Oid 1 </summary> 
+            /// <summary> Oid 1 - Contains everything except tasks </summary> 
             public ExtMonFolder FolderGeneral;
-            /// <summary> Oid 2 </summary> 
+            /// <summary> Oid 2 - Contains tasks (one subfolder per each task) </summary> 
             public ExtMonFolder FolderTasks;
 
-            /// <summary> Oid General.1 </summary>  //todo add ua names to comments
+            /// <summary> Oid General.1 </summary> 
             public readonly ExtMonVariable<string> JobName;
             /// <summary> Oid General.2 </summary>
             public readonly ExtMonVariable<JobStatus> Status;
@@ -924,10 +881,6 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> DoneCount;
             /// <summary> Oid General.5 </summary>
             public readonly ExtMonVariable<uint> FailedCount;
-
-            /// <summary> Oid Tasks.1...Tasks.n, where n - size of the list</summary>
-            public List<TaskInfo> Tasks; // todo. kls. encapsulate FolderTasks?
-
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
                 : base(parent, snmpLeastId)
@@ -983,6 +936,7 @@ namespace iba.Data
                 PrivateReset();
             }
 
+            /// <summary> Resets everything except tasks </summary>
             private void PrivateReset()
             {
                 JobName.Value = "";
@@ -990,6 +944,7 @@ namespace iba.Data
                 TodoCount.Value = 0;
                 DoneCount.Value = 0;
                 FailedCount.Value = 0;
+                // todo. kls. reset tasks???
             }
 
             /// <summary> Resets to default values everything except Guid (primary key) and Tasks </summary>
@@ -998,15 +953,36 @@ namespace iba.Data
                 PrivateReset();
             }
 
-            // todo. kls. 
+            public int TaskCount => FolderTasks.Children.Count;
+
+
+            /// <summary> Gets Job's task with given index </summary>
+            public TaskInfo this[int index]
+            {
+                get
+                {
+                    ExtMonNode child = FolderTasks.Children[index];
+                    Debug.Assert(child is TaskInfo);
+                    return child as TaskInfo;
+                }
+            }
+
+            public TaskInfo AddTask(string taskName)
+            {
+                var taskInfo = new TaskInfo(FolderTasks, (uint)FolderTasks.Children.Count + 1, taskName);
+                FolderTasks.Children.Add(taskInfo);
+                // check consistency between mib name and oid
+                Debug.Assert(taskInfo.SnmpFullMibName.Contains($"Task{taskInfo.SnmpLeastId}"));
+                return taskInfo;
+            }
             public void ResetTasks()
             {
+                FolderTasks.ClearChildren();
             }
 
             public override string ToString()
             {
-                string tasksString = (Tasks?.Count ?? 0).ToString();
-                return $@"{JobName.Value} [{Status}, {TodoCount}/{DoneCount}/{FailedCount}, T:{tasksString}]";
+                return $@"{JobName.Value} [{Status}, {TodoCount}/{DoneCount}/{FailedCount}, T:{TaskCount}]";
             }
         }
 
