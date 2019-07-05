@@ -1078,22 +1078,28 @@ namespace iba.Data
                 // last processing
 
                 LastProcessingLastDatFileProcessed = FolderLastProcessing.AddChildVariable<string>(
-                    @"Last dat-file processed", @"LastFile", 
+                    @"Last dat-file processed", null /*is special, see below*/, 
                     @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
                     SNMP_AUTO_LEAST_ID);
+                // set special mib name (skip name of FolderLastProcessing) 
+                LastProcessingLastDatFileProcessed.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"LastFile";
                 Debug.Assert(LastProcessingLastDatFileProcessed.SnmpLeastId == 1); // ensure id has an expected value
 
                 LastProcessingStartTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
-                    @"Start timestamp", @"StartStamp", 
+                    @"Start timestamp", null /*is special, see below*/,
                     @"Time when processing of the last successfully processed file was started. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                     SNMP_AUTO_LEAST_ID);
+                // set special mib name (skip name of FolderLastProcessing) 
+                LastProcessingStartTimeStamp.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"StartStamp"; 
 
                 LastProcessingFinishTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
-                    @"Finish timestamp", @"FinishStamp",
+                    @"Finish timestamp", null /*is special, see below*/,
                     @"Time when processing of the last successfully processed file was finished. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                     SNMP_AUTO_LEAST_ID);
+                // set special mib name (skip name of FolderLastProcessing) 
+                LastProcessingFinishTimeStamp.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"FinishStamp";
                 Debug.Assert(LastProcessingFinishTimeStamp.SnmpLeastId == 3); // ensure id has an expected value
 
                 PrivateReset();
