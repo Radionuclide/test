@@ -65,41 +65,41 @@ namespace iba.Data
 
         public ExtMonData()
         {
-            FolderRoot = new ExtMonFolder(null, caption: @"Root", snmpMibNameSuffix: @"Root", description: @"Root", snmpLeastId: 0)
+            FolderRoot = new ExtMonFolder(null, @"Root", @"Root", @"Root", 0)
             { SnmpFullMibName = "Root" };
             // FolderRoot.SnmpFullOid = ; // it has no SNMP OID
 
             FolderRoot.Children.Add(
                 License = new LicenseInfo(FolderRoot));
             License.Caption = @"Licensing";
-            License.Description = "Global cleanup settings for all local drives."; // is not used in SNMP
+            License.Description = "License information."; // only for OPC UA (in SNMP it's predefined in ibaSnmp.dll)
             //License.SnmpFullOid = ; // is not used. License OID is actually "PrGeneral.3", but it's handled specially
-            //License.SnmpFullMibName = ""; // it is not used i
+            //License.SnmpFullMibName = ""; // it's predefined in ibaSnmp.dll
 
             FolderRoot.Children.Add(
                 FolderGlobalCleanup = new ExtMonFolder(FolderRoot,
-                caption: @"Global cleanup", snmpFullMibName: @"globalCleanup",
-                description: "Global cleanup settings for all local drives.", fullOid: new IbaSnmpOid(1)));
+                @"Global cleanup", @"globalCleanup",
+                "Global cleanup settings for all local drives.", new IbaSnmpOid(1)));
 
             FolderRoot.Children.Add(
                 FolderStandardJobs = new ExtMonFolder(FolderRoot,
-                caption: @"Standard jobs", snmpFullMibName: @"standardJobs",
-                description: @"List of all standard jobs.", fullOid: new IbaSnmpOid(2)));
+                @"Standard jobs", @"standardJobs",
+                @"List of all standard jobs.", new IbaSnmpOid(2)));
 
             FolderRoot.Children.Add(
                 FolderScheduledJobs = new ExtMonFolder(FolderRoot,
-                caption: @"Scheduled jobs", snmpFullMibName: @"scheduledJobs",
-                description: @"List of all scheduled jobs.", fullOid: new IbaSnmpOid(3)));
+                @"Scheduled jobs", @"scheduledJobs",
+                @"List of all scheduled jobs.", new IbaSnmpOid(3)));
 
             FolderRoot.Children.Add(
                 FolderOneTimeJobs = new ExtMonFolder(FolderRoot,
-                caption: @"One time jobs", snmpFullMibName: @"oneTimeJobs",
-                description: @"List of all one-time jobs.", fullOid: new IbaSnmpOid(4)));
+                @"One time jobs", @"oneTimeJobs",
+                @"List of all one-time jobs.", new IbaSnmpOid(4)));
 
             FolderRoot.Children.Add(
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
-                caption: @"Event jobs", snmpFullMibName: @"eventJobs",
-                description: @"List of all event jobs.", fullOid: new IbaSnmpOid(5)));
+                @"Event jobs", @"eventJobs",
+                @"List of all event jobs.", new IbaSnmpOid(5)));
         }
 
         public void Reset()
@@ -107,19 +107,19 @@ namespace iba.Data
             License.Reset();
 
             GlobalCleanup.Clear();
-            FolderGlobalCleanup.Children.Clear();
+            FolderGlobalCleanup.ClearChildren();
 
             StandardJobs.Clear();
-            FolderStandardJobs.Children.Clear();
+            FolderStandardJobs.ClearChildren();
 
             ScheduledJobs.Clear();
-            FolderScheduledJobs.Children.Clear();
+            FolderScheduledJobs.ClearChildren();
 
             OneTimeJobs.Clear();
-            FolderOneTimeJobs.Children.Clear();
+            FolderOneTimeJobs.ClearChildren();
 
             EventBasedJobs.Clear();
-            FolderEventBasedJobs.Children.Clear();
+            FolderEventBasedJobs.ClearChildren();
         }
 
         #endregion
@@ -425,6 +425,10 @@ namespace iba.Data
 
         internal class ExtMonFolder : ExtMonNode // todo. kls. Rename to ExternalMonitoringGroup 
         {
+            /// <summary>
+            /// Try avoid writing this collection directly or be careful with parent-child consistency.
+            /// Use <see cref="AddChildFolder"/> or <see cref="AddChildVariable"/> if possible.
+            /// </summary>
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
 
             /// <summary>
@@ -449,16 +453,23 @@ namespace iba.Data
             {
             }
 
+            /// <summary> Adds a child folder, preserving parent-child consistency </summary>
             public ExtMonFolder AddChildFolder(string caption, string snmpMibNameSuffix,
                 string description, uint snmpLeastId)
             {
-                var child = new ExtMonFolder(this,caption: caption, snmpMibNameSuffix: snmpMibNameSuffix, description: description, snmpLeastId: snmpLeastId);
+                var child = new ExtMonFolder(this,caption, snmpMibNameSuffix, description, snmpLeastId);
                 Children.Add(child);
                 return child;
             }
+
+
+            /// <summary> Adds a child variable, preserving parent-child consistency </summary>
             public ExtMonVariable<T> AddChildVariable<T>(string caption, string snmpMibNameSuffix,
                 string description, uint snmpLeastId)
             {
+                //if (snmpLeastId ==)// todo. kls. 
+                //    snmpLeastId = (uint)Children.Count + 1;
+
                 var child = new ExtMonVariable<T>(this, caption, snmpMibNameSuffix, description, snmpLeastId);
                 Children.Add(child);
                 return child;
@@ -501,6 +512,10 @@ namespace iba.Data
                 return list;
             }
 
+            public void ClearChildren()
+            {
+                Children.Clear();
+            }
 
             public override string ToString()
             {
@@ -522,7 +537,7 @@ namespace iba.Data
 
             protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
-                : base(parent, caption: caption, snmpMibNameSuffix: snmpMibNameSuffix, description: description, snmpLeastId: snmpLeastId)
+                : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
             {
             }
 
@@ -619,39 +634,33 @@ namespace iba.Data
                 // set Caption, Description, etc.
                 Caption = $@"Drive '{driveName}'";
                 SnmpFullMibName = $@"globalCleanupDrive{snmpLeastId}"; 
-                Description = $@"Global cleanup settings for the drive '{driveName}'";
+                Description = $@"Global cleanup settings for the drive '{driveName}'.";
 
                 // create variables and add them to collection
 
-                Children.Add(
-                DriveName = new ExtMonVariable<string>(this, @"Drive Name", @"Name",
+                DriveName = AddChildVariable<string>(@"Drive Name", @"Name",
                     @"Drive name like it appears in operating system.",
-                    1));
+                    1);
 
-                Children.Add(
-                    Active = new ExtMonVariable<bool>(this, @"Active", @"Active",
+                Active = AddChildVariable<bool>(@"Active", @"Active",
                     @"Whether or not the global cleanup is enabled for the drive.",
-                    2));
+                    2);
 
-                Children.Add(
-                    SizeInMb = new ExtMonVariable<uint>(this, @"Size", @"Size",
+                SizeInMb = AddChildVariable<uint>(@"Size", @"Size",
                     @"Size of the drive (in megabytes).",
-                    3));
+                    3);
 
-                Children.Add(
-                    CurrentFreeSpaceInMb = new ExtMonVariable<uint>(this, @"Current free space", @"CurrFreeSpace",
+                CurrentFreeSpaceInMb = AddChildVariable<uint>(@"Current free space", @"CurrFreeSpace",
                     @"Current free space of the drive (in megabytes).",
-                    4));
+                    4);
 
-                Children.Add(
-                    MinFreeSpaceInPercent = new ExtMonVariable<uint>(this, @"Min free space", @"MinFreeSpace",
+                MinFreeSpaceInPercent = AddChildVariable<uint>(@"Min free space", @"MinFreeSpace",
                     @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
-                    5));
+                    5);
 
-                Children.Add(
-                    RescanTime = new ExtMonVariable<uint>(this, @"Rescan time", @"RescanTime",
+                RescanTime = AddChildVariable<uint>(@"Rescan time", @"RescanTime",
                     @"How often the application rescans the drive parameters (in minutes).", 
-                    6));
+                    6);
 
                 // set DriveName.Value right now, because it will serve as a primary key of DriveInfo collection
                 DriveName.Value = driveName;
@@ -712,39 +721,34 @@ namespace iba.Data
                 // create variables and add them to collection
 
                 // todo. kls. change MIB name and desc on TaskName change?
-                Children.Add(
-                    TaskName = new ExtMonVariable<string>(this,
+                TaskName = AddChildVariable<string>(
                     @"Task name", @"Name",
                     @"The name of the task as it appears in GUI.",
-                    1));
+                    1);
 
-                Children.Add(
-                    TaskType = new ExtMonVariable<string>(this,
+                TaskType = AddChildVariable<string>(
                     @"Task type", "Type",
                     @"The type of the task (copy, extract, report, etc.).",
-                    2));
+                    2);
 
-                Children.Add(
-                    Success = new ExtMonVariable<bool>(this, 
+                Success = AddChildVariable<bool>(
                     @"Success", @"Success", 
                     @"Whether or not the last executed task was completed successfully, i.e. without errors. " +
                     @"For Condition task this means that the expression was successfully evaluated as " +
                     @"TRUE or FALSE - both results are treated as success.",
-                    3));
+                    3);
 
-                Children.Add(
-                    DurationOfLastExecutionInSec = new ExtMonVariable<uint>(this,
+                DurationOfLastExecutionInSec = AddChildVariable<uint>(
                     @"Duration of last execution", @"DurationOfLastExecution",
                     @"Duration of the last task execution (in seconds).",
-                    4));
+                    4);
 
-                Children.Add(
-                    MemoryUsedForLastExecutionInMb = new ExtMonVariable<uint>(this,
+                MemoryUsedForLastExecutionInMb = AddChildVariable<uint>(
                     @"Memory used for last execution", @"LastMemoryUsed",
                     @"Amount of memory used during the last execution of the task (in megabytes). " +
                     @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., " +
                     @"Condition, Report, Extract and some custom tasks.",
-                    5));
+                    5);
 
                 // set default values
                 Reset();
@@ -754,6 +758,7 @@ namespace iba.Data
             public LocalCleanupInfo AddCleanupInfo()
             {
                 Children.Add(CleanupInfo = new LocalCleanupInfo(this, 6));
+                Debug.Assert(CleanupInfo.SnmpLeastId == 6);
                 return CleanupInfo;
             }
             public void ResetCleanupInfo()
@@ -792,35 +797,31 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> FreeDiskSpace;
 
             public LocalCleanupInfo(ExtMonFolder parent, uint snmpLeastId)
-                : base(parent, caption: @"Cleanup", snmpMibNameSuffix: @"Cleanup",
-                    description: @"Cleanup parameters of the task.", snmpLeastId: snmpLeastId)
+                : base(parent, @"Cleanup", @"Cleanup",
+                    @"Cleanup parameters of the task.", snmpLeastId)
             {
                 // create variables and add them to collection
 
-                Children.Add(
-                    LimitChoice = new ExtMonVariable<TaskWithTargetDirData.OutputLimitChoiceEnum>(this,
+                LimitChoice = AddChildVariable<TaskWithTargetDirData.OutputLimitChoiceEnum>(
                         @"Limit choice", @"LimitChoice",
                         @"Option selected as limit for the disk space usage. " +
                         @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
-                    1));
+                    1);
 
-                Children.Add(
-                    Subdirectories = new ExtMonVariable<uint>(this,
+                Subdirectories = AddChildVariable<uint>(
                         @"Subdirectories", @"Subdirectories",
                         @"Maximum count of directories the task can use.",
-                    2));
+                    2);
 
-                Children.Add(
-                    UsedDiskSpace = new ExtMonVariable<uint>(this,
+                UsedDiskSpace = AddChildVariable<uint>(
                         @"Used disk space", @"UsedDiskSpace",
                         @"Maximum disk space that can be used by the task (in megabytes).",
-                    3));
+                    3);
 
-                Children.Add(
-                    FreeDiskSpace = new ExtMonVariable<uint>(this,
+                FreeDiskSpace = AddChildVariable<uint>(
                         @"Free disk space", @"FreeDiskSpace",
                         @"Minimum disk space that is kept free (in megabytes).",
-                    4));
+                    4);
             }
         }
 
@@ -873,48 +874,43 @@ namespace iba.Data
 
                 // create folders and add them to collection
 
-                // todo. kls. desc on Job rename (this was NOT implemented in original version also) 
-                Children.Add(
-                    FolderGeneral = new ExtMonFolder(this,
-                    caption: @"General", snmpMibNameSuffix: @"General",
-                    description: $@"General properties of job '{jobName}'.", snmpLeastId: 1)); 
+                // todo. kls. Do description change on Job rename (this was NOT implemented in original version also) 
+                FolderGeneral = AddChildFolder(
+                    @"General", @"General",
+                    $@"General properties of job '{jobName}'.", 
+                    1);
 
-                Children.Add(
-                    FolderTasks = new ExtMonFolder(this,
-                    caption: @"Tasks", snmpMibNameSuffix: @"Tasks", 
-                    description: $@"Information about all tasks of the job '{jobName}'.", snmpLeastId: 2));
+                FolderTasks = AddChildFolder(
+                    @"Tasks", @"Tasks",
+                    $@"Information about all tasks of the job '{jobName}'.",
+                    2);
 
                 // create variables and add them to collection
 
-                FolderGeneral.Children.Add(
-                    JobName = new ExtMonVariable<string>(FolderGeneral,
+                JobName = FolderGeneral.AddChildVariable<string>(
                     @"Job Name", @"Name",
                     @"The name of the job as it appears in GUI.",
-                    1));
+                    1);
 
-                FolderGeneral.Children.Add(
-                    Status = new ExtMonVariable<JobStatus>(FolderGeneral,
+                Status = FolderGeneral.AddChildVariable<JobStatus>(
                     @"Status", @"Status", 
                     @"Current status of the job (started, stopped or disabled).",
-                    2));
+                    2);
 
-                FolderGeneral.Children.Add(
-                    TodoCount = new ExtMonVariable<uint>(FolderGeneral,
+                TodoCount = FolderGeneral.AddChildVariable<uint>(
                     @"Todo #", @"Todo",
                     @"Number of dat files to be processed.",
-                    3));
+                    3);
 
-                FolderGeneral.Children.Add(
-                    DoneCount = new ExtMonVariable<uint>(FolderGeneral,
+                DoneCount = FolderGeneral.AddChildVariable<uint>(
                     @"Done #", @"Done",
                     @"Number of processed files.",
-                    4));
+                    4);
 
-                FolderGeneral.Children.Add(
-                    FailedCount = new ExtMonVariable<uint>(FolderGeneral,
+                FailedCount = FolderGeneral.AddChildVariable<uint>(
                     @"Failed #", @"Failed",
                     @"Number of errors occurred during processing.",
-                    5));
+                    5);
 
                 PrivateReset();
             }
@@ -974,40 +970,36 @@ namespace iba.Data
                 // set Description and MIB. (Caption is set in the base class)
                 SnmpFullMibName = $@"standardJob{snmpLeastId}";
                 Description = $@"Properties of standard job '{jobName}'.";
-                
+
                 // create variables and add them to collection
 
-                FolderGeneral.Children.Add(
-                    PermFailedCount = new ExtMonVariable<uint>(FolderGeneral,
-                    @"Perm. Failed #", @"PermFailed",
+                PermFailedCount = FolderGeneral.AddChildVariable<uint>(
+                    @"Perm. Failed #", @"PermFailedCount",
                     @"Number of files with persistent errors.",
-                    6));
+                    6);
 
-                FolderGeneral.Children.Add(
-                    TimestampJobStarted = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp job started", @"TimestampJobStarted",
                     @"Time when the job was started. For a stopped job, it relates to the last start of the job. " +
                     @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                    7));
+                    7);
 
-                FolderGeneral.Children.Add(
-                    TimestampLastDirectoryScan = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampLastDirectoryScan = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp last directory scan", @"TimestampLastDirectoryScan",
                     @"Time when the last scan for new (unprocessed) .dat files was performed. " +
                     @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                    8));
+                    8);
 
-                FolderGeneral.Children.Add(
-                    TimestampLastReprocessErrorsScan = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampLastReprocessErrorsScan = FolderGeneral.AddChildVariable<DateTime>(
                     @"Timestamp last reprocess errors scan", @"TimestampLastReprocessErrorsScan",
                     @"Time when the last reprocess scan was performed " +
                     @"(reprocess scan is a scan for .dat files that previously were processed with errors).  " +
                     @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                    9));
+                    9);
 
                 // last processing Folder
-                FolderLastProcessing = FolderGeneral.AddChildFolder(caption: @"LastProcessing", snmpMibNameSuffix: @"LastProcessing",
-                    description: @"Information about the last successfully processed file.", snmpLeastId: 10);
+                FolderLastProcessing = FolderGeneral.AddChildFolder(@"LastProcessing", @"LastProcessing",
+                    @"Information about the last successfully processed file.", 10);
 
 
                 // last processing
@@ -1017,19 +1009,17 @@ namespace iba.Data
                     @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
                     1);
 
-                FolderLastProcessing.Children.Add(
-                    LastProcessingStartTimeStamp = new ExtMonVariable<DateTime>(FolderLastProcessing,
+                LastProcessingStartTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
                     @"Start timestamp", @"StartStamp", // todo. kls. derive mib name from job, not from last proc ?
                     @"Time when processing of the last successfully processed file was started. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                    2));
+                    2);
 
-                FolderLastProcessing.Children.Add(
-                    LastProcessingFinishTimeStamp = new ExtMonVariable<DateTime>(FolderLastProcessing,
+                LastProcessingFinishTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
                     @"Finish timestamp", @"FinishStamp", // todo. kls. derive mib name from job, not from last proc ?
                     @"Time when processing of the last successfully processed file was finished. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                    3));
+                    3);
 
                 PrivateReset();
             }
@@ -1073,34 +1063,30 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                FolderGeneral.Children.Add(
-                    PermFailedCount = new ExtMonVariable<uint>(FolderGeneral,
+                PermFailedCount = FolderGeneral.AddChildVariable<uint>(
                         @"Perm. Failed #", @"PermFailedCount",
                         @"Number of files with persistent errors.",
-                        6));
+                        6);
 
-                FolderGeneral.Children.Add(
-                    TimestampJobStarted = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp job started", @"TimestampJobStarted",
                         @"Time when job was started (starting of the scheduled job does NOT mean that it will be executed immediately).  " +
                         @"For a stopped job, it relates to the last start of the job.  " +
                         @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                        7));
+                        7);
 
-                FolderGeneral.Children.Add(
-                    TimestampLastExecution = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the job was last executed. " +
                         @"(This does not mean the moment when job was started, but the moment when configured trigger was fired last time); " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        8));
+                        8);
 
-                FolderGeneral.Children.Add(
-                    TimestampNextExecution = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampNextExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp next execution", @"TimestampNextExecution",
                         @"Time of the next scheduled execution. " +
                         @"If there is no execution scheduled, then value is '01.01.0001 0:00:00'.",
-                        9));
+                        9);
 
                 PrivateReset();
             }
@@ -1135,12 +1121,12 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                FolderGeneral.Children.Add(
-                    TimestampLastExecution = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the last execution was started. " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        6));
+                        6);
+                Debug.Assert(TimestampLastExecution.SnmpLeastId == 6);
 
 
                 PrivateReset();
@@ -1177,27 +1163,24 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                FolderGeneral.Children.Add(
-                    PermFailedCount = new ExtMonVariable<uint>(FolderGeneral,
-                        @"Perm. Failed #", @"PermFailed",
+                PermFailedCount = FolderGeneral.AddChildVariable<uint>(
+                        @"Perm. Failed #", @"PermFailedCount",
                         @"Number of files with persistent errors.",
-                        6));
+                        6);
 
-                FolderGeneral.Children.Add(
-                    TimestampJobStarted = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp job started", @"TimestampJobStarted",
                         @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
                         @"For a stopped job, it relates to the last start of the job.  " +
                         @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                        7));
+                        7);
 
-                FolderGeneral.Children.Add(
-                    TimestampLastExecution = new ExtMonVariable<DateTime>(FolderGeneral,
+                TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the job was last executed. " +
                         @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        8));
+                        8);
 
                 PrivateReset();
             }
