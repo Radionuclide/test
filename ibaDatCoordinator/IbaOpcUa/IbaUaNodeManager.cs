@@ -101,6 +101,7 @@ namespace iba.ibaOPCServer
                 }
 
                 FolderIbaRoot = CreateFolder(null, FolderIbaRootName, FolderIbaRootName);
+                FolderIbaRoot.Description = @"ibaDatCoordinator module";
 
                 FolderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
                 references.Add(new NodeStateReference(ReferenceTypes.Organizes, false, FolderIbaRoot.NodeId));
@@ -303,13 +304,8 @@ namespace iba.ibaOPCServer
         public static readonly char NODE_ID_DELIMITER = '\\';
         public static readonly char NODE_ID_DEFAULT_REPLACEMENT_CHARACTER = '_';
 
-        /// <summary>
-        /// // todo. kls. fix comment
-        /// "abc\de" + "fgh" -> "abc\de\fgh"
-        /// </summary>
-        /// <param name="parentFullId"></param>
-        /// <param name="nodeBrowseName"></param>
-        /// <returns></returns>
+        /// <summary> Composes string node id, using <see cref="NODE_ID_DELIMITER"/>. 
+        /// E.g.: "abc\de" + "fgh" -> "abc\de\fgh" </summary>
         public string ComposeNodeId(string parentFullId, string nodeBrowseName) 
             => parentFullId + NODE_ID_DELIMITER + GetAdaptedBrowseName(nodeBrowseName);
 
@@ -317,29 +313,20 @@ namespace iba.ibaOPCServer
 
         public readonly IbaUaNodeManagerStatus Status;
 
-        /// <summary>
-        /// Root folder for all iba-specific data
-        /// </summary>
+        /// <summary> Root folder for all iba-specific data </summary>
         public FolderState FolderIbaRoot { get; private set; }
 
-        /// <summary>
-        /// contains iba-ua-server-status nodes
-        /// </summary>
+        /// <summary> Contains auxiliary / iba-ua-server-status nodes </summary>
         public FolderState FolderIbaStatus { get; private set; }
 
-        #region prefixes for "Tasks" and "Globals" varialbes
-
-        private const string FolderIbaRootName = "Root";
+        private const string FolderIbaRootName = "ibaDatCoordinator";
         private const string FolderIbaStatusName = "Status";
 
-        #endregion
 
         private IbaOpcUaVariable _temporaryWatch;
 
         // todo delete tmp variables
         public static int TmpKls___ReadCounter;
-        public static int TmpKls___SearchCountFast;
-        public static int TmpKls___SearchCountSlow;
 
         /// <summary>
         /// By Kolesnik. 
@@ -351,8 +338,8 @@ namespace iba.ibaOPCServer
 
             try
             {
-                // probabaly ua-monitored items list can differ from wathclist
-                // (this is not good situation (some inconsistecy take place) but still can happen)
+                // probabaly ua-monitored items list can differ from watchlist
+                // (this is not good situation (some inconsistency take place) but still can happen)
                 // if we have some monitored item that is not presented in a watchlist
                 // then we should mark it as bad
 
@@ -487,7 +474,7 @@ namespace iba.ibaOPCServer
         /// <returns></returns>
         public string KlsGetDescriptionStringVarTree()
         {
-            // todo do it faster:  do not recalculate stirng unless tree was changed since last time
+            // todo do it faster:  do not recalculate string unless tree was changed since last time
             // by now in release show only number
 #if DEBUG
 

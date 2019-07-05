@@ -635,8 +635,13 @@ namespace iba.Processing
                         return false; // rebuild failed
                     }
 
-
-                    BuildFolderRecursively(null, ObjectsData.FolderRoot);
+                    foreach (var node in ObjectsData.FolderRoot.Children)
+                    {
+                        Debug.Assert(node is ExtMonData.ExtMonFolder);
+                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                        if (node is ExtMonData.ExtMonFolder xmFolder)
+                            BuildFolderRecursively(null, xmFolder);
+                    }
 
 
                     // todo. kls. remove
@@ -644,9 +649,6 @@ namespace iba.Processing
                     //    NodeManager.CreateVariableAndItsNode(ObjectsData.FolderGlobalCleanup.UaFullId, BuiltInType.Int32, "Lifebeat2");
                     //_lifeBeatVar2 =
                     //    NodeManager.CreateVariableAndItsNode(null, BuiltInType.Int32, "Lifebeat2");
-
-
-                    //BuildFolderRecursively(null, ObjectsData.FolderGlobalCleanup);
 
                     // uniqueness test 
                     //CreateUaFolder(sectionFolder, null, "null");
@@ -659,8 +661,6 @@ namespace iba.Processing
                     //CreateUaFolder(sectionFolder, "Abc", " ");
                     //CreateUaFolder(sectionFolder, "A.B", " ");
                     //CreateUaFolder(sectionFolder, "A.B", " ");
-
-
 
                     return true; // rebuilt successfully
                 }

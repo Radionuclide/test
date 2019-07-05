@@ -257,22 +257,23 @@ namespace iba.Data
 
         #region Abstract and common classes
 
-        /// <summary>
-        /// 'Node' is either folder or variable. // todo. kls. to comment
-        /// </summary>
+        /// <summary> Node is a basic element of <see cref="ExtMonData"/> hierarchy.
+        /// It is either folder or variable. </summary>
         internal abstract class ExtMonNode
         {
             public readonly ExtMonFolder Parent;
 
             public string Caption; // todo. kls. try make readonly 
             public string Description; // todo. kls. try make readonly 
-
-
-            /// <summary> SNMP: Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
+            
+            /// <summary> Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
             public readonly uint SnmpLeastId;
 
+            /// <summary> Backing field for <see cref="SnmpFullOid"/> </summary>
             public IbaSnmpOid _snmpFullOid;
-            /// <summary> Can be set directly or can be evaluated dynamically from SnmpLeastId and parent's OID</summary>
+
+            /// <summary> Full SNMP OID.
+            /// Can be set directly or can be evaluated dynamically from SnmpLeastId and parent's full OID. </summary>
             public IbaSnmpOid SnmpFullOid
             {
                 get
@@ -291,12 +292,15 @@ namespace iba.Data
                 set => _snmpFullOid = value;
             }
 
-            /// <summary> e.g. "Status" for the item "standardJob3Task2Status" </summary>
+            /// <summary> Rightmost piece of the MIB name;
+            /// e.g. "Status" for the item "standardJob3Task2Status" </summary>
             public readonly string SnmpMibNameSuffix;
 
+            /// <summary> Backing field for <see cref="SnmpFullMibName"/> </summary>
             private string _snmpFullMibName;
 
-            /// <summary> Can be set directly or can be evaluated dynamically from MibSuffix and parent's MibName </summary>
+            /// <summary> Full SNMP MIB name. 
+            /// Can be set directly or can be evaluated dynamically from MibSuffix and parent's FullMibName </summary>
             public string SnmpFullMibName
             {
                 get
@@ -530,18 +534,13 @@ namespace iba.Data
             }
         }
 
-        /// <summary> Group is a special kind of folder.
-        /// its items are updated altogether.
-        /// // todo. kls. to comment
+        /// <summary>
+        /// Group is a special kind of folder.
+        /// It has a timestamp of last update, and it's assumed that its items are updated altogether if one of
+        /// group's items is requested from outside.
         /// </summary>
         internal abstract class ExtMonGroup : ExtMonFolder
         {
-
-            //protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId) : // todo. kls. remove parameterless
-
-            //    this(parent, null, null, null, snmpLeastId)
-            //{ }
-
             protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
                 : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
