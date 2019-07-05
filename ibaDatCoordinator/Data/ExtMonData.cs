@@ -278,7 +278,7 @@ namespace iba.Data
 
 
             /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
-            public string UaFullId; // todo try to remove ?
+            //public string UaFullId; // todo. kls. try to remove ?
 
 
             protected ExtMonNode(ExtMonFolder parent, uint snmpLeastId, 

@@ -690,7 +690,7 @@ namespace iba.Processing
         {
             try
             {
-                FolderState uaFolder = CreateUaFolder(uaParentFolder, startingFolder);
+                FolderState uaFolder = CreateOpcUaFolder(uaParentFolder, startingFolder);
                 
                 foreach (var node in startingFolder.Children)
                 {
@@ -698,10 +698,9 @@ namespace iba.Processing
                     {
                         case ExtMonData.ExtMonFolder xmFolder:
                             BuildFolderRecursively(uaFolder, xmFolder);
-
                             break;
                         case ExtMonData.ExtMonVariableBase xmv:
-                            CreateUserValue2(uaFolder, xmv, GlobalCleanupDriveInfoItemRequested); // todo. kls. handler
+                            CreateOpcUaValue(uaFolder, xmv);
                             break;
                         default:
                             continue;
@@ -718,50 +717,54 @@ namespace iba.Processing
         }
 
 
-        #region Create Value, Create Folder helper functions
+        #region Create/Update Value/Folder
 
-        private FolderState CreateUaFolder(FolderState uaParentFolder, string displayName, string description)
+        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, string displayName, string description)
             => NodeManager.CreateFolderAndItsNode(uaParentFolder ?? NodeManager.FolderIbaRoot, displayName, description);
 
-        private FolderState CreateUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
+        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
             // create
-            FolderState folder = CreateUaFolder(uaParentFolder, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+            FolderState folder = CreateOpcUaFolder(uaParentFolder, xmFolderToCreate.Caption, xmFolderToCreate.Description);
             // keep UA id in ExtMon Node
-            xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string;
+            //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
             return folder;
         }
 
-        private IbaOpcUaVariable CreateUserValue(FolderState parent, object initialValue,
-            string name, string description = null,
-            EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null, object tag = null)
+        //private IbaOpcUaVariable CreateUserValue(FolderState parent, object initialValue,
+        //    string name, string description = null,
+        //    EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null, object tag = null)
+        //{
+        //    // get uaType automatically from initial value
+        //    var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
+        //    Debug.Assert(uaType != BuiltInType.Null);
+
+        //    IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, uaType, name, description);
+
+        //    NodeManager.SetValueScalar(iv, initialValue);
+        //    iv.OnReadValue += OnReadProductSpecificValue;
+        //    return iv;
+        //}
+
+        private IbaOpcUaVariable CreateOpcUaValue(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
         {
-            // get uaType automatically from initial value
-            var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
-            Debug.Assert(uaType != BuiltInType.Null);
-
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, uaType, name, description);
-
-            NodeManager.SetValueScalar(iv, initialValue);
-            iv.OnReadValue += OnReadDriveInfoValue;
-            return iv;
-        }
-
-        private IbaOpcUaVariable CreateUserValue2(FolderState parent, ExtMonData.ExtMonVariableBase xmv, 
-            EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null)
-        {
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, xmv.ObjValue, xmv.Caption, xmv.Description);
+            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(
+                parent, xmv.ObjValue, xmv.Caption, xmv.Description);
             
             // keep cross reference between internal variable and UA variable for instant access
             xmv.UaVar = iv;
             iv.ExtMonVar = xmv;
 
             // add handler
-            iv.OnReadValue += OnReadDriveInfoValue;
+            iv.OnReadValue += OnReadProductSpecificValue;
             return iv;
         }
 
-        
+        private void UpdateOpcUaValue(ExtMonData.ExtMonVariableBase xmv)
+        {
+            NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+        }
+
         // todo. kls. to comment
         private void CreateEnumUserValue(string oidSuffix, object valueType, int initialValue,
             string caption, string mibName = null, string mibDescription = null,
@@ -779,62 +782,7 @@ namespace iba.Processing
 
         #region Value-Refresh functions  
 
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshLicenseInfo()
-        {
-            if (Monitor.TryEnter(LockObject, LockTimeout))
-            {
-                try
-                {
-                    if (ObjectsData.License.IsUpToDate())
-                    {
-                        // data is fresh, no need to change something
-                        return false; // was not updated
-                    }
-
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
-                    {
-                        // should not happen
-                        // failed to update data
-                        // don't rebuild the tree, just return false
-                        return false; // was not updated
-                    }
-
-                    // TaskManager has updated info successfully 
-                    // copy it to snmp tree
-
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
-                    //IbaOpcUaServer.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
-                    return true; // data was updated
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-                return false; // was not updated
-            }
-        }
-
+        
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
@@ -861,6 +809,9 @@ namespace iba.Processing
                     bool bSuccess;
                     switch (xmGroup)
                     {
+                        case ExtMonData.LicenseInfo licenseInfo:
+                            bSuccess = man.SnmpRefreshLicenseInfo(licenseInfo);
+                            break;
                         case ExtMonData.GlobalCleanupDriveInfo driveInfo:
                             bSuccess = man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
                             break;
@@ -891,8 +842,7 @@ namespace iba.Processing
 
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
-                        // todo. kls. 
-                        NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+                        UpdateOpcUaValue(xmv);
                     }
 
                     return true; // data was updated
@@ -909,7 +859,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. // todo. kls. to comment Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
+                        $"OPC UA. {nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -924,67 +874,25 @@ namespace iba.Processing
 
         #region XxxRequested event handlers
 
-        private void IbaSnmp_LicensingValueRequested<T>(object sender, EventArgs args)
-        {
-            // refresh data if it is too old 
-            RefreshLicenseInfo();
-
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            try
-            {
-                //args.Value = (T)args.IbaSnmp.GetValue(args.Oid);
-            }
-            catch
-            {
-                // suppress possible cast exception from null to ValueType (bool, int, etc.)
-            }
-        }
-
-        private void GlobalCleanupDriveInfoItemRequested(object sender, IbaOpcUaObjectValueRequestedEventArgs args)
-        {
-            var driveInfo = args.Tag as ExtMonData.GlobalCleanupDriveInfo;
-
-            if (driveInfo == null)
-            {
-                // should not happen
-                args.Value = null;
-            }
-
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGroup(driveInfo);
-
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            //args.Value = args.Worker.NodeManager.g.GetValue(args.Oid);
-        }
-
-        private ServiceResult OnReadDriveInfoValue(ISystemContext context,
+        private ServiceResult OnReadProductSpecificValue(ISystemContext context,
             NodeState node, NumericRange indexrange, QualifiedName dataencoding, ref object value, ref StatusCode statuscode, ref DateTime timestamp)
         {
             if (!(node is IbaOpcUaVariable iv) /*we handle only iba variables here*/|| 
-                !(iv.ExtMonVar.Parent is ExtMonData.GlobalCleanupDriveInfo driveInfo))
+                !(iv.ExtMonVar.Group is ExtMonData.ExtMonGroup group))
             {
+                Debug.Assert(false); // should not happen
                 value = null;
                 statuscode = StatusCodes.Bad;
                 return ServiceResult.Good; // // todo. kls. Good?
             }
 
-
             Debug.Assert(iv.Value == value); // should be the same
 
-            var oldValue = iv.Value; // todo. kls. tmp
-
             // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGroup(driveInfo);
+            var bResult = RefreshGroup(group);
 
-            if (!oldValue.Equals(iv.Value))
-                // changed
-                ; // todo. kls. 
+            if (bResult == false)
+                ;
 
             // re-read the value and send it back via args
             // (we should do re-read independently on whether above call to RefreshXxx()
@@ -992,31 +900,11 @@ namespace iba.Processing
             // in another thread if multiple values are requested)
             value = iv.Value;
             statuscode = iv.StatusCode;
+            Debug.Assert(iv.StatusCode == StatusCodes.Good);
 
             return ServiceResult.Good;
         }
-
-        private void JobInfoItemRequested(object sender, object args)
-        {
-            //var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
-
-            //if (jobInfo == null)
-            //{
-            //    // should not happen
-            //    args.Value = null;
-            //    return;
-            //}
-
-            //// refresh data if it is too old (or rebuild the whole tree if necessary)
-            //RefreshJobInfo(jobInfo);
-
-            //// re-read the value and send it back via args
-            //// (we should do re-read independently on whether above call to RefreshXxx()
-            //// had updated the value or not, because the value could be updated meanwhile by a similar call
-            //// in another thread if multiple values are requested)
-            //args.Value = args.IbaSnmp.GetValue(args.Oid);
-        }
-
+        
         #endregion
 
         #endregion

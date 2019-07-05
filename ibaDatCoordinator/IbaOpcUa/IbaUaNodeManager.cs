@@ -1262,6 +1262,7 @@ namespace iba.ibaOPCServer
         {
             // todo. kls. perform type-check if necessary
 #if DEBUG 
+            FormatEnum(ref value);
             var uaType = GetOpcUaType(value);
             Debug.Assert((NodeId)(uint)uaType == varState.DataType);
 #endif
@@ -1449,13 +1450,29 @@ namespace iba.ibaOPCServer
             return folder;
         }
 
+        /// <summary> Converts enum value to formatted string.
+        /// // todo. kls. proper enum handling? </summary>
+        public static string FormatEnum(object enumValue)
+        {
+            Debug.Assert(enumValue.GetType().IsEnum);
+            return $@"{(int)enumValue} ({enumValue})";
+        }        
+        
+        /// <summary> Formats value if it is enum. Other values stay unchanged.
+        /// // todo. kls. proper enum handling? </summary>
+        public static void FormatEnum(ref object enumValue)
+        {
+            if (enumValue.GetType().IsEnum)
+            {
+                enumValue = FormatEnum(enumValue);
+            }
+        }
+
         public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, object initialValue, string displayName,
             string description = null)
         {
-            if (initialValue.GetType().IsEnum)
-            {
-                initialValue = $@"{(int)initialValue} ({initialValue})" ; // todo. kls. 
-            }
+            FormatEnum(ref initialValue);
+
             // get uaType automatically from initial value
             var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
