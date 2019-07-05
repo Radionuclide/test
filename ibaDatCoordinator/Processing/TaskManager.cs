@@ -503,6 +503,11 @@ namespace iba.Processing
 
         #region Internal Server functions
 
+        /// <summary>
+        /// // todo. kls. 
+        /// </summary>
+        private uint _tmpTimer => 555000 + (uint)DateTime.Now.Second;
+
         internal bool SnmpRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
             licenseInfo.Reset();
@@ -523,6 +528,9 @@ namespace iba.Processing
                     licenseInfo.Customer.Value = info.Customer;
                     licenseInfo.TimeLimit.Value = info.TimeLimit;
                     licenseInfo.DemoTimeLimit.Value = info.DemoTimeLimit;
+
+                    // todo. kls. remove tmp override!!!
+                    licenseInfo.DemoTimeLimit.Value = (int)_tmpTimer;
                 }
 
                 licenseInfo.PutTimeStamp();
@@ -585,7 +593,11 @@ namespace iba.Processing
             //driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); 
             driveInfo.MinFreeSpaceInPercent.Value = (uint)gcData.PercentageFree; 
 
-            driveInfo.RescanTime.Value = (uint)gcData.RescanTime; 
+            driveInfo.RescanTime.Value = (uint)gcData.RescanTime;
+
+            // todo. kls. remove tmp override!!!
+            driveInfo.RescanTime.Value = (uint)_tmpTimer;
+
 
             driveInfo.PutTimeStamp();
         }
@@ -763,6 +775,10 @@ namespace iba.Processing
                     ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
+
+            // todo. kls. remove tmp override!!!
+            ji.TodoCount.Value = (uint)_tmpTimer;
+
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
             ji.FailedCount.Value = (uint)s.CountErrors();
 
@@ -913,6 +929,9 @@ namespace iba.Processing
                 {
                     taskInfo.ResetCleanupInfo();
                 }
+
+                // todo. kls. remove tmp override!!!
+                taskInfo.MemoryUsedForLastExecutionInMb.Value = (uint)_tmpTimer;
             }
         }
 
