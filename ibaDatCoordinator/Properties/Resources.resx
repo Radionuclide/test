@@ -1323,7 +1323,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>There was an error generating the support file for {0} : {1}</value>
   </data>
   <data name="SupportFileSuccess" xml:space="preserve">
-    <value>Support file generatated successfully for {0}; saved to  {1}</value>
+    <value>Support file generated successfully for {0}; saved to  {1}</value>
   </data>
   <data name="ThisSystem" xml:space="preserve">
     <value>this system</value>
@@ -1338,7 +1338,8 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side.</value>
   </data>
   <data name="snmpCreatedMibFiles" xml:space="preserve">
-    <value>Successfully created the following MIB files: {0}.\r\n\r\nDo you wish to navigate to these files?</value>
+    <value>Successfully created the following MIB files: {0}. 
+Do you wish to navigate to these files?</value>
   </data>
   <data name="snmpCreatedMibFilesTitle" xml:space="preserve">
     <value>Created MIB files</value>

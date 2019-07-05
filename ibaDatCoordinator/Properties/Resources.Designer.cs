@@ -3438,7 +3438,8 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully created the following MIB files: {0}.\r\n\r\nDo you wish to navigate to these files?.
+        ///   Looks up a localized string similar to Successfully created the following MIB files: {0}. 
+        ///Do you wish to navigate to these files?.
         /// </summary>
         internal static string snmpCreatedMibFiles {
             get {
@@ -3796,7 +3797,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Support file generatated successfully for {0}; saved to  {1}.
+        ///   Looks up a localized string similar to Support file generated successfully for {0}; saved to  {1}.
         /// </summary>
         internal static string SupportFileSuccess {
             get {
