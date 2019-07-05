@@ -636,7 +636,6 @@ namespace iba.Processing
                     }
 
 
-                    // ibaRoot.DatCoord.Product.1 - Global cleanup
                     BuildFolderRecursively(null, ObjectsData.FolderRoot);
 
 
@@ -692,13 +691,14 @@ namespace iba.Processing
             try
             {
                 FolderState uaFolder = CreateUaFolder(uaParentFolder, startingFolder);
-
+                
                 foreach (var node in startingFolder.Children)
                 {
                     switch (node)
                     {
                         case ExtMonData.ExtMonFolder xmFolder:
                             BuildFolderRecursively(uaFolder, xmFolder);
+
                             break;
                         case ExtMonData.ExtMonVariableBase xmv:
                             CreateUserValue2(uaFolder, xmv, GlobalCleanupDriveInfoItemRequested); // todo. kls. handler
@@ -710,6 +710,7 @@ namespace iba.Processing
             }
             catch
             {
+                Debug.Assert(false); // should not happen
                 // go on with other items 
                 // even if current one has failed 
             }

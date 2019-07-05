@@ -1379,7 +1379,7 @@ namespace iba.ibaOPCServer
         /// Anything else is ok, including whitespaces, slashes, semicolons, etc. </summary>
         public static bool IsValidBrowseName(string browseName)
         {
-            return !string.IsNullOrEmpty(browseName) && !browseName.Contains('.');
+            return !string.IsNullOrEmpty(browseName) && !browseName.Contains(NODE_ID_DELIMITER);
         }
 
         /// <summary>

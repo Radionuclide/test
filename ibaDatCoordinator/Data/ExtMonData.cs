@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DevExpress.XtraEditors.Controls;
 using iba.Utility;
 using ibaOpcServer.IbaOpcUa;
 using IbaSnmpLib;
@@ -64,38 +65,41 @@ namespace iba.Data
 
         public ExtMonData()
         {
-            FolderRoot = new ExtMonFolder(null, 0, @"Root", @"Root", @"Root")
+            FolderRoot = new ExtMonFolder(null, caption: @"Root", snmpMibNameSuffix: @"Root", description: @"Root", snmpLeastId: 0)
             { SnmpFullMibName = "Root" };
             // FolderRoot.SnmpFullOid = ; // it has no SNMP OID
 
             FolderRoot.Children.Add(
                 License = new LicenseInfo(FolderRoot));
+            License.Caption = @"Licensing";
+            License.Description = "Global cleanup settings for all local drives."; // is not used in SNMP
             //License.SnmpFullOid = ; // is not used. License OID is actually "PrGeneral.3", but it's handled specially
+            //License.SnmpFullMibName = ""; // it is not used i
 
             FolderRoot.Children.Add(
-                FolderGlobalCleanup = new ExtMonFolder(FolderRoot, new IbaSnmpOid(1),
-                @"Global cleanup", @"globalCleanup",
-                "Global cleanup settings for all local drives."));
+                FolderGlobalCleanup = new ExtMonFolder(FolderRoot,
+                caption: @"Global cleanup", snmpFullMibName: @"globalCleanup",
+                description: "Global cleanup settings for all local drives.", fullOid: new IbaSnmpOid(1)));
 
             FolderRoot.Children.Add(
-                FolderStandardJobs = new ExtMonFolder(FolderRoot, new IbaSnmpOid(2),
-                @"Standard jobs", @"standardJobs",
-                @"List of all standard jobs."));
+                FolderStandardJobs = new ExtMonFolder(FolderRoot,
+                caption: @"Standard jobs", snmpFullMibName: @"standardJobs",
+                description: @"List of all standard jobs.", fullOid: new IbaSnmpOid(2)));
 
             FolderRoot.Children.Add(
-                FolderScheduledJobs = new ExtMonFolder(FolderRoot, new IbaSnmpOid(3),
-                @"Scheduled jobs", @"scheduledJobs",
-                @"List of all scheduled jobs."));
+                FolderScheduledJobs = new ExtMonFolder(FolderRoot,
+                caption: @"Scheduled jobs", snmpFullMibName: @"scheduledJobs",
+                description: @"List of all scheduled jobs.", fullOid: new IbaSnmpOid(3)));
 
             FolderRoot.Children.Add(
-                FolderOneTimeJobs = new ExtMonFolder(FolderRoot, new IbaSnmpOid(4),
-                @"One time jobs", @"oneTimeJobs",
-                @"List of all one-time jobs."));
+                FolderOneTimeJobs = new ExtMonFolder(FolderRoot,
+                caption: @"One time jobs", snmpFullMibName: @"oneTimeJobs",
+                description: @"List of all one-time jobs.", fullOid: new IbaSnmpOid(4)));
 
             FolderRoot.Children.Add(
-                FolderEventBasedJobs = new ExtMonFolder(FolderRoot, new IbaSnmpOid(5),
-                @"Event jobs", @"eventJobs",
-                @"List of all event jobs."));
+                FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
+                caption: @"Event jobs", snmpFullMibName: @"eventJobs",
+                description: @"List of all event jobs.", fullOid: new IbaSnmpOid(5)));
         }
 
         public void Reset()
@@ -183,11 +187,33 @@ namespace iba.Data
 
         public List<ExtMonNode> GetFlatListOfAllChildren() => FolderRoot.GetFlatListOfAllChildren();
 
+        public bool CheckChildParentConsistency(ExtMonFolder folder)
+        {
+            foreach (var node in folder.Children)
+            {
+                if (node.Parent != folder)
+                    return false;
+
+                // ReSharper disable once InvertIf
+                if (node is ExtMonFolder xmFolder)
+                {
+                    // todo. kls. simplify
+                    var isConsistent = CheckChildParentConsistency(xmFolder);
+                    if (!isConsistent)
+                        return false;
+                }
+            }
+
+            return true;
+
+        }
+
         public bool CheckConsistency()
         {
             Debug.Assert(StandardJobs != null);
 
-            // todo. kls. check tree structure (parent-child cross ref)
+            // Check tree structure (parent-child) consistency
+            Debug.Assert(CheckChildParentConsistency(FolderRoot));
 
             // todo. kls. check double-lists
 
@@ -401,6 +427,44 @@ namespace iba.Data
         {
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
 
+            /// <summary>
+            /// Is used for "Big" folders - section roots - like "Standard Jobs".
+            /// Note, that here FULL OID and FULL MIB name are used here (not suffixes).
+            /// </summary>
+            public ExtMonFolder(ExtMonFolder parent,
+                string caption, string snmpFullMibName, string description, IbaSnmpOid fullOid)
+                : base(parent, 0, caption, null, description)
+            {
+                SnmpFullMibName = snmpFullMibName;
+                SnmpFullOid = fullOid;
+            }
+
+            /// <summary>
+            /// Is used for "small" folders (i.e. all other folders except section roots).
+            /// Note, that here OID suffixes MIB suffixes are used (not full OID, not full MIB name).
+            /// </summary>
+            public ExtMonFolder(ExtMonFolder parent,
+                string caption, string snmpMibNameSuffix, string description, uint snmpLeastId)
+                : base(parent, snmpLeastId, caption, snmpMibNameSuffix, description)
+            {
+            }
+
+            public ExtMonFolder AddChildFolder(string caption, string snmpMibNameSuffix,
+                string description, uint snmpLeastId)
+            {
+                var child = new ExtMonFolder(this,caption: caption, snmpMibNameSuffix: snmpMibNameSuffix, description: description, snmpLeastId: snmpLeastId);
+                Children.Add(child);
+                return child;
+            }
+            public ExtMonVariable<T> AddChildVariable<T>(string caption, string snmpMibNameSuffix,
+                string description, uint snmpLeastId)
+            {
+                var child = new ExtMonVariable<T>(this, caption, snmpMibNameSuffix, description, snmpLeastId);
+                Children.Add(child);
+                return child;
+            }
+
+
             public List<ExtMonNode> GetFlatListOfAllChildren()
             {
                 var list = new List<ExtMonNode>();
@@ -437,29 +501,6 @@ namespace iba.Data
                 return list;
             }
 
-            /// <summary>
-            /// // todo. kls. to comment
-            /// Is used for "Big" folders - section roots.
-            /// Note, that here FULL OID and FULL MIB name are used (not suffixes).
-            /// </summary>
-            public ExtMonFolder(ExtMonFolder parent, IbaSnmpOid fullOid,
-                string caption = null, string snmpFullMibName = null, string description = null)
-                : base(parent, 0, caption, null, description)
-            {
-                SnmpFullMibName = snmpFullMibName;
-                SnmpFullOid = fullOid;
-            }
-
-            /// <summary>
-            /// // todo. kls. to comment
-            /// Is used for "small" folders.
-            /// Note, that here suffixes are used (not full OID or MIB name).
-            /// </summary>
-            public ExtMonFolder(ExtMonFolder parent, uint snmpLeastId,
-                string caption = null, string snmpMibNameSuffix = null, string description = null)
-                : base(parent, snmpLeastId, caption, snmpMibNameSuffix, description)
-            {
-            }
 
             public override string ToString()
             {
@@ -481,7 +522,7 @@ namespace iba.Data
 
             protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
-                : base(parent, snmpLeastId, caption, snmpMibNameSuffix, description)
+                : base(parent, caption: caption, snmpMibNameSuffix: snmpMibNameSuffix, description: description, snmpLeastId: snmpLeastId)
             {
             }
 
@@ -655,7 +696,7 @@ namespace iba.Data
             public LocalCleanupInfo CleanupInfo { get; private set; }
 
             public TaskInfo(ExtMonFolder parent, uint snmpLeastId, string taskName)
-                : base(parent, snmpLeastId)
+                : base(parent, null, null, null, snmpLeastId)
             {
                 // determine parent job
                 Debug.Assert(parent != null); // "job.tasks" folder
@@ -751,8 +792,8 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> FreeDiskSpace;
 
             public LocalCleanupInfo(ExtMonFolder parent, uint snmpLeastId)
-                : base(parent, snmpLeastId, @"Cleanup", @"Cleanup",
-                    @"Cleanup parameters of the task.")
+                : base(parent, caption: @"Cleanup", snmpMibNameSuffix: @"Cleanup",
+                    description: @"Cleanup parameters of the task.", snmpLeastId: snmpLeastId)
             {
                 // create variables and add them to collection
 
@@ -834,14 +875,14 @@ namespace iba.Data
 
                 // todo. kls. desc on Job rename (this was NOT implemented in original version also) 
                 Children.Add(
-                    FolderGeneral = new ExtMonFolder(this, 1,
-                    @"General", @"General",
-                    $@"General properties of job '{jobName}'.")); 
+                    FolderGeneral = new ExtMonFolder(this,
+                    caption: @"General", snmpMibNameSuffix: @"General",
+                    description: $@"General properties of job '{jobName}'.", snmpLeastId: 1)); 
 
                 Children.Add(
-                    FolderTasks = new ExtMonFolder(this, 2,
-                    @"Tasks", @"Tasks", 
-                    $@"Information about all tasks of the job '{jobName}'."));
+                    FolderTasks = new ExtMonFolder(this,
+                    caption: @"Tasks", snmpMibNameSuffix: @"Tasks", 
+                    description: $@"Information about all tasks of the job '{jobName}'.", snmpLeastId: 2));
 
                 // create variables and add them to collection
 
@@ -965,29 +1006,27 @@ namespace iba.Data
                     9));
 
                 // last processing Folder
-                Children.Add(
-                    FolderLastProcessing = new ExtMonFolder(FolderGeneral, 10,
-                    @"LastProcessing", @"LastProcessing",
-                    @"Information about the last successfully processed file."));
+                FolderLastProcessing = FolderGeneral.AddChildFolder(caption: @"LastProcessing", snmpMibNameSuffix: @"LastProcessing",
+                    description: @"Information about the last successfully processed file.", snmpLeastId: 10);
+
 
                 // last processing
 
-                FolderLastProcessing.Children.Add(
-                    LastProcessingLastDatFileProcessed = new ExtMonVariable<string>(FolderLastProcessing,
-                    @"Last dat-file processed", @"LastFile", // todo. kls. derive mib name from job, not from last proc
+                LastProcessingLastDatFileProcessed = FolderLastProcessing.AddChildVariable<string>(
+                    @"Last dat-file processed", @"LastFile", // todo. kls. derive mib name from job, not from last proc ?
                     @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                    1));
+                    1);
 
                 FolderLastProcessing.Children.Add(
                     LastProcessingStartTimeStamp = new ExtMonVariable<DateTime>(FolderLastProcessing,
-                    @"Start timestamp", @"StartStamp", // todo. kls. derive mib name from job, not from last proc
+                    @"Start timestamp", @"StartStamp", // todo. kls. derive mib name from job, not from last proc ?
                     @"Time when processing of the last successfully processed file was started. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                     2));
 
                 FolderLastProcessing.Children.Add(
                     LastProcessingFinishTimeStamp = new ExtMonVariable<DateTime>(FolderLastProcessing,
-                    @"Finish timestamp", @"FinishStamp", // todo. kls. derive mib name from job, not from last proc
+                    @"Finish timestamp", @"FinishStamp", // todo. kls. derive mib name from job, not from last proc ?
                     @"Time when processing of the last successfully processed file was finished. " +
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                     3));
