@@ -12,100 +12,6 @@ using Opc.Ua.Configuration;
 
 namespace iba.Processing
 {
-
-
-    #region Helper classes
-
-    //public enum OpcUaWorkerStatus // todo share with snmp 
-    //{
-    //    Started,
-    //    Stopped,
-    //    Errored
-    //}
-
-    [Serializable]
-    public class OpcUaTreeNodeTag
-    {
-        public string Id { get; set; }
-
-        public bool IsFolder { get; set; }
-
-        public string Caption { get; set; }
-
-        public string Value { get; set; }
-
-        public string Type { get; set; }
-
-        public string MibName { get; set; }
-
-        public string MibDescription { get; set; }
-
-        public bool IsExpandedByDefault { get; set; }
-    }
-
-    #region Event handler classes
-    
-    public abstract class IbaOpcUaValueRequestedEventArgs : EventArgs
-    {
-        public OpcUaWorker Worker { get; }
-
-        // todo. kls. to comment
-        public string Id { get; }
-
-        /// <summary> Reference to object-specific data needed to refresh the value </summary>
-        public object Tag { get; }
-
-        protected IbaOpcUaValueRequestedEventArgs(OpcUaWorker worker, string id, object tag)
-        {
-            Worker = worker;
-            Id = id;
-            Tag = tag;
-        }
-
-        protected IbaOpcUaValueRequestedEventArgs(IbaOpcUaValueRequestedEventArgs e)
-            : this(e.Worker, e.Id, e.Tag)
-        {
-        }
-    }
-
-    public class IbaOpcUaValueRequestedEventArgs<T> : IbaOpcUaValueRequestedEventArgs
-    {
-        public T Value { get; set; }
-
-        public IbaOpcUaValueRequestedEventArgs(OpcUaWorker worker, string id, object tag)
-            : base(worker, id, tag)
-        {
-        }
-
-        public IbaOpcUaValueRequestedEventArgs(IbaOpcUaValueRequestedEventArgs e)
-            : base(e)
-        {
-        }
-    }
-
-    public class IbaOpcUaObjectValueRequestedEventArgs : IbaOpcUaValueRequestedEventArgs<object>
-    {
-        public Type ValueType { get; }
-
-        public IbaOpcUaObjectValueRequestedEventArgs(OpcUaWorker worker, string id, Type valueType,object tag)
-            : base(worker, id, tag)
-        {
-            this.ValueType = valueType;
-        }
-
-        public IbaOpcUaObjectValueRequestedEventArgs(IbaOpcUaValueRequestedEventArgs e, Type valueType)
-            : base(e)
-        {
-            this.ValueType = valueType;
-        }
-
-
-    }
-
-    #endregion
-
-    #endregion
-
     public class OpcUaWorker : IDisposable
     {
         // // todo. kls. remove
@@ -122,7 +28,7 @@ namespace iba.Processing
 
         public OpcUaWorker()
         {
-            Status = SnmpWorkerStatus.Errored;
+            Status = ExtMonWorkerStatus.Errored;
             StatusString = Resources.opcUaStatusNotInit;
 
             // todo. kls. remove
@@ -222,12 +128,12 @@ namespace iba.Processing
             RestartServer();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            ExtMonData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
+            ExtMonData.ExtMonGroup.AgeThreshold = ExtMonDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
             _treeValidatorTimer = new System.Timers.Timer
             {
-                Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
+                Interval = ExtMonDataValidTimePeriod.TotalMilliseconds,
                 AutoReset = false // do not repeat
                 // it will be re-activated only if data was invalidated
             };
@@ -242,7 +148,6 @@ namespace iba.Processing
             };
 
             RegisterEnums();
-            SetGeneralProductInformation();
             RebuildTree();
         }
 
@@ -307,8 +212,8 @@ namespace iba.Processing
             }
         }
 
-        //public OpcUaWorkerStatus Status { get; private set; }
-        public SnmpWorkerStatus Status { get; private set; }
+        /// <summary> Started / Stopped / Errored </summary>
+        public ExtMonWorkerStatus Status { get; private set; }
         
         public string StatusString { get; private set; }
 
@@ -324,7 +229,7 @@ namespace iba.Processing
             try
             {
                 var oldStatus = Status;
-                Status = SnmpWorkerStatus.Errored;
+                Status = ExtMonWorkerStatus.Errored;
                 StatusString = @"";
 
                 IbaOpcUaServer.Stop(); 
@@ -339,7 +244,7 @@ namespace iba.Processing
                     IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration);
 
                     //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
-                    Status = SnmpWorkerStatus.Started;
+                    Status = ExtMonWorkerStatus.Started;
                     StatusString = String.Format(Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
 
                     logMessage = Status == oldStatus
@@ -352,7 +257,7 @@ namespace iba.Processing
                 }
                 else
                 {
-                    Status = SnmpWorkerStatus.Stopped;
+                    Status = ExtMonWorkerStatus.Stopped;
                     StatusString = Resources.opcUaStatusDisabled;
 
                     logMessage = Status == oldStatus
@@ -372,7 +277,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Status = SnmpWorkerStatus.Errored;
+                Status = ExtMonWorkerStatus.Errored;
                 StatusString = String.Format(Resources.opcUaStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
@@ -408,23 +313,28 @@ namespace iba.Processing
 
         #region Common functionality for all objects
 
-        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
+        /// <summary> Lock this object while using <see cref="ObjectsData"/> </summary>
         public readonly object LockObject = new object(); //todo share lock with SNMP?
 
+        /// todo. kls. share with snmp?
         public int LockTimeout { get; } = 50;
 
-        /// <summary> Data older than this will be trated as outdated. 
-        /// When requested, such data will be refreshed first before sending via SNMP. </summary>
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
+
+        /// <summary> Data older than this will be treated as outdated. 
+        /// When requested, such data will be refreshed first before sending via SNMP.
+        /// todo. kls. share with snmp?
+        /// </summary>
+        public TimeSpan ExtMonDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
         /// <summary> Holds all data that is shown via SNMP. 
-        /// This data is in convenient structured format, and does not contain SNMP adresses (OIDs) explicitly.
+        /// This data is in convenient structured format, and does not contain SNMP addresses (OIDs) explicitly.
         /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
         /// </summary>
         internal ExtMonData ObjectsData { get; } = new ExtMonData(); // odo share data with SNMP?
 
         #region register enums
 
+        // todo. kls. use or delete?
         private string _enumJobStatus;
         private string _enumCleanupType;
 
@@ -456,53 +366,7 @@ namespace iba.Processing
 
         #endregion
 
-
-        #region General product information
-
-        /// <summary> Sets product name and version. Registers license value handlers. </summary>
-        private void SetGeneralProductInformation()
-        {
-            // change default gui caption from "ibaDatCo" to "ibaDatCoordinator"
-            //IbaOpcUaServer.SetOidMetadata(IbaOpcUaServer.OidIbaProduct, @"ibaDatCoordinator");
-
-            //// all the other captions can be left as is
-            //// all the general objects already have gui Captions, predefined
-            //// e.g.:
-            //// var captionSample = IbaSnmp.GetOidMetadata(IbaSnmp.OidIbaProductGeneralLicensingCustomer).GuiCaption;
-
-            //// ibaRoot.DatCoord.General.1 - Title
-            ////IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductGeneralTitle, @"Title");
-            //IbaOpcUaServer.ValueIbaProductGeneralTitle = @"ibaDatCoordinator";
-
-            //// ibaRoot.DatCoord.General.2 - Version
-            //var ver = GetType().Assembly.GetName().Version;
-            //IbaOpcUaServer.SetValueIbaProductGeneralVersion(ver.Major, ver.Minor, ver.Build);
-
-            //// ibaRoot.DatCoord.General.Licensing.1 - IsValid
-            //IbaOpcUaServer.LicensingIsValidRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.2 - Serial number
-            //IbaOpcUaServer.LicensingSnRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.3 - Hardware ID
-            //IbaOpcUaServer.LicensingHwIdRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.4 - Dongle type
-            //IbaOpcUaServer.LicensingTypeRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.5 - Customer
-            //IbaOpcUaServer.LicensingCustomerRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.6 - Time limit
-            //IbaOpcUaServer.LicensingTimeLimitRequested += IbaSnmp_LicensingValueRequested;
-
-            //// ibaRoot.DatCoord.General.Licensing.7 - Demo time limit
-            //IbaOpcUaServer.LicensingDemoTimeLimitRequested += IbaSnmp_LicensingValueRequested;
-        }
-
-        #endregion
-
-
+        
         #region Building and rebuilding the tree
 
         private bool _isStructureValid;
@@ -585,9 +449,9 @@ namespace iba.Processing
             {
                 try
                 {
-                    // snmp structure is valid until datcoordinator configuration is changed.
+                    // obj structure is valid until datCoordinator configuration is changed.
                     // theoretically it can be reset to false by another thread
-                    // during the process of rebuild of SnmpObjectsData,
+                    // during the process of rebuild of ExtMonData,
                     // but it's not a problem. 
                     // If this happens, then the tree will be rebuilt once again.
                     // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
@@ -608,25 +472,6 @@ namespace iba.Processing
                             BuildFolderRecursively(null, xmFolder);
                     }
 
-
-                    // todo. kls. remove
-                    //_lifeBeatVar2 =
-                    //    NodeManager.CreateVariableAndItsNode(ObjectsData.FolderGlobalCleanup.UaFullId, BuiltInType.Int32, "Lifebeat2");
-                    //_lifeBeatVar2 =
-                    //    NodeManager.CreateVariableAndItsNode(null, BuiltInType.Int32, "Lifebeat2");
-
-                    // uniqueness test 
-                    //CreateUaFolder(sectionFolder, null, "null");
-                    //CreateUaFolder(sectionFolder, "", "empty");
-                    //CreateUaFolder(sectionFolder, " ", "wh1");
-                    //CreateUaFolder(sectionFolder, " ", "wh1");
-                    //CreateUaFolder(sectionFolder, "  ", "wh2");
-                    //CreateUaFolder(sectionFolder, "Abc", " ");
-                    //CreateUaFolder(sectionFolder, "Abc", " ");
-                    //CreateUaFolder(sectionFolder, "Abc", " ");
-                    //CreateUaFolder(sectionFolder, "A.B", " ");
-                    //CreateUaFolder(sectionFolder, "A.B", " ");
-
                     return true; // rebuilt successfully
                 }
                 finally
@@ -641,7 +486,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -684,33 +529,16 @@ namespace iba.Processing
 
         #region Create/Update Value/Folder
 
-        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, string displayName, string description)
-            => NodeManager.CreateFolderAndItsNode(uaParentFolder ?? NodeManager.FolderIbaRoot, displayName, description);
-
         private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
             // create
-            FolderState folder = CreateOpcUaFolder(uaParentFolder, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+            FolderState folder = NodeManager.CreateFolderAndItsNode(
+                uaParentFolder ?? NodeManager.FolderIbaRoot, xmFolderToCreate.Caption, xmFolderToCreate.Description);
 
             // keep UA id in ExtMon Node
             //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
             return folder;
         }
-
-        //private IbaOpcUaVariable CreateUserValue(FolderState parent, object initialValue,
-        //    string name, string description = null,
-        //    EventHandler<IbaOpcUaObjectValueRequestedEventArgs> handler = null, object tag = null)
-        //{
-        //    // get uaType automatically from initial value
-        //    var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
-        //    Debug.Assert(uaType != BuiltInType.Null);
-
-        //    IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, uaType, name, description);
-
-        //    NodeManager.SetValueScalar(iv, initialValue);
-        //    iv.OnReadValue += OnReadProductSpecificValue;
-        //    return iv;
-        //}
 
         private IbaOpcUaVariable CreateOpcUaValue(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
         {
@@ -721,29 +549,25 @@ namespace iba.Processing
             return iv;
         }
 
-        private void UpdateOpcUaValue(ExtMonData.ExtMonVariableBase xmv)
+        /// <summary> Transfers value from <see cref="ExtMonData.ExtMonVariableBase"/>
+        /// to a corresponding OPC UA node </summary>
+        private void SetOpcUaValue(ExtMonData.ExtMonVariableBase xmv)
         {
+            Debug.Assert(xmv != null);
+            Debug.Assert(xmv.UaVar != null);
+            if (xmv?.UaVar == null)
+                return;
             NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
         }
 
-        // todo. kls. to comment
-        private void CreateEnumUserValue(string oidSuffix, object valueType, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<object> handler = null,
-            object tag = null)
-        {
-            //IbaOpcUaServer.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
-            //IbaOpcUaServer.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
         #endregion
 
         #endregion
 
 
-        #region Value-Refresh functions  
+        #region Value refresh and OnRead event handlers
 
-        
+
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
@@ -792,18 +616,24 @@ namespace iba.Processing
                         // failed to update data
                         // rebuild the tree
                         LogData.Data.Logger.Log(Level.Debug,
-                            $"OPC UA. {nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
+                            $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
                         IsStructureValid = false;
                         Debug.Assert(false);
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated driveInfo successfully 
+                    // TaskManager has updated group successfully 
                     // copy it to UA tree
-
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
-                        UpdateOpcUaValue(xmv);
+                        try
+                        {
+                            SetOpcUaValue(xmv);
+                        }
+                        catch 
+                        {
+
+                        }
                     }
 
                     return true; // data was updated
@@ -820,7 +650,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"OPC UA. {nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
                 catch
                 {
@@ -830,28 +660,27 @@ namespace iba.Processing
             }
         }
        
-        #endregion
-
-
-        #region XxxRequested event handlers
 
         private ServiceResult OnReadProductSpecificValue(ISystemContext context,
-            NodeState node, NumericRange indexrange, QualifiedName dataencoding, ref object value, ref StatusCode statuscode, ref DateTime timestamp)
+            NodeState node, NumericRange indexRange, QualifiedName dataEncoding,
+            ref object value, ref StatusCode statusCode, ref DateTime timestamp)
         {
-            if (!(node is IbaOpcUaVariable iv) /*we handle only iba variables here*/|| 
-                !(iv.ExtMonVar.Group is ExtMonData.ExtMonGroup group))
+            if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
             {
                 Debug.Assert(false); // should not happen
                 value = null;
-                statuscode = StatusCodes.Bad;
-                return ServiceResult.Good; // todo. kls. Good?
+                statusCode = StatusCodes.Bad;
+                return ServiceResult.Good; // statusCode is bad; serviceResult is good
             }
 
             Debug.Assert(iv.Value == value); // should be the same
 
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            var bResult = RefreshGroup(group);
+            Debug.Assert(iv.ExtMonVar.Group != null); 
 
+            // refresh data if it is too old (or rebuild the whole tree if necessary)
+            var bResult = RefreshGroup(iv.ExtMonVar.Group);
+
+            // todo. kls. del tst
             if (bResult == false)
                 ;
 
@@ -860,10 +689,30 @@ namespace iba.Processing
             // had updated the value or not, because the value could be updated meanwhile by a similar call
             // in another thread if multiple values are requested)
             value = iv.Value;
-            statuscode = iv.StatusCode;
+            statusCode = iv.StatusCode;
             Debug.Assert(iv.StatusCode == StatusCodes.Good);
 
             return ServiceResult.Good;
+        }
+
+        private object RefreshAndReadNode(string nodeId)
+        {
+            Debug.Assert(!string.IsNullOrWhiteSpace(nodeId));
+            if (string.IsNullOrWhiteSpace(nodeId))
+                return null;
+
+            var node = NodeManager.Find(nodeId);
+
+            Debug.Assert(node is IbaOpcUaVariable);
+
+            if (!(node is IbaOpcUaVariable iv))
+                return null;
+
+            Debug.Assert(iv.ExtMonVar.Group != null);
+
+            RefreshGroup(iv.ExtMonVar.Group);
+
+            return iv.Value;
         }
 
         #endregion
@@ -928,9 +777,6 @@ namespace iba.Processing
         {
             try
             {
-                // todo. kls. update value!
-                // todo. kls. use lock??
-
                 Debug.Assert(node != null);
 
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -954,71 +800,38 @@ namespace iba.Processing
                 if (node is IbaOpcUaVariable iv)
                 {
                     tag.IsFolder = false;
+
+                    // old val???
                     tag.Value = iv.Value.ToString();
+                    tag.Value = ""; // default val
+
                     var type = iv.ExtMonVar.ObjValue.GetType();
                     tag.Type = type.IsEnum ? "Enum" : type.Name;
+
+
+                    // try to get an updated value
+                    try
+                    {
+                        // todo. kls. refresh group, get value....
+                        object value = RefreshAndReadNode(tag.OpcUaNodeId);
+                        tag.Value = $"{value}";
+
+                        //tag.Value = IbaOpcUaServer.IsEnumDataTypeRegistered(objInfo.ValueType)
+                        //    ?
+                        //    // enum - format it like e.g. "1 (started)"
+                        //    $@"{objInfo.Value} ({IbaOpcUaServer.GetEnumValueName(objInfo.ValueType, (int) objInfo.Value)})"
+                        //    :
+                        //    // other types - just value
+                        //    objInfo.Value?.ToString() ?? "";
+                    }
+                    catch
+                    {
+                        Debug.Assert(false);
+                        tag.Value = "errrr????"; // ??????????????????????
+                    }
                 }
-                // todo. kls. get IsExpanded from ExtMonFolder
+
                 return tag;
-
-
-
-                // todo. kls. get BaseState by nodeid
-                //this.IbaOpcUaServer.IbaUaNodeManager.getn(oid);
-                //var tag = new SnmpTreeNodeTag { Oid = oid };
-
-                //stringMetadata metadata = IbaOpcUaServer.GetOidMetadata(oid);
-                //if (metadata == null)
-                //{
-                //    // this is inexisting node
-                //    // leave all fields empty
-                //    return tag;
-                //}
-
-                //// fill data common for folders and leaves
-                //tag.MibName = metadata.MibName;
-                //tag.MibDescription = metadata.MibDescription;
-                //tag.Caption = metadata.GuiCaption;
-
-                //// try to get value (applicable only to objects=leaves)
-
-                //IbaSnmpObjectInfo objInfo;
-                //try
-                //{
-                //    objInfo = IbaOpcUaServer.GetObjectInfo(oid, bUpdate);
-                //}
-                //catch (Exception ex)
-                //{
-                //    // should not happen, so better to see it if it happens
-                //    LogData.Data.Logger.Log(Level.Exception,
-                //        $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}.({oid}). Error calling GetObjectInfo(). {ex.Message}");
-                //    return null;
-                //}
-
-                //// check  if this is a folder or leaf
-                //// object (leaf) can miss a value but anyway should have some data type
-                //if (!String.IsNullOrWhiteSpace(objInfo?.MibDataType))
-                //{
-                //    // this is a leaf node
-                //    tag.IsFolder = false;
-
-                //    tag.Value = IbaOpcUaServer.IsEnumDataTypeRegistered(objInfo.ValueType)
-                //        ?
-                //        // enum - format it like e.g. "1 (started)"
-                //        $@"{objInfo.Value} ({IbaOpcUaServer.GetEnumValueName(objInfo.ValueType, (int)objInfo.Value)})"
-                //        :
-                //        // other types - just value
-                //        objInfo.Value?.ToString() ?? "";
-
-
-                //    tag.Type = objInfo.MibDataType;
-                //}
-                //else
-                //{
-                //    // this is a folder
-                //    tag.IsFolder = true;
-                //}
-                //return tag;
             }
             catch (Exception ex)
             {
@@ -1054,7 +867,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}({nodeId}). {ex.Message}");
+                    $"{nameof(OpcUaWorker)}.{nameof(GetTreeNodeTag)}({nodeId}). {ex.Message}");
                 return null;
             }
         }

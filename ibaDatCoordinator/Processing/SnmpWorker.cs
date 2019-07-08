@@ -17,14 +17,13 @@ namespace iba.Processing
 
     #region Helper classes
 
-    public enum SnmpWorkerStatus
+    public enum ExtMonWorkerStatus
     {
         Started,
         Stopped,
         Errored
     }
-
-
+    
     /// <summary> Is used to send MIB file contents from Server to Client via remoting </summary>
     [Serializable]
     public struct SnmpMibFileContainer
@@ -46,7 +45,7 @@ namespace iba.Processing
 
         public SnmpWorker()
         {
-            Status = SnmpWorkerStatus.Errored;
+            Status = ExtMonWorkerStatus.Errored;
             StatusString = Resources.snmpStatusNotInit;
         }
 
@@ -137,7 +136,7 @@ namespace iba.Processing
             }
         }
 
-        public SnmpWorkerStatus Status { get; private set; }
+        public ExtMonWorkerStatus Status { get; private set; }
 
         public string StatusString { get; private set; }
 
@@ -151,7 +150,7 @@ namespace iba.Processing
         public void RestartAgent()
         {
             var oldStatus = Status;
-            Status = SnmpWorkerStatus.Errored;
+            Status = ExtMonWorkerStatus.Errored;
             StatusString = @"";
 
             try
@@ -163,7 +162,7 @@ namespace iba.Processing
                 if (_snmpData.Enabled)
                 {
                     IbaSnmp.Start();
-                    Status = SnmpWorkerStatus.Started;
+                    Status = ExtMonWorkerStatus.Started;
                     StatusString = String.Format(Resources.snmpStatusRunningOnPort, _snmpData.Port);
 
                     logMessage = Status == oldStatus
@@ -176,7 +175,7 @@ namespace iba.Processing
                 }
                 else
                 {
-                    Status = SnmpWorkerStatus.Stopped;
+                    Status = ExtMonWorkerStatus.Stopped;
                     StatusString = Resources.snmpStatusDisabled;
 
                     logMessage = Status == oldStatus
@@ -196,7 +195,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Status = SnmpWorkerStatus.Errored;
+                Status = ExtMonWorkerStatus.Errored;
                 StatusString = String.Format(Resources.snmpStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }

@@ -802,10 +802,17 @@ namespace iba.Data
             // create Cleanup folder and add it to collection
             public LocalCleanupInfo AddCleanupInfo()
             {
+                if (CleanupInfo != null)
+                {
+                    // we already have it
+                    return CleanupInfo;
+                }
+
                 Children.Add(CleanupInfo = new LocalCleanupInfo(this, 6));
                 return CleanupInfo;
             }
-            public void ResetCleanupInfo()
+
+            public void DeleteCleanupInfo()
             {
                 Children.Remove(CleanupInfo);
                 CleanupInfo = null;
@@ -819,7 +826,7 @@ namespace iba.Data
                 Success.Value = false;
                 DurationOfLastExecutionInSec.Value = 0;
                 MemoryUsedForLastExecutionInMb.Value = 0;
-                ResetCleanupInfo();
+                CleanupInfo?.Reset();
             }
 
             public override string ToString()
@@ -868,6 +875,16 @@ namespace iba.Data
                         @"Minimum disk space that is kept free (in megabytes).",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(FreeDiskSpace.SnmpLeastId == 4); // ensure id has an expected value
+
+                Reset();
+            }
+
+            public void Reset()
+            {
+                LimitChoice.Value = TaskWithTargetDirData.OutputLimitChoiceEnum.None;
+                Subdirectories.Value = 0;
+                UsedDiskSpace.Value = 0;
+                FreeDiskSpace.Value = 0;
             }
         }
 

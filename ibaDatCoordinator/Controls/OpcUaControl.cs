@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using iba.Data;
@@ -11,8 +10,6 @@ using iba.Logging;
 using iba.Processing;
 using iba.Properties;
 using iba.Utility;
-using IbaSnmpLib;
-using Opc.Ua;
 
 namespace iba.Controls
 {
@@ -47,10 +44,12 @@ namespace iba.Controls
             // bind password text boxes to their show/hide buttons
             buttonShowPassword.Tag = tbPassword;
 
-            ImageList pdaList = new ImageList();
-            pdaList.ImageSize = new Size(16, 16);
-            pdaList.TransparentColor = Color.Magenta;
-            pdaList.ColorDepth = ColorDepth.Depth24Bit;
+            ImageList pdaList = new ImageList
+            {
+                ImageSize = new Size(16, 16),
+                TransparentColor = Color.Magenta,
+                ColorDepth = ColorDepth.Depth24Bit
+            };
             pdaList.Images.AddStrip(Resources.snmp_images);
 
             // image list for objects TreeView
@@ -92,7 +91,7 @@ namespace iba.Controls
                 ConfigurationFromDataToControls();
 
                 //// force rebuild worker's tree to ensure we have most recent information
-                //TaskManager.Manager.SnmpRebuildObjectTree();
+                // /*this is unnecessary*/ TaskManager.Manager.OpcUaRebuildObjectTree();
 
                 // rebuild gui-tree
                 RebuildObjectsTree(); 
@@ -298,250 +297,8 @@ namespace iba.Controls
         {
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
-        #endregion
 
-
-        #region Diagnostics
-
-        private void RefreshBriefStatus()
-        {
-            try
-            {
-                var status = TaskManager.Manager.OpcUaGetBriefStatus();
-                tbStatus.Text = status.Item2;
-                tbStatus.BackColor = StatusToColor(status.Item1);
-            }
-            catch (Exception ex)
-            {
-                tbStatus.Text = "";
-                tbStatus.BackColor = BackColor;
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshBriefStatus)}. {ex.Message}");
-            }
-        }
-
-        public static Color StatusToColor(SnmpWorkerStatus status)
-        {
-            return status == SnmpWorkerStatus.Started
-                ? Color.LimeGreen // running
-                : (status == SnmpWorkerStatus.Stopped
-                    ? Color.LightGray // stopped
-                    : Color.Red); // error
-        }
-
-        private void RefreshClientsTable()
-        {
-            try
-            {
-                // clear list
-                dgvClients.Rows.Clear();
-
-                // show new data
-                //List<IbaSnmpDiagClient> clients = TaskManager.Manager.SnmpGetClients();
-
-                //// can happen when suddenly disconnected
-                //if (clients == null)
-                //{
-                //    return;
-                //}
-
-                //foreach (var client in clients)
-                //{
-                //    dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
-                //}
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
-            }
-        }
-
-        private void timerRefreshStatus_Tick(object sender, EventArgs e)
-        {
-            bool isConnectedOrLocal = IsConnectedOrLocal;
-
-            buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled =
-                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
-
-            if (isConnectedOrLocal)
-            {
-                RefreshBriefStatus();
-                RefreshClientsTable();
-            }
-            else
-            {
-                tbStatus.Text = "";
-                tbStatus.BackColor = BackColor;
-            }
-        }
-
-        private static bool IsConnectedOrLocal =>
-            Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
-            Program.RunsWithService == Program.ServiceEnum.CONNECTED;
-
-
-        private void buttonClearClients_Click(object sender, EventArgs e)
-        {
-            // reset monitoring counters in ibaSnmp
-            try
-            {
-                TaskManager.Manager.SnmpClearClients();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(buttonClearClients_Click)}. {ex.Message}");
-            }
-
-            // refresh it in GUI
-            RefreshClientsTable();
-        }
-
-        #endregion
-
-
-        #region Objects
-        
-        public void RebuildObjectsTree()
-        {
-            if (!IsConnectedOrLocal)
-            {
-                return;
-            }
-
-            tvObjects.Nodes.Clear();
-
-            try
-            {
-                var objSnapshot = TaskManager.Manager.OpcUaGetObjectTreeSnapShot();
-
-                if (objSnapshot == null)
-                {
-                    Debug.Assert(false); // should not happen
-                    return;
-                }
-
-                foreach (var tag in objSnapshot)
-                {
-                    if (tag == null)
-                    {
-                        Debug.Assert(false); // should not happen
-                        continue;
-                    }
-
-                    string parentId = IbaUaNodeManager.GetParentName(tag.OpcUaNodeId);
-                    TreeNode parentGuiNode = string.IsNullOrWhiteSpace(parentId) ? 
-                        null : FindSingleNodeById(parentId);
-
-                    TreeNodeCollection collection = parentGuiNode == null ? 
-                        tvObjects.Nodes /* add to root by default */: 
-                        parentGuiNode.Nodes;
-
-                    int imageIndex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
-
-                    TreeNode guiNode = collection.Add(
-                        tag.OpcUaNodeId, tag.Caption, imageIndex, imageIndex);
-                    guiNode.Tag = tag;
-                }
-
-                // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
-                var nodesToExpand = new HashSet<string>
-                {
-                    "ibaDatCoordinator\\Standard jobs",
-                    "ibaDatCoordinator\\Scheduled jobs",
-                    "ibaDatCoordinator\\One time jobs",
-                    "ibaDatCoordinator\\Event jobs"
-                };
-
-                // expand those which are marked for
-                foreach (var str in nodesToExpand)
-                {
-                    SnmpControl.ExpandNodeAndAllAncestors(FindSingleNodeById(str));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception,
-                    $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
-            }
-
-            // navigate to recent user selected node if possible
-            if (_recentId == null)
-            {
-                // we have no recent id
-                return;
-            }
-            var recentNode = FindSingleNodeById(_recentId);
-            if (recentNode == null)
-            {
-                // recent node was not found; likely, it's is deleted; no problem;
-                return;
-            }
-            // expand parent to make the node visible
-            SnmpControl.ExpandNodeAndAllAncestors(recentNode.Parent);
-            // select it
-            tvObjects.SelectedNode = recentNode;
-        }
-
-        private TreeNode FindSingleNodeById(string id) =>
-            SnmpControl.FindSingleNodeById(tvObjects.Nodes, id);
-
-        /// <summary> The most recent node that was selected by the user </summary>
-        private string _recentId;
-
-        private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (!IsConnectedOrLocal)
-            {
-                return;
-            }
-
-            try
-            {
-                // reset recently selected node
-                _recentId = null;
-
-                // reset all fields
-                tbObjValue.Text = String.Empty;
-                tbObjType.Text = String.Empty;
-                tbObjNodeId.Text = String.Empty;
-                tbObjDescription.Text = String.Empty;
-
-                // get existing node's tag
-                if (!(e.Node.Tag is ExtMonData.GuiTreeNodeTag tag))
-                {
-                    // should not happen; each node should be equipped with a tag
-                    Debug.Assert(false); 
-                    return;
-                }
-
-                // try to refresh node's tag
-                try
-                {
-                    tag = TaskManager.Manager.OpcUaGetTreeNodeTag(tag.OpcUaNodeId);
-                }
-                catch
-                {
-                    // reset value that we know that something is wrong
-                    tag.Value = String.Empty;
-                    tag.Type = String.Empty;
-                }
-
-                tbObjValue.Text = tag.Value;
-                tbObjType.Text = tag.Type;
-                tbObjNodeId.Text = tag.OpcUaNodeId;
-                tbObjDescription.Text = tag.Description;
-
-                // remember recently selected node
-                _recentId = tag.OpcUaNodeId;
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Debug,
-                    $@"{nameof(OpcUaControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
-            }
-        }
-
-        #endregion
-
+        #region Endpoints
 
         // todo. kls. delete
         private void buttonCopyToClipboard_Click(object sender, EventArgs e)
@@ -561,7 +318,7 @@ namespace iba.Controls
                 else
                     Clipboard.SetText(uri);
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Clipboard err");
             }
@@ -571,12 +328,7 @@ namespace iba.Controls
         {
             var dep = OpcUaData.DefaultEndPoint;
 
-            int r = dgvEndpoints.Rows.Add(dep.Hostname, dep.Port, dep.Uri);
-
-            var x = dgvEndpoints.ReadOnly;
-            var y = dgvEndpoints.Rows[r].ReadOnly;
-
-            OpcUaData.OpcUaEndPoint ep = new OpcUaData.OpcUaEndPoint(IPAddress.None, 80);
+            dgvEndpoints.Rows.Add(dep.Hostname, dep.Port, dep.Uri);
         }
 
         // todo. kls. 
@@ -733,6 +485,235 @@ namespace iba.Controls
             }
         }
 
+        #endregion
+
+
+        #endregion
+
+
+        #region Diagnostics
+
+        private void RefreshBriefStatus()
+        {
+            try
+            {
+                var status = TaskManager.Manager.OpcUaGetBriefStatus();
+                tbStatus.Text = status.Item2;
+                tbStatus.BackColor = SnmpControl.StatusToColor(status.Item1);
+            }
+            catch (Exception ex)
+            {
+                tbStatus.Text = "";
+                tbStatus.BackColor = BackColor;
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshBriefStatus)}. {ex.Message}");
+            }
+        }
+
+        private void RefreshClientsTable()
+        {
+            try
+            {
+                // clear list
+                dgvClients.Rows.Clear();
+
+                // show new data
+                //List<IbaSnmpDiagClient> clients = TaskManager.Manager.SnmpGetClients();
+
+                //// can happen when suddenly disconnected
+                //if (clients == null)
+                //{
+                //    return;
+                //}
+
+                //foreach (var client in clients)
+                //{
+                //    dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
+                //}
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
+            }
+        }
+
+        private void timerRefreshStatus_Tick(object sender, EventArgs e)
+        {
+            bool isConnectedOrLocal = IsConnectedOrLocal;
+
+            buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled =
+                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
+
+            if (isConnectedOrLocal)
+            {
+                RefreshBriefStatus();
+                RefreshClientsTable();
+            }
+            else
+            {
+                tbStatus.Text = "";
+                tbStatus.BackColor = BackColor;
+            }
+        }
+
+        private static bool IsConnectedOrLocal =>
+            Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
+            Program.RunsWithService == Program.ServiceEnum.CONNECTED;
+
+
+        // todo. kls. delete?
+        private void buttonClearClients_Click(object sender, EventArgs e)
+        {
+            // reset monitoring counters in ibaSnmp
+            try
+            {
+                //TaskManager.Manager.OpcUaClearClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(buttonClearClients_Click)}. {ex.Message}");
+            }
+
+            // refresh it in GUI
+            RefreshClientsTable();
+        }
+
+        #endregion
+
+
+        #region Objects
+        
+        public void RebuildObjectsTree()
+        {
+            if (!IsConnectedOrLocal)
+            {
+                return;
+            }
+
+            tvObjects.Nodes.Clear();
+
+            try
+            {
+                var objSnapshot = TaskManager.Manager.OpcUaGetObjectTreeSnapShot();
+
+                if (objSnapshot == null)
+                {
+                    Debug.Assert(false); // should not happen
+                    return;
+                }
+
+                foreach (var tag in objSnapshot)
+                {
+                    if (tag == null)
+                    {
+                        Debug.Assert(false); // should not happen
+                        // ReSharper disable once HeuristicUnreachableCode
+                        continue;
+                    }
+
+                    string parentId = IbaUaNodeManager.GetParentName(tag.OpcUaNodeId);
+                    TreeNode parentGuiNode = string.IsNullOrWhiteSpace(parentId) ? 
+                        null : FindSingleNodeById(parentId);
+
+                    TreeNodeCollection collection = parentGuiNode == null ? 
+                        tvObjects.Nodes /* add to root by default */: 
+                        parentGuiNode.Nodes;
+
+                    int imageIndex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+
+                    TreeNode guiNode = collection.Add(
+                        tag.OpcUaNodeId, tag.Caption, imageIndex, imageIndex);
+                    guiNode.Tag = tag;
+                }
+
+                // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
+                var nodesToExpand = new HashSet<string>
+                {
+                    "ibaDatCoordinator\\Standard jobs",
+                    "ibaDatCoordinator\\Scheduled jobs",
+                    "ibaDatCoordinator\\One time jobs",
+                    "ibaDatCoordinator\\Event jobs"
+                };
+
+                // expand those which are marked for
+                foreach (var str in nodesToExpand)
+                {
+                    SnmpControl.ExpandNodeAndAllAncestors(FindSingleNodeById(str));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception,
+                    $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
+            }
+
+            // navigate to recent user selected node if possible
+            SnmpControl.SelectTreeNode(tvObjects, _recentId);
+        }
+
+        /// <summary> Looks for a given id in the <see cref="tvObjects"/> </summary>
+        private TreeNode FindSingleNodeById(string id) =>
+            SnmpControl.FindSingleNodeById(tvObjects.Nodes, id);
+
+        /// <summary> The most recent node that was selected by the user </summary>
+        private string _recentId;
+
+        private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (!IsConnectedOrLocal)
+            {
+                return;
+            }
+
+            try
+            {
+                // reset recently selected node
+                _recentId = null;
+
+                // reset all fields
+                tbObjValue.Text = String.Empty;
+                tbObjType.Text = String.Empty;
+                tbObjNodeId.Text = String.Empty;
+                tbObjDescription.Text = String.Empty;
+
+                // get existing node's tag
+                if (!(e.Node.Tag is ExtMonData.GuiTreeNodeTag tag))
+                {
+                    // should not happen; each node should be equipped with a tag
+                    Debug.Assert(false); 
+                    return;
+                }
+
+                // try to refresh node's tag
+                try
+                {
+                    tag = TaskManager.Manager.OpcUaGetTreeNodeTag(tag.OpcUaNodeId);
+                }
+                catch
+                {
+                    // reset value that we know that something is wrong
+                    tag.Value = String.Empty;
+                    tag.Type = String.Empty;
+                }
+
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjNodeId.Text = tag.OpcUaNodeId;
+                tbObjDescription.Text = tag.Description;
+
+                // remember recently selected node
+                _recentId = tag.OpcUaNodeId;
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Debug,
+                    $@"{nameof(OpcUaControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
+            }
+        }
+
+        #endregion
+
+
+        // todo. kls. delete
         private void buttonSetTestCfg_Click(object sender, EventArgs e)
         {
             // copy default data to current data except enabled/disabled
@@ -762,13 +743,13 @@ namespace iba.Controls
 
         }
 
-        static TaskManager Manager => TaskManager.Manager;
-
+        // todo. kls. delete
         private void buttonRebuildTree_Click(object sender, EventArgs e)
         {
-            Manager.OpcUaRebuildObjectTree();
+            TaskManager.Manager.OpcUaRebuildObjectTree();
         }
 
+        // todo. kls. delete
         private void buttonRefreshGuiTree_Click(object sender, EventArgs e)
         {
             this.RebuildObjectsTree();
