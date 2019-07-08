@@ -419,8 +419,6 @@ namespace iba.Controls
                     return;
                 }
 
-                var nodesToExpand = new List<TreeNode>(); // todo. kls. remove?
-
                 foreach (var tag in objSnapshot)
                 {
                     if (tag == null)
@@ -442,27 +440,19 @@ namespace iba.Controls
                     TreeNode guiNode = collection.Add(
                         tag.OpcUaNodeId, tag.Caption, imageIndex, imageIndex);
                     guiNode.Tag = tag;
-
-                    // mark for expanding
-                    if (tag.IsExpandedByDefault)
-                    {
-                        // todo. kls. leave only one way of expanding
-                        //guiNode.Expand();
-                        //nodesToExpand.Add(guiNode);
-                    }
                 }
 
-                // nodes to expand; (order/sorting is not important)
-                var nodesToExpand1 = new HashSet<string>
+                // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
+                var nodesToExpand = new HashSet<string>
                 {
                     "ibaDatCoordinator\\Standard jobs",
-                  "ibaDatCoordinator\\Scheduled jobs",
+                    "ibaDatCoordinator\\Scheduled jobs",
                     "ibaDatCoordinator\\One time jobs",
-      //              "ibaDatCoordinator\\Event jobs"
+                    "ibaDatCoordinator\\Event jobs"
                 };
 
                 // expand those which are marked for
-                foreach (var str in nodesToExpand1)
+                foreach (var str in nodesToExpand)
                 {
                     SnmpControl.ExpandNodeAndAllAncestors(FindSingleNodeById(str));
                 }
@@ -549,7 +539,6 @@ namespace iba.Controls
                     $@"{nameof(OpcUaControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
             }
         }
-
 
         #endregion
 
@@ -771,15 +760,6 @@ namespace iba.Controls
             //// set data to manager and restart snmp agent if necessary
             //TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-        }
-
-        //private OpcUaWorker TstWorker => Manager.Tst___OpcUaWorker; // todo. kls. delete
-        //private IbaOpcUaServer TstServer => TstWorker.IbaOpcUaServer; // todo. kls. delete
-        //private IbaUaNodeManager TstNodeMan => TstServer.IbaUaNodeManager; // todo. kls. delete
-
-        private void buttonTest2_Click(object sender, EventArgs e)
-        {
-            //TstNodeMan.SetValueScalar(TstWorker._lifeBeatReactive, (int)DateTime.Now.Second);
         }
 
         static TaskManager Manager => TaskManager.Manager;

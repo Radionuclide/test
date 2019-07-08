@@ -1,17 +1,16 @@
-﻿using iba.Data;
+﻿using System.Diagnostics;
+using iba.Data;
 using iba.ibaOPCServer;
 using Opc.Ua;
 
 namespace ibaOpcServer.IbaOpcUa
 {
-
     public class IbaOpcUaVariable : BaseDataVariableState
     {
         public bool IsMarkedForDeleting = false;
         public bool IsMonitored = false;
-        public bool IsAvailableInPmacWatchlist = false;
 
-        internal ExtMonData.ExtMonVariableBase ExtMonVar; // todo. kls. 
+        public readonly ExtMonData.ExtMonVariableBase ExtMonVar; // todo. kls. 
 
         /// <summary>
         /// This flag is created for quick check.
@@ -24,20 +23,14 @@ namespace ibaOpcServer.IbaOpcUa
 
         protected readonly IbaUaNodeManager _mgr;
 
-        /// <summary>
-        /// This is a name of the variable in VariableInformation.tVariableElement-notation.
-        /// We never renamme folders dynamically and we do not move nodes inside a tree, so
-        /// this name stays unchanged. 
-        /// Though we have direct reference to VariableElement, VeName is still needed for better reliability.
-        /// </summary>
-        public readonly string VeName;
-
-        public IbaOpcUaVariable(NodeState parent, object ve, IbaUaNodeManager mgr)
+        public IbaOpcUaVariable(NodeState parent, ExtMonData.ExtMonVariableBase xmv, IbaUaNodeManager mgr)
             : base(parent)
         {
+            Debug.Assert(xmv != null);
+
             // add references to each other
-            //VariableElement = ve;
-            //ve.UaVariable = this;
+            ExtMonVar = xmv;
+            xmv.UaVar = this;
 
             // remember ve name to bind this ibaVariable to certain name
             // in future even if Ve is renewed in online server,
@@ -51,28 +44,14 @@ namespace ibaOpcServer.IbaOpcUa
             IsDeleted = false;
         }
 
-        //public bool IsReadable
-        //{
-        //    get { return (UserAccessLevel & AccessLevels.CurrentRead) != 0; }
-        //}
-        //public bool IsWritable
-        //{
-        //    get { return (UserAccessLevel & AccessLevels.CurrentWrite) != 0; }
-        //}
-
         protected override void OnAfterCreate(ISystemContext context, NodeState node)
         {
-            // take this into account in statistics
-            _mgr?.Status.IncrementVarCounter();
-            
+           
             base.OnAfterCreate(context, node);
         }
 
         protected override void OnBeforeDelete(ISystemContext context)
         {
-            // take this into account in statistics
-            _mgr?.Status?.DecrementVarCounter();
-            
             // set this flag; it will be checked when user will try to monitor it
             IsDeleted = true;
 

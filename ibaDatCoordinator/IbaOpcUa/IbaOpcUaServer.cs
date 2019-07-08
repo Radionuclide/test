@@ -29,7 +29,6 @@ namespace iba.ibaOPCServer
             KlsStrSubscriptions = "";
             KlsStrVarTree = "";
             KlsStrMonitoredItems = "";
-            KlsStrWriteActions = "0";
         }
 
         #region Overridden Methods
@@ -208,9 +207,6 @@ namespace iba.ibaOPCServer
         public string KlsStrVarTree { get; private set; }
         public string KlsStrMonitoredItems { get; private set; }
         public string KlsStrMonitoredItems2 { get; private set; }
-        public string KlsStrWriteActions { get; private set; }
-
-        private int _klsWriteActionsCount;
 
 
         #region trust functionality
@@ -609,13 +605,6 @@ namespace iba.ibaOPCServer
             KlsStrMonitoredItems2 = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
 //            return _onlineServer.AddRemoveWatch(sVarName);
             return false;
-        }
-
-        public void KlsWrite(object ve, object value, ushort valueSize)
-        {
-            _klsWriteActionsCount++;
-            KlsStrWriteActions = _klsWriteActionsCount.ToString();
-//            _onlineServer.SetVariable(ve, value, valueSize);
         }
 
         public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)

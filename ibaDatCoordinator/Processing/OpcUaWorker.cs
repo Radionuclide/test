@@ -214,13 +214,9 @@ namespace iba.Processing
 
                 //_uaServer.OnTrustModeChanged += trustModeChangedHandler;
 
-
-
                 IbaOpcUaServer.KlsInitialize(null, null, false);
 
                 //_opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
-
-                Tst__CreateTestTree();
             }
 
             RestartServer();
@@ -250,36 +246,7 @@ namespace iba.Processing
             RebuildTree();
         }
 
-        public void Tst__CreateTestTree()
-        {
-            //_lifeBeatVar =
-            //    NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat");
-            //_lifeBeatReactive =
-            //    NodeManager.CreateVariableAndItsNode(NodeManager.FolderIbaStatus, BuiltInType.Int32, "Lifebeat reactive");
-
-            //_lifeBeatReactive.OnReadValue += OnReadValue1; // todo. kls. 
-            ////IbaVariable iv;
-            ////iv.StateChanged
-
-            //NodeManager.SetValueScalar(_lifeBeatVar, 0);
-            //NodeManager.SetValueScalar(_lifeBeatReactive, 0);
-        }
-
-
-        private int _tmpval = 1;
-        private ServiceResult OnReadValue1(ISystemContext context, NodeState node,
-            NumericRange indexrange, QualifiedName dataencoding, ref object value, ref StatusCode statuscode, ref DateTime timestamp)
-
-        {
-
-            value = (int)value + 1000000;
-            //value = _tmpval++;
-            //statuscode = 
-            //timestamp = DateTime.Now;
-            return ServiceResult.Good;
-        }
-
-
+  
         public string Tst__GetInternalEndpoints()
         {
             string str = "";
@@ -370,7 +337,6 @@ namespace iba.Processing
                 if (_opcUaData.Enabled)
                 {
                     IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration);
-                    Tst__CreateTestTree();
 
                     //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
                     Status = SnmpWorkerStatus.Started;
@@ -725,6 +691,7 @@ namespace iba.Processing
         {
             // create
             FolderState folder = CreateOpcUaFolder(uaParentFolder, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+
             // keep UA id in ExtMon Node
             //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
             return folder;
@@ -747,12 +714,7 @@ namespace iba.Processing
 
         private IbaOpcUaVariable CreateOpcUaValue(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
         {
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(
-                parent, xmv.ObjValue, xmv.Caption, xmv.Description);
-            
-            // keep cross reference between internal variable and UA variable for instant access
-            xmv.UaVar = iv;
-            iv.ExtMonVar = xmv;
+            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, xmv);
 
             // add handler
             iv.OnReadValue += OnReadProductSpecificValue;

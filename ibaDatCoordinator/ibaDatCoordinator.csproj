@@ -233,11 +233,9 @@
     <Compile Include="IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="IbaOpcUa\ibaOpcUaUserAccount.cs" />
     <Compile Include="IbaOpcUa\IbaUaNodeManager.cs" />
-    <Compile Include="IbaOpcUa\IbaUaNodeManagerStatus.cs" />
     <Compile Include="IbaOpcUa\IbaOpcUaVariable.cs" />
     <Compile Include="IbaOpcUa\PmacStatusForUaServer.cs" />
     <Compile Include="IbaOpcUa\UaNodeStateExtenstion.cs" />
-    <Compile Include="IbaOpcUa\VarCounter.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
     <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
     <Compile Include="Processing\OpcUaWorker.cs" />

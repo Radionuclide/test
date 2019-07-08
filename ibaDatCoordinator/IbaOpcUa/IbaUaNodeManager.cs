@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DevExpress.Utils;
+using iba.Data;
 using iba.Utility;
 using Opc.Ua;
 using Opc.Ua.Server;
@@ -32,7 +33,6 @@ namespace iba.ibaOPCServer
         {
             _ibaUaServer = ibaUaServer;
             SystemContext.NodeIdFactory = this;
-            Status = new IbaUaNodeManagerStatus(this);
         }
 
         #endregion
@@ -110,18 +110,6 @@ namespace iba.ibaOPCServer
                 AddRootNotifier(FolderIbaRoot);
 
                 AddPredefinedNode(SystemContext, FolderIbaRoot);
-
-
-                // create additional folders
-                FolderIbaStatus = CreateFolderAndItsNode(FolderIbaRoot, FolderIbaStatusName, "Status of ibaDatCoordinator's OPC UA monitoring system");
-                //_folderIbaGlobals = CreateFolderAndItsNode(_folderIbaRoot, FolderIbaGlobalsName);
-                // do not create Tasks now; it will be created if needed on update of varTree
-                ////_folderIbaTask = KlsCreateFolderAndItsNode(_folderIbaRoot, _folderIbaTasksName);
-
-                // create status nodes
-                // this can be done only here, not in constructor
-                Status.CreateStatusTree(FolderIbaStatus);
-
             }
         }
 
@@ -312,19 +300,13 @@ namespace iba.ibaOPCServer
 
         private readonly IbaOpcUaServer _ibaUaServer;
 
-        public readonly IbaUaNodeManagerStatus Status;
-
         /// <summary> Root folder for all iba-specific data </summary>
         public FolderState FolderIbaRoot { get; private set; }
 
-        /// <summary> Contains auxiliary / iba-ua-server-status nodes </summary>
-        public FolderState FolderIbaStatus { get; private set; }
-
         private const string FolderIbaRootName = "ibaDatCoordinator";
-        private const string FolderIbaStatusName = "Status";
 
 
-        private IbaOpcUaVariable _temporaryWatch;
+        private IbaOpcUaVariable _temporaryWatch; // todo. kls. delete
 
         // todo delete tmp variables
         public static int TmpKls___ReadCounter;
@@ -350,7 +332,7 @@ namespace iba.ibaOPCServer
                 {
                     IbaOpcUaVariable monitoredIbaOpcUaVar = kvp.Value.Node as IbaOpcUaVariable;
                     if (monitoredIbaOpcUaVar == null) continue;
-                    monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist = false;
+                    //monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist = false;
                 }
 
                 // set values and mark with IsAvailableInPmacWatchlist flag 
@@ -362,7 +344,7 @@ namespace iba.ibaOPCServer
                 {
                     IbaOpcUaVariable monitoredIbaOpcUaVar = kvp.Value.Node as IbaOpcUaVariable;
                     if (monitoredIbaOpcUaVar == null) continue;
-                    if (monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist) continue;
+                    //if (monitoredIbaOpcUaVar.IsAvailableInPmacWatchlist) continue;
                     
                     // here is a monitored but unavailable variable
                     monitoredIbaOpcUaVar.StatusCode = StatusCodes.BadNoDataAvailable;
@@ -603,14 +585,13 @@ namespace iba.ibaOPCServer
                     if (monitoredIbaOpcUaVar == null) continue;
                     if (monitoredIbaOpcUaVar.IsDeleted) continue;
                     count2++;
-                    if (!monitoredIbaOpcUaVar.IsMonitored)
-                        Status.AddNewError(string.Format("Monitored list inconcistency. Item {0}.", monitoredIbaOpcUaVar));
-                }                
+                    //AddNewError(string.Format("Monitored list inconcistency. Item {0}.", monitoredIbaOpcUaVar));
+                    Debug.Assert(monitoredIbaOpcUaVar.IsMonitored);
+                }
 
-                if (count1 != count2)
-                    // can happen sometimes... 
-                    // like creating of monitored item list without calling onMonitoredItemCreated handler
-                    Status.AddNewError(string.Format("Monitored list inconcistency. (Flags = {0}) != (Items = {1})", count1,count2));
+                // can happen sometimes... 
+                // like creating of monitored item list without calling onMonitoredItemCreated handler
+                Debug.Assert(count1 == count2);
             }
         }
         /// <summary>
@@ -650,14 +631,14 @@ namespace iba.ibaOPCServer
                     // call state-change handlers
                     v.ClearChangeMasks(SystemContext, false);
                     // add this change to statistics
-                    Status.TreeUpdateInvalidated.Increment();
+                    //Status.TreeUpdateInvalidated.Increment();
                 }
                 else
                 {
                     // not monitored, so can be deleted
                     DeleteNodeRecursively(v, true);
                     // add this change to statistics
-                    Status.TreeUpdateDeleted.Increment();
+                    //Status.TreeUpdateDeleted.Increment();
                 }
             }
         }
@@ -702,7 +683,8 @@ namespace iba.ibaOPCServer
             string prefix = string.Format("{0}.", FolderIbaRoot.BrowseName.Name);
             if (!uaName.StartsWith(prefix))
             {
-                Status.AddNewError(string.Format("Found uaName '{0}' not starting with ibaRootFolder name.", uaName));
+                Debug.Assert(false);
+                //Status.AddNewError(string.Format("Found uaName '{0}' not starting with ibaRootFolder name.", uaName));
                 return "";
             }
 
@@ -1066,8 +1048,6 @@ namespace iba.ibaOPCServer
             // delete all children of iba root folder
             foreach (var node in GetChildren(FolderIbaRoot))
             {
-                if (node == FolderIbaStatus)
-                    continue;
                 DeleteNodeRecursively(node, false);
             }
         }
@@ -1414,6 +1394,7 @@ namespace iba.ibaOPCServer
             string parentId = nodeId.Substring(0, pos);
             Debug.Assert(!string.IsNullOrWhiteSpace(parentId));
             return parentId;
+
         }
 
         /// <summary>Checks if it is ok to create a node with such a name in a given folder.
@@ -1435,7 +1416,7 @@ namespace iba.ibaOPCServer
         /// All characters (including whitespace) except dot are allowed. For example, 'My variable'</param>
         /// <param name="description">OPC UA node description - any string or null</param>
         /// <returns>Returns a created Folder</returns>
-        public FolderState CreateFolderAndItsNode(FolderState parent, string displayName, string description) // todo. kls. make description optional
+        public FolderState CreateFolderAndItsNode(FolderState parent, string displayName, string description) 
         {
             //AssertNameCorrectnessAndUniqueness(parent, name);
 
@@ -1479,61 +1460,42 @@ namespace iba.ibaOPCServer
             }
         }
 
-        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, object initialValue, string displayName,
-            string description = null)
+        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
         {
+            object initialValue = xmv.ObjValue;
+
             FormatEnum(ref initialValue);
 
             // get uaType automatically from initial value
             var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
 
-            var v = CreateVariableAndItsNode(parent, uaType, displayName, description);
-            SetValueScalar(v, initialValue);
-            return v;
-        }
+            string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. move to overridden function?
 
-        // todo. kls. remove! (merge with previous overload)
-        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, BuiltInType dataType, string displayName,
-            string description = null)
-        {
-            //            AssertNameCorrectnessAndUniqueness(parent, name); // todo. kls. test and del
-            string browseName = GenerateUniqueNodeName(parent, displayName); // todo. kls. move to overridden function
-
-            // todo. kls. test and del
-            //if (browseName != displayName)
-            //    ;
-
-            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, null, null);
+            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv, null);
 
             // create node for given instance
             CreateNodeForDataVariable(v, browseName);
 
-            v.Description = description;
-            v.DisplayName = displayName;
+            v.Description = xmv.Description;
+            v.DisplayName = xmv.Caption;
 
             // set access type to readonly
             v.SetAccessLevel(true, false);
-            v.SetupAsScalar(dataType);
+            v.SetupAsScalar(uaType);
+
+            SetValueScalar(v, initialValue);
             return v;
         }
-
         /// <summary>
         /// By Kolesnik. 
         /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="name"></param>
-        /// <param name="subTreeId"></param>
-        /// <param name="ve"></param>
-        /// <returns></returns>
         private IbaOpcUaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, object ve)
         {
             IbaOpcUaVariable v = new IbaOpcUaVariable(parent, null, this); // todo. kls. use for feedback
 
             // create node for given instance
             CreateNodeForDataVariable(v, name);
-
-            v.OnSimpleWriteValue += OnWriteIbaNode;
 
             return v;
         }
@@ -1613,13 +1575,7 @@ namespace iba.ibaOPCServer
         {
             var instances = GetFlatListOfAllChildren(this.FolderIbaRoot);
 
-            // exclude status nodes
-            var statusInstances = GetFlatListOfAllChildren(this.FolderIbaStatus);
-            foreach (var instance in statusInstances)
-            {
-                instances.Remove(instance);
-            }
-
+            // todo. kls. 
             // convert to string id???
             //var list = new Set<BaseInstanceState>();
             //foreach (var instance in instances)
@@ -1654,119 +1610,12 @@ namespace iba.ibaOPCServer
 
             // it is not used, remove it
             ibaOpcUaVariableToRemove.IsMonitored = false;
-            _ibaUaServer.KlsRemoveWatch(ibaOpcUaVariableToRemove.VeName);
+            //_ibaUaServer.KlsRemoveWatch(ibaOpcUaVariableToRemove.VeName);
         }
 
         #endregion
 
-        #region ua event handlers by Kolesnik
-
-        private ServiceResult OnWriteIbaNode(ISystemContext context, NodeState node, ref object value)
-        {
-            // check user acess rights
-            IbaOpcUaUserAccount acc = _ibaUaServer.KlsGetUserForSession(context.SessionId);
-            if (!acc.CanWrite) return new ServiceResult(StatusCodes.BadUserAccessDenied);
-            
-            // todo
-            // in future we will have coversion table with delegates and including sizes
-            // big switch here is not good
-
-
-            IbaOpcUaVariable iv = node as IbaOpcUaVariable;
-
-            // paranoic check
-            if (iv == null)
-                // should not happen
-                // we add this event handler only to iba variables.
-                // nevertheless cancel furhter actions
-                return new ServiceResult(StatusCodes.BadInternalError);
-
-            //// paranoic check - no reference?
-            //if (iv.VariableElement == null)
-            //    // should not happen
-            //    // during varTree update all ibaVAriables should be supplied with correct reference to their ve
-            //    // nevertheless cancel furhter actions
-            //    return new ServiceResult(StatusCodes.BadInternalError);
-
-            //// paranoic check - reference consistency
-            //if (!ReferenceEquals(iv.VariableElement.UaVariable, iv))
-            //    // should not happen
-            //    // during varTree update all references should be checked for consistency
-            //    // nevertheless cancel furhter actions
-            //    return new ServiceResult(StatusCodes.BadInternalError);
-
-            ushort sz;
-            try
-            {
-                switch ((BuiltInType)(uint)(iv.DataType.Identifier))
-                {
-                    case BuiltInType.Boolean:
-                        sz = 1;
-                        break;
-                    case BuiltInType.SByte:
-                        sz = 1;
-                        break;
-                    case BuiltInType.Int16:
-                        sz = 2;
-                        break;
-                    case BuiltInType.Int32:
-                        sz = 4;
-                        break;
-                    case BuiltInType.Int64:
-                        sz = 4;
-                        break;
-
-                    case BuiltInType.Byte:
-                        sz = 1;
-                        break;
-                    case BuiltInType.UInt16:
-                        sz = 2;
-                        break;
-                    case BuiltInType.UInt32:
-                        sz = 4;
-                        break;
-                    case BuiltInType.UInt64:
-                        sz = 8;
-                        break;
-                    case BuiltInType.Float:
-                        sz = 4;
-                        break;
-                    case BuiltInType.Double:
-                        sz = 8;
-                        break;
-
-                    default:
-                        // strings and arrays are not supported yet
-                        // todo add support for strings and arrays
-                        sz = 0;
-                        break;
-                }
-            }
-            catch
-            {
-                // if id is not a built-in type, then it references to a TypeNode and has a complex type
-                // it is not supported
-                // todo implement complex types
-                return new ServiceResult(StatusCodes.BadDataTypeIdUnknown);
-            }
-
-            // unknown/unsupported type
-            if (sz == 0)
-                return new ServiceResult(StatusCodes.BadDataTypeIdUnknown);
-
-
-            // todo typecheck
-            // todo use StatusCodes.BadTypeMismatch
-
-            // okay
-            _ibaUaServer.KlsWrite(null, value, sz);
-
-
-            return ServiceResult.Good;
-        }
-
-        #endregion
-
+        
         #region override by kolesnik
 
         protected override void OnMonitoredItemCreated(ServerSystemContext context, NodeHandle handle, MonitoredItem monitoredItem)
@@ -1787,17 +1636,17 @@ namespace iba.ibaOPCServer
             // remember that it is monitored
             iv.IsMonitored = true;
 
-            // get name in VariableElement notation
-            if (string.IsNullOrEmpty(iv.VeName))
-            {
-                // should not happen...
-                // do not add this to PMAC watchlist
-                Status.AddNewError(string.Format("Cannot get ve-Name for variable '{0}'", iv));
-                return;
-            }
+            //// get name in VariableElement notation
+            //if (string.IsNullOrEmpty(iv.VeName))
+            //{
+            //    // should not happen...
+            //    // do not add this to PMAC watchlist
+            //    Status.AddNewError(string.Format("Cannot get ve-Name for variable '{0}'", iv));
+            //    return;
+            //}
 
-            // add it to PMAC's watchlist
-            _ibaUaServer.KlsAddWatch(iv.VeName);
+            //// add it to PMAC's watchlist
+            //_ibaUaServer.KlsAddWatch(iv.VeName);
         }
 
         protected override void OnMonitoredItemDeleted(ServerSystemContext context, NodeHandle handle, MonitoredItem monitoredItem)
@@ -1843,7 +1692,7 @@ namespace iba.ibaOPCServer
                 _temporaryWatch = v;
 
                 TmpKls___ReadCounter++;
-                _ibaUaServer.KlsAddWatch(_temporaryWatch.VeName);
+                //_ibaUaServer.KlsAddWatch(_temporaryWatch.VeName);
             }
             base.Read(context, maxAge, nodesToRead, values, errors);
 

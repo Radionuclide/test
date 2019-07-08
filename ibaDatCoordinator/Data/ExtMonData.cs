@@ -14,7 +14,7 @@ namespace iba.Data
     /// Is used as a middle layer between: TaskManager on the one side
     /// and SnmpWorker or OpcUaWorker on the other side.
     /// </summary>
-    internal class ExtMonData 
+    public class ExtMonData 
     {
         #region Body
         
@@ -83,13 +83,6 @@ namespace iba.Data
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
                 @"Event jobs", @"eventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
-
-            // todo. kls. use or remove?
-            FolderRoot.IsGuiNodeExpandedByDefault = true;
-            FolderStandardJobs.IsGuiNodeExpandedByDefault = true;
-            FolderScheduledJobs.IsGuiNodeExpandedByDefault = true;
-            FolderOneTimeJobs.IsGuiNodeExpandedByDefault = true;
-            FolderEventBasedJobs.IsGuiNodeExpandedByDefault = true;
         }
 
         public void Reset()
@@ -223,7 +216,7 @@ namespace iba.Data
 
         /// <summary> Node is a basic element of <see cref="ExtMonData"/> hierarchy.
         /// It is either folder or variable. </summary>
-        internal abstract class ExtMonNode
+        public abstract class ExtMonNode
         {
             public readonly ExtMonFolder Parent;
 
@@ -304,7 +297,7 @@ namespace iba.Data
             }
         }
 
-        internal abstract class ExtMonVariableBase : ExtMonNode
+        public abstract class ExtMonVariableBase : ExtMonNode
         {
             /// <summary> Gets contained data as untyped <see cref="object"/> </summary>
             public abstract object ObjValue { get; }
@@ -369,7 +362,7 @@ namespace iba.Data
             #endregion
         }
 
-        internal class ExtMonVariable<T> : ExtMonVariableBase
+        public class ExtMonVariable<T> : ExtMonVariableBase
         {
             public T Value;
 
@@ -387,17 +380,13 @@ namespace iba.Data
             }
         }
 
-        internal class ExtMonFolder : ExtMonNode // todo. kls. Rename to ExternalMonitoringGroup 
+        public class ExtMonFolder : ExtMonNode // todo. kls. Rename to ExternalMonitoringGroup 
         {
             /// <summary>
             /// Try avoid writing this collection directly or be careful with parent-child consistency.
             /// Use <see cref="AddChildFolder"/> or <see cref="AddChildVariable"/> if possible.
             /// </summary>
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
-
-            /// <summary> Whether this node is expanded by default in GUI tree view
-            /// // todo. kls. use or remove? </summary>
-            public bool IsGuiNodeExpandedByDefault;
 
             /// <summary>
             /// Is used for "Big" folders - section roots - like "Standard Jobs".
@@ -507,7 +496,7 @@ namespace iba.Data
         /// It has a timestamp of last update, and it's assumed that its items are updated altogether if one of
         /// group's items is requested from outside.
         /// </summary>
-        internal abstract class ExtMonGroup : ExtMonFolder
+        public abstract class ExtMonGroup : ExtMonFolder
         {
             protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
@@ -544,31 +533,31 @@ namespace iba.Data
         [Serializable]
         public class GuiTreeNodeTag
         {
-            /// <summary> key for SNMP </summary>
-            public IbaSnmpOid SnmpOid { get; set; }
-
-            /// <summary> key for OPC UA </summary>
-            public string OpcUaNodeId { get; set; }
-
-            public bool IsFolder { get; set; }
-
             public string Caption { get; set; }
-
-            public string Value { get; set; }
-
-            public string Type { get; set; }
-
-            public string SnmpMibName { get; set; }
 
             public string Description { get; set; }
 
-            public bool IsExpandedByDefault { get; set; }
+            public bool IsFolder { get; set; }
+
+            /// <summary> applicable only to variables </summary>
+            public string Value { get; set; }
+
+            /// <summary> applicable only to variables </summary>
+            public string Type { get; set; }
+
+            /// <summary> key for SNMP </summary>
+            public IbaSnmpOid SnmpOid { get; set; }
+
+            public string SnmpMibName { get; set; }
+            
+            /// <summary> key for OPC UA </summary>
+            public string OpcUaNodeId { get; set; }
         }
 
         #endregion
 
 
-        internal class LicenseInfo : ExtMonGroup
+        public class LicenseInfo : ExtMonGroup
         {
 
             /// <summary> Oid 1 </summary>
@@ -651,7 +640,7 @@ namespace iba.Data
         }
 
 
-        internal class GlobalCleanupDriveInfo : ExtMonGroup
+        public class GlobalCleanupDriveInfo : ExtMonGroup
         {
             /// <summary> Primary key for the drive info collection (is uniquely identified by drive name) </summary>
             public string Key => DriveName.Value;
@@ -735,11 +724,11 @@ namespace iba.Data
             }
         }
 
-        
+
         #region Tasks
 
         /// <summary> OID 1...n - one class instance per each task </summary>
-        internal class TaskInfo : ExtMonFolder
+        public class TaskInfo : ExtMonFolder
         {
             /// <summary> Oid 1 </summary>
             public readonly ExtMonVariable<string> TaskName;
@@ -840,7 +829,7 @@ namespace iba.Data
         }
         
 
-        internal class LocalCleanupInfo : ExtMonFolder
+        public class LocalCleanupInfo : ExtMonFolder
         {
             /// <summary> Oid 1 </summary>
             public readonly ExtMonVariable<TaskWithTargetDirData.OutputLimitChoiceEnum> LimitChoice;
@@ -887,7 +876,7 @@ namespace iba.Data
 
         #region Jobs
 
-        internal enum JobStatus
+        public enum JobStatus
         {
             Disabled = 0,
             Started = 1,
@@ -896,7 +885,7 @@ namespace iba.Data
 
 
         /// <summary> OID ...2 Standard Jobs </summary>
-        internal abstract class JobInfoBase : ExtMonGroup
+        public abstract class JobInfoBase : ExtMonGroup
         {
             /// <summary> key of the job list </summary>
             public Guid Guid;
@@ -949,7 +938,7 @@ namespace iba.Data
 
                 Status = FolderGeneral.AddChildVariable<JobStatus>(
                     @"Status", @"Status", 
-                    @"Current status of the job (started, stopped or disabled).",
+                    @"Current status of the job (1=started, 2=stopped or 3=disabled).",
                     SNMP_AUTO_LEAST_ID);
 
                 TodoCount = FolderGeneral.AddChildVariable<uint>(
@@ -1022,7 +1011,7 @@ namespace iba.Data
         }
 
 
-        internal class StandardJobInfo : JobInfoBase
+        public class StandardJobInfo : JobInfoBase
         {
             /// <summary> Oid 10 </summary>
             public ExtMonFolder FolderLastProcessing;
@@ -1134,7 +1123,7 @@ namespace iba.Data
         }
 
 
-        internal class ScheduledJobInfo : JobInfoBase
+        public class ScheduledJobInfo : JobInfoBase
         {
             /// <summary> Oid 6 </summary>
             public readonly ExtMonVariable<uint> PermFailedCount;
@@ -1200,7 +1189,7 @@ namespace iba.Data
         }
         
 
-        internal class OneTimeJobInfo : JobInfoBase
+        public class OneTimeJobInfo : JobInfoBase
         {
             /// <summary> Oid 6 </summary>
             public readonly ExtMonVariable<DateTime> TimestampLastExecution;
@@ -1237,7 +1226,7 @@ namespace iba.Data
         }
 
 
-        internal class EventBasedJobInfo : JobInfoBase
+        public class EventBasedJobInfo : JobInfoBase
         {
             /// <summary> Oid 6 </summary>
             public readonly ExtMonVariable<uint> PermFailedCount;

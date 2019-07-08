@@ -404,9 +404,6 @@ namespace iba.Controls
                 var sortedOids = objSnapshot.Keys.ToList();
                 sortedOids.Sort();
 
-
-                var nodesToExpand = new List<TreeNode>();
-
                 foreach (var oid in sortedOids)
                 {
                     var tag = objSnapshot[oid];
@@ -429,18 +426,22 @@ namespace iba.Controls
                     // add this item to parent node
                     var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
                     node.Tag = tag;
-
-                    // mark for expanding
-                    if (tag.IsExpandedByDefault)
-                    {
-                        nodesToExpand.Add(node);
-                    }
                 }
 
-                // expand those which are marked for
-                foreach (var treeNode in nodesToExpand)
+
+                // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
+                var nodesToExpand = new HashSet<IbaSnmpOid>
                 {
-                    treeNode?.Expand();
+                    "1.3.6.1.4.1.45120.2.1.2", // Standard jobs
+                    "1.3.6.1.4.1.45120.2.1.3", // Scheduled jobs
+                    "1.3.6.1.4.1.45120.2.1.4", // One time jobs
+                    "1.3.6.1.4.1.45120.2.1.5", // Event jobs
+                };
+
+                // expand those which are marked for
+                foreach (IbaSnmpOid oid in nodesToExpand)
+                {
+                    ExpandNodeAndAllAncestors(FindSingleNodeById(oid));
                 }
             }
             catch (Exception ex)

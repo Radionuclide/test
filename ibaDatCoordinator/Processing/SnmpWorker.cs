@@ -854,27 +854,6 @@ namespace iba.Processing
                     }
                 }
 
-                // mark some nodes as expanded
-                var nodesToExpand = new HashSet<IbaSnmpOid>
-                {
-                    rootOid,
-                    IbaSnmp.OidIbaRoot,
-                    IbaSnmp.OidIbaProduct,
-                    IbaSnmp.OidIbaProductSpecific,
-                    //IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.GlobalCleanupOid,// not needed
-                    IbaSnmp.OidIbaProductSpecific + 2, // stdJobs
-                    IbaSnmp.OidIbaProductSpecific + 3, // schJobs
-                    IbaSnmp.OidIbaProductSpecific + 4 // otJobs
-                };
-
-                foreach (var oid in nodesToExpand)
-                {
-                    if (result.TryGetValue(oid, out ExtMonData.GuiTreeNodeTag tag))
-                    {
-                        tag.IsExpandedByDefault = true;
-                    }
-                }
-
                 return result;
             }
             catch (Exception ex)
