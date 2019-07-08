@@ -452,23 +452,20 @@ namespace iba.Controls
                     }
                 }
 
+                // nodes to expand; (order/sorting is not important)
                 var nodesToExpand1 = new HashSet<string>
                 {
-                    "ibaDatCoordinator",
                     "ibaDatCoordinator\\Standard jobs",
-                    "ibaDatCoordinator\\Scheduled jobs",
+                  "ibaDatCoordinator\\Scheduled jobs",
                     "ibaDatCoordinator\\One time jobs",
-                    "ibaDatCoordinator\\Event jobs"
+      //              "ibaDatCoordinator\\Event jobs"
                 };
 
                 // expand those which are marked for
                 foreach (var str in nodesToExpand1)
                 {
-                    var treeNode = FindSingleNodeById(str);
-                    treeNode?.Expand();
+                    SnmpControl.ExpandNodeAndAllAncestors(FindSingleNodeById(str));
                 }
-
-                return;
             }
             catch (Exception ex)
             {
@@ -476,62 +473,29 @@ namespace iba.Controls
                     $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
             }
 
-            // navigate to last selected oid if possible
-            if (_lastId == null)
+            // navigate to recent user selected node if possible
+            if (_recentId == null)
             {
+                // we have no recent id
                 return;
             }
-
-            //var parents = null;//_lastId.GetParents();
-            //foreach (IbaSnmpOid oid in parents)
-            //{
-            //    try
-            //    {
-            //        FindSingleNodeById(oid)?.Expand();
-            //    }
-            //    catch
-            //    {
-            //        // just go on with others
-            //    }
-            //}
-
-            tvObjects.SelectedNode = FindSingleNodeById(_lastId);
-
-            tvObjects.Select();
-            tvObjects.Focus();
+            var recentNode = FindSingleNodeById(_recentId);
+            if (recentNode == null)
+            {
+                // recent node was not found; likely, it's is deleted; no problem;
+                return;
+            }
+            // expand parent to make the node visible
+            SnmpControl.ExpandNodeAndAllAncestors(recentNode.Parent);
+            // select it
+            tvObjects.SelectedNode = recentNode;
         }
 
-        private TreeNode FindSingleNodeById(string id)
-        {
-            if (id == null)
-            {
-                // should not happen
-                throw new ArgumentNullException(nameof(id));
-            }
+        private TreeNode FindSingleNodeById(string id) =>
+            SnmpControl.FindSingleNodeById(tvObjects.Nodes, id);
 
-            // check if exists
-            TreeNode[] nodes = tvObjects.Nodes.Find(id, true);
-
-            Debug.Assert(nodes.Length <= 1); // should be not more than one
-
-            if (nodes.Length == 1)
-            {
-                // ok, found exactly one match
-                return nodes[0];
-            }
-            if (nodes.Length > 1)
-            {
-                // Length > 1
-                // should not happen
-                // inconsisnensy?
-                throw new Exception($@"Found more than one match for {id}");
-            }
-            return null; // not found
-        }
-
-
-        /// <summary> The last Oid that was selected by the user </summary>
-        private string _lastId;
+        /// <summary> The most recent node that was selected by the user </summary>
+        private string _recentId;
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -542,8 +506,8 @@ namespace iba.Controls
 
             try
             {
-                // reset last selected oid
-                _lastId = null;
+                // reset recently selected node
+                _recentId = null;
 
                 // reset all fields
                 tbObjValue.Text = String.Empty;
@@ -552,36 +516,37 @@ namespace iba.Controls
                 tbObjDescription.Text = String.Empty;
 
                 // get existing node's tag
-                var tag = (ExtMonData.GuiTreeNodeTag)e.Node.Tag;
-
-                if (tag == null)
+                if (!(e.Node.Tag is ExtMonData.GuiTreeNodeTag tag))
+                {
+                    // should not happen; each node should be equipped with a tag
+                    Debug.Assert(false); 
                     return;
-                // try to refresh node's tag
-                // todo. kls. 
-                //try
-                //{
-                //    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
-                //}
-                //catch (Exception)
-                //{
-                //    // reset value that we know that something is wrong
-                //    tag.Value = String.Empty;
-                //    tag.Type = String.Empty;
-                //}
+                }
 
-                //tbObjOid.Text = tag.Oid?.ToString();
+                // try to refresh node's tag
+                try
+                {
+                    tag = TaskManager.Manager.OpcUaGetTreeNodeTag(tag.OpcUaNodeId);
+                }
+                catch
+                {
+                    // reset value that we know that something is wrong
+                    tag.Value = String.Empty;
+                    tag.Type = String.Empty;
+                }
+
                 tbObjValue.Text = tag.Value;
                 tbObjType.Text = tag.Type;
                 tbObjNodeId.Text = tag.OpcUaNodeId;
-                tbObjDescription.Text = tag.Description; // todo. kls. rename/reuse SnmpTreeNodeTag
+                tbObjDescription.Text = tag.Description;
 
-                // remember last selected oid
-                _lastId = null;// tag.Oid; // todo. kls. 
+                // remember recently selected node
+                _recentId = tag.OpcUaNodeId;
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Debug,
-                    @"SnmpControl.tvObjects_AfterSelect(). Exception: " + ex.Message);
+                    $@"{nameof(OpcUaControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
             }
         }
 

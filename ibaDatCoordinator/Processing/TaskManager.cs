@@ -1068,13 +1068,12 @@ namespace iba.Processing
             }
         }
 
-        internal virtual ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(IbaSnmpOid oid)
+        internal virtual ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
         {
             try
             {
-                return null;
                 // refresh value and get information
-                //return OpcUaWorker.GetTreeNodeTag(oid, true);
+                return OpcUaWorker.GetTreeNodeTag(id, true);
             }
             catch (Exception ex)
             {

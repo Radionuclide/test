@@ -413,7 +413,7 @@ namespace iba.Controls
 
                     // get parent node
                     var parentOid = oid.GetParent();
-                    var parentNode = FindSingleNodeByOid(parentOid);
+                    var parentNode = FindSingleNodeById(parentOid);
 
                     // if parent node exists, add item there.
                     // otherwise add directly to the root
@@ -440,7 +440,7 @@ namespace iba.Controls
                 // expand those which are marked for
                 foreach (var treeNode in nodesToExpand)
                 {
-                    treeNode.Expand();
+                    treeNode?.Expand();
                 }
             }
             catch (Exception ex)
@@ -449,41 +449,56 @@ namespace iba.Controls
                     $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
             }
 
-            // navigate to last selected oid if possible
-            if (_lastOid == null)
+            // navigate to recent user selected node if possible
+
+            if (_recentOid == null)
             {
+                // we have no recent oid
                 return;
             }
-
-            var parents = _lastOid.GetParents();
-            foreach (IbaSnmpOid oid in parents)
+            var recentNode = FindSingleNodeById(_recentOid);
+            if (recentNode == null)
             {
-                try
-                {
-                    FindSingleNodeByOid(oid)?.Expand();
-                }
-                catch
-                {
-                    // just go on with others
-                }
+                // recent node was not found; likely, it's is deleted; no problem;
+                return;
             }
-
-            tvObjects.SelectedNode = FindSingleNodeByOid(_lastOid);
-
-            //tvObjects.Select();
-//            tvObjects.Focus();
+            // expand parent to make the node visible
+            SnmpControl.ExpandNodeAndAllAncestors(recentNode.Parent);
+            // select it
+            tvObjects.SelectedNode = recentNode;
         }
 
-        private TreeNode FindSingleNodeByOid(IbaSnmpOid oid)
+        /// <summary> Expands given node and all its parents
+        /// to ensure that given node is visible </summary>
+        public static void ExpandNodeAndAllAncestors(TreeNode node)
         {
-            if (oid == null)
+            if (node == null)
+                return;
+
+            while (true)
+            {
+                node.Expand();
+                if (node.Parent == null)
+                {
+                    // root is reached
+                    break;
+                }
+                node = node.Parent;
+            }
+        }
+
+        /// <summary> Looks for a given id in a given collection </summary>
+        public static TreeNode FindSingleNodeById(TreeNodeCollection collection, string id)
+        {
+            if (id == null)
             {
                 // should not happen
-                throw new ArgumentNullException(nameof(oid));
+                Debug.Assert(false);
+                return null;
             }
 
             // check if exists
-            TreeNode[] nodes = tvObjects.Nodes.Find(oid.ToString(), true);
+            TreeNode[] nodes = collection.Find(id, true);
 
             if (nodes.Length == 1)
             {
@@ -493,16 +508,20 @@ namespace iba.Controls
             if (nodes.Length > 1)
             {
                 // Length > 1
-                // should not happen
-                // inconsisnensy?
-                throw new Exception($@"Found more than one match for {oid}");
+                // throw new Exception($@"Found more than one match for {id}");
+                // should not happen. inconsistency?
+                Debug.Assert(false);
+                return nodes[0];
             }
             return null; // not found
         }
 
+        private TreeNode FindSingleNodeById(IbaSnmpOid oid) => 
+            FindSingleNodeById(tvObjects.Nodes, oid.ToString());
 
-        /// <summary> The last Oid that was selected by the user </summary>
-        private IbaSnmpOid _lastOid;
+
+        /// <summary> The most recent node that was selected by the user </summary>
+        private IbaSnmpOid _recentOid;
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -513,8 +532,8 @@ namespace iba.Controls
 
             try
             {
-                // reset last selected oid
-                _lastOid = null;
+                // reset recently selected node
+                _recentOid = null;
 
                 // reset all fields
                 tbObjOid.Text = String.Empty;
@@ -524,14 +543,19 @@ namespace iba.Controls
                 tbObjType.Text = String.Empty;
 
                 // get existing node's tag
-                var tag = (ExtMonData.GuiTreeNodeTag)e.Node.Tag;
+                if (!(e.Node.Tag is ExtMonData.GuiTreeNodeTag tag))
+                {
+                    // should not happen; each node should be equipped with a tag
+                    Debug.Assert(false);
+                    return;
+                }
 
                 // try to refresh node's tag
                 try
                 {
                     tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.SnmpOid);
                 }
-                catch (Exception)
+                catch
                 {
                     // reset value that we know that something is wrong
                     tag.Value = String.Empty;
@@ -544,13 +568,13 @@ namespace iba.Controls
                 tbObjMibName.Text = tag.SnmpMibName;
                 tbObjMibDescription.Text = tag.Description;
 
-                // remember last selected oid
-                _lastOid = tag.SnmpOid;
+                // remember recently selected node
+                _recentOid = tag.SnmpOid;
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Debug,
-                    @"SnmpControl.tvObjects_AfterSelect(). Exception: " + ex.Message);
+                    $@"{nameof(SnmpControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
             }
         }
 

@@ -882,7 +882,7 @@ namespace iba.Processing
                 Debug.Assert(false); // should not happen
                 value = null;
                 statuscode = StatusCodes.Bad;
-                return ServiceResult.Good; // // todo. kls. Good?
+                return ServiceResult.Good; // todo. kls. Good?
             }
 
             Debug.Assert(iv.Value == value); // should be the same
@@ -925,45 +925,13 @@ namespace iba.Processing
                     return null;
                 }
 
-                //var rootOid = IbaOpcUaServer.KlsStrVarTree.OidIbaRoot;
-
-                //// get a set of all folders and nodes starting with the root
-                //var nodesSet = new HashSet<string> { rootOid };
-                //foreach (var oid in objList)
-                //{
-                //    // skip everything that is outside selected root
-                //    if (!oid.StartsWith(rootOid))
-                //    {
-                //        continue;
-                //    }
-
-                //    // add object itself
-                //    nodesSet.Add(oid);
-
-                //    // add object's parents (folder-nodes)
-                //    var parents = oid.GetParents();
-                //    foreach (var parent in parents)
-                //    {
-                //        if (parent.StartsWith(rootOid))
-                //        {
-                //            nodesSet.Add(parent);
-                //        }
-                //    }
-                //}
-
                 //retrieve information about each node
                 foreach (BaseInstanceState uaNode in objList)
                 {
                     var tag = GetTreeNodeTag(uaNode, true);
                     if (tag != null)
                     {
-                        try
-                        {
-                            result.Add(tag);
-                        }
-                        catch
-                        {
-                        }
+                        result.Add(tag);
                     }
                 }
                 ////mark some nodes as expanded
@@ -991,47 +959,50 @@ namespace iba.Processing
                     $"{nameof(OpcUaWorker)}.{nameof(GetObjectTreeSnapShot)}. {ex.Message}");
                 return null;
             }
-
-            return null;
-        }
-
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(BaseInstanceState node, bool bUpdate = false)
-        {
-            // todo. kls. update value!
-
-            ExtMonData.GuiTreeNodeTag tag = new ExtMonData.GuiTreeNodeTag
-            {
-                Type = "",
-                Value = "",
-                Caption = node.DisplayName.Text,
-                Description = node.Description.Text,
-                IsFolder = true,
-                OpcUaNodeId = IbaUaNodeManager.GetNodeIdAsString(node.NodeId)
-            };
-
-            Debug.Assert(tag.OpcUaNodeId != null);
-
-            // ReSharper disable once InvertIf
-            if (node is IbaOpcUaVariable iv)
-            {
-                tag.IsFolder = false;
-                tag.Value = iv.Value.ToString();
-                tag.Type = iv.Value.GetType().Name;
-
-            }
-            // todo. kls. get IsExpanded from ExtMonFolder
-            return tag;
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string oid, bool bUpdate = false)
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(BaseInstanceState node, bool bUpdate = false)
         {
             try
             {
-                return null;
+                // todo. kls. update value!
+                // todo. kls. use lock??
+
+                Debug.Assert(node != null);
+
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (node == null)
+                    // ReSharper disable once HeuristicUnreachableCode
+                    return null;
+
+                ExtMonData.GuiTreeNodeTag tag = new ExtMonData.GuiTreeNodeTag
+                {
+                    Type = "",
+                    Value = "",
+                    Caption = node.DisplayName.Text,
+                    Description = node.Description.Text,
+                    IsFolder = true,
+                    OpcUaNodeId = IbaUaNodeManager.GetNodeIdAsString(node.NodeId)
+                };
+
+                Debug.Assert(tag.OpcUaNodeId != null);
+
+                // ReSharper disable once InvertIf
+                if (node is IbaOpcUaVariable iv)
+                {
+                    tag.IsFolder = false;
+                    tag.Value = iv.Value.ToString();
+                    var type = iv.ExtMonVar.ObjValue.GetType();
+                    tag.Type = type.IsEnum ? "Enum" : type.Name;
+                }
+                // todo. kls. get IsExpanded from ExtMonFolder
+                return tag;
+
+
 
                 // todo. kls. get BaseState by nodeid
-            //this.IbaOpcUaServer.IbaUaNodeManager.getn(oid);
+                //this.IbaOpcUaServer.IbaUaNodeManager.getn(oid);
                 //var tag = new SnmpTreeNodeTag { Oid = oid };
 
                 //stringMetadata metadata = IbaOpcUaServer.GetOidMetadata(oid);
@@ -1090,11 +1061,40 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}({oid}). {ex.Message}");
+                    $"{nameof(OpcUaWorker)}.{nameof(GetTreeNodeTag)}({node}). {ex.Message}");
                 return null;
             }
+        }
 
-            return null;
+        /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId, bool bUpdate = false)
+        {
+            try
+            {
+                Debug.Assert(!string.IsNullOrWhiteSpace(nodeId));
+
+                if (string.IsNullOrWhiteSpace(nodeId))
+                {
+                    // illegal nodeId
+                    return null;
+                }
+
+                BaseInstanceState uaNode = NodeManager.Find(nodeId) as BaseInstanceState;
+                // ReSharper disable once ConvertIfStatementToReturnStatement
+                if (uaNode == null)
+                {
+                    // requested node is not found; likely is deleted
+                    return null;
+                }
+
+                return GetTreeNodeTag(uaNode, bUpdate);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"{nameof(SnmpWorker)}.{nameof(GetTreeNodeTag)}({nodeId}). {ex.Message}");
+                return null;
+            }
         }
 
         #endregion
