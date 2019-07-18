@@ -2473,7 +2473,7 @@ namespace iba.Processing
                             DateTime dt = new DateTime();
                             int microsec = 0;
                             m_ibaAnalyzer.GetStartTime(ref dt, ref microsec);
-                            dt.AddTicks(microsec * 10);
+                            dt = dt.AddTicks(microsec * 10);
                             m_startTimeFromDatFile = dt;
                         }
                         catch

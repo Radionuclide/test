@@ -76,7 +76,7 @@ namespace iba.Processing
                     using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_task.MonitorData))
                     {
                         m_ibaAnalyzer.GetStartTime(ref dt, ref microsec);
-                        dt.AddTicks(microsec * 10);
+                        dt = dt.AddTicks(microsec * 10);
                     }
                     m_startTime = dt;
                 }
