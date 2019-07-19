@@ -589,7 +589,7 @@ namespace iba
             {
                 return m_com.GetVersion();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "?";
             }

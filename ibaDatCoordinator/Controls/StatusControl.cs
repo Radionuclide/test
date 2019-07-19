@@ -30,7 +30,7 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons, m_cleanupIcons, m_splitIcons;
+        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons, m_cleanupIcons, m_splitIcons, m_hdCreateEventIcons;
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
@@ -48,6 +48,7 @@ namespace iba.Controls
             m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_cleanupIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_splitIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
@@ -137,6 +138,16 @@ namespace iba.Controls
             m_splitIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
             m_splitIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
             m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle)));
+
+            m_hdCreateEventIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
+            m_hdCreateEventIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.img_computed_values);
+            m_hdCreateEventIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.img_computed_values));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.img_computed_values));
 
             UpdatePlugins();
 
@@ -292,13 +303,15 @@ namespace iba.Controls
                             bitmap = m_pauseIcons[value];
                         else if (task is SplitterTaskData)
                             bitmap = m_splitIcons[value];
+                        else if (task is HDCreateEventTaskData)
+                            bitmap = m_hdCreateEventIcons[value];
                         else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
                             bitmap = m_cleanupIcons[value];
                         else if (task is ICustomTaskData)
                         {
                             ICustomTaskData cust = (ICustomTaskData)task;
                             string name = cust.Plugin.NameInfo;
-                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo ii) { return ii.Name == name; });
+                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
                             bitmap = m_customtaskIcons[index][value];
                         }
 

@@ -560,6 +560,47 @@ namespace iba
     }
     #endregion
 
+    #region HDCreateEventTaskTreeItemData
+    public class HDCreateEventTaskTreeItemData : TreeItemData
+    {
+        public HDCreateEventTaskTreeItemData(IPropertyPaneManager propManager, HDCreateEventTaskData cet)
+            : base(propManager)
+        {
+            m_cet = cet;
+        }
+
+        public override string What
+        {
+            get { return "HDCreateEventTask"; }
+        }
+
+        protected HDCreateEventTaskData m_cet;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_cet;
+            }
+            set
+            {
+                m_cet = value as HDCreateEventTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["HDEventCreationTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new HDEventCreationTaskControl());
+                manager.PropertyPanes["HDEventCreationTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region StatusTreeItemData
     public class StatusTreeItemData : TreeItemData
     {

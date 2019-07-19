@@ -43,6 +43,30 @@ namespace iba.Processing
             }
         }
 
+        public int SignalTreeImageCount
+        {
+            get
+            {
+                try
+                {
+                    return analyzer.SignalTreeImageCount;
+                }
+                catch //might be incompatible version;
+                {
+                    return -1;
+                }
+            }
+            set
+            {
+                try
+                {
+                    analyzer.SignalTreeImageCount = value;
+                }
+                catch //might be incompatible version;
+                { }
+            }
+        }
+
         public void AddLogical(string name, string expression, int XType)
         {
             analyzer.AddLogical(name, expression, XType);
@@ -364,6 +388,67 @@ namespace iba.Processing
 
             }
 
+        }
+
+        public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
+        {
+            try
+            {
+                analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
+            }
+            catch //might be incompatible version;
+            {
+                pTimebase = xoffset = 0.0;
+                pData = null;
+            }
+        }
+
+        public uint GetMarkerColor(int index)
+        {
+            try
+            {
+                return analyzer.GetMarkerColor(index);
+            }
+            catch //might be incompatible version;
+            {
+                return 0;
+            }
+        }
+
+        public void UpdateOverlay()
+        {
+            try
+            {
+                analyzer.UpdateOverlay();
+            }
+            catch //might be incompatible version;
+            {
+
+            }
+        }
+
+        public dynamic GetSignalTree(int filter)
+        {
+            try
+            {
+                return analyzer.GetSignalTree(filter);
+            }
+            catch //might be incompatible version;
+            {
+                return null;
+            }
+        }
+
+        public void SignalTreeImageData(int index, out object pData)
+        {
+            try
+            {
+                analyzer.SignalTreeImageData(index, out pData);
+            }
+            catch //might be incompatible version;
+            {
+                pData = null;
+            }
         }
     }
 }

@@ -103,8 +103,10 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.updateDataTaskTitle;
             else if (this is PauseTaskData)
                 m_name = iba.Properties.Resources.pauseTaskTitle;
+            else if (this is HDCreateEventTaskData)
+                m_name = iba.Properties.Resources.HDEventTaskTitle;
             else if (this is TaskWithTargetDirData)
-                m_name = iba.Properties.Resources.cleanupTaskTitle; 
+                m_name = iba.Properties.Resources.cleanupTaskTitle;
         }
 
         public int CompareTo(TaskData other)

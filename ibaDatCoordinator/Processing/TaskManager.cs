@@ -869,6 +869,7 @@ namespace iba.Processing
                 //   CustomTaskData
                 //   IfTaskData 
                 //   PauseTaskData 
+                //   HDCreateEventTaskData
                 {
                     if (taskData is BatchFileData)
                     {
@@ -894,6 +895,10 @@ namespace iba.Processing
                     {
                         taskTypeStr = "Pause";
                         //var typedData = taskData as PauseTaskData;
+                    }
+                    else if (taskData is HDCreateEventTaskData)
+                    {
+                        taskTypeStr = "ibaHDCreateEvent";
                     }
                 }
 

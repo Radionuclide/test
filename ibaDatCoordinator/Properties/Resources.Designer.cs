@@ -1138,11 +1138,39 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add new ibaHD generate event task.
+        /// </summary>
+        internal static string hdcreateeventtaskButton {
+            get {
+                return ResourceManager.GetString("hdcreateeventtaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate ibaHD event.
+        /// </summary>
+        internal static string HDEventTaskTitle {
+            get {
+                return ResourceManager.GetString("HDEventTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibaAnalyzer {
             get {
                 object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaAnalyzer_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("ibaAnalyzer_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1283,6 +1311,16 @@ namespace iba.Properties {
         internal static string IfTestPositiveEvaluation {
             get {
                 return ResourceManager.GetString("IfTestPositiveEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_computed_values {
+            get {
+                object obj = ResourceManager.GetObject("img_computed_values", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1782,6 +1820,69 @@ namespace iba.Properties {
         internal static string logGlobalCleanupSystemDriveNeedsSubFolder {
             get {
                 return ResourceManager.GetString("logGlobalCleanupSystemDriveNeedsSubFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The writer configuration could not be activated.
+        /// </summary>
+        internal static string logHDEventTaskActivateError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskActivateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer v7.1.0 or higher is required.
+        /// </summary>
+        internal static string logHDEventTaskAnalyzerVersionError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskAnalyzerVersionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following errors were reported while configuring the writer: {0}.
+        /// </summary>
+        internal static string logHDEventTaskConfigError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskConfigError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pulse signal was not found.
+        /// </summary>
+        internal static string logHDEventTaskPulseSignalError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskPulseSignalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started generating ibaHD events.
+        /// </summary>
+        internal static string logHDEventTaskStarted {
+            get {
+                return ResourceManager.GetString("logHDEventTaskStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaHD events were generated successfully.
+        /// </summary>
+        internal static string logHDEventTaskSuccess {
+            get {
+                return ResourceManager.GetString("logHDEventTaskSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to determine the start and end time of the processed file.
+        /// </summary>
+        internal static string logHDEventTaskTimeError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskTimeError", resourceCulture);
             }
         }
         
@@ -2370,6 +2471,15 @@ namespace iba.Properties {
         internal static string NewExtractTitle {
             get {
                 return ResourceManager.GetString("NewExtractTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add ibaHD Generate Event Task.
+        /// </summary>
+        internal static string NewHDCreateEventTaskTitle {
+            get {
+                return ResourceManager.GetString("NewHDCreateEventTaskTitle", resourceCulture);
             }
         }
         

@@ -11,17 +11,25 @@ using iba.Plugins;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.ComponentModel;
+using iba.HD.Common;
+using iba.HD.Client.Interfaces;
+using iba.HD.Client;
+using Microsoft.Win32;
 
 namespace iba.Processing
 {
     class ConfigurationWorker
     {
+        static readonly HdWriterOrigin hdWriterOrigin = new HdWriterOrigin(Guid.NewGuid(), "DatCo");
+
         private ConfigurationData m_cd;
 
         public ConfigurationData RunningConfiguration
         {
             get {return m_cd;}
         }
+
+        private Version m_versionIbaAnalyzer;
 
         private Thread m_thread;
         internal StatusData m_sd;
@@ -448,7 +456,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
@@ -472,6 +480,7 @@ namespace iba.Processing
 
         public ConfigurationWorker(ConfigurationData cd)
         {
+            m_versionIbaAnalyzer = null;
             m_cd = cd.Clone_AlsoCopyGuids();
             m_sd = new StatusData(cd);
             m_stop = true;
@@ -1935,7 +1944,7 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (System.UnauthorizedAccessException ex)
+                catch (System.UnauthorizedAccessException)
                 {
                     if (String.IsNullOrEmpty(m_cd.FileEncryptionPassword))
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess6, filename);
@@ -2975,6 +2984,11 @@ namespace iba.Processing
                 }
                 else
                     CopyDatFile(DatFile, dat);
+            }
+            else if (task is HDCreateEventTaskData)
+            {
+                HDCreateEventTask(DatFile, task as HDCreateEventTaskData);
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
             }
             else if(task.GetType() == typeof(TaskWithTargetDirData))
             {
@@ -4524,6 +4538,406 @@ namespace iba.Processing
             lock (m_sd.DatFileStates)
             {
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+            }
+        }
+
+        bool TryGetUTCTimes(string filename, out DateTime startTime, out DateTime endTime)
+        {
+            startTime = endTime = DateTime.MinValue;
+
+            try
+            {
+                if (Path.GetExtension(filename)?.ToLower() == ".hdq")
+                {
+                    IniParser parser = new IniParser(filename);
+                    if (parser.Read() && parser.Sections.ContainsKey("HDQ file"))
+                        return false;
+
+                    string strStart = "";
+                    if (!parser.Sections["HDQ file"].TryGetValue("starttime", out strStart))
+                        return false;
+
+                    string strEnd = "";
+                    if (!parser.Sections["HDQ file"].TryGetValue("stoptime", out strEnd))
+                        return false;
+
+                    startTime = DateTime.ParseExact(strStart, "dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    endTime = DateTime.ParseExact(strEnd, "dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                }
+                else
+                {
+                    IbaShortFileInfo sfi = IbaFileReader.ReadShortFileInfo(filename);
+                    DateTime dtEnd = sfi.EndTime;
+                    DateTime dtStart = sfi.StartTime;
+                    if (sfi.UtcOffsetValid)
+                    {
+                        var currOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+                        var fileOffset = TimeSpan.FromMinutes(sfi.UtcOffset);
+                        dtStart = dtStart.AddTicks((currOffset - fileOffset).Ticks);
+                        dtEnd = dtEnd.AddTicks((currOffset - fileOffset).Ticks);
+                    }
+
+                    startTime = dtStart;
+                    endTime = dtEnd;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            startTime = startTime.ToUniversalTime();
+            endTime = endTime.ToUniversalTime();
+            return true;
+        }
+
+        EventWriterItem GenerateEvent(HDCreateEventTaskData task, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN) //TODO add text coll args
+        {            
+            bool bUseSinglePoint = !double.IsNaN(from) && from == to;
+            bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
+            string exprRange = $"XCutRange({{0}},{from},{to})";
+            string exprSinglePoint = $"YatX({{0}},{from})";
+
+            float[] floats = new float[task.EventSettings.NumericFields.Count];
+            for (int i = 0; i < floats.Length; i++)
+            {
+                string lExpr = task.EventSettings.NumericFields[i].Item2;
+
+                if (string.IsNullOrWhiteSpace(lExpr))
+                {
+                    floats[i] = float.NaN;
+                    continue;
+                }
+
+                if (bUseRange)
+                    lExpr = string.Format(exprRange, lExpr);
+                else if (bUseSinglePoint)
+                    lExpr = string.Format(exprSinglePoint, lExpr);
+
+                monitor.Execute(() => { floats[i] = m_ibaAnalyzer.Evaluate(lExpr, 0); });
+            }
+
+            string[] texts = new string[task.EventSettings.TextFields.Count];
+            for (int i = 0; i < texts.Length; i++)
+            {
+                var values = textValues[task.EventSettings.TextFields[i].Item1];
+                List<string> strings = values.Item1;
+                List<double> stamps = values.Item2;
+
+                if (stamps.Count != 0)
+                {
+                    if (double.IsNaN(from))
+                    {
+                        texts[i] = stamps[0] > 0.0 ? "" : strings[0];
+                        continue;
+                    }
+
+                    int j = 0;
+                    while (j < stamps.Count && stamps[j] <= from)
+                        j++;
+
+                    texts[i] = j == 0 ? "" : strings[j - 1];
+                }
+                else
+                    texts[i] = "";
+            }
+
+            byte[][] blobs = new byte[task.EventSettings.BlobFields.Count][];
+            for (int i = 0; i < blobs.Length; i++)
+                blobs[i] = null; //Not supported at the moment
+
+            long duration = 0;
+            if (bUseRange)
+                duration = TimeSpan.FromSeconds(to - from).Ticks;
+            else if (double.IsNaN(from))
+                duration = (stopTime - startTime).Ticks;
+
+            long stamp = 0;
+            if (double.IsNaN(from))
+                stamp = stopTime.Ticks;
+            else
+                stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
+
+            return new EventWriterItem(0, stamp, duration, true, false, floats, texts, blobs);
+        }
+
+        SlimEventWriterConfig CreateHDWriterConfig(HDCreateEventTaskData task)
+        {
+            SlimEventWriterSignal signal = new SlimEventWriterSignal(HdId.GetSubId(task.EventSettings.ID), task.EventSettings.Name);
+
+            string[] floatFields = new string[task.EventSettings.NumericFields.Count];
+            for (int i = 0; i < task.EventSettings.NumericFields.Count; i++)
+                floatFields[i] = task.EventSettings.NumericFields[i].Item1;
+            signal.FloatFields = floatFields;
+
+            string[] textFields = new string[task.EventSettings.TextFields.Count];
+            for (int i = 0; i < task.EventSettings.TextFields.Count; i++)
+                textFields[i] = task.EventSettings.TextFields[i].Item1;
+            signal.TextFields = textFields;
+
+            string[] blobFields = new string[task.EventSettings.BlobFields.Count];
+            for (int i = 0; i < task.EventSettings.BlobFields.Count; i++)
+                blobFields[i] = task.EventSettings.BlobFields[i];
+            signal.BlobFields = blobFields;
+
+            HdStoreId storeId = task.EventSettings.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.EventSettings.Server, task.EventSettings.ServerPort, task.EventSettings.StoreName);
+            return new SlimEventWriterConfig(hdWriterOrigin, storeId, new SlimEventWriterSignal[1] { signal }, true);
+        }
+
+        private void HDCreateEventTask(string filename, HDCreateEventTaskData task)
+        {
+            if (m_versionIbaAnalyzer == null)
+            {
+                string ibaAnalyzerExe = "";
+                try
+                {
+                    Microsoft.Win32.RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                    object o = key.GetValue("");
+                    ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+                }
+                catch
+                {
+                    ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
+                }
+
+                m_versionIbaAnalyzer = VersionCheck.GetVersion(ibaAnalyzerExe);
+            }
+
+            if (m_versionIbaAnalyzer == null || m_versionIbaAnalyzer < new Version(7, 1, 0))
+            {
+                Log(Logging.Level.Exception, Properties.Resources.logHDEventTaskAnalyzerVersionError, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            if (!File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            if (!TryGetUTCTimes(filename, out DateTime startTime,  out DateTime endTime))
+            {
+                Log(Logging.Level.Exception, Properties.Resources.logHDEventTaskTimeError, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+
+            // Generate events
+            EventWriterData eventData = null;
+            try
+            {
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                }
+                Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskStarted, filename, task);
+                
+                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
+                {
+                    mon.Execute(delegate () { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
+
+                    Dictionary<string, Tuple<List<string>, List<double>>> textResults = new Dictionary<string, Tuple<List<string>, List<double>>>();
+                    foreach (var textField in task.EventSettings.TextFields)
+                    {
+                        if (string.IsNullOrWhiteSpace(textField.Item2))
+                        {
+                            textResults[textField.Item1] = Tuple.Create(new List<string>(1) { "" }, new List<double>(1) { 0.0 });
+                            continue;
+                        }
+
+                        if (textField.Item2 == HDCreateEventTaskData.CurrentFileExpression)
+                        {
+                            textResults[textField.Item1] = Tuple.Create(new List<string>(1) { Path.GetFileName(filename) }, new List<double>(1) { 0.0 });
+                            continue;
+                        }
+
+                        textResults[textField.Item1] = Tuple.Create(new List<string>(1) { "" }, new List<double>(1) { 0.0 }); //TODO replace by appropriate logic once the automation interface allows this
+                    }
+
+                    List<EventWriterItem> events = new List<EventWriterItem>();
+                    if (task.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse)
+                    {
+                        if (string.IsNullOrWhiteSpace(task.PulseSignal))
+                        {
+                            Log(Logging.Level.Exception, Properties.Resources.logHDEventTaskPulseSignalError, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+
+                        double timebase = 0;
+                        double xoffset = 0;
+                        object data = null;
+                        mon.Execute(() => { m_ibaAnalyzer.EvaluateToArray(task.PulseSignal, 0, out timebase, out xoffset, out data); });
+
+                        double[] pulseValues = data as double[];
+                        if (pulseValues == null || pulseValues.Length == 0)
+                        {
+                            Log(Logging.Level.Exception, Properties.Resources.logHDEventTaskPulseSignalError, filename, task);
+                            lock (m_sd.DatFileStates)
+                            {
+                                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                            }
+                            return;
+                        }
+
+                        // Determine intervals
+                        bool bInPulse = false;
+                        double currStart = 0.0;
+                        List<Tuple<double, double>> intervals = new List<Tuple<double, double>>();
+
+                        for (int i = 0; i < pulseValues.Length; i++)
+                        {
+                            bool bAboveZero = pulseValues[i] > 0.0;
+                            if (bInPulse == bAboveZero)
+                                continue;
+
+                            if (bAboveZero)
+                                currStart = xoffset + i * timebase;
+                            else
+                                intervals.Add(Tuple.Create(currStart, xoffset + (i - 1) * timebase));
+
+                            bInPulse = bAboveZero;
+                        }
+
+                        if (bInPulse)
+                            intervals.Add(Tuple.Create(currStart, xoffset + (pulseValues.Length - 1) * timebase));
+
+                        // Create events
+                        foreach (var interval in intervals)
+                            events.Add(GenerateEvent(task, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                    }
+                    else
+                        events.Add(GenerateEvent(task, mon, startTime, endTime, textResults)); // One event for the entire file
+
+                    eventData = new EventWriterData(events);
+                }
+            }
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            finally
+            {
+                if (m_ibaAnalyzer != null)
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseAnalysis();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        RestartIbaAnalyzer();
+                    }
+                }
+            }
+
+            if (eventData == null)
+                return;
+
+            // Write events
+            IHdWriterManager writerManager = null;
+            try
+            {
+                HdWriterConfig cfg = CreateHDWriterConfig(task);
+
+                writerManager = HdClient.CreateWriterManager();
+
+                writerManager.StartConfig();
+
+                IHdWriterSummary summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
+                while (summary.Result == WriterConfigResult.Conflict)
+                {
+                    foreach (var cflt in summary.Conflicts)
+                        cflt.Solution = HdWriterSolution.Append;
+
+                    summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
+                }
+
+                writerManager.EndConfig();
+
+                if (summary.Result != WriterConfigResult.Valid)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    if (summary.Errors != null && summary.Errors.Count > 0)
+                    {
+                        foreach (var err in summary.Errors)
+                            sb.Append(" ").Append(err).Append(",");
+
+                        sb.Remove(sb.Length - 1, 1);
+                    }
+                    
+                    throw new Exception(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+                }
+
+                writerManager.StartCreate();
+                IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
+                writerManager.EndCreate();
+
+                if (writer == null || writer.Status != HdWriterStatus.Open)
+                    throw new Exception(Properties.Resources.logHDEventTaskActivateError);
+
+                writer.Write(eventData);
+
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);
+            }
+            catch(Exception ex)
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            finally
+            {
+                if (writerManager != null)
+                {
+                    try
+                    {
+                        writerManager.Dispose();
+                    }
+                    catch
+                    { }
+                }
             }
         }
 

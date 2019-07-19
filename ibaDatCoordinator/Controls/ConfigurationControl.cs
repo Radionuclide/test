@@ -85,6 +85,7 @@ namespace iba.Controls
             m_newPauseTaskButton.Image = iba.Properties.Resources.pausetask;
             m_newCleanupTaskButton.Image = iba.Properties.Resources.broom;
             m_newSplitterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
+            m_newHdCreateEventTaskButton.Image = iba.Properties.Resources.img_computed_values;
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -95,6 +96,7 @@ namespace iba.Controls
             m_newPauseTaskButton.ToolTipText = iba.Properties.Resources.pausetaskButton;
             m_newCleanupTaskButton.ToolTipText = iba.Properties.Resources.cleanuptaskButton;
             m_newSplitterTaskButton.ToolTipText = iba.Properties.Resources.splittertaskButton;
+            m_newHdCreateEventTaskButton.ToolTipText = iba.Properties.Resources.hdcreateeventtaskButton;
 
             m_taskCount = m_newTaskToolstrip.Items.Count;
             UpdatePlugins();
@@ -537,6 +539,23 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(Splitter.Name, MainForm.SPLITTERTASK_INDEX, MainForm.SPLITTERTASK_INDEX);
             newNode.Tag = new SplitterTaskTreeItemData(m_manager, Splitter);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+        }
+
+        private void m_newHDCreateEventTaskButton_Click(object sender, EventArgs e)
+        {
+            if (!TestTaskCount())
+                return;
+            HDCreateEventTaskData createEvent = new HDCreateEventTaskData(m_data);
+            new SetNextName(createEvent);
+            m_data.Tasks.Add(createEvent);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(createEvent.Name, MainForm.HDEVENTTASK_INDEX, MainForm.HDEVENTTASK_INDEX);
+            newNode.Tag = new HDCreateEventTaskTreeItemData(m_manager, createEvent);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
