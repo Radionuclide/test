@@ -4763,7 +4763,27 @@ namespace iba.Processing
                             continue;
                         }
 
-                        textResults[textField.Item1] = Tuple.Create(new List<string>(1) { "" }, new List<double>(1) { 0.0 }); //TODO replace by appropriate logic once the automation interface allows this
+                        object oStamps = null;
+                        object oValues = null;
+                        mon.Execute(delegate () { m_ibaAnalyzer.EvaluateToStringArray(textField.Item2, 0, out oStamps, out oValues); });
+
+                        double[] stamps = oStamps as double[];
+                        string[] values = oValues as string[];
+
+                        List<double> lStamps = null;
+                        List<string> lValues = null;
+                        if (stamps == null || values == null || stamps.Length != values.Length)
+                        {
+                            lStamps = new List<double>(1) { 0.0 };
+                            lValues = new List<string>(1) { "" };
+                        }
+                        else
+                        {
+                            lStamps = new List<double>(stamps);
+                            lValues = new List<string>(values);
+                        }
+
+                        textResults[textField.Item1] = Tuple.Create(lValues, lStamps);
                     }
 
                     List<EventWriterItem> events = new List<EventWriterItem>();

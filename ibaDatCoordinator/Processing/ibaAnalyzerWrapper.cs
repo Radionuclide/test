@@ -450,5 +450,29 @@ namespace iba.Processing
                 pData = null;
             }
         }
+
+        public void EvaluateToStringArray(string expression, int XType, out object pTimeStamps, out object pStrings)
+        {
+            try
+            {
+                analyzer.EvaluateToStringArray(expression, XType, out pTimeStamps, out pStrings);
+            }
+            catch //might be incompatible version;
+            {
+                pTimeStamps = pStrings = null;
+            }
+        }
+
+        public void EvaluateToNEArray(string expression, int XType, out object pTimeStamps, out object pValues)
+        {
+            try
+            {
+                analyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
+            }
+            catch //might be incompatible version;
+            {
+                pTimeStamps = pValues = null;
+            }
+        }
     }
 }
