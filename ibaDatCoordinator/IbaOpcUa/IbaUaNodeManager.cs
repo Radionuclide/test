@@ -997,7 +997,12 @@ namespace iba.ibaOPCServer
             }
         }
 
-        public void DeleteEmptySubfolders(FolderState parentFolder = null, bool bPreserveItself = false)
+        /// <summary> Deletes all empty folders below a given folder and then
+        /// also deletes the given folder if it is (or it became) empty.
+        /// <see cref="FolderIbaRoot"/> and its immediate children are always preserved.
+        /// </summary>
+        /// <param name="parentFolder">A folder to cleanup; or null to cleanup the whole tree</param>
+        public void DeleteEmptySubfolders(FolderState parentFolder = null)
         {
             // if parent folder is not specified, then use root folder
             parentFolder = parentFolder ?? FolderIbaRoot;
@@ -1009,11 +1014,14 @@ namespace iba.ibaOPCServer
                     DeleteEmptySubfolders(folder);
             }
 
-            // if parentFolder doesn't have children anymore, then delete it
-            if (parentFolder != FolderIbaRoot && bPreserveItself == false && GetChildren(parentFolder).Count == 0)
-            {
-                DeleteNodeRecursively(parentFolder, false);
-            }
+            // check if we can delete parentFolder itself
+            if (parentFolder == FolderIbaRoot /* is root */ || 
+                parentFolder.Parent == FolderIbaRoot /* is immediate child of root (section folder) */ ||
+                GetChildren(parentFolder).Count > 0 /*is not empty*/)
+                return; // we cannot delete it
+            
+            // it is a simple empty folder, it can be deleted
+            DeleteNodeRecursively(parentFolder, false);
         }
 
 

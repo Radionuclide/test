@@ -387,10 +387,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // tree structure has not changed
             }
         }
@@ -453,10 +451,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // rebuild failed
             }
         }
@@ -654,10 +650,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // was not updated
             }
         }
@@ -742,10 +736,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"SNMP. {nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // was not updated
             }
         }

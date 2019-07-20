@@ -193,8 +193,8 @@ namespace iba.Data
             {
                 var oid = child.SnmpFullOid;
 
-                // OID should not be too short, and should not end with 0
-                if (oid == null || oid.Count < 2 || oid.GetLeastSignificantSubId() == 0)
+                // OID should not end with 0
+                if (oid == null || oid.GetLeastSignificantSubId() == 0)
                     return false;
                 // check OIDs uniqueness
                 if (oids.Contains(oid))
@@ -500,6 +500,7 @@ namespace iba.Data
                     switch (child)
                     {
                         case ExtMonFolder folder:
+                            list.Add(folder);
                             list.AddRange(folder.GetFlatListOfAllChildren());
                             break;
                         case ExtMonVariableBase variable:

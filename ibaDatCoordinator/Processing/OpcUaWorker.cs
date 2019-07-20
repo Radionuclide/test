@@ -14,13 +14,7 @@ namespace iba.Processing
 {
     public class OpcUaWorker : IDisposable
     {
-        // // todo. kls. remove
-        //private BaseDataVariableState _lifeBeatVar;
-        //private BaseDataVariableState _lifeBeatVar2;
-        //public BaseDataVariableState _lifeBeatReactive;
-        //private readonly System.Windows.Forms.Timer _lifebeatTimer = new System.Windows.Forms.Timer {Enabled = false, Interval = 300};
-
-        //public static int TmpLifebeatValue { get; private set; } // todo. kls. only if enabled
+        private readonly System.Windows.Forms.Timer _monitoringTimer = new System.Windows.Forms.Timer { Enabled = false, Interval = 5000 };
 
         #region Construction, Destruction, Init
 
@@ -31,26 +25,51 @@ namespace iba.Processing
             Status = ExtMonWorkerStatus.Errored;
             StatusString = Resources.opcUaStatusNotInit;
 
-            // todo. kls. remove
-            //_lifebeatTimer.Enabled = true;
+            _monitoringTimer.Enabled = true;
 
-            //_lifebeatTimer.Tick += (sender, args) =>
-            //{
-            //    try
-            //    {
-            //        TmpLifebeatValue++;
-            //        if (_lifeBeatVar != null)
-            //        {
-            //            NodeManager?.SetValueScalar(_lifeBeatVar, TmpLifebeatValue + 10000);
-            //            NodeManager?.SetValueScalar(_lifeBeatVar2, TmpLifebeatValue + 20000);
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        TmpLifebeatValue = 0;
-            //        /**/
-            //    }
-            //};
+            _monitoringTimer.Tick += OnMonitoringTimerTick;
+        }
+
+        private void OnMonitoringTimerTick(object sender, EventArgs args)
+        {
+            if (Monitor.TryEnter(LockObject, LockTimeout))
+            {
+                try
+                {
+                    if (true)
+                    {
+                        var list = ObjectsData.GetFlatListOfAllChildren();
+                        foreach (var node in list)
+                        {
+                            if (node is ExtMonData.ExtMonGroup group)
+                                RefreshGroup(group);
+                        }
+                    }
+                }
+                catch
+                {
+                    // todo. kls. 
+                    Debug.Assert(false);
+                    ;
+                    /**/
+                }
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Debug,
+                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {GetCurrentThreadString()}.");
+                }
+                catch { /* logging is not critical */ }
+            }
+            
         }
 
         public void Dispose()
@@ -427,12 +446,10 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // tree structure has not changed
             }
         }
@@ -461,20 +478,12 @@ namespace iba.Processing
 
                     var oldVariables = NodeManager.GetListOfAllUserNodes();
 
-                    // todo. kls. rem tryc
-                    try
+                    foreach (var node in oldVariables)
                     {
-                        foreach (var node in oldVariables)
+                        if (node is IbaOpcUaVariable iv)
                         {
-                            if (node is IbaOpcUaVariable iv)
-                            {
-                                iv.IsMarkedForDeleting = true;
-                            }
+                            iv.IsMarkedForDeleting = true;
                         }
-                    }
-                    catch
-                    {
-                        ;
                     }
 
                     if (!man.SnmpRebuildObjectsData(ObjectsData))
@@ -491,29 +500,17 @@ namespace iba.Processing
                     }
 
                     // delete nodes that were marked for deletion and were not updated
-                    try
+                    foreach (var node in oldVariables)
                     {
-                        foreach (var node in oldVariables)
+                        if (node is IbaOpcUaVariable iv && iv.IsMarkedForDeleting)
                         {
-                            if (node is IbaOpcUaVariable iv && iv.IsMarkedForDeleting)
-                            {
-                                // delete node, but don't delete empty folders yet (to preserve section folders)
-                                NodeManager.DeleteNodeRecursively(iv, false);
-                            }
+                            // delete node, but don't delete empty folders yet (to preserve section folders)
+                            NodeManager.DeleteNodeRecursively(iv, false);
                         }
                     }
-                    catch
-                    {
-                        ;
-                    }
 
-                    // delete all empty folders inside sections but preserve section folders
-                    foreach (var node in NodeManager.GetChildren(NodeManager.FolderIbaRoot))
-                    {
-                        if (node is FolderState folder)
-                            NodeManager.DeleteEmptySubfolders(folder, true);
-                    }
-
+                    // delete all empty folders. (section folders will be preserved even if empty)
+                    NodeManager.DeleteEmptySubfolders();
 
                     return true; // rebuilt successfully
                 }
@@ -531,10 +528,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // rebuild failed
             }
         }
@@ -665,8 +660,6 @@ namespace iba.Processing
         /// to a corresponding OPC UA node </summary>
         private void SetOpcUaValue(ExtMonData.ExtMonVariableBase xmv)
         {
-            Debug.Assert(xmv != null);
-            Debug.Assert(xmv.UaVar != null);
             if (xmv?.UaVar == null)
                 return;
             NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
@@ -764,10 +757,8 @@ namespace iba.Processing
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // data was NOT updated
             }
         }
