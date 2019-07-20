@@ -20,16 +20,13 @@ namespace iba.Data
     {
         #region Static / Singleton
 
-        // todo. kls. lazy
-
         private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
         public static ExtMonData Instance => _lazyInstance.Value;
 
         public static object InstanceLockObject => Instance.LockObject;
 
-        /// <summary>
-        /// // todo. kls. 
-        /// </summary>
+        /// <summary> Recommended timeout for trying to acquire
+        /// a lock to <see cref="LockObject"/> </summary>
         public static int LockTimeout { get; } = 50;
 
         /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
@@ -42,7 +39,7 @@ namespace iba.Data
 
         #region Fields and Props
 
-        public readonly object LockObject = new object(); //todo share lock with SNMP?
+        public readonly object LockObject = new object();
 
         /// <summary> Supply this value to AddChildXxx() functions to set snmpLeastId automatically. </summary>
         public const uint SNMP_AUTO_LEAST_ID = uint.MaxValue;
@@ -351,6 +348,19 @@ namespace iba.Data
                 }
             }
 
+            public ExtMonGroup GetGroup() // todo. kls. optimize to lazy
+            {
+                switch (Parent)
+                {
+                    case null:
+                        return null;
+                    case ExtMonGroup group:
+                        return group;
+                    default:
+                        return Parent.GetGroup();
+                }
+            }
+
             protected ExtMonNode(ExtMonFolder parent, uint snmpLeastId, 
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
             {
@@ -372,7 +382,7 @@ namespace iba.Data
             /// <summary> Gets contained data as untyped <see cref="object"/> </summary>
             public abstract object ObjValue { get; }
 
-            /// <summary>  // todo. kls. to comment  </summary>
+            /// <summary> The <see cref="Group"/> a variable belongs to </summary>
             public readonly ExtMonGroup Group;
 
             public object handler;
@@ -382,48 +392,11 @@ namespace iba.Data
             {
                 Group = GetGroup();
             }
-
-            public ExtMonGroup GetGroup() // todo. kls. optimize to lazy
-            {
-                if (Parent == null)
-                    return null;
-                ExtMonGroup group = null;
-
-                ExtMonNode ancestor = Parent;
-                for (int i = 0; i < 4; i++)
-                {
-                    if (ancestor == null)
-                    {
-                        break;
-                    }
-
-                    if (ancestor is ExtMonGroup ancestorAsGroup)
-                    {
-                        group = ancestorAsGroup;
-                        break;
-                    }
-
-                    // look higher
-                    ancestor = ancestor.Parent;
-                }
-
-                Debug.Assert(group != null);
-                return group;
-            }
-
+            
             public override string ToString()
             {
-                return $@"Variable '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}', G='{Group?.Caption}', UA='{UaVar?.BrowseName}'";
+                return $@"Variable '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}', G='{GetGroup()?.Caption}', UA='{UaVar?.BrowseName}'";
             }
-
-            //#region SNMP - specific
-            ///// <summary> Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
-            //public readonly uint SnmpLeastId;
-            ///// <summary> SNMP OID for corresponding object </summary>
-            //public IbaSnmpOid SnmpOid => (Parent == null || Parent.Oid == null) ? null : Parent.Oid + SnmpLeastId;
-            ////public readonly IbaSnmpOid SnmpOid;
-            //public readonly string SnmpMibNameSuffix;
-            //#endregion
 
             #region OPC UA - specific
 
