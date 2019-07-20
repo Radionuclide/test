@@ -289,16 +289,15 @@ namespace iba.Data
                             : Parent.SnmpFullMibName + SnmpMibNameSuffix;
 
                     }
+                    Debug.Assert( _snmpFullMibName != null); // todo. kls. 
                     Debug.Assert(SnmpMibNameSuffix == null || _snmpFullMibName == null || _snmpFullMibName.Contains(SnmpMibNameSuffix));
                     return _snmpFullMibName;
                 }
                 set => _snmpFullMibName = value;
             }
+            
 
-
-            /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
-            //public string UaFullId; // todo. kls. try to remove ?
-
+            /// <summary> Backing field for <see cref="UaBrowseName"/> </summary>
             private string _uaBrowseName;
             /// <summary> Normally, in most cases UaBrowseName is
             /// equal to <see cref="SnmpMibNameSuffix"/>; but it can be set separately. </summary>
@@ -308,8 +307,26 @@ namespace iba.Data
                 set => _uaBrowseName = value;
             }
 
-            public string UaFullPath => 
-                Parent == null ? UaBrowseName : IbaUaNodeManager.ComposeNodeId(Parent.UaFullPath, UaBrowseName);
+            /// <summary> Backing field for <see cref="UaFullPath"/> </summary>
+            private string _uaFullPath;
+
+            /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
+            public string UaFullPath
+            {
+                get
+                {
+                    if (_uaFullPath == null)
+                    {
+                        // calculate (and keep) it first request
+                        _uaFullPath = Parent == null
+                            ? UaBrowseName
+                            : IbaUaNodeManager.ComposeNodeId(Parent.UaFullPath, UaBrowseName);
+                    }
+                    Debug.Assert(_uaFullPath != null);
+                    Debug.Assert(_uaFullPath.Contains(UaBrowseName));
+                    return _uaFullPath;
+                }
+            }
 
             protected ExtMonNode(ExtMonFolder parent, uint snmpLeastId, 
                 string caption = null, string snmpMibNameSuffix = null, string description = null)

@@ -7,7 +7,6 @@ namespace ibaOpcServer.IbaOpcUa
 {
     public class IbaOpcUaVariable : BaseDataVariableState
     {
-        public bool IsMarkedForDeleting = false;
         public bool IsMonitored = false;
 
         public ExtMonData.ExtMonVariableBase ExtMonVar;
@@ -21,39 +20,33 @@ namespace ibaOpcServer.IbaOpcUa
         /// </summary>
         public bool IsDeleted { get; protected set; }
 
-        // todo. kls. comment
-        public bool IsDeletionPending { get; set; }
+        /// <summary> This flag is used in UA tree rebuild.
+        /// Nodes that are not present in <see cref="ExtMonData"/> are first marked for deletion and then deleted.
+        /// </summary>
+        public bool IsMarkedForDeleting;
 
-        protected readonly IbaUaNodeManager _mgr;
-
-        public IbaOpcUaVariable(NodeState parent, ExtMonData.ExtMonVariableBase xmv, IbaUaNodeManager mgr)
+        public IbaOpcUaVariable(NodeState parent, ExtMonData.ExtMonVariableBase xmv)
             : base(parent)
         {
             Debug.Assert(xmv != null);
 
             SetCrossReference(xmv);
-
-            // remember ve name to bind this ibaVariable to certain name
-            // in future even if Ve is renewed in online server,
-            // this ibaVariable will 'cooperate' with another Ve ONLY if it has the same name
-            //VeName = ve.VariableName;
-
-            // remember our manager
-            _mgr = mgr;
         }
 
         public void SetCrossReference(ExtMonData.ExtMonVariableBase xmv)
         {
+            var oldXmv = ExtMonVar;
             // add references to each other
             ExtMonVar = xmv;
             xmv.UaVar = this;
 
-            // todo. kls. destroy old references
+            // destroy old reference
+            if (!ReferenceEquals(oldXmv, xmv) && oldXmv != null)
+                oldXmv.UaVar = null;
         }
 
         protected override void OnAfterCreate(ISystemContext context, NodeState node)
         {
-           
             base.OnAfterCreate(context, node);
         }
 
@@ -66,6 +59,5 @@ namespace ibaOpcServer.IbaOpcUa
         }
 
     }
-
 
 }

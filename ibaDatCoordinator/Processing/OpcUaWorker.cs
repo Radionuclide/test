@@ -468,7 +468,7 @@ namespace iba.Processing
                         {
                             if (node is IbaOpcUaVariable iv)
                             {
-                                iv.IsDeletionPending = true;
+                                iv.IsMarkedForDeleting = true;
                             }
                         }
                     }
@@ -495,7 +495,7 @@ namespace iba.Processing
                     {
                         foreach (var node in oldVariables)
                         {
-                            if (node is IbaOpcUaVariable iv && iv.IsDeletionPending)
+                            if (node is IbaOpcUaVariable iv && iv.IsMarkedForDeleting)
                             {
                                 // delete node, but don't delete empty folders yet (to preserve section folders)
                                 NodeManager.DeleteNodeRecursively(iv, false);
@@ -579,28 +579,21 @@ namespace iba.Processing
 
             Debug.Assert(IbaUaNodeManager.IsValidBrowseName(xmFolderToCreate.UaBrowseName));
 
-            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, xmFolderToCreate.UaBrowseName);
+            NodeState node = NodeManager.Find(xmFolderToCreate.UaFullPath);
 
-            NodeState node = NodeManager.Find(fullNodeId);
-
-            Debug.Assert(node == null || node.NodeId.Identifier as string == fullNodeId);
+            Debug.Assert(node == null || node.NodeId.Identifier as string == xmFolderToCreate.UaFullPath);
 
             switch (node)
             {
                 case null:
                     // node does not exist. Create it
-                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate, fullNodeId);
+                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate);
                 case FolderState folder:
-                    // such folder already exists
-                    // update
-                    // todo. kls. keep cross ref???
-                    if (folder.Description != xmFolderToCreate.Description)
-                        ;
-                    if (folder.DisplayName != xmFolderToCreate.Caption)
-                        ;
-
-                    folder.Description = xmFolderToCreate.Description;
+                    // such folder already exists;
+                    // update its Caption and Description
+                    // because it could be renamed or reordered
                     folder.DisplayName = xmFolderToCreate.Caption;
+                    folder.Description = xmFolderToCreate.Description;
                     return folder;
                 default:
                     // node exists but it's not a folder
@@ -608,71 +601,60 @@ namespace iba.Processing
                     // nevertheless, re-create it
                     Debug.Assert(false);
                     NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
-                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate, fullNodeId);
+                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate);
             }
         }
 
-        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate, string fullNodeId)
+        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
             // create
             FolderState folder = NodeManager.CreateFolderAndItsNode(
                 uaParentFolder ?? NodeManager.FolderIbaRoot,
                 xmFolderToCreate.UaBrowseName, xmFolderToCreate.Caption, xmFolderToCreate.Description);
 
-            Debug.Assert(folder.NodeId.Identifier as string == fullNodeId);
+            // ensure created NodeId looks as expected
             Debug.Assert(folder.NodeId.Identifier as string == xmFolderToCreate.UaFullPath);
 
-            // keep UA id in ExtMon Node
-            //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
             return folder;
         }
 
 
         private IbaOpcUaVariable CreateOrUpdateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
-            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, xmv.UaBrowseName);
+            Debug.Assert(IbaUaNodeManager.IsValidBrowseName(xmv.UaBrowseName));
 
-            Debug.Assert(fullNodeId == xmv.UaFullPath);
-
-            NodeState node = NodeManager.Find(fullNodeId);
+            NodeState node = NodeManager.Find(xmv.UaFullPath);
 
             switch (node)
             {
                 case null:
                     // node does not exist. Create it
-                    return CreateOpcUaValue(uaParentFolder, xmv, fullNodeId);
+                    return CreateOpcUaValue(uaParentFolder, xmv);
                 case IbaOpcUaVariable iv:
                     // such variable already exists
                     // let's update cross reference
-                    var oldXmv = iv.ExtMonVar;
-                    if (object.ReferenceEquals(oldXmv, xmv))
-                    {
-                        ;
-                        // do nothing
-                    }
-                    else
-                    {
-                        // todo. kls. move all conditions here..
-                        iv.SetCrossReference(xmv);
-                    }
-                    iv.IsDeletionPending = false;
-                    // todo. kls. keep cross ref???
+                    iv.SetCrossReference(xmv);
+                    // this node is present in ExtMonData and should NOT be deleted
+                    iv.IsMarkedForDeleting = false; 
+                    // Caption and Description theoretically never change for variables
+                    Debug.Assert(iv.DisplayName == xmv.Caption);
+                    Debug.Assert(iv.Description == xmv.Description);
                     return iv;
                 default:
                     // node exists but it's not IbaOpcUaVariable
-                    // it's strange, and it should not happen...
-                    // nevertheless, re-create it
+                    // it should not happen... nevertheless, re-create it
                     Debug.Assert(false);
                     NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
-                    return CreateOpcUaValue(uaParentFolder, xmv, fullNodeId);
+                    return CreateOpcUaValue(uaParentFolder, xmv);
             }
         }
 
-        private IbaOpcUaVariable CreateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv, string fullNodeId)
+        private IbaOpcUaVariable CreateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(uaParentFolder, xmv);
+            IbaOpcUaVariable iv = NodeManager.CreateIbaVariable(uaParentFolder, xmv);
 
-            Debug.Assert(iv.NodeId.Identifier as string == fullNodeId);
+            // ensure created NodeId looks as expected
+            Debug.Assert(iv.NodeId.Identifier as string == xmv.UaFullPath);
 
             // add handler
             iv.OnReadValue += OnReadProductSpecificValue;

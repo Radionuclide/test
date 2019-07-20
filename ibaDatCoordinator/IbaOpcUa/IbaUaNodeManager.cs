@@ -620,27 +620,27 @@ namespace iba.ibaOPCServer
 
             KlsCheckMonitoredItemsConsistency(allIbaVariables);
 
-            // delete or mark as bad
-            foreach (IbaOpcUaVariable v in allIbaVariables.Where(v => v.IsMarkedForDeleting))
-            {
-                // what is marked for deleting should be either deleted or marked as bad
-                if (v.IsMonitored)
-                {
-                    // we cannot delete invalidate inexisting in PMAC as bad
-                    v.StatusCode = StatusCodes.BadNoDataAvailable;
-                    // call state-change handlers
-                    v.ClearChangeMasks(SystemContext, false);
-                    // add this change to statistics
-                    //Status.TreeUpdateInvalidated.Increment();
-                }
-                else
-                {
-                    // not monitored, so can be deleted
-                    DeleteNodeRecursively(v, true);
-                    // add this change to statistics
-                    //Status.TreeUpdateDeleted.Increment();
-                }
-            }
+            //// delete or mark as bad
+            //foreach (IbaOpcUaVariable v in allIbaVariables.Where(v => v.IsMarkedForDeleting))
+            //{
+            //    // what is marked for deleting should be either deleted or marked as bad
+            //    if (v.IsMonitored)
+            //    {
+            //        // we cannot delete invalidate inexisting in PMAC as bad
+            //        v.StatusCode = StatusCodes.BadNoDataAvailable;
+            //        // call state-change handlers
+            //        v.ClearChangeMasks(SystemContext, false);
+            //        // add this change to statistics
+            //        //Status.TreeUpdateInvalidated.Increment();
+            //    }
+            //    else
+            //    {
+            //        // not monitored, so can be deleted
+            //        DeleteNodeRecursively(v, true);
+            //        // add this change to statistics
+            //        //Status.TreeUpdateDeleted.Increment();
+            //    }
+            //}
         }
 
         //private bool KlsCheckReferenceConsistency(IbaVariable ibaVar, VariableInformation.tVariableElement ve)
@@ -1428,7 +1428,7 @@ namespace iba.ibaOPCServer
             }
         }
 
-        public IbaOpcUaVariable CreateVariableAndItsNode(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
+        public IbaOpcUaVariable CreateIbaVariable(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
         {
             object initialValue = xmv.ObjValue;
 
@@ -1440,12 +1440,15 @@ namespace iba.ibaOPCServer
 
             AssertNameCorrectnessAndUniqueness(parent, xmv.UaBrowseName);
 
-            //string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. move to overridden function?
+            //string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. remove or move to overridden function?
 
-            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv, null);
+            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv);
 
             // create node for given instance
             CreateNodeForDataVariable(v, xmv.UaBrowseName);
+
+            // ensure created NodeId looks as expected
+            Debug.Assert(v.NodeId.Identifier as string == xmv.UaFullPath);
 
             v.Description = xmv.Description;
             v.DisplayName = xmv.Caption;
@@ -1457,48 +1460,34 @@ namespace iba.ibaOPCServer
             SetValueScalar(v, initialValue);
             return v;
         }
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        private IbaOpcUaVariable KlsCreateIbaVariableAndItsNode(NodeState parent, string name, object ve)
-        {
-            IbaOpcUaVariable v = new IbaOpcUaVariable(parent, null, this); // todo. kls. use for feedback
-
-            // create node for given instance
-            CreateNodeForDataVariable(v, name);
-
-            return v;
-        }
         
-        private NodeId CreateNodeForDataVariable(BaseDataVariableState v, string browseName)
+        private void CreateNodeForDataVariable(BaseDataVariableState v, string browseName)
         {
             // compose browse name
             QualifiedName qualifiedName = new QualifiedName(browseName, NamespaceIndex);
 
             // create node for given instance
-            NodeId nodeId = CreateNode(SystemContext, v.Parent.NodeId, ReferenceTypeIds.Organizes, qualifiedName, v);
+            CreateNode(SystemContext, v.Parent.NodeId, ReferenceTypeIds.Organizes, qualifiedName, v);
 
             // set up attributes to defaults
-            {
-                v.ReferenceTypeId = ReferenceTypes.Organizes;
-                v.TypeDefinitionId = VariableTypeIds.BaseDataVariableType;
-                v.Timestamp = DateTime.UtcNow;
-                v.Historizing = false;
 
-                v.WriteMask = AttributeWriteMask.None;
-                v.UserWriteMask = v.WriteMask;
+            v.ReferenceTypeId = ReferenceTypes.Organizes;
+            v.TypeDefinitionId = VariableTypeIds.BaseDataVariableType;
+            v.Timestamp = DateTime.UtcNow;
+            v.Historizing = false;
 
-                v.AccessLevel = AccessLevels.None;
-                v.UserAccessLevel = v.AccessLevel;
+            v.WriteMask = AttributeWriteMask.None;
+            v.UserWriteMask = v.WriteMask;
 
-                v.DataType = null;
-                v.ValueRank = ValueRanks.Scalar;
-                v.Value = null;
+            v.AccessLevel = AccessLevels.None;
+            v.UserAccessLevel = v.AccessLevel;
 
-                // do not set to good until we have some data
-                v.StatusCode = StatusCodes.BadNoData;
-            }
-            return nodeId;
+            v.DataType = null;
+            v.ValueRank = ValueRanks.Scalar;
+            v.Value = null;
+
+            // do not set to good until we have some data
+            v.StatusCode = StatusCodes.BadNoData;
         }
 
         public List<BaseInstanceState> GetChildren(FolderState folder)
