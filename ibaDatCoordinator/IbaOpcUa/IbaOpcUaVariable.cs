@@ -10,7 +10,7 @@ namespace ibaOpcServer.IbaOpcUa
         public bool IsMarkedForDeleting = false;
         public bool IsMonitored = false;
 
-        public readonly ExtMonData.ExtMonVariableBase ExtMonVar; // todo. kls. 
+        public ExtMonData.ExtMonVariableBase ExtMonVar;
 
         /// <summary>
         /// This flag is created for quick check.
@@ -21,6 +21,9 @@ namespace ibaOpcServer.IbaOpcUa
         /// </summary>
         public bool IsDeleted { get; protected set; }
 
+        // todo. kls. comment
+        public bool IsDeletionPending { get; set; }
+
         protected readonly IbaUaNodeManager _mgr;
 
         public IbaOpcUaVariable(NodeState parent, ExtMonData.ExtMonVariableBase xmv, IbaUaNodeManager mgr)
@@ -28,9 +31,7 @@ namespace ibaOpcServer.IbaOpcUa
         {
             Debug.Assert(xmv != null);
 
-            // add references to each other
-            ExtMonVar = xmv;
-            xmv.UaVar = this;
+            SetCrossReference(xmv);
 
             // remember ve name to bind this ibaVariable to certain name
             // in future even if Ve is renewed in online server,
@@ -39,9 +40,15 @@ namespace ibaOpcServer.IbaOpcUa
 
             // remember our manager
             _mgr = mgr;
+        }
 
-            // not deleted, can be used normally
-            IsDeleted = false;
+        public void SetCrossReference(ExtMonData.ExtMonVariableBase xmv)
+        {
+            // add references to each other
+            ExtMonVar = xmv;
+            xmv.UaVar = this;
+
+            // todo. kls. destroy old references
         }
 
         protected override void OnAfterCreate(ISystemContext context, NodeState node)

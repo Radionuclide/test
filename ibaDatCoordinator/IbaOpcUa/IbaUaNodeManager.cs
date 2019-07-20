@@ -942,61 +942,61 @@ namespace iba.ibaOPCServer
         //    return false;
         //}
 
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        /// <param name="startFolder"></param>
-        /// <param name="varFullNameAsList"></param>
-        /// <returns></returns>
-        public FolderState KlsCreatePath(FolderState startFolder, List<string> varFullNameAsList)
-        {
-            if (startFolder == null) return null;
+        ///// <summary>
+        ///// By Kolesnik. 
+        ///// </summary>
+        ///// <param name="startFolder"></param>
+        ///// <param name="varFullNameAsList"></param>
+        ///// <returns></returns>
+        //public FolderState KlsCreatePath(FolderState startFolder, List<string> varFullNameAsList)
+        //{
+        //    if (startFolder == null) return null;
 
-            if (varFullNameAsList == null || varFullNameAsList.Count == 0) return null;
+        //    if (varFullNameAsList == null || varFullNameAsList.Count == 0) return null;
 
-            string topmost = varFullNameAsList[0];
+        //    string topmost = varFullNameAsList[0];
 
-            // check whether topmost folder exists among our immediate children
-            BaseInstanceState subElemet = startFolder.FindChild(SystemContext, new QualifiedName(topmost, NamespaceIndex));
-            FolderState subfolder = null;
+        //    // check whether topmost folder exists among our immediate children
+        //    BaseInstanceState subElemet = startFolder.FindChild(SystemContext, new QualifiedName(topmost, NamespaceIndex));
+        //    FolderState subfolder = null;
 
-            if (subElemet != null)
-            {
-                if (subElemet is FolderState)
-                {
-                    // subfolder already exists, ok
-                    subfolder = subElemet as FolderState;
-                }
-                else
-                {
-                    // element with this name already exists but it is not a folder
-                    // this is rare case (when scalar is replaced by the struct with the same name)
-                    // we should replace var with the folder
-                    // (otherwise we will have name conflict)
-                    // so, delete subelement without check of usage, because we have to
-                    DeleteNodeRecursively(subElemet, false);
-                    // subfolder with this name will be created in next statement
-                }
-            }
+        //    if (subElemet != null)
+        //    {
+        //        if (subElemet is FolderState)
+        //        {
+        //            // subfolder already exists, ok
+        //            subfolder = subElemet as FolderState;
+        //        }
+        //        else
+        //        {
+        //            // element with this name already exists but it is not a folder
+        //            // this is rare case (when scalar is replaced by the struct with the same name)
+        //            // we should replace var with the folder
+        //            // (otherwise we will have name conflict)
+        //            // so, delete subelement without check of usage, because we have to
+        //            DeleteNodeRecursively(subElemet, false);
+        //            // subfolder with this name will be created in next statement
+        //        }
+        //    }
 
-            if (subfolder == null)
-            {
-                // topmost folder does not exist
-                // create it
-                subfolder = CreateFolderAndItsNode(startFolder, topmost, null);
-            }
+        //    if (subfolder == null)
+        //    {
+        //        // topmost folder does not exist
+        //        // create it
+        //        subfolder = CreateFolderAndItsNode(startFolder, topmost, null);
+        //    }
 
-            // get subpath relative to the subfolder
-            varFullNameAsList.RemoveAt(0);
-            if (varFullNameAsList.Count == 0)
-                // nothing else left to find/create, path is ok
-                // return lowermost subfolder
-                return subfolder;
-            else
-            // create the rest of the path recursively
-            // ReSharper disable once TailRecursiveCall - for better readability (recursion depth should not be big)
-                return KlsCreatePath(subfolder, varFullNameAsList);
-        }
+        //    // get subpath relative to the subfolder
+        //    varFullNameAsList.RemoveAt(0);
+        //    if (varFullNameAsList.Count == 0)
+        //        // nothing else left to find/create, path is ok
+        //        // return lowermost subfolder
+        //        return subfolder;
+        //    else
+        //    // create the rest of the path recursively
+        //    // ReSharper disable once TailRecursiveCall - for better readability (recursion depth should not be big)
+        //        return KlsCreatePath(subfolder, varFullNameAsList);
+        //}
 
         /// <summary>
         /// 1. Recursively destroys the node a its children.
@@ -1051,6 +1051,26 @@ namespace iba.ibaOPCServer
                 DeleteNodeRecursively(node, false);
             }
         }
+
+        public void DeleteEmptySubfolders(FolderState parentFolder = null, bool bPreserveItself = false)
+        {
+            // if parent folder is not specified, then use root folder
+            parentFolder = parentFolder ?? FolderIbaRoot;
+
+            // first try to delete all children on lower level
+            foreach (var node in GetChildren(parentFolder))
+            {
+                if (node is FolderState folder)
+                    DeleteEmptySubfolders(folder);
+            }
+
+            // if parentFolder doesn't have children anymore, then delete it
+            if (parentFolder != FolderIbaRoot && bPreserveItself == false && GetChildren(parentFolder).Count == 0)
+            {
+                DeleteNodeRecursively(parentFolder, false);
+            }
+        }
+
 
 
 
@@ -1372,7 +1392,7 @@ namespace iba.ibaOPCServer
         /// <param name="parent">Parent folder for the node to be created in</param>
         /// <param name="nodeName">Browse name of the node that is going to be created</param>
         /// <returns></returns>
-        public string GetFullNodeId(NodeState parent, string nodeName)
+        public static string GetFullNodeId(NodeState parent, string nodeName)
         {
             if (parent == null)
                 throw new ArgumentException("Trying to get an id for a parent==null", nameof(parent));
@@ -1412,18 +1432,21 @@ namespace iba.ibaOPCServer
 
         /// <summary> Creates a folder in the default address space.  </summary>
         /// <param name="parent">Parent folder to create a node in</param>
+        /// <param name="browseName"></param>
         /// <param name="displayName"> // todo. kls. BrowseName, that will be also used for creation of NodeId and a default Display name;
         /// All characters (including whitespace) except dot are allowed. For example, 'My variable'</param>
         /// <param name="description">OPC UA node description - any string or null</param>
         /// <returns>Returns a created Folder</returns>
-        public FolderState CreateFolderAndItsNode(FolderState parent, string displayName, string description) 
+        public FolderState CreateFolderAndItsNode(FolderState parent, string browseName, string displayName, string description) 
         {
-            //AssertNameCorrectnessAndUniqueness(parent, name);
+            AssertNameCorrectnessAndUniqueness(parent, browseName);
 
             var folder = new FolderState(parent);
-            string browseName = GenerateUniqueNodeName(parent, displayName);
 
             // todo. kls. 
+            //string browseName = GenerateUniqueNodeName(parent, displayName);
+
+            // todo. kls. check uniqueness
             if (browseName != displayName)
                 ;
 
@@ -1470,7 +1493,14 @@ namespace iba.ibaOPCServer
             var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
 
-            string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. move to overridden function?
+            string browseName = string.IsNullOrWhiteSpace(xmv.SnmpMibNameSuffix)
+                ? xmv.SnmpFullMibName
+                : xmv.SnmpMibNameSuffix;
+
+            // todo. kls. check uniqueness
+            AssertNameCorrectnessAndUniqueness(parent, browseName);
+
+            //string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. move to overridden function?
 
             IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv, null);
 

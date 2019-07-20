@@ -457,7 +457,25 @@ namespace iba.Processing
                     // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
                     IsStructureValid = true;
 
-                    IbaOpcUaServer.IbaUaNodeManager.DeleteAllUserValues();
+                    //IbaOpcUaServer.IbaUaNodeManager.DeleteAllUserValues();
+
+                    var oldVariables = NodeManager.GetListOfAllUserNodes();
+
+                    // todo. kls. rem tryc
+                    try
+                    {
+                        foreach (var node in oldVariables)
+                        {
+                            if (node is IbaOpcUaVariable iv)
+                            {
+                                iv.IsDeletionPending = true;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        ;
+                    }
 
                     if (!man.SnmpRebuildObjectsData(ObjectsData))
                     {
@@ -471,6 +489,31 @@ namespace iba.Processing
                         if (node is ExtMonData.ExtMonFolder xmFolder)
                             BuildFolderRecursively(null, xmFolder);
                     }
+
+                    // delete nodes that were marked for deletion and were not updated
+                    try
+                    {
+                        foreach (var node in oldVariables)
+                        {
+                            if (node is IbaOpcUaVariable iv && iv.IsDeletionPending)
+                            {
+                                // delete node, but don't delete empty folders yet (to preserve section folders)
+                                NodeManager.DeleteNodeRecursively(iv, false);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        ;
+                    }
+
+                    // delete all empty folders inside sections but preserve section folders
+                    foreach (var node in NodeManager.GetChildren(NodeManager.FolderIbaRoot))
+                    {
+                        if (node is FolderState folder)
+                            NodeManager.DeleteEmptySubfolders(folder, true);
+                    }
+
 
                     return true; // rebuilt successfully
                 }
@@ -500,7 +543,7 @@ namespace iba.Processing
         {
             try
             {
-                FolderState uaFolder = CreateOpcUaFolder(uaParentFolder, startingFolder);
+                FolderState uaFolder = CreateOrUpdateOpcUaFolder(uaParentFolder, startingFolder);
                 
                 foreach (var node in startingFolder.Children)
                 {
@@ -510,7 +553,7 @@ namespace iba.Processing
                             BuildFolderRecursively(uaFolder, xmFolder);
                             break;
                         case ExtMonData.ExtMonVariableBase xmv:
-                            CreateOpcUaValue(uaFolder, xmv);
+                            CreateOrUpdateOpcUaValue(uaFolder, xmv);
                             break;
                         default:
                             continue;
@@ -529,20 +572,113 @@ namespace iba.Processing
 
         #region Create/Update Value/Folder
 
-        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
+        private FolderState CreateOrUpdateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
+            // todo. kls. 
+            string browseName = string.IsNullOrWhiteSpace(xmFolderToCreate.SnmpMibNameSuffix)
+                ? xmFolderToCreate.SnmpFullMibName
+                : xmFolderToCreate.SnmpMibNameSuffix;
+
+            if (uaParentFolder == null) uaParentFolder = NodeManager.FolderIbaRoot;
+
+            // todo. kls. problem is here!!1 not get but generate!!
+            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, browseName);
+
+            NodeState node = NodeManager.Find(fullNodeId);
+
+            switch (node)
+            {
+                case null:
+                    // node does not exist. Create it
+                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate, fullNodeId);
+                case FolderState folder:
+                    // such folder already exists
+                    // update
+                    // todo. kls. keep cross ref???
+                    if (folder.Description != xmFolderToCreate.Description)
+                        ;
+                    if (folder.DisplayName != xmFolderToCreate.Caption)
+                        ;
+
+                    folder.Description = xmFolderToCreate.Description;
+                    folder.DisplayName = xmFolderToCreate.Caption;
+                    return folder;
+                default:
+                    // node exists but it's not a folder
+                    // it's strange, and it should not happen...
+                    // nevertheless, re-create it
+                    Debug.Assert(false);
+                    NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
+                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate, fullNodeId);
+            }
+        }
+
+        private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate, string fullNodeId)
+        {
+            // todo. kls. 
+            string browseName = string.IsNullOrWhiteSpace(xmFolderToCreate.SnmpMibNameSuffix)
+                ? xmFolderToCreate.SnmpFullMibName
+                : xmFolderToCreate.SnmpMibNameSuffix;
+
             // create
             FolderState folder = NodeManager.CreateFolderAndItsNode(
-                uaParentFolder ?? NodeManager.FolderIbaRoot, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+                uaParentFolder ?? NodeManager.FolderIbaRoot, browseName, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+
+            Debug.Assert(folder.NodeId.Identifier as string == fullNodeId);
 
             // keep UA id in ExtMon Node
             //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
             return folder;
         }
 
-        private IbaOpcUaVariable CreateOpcUaValue(FolderState parent, ExtMonData.ExtMonVariableBase xmv)
+
+        private IbaOpcUaVariable CreateOrUpdateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
-            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(parent, xmv);
+            // todo. kls. 
+            string browseName = string.IsNullOrWhiteSpace(xmv.SnmpMibNameSuffix)
+                ? xmv.SnmpFullMibName
+                : xmv.SnmpMibNameSuffix;
+            
+            // todo. kls. generate name - not get
+            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, browseName);
+
+            NodeState node = NodeManager.Find(fullNodeId);
+
+            switch (node)
+            {
+                case null:
+                    // node does not exist. Create it
+                    return CreateOpcUaValue(uaParentFolder, xmv, fullNodeId);
+                case IbaOpcUaVariable iv:
+                    // such variable already exists
+                    // let's update cross reference
+                    var oldXmv = iv.ExtMonVar;
+                    if (object.ReferenceEquals(oldXmv, xmv))
+                    {
+                        ;
+                        // do nothing
+                    }
+                    else
+                    {
+                        // todo. kls. move all conditions here..
+                        iv.SetCrossReference(xmv);
+                    }
+                    iv.IsDeletionPending = false;
+                    // todo. kls. keep cross ref???
+                    return iv;
+                default:
+                    // node exists but it's not IbaOpcUaVariable
+                    // it's strange, and it should not happen...
+                    // nevertheless, re-create it
+                    Debug.Assert(false);
+                    NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
+                    return CreateOpcUaValue(uaParentFolder, xmv, fullNodeId);
+            }
+        }
+
+        private IbaOpcUaVariable CreateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv, string fullNodeId)
+        {
+            IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(uaParentFolder, xmv);
 
             // add handler
             iv.OnReadValue += OnReadProductSpecificValue;
@@ -618,7 +754,6 @@ namespace iba.Processing
                         LogData.Data.Logger.Log(Level.Debug,
                             $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
                         IsStructureValid = false;
-                        Debug.Assert(false);
                         return false; // data was NOT updated
                     }
 
@@ -632,7 +767,8 @@ namespace iba.Processing
                         }
                         catch 
                         {
-
+                            // // todo. kls. remove
+                            Debug.Assert(false);
                         }
                     }
 
@@ -673,16 +809,21 @@ namespace iba.Processing
                 return ServiceResult.Good; // statusCode is bad; serviceResult is good
             }
 
-            Debug.Assert(iv.Value == value); // should be the same
+            if (iv.IsDeleted)
+            {
+                // don't try to refresh deleted variables
+                iv.Value = null;
+                Debug.Assert(iv.StatusCode == StatusCodes.BadObjectDeleted);
+                iv.StatusCode = StatusCodes.BadObjectDeleted;
+            }
+            else
+            {
+                Debug.Assert(iv.Value == value); // should be the same at this point
+                Debug.Assert(iv.ExtMonVar.Group != null);
 
-            Debug.Assert(iv.ExtMonVar.Group != null); 
-
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            var bResult = RefreshGroup(iv.ExtMonVar.Group);
-
-            // todo. kls. del tst
-            if (bResult == false)
-                ;
+                // refresh data if it is too old (or rebuild the whole tree if necessary)
+                RefreshGroup(iv.ExtMonVar.Group);
+            }
 
             // re-read the value and send it back via args
             // (we should do re-read independently on whether above call to RefreshXxx()
@@ -690,7 +831,7 @@ namespace iba.Processing
             // in another thread if multiple values are requested)
             value = iv.Value;
             statusCode = iv.StatusCode;
-            Debug.Assert(iv.StatusCode == StatusCodes.Good);
+            Debug.Assert(iv.StatusCode == StatusCodes.Good || iv.StatusCode == StatusCodes.BadObjectDeleted);
 
             return ServiceResult.Good;
         }
@@ -702,6 +843,10 @@ namespace iba.Processing
                 return null;
 
             var node = NodeManager.Find(nodeId);
+
+            // not found
+            if (node == null)
+                return null;
 
             Debug.Assert(node is IbaOpcUaVariable);
 
@@ -800,34 +945,29 @@ namespace iba.Processing
                 if (node is IbaOpcUaVariable iv)
                 {
                     tag.IsFolder = false;
-
-                    // old val???
-                    tag.Value = iv.Value.ToString();
                     tag.Value = ""; // default val
 
-                    var type = iv.ExtMonVar.ObjValue.GetType();
-                    tag.Type = type.IsEnum ? "Enum" : type.Name;
-
-
-                    // try to get an updated value
-                    try
+                    if (iv.IsDeleted)
                     {
-                        // todo. kls. refresh group, get value....
-                        object value = RefreshAndReadNode(tag.OpcUaNodeId);
-                        tag.Value = $"{value}";
-
-                        //tag.Value = IbaOpcUaServer.IsEnumDataTypeRegistered(objInfo.ValueType)
-                        //    ?
-                        //    // enum - format it like e.g. "1 (started)"
-                        //    $@"{objInfo.Value} ({IbaOpcUaServer.GetEnumValueName(objInfo.ValueType, (int) objInfo.Value)})"
-                        //    :
-                        //    // other types - just value
-                        //    objInfo.Value?.ToString() ?? "";
+                        tag.Type = "";
+                        tag.Value = "";
                     }
-                    catch
+                    else /*not deleted; is a valid variable*/
                     {
-                        Debug.Assert(false);
-                        tag.Value = "errrr????"; // ??????????????????????
+                        var type = iv.ExtMonVar.ObjValue.GetType();
+                        tag.Type = type.IsEnum ? "Enum" : type.Name;
+
+                        // try to get an updated value
+                        try
+                        {
+                            object value = RefreshAndReadNode(tag.OpcUaNodeId);
+                            tag.Value = $"{value}";
+                        }
+                        catch
+                        {
+                            Debug.Assert(false);
+                            tag.Value = "(error)";
+                        }
                     }
                 }
 
