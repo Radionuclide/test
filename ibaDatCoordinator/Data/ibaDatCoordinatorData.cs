@@ -25,7 +25,8 @@ namespace iba.Data
         }
 
         // added by kolesnik - begin
-        public SnmpData SnmpData { get; set; } 
+        public SnmpData SnmpData { get; set; }
+        public OpcUaData OpcUaData { get; set; }
         // added by kolesnik - end
 
         private List<ConfigurationData> m_confs;
@@ -134,6 +135,7 @@ namespace iba.Data
             answer.m_wd = manager.WatchDogData;
             // added by kolesnik - begin
             answer.SnmpData = manager.SnmpData;
+            answer.OpcUaData = manager.OpcUaData;
             // added by kolesnik - end
             answer.m_doPostPoning = manager.DoPostponeProcessing;
             answer.m_maxResourceIntensiveTasks = manager.MaxResourceIntensiveTasks;
@@ -154,6 +156,7 @@ namespace iba.Data
             manager.ReplaceWatchdogData(WatchDogData);
             // added by kolesnik - begin
             manager.SnmpData = SnmpData;
+            manager.OpcUaData = OpcUaData;
             // added by kolesnik - end
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
