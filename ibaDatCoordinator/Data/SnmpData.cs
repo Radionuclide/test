@@ -12,14 +12,6 @@ namespace iba.Data
         }
 
         public bool Enabled { get; set; }
-        //public bool Enabled
-        //{
-        //    get { return true; }
-        //    set
-        //    {
-        //        ;
-        //    }
-        //}
 
         public bool UseSnmpV2TcForStrings { get; set; }
 

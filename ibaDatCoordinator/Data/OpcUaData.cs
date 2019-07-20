@@ -90,7 +90,7 @@ namespace iba.Data
 
         public void ResetToDefaults()
         {
-            Enabled = true; // todo. kls.
+            Enabled = false; // todo. kls. 
             Endpoints.Clear();
             Endpoints.Add(DefaultEndPoint);
         }
@@ -104,8 +104,16 @@ namespace iba.Data
             }
 
             return
-                Enabled == other.Enabled
-                && Endpoints.SequenceEqual(other.Endpoints); // todo. kls. 
+                this.Enabled == other.Enabled &&
+                this.UserName == other.UserName &&
+                this.Password == other.Password &&
+                this.HasSecurityNone == other.HasSecurityNone &&
+                this.HasSecurityBasic128 == other.HasSecurityBasic128 &&
+                this.HasSecurityBasic256 == other.HasSecurityBasic256 &&
+                this.HasUserCertificate == other.HasUserCertificate &&
+                this.SecurityBasic128Level == other.SecurityBasic128Level &&
+                this.SecurityBasic256Level == other.SecurityBasic256Level &&
+                Endpoints.SequenceEqual(other.Endpoints); // todo. kls. 
         }
 
         public override int GetHashCode()
