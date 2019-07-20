@@ -101,7 +101,7 @@ namespace iba.ibaOPCServer
                     externalReferences[ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
 
-                FolderIbaRoot = CreateFolder(null, FolderIbaRootName, FolderIbaRootName);
+                FolderIbaRoot = CreateFolder(null, "IbaDatCoordinator" /*UpperCamel*/, "ibaDatCoordinator");
                 FolderIbaRoot.Description = @"ibaDatCoordinator module";
 
                 FolderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
@@ -295,7 +295,7 @@ namespace iba.ibaOPCServer
 
         /// <summary> Composes string node id, using <see cref="NODE_ID_DELIMITER"/>. 
         /// E.g.: "abc\de" + "fgh" -> "abc\de\fgh" </summary>
-        public string ComposeNodeId(string parentFullId, string nodeBrowseName) 
+        public static string ComposeNodeId(string parentFullId, string nodeBrowseName) 
             => parentFullId + NODE_ID_DELIMITER + GetAdaptedBrowseName(nodeBrowseName);
 
         private readonly IbaOpcUaServer _ibaUaServer;
@@ -303,7 +303,7 @@ namespace iba.ibaOPCServer
         /// <summary> Root folder for all iba-specific data </summary>
         public FolderState FolderIbaRoot { get; private set; }
 
-        private const string FolderIbaRootName = "ibaDatCoordinator";
+        //private const string FolderIbaRootName = "ibaDatCoordinator";
 
 
         private IbaOpcUaVariable _temporaryWatch; // todo. kls. delete
@@ -642,61 +642,6 @@ namespace iba.ibaOPCServer
                 }
             }
         }
-
-        /// <summary>
-        /// By Kolesnik. 
-        /// </summary>
-        /// <param name="variableName"></param>
-        /// <param name="includeIbaRootNodeName"></param>
-        /// <returns></returns>
-        private string KlsConvertVeNameToUaSymbolicPath(string variableName, bool includeIbaRootNodeName)
-        {
-            string path = KlsConvertVeNameToUaName(variableName, includeIbaRootNodeName);
-            
-            if (path == "") return "";
-
-            // finally apply another delimiter for symbolic path
-            return path.Replace('.', '/');
-        }
-
-        /// <summary>
-        /// By Kolesnik. 
-        /// For the given variable name in terms of VariableInformation.tVariableElement get ua internal full name.
-        /// For example "Globals.Struct1.Var2" -> "ibaRoot.ibaGlobals.Struct1.Var2" 
-        /// (or something like this depending on defined gloabl prefixes).
-        /// </summary>
-        /// <returns>Returns "" on error, or string name on success</returns>
-        private string KlsConvertVeNameToUaName(string veName, bool includeIbaRootNodeName)
-        {
-            // declare prefixes for better code readability 
-            string internalPrefix = "", externalPrefix;
-
-            // determine variable group Globals or Tasks
-
-            // replace pmac prefix with internal prefix
-            string uaName = internalPrefix;// + veName.Substring(externalPrefix.Length);
-
-            // now it should look like for example "ibaRoot.ibaGlobals.Struct1.Elm2"
-
-            // paranoic check
-            // path should always start with "ibaRoot."
-            string prefix = string.Format("{0}.", FolderIbaRoot.BrowseName.Name);
-            if (!uaName.StartsWith(prefix))
-            {
-                Debug.Assert(false);
-                //Status.AddNewError(string.Format("Found uaName '{0}' not starting with ibaRootFolder name.", uaName));
-                return "";
-            }
-
-            // if we do not need to include ibaRoot, then remove it from name
-            if (!includeIbaRootNodeName)
-                // remove "ibaRoot." prefix as requested
-                // this can be needed to start browsing down from ibaRoot
-                uaName = uaName.Substring(prefix.Length);
-
-            return uaName;
-        }
-
 
         //private bool KlsCheckReferenceConsistency(IbaVariable ibaVar, VariableInformation.tVariableElement ve)
         //{
@@ -1493,19 +1438,14 @@ namespace iba.ibaOPCServer
             var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
 
-            string browseName = string.IsNullOrWhiteSpace(xmv.SnmpMibNameSuffix)
-                ? xmv.SnmpFullMibName
-                : xmv.SnmpMibNameSuffix;
-
-            // todo. kls. check uniqueness
-            AssertNameCorrectnessAndUniqueness(parent, browseName);
+            AssertNameCorrectnessAndUniqueness(parent, xmv.UaBrowseName);
 
             //string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. move to overridden function?
 
             IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv, null);
 
             // create node for given instance
-            CreateNodeForDataVariable(v, browseName);
+            CreateNodeForDataVariable(v, xmv.UaBrowseName);
 
             v.Description = xmv.Description;
             v.DisplayName = xmv.Caption;

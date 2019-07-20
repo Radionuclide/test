@@ -628,10 +628,10 @@ namespace iba.Controls
                 // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
                 var nodesToExpand = new HashSet<string>
                 {
-                    "ibaDatCoordinator\\Standard jobs",
-                    "ibaDatCoordinator\\Scheduled jobs",
-                    "ibaDatCoordinator\\One time jobs",
-                    "ibaDatCoordinator\\Event jobs"
+                    "ibaDatCoordinator\\StandardJobs",
+                    "ibaDatCoordinator\\ScheduledJobs",
+                    "ibaDatCoordinator\\OneTimeJobs",
+                    "ibaDatCoordinator\\EventJobs"
                 };
 
                 // expand those which are marked for

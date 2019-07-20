@@ -70,7 +70,7 @@ namespace iba.Processing
                 }
 
                 _uaApplication = new ApplicationInstance();
-//                IbaOpcUaServer = new IbaOpcUaServer(); 
+                //                IbaOpcUaServer = new IbaOpcUaServer(); 
             }
 
             //_uaApplication?.Stop();
@@ -151,13 +151,13 @@ namespace iba.Processing
             RebuildTree();
         }
 
-  
+
         public string Tst__GetInternalEndpoints()
         {
             string str = "";
             foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
             {
-                str +=  adr + "; ";
+                str += adr + "; ";
             }
 
             return str.Trim(' ', ';');
@@ -214,7 +214,7 @@ namespace iba.Processing
 
         /// <summary> Started / Stopped / Errored </summary>
         public ExtMonWorkerStatus Status { get; private set; }
-        
+
         public string StatusString { get; private set; }
 
         public static string GetCurrentThreadString()
@@ -232,7 +232,7 @@ namespace iba.Processing
                 Status = ExtMonWorkerStatus.Errored;
                 StatusString = @"";
 
-                IbaOpcUaServer.Stop(); 
+                IbaOpcUaServer.Stop();
                 ApplyConfigurationToUaServer(); // todo
                 string logMessage;
 
@@ -366,7 +366,7 @@ namespace iba.Processing
 
         #endregion
 
-        
+
         #region Building and rebuilding the tree
 
         private bool _isStructureValid;
@@ -544,7 +544,7 @@ namespace iba.Processing
             try
             {
                 FolderState uaFolder = CreateOrUpdateOpcUaFolder(uaParentFolder, startingFolder);
-                
+
                 foreach (var node in startingFolder.Children)
                 {
                     switch (node)
@@ -574,17 +574,16 @@ namespace iba.Processing
 
         private FolderState CreateOrUpdateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate)
         {
-            // todo. kls. 
-            string browseName = string.IsNullOrWhiteSpace(xmFolderToCreate.SnmpMibNameSuffix)
-                ? xmFolderToCreate.SnmpFullMibName
-                : xmFolderToCreate.SnmpMibNameSuffix;
+            if (uaParentFolder == null)
+                uaParentFolder = NodeManager.FolderIbaRoot;
 
-            if (uaParentFolder == null) uaParentFolder = NodeManager.FolderIbaRoot;
+            Debug.Assert(IbaUaNodeManager.IsValidBrowseName(xmFolderToCreate.UaBrowseName));
 
-            // todo. kls. problem is here!!1 not get but generate!!
-            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, browseName);
+            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, xmFolderToCreate.UaBrowseName);
 
             NodeState node = NodeManager.Find(fullNodeId);
+
+            Debug.Assert(node == null || node.NodeId.Identifier as string == fullNodeId);
 
             switch (node)
             {
@@ -615,16 +614,13 @@ namespace iba.Processing
 
         private FolderState CreateOpcUaFolder(FolderState uaParentFolder, ExtMonData.ExtMonFolder xmFolderToCreate, string fullNodeId)
         {
-            // todo. kls. 
-            string browseName = string.IsNullOrWhiteSpace(xmFolderToCreate.SnmpMibNameSuffix)
-                ? xmFolderToCreate.SnmpFullMibName
-                : xmFolderToCreate.SnmpMibNameSuffix;
-
             // create
             FolderState folder = NodeManager.CreateFolderAndItsNode(
-                uaParentFolder ?? NodeManager.FolderIbaRoot, browseName, xmFolderToCreate.Caption, xmFolderToCreate.Description);
+                uaParentFolder ?? NodeManager.FolderIbaRoot,
+                xmFolderToCreate.UaBrowseName, xmFolderToCreate.Caption, xmFolderToCreate.Description);
 
             Debug.Assert(folder.NodeId.Identifier as string == fullNodeId);
+            Debug.Assert(folder.NodeId.Identifier as string == xmFolderToCreate.UaFullPath);
 
             // keep UA id in ExtMon Node
             //xmFolderToCreate.UaFullId = folder.NodeId.Identifier as string; // todo. kls. 
@@ -634,13 +630,9 @@ namespace iba.Processing
 
         private IbaOpcUaVariable CreateOrUpdateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
-            // todo. kls. 
-            string browseName = string.IsNullOrWhiteSpace(xmv.SnmpMibNameSuffix)
-                ? xmv.SnmpFullMibName
-                : xmv.SnmpMibNameSuffix;
-            
-            // todo. kls. generate name - not get
-            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, browseName);
+            string fullNodeId = IbaUaNodeManager.GetFullNodeId(uaParentFolder, xmv.UaBrowseName);
+
+            Debug.Assert(fullNodeId == xmv.UaFullPath);
 
             NodeState node = NodeManager.Find(fullNodeId);
 
@@ -679,6 +671,8 @@ namespace iba.Processing
         private IbaOpcUaVariable CreateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv, string fullNodeId)
         {
             IbaOpcUaVariable iv = NodeManager.CreateVariableAndItsNode(uaParentFolder, xmv);
+
+            Debug.Assert(iv.NodeId.Identifier as string == fullNodeId);
 
             // add handler
             iv.OnReadValue += OnReadProductSpecificValue;
@@ -765,7 +759,7 @@ namespace iba.Processing
                         {
                             SetOpcUaValue(xmv);
                         }
-                        catch 
+                        catch
                         {
                             // // todo. kls. remove
                             Debug.Assert(false);
@@ -795,7 +789,7 @@ namespace iba.Processing
                 return false; // data was NOT updated
             }
         }
-       
+
 
         private ServiceResult OnReadProductSpecificValue(ISystemContext context,
             NodeState node, NumericRange indexRange, QualifiedName dataEncoding,
@@ -865,7 +859,7 @@ namespace iba.Processing
         #endregion
 
 
-        #region Tree Snapshot for GUI and MIB generation
+        #region Tree Snapshot for GUI
 
         internal List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {

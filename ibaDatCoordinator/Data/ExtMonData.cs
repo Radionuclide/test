@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using DevExpress.XtraEditors.Controls;
+using iba.ibaOPCServer;
 using iba.Utility;
 using ibaOpcServer.IbaOpcUa;
 using IbaSnmpLib;
@@ -56,32 +57,33 @@ namespace iba.Data
                 @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0);
             // FolderRoot.SnmpFullMibName = ; // is not used
             // FolderRoot.SnmpFullOid = ; // is not used
+            FolderRoot.UaBrowseName = "IbaDatCoordinator";
 
             FolderRoot.Children.Add(License = new LicenseInfo(FolderRoot));
 
             FolderRoot.Children.Add(
                 FolderGlobalCleanup = new ExtMonFolder(FolderRoot,
-                @"Global cleanup", @"globalCleanup",
+                @"Global cleanup", @"globalCleanup", @"GlobalCleanup",
                 "Global cleanup settings for all local drives.", new IbaSnmpOid(1)));
 
             FolderRoot.Children.Add(
                 FolderStandardJobs = new ExtMonFolder(FolderRoot,
-                @"Standard jobs", @"standardJobs",
+                @"Standard jobs", @"standardJobs", @"StandardJobs",
                 @"List of all standard jobs.", new IbaSnmpOid(2)));
 
             FolderRoot.Children.Add(
                 FolderScheduledJobs = new ExtMonFolder(FolderRoot,
-                @"Scheduled jobs", @"scheduledJobs",
+                @"Scheduled jobs", @"scheduledJobs", @"ScheduledJobs",
                 @"List of all scheduled jobs.", new IbaSnmpOid(3)));
 
             FolderRoot.Children.Add(
                 FolderOneTimeJobs = new ExtMonFolder(FolderRoot,
-                @"One time jobs", @"oneTimeJobs",
+                @"One time jobs", @"oneTimeJobs", @"OneTimeJobs",
                 @"List of all one-time jobs.", new IbaSnmpOid(4)));
 
             FolderRoot.Children.Add(
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
-                @"Event jobs", @"eventJobs",
+                @"Event jobs", @"eventJobs", @"EventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
         }
 
@@ -105,6 +107,7 @@ namespace iba.Data
         {
             var driveInfo = new GlobalCleanupDriveInfo(
                 FolderGlobalCleanup, (uint)FolderGlobalCleanup.Children.Count + 1, driveName);
+            driveInfo.UaBrowseName = $@"Drive_{driveName.Substring(0, 1)}:";
             FolderGlobalCleanup.Children.Add(driveInfo);
             // check consistency between mib name and oid
             Debug.Assert(driveInfo.SnmpFullMibName.Contains($"Drive{driveInfo.SnmpLeastId}"));
@@ -115,36 +118,43 @@ namespace iba.Data
         {
             JobInfoBase jobInfo;
             ExtMonFolder folder;
-            
+            uint indexWithinFolder;
+
             switch (jobType)
             {
                 case ConfigurationData.JobTypeEnum.DatTriggered: // standard Job
                     folder = FolderStandardJobs;
-                    jobInfo = new StandardJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
+                    indexWithinFolder = (uint) folder.Children.Count + 1;
+                    jobInfo = new StandardJobInfo(folder, indexWithinFolder, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.Scheduled:
                     folder = FolderScheduledJobs;
-                    jobInfo = new ScheduledJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
+                    indexWithinFolder = (uint)folder.Children.Count + 1;
+                    jobInfo = new ScheduledJobInfo(folder, indexWithinFolder, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.OneTime:
                     folder = FolderOneTimeJobs;
-                    jobInfo = new OneTimeJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
+                    indexWithinFolder = (uint)folder.Children.Count + 1;
+                    jobInfo = new OneTimeJobInfo(folder, indexWithinFolder, jobName);
                     break;
 
                 case ConfigurationData.JobTypeEnum.Event:
                     folder = FolderEventBasedJobs;
-                    jobInfo = new EventBasedJobInfo(folder, (uint)folder.Children.Count + 1, jobName);
+                    indexWithinFolder = (uint)folder.Children.Count + 1;
+                    jobInfo = new EventBasedJobInfo(folder, indexWithinFolder, jobName);
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             jobInfo.Guid = guid;
+            jobInfo.UaBrowseName = $@"Job{indexWithinFolder}"; // todo. kls. use guid??
             folder.Children.Add(jobInfo);
             // check consistency between mib name and oid
-            Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}")); 
+            Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
+            Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}"));
             return jobInfo;
         }
 
@@ -177,6 +187,7 @@ namespace iba.Data
 
             Set<IbaSnmpOid> oids = new Set<IbaSnmpOid>();
             Set<string> mibNames = new Set<string>();
+            Set<string> uaPaths = new Set<string>();
 
             foreach (var child in children)
             {
@@ -198,8 +209,16 @@ namespace iba.Data
                 if (mibNames.Contains(mibName))
                     return false;
                 mibNames.Add(mibName);
-            }
 
+                var uaPath = child.UaFullPath;
+                // should not be null or whitespace
+                if (string.IsNullOrWhiteSpace(uaPath))
+                    return false;
+                // check uniqueness
+                if (uaPaths.Contains(uaPath))
+                    return false;
+                uaPaths.Add(uaPath);
+            }
             return true;
         }
 
@@ -280,6 +299,17 @@ namespace iba.Data
             /// <summary> Full OPC UA NodeId (path) of the node in UA address space</summary>
             //public string UaFullId; // todo. kls. try to remove ?
 
+            private string _uaBrowseName;
+            /// <summary> Normally, in most cases UaBrowseName is
+            /// equal to <see cref="SnmpMibNameSuffix"/>; but it can be set separately. </summary>
+            public string UaBrowseName
+            {
+                get => _uaBrowseName ?? SnmpMibNameSuffix ?? SnmpFullMibName;
+                set => _uaBrowseName = value;
+            }
+
+            public string UaFullPath => 
+                Parent == null ? UaBrowseName : IbaUaNodeManager.ComposeNodeId(Parent.UaFullPath, UaBrowseName);
 
             protected ExtMonNode(ExtMonFolder parent, uint snmpLeastId, 
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
@@ -393,11 +423,12 @@ namespace iba.Data
             /// Note, that here FULL OID and FULL MIB name are used here (not suffixes).
             /// </summary>
             public ExtMonFolder(ExtMonFolder parent,
-                string caption, string snmpFullMibName, string description, IbaSnmpOid fullOid)
+                string caption, string snmpFullMibName, string uaBrowseName, string description, IbaSnmpOid fullOid)
                 : base(parent, 0, caption, null, description)
             {
                 SnmpFullMibName = snmpFullMibName;
                 SnmpFullOid = fullOid;
+                UaBrowseName = uaBrowseName;
             }
 
             /// <summary>
@@ -588,38 +619,38 @@ namespace iba.Data
                 // create variables and add them to collection
 
                 IsValid = AddChildVariable<bool>(
-                    @"Is valid", "Lic001" /*not used*/,
+                    @"Is valid", "IsValid",
                     @"Is license valid.",
                     SNMP_AUTO_LEAST_ID);
                 Debug.Assert(IsValid.SnmpLeastId == 1);
 
                 Sn = AddChildVariable<string>(
-                    @"Dongle serial number", "Lic002" /*not used*/,
+                    @"Dongle serial number", "DongleSerialNumber",
                     @"Dongle serial number.",
                     SNMP_AUTO_LEAST_ID);
 
                 HwId = AddChildVariable<string>(
-                    @"Dongle hardware ID", "Lic003" /*not used*/,
+                    @"Dongle hardware ID", "DongleHwId",
                     @"Dongle hardware ID.",
                     SNMP_AUTO_LEAST_ID);
 
                 DongleType = AddChildVariable<string>(
-                    @"Dongle type", "Lic004" /*not used*/,
+                    @"Dongle type", "DongleType",
                     @"Dongle type.",
                     SNMP_AUTO_LEAST_ID);
 
                 Customer = AddChildVariable<string>(
-                    @"Customer", "Lic005" /*not used*/,
+                    @"Customer", "Customer",
                     @"License customer.",
                     SNMP_AUTO_LEAST_ID);
 
                 TimeLimit = AddChildVariable<int>(
-                    @"Time limit", "Lic006" /*not used*/,
+                    @"Time limit", "TimeLimit",
                     @"Time limit.",
                     SNMP_AUTO_LEAST_ID);
 
                 DemoTimeLimit = AddChildVariable<int>(
-                    @"Demo time limit", "Lic007" /*not used*/,
+                    @"Demo time limit", "DemoTimeLimit",
                     @"Demo time limit.",
                     SNMP_AUTO_LEAST_ID);
 
@@ -1010,8 +1041,13 @@ namespace iba.Data
 
             public TaskInfo AddTask(string taskName)
             {
-                var taskInfo = new TaskInfo(FolderTasks, (uint)FolderTasks.Children.Count + 1, taskName);
+                var taskInfo = new TaskInfo(FolderTasks, (uint) FolderTasks.Children.Count + 1, taskName)
+                {
+                    UaBrowseName = $@"Task{FolderTasks.Children.Count + 1}" // todo. kls. use guid?
+                };
+
                 FolderTasks.Children.Add(taskInfo);
+
                 // check consistency between mib name and oid
                 Debug.Assert(taskInfo.SnmpFullMibName.Contains($"Task{taskInfo.SnmpLeastId}"));
                 return taskInfo;
@@ -1099,6 +1135,8 @@ namespace iba.Data
                     SNMP_AUTO_LEAST_ID);
                 // set special mib name (skip name of FolderLastProcessing) 
                 LastProcessingLastDatFileProcessed.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"LastFile";
+                // set UA name differently to mib name 
+                LastProcessingLastDatFileProcessed.UaBrowseName = @"LastFile";
                 Debug.Assert(LastProcessingLastDatFileProcessed.SnmpLeastId == 1); // ensure id has an expected value
 
                 LastProcessingStartTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
@@ -1107,7 +1145,9 @@ namespace iba.Data
                     @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
                     SNMP_AUTO_LEAST_ID);
                 // set special mib name (skip name of FolderLastProcessing) 
-                LastProcessingStartTimeStamp.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"StartStamp"; 
+                LastProcessingStartTimeStamp.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"StartStamp";
+                // set UA name differently to mib name 
+                LastProcessingStartTimeStamp.UaBrowseName = @"StartStamp";
 
                 LastProcessingFinishTimeStamp = FolderLastProcessing.AddChildVariable<DateTime>(
                     @"Finish timestamp", null /*is special, see below*/,
@@ -1116,6 +1156,8 @@ namespace iba.Data
                     SNMP_AUTO_LEAST_ID);
                 // set special mib name (skip name of FolderLastProcessing) 
                 LastProcessingFinishTimeStamp.SnmpFullMibName = FolderGeneral.SnmpFullMibName + @"FinishStamp";
+                // set UA name differently to mib name 
+                LastProcessingFinishTimeStamp.UaBrowseName = @"FinishStamp";
                 Debug.Assert(LastProcessingFinishTimeStamp.SnmpLeastId == 3); // ensure id has an expected value
 
                 PrivateReset();
