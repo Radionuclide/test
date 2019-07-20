@@ -118,8 +118,7 @@ namespace iba.ibaOPCServer
         }
         public override string ToString()
         {
-            return string.Format("{0} r={1} w={2} b={3} m={4}", 
-                GetShortStringDescription(), CanRead, CanWrite, CanBrowse, CanMonitor);
+            return $"{GetShortStringDescription()} r={CanRead} w={CanWrite} b={CanBrowse} m={CanMonitor}";
         }
     }
 }

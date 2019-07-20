@@ -6,6 +6,7 @@ using iba.Data;
 using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Properties;
+using iba.Utility;
 using ibaOpcServer.IbaOpcUa;
 using Opc.Ua;
 using Opc.Ua.Configuration;
@@ -14,73 +15,17 @@ namespace iba.Processing
 {
     public class OpcUaWorker : IDisposable
     {
-        private readonly System.Windows.Forms.Timer _monitoringTimer = new System.Windows.Forms.Timer { Enabled = false, Interval = 5000 };
-
         #region Construction, Destruction, Init
-
-        private string _ibaDatCoordinatorUaServerStr = "ibaDatCoordinatorUaServer";
 
         public OpcUaWorker()
         {
             Status = ExtMonWorkerStatus.Errored;
             StatusString = Resources.opcUaStatusNotInit;
-
-            _monitoringTimer.Enabled = true;
-
-            _monitoringTimer.Tick += OnMonitoringTimerTick;
-        }
-
-        // todo. kls. start/stop monitoring timer if UA enabled/disabled
-        private void OnMonitoringTimerTick(object sender, EventArgs args)
-        {
-            if (!OpcUaData.Enabled)
-                return;
-
-            if (Monitor.TryEnter(LockObject, LockTimeout))
-            {
-                try
-                {
-                    if (true)
-                    {
-                        var list = ObjectsData.GetFlatListOfAllChildren();
-                        foreach (var node in list)
-                        {
-                            if (node is ExtMonData.ExtMonGroup group)
-                                RefreshGroup(group);
-                        }
-                    }
-                }
-                catch
-                {
-                    // todo. kls. 
-                    Debug.Assert(false);
-                    ;
-                    /**/
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {GetCurrentThreadString()}.");
-                }
-                catch { /* logging is not critical */ }
-            }
-            
         }
 
         public void Dispose()
         {
-            _monitoringTimer.Stop();
         }
-
 
         public void Init()
         {
@@ -89,6 +34,10 @@ namespace iba.Processing
                 // disable double initialization
                 return;
             }
+
+            // turn on monitoring timer
+            InitializeMonitoringTimer();
+
 
             _uaApplication = new ApplicationInstance();
             //                IbaOpcUaServer = new IbaOpcUaServer(); 
@@ -202,12 +151,15 @@ namespace iba.Processing
         #region Configuration of UA server
 
         ApplicationInstance _uaApplication;
-        private IbaUaNodeManager NodeManager => IbaOpcUaServer.IbaUaNodeManager;
 
         public IbaOpcUaServer IbaOpcUaServer { get; private set; }
 
-        private OpcUaData _opcUaData = new OpcUaData();
+        /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaUaNodeManager"/> </summary>
+        private IbaUaNodeManager NodeManager => IbaOpcUaServer.IbaUaNodeManager;
 
+        private string _ibaDatCoordinatorUaServerStr = "ibaDatCoordinatorUaServer";
+
+        private OpcUaData _opcUaData = new OpcUaData();
         public OpcUaData OpcUaData
         {
             get => _opcUaData;
@@ -339,18 +291,13 @@ namespace iba.Processing
 
         #region Handling object tree - building, refreshing
 
-        #region Common functionality for all objects
-
         /// <summary> A quick reference to <see cref="ExtMonData"/> instance lock </summary>
         private object LockObject => ExtMonData.InstanceLockObject;
 
         /// <summary> A quick reference to <see cref="ExtMonData"/> recommended lock timeout </summary>
         private int LockTimeout => ExtMonData.LockTimeout;
         
-        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> instance </summary>
-        private ExtMonData ObjectsData => ExtMonData.Instance;
-
-        #region register enums
+        #region Register enums
 
         // todo. kls. use or delete?
         private string _enumJobStatus;
@@ -379,8 +326,6 @@ namespace iba.Processing
             //    }
             //);
         }
-
-        #endregion
 
         #endregion
 
@@ -485,12 +430,12 @@ namespace iba.Processing
                         }
                     }
 
-                    if (!man.ExtMonRebuildObjectsData(ObjectsData))
+                    if (!man.ExtMonRebuildObjectsData(ExtMonData.Instance))
                     {
                         return false; // rebuild failed
                     }
 
-                    foreach (var node in ObjectsData.FolderRoot.Children)
+                    foreach (var node in ExtMonData.Instance.FolderRoot.Children)
                     {
                         Debug.Assert(node is ExtMonData.ExtMonFolder);
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -505,6 +450,10 @@ namespace iba.Processing
                         {
                             // delete node, but don't delete empty folders yet (to preserve section folders)
                             NodeManager.DeleteNodeRecursively(iv, false);
+
+                            // remove handler
+                            // ReSharper disable once DelegateSubtraction
+                            iv.OnReadValue -= OnReadProductSpecificValue;
                         }
                     }
 
@@ -727,19 +676,11 @@ namespace iba.Processing
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated group successfully 
+                    // TaskManager has updated group successfully;
                     // copy it to UA tree
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
-                        try
-                        {
-                            SetOpcUaValue(xmv);
-                        }
-                        catch
-                        {
-                            // // todo. kls. remove
-                            Debug.Assert(false);
-                        }
+                        SetOpcUaValue(xmv);
                     }
 
                     return true; // data was updated
@@ -826,6 +767,88 @@ namespace iba.Processing
             RefreshGroup(iv.ExtMonVar.Group);
 
             return iv.Value;
+        }
+
+        #endregion
+
+
+        #region Monitored itmes handling
+
+        private readonly System.Windows.Forms.Timer _monitoringTimer = new System.Windows.Forms.Timer { Enabled = false };
+
+        private void InitializeMonitoringTimer()
+        {
+            // set interval to value slightly bigger than AgeThreshold,
+            // to ensure we don't request update twice within one interval
+            _monitoringTimer.Interval = (int)(ExtMonData.AgeThreshold.TotalMilliseconds * 1.1);
+            // let it be always enabled as long as worker lives;
+            // if OPC UA is disabled then timer handler does nothing and returns immediately
+            _monitoringTimer.Enabled = true;
+            _monitoringTimer.Tick += OnMonitoringTimerTick;
+        }
+
+        private void OnMonitoringTimerTick(object sender, EventArgs args)
+        {
+            if (!OpcUaData.Enabled)
+                return;
+
+            if (Monitor.TryEnter(LockObject, LockTimeout))
+            {
+                try
+                {
+                    var monitoredNodes = NodeManager.GetMonitoredNodes();
+
+                    // todo. kls. remove tmp
+                    string tmp___Nodes = "";
+                    string tmp___Groups = "";
+
+                    // prepare a set of groups to be refreshed
+                    var groups = new HashSet<ExtMonData.ExtMonGroup>();
+                    foreach (var kvp in monitoredNodes)
+                    {
+                        NodeState node = kvp.Value.Node;
+                        if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
+                        {
+                            groups.Add(iv.ExtMonVar.Group);
+                            tmp___Nodes += $@"{iv.ExtMonVar.Caption}, ";
+                        }
+                    }
+
+                    // refresh all groups that have monitored items
+                    foreach (var group in groups)
+                    {
+                        RefreshGroup(group);
+                        tmp___Groups += $@"{group.Caption}, ";
+                    }
+
+                    tmp___Groups = tmp___Groups.TrimEnd(' ', ',');
+                    tmp___Nodes = tmp___Nodes.TrimEnd(' ', ',');
+                    // todo. kls. remove override
+                    StatusString = $@"Monitored {monitoredNodes.Count}: {{ I=[{tmp___Nodes}] G=[{tmp___Groups}] }}";
+                }
+                catch
+                {
+                    // todo. kls. 
+                    Debug.Assert(false);
+                    ;
+                    /**/
+                }
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Debug,
+                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {GetCurrentThreadString()}.");
+                }
+                catch { /* logging is not critical */ }
+            }
         }
 
         #endregion

@@ -503,7 +503,8 @@ namespace iba.Processing
 
         #region Internal Server functions
 
-        /// <summary>  // todo. kls.  </summary>
+        /// <summary>  // todo. kls. remove tmp
+        /// </summary>
         private uint _tmpTimer => 555000 + (uint)DateTime.Now.Second;
 
         internal bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)

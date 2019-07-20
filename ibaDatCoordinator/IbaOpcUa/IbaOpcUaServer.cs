@@ -197,7 +197,7 @@ namespace iba.ibaOPCServer
         #endregion
 
         
-        public IbaUaNodeManager IbaUaNodeManager; // todo. kls. make private??
+        public IbaUaNodeManager IbaUaNodeManager;
 
         // todo protect by lock for safe thread access? or not so important?
         public string KlsStrEndpoints { get; private set; }
@@ -206,8 +206,6 @@ namespace iba.ibaOPCServer
         public string KlsStrSubscriptions { get; private set; }
         public string KlsStrVarTree { get; private set; }
         public string KlsStrMonitoredItems { get; private set; }
-        public string KlsStrMonitoredItems2 { get; private set; }
-
 
         #region trust functionality
         private IbaOpcUaServerCertificateTrustMode _trustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
@@ -505,8 +503,6 @@ namespace iba.ibaOPCServer
         {
             // delete var tree
             KlsUpdateConfiguration();
-            // ensure we get an exception on attempt of usage of _onlineServer
-            //_onlineServer = null;
         }
 
         public void KlsUpdateConfiguration()
@@ -533,25 +529,9 @@ namespace iba.ibaOPCServer
             //KlsStrVarTree = _ibaUaNodeManager.KlsGetDescriptionStringVarTree();
         }
 
-        //public void KlsUpdateWatchVariableValues(List<VariableInformation.tWatchlistElement> watchList)
-        //{
-        //    // todo remove statistics
-        //    //const double k = 0.1;
-        //    //const int Multiplier = 1;
-
-        //    //DateTime start = DateTime.Now;
-        //    //for (int i = 0; i < Multiplier; i++)
-        //    _ibaUaNodeManager.KlsUpdateWatchVariableValues(watchList);
-
-        //    //double durMs = (DateTime.Now - start).TotalMilliseconds * 1000 / Multiplier ;
-        //    //IbaUaNodeManager.TmpKls_DelaySlow = IbaUaNodeManager.TmpKls_DelaySlow * (1 - k) + durMs * k;
-
-        //}
-
         /// <summary>
-        /// todo delete or optimize in release version
+        /// todo. kls. delete or optimize in release version
         /// </summary>
-        /// <returns></returns>
         public string KlsGetDescriptionStringSubscriptions()
         {
             string s = "";
@@ -590,21 +570,6 @@ namespace iba.ibaOPCServer
             }
 
 
-        }
-
-        public bool KlsAddWatch(string sVarName)
-        {
-            KlsStrMonitoredItems = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
-            KlsStrMonitoredItems2 = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
-            //return _onlineServer.AddWatchVariable(sVarName);
-            return false;
-        }
-        public bool KlsRemoveWatch(string sVarName)
-        {
-            KlsStrMonitoredItems = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems();
-            KlsStrMonitoredItems2 = IbaUaNodeManager.KlsGetDescriptionStringMonitoredItems2();
-//            return _onlineServer.AddRemoveWatch(sVarName);
-            return false;
         }
 
         public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
@@ -685,10 +650,10 @@ namespace iba.ibaOPCServer
             }
             catch
             {
+                ;
                 // todo. kls. 
                 throw;
             }
-
         }
 
         public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)

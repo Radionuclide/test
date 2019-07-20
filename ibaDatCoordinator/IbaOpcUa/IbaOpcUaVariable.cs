@@ -7,8 +7,6 @@ namespace ibaOpcServer.IbaOpcUa
 {
     public class IbaOpcUaVariable : BaseDataVariableState
     {
-        public bool IsMonitored = false;
-
         public ExtMonData.ExtMonVariableBase ExtMonVar;
 
         /// <summary>
@@ -45,19 +43,17 @@ namespace ibaOpcServer.IbaOpcUa
                 oldXmv.UaVar = null;
         }
 
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
-            base.OnAfterCreate(context, node);
-        }
-
         protected override void OnBeforeDelete(ISystemContext context)
         {
             // set this flag; it will be checked when user will try to monitor it
             IsDeleted = true;
 
+            // ensure we don't have access to ExtMonData even if 
+            // the instance is cached somewhere
+            ExtMonVar = null;
+
             base.OnBeforeDelete(context);
         }
 
     }
-
 }
