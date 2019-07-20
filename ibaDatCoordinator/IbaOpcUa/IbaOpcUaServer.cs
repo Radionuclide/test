@@ -683,10 +683,9 @@ namespace iba.ibaOPCServer
 
                 return responseHeader;
             }
-            catch (Exception e)
+            catch
             {
                 // todo. kls. 
-                //Console.WriteLine(e);
                 throw;
             }
 

@@ -555,11 +555,14 @@ namespace iba.ibaOPCServer
 
             try
             {
-                List<IbaOpcUaVariable> allIbaVariableChildren = FolderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
+                var allIbaVariableChildren = GetFlatListOfAllChildren(FolderIbaRoot);
 
-                foreach (IbaOpcUaVariable iv in allIbaVariableChildren)
+                foreach (var node in allIbaVariableChildren)
                 {
-                    if (!iv.IsMonitored) continue;
+                    if (!(node is IbaOpcUaVariable iv))
+                        continue;
+                    if (!iv.IsMonitored)
+                        continue;
                     if (s == ("<n" + "one>")) s = "";
                     s += iv.BrowseName.Name + ", ";
                 } 
@@ -607,7 +610,7 @@ namespace iba.ibaOPCServer
         public void KlsDeleteUnneededNodes()
         {
             // get all variables
-            List<IbaOpcUaVariable> allIbaVariables = FolderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
+            //List<IbaOpcUaVariable> allIbaVariables = FolderIbaRoot.GetFlatListOfIbaVariableChildren(SystemContext);
 
             // for better reliability we could refresh IsMonitored flag
             // on the case if some inconsistencies appeared
@@ -624,7 +627,7 @@ namespace iba.ibaOPCServer
             ////    monitoredIbaVar.IsMonitored = true;
             ////}
 
-            KlsCheckMonitoredItemsConsistency(allIbaVariables);
+            //KlsCheckMonitoredItemsConsistency(allIbaVariables);
 
             //// delete or mark as bad
             //foreach (IbaOpcUaVariable v in allIbaVariables.Where(v => v.IsMarkedForDeleting))
@@ -1236,15 +1239,6 @@ namespace iba.ibaOPCServer
             varState.ClearChangeMasks(SystemContext, false);
         }
         
-        /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
-        public void SetValueScalar(string nodeId, object value)
-        {
-            if (!(Find(nodeId) is BaseDataVariableState variable))
-                return;
-            SetValueScalar(variable, value);
-        }
-
-
         ///// <summary>
         ///// By Kolesnik. 
         ///// </summary>
@@ -1461,13 +1455,17 @@ namespace iba.ibaOPCServer
             v.DisplayName = xmv.Caption;
 
             // set access type to readonly
-            v.SetAccessLevel(true, false);
-            v.SetupAsScalar(uaType);
+            v.UserAccessLevel = v.AccessLevel = AccessLevels.CurrentRead;
+
+            // set up as scalar
+            v.TypeDefinitionId = VariableTypeIds.BaseDataVariableType;
+            v.DataType = (uint)uaType;
+            v.ValueRank = ValueRanks.Scalar;
 
             SetValueScalar(v, initialValue);
             return v;
         }
-        
+
         private void CreateNodeForDataVariable(BaseDataVariableState v, string browseName)
         {
             // compose browse name
@@ -1506,10 +1504,11 @@ namespace iba.ibaOPCServer
             return list;
         }
 
-        public List<BaseInstanceState> GetFlatListOfAllChildren(FolderState folder)
+        public List<BaseInstanceState> GetFlatListOfAllChildren(FolderState folder = null)
         {
-            if (folder == null)
-                return null;
+            folder = folder ?? FolderIbaRoot;
+            Debug.Assert(folder != null);
+
             var allChildren = new List<BaseInstanceState> {folder};
 
             var immediateChildren = new List<BaseInstanceState>();
@@ -1532,29 +1531,6 @@ namespace iba.ibaOPCServer
             return allChildren;
         }
 
-        public static string GetNodeIdAsString(NodeId id)
-        {
-            return id.IdType == IdType.String ? (string) id.Identifier : null;
-        }
-
-        public List<BaseInstanceState> GetListOfAllUserNodes()
-        {
-            var instances = GetFlatListOfAllChildren(this.FolderIbaRoot);
-
-            // todo. kls. 
-            // convert to string id???
-            //var list = new Set<BaseInstanceState>();
-            //foreach (var instance in instances)
-            //{
-            //    var nodeId = instance.NodeId;
-            //    Debug.Assert(nodeId.IdType == IdType.String);
-            //    string strNodeId = GetNodeIdAsString(nodeId);
-            //    Debug.Assert(strNodeId != null);
-            //    list.Add(strNodeId);
-            //}
-            //return list;
-            return instances;
-        }
         /// <summary>
         /// By Kolesnik. 
         /// Remove variable from PMAC's watch list if this variable is not monitored (e.g. by someone else)
@@ -1666,175 +1642,5 @@ namespace iba.ibaOPCServer
 
         #endregion
 
-        #region Byte decoding by Kolesnik
-
-
-        //private static VariableInformation.ByteDecoderForScalar GetByteDecoderScalar_Slow(BuiltInType t)
-        //{
-        //    // using switch/case is a very slow implementation!
-        //    // todo later speedup using sorted list or using adding field in varifo
-        //    switch (t)
-        //    {
-        //        case BuiltInType.Boolean:
-        //            return ByteDecoderBoolean;
-        //        case BuiltInType.SByte:
-        //            return ByteDecoderSByte;
-        //        case BuiltInType.Int16:
-        //            return ByteDecoderInt16;
-        //        case BuiltInType.Int32:
-        //            return ByteDecoderInt32;
-        //        case BuiltInType.Int64:
-        //            return ByteDecoderInt64;
-
-        //        case BuiltInType.Byte:
-        //            return ByteDecoderByte;
-        //        case BuiltInType.UInt16:
-        //            return ByteDecoderUInt16;
-        //        case BuiltInType.UInt32:
-        //            return ByteDecoderUInt32;
-        //        case BuiltInType.UInt64:
-        //            return ByteDecoderUInt64;
-
-        //        case BuiltInType.Float:
-        //            return ByteDecoderSingle;
-        //        case BuiltInType.Double:
-        //            return ByteDecoderDouble;
-
-        //        case BuiltInType.String:
-        //            // todo
-        //            // array of strings needs special handle
-        //            // disable by now
-        //            //return ByteDecoderString;
-        //            return null;
-
-        //        default:
-        //            return null;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// By Kolesnik. 
-        ///// </summary>
-        ///// <param name="t"></param>
-        ///// <param name="decoderScalar"></param>
-        ///// <returns></returns>
-        //private static VariableInformation.ByteDecoderForArray KlsGetByteDecoderArray_Slow(
-        //    BuiltInType t, out VariableInformation.ByteDecoderForScalar decoderScalar)
-        //{
-        //    // using switch/case is a very slow implementation!
-        //    // todo later speedup using sorted list or using adding field in varifo
-        //    decoderScalar = GetByteDecoderScalar_Slow(t);
-        //    if (decoderScalar == null) return null;
-
-        //    switch (t)
-        //    {
-        //        case BuiltInType.Boolean:
-        //            return ByteDecoderArrayGeneric<Boolean>;
-
-        //        case BuiltInType.SByte:
-        //            return ByteDecoderArrayGeneric<SByte>;
-        //        case BuiltInType.Int16:
-        //            return ByteDecoderArrayGeneric<Int16>;
-        //        case BuiltInType.Int32:
-        //            return ByteDecoderArrayGeneric<Int32>;
-        //        case BuiltInType.Int64:
-        //            return ByteDecoderArrayGeneric<Int64>;
-
-        //        case BuiltInType.Byte:
-        //            return ByteDecoderArrayGeneric<Byte>;
-        //        case BuiltInType.UInt16:
-        //            return ByteDecoderArrayGeneric<UInt16>;
-        //        case BuiltInType.UInt32:
-        //            return ByteDecoderArrayGeneric<UInt32>;
-        //        case BuiltInType.UInt64:
-        //            return ByteDecoderArrayGeneric<UInt64>;
-
-        //        case BuiltInType.Float:
-        //            return ByteDecoderArrayGeneric<Single>;
-        //        case BuiltInType.Double:
-        //            return ByteDecoderArrayGeneric<Double>;
-
-        //        case BuiltInType.String:
-        //            // todo
-        //            // array of strings needs special handle
-        //            // disable by now
-        //            //return ByteDecoderArrayGeneric<String>;
-        //            return null;
-
-        //        default:
-        //            return null;
-        //    }
-        //}
-
-        private static object ByteDecoderBoolean(byte[] value, int offset)
-        {
-            return BitConverter.ToBoolean(value, offset);
-        }
-
-        private static object ByteDecoderSByte(byte[] value, int offset)
-        {
-            return (sbyte) value[offset];
-        }
-
-        private static object ByteDecoderInt16(byte[] value, int offset)
-        {
-            return BitConverter.ToInt16(value, offset);
-        }
-
-        private static object ByteDecoderInt32(byte[] value, int offset)
-        {
-            return BitConverter.ToInt32(value, offset);
-        }
-
-        private static object ByteDecoderInt64(byte[] value, int offset)
-        {
-            return BitConverter.ToInt64(value, offset);
-        }
-
-        private static object ByteDecoderByte(byte[] value, int offset)
-        {
-            return value[offset];
-        }
-
-        private static object ByteDecoderUInt16(byte[] value, int offset)
-        {
-            return BitConverter.ToUInt16(value, offset);
-        }
-
-        private static object ByteDecoderUInt32(byte[] value, int offset)
-        {
-            return BitConverter.ToUInt32(value, offset);
-        }
-
-        private static object ByteDecoderUInt64(byte[] value, int offset)
-        {
-            return BitConverter.ToUInt64(value, offset);
-        }
-
-        private static object ByteDecoderSingle(byte[] value, int offset)
-        {
-            return BitConverter.ToSingle(value, offset);
-        }
-
-        private static object ByteDecoderDouble(byte[] value, int offset)
-        {
-            return BitConverter.ToDouble(value, offset);
-        }
-
-
-        //private static object ByteDecoderArrayGeneric<T>
-        //    (byte[] data, int offset, int count, int typeSize, VariableInformation.ByteDecoderForScalar decoder) where T : new()
-        //{
-        //    T[] result;
-
-        //    result = new T[count];
-
-        //    for (int i = 0; i < count; i++)
-        //        result[i] = (T) decoder(data, offset + i*typeSize);
-
-        //    return result; // successful
-        //}
-
-        #endregion
     }
 }

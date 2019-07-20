@@ -168,7 +168,6 @@ namespace iba.Processing
 
             RegisterEnums();
 
-            // todo. kls. 
             if (OpcUaData.Enabled)
                 RebuildTree();
         }
@@ -476,7 +475,7 @@ namespace iba.Processing
 
                     //IbaOpcUaServer.IbaUaNodeManager.DeleteAllUserValues();
 
-                    var oldVariables = NodeManager.GetListOfAllUserNodes();
+                    var oldVariables = NodeManager.GetFlatListOfAllChildren();
 
                     foreach (var node in oldVariables)
                     {
@@ -844,7 +843,7 @@ namespace iba.Processing
                 RebuildTreeIfItIsInvalid();
 
                 var result = new List<ExtMonData.GuiTreeNodeTag>();
-                var objList = IbaOpcUaServer.IbaUaNodeManager.GetListOfAllUserNodes();
+                var objList = NodeManager.GetFlatListOfAllChildren();
                 if (objList == null)
                 {
                     return null;
@@ -859,22 +858,6 @@ namespace iba.Processing
                         result.Add(tag);
                     }
                 }
-                ////mark some nodes as expanded
-                //var nodesToExpand = new HashSet<string>
-                //{
-                //    "ibaDatCoordinator\\Standard jobs",
-                //    "ibaDatCoordinator\\Scheduled jobs",
-                //    "ibaDatCoordinator\\One time jobs",
-                //    "ibaDatCoordinator\\Event jobs",
-                //};
-
-                //foreach (string key in nodesToExpand)
-                //{
-                //    if (result.TryGetValue(key, out ExtMonData.GuiTreeNodeTag tag))
-                //    {
-                //        tag.IsExpandedByDefault = true;
-                //    }
-                //}
 
                 return result;
             }
@@ -905,7 +888,7 @@ namespace iba.Processing
                     Caption = node.DisplayName.Text,
                     Description = node.Description.Text,
                     IsFolder = true,
-                    OpcUaNodeId = IbaUaNodeManager.GetNodeIdAsString(node.NodeId)
+                    OpcUaNodeId = node.NodeId.Identifier as string /*we use only string ids*/
                 };
 
                 Debug.Assert(tag.OpcUaNodeId != null);
