@@ -152,7 +152,7 @@ namespace iba.Controls
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    @"SnmpControl.buttonConfigurationApply_Click() exception: " + ex.Message);
+                    $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationApply_Click)}. {ex.Message}");
             }
         }
 
@@ -180,16 +180,13 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-                // rebuild the tree because probably textual conventions were changed
-                TaskManager.Manager.SnmpRebuildObjectTree();
-
                 // rebuild GUI tree
                 RebuildObjectsTree();
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    @"OpcUaControl.buttonConfigurationReset_Click() exception: " + ex.Message);
+                    $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationReset_Click)}. {ex.Message}");
             }
         }
 

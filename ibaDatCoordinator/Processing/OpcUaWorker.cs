@@ -30,8 +30,12 @@ namespace iba.Processing
             _monitoringTimer.Tick += OnMonitoringTimerTick;
         }
 
+        // todo. kls. start/stop monitoring timer if UA enabled/disabled
         private void OnMonitoringTimerTick(object sender, EventArgs args)
         {
+            if (!OpcUaData.Enabled)
+                return;
+
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
                 try
@@ -74,23 +78,20 @@ namespace iba.Processing
 
         public void Dispose()
         {
-            //_lifebeatTimer.Stop(); // todo. kls. 
+            _monitoringTimer.Stop();
         }
 
 
         public void Init()
         {
-            lock (LockObject)
+            if (_uaApplication != null) //todo
             {
-                if (_uaApplication != null) //todo
-                {
-                    // disable double initialization
-                    return;
-                }
-
-                _uaApplication = new ApplicationInstance();
-                //                IbaOpcUaServer = new IbaOpcUaServer(); 
+                // disable double initialization
+                return;
             }
+
+            _uaApplication = new ApplicationInstance();
+            //                IbaOpcUaServer = new IbaOpcUaServer(); 
 
             //_uaApplication?.Stop();
             _uaApplication.ApplicationType = ApplicationType.Server;
@@ -147,12 +148,11 @@ namespace iba.Processing
             RestartServer();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            ExtMonData.ExtMonGroup.AgeThreshold = ExtMonDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
             _treeValidatorTimer = new System.Timers.Timer
             {
-                Interval = ExtMonDataValidTimePeriod.TotalMilliseconds,
+                Interval = ExtMonData.AgeThreshold.TotalMilliseconds,
                 AutoReset = false // do not repeat
                 // it will be re-activated only if data was invalidated
             };
@@ -167,7 +167,10 @@ namespace iba.Processing
             };
 
             RegisterEnums();
-            RebuildTree();
+
+            // todo. kls. 
+            if (OpcUaData.Enabled)
+                RebuildTree();
         }
 
 
@@ -310,6 +313,13 @@ namespace iba.Processing
             }
 
             _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+
+            // todo. kls. remove tst
+            if (_opcUaData.Endpoints.Count > 1)
+                _opcUaData.Endpoints.RemoveAt(1);
+            if (_opcUaData.Endpoints.Count > 1)
+                _opcUaData.Endpoints.RemoveAt(1);
+
             foreach (var ep in _opcUaData.Endpoints)
                 _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
 
@@ -332,24 +342,14 @@ namespace iba.Processing
 
         #region Common functionality for all objects
 
-        /// <summary> Lock this object while using <see cref="ObjectsData"/> </summary>
-        public readonly object LockObject = new object(); //todo share lock with SNMP?
+        /// <summary> A quick reference to <see cref="ExtMonData"/> instance lock </summary>
+        private object LockObject => ExtMonData.InstanceLockObject;
 
-        /// todo. kls. share with snmp?
-        public int LockTimeout { get; } = 50;
-
-
-        /// <summary> Data older than this will be treated as outdated. 
-        /// When requested, such data will be refreshed first before sending via SNMP.
-        /// todo. kls. share with snmp?
-        /// </summary>
-        public TimeSpan ExtMonDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
-
-        /// <summary> Holds all data that is shown via SNMP. 
-        /// This data is in convenient structured format, and does not contain SNMP addresses (OIDs) explicitly.
-        /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
-        /// </summary>
-        internal ExtMonData ObjectsData { get; } = new ExtMonData(); // odo share data with SNMP?
+        /// <summary> A quick reference to <see cref="ExtMonData"/> recommended lock timeout </summary>
+        private int LockTimeout => ExtMonData.LockTimeout;
+        
+        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> instance </summary>
+        private ExtMonData ObjectsData => ExtMonData.Instance;
 
         #region register enums
 
@@ -486,7 +486,7 @@ namespace iba.Processing
                         }
                     }
 
-                    if (!man.SnmpRebuildObjectsData(ObjectsData))
+                    if (!man.ExtMonRebuildObjectsData(ObjectsData))
                     {
                         return false; // rebuild failed
                     }
@@ -557,7 +557,9 @@ namespace iba.Processing
             }
             catch
             {
-                Debug.Assert(false); // should not happen
+                ;// todo. kls. 
+                ;
+                //Debug.Assert(false); // should not happen
                 // go on with other items 
                 // even if current one has failed 
             }
@@ -700,13 +702,13 @@ namespace iba.Processing
                     switch (xmGroup)
                     {
                         case ExtMonData.LicenseInfo licenseInfo:
-                            bSuccess = man.SnmpRefreshLicenseInfo(licenseInfo);
+                            bSuccess = man.ExtMonRefreshLicenseInfo(licenseInfo);
                             break;
                         case ExtMonData.GlobalCleanupDriveInfo driveInfo:
-                            bSuccess = man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
+                            bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
                             break;
                         case ExtMonData.JobInfoBase jobInfo:
-                            bSuccess = man.SnmpRefreshJobInfo(jobInfo);
+                            bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
                             break;
                         default:
                             // should not happen

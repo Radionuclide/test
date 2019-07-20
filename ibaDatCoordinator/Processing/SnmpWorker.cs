@@ -51,28 +51,25 @@ namespace iba.Processing
 
         public void Init()
         {
-            lock (LockObject)
+            if (IbaSnmp != null)
             {
-                if (IbaSnmp != null)
-                {
-                    // disable double initialization
-                    return;
-                }
-
-                IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+                // disable double initialization
+                return;
             }
+
+            IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
 
             IbaSnmp.DosProtectionInternal.Enabled = false;
             IbaSnmp.DosProtectionExternal.Config(5000, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
             RestartAgent();
 
             TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            ExtMonData.ExtMonGroup.AgeThreshold = SnmpObjectsDataValidTimePeriod;
 
             // create the timer for delayed tree rebuild
+            // todo. kls. share UA+SNMP
             _treeValidatorTimer = new Timer
             {
-                Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
+                Interval = ExtMonData.AgeThreshold.TotalMilliseconds,
                 AutoReset = false // do not repeat
                 // it will be re-activated only if data was invalidated
             };
@@ -88,7 +85,9 @@ namespace iba.Processing
 
             RegisterEnums();
             SetGeneralProductInformation();
-            RebuildTree();
+
+            if (SnmpData.Enabled)
+                RebuildTree();
         }
 
         public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
@@ -230,20 +229,14 @@ namespace iba.Processing
 
         #region Common functionality for all objects
 
-        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
-        public readonly object LockObject = new object();
+        /// <summary> A quick reference to <see cref="ExtMonData"/> instance lock </summary>
+        private object LockObject => ExtMonData.InstanceLockObject;
 
-        public int LockTimeout { get; } = 50;
+        /// <summary> A quick reference to <see cref="ExtMonData"/> recommended lock timeout </summary>
+        private int LockTimeout => ExtMonData.LockTimeout;
 
-        /// <summary> Data older than this will be treated as outdated. 
-        /// When requested, such data will be refreshed first before sending via SNMP. </summary>
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
-
-        /// <summary> Holds all data that is shown via SNMP. 
-        /// This data is in convenient structured format, and does not contain SNMP addresses (OIDs) explicitly.
-        /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
-        /// </summary>
-        internal ExtMonData ObjectsData { get; } = new ExtMonData();
+        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> instance </summary>
+        private ExtMonData ObjectsData => ExtMonData.Instance;
 
         #region register enums
 
@@ -351,7 +344,7 @@ namespace iba.Processing
             }
         }
 
-        private Timer _treeValidatorTimer;
+        private Timer _treeValidatorTimer;             // todo. kls. share UA+SNMP
 
         /// <summary>
         /// Rebuilds a tree completely if its <see cref="IsStructureValid"/> flag is set to false. 
@@ -385,7 +378,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -416,7 +409,7 @@ namespace iba.Processing
                     IbaSnmp.DeleteAllUserValues();
                     IbaSnmp.DeleteAllUserOidMetadata();
 
-                    if (!man.SnmpRebuildObjectsData(ObjectsData))
+                    if (!man.ExtMonRebuildObjectsData(ObjectsData))
                     {
                         return false; // rebuild failed
                     }
@@ -449,7 +442,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -616,7 +609,7 @@ namespace iba.Processing
                     }
 
                     var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
+                    if (!man.ExtMonRefreshLicenseInfo(ObjectsData.License))
                     {
                         // should not happen
                         // failed to update data
@@ -648,7 +641,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -682,10 +675,10 @@ namespace iba.Processing
                     switch (xmGroup)
                     {
                         case ExtMonData.GlobalCleanupDriveInfo driveInfo:
-                            bSuccess = man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo);
+                            bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
                             break;
                         case ExtMonData.JobInfoBase jobInfo:
-                            bSuccess = man.SnmpRefreshJobInfo(jobInfo);
+                            bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
                             break;
                         default:
                             // should not happen
@@ -700,7 +693,7 @@ namespace iba.Processing
                         // failed to update data
                         // rebuild the tree
                         LogData.Data.Logger.Log(Level.Debug,
-                            $"SNMP. {nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
+                            $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
                         IsStructureValid = false;
                         Debug.Assert(false);
                         return false; // data was NOT updated
@@ -719,7 +712,7 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     LogData.Data.Logger.Log(Level.Exception,
-                        $"SNMP. {nameof(RefreshGroup)}. Error during refreshing group {xmGroup.Caption}. {ex.Message}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error during refreshing group {xmGroup.Caption}. {ex.Message}.");
                     return false; // was not updated
                 }
                 finally
@@ -734,7 +727,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. {nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 

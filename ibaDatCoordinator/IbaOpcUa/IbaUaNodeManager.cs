@@ -104,6 +104,12 @@ namespace iba.ibaOPCServer
                 FolderIbaRoot = CreateFolder(null, "IbaDatCoordinator" /*UpperCamel*/, "ibaDatCoordinator");
                 FolderIbaRoot.Description = @"ibaDatCoordinator module";
 
+                // todo. kls. check initialization
+                var x = Find(FolderIbaRoot.NodeId);
+                if (x == null)
+                    ;
+                //Debug.Assert(Find(FolderIbaRoot.NodeId)!=null);
+
                 FolderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
                 references.Add(new NodeStateReference(ReferenceTypes.Organizes, false, FolderIbaRoot.NodeId));
                 FolderIbaRoot.EventNotifier = EventNotifiers.SubscribeToEvents;
@@ -1396,15 +1402,8 @@ namespace iba.ibaOPCServer
 
             var folder = new FolderState(parent);
 
-            // todo. kls. 
-            //string browseName = GenerateUniqueNodeName(parent, displayName);
-
-            // todo. kls. check uniqueness
-            if (browseName != displayName)
-                ;
-
             var qualifiedName = new QualifiedName(browseName, NamespaceIndex);
-            
+
             CreateNode(SystemContext, parent.NodeId, ReferenceTypeIds.Organizes, qualifiedName, folder);
 
             folder.TypeDefinitionId = ObjectTypeIds.FolderType;

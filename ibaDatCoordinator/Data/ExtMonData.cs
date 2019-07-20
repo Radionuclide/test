@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DevExpress.Utils;
 using DevExpress.XtraEditors.Controls;
 using iba.ibaOPCServer;
 using iba.Utility;
@@ -17,9 +18,31 @@ namespace iba.Data
     /// </summary>
     public class ExtMonData 
     {
+        #region Static / Singleton
+
+        // todo. kls. lazy
+
+        private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
+        public static ExtMonData Instance => _lazyInstance.Value;
+
+        public static object InstanceLockObject => Instance.LockObject;
+
+        /// <summary>
+        /// // todo. kls. 
+        /// </summary>
+        public static int LockTimeout { get; } = 50;
+
+        /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
+        /// is probably too old (and should be updated before sending via SNMP or OPC UA). </summary>
+        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(2);
+
+        #endregion
+
         #region Body
-        
+
         #region Fields and Props
+
+        public readonly object LockObject = new object(); //todo share lock with SNMP?
 
         /// <summary> Supply this value to AddChildXxx() functions to set snmpLeastId automatically. </summary>
         public const uint SNMP_AUTO_LEAST_ID = uint.MaxValue;
@@ -552,11 +575,6 @@ namespace iba.Data
                 : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
             {
             }
-
-            /// <summary> A measure to tell whether data is fresh or outdated </summary>
-            public static TimeSpan AgeThreshold { get; set; }
-                // by default count all data as too old
-                = TimeSpan.FromSeconds(0);
 
             /// <summary> When data has been last time updated </summary>
             public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
