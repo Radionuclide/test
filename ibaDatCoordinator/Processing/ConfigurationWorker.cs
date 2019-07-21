@@ -1936,7 +1936,7 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (System.UnauthorizedAccessException ex)
+                catch (System.UnauthorizedAccessException)
                 {
                     if (String.IsNullOrEmpty(m_cd.FileEncryptionPassword))
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess6, filename);

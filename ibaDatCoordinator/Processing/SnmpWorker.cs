@@ -7,7 +7,6 @@ using iba.Data;
 using iba.Logging;
 using iba.Properties;
 using IbaSnmpLib;
-using Timer = System.Timers.Timer;
 
 // all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
 // usual strings (e.g. "General") should be localized later.
@@ -63,41 +62,11 @@ namespace iba.Processing
             IbaSnmp.DosProtectionExternal.Config(5000, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
             RestartAgent();
 
-            TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-
-            // create the timer for delayed tree rebuild
-            // todo. kls. share UA+SNMP
-            _treeValidatorTimer = new Timer
-            {
-                Interval = ExtMonData.AgeThreshold.TotalMilliseconds,
-                AutoReset = false // do not repeat
-                // it will be re-activated only if data was invalidated
-            };
-            _treeValidatorTimer.Elapsed += (sender, args) =>
-            {
-                RebuildTreeIfItIsInvalid();
-
-                // best option to test why it's needed
-                // 1. setup SNMP manager to monitor some yet non-existent job. it will show "no such instance". ok.
-                // 2. Add one or several jobs to fit the requested OID area. 
-                //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
-            };
+            // subscribe to tree structure changes 
+            ExtMonInstance.ExtMonStructureChanged += (sender, args) => RebuildTree();
 
             RegisterEnums();
             SetGeneralProductInformation();
-
-            if (SnmpData.Enabled)
-                RebuildTree();
-        }
-
-        public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
-        {
-            // we do not need to lock something here
-            // it's not a problem if structure is invalidated during rebuild is in progress
-
-            // mark tree as invalid
-            // it will be rebuilt on 1st request to any existing user node
-            IsStructureValid = false;
         }
 
         #endregion
@@ -105,7 +74,6 @@ namespace iba.Processing
 
         #region Configuration of SNMP agent (IbaSnmp libraray)
 
-        //private IbaSnmp IbaSnmp { get; set; }
         public IbaSnmp IbaSnmp { get; private set; }
 
         private SnmpData _snmpData = new SnmpData();
@@ -227,18 +195,17 @@ namespace iba.Processing
 
         #region Handling object tree - building, refreshing
 
-        #region Common functionality for all objects
+        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> </summary>
+        private static ExtMonData ExtMonInstance => ExtMonData.Instance;
 
         /// <summary> A quick reference to <see cref="ExtMonData"/> instance lock </summary>
-        private object LockObject => ExtMonData.InstanceLockObject;
+        private static object LockObject => ExtMonInstance.LockObject;
 
         /// <summary> A quick reference to <see cref="ExtMonData"/> recommended lock timeout </summary>
-        private int LockTimeout => ExtMonData.LockTimeout;
+        private static int LockTimeout => ExtMonData.LockTimeout;
 
-        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> instance </summary>
-        private ExtMonData ObjectsData => ExtMonData.Instance;
 
-        #region register enums
+        #region Register enums
 
         private IbaSnmpValueType _enumJobStatus;
         private IbaSnmpValueType _enumCleanupType;
@@ -266,8 +233,6 @@ namespace iba.Processing
                 }
             );
         }
-
-        #endregion
 
         #endregion
 
@@ -318,73 +283,7 @@ namespace iba.Processing
         #endregion
 
 
-        #region Building and rebuilding the tree
-
-        private bool _isStructureValid;
-
-        public bool IsStructureValid
-        {
-            get => _isStructureValid;
-            set
-            {
-                // this implementation works properly if called from different threads
-                // lock of the timer is not needed here
-                _isStructureValid = value;
-
-                // stop current cycle
-                _treeValidatorTimer?.Stop();
-
-                // if structure is marked invalid
-                if (!value)
-                {
-                    // schedule a delayed tree rebuild, 
-                    // if it will not happen earlier
-                    _treeValidatorTimer?.Start();
-                }
-            }
-        }
-
-        private Timer _treeValidatorTimer;             // todo. kls. share UA+SNMP
-
-        /// <summary>
-        /// Rebuilds a tree completely if its <see cref="IsStructureValid"/> flag is set to false. 
-        /// Use returned value to know whether tree has been rebuilt.
-        /// </summary>
-        /// <returns> <value>true</value> if tree was rebuilt, 
-        /// <value>false</value> if it is valid and has not been modified by this call.</returns>
-        public bool RebuildTreeIfItIsInvalid()
-        {
-            // here I use double than normal timeout to give priority over other locks
-            if (Monitor.TryEnter(LockObject, LockTimeout*2))
-            {
-                try
-                {
-                    if (IsStructureValid)
-                    {
-                        return false; // tree structure has not changed
-                    }
-                    RebuildTree();
-                    return true; // tree structure has changed
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
-                }
-                catch { /* logging is not critical */ }
-
-                return false; // tree structure has not changed
-            }
-        }
+        #region Building the tree
 
         public bool RebuildTree()
         {
@@ -398,19 +297,14 @@ namespace iba.Processing
             {
                 try
                 {
-                    // snmp structure is valid until datCoordinator configuration is changed.
-                    // theoretically it can be reset to false by another thread
-                    // during the process of rebuild of SnmpObjectsData,
-                    // but it's not a problem. 
-                    // If this happens, then the tree will be rebuilt once again.
-                    // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
-                    IsStructureValid = true;
-
                     IbaSnmp.DeleteAllUserValues();
                     IbaSnmp.DeleteAllUserOidMetadata();
 
-                    if (!man.ExtMonRebuildObjectsData(ObjectsData))
+                    if (!ExtMonInstance.IsStructureValid)
                     {
+                        // ExtMonData structure is invalid;
+                        // Normally it should not happen, because usually we rebuild our tree on reaction to ExtMon structure change.
+                        // Anyway, it makes no sense to rebuild our tree
                         return false; // rebuild failed
                     }
 
@@ -418,15 +312,15 @@ namespace iba.Processing
                     IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
 
                     // ibaRoot.DatCoord.Product.1 - Global cleanup
-                    BuildFolderRecursively(ObjectsData.FolderGlobalCleanup);
+                    BuildFolderRecursively(ExtMonInstance.FolderGlobalCleanup);
                     // ibaRoot.DatCoord.Product.2 - Standard jobs
-                    BuildFolderRecursively(ObjectsData.FolderStandardJobs);
+                    BuildFolderRecursively(ExtMonInstance.FolderStandardJobs);
                     // ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                    BuildFolderRecursively(ObjectsData.FolderScheduledJobs);
+                    BuildFolderRecursively(ExtMonInstance.FolderScheduledJobs);
                     // ibaRoot.DatCoord.Product.4 - One time jobs
-                    BuildFolderRecursively(ObjectsData.FolderOneTimeJobs);
+                    BuildFolderRecursively(ExtMonInstance.FolderOneTimeJobs);
                     // ibaRoot.DatCoord.Product.5 - Event jobs
-                    BuildFolderRecursively(ObjectsData.FolderEventBasedJobs);
+                    BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
 
                     return true; // rebuilt successfully
                 }
@@ -442,7 +336,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -602,14 +496,14 @@ namespace iba.Processing
             {
                 try
                 {
-                    if (ObjectsData.License.IsUpToDate())
+                    if (ExtMonInstance.License.IsUpToDate())
                     {
                         // data is fresh, no need to change something
                         return false; // was not updated
                     }
 
                     var man = TaskManager.Manager;
-                    if (!man.ExtMonRefreshLicenseInfo(ObjectsData.License))
+                    if (!man.ExtMonRefreshLicenseInfo(ExtMonInstance.License))
                     {
                         // should not happen
                         // failed to update data
@@ -620,13 +514,13 @@ namespace iba.Processing
                     // TaskManager has updated info successfully 
                     // copy it to snmp tree
 
-                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ExtMonInstance.License.IsValid.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ExtMonInstance.License.Sn.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ExtMonInstance.License.HwId.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingType = ExtMonInstance.License.DongleType.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ExtMonInstance.License.Customer.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ExtMonInstance.License.TimeLimit.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ExtMonInstance.License.DemoTimeLimit.Value;
                     return true; // data was updated
                 }
                 finally
@@ -655,7 +549,7 @@ namespace iba.Processing
             {
                 try
                 {
-                    if (RebuildTreeIfItIsInvalid())
+                    if (ExtMonInstance.RebuildTreeIfItIsInvalid())
                     {
                         // tree was rebuilt completely
                         // no need to update some parts of it
@@ -689,23 +583,20 @@ namespace iba.Processing
 
                     if (!bSuccess)
                     {
-                        // should not happen
-                        // failed to update data
-                        // rebuild the tree
+                        // should not happen; failed to update the data;
+                        // mark tree invalid to rebuild it later
                         LogData.Data.Logger.Log(Level.Debug,
                             $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
-                        IsStructureValid = false;
-                        Debug.Assert(false);
+                        ExtMonInstance.IsStructureValid = false;
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated driveInfo successfully 
+                    // TaskManager has updated the group successfully;
                     // copy it to snmp tree
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
                         SetUserValue(xmv);
                     }
-
 
                     return true; // was updated
                 }
@@ -738,7 +629,7 @@ namespace iba.Processing
         #endregion
 
 
-        #region XxxRequested event handlers
+        #region Value Requested event handlers
 
         private void IbaSnmp_LicensingValueRequested<T>(object sender, IbaSnmpValueRequestedEventArgs<T> args)
         {
@@ -793,7 +684,7 @@ namespace iba.Processing
             try
             {
                 // check tree structure before taking a snapshot
-                RebuildTreeIfItIsInvalid();
+                ExtMonInstance.RebuildTreeIfItIsInvalid();
 
                 var result = new Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag>();
                 var objList = IbaSnmp.GetListOfAllOids();

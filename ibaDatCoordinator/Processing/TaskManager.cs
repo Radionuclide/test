@@ -12,7 +12,6 @@ using iba.Plugins;
 using System.IO;
 using iba.Logging;
 using IbaSnmpLib;
-using Opc.Ua;
 
 namespace iba.Processing
 {
@@ -33,9 +32,7 @@ namespace iba.Processing
             {
                 m_workers.Add(data, cw);
             }
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         virtual public void AddConfigurations(List<ConfigurationData> datas)
@@ -62,9 +59,7 @@ namespace iba.Processing
                 }
             }
 
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         virtual public void ReplaceConfiguration(ConfigurationData data)
@@ -83,9 +78,7 @@ namespace iba.Processing
                 //else, ignore, replace is due to a belated save of an already deleted configuration
             }
 
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void ReplaceOrAddConfigurationInternal(ConfigurationData data)
@@ -105,9 +98,7 @@ namespace iba.Processing
                     m_workers.Add(data, cw);
                 }
             }
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty); // todo. kls. 
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         virtual public void ReplaceConfigurations(List<ConfigurationData> datas)
@@ -149,9 +140,7 @@ namespace iba.Processing
                 }
             }
 
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         virtual public bool CompareConfiguration(ConfigurationData data)
@@ -212,9 +201,7 @@ namespace iba.Processing
             m_workers[data].ConfigurationToUpdate = data;
             m_workers[data].Start();
 
-            // added by kolesnik - begin
-            SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
-            // added by kolesnik - end
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         virtual public void StopConfiguration(ConfigurationData data)
@@ -359,16 +346,16 @@ namespace iba.Processing
         #region SNMP and OPC UA interfaces
 
         /// <summary> 
-        /// Is fired when there is a chance (yes, at least a chance) that snmp data structure (amount of jobs, tasks, etc) is changed. 
-        /// So, SnmpWorker can know this, and may rebuild its SNMP objects tree accordingly.
+        /// Is fired when there is a chance (yes, at least a chance) that external monitoring data structure (amount of jobs, tasks, etc) is changed. 
+        /// So, SnmpWorker and OpcUaWorker can know this, and may rebuild their objects trees accordingly.
         /// It does not guarantee that data is really changed, but only just that it might have changed.
-        /// (SnmpWorker's handler is very lightweight, so it's better to trigger this event
+        /// (event handler is very lightweight, so it's better to trigger this event
         /// more often (e.g. let even twice for each real change - no matter), than 
         /// to miss some point (even some that happens seldom) where it is changed.
         /// Event is not relevant to some 'small' data changes,
-        /// i.e changes that do not alter the structure (hierarcy) of the snmp tree (e.g. status of the job, or some other value).
+        /// i.e changes that do not alter the structure (hierarchy) of the snmp tree (e.g. status of the job, or some other value).
         /// </summary>
-        public event EventHandler<EventArgs> SnmpConfigurationChanged; // todo. kls. use SNMP and UA together 
+        public event EventHandler<EventArgs> ExtMonConfigurationChanged;
 
         private SnmpWorker SnmpWorker { get; } = new SnmpWorker();
 
@@ -800,7 +787,7 @@ namespace iba.Processing
             else if (ji.TaskCount != cfg.Tasks.Count)
             {
                 ji.ResetTasks();
-                SnmpConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -934,8 +921,11 @@ namespace iba.Processing
             }
         }
 
-        internal bool ExtMonRebuildObjectsData(ExtMonData od)
+        /// <summary> Rebuilds <see cref="ExtMonData"/> instance. </summary>
+        /// <returns> true on success and false on error </returns>
+        internal bool ExtMonRebuildObjectsData()
         {
+            var od = ExtMonData.Instance;
             try
             {
                 od.Reset();
@@ -986,7 +976,7 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
-                    $"SNMP. Error during rebuilding object data. {ex.Message}.");
+                    $"{nameof(ExtMonRebuildObjectsData)}. Error during rebuilding object data. {ex.Message}.");
                 return false; // error
             }
         }
@@ -997,18 +987,6 @@ namespace iba.Processing
         #endregion
 
         #region OPC UA interface 
-
-        /// <summary> //todo check comment
-        /// Is fired when there is a chance (yes, at least a chance) that opcUa data structure (amount of jobs, tasks, etc) is changed. 
-        /// So, OpcUaWorker can know this, and may rebuild its objects tree accordingly.
-        /// It does not guarantee that data is really changed, but only just that it might have changed.
-        /// (SnmpWorker's handler is very lightweight, so it's better to trigger this event
-        /// more often (e.g. let even twice for each real change - no matter), than 
-        /// to miss some point (even some that happens seldom) where it is changed.
-        /// Event is not relevant to some 'small' data changes,
-        /// i.e changes that do not alter the structure (hierarchy) of the snmp tree (e.g. status of the job, or some other value).
-        /// </summary>
-        public event EventHandler<EventArgs> OpcUaConfigurationChanged; // todo. kls. share with SNMP
 
         private OpcUaWorker OpcUaWorker { get; } = new OpcUaWorker();
 

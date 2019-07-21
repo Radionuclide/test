@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using DevExpress.Utils;
 using DevExpress.XtraEditors.Controls;
 using iba.ibaOPCServer;
+using iba.Logging;
+using iba.Processing;
 using iba.Utility;
 using ibaOpcServer.IbaOpcUa;
 using IbaSnmpLib;
@@ -22,8 +25,6 @@ namespace iba.Data
 
         private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
         public static ExtMonData Instance => _lazyInstance.Value;
-
-        public static object InstanceLockObject => Instance.LockObject;
 
         /// <summary> Recommended timeout for trying to acquire
         /// a lock to <see cref="LockObject"/> </summary>
@@ -73,6 +74,8 @@ namespace iba.Data
 
         public ExtMonData()
         {
+            InitializeTreeValidator();
+
             FolderRoot = new ExtMonFolder(null,
                 @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0);
             // FolderRoot.SnmpFullMibName = ; // is not used
@@ -120,6 +123,175 @@ namespace iba.Data
 
         #endregion
 
+
+        #region Tree Validity
+
+        public event EventHandler<EventArgs> ExtMonStructureChanged;
+
+        /// <summary> Backing field for <see cref="IsStructureValid"/> </summary>
+        private bool _isStructureValid;
+
+        /// <summary>
+        /// Whether <see cref="ExtMonData"/> structure is relevant to the current structure in <see cref="TaskManager"/>.
+        /// It is set to false every time when structure
+        /// is changed in <see cref="TaskManager"/> (see <see cref="TaskManager.ExtMonConfigurationChanged"/>).
+        /// It is set to true after each successful tree rebuild (see <see cref="RebuildTree"/>).
+        /// </summary>
+        public bool IsStructureValid
+        {
+            get => _isStructureValid;
+            set
+            {
+                // this implementation works properly if called from different threads;
+                // lock of the timer is not needed here
+                _isStructureValid = value;
+
+                // stop current cycle
+                _treeValidatorTimer?.Stop();
+
+                // if structure is marked invalid
+                if (!value)
+                {
+                    // schedule a delayed tree rebuild, 
+                    // if it will not happen earlier
+                    _treeValidatorTimer?.Start();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The reason for having this timer is a compromise between responsibility and computational efforts.
+        /// Without this timer we had to rebuild the tree on any
+        /// firing of <see cref="TaskManager.ExtMonConfigurationChanged"/> event.
+        /// With this timer it's guaranteed that:
+        ///  1. Tree will not be rebuilt too often
+        ///  2. Tree will be rebuilt not later than after a certain time
+        /// </summary>
+        private readonly System.Timers.Timer _treeValidatorTimer = new System.Timers.Timer {Enabled = false};
+
+        private void InitializeTreeValidator()
+        {
+            TaskManager.Manager.ExtMonConfigurationChanged += (sender, args) =>
+            {
+                // we do not need to lock something here
+                // it's not a problem if structure is invalidated during rebuild is in progress
+
+                // mark tree as invalid
+                // it will be rebuilt either:
+                //  * on first request to any existing node
+                //  * or automatically on tick of _treeValidatorTimer
+                IsStructureValid = false;
+            };
+
+            // create the timer for delayed tree rebuild
+            _treeValidatorTimer.Interval = AgeThreshold.TotalMilliseconds;
+            _treeValidatorTimer.AutoReset = false;
+            _treeValidatorTimer.Enabled = true;
+            _treeValidatorTimer.Elapsed += (sender, args) =>
+            {
+                RebuildTreeIfItIsInvalid();
+
+                // best option to test why it's needed
+                // 1. setup SNMP manager to monitor some yet non-existent job. it will show "no such instance". ok.
+                // 2. Add one or several jobs to fit the requested OID area. 
+                //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
+            };
+        }
+
+        /// <summary>
+        /// Rebuilds a tree completely if its <see cref="IsStructureValid"/> flag is set to false. 
+        /// Use returned value to know whether tree has been rebuilt.
+        /// </summary>
+        /// <returns> <value>true</value> if tree was rebuilt, 
+        /// <value>false</value> if it is valid and has not been modified by this call.</returns>
+        public bool RebuildTreeIfItIsInvalid()
+        {
+            // here I use double than normal timeout to give priority over other locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 2))
+            {
+                try
+                {
+                    if (IsStructureValid)
+                    {
+                        return false; // tree structure has not changed
+                    }
+                    RebuildTree();
+                    return true; // tree structure has changed
+                }
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                // failed to acquire a lock
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Debug,
+                        $"{nameof(ExtMonData)}. Error acquiring lock when checking whether tree is valid.");
+                }
+                catch { /* logging is not critical */ }
+
+                return false; // tree structure has not changed
+            }
+        }
+
+        public bool RebuildTree()
+        {
+            var man = TaskManager.Manager;
+            if (man == null)
+            {
+                return false; // rebuild failed
+            }
+
+            if (Monitor.TryEnter(LockObject, LockTimeout))
+            {
+                try
+                {
+                    // obj structure is valid until datCoordinator configuration is changed.
+                    // theoretically it can be reset to false by another thread
+                    // during the process of rebuild of ExtMonData,
+                    // but it's not a problem. 
+                    // If this happens, then the tree will be rebuilt once again.
+                    // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
+                    IsStructureValid = true;
+
+                    bool bSuccess = man.ExtMonRebuildObjectsData();
+
+                    try
+                    {
+                        ExtMonStructureChanged?.Invoke(this, EventArgs.Empty);
+                    }
+                    catch
+                    {
+                        LogData.Data.Logger.Log(Level.Debug,
+                            $"{nameof(ExtMonData)}.{nameof(RebuildTree)}. Error triggering event {nameof(ExtMonStructureChanged)}.");
+                    }
+
+                    // fire an event to let SNMP worker and UA worker know that 
+                    // structure was changed and that they also need to rebuild their trees accordingly
+                    return bSuccess;
+                }
+                finally
+                {
+                    Monitor.Exit(LockObject);
+                }
+            }
+
+            // failed to acquire a lock
+            try
+            {
+                LogData.Data.Logger.Log(Level.Debug,
+                    $"{nameof(ExtMonData)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree.");
+            }
+            catch { /* logging is not critical */ }
+
+            return false; // rebuild failed
+        }
+
+        #endregion
 
         #region AddNewXxx() and auxiliary
 
