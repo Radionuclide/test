@@ -549,10 +549,7 @@ namespace iba.ibaOPCServer
 
             var allChildren = new List<BaseInstanceState> {folder};
 
-            var immediateChildren = new List<BaseInstanceState>();
-            folder.GetChildren(SystemContext, immediateChildren);
-
-            foreach (BaseInstanceState baseInstanceState in immediateChildren)
+            foreach (BaseInstanceState baseInstanceState in GetChildren(folder))
             {
                 switch (baseInstanceState)
                 {
@@ -567,6 +564,30 @@ namespace iba.ibaOPCServer
                 }
             }
             return allChildren;
+        }
+
+        public List<IbaOpcUaVariable> GetFlatListOfAllIbaVariables(FolderState folder = null)
+        {
+            folder = folder ?? FolderIbaRoot;
+            Debug.Assert(folder != null);
+
+            var allVariables = new List<IbaOpcUaVariable>();
+
+            foreach (BaseInstanceState baseInstanceState in GetChildren(folder))
+            {
+                switch (baseInstanceState)
+                {
+                    case FolderState childFolder:
+                        var subChildren = GetFlatListOfAllIbaVariables(childFolder);
+                        if (subChildren != null)
+                            allVariables.AddRange(subChildren);
+                        break;
+                    case IbaOpcUaVariable childVar:
+                        allVariables.Add(childVar);
+                        break;
+                }
+            }
+            return allVariables;
         }
 
         #endregion

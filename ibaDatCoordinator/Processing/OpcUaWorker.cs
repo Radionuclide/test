@@ -6,7 +6,6 @@ using iba.Data;
 using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Properties;
-using iba.Utility;
 using ibaOpcServer.IbaOpcUa;
 using Opc.Ua;
 using Opc.Ua.Configuration;
@@ -273,17 +272,6 @@ namespace iba.Processing
 
             foreach (var ep in _opcUaData.Endpoints)
                 _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
-
-            // apply port, do not change ip addresses
-            //List<IPEndPoint> eps = IbaOpcUaServer.EndPointsToListen;
-            //foreach (IPEndPoint ipe in eps)
-            //{
-            //    ipe.Port = SnmpData.Port;
-            //}
-            //IbaOpcUaServer.EndPointsToListen = eps;
-
-            // security
-            //IbaOpcUaServer.SetSecurityForV1AndV2(new List<string> { SnmpData.V1V2Security });
         }
 
         #endregion
@@ -336,7 +324,7 @@ namespace iba.Processing
 
         public bool IsStructureValid
         {
-            get { return _isStructureValid; }
+            get => _isStructureValid;
             set
             {
                 // this implementation works properly if called from different threads
@@ -346,7 +334,7 @@ namespace iba.Processing
                 // stop current cycle
                 _treeValidatorTimer?.Stop();
 
-                // if sturcture is marked ivalid
+                // if structure is marked invalid
                 if (!value)
                 {
                     // schedule a delayed tree rebuild, 
@@ -398,6 +386,8 @@ namespace iba.Processing
             }
         }
 
+        HashSet<IbaOpcUaVariable> _deletionPendingNodes;
+
         public bool RebuildTree()
         {
             var man = TaskManager.Manager;
@@ -418,17 +408,7 @@ namespace iba.Processing
                     // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
                     IsStructureValid = true;
 
-                    //IbaOpcUaServer.IbaUaNodeManager.DeleteAllUserValues();
-
-                    var oldVariables = NodeManager.GetFlatListOfAllChildren();
-
-                    foreach (var node in oldVariables)
-                    {
-                        if (node is IbaOpcUaVariable iv)
-                        {
-                            iv.IsMarkedForDeleting = true;
-                        }
-                    }
+                    _deletionPendingNodes = new HashSet<IbaOpcUaVariable>(NodeManager.GetFlatListOfAllIbaVariables());
 
                     if (!man.ExtMonRebuildObjectsData(ExtMonData.Instance))
                     {
@@ -444,16 +424,16 @@ namespace iba.Processing
                     }
 
                     // delete nodes that were marked for deletion and were not updated
-                    foreach (var node in oldVariables)
+                    foreach (var node in _deletionPendingNodes)
                     {
-                        if (node is IbaOpcUaVariable iv && iv.IsMarkedForDeleting)
+                        if (node is IbaOpcUaVariable iv )
                         {
-                            // delete node, but don't delete empty folders yet (to preserve section folders)
-                            NodeManager.DeleteNodeRecursively(iv, false);
-
                             // remove handler
                             // ReSharper disable once DelegateSubtraction
                             iv.OnReadValue -= OnReadProductSpecificValue;
+
+                            // delete node, but don't delete empty folders yet (to preserve section folders)
+                            NodeManager.DeleteNodeRecursively(iv, false);
                         }
                     }
 
@@ -543,10 +523,8 @@ namespace iba.Processing
                 default:
                     // node exists but it's not a folder
                     // it's strange, and it should not happen...
-                    // nevertheless, re-create it
                     Debug.Assert(false);
-                    NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
-                    return CreateOpcUaFolder(uaParentFolder, xmFolderToCreate);
+                    return null;
             }
         }
 
@@ -580,17 +558,16 @@ namespace iba.Processing
                     // let's update cross reference
                     iv.SetCrossReference(xmv);
                     // this node is present in ExtMonData and should NOT be deleted
-                    iv.IsMarkedForDeleting = false; 
+                    _deletionPendingNodes.Remove(iv);
                     // Caption and Description theoretically never change for variables
                     Debug.Assert(iv.DisplayName == xmv.Caption);
                     Debug.Assert(iv.Description == xmv.Description);
                     return iv;
                 default:
                     // node exists but it's not IbaOpcUaVariable
-                    // it should not happen... nevertheless, re-create it
+                    // it's strange, and it should not happen...
                     Debug.Assert(false);
-                    NodeManager.DeleteNodeRecursively(node as BaseInstanceState, false);
-                    return CreateOpcUaValue(uaParentFolder, xmv);
+                    return null;
             }
         }
 

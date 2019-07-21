@@ -18,11 +18,6 @@ namespace ibaOpcServer.IbaOpcUa
         /// </summary>
         public bool IsDeleted { get; protected set; }
 
-        /// <summary> This flag is used in UA tree rebuild.
-        /// Nodes that are not present in <see cref="ExtMonData"/> are first marked for deletion and then deleted.
-        /// </summary>
-        public bool IsMarkedForDeleting;
-
         public IbaOpcUaVariable(NodeState parent, ExtMonData.ExtMonVariableBase xmv)
             : base(parent)
         {

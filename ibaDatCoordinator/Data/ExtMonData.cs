@@ -309,8 +309,8 @@ namespace iba.Data
                             : Parent.SnmpFullMibName + SnmpMibNameSuffix;
 
                     }
-                    Debug.Assert( _snmpFullMibName != null); // todo. kls. 
-                    Debug.Assert(SnmpMibNameSuffix == null || _snmpFullMibName == null || _snmpFullMibName.Contains(SnmpMibNameSuffix));
+                    Debug.Assert( _snmpFullMibName != null);
+                    Debug.Assert(SnmpMibNameSuffix == null || _snmpFullMibName.Contains(SnmpMibNameSuffix));
                     return _snmpFullMibName;
                 }
                 set => _snmpFullMibName = value;
@@ -348,7 +348,7 @@ namespace iba.Data
                 }
             }
 
-            public ExtMonGroup GetGroup() // todo. kls. optimize to lazy
+            public ExtMonGroup GetGroup()
             {
                 switch (Parent)
                 {
@@ -423,7 +423,7 @@ namespace iba.Data
             }
         }
 
-        public class ExtMonFolder : ExtMonNode // todo. kls. Rename to ExternalMonitoringGroup 
+        public class ExtMonFolder : ExtMonNode
         {
             /// <summary>
             /// Try avoid writing this collection directly or be careful with parent-child consistency.
@@ -782,7 +782,7 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> MemoryUsedForLastExecutionInMb;
 
             /// <summary> A Job the task belongs to </summary>
-            public JobInfoBase ParentJob; // todo remove
+            public JobInfoBase ParentJob;
 
             /// <summary> Oid 6. Folder is OPTIONAL, can be empty for tasks that have no cleanup settings </summary>
             public LocalCleanupInfo CleanupInfo { get; private set; }
@@ -803,7 +803,7 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                // todo. kls. change MIB name and desc on TaskName change?
+                // todo. kls. Do description change on Task rename (this was NOT implemented in original version also) 
                 TaskName = AddChildVariable<string>(
                     @"Task name", @"Name",
                     @"The name of the task as it appears in GUI.",
@@ -1025,7 +1025,7 @@ namespace iba.Data
                 TodoCount.Value = 0;
                 DoneCount.Value = 0;
                 FailedCount.Value = 0;
-                // todo. kls. reset tasks???
+                // task reset is not needed here; is done with a separate function
             }
 
             /// <summary> Resets to default values everything except Guid (primary key) and Tasks </summary>
