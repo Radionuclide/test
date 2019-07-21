@@ -58,19 +58,15 @@ namespace iba.ibaOPCServer
         /// </summary>
         public override NodeId New(ISystemContext context, NodeState node)
         {
-            BaseInstanceState instance = node as BaseInstanceState;
+            if (!(node is BaseInstanceState instance) || instance.Parent == null)
+                return node.NodeId;
 
-            if (instance != null && instance.Parent != null)
+            if (instance.Parent.NodeId.Identifier is string strId)
             {
-                string id = instance.Parent.NodeId.Identifier as string;
-
-                if (id != null)
-                {
-                    // Replaced underline (_) with our own NODE_ID_DELIMITER
-                    return new NodeId(ComposeNodeId(id,  instance.SymbolicName), instance.Parent.NodeId.NamespaceIndex);
+                // Replaced underline (_) with our own NODE_ID_DELIMITER
+                return new NodeId(ComposeNodeId(strId, instance.SymbolicName), instance.Parent.NodeId.NamespaceIndex);
                     
-                    // todo. kls. check uniqueness here??
-                }
+                // todo. kls. check uniqueness here??
             }
 
             return node.NodeId;
@@ -78,6 +74,7 @@ namespace iba.ibaOPCServer
         #endregion
 
         #region INodeManager Members
+
         /// <summary>
         /// By OPC Foundation.
         /// Changed considerably by Kolesnik.
@@ -102,18 +99,15 @@ namespace iba.ibaOPCServer
                 FolderIbaRoot = CreateFolder(null, "IbaDatCoordinator" /*UpperCamel*/, "ibaDatCoordinator");
                 FolderIbaRoot.Description = @"ibaDatCoordinator module";
 
-                // todo. kls. check initialization
-                var x = Find(FolderIbaRoot.NodeId);
-                if (x == null)
-                    ;
-                //Debug.Assert(Find(FolderIbaRoot.NodeId)!=null);
-
                 FolderIbaRoot.AddReference(ReferenceTypes.Organizes, true, ObjectIds.ObjectsFolder);
                 references.Add(new NodeStateReference(ReferenceTypes.Organizes, false, FolderIbaRoot.NodeId));
                 FolderIbaRoot.EventNotifier = EventNotifiers.SubscribeToEvents;
                 AddRootNotifier(FolderIbaRoot);
 
                 AddPredefinedNode(SystemContext, FolderIbaRoot);
+
+                // paranoic check
+                Debug.Assert(Find(FolderIbaRoot.NodeId) != null);
             }
         }
 
@@ -303,12 +297,10 @@ namespace iba.ibaOPCServer
         /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
         public void SetValueScalar(BaseDataVariableState varState, object value)
         {
-            // todo. kls. perform type-check if necessary
-#if DEBUG 
             FormatEnum(ref value);
             var uaType = GetOpcUaType(value);
             Debug.Assert((NodeId)(uint)uaType == varState.DataType);
-#endif
+
             // set value
             varState.Value = value;
 

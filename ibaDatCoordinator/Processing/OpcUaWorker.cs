@@ -34,31 +34,28 @@ namespace iba.Processing
                 return;
             }
 
-            // turn on monitoring timer
-            InitializeMonitoringTimer();
-
-
-            _uaApplication = new ApplicationInstance();
-            //                IbaOpcUaServer = new IbaOpcUaServer(); 
-
-            //_uaApplication?.Stop();
-            _uaApplication.ApplicationType = ApplicationType.Server;
-            _uaApplication.ConfigSectionName = $"iba_ag.{_ibaDatCoordinatorUaServerStr}";
-            //try
+            try
             {
-                // create ua server
+                _uaApplication = new ApplicationInstance();
                 IbaOpcUaServer = new IbaOpcUaServer();
 
+                _uaApplication.ApplicationType = ApplicationType.Server;
+                _uaApplication.ConfigSectionName = $"iba_ag.ibaDatCoordinatorUaServer";
+
+                // create ua server
+
                 // load the application configuration.
-                _uaApplication.LoadApplicationConfiguration(false);
+                _uaApplication.LoadApplicationConfiguration(false); // todo. kls. is done automatically on start (try to defer)
                 if (!string.IsNullOrEmpty(_uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
                     _uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath =
-                        "c:\\Temp\\datCo_OpcUaServer_log.txt"; //todo
+                        "c:\\Temp\\datCo_OpcUaServer_log.txt"; // todo. kls. 
                     _uaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
-                String sysName = IbaOpcUaServer.GetFQDN(); //todo
+                // todo. kls. 
+                String sysName = IbaOpcUaServer.GetFQDN();
+
                 //if ((_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Count == 0) ||
                 //    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
                 //        "opc.tcp://" + sysName + ":21060") ||
@@ -70,35 +67,42 @@ namespace iba.Processing
                     //string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
                     ////string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
                     _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint.Uri);
+                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint
+                        .Uri);
                     //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(Base2);
                 }
 
                 // check the application certificate.
                 _uaApplication.CheckApplicationInstanceCertificate(false, 0);
 
-                // todo. kls. Test exceptions on init
+                //start the server
+                //if (Environment.UserInteractive)
+                //    _uaApplication.Start(IbaOpcUaServer);
+                //else
+                // // todo. kls. - test launch as service
+                //    _uaApplication.StartAsService(IbaOpcUaServer);
+                //_uaServer.OnTrustModeChanged += trustModeChangedHandler; // todo. kls. 
 
-                // start the server.
-                if (Environment.UserInteractive)
-                    _uaApplication.Start(IbaOpcUaServer);
-                else
-                    // todo - launch as service not tested!
-                    _uaApplication.StartAsService(IbaOpcUaServer);
+                // change status from initial (errored) to stopped to have proper
+                Status = ExtMonWorkerStatus.Stopped;
 
-                //_uaServer.OnTrustModeChanged += trustModeChangedHandler;
+                // start server (if it is enabled), update status, write to log
+                RestartServer();
 
-                IbaOpcUaServer.KlsInitialize(null, null, false);
+                // todo. kls. 
+                RegisterEnums();
 
-                //_opcUaData.EndPointString = IbaOpcUaServer.KlsStrEndpointTcp; // todo. kls. 
+                // subscribe to tree structure changes 
+                ExtMonInstance.ExtMonStructureChanged += (sender, args) => RebuildTree();
+
+                // turn on monitoring timer
+                InitializeMonitoringTimer();
             }
-
-            RestartServer();
-
-            // subscribe to tree structure changes 
-            ExtMonInstance.ExtMonStructureChanged += (sender, args) => RebuildTree();
-
-            RegisterEnums();
+            catch
+            {
+                ;
+                throw;
+            }
         }
 
 
@@ -120,14 +124,12 @@ namespace iba.Processing
 
         #region Configuration of UA server
 
-        ApplicationInstance _uaApplication;
+        private ApplicationInstance _uaApplication;
 
         public IbaOpcUaServer IbaOpcUaServer { get; private set; }
 
         /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaUaNodeManager"/> </summary>
         private IbaUaNodeManager NodeManager => IbaOpcUaServer?.IbaUaNodeManager;
-
-        private string _ibaDatCoordinatorUaServerStr = "ibaDatCoordinatorUaServer";
 
         private OpcUaData _opcUaData = new OpcUaData();
         public OpcUaData OpcUaData
@@ -167,28 +169,53 @@ namespace iba.Processing
             return $"thr=[{thrNameOrId}]";
         }
 
+        private void StartServer()
+        {
+            ApplyConfiguration2(); // todo. kls. test - can be set before or after server start
+
+            // start application and server
+            _uaApplication.Start(IbaOpcUaServer);
+
+            IbaOpcUaServer.ApplyConfiguration(null, null, false);
+
+            RebuildTree();
+
+            // finally, set status
+            Status = ExtMonWorkerStatus.Started;
+            StatusString = String.Format(Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
+        }
+
+        private void StopServer()
+        {
+            // first, set status
+            Status = ExtMonWorkerStatus.Stopped;
+            StatusString = Resources.opcUaStatusDisabled;
+            
+            if (NodeManager == null)
+            {
+                // server was never started, so no need to stop it
+                return;
+            }
+
+            // delete object tree because anyway on server stop all of them will become invalid
+            NodeManager?.DeleteNodeRecursively(NodeManager.FolderIbaRoot, true);
+
+            // stop application and server
+            _uaApplication.Stop();
+        }
+
         public void RestartServer()
         {
             try
             {
-                var oldStatus = Status;
-                Status = ExtMonWorkerStatus.Errored;
-                StatusString = @"";
-
-                IbaOpcUaServer.Stop();
-                ApplyConfigurationToUaServer(); // todo
                 string logMessage;
+                var oldStatus = Status;
 
-                //_uaApplication.Stop();
-                //_uaApplication.Start(IbaOpcUaServer);
+                StopServer();
 
                 if (_opcUaData.Enabled)
                 {
-                    IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration);
-
-                    //IbaOpcUaServer.Start(_uaApplication.ApplicationConfiguration, uri);
-                    Status = ExtMonWorkerStatus.Started;
-                    StatusString = String.Format(Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
+                    StartServer();
 
                     logMessage = Status == oldStatus
                         ?
@@ -200,8 +227,6 @@ namespace iba.Processing
                 }
                 else
                 {
-                    Status = ExtMonWorkerStatus.Stopped;
-                    StatusString = Resources.opcUaStatusDisabled;
 
                     logMessage = Status == oldStatus
                         ?
@@ -226,12 +251,11 @@ namespace iba.Processing
             }
         }
 
-        private void ApplyConfigurationToUaServer()
+        private void ApplyConfiguration2()
         {
-            if (IbaOpcUaServer == null || OpcUaData == null)
-            {
-                return;
-            }
+            Debug.Assert(_uaApplication != null);
+            Debug.Assert(IbaOpcUaServer != null);
+            Debug.Assert(OpcUaData != null);
 
             _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
 
@@ -300,7 +324,7 @@ namespace iba.Processing
         public bool RebuildTree()
         {
             var man = TaskManager.Manager;
-            if (man == null || IbaOpcUaServer == null)
+            if (man == null || IbaOpcUaServer?.IbaUaNodeManager == null)
             {
                 return false; // rebuild failed
             }
@@ -342,7 +366,7 @@ namespace iba.Processing
 
                     // delete all empty folders. (section folders will be preserved even if empty)
                     NodeManager.DeleteEmptySubfolders();
-
+                    
                     return true; // rebuilt successfully
                 }
                 finally
@@ -669,6 +693,7 @@ namespace iba.Processing
                         }
                     }
 
+                    // todo rebuild monitoring groups only in On MonitoredItem add/remove handler
                     // refresh all groups that have monitored items
                     foreach (var group in groups)
                     {
@@ -783,7 +808,7 @@ namespace iba.Processing
                     try
                     {
                         RefreshGroup(xmv.Group);
-                        tag.Value = xmv.ObjValue.ToString();
+                        tag.Value = $@"{xmv.ObjValue}";
                     }
                     catch
                     {
@@ -817,7 +842,7 @@ namespace iba.Processing
                 foreach (var node in children)
                 {
                     if (node.UaFullPath == nodeId)
-                        return GetTreeNodeTag(node);
+                        return GetTreeNodeTag(node); 
                 }
             }
             catch (Exception ex)

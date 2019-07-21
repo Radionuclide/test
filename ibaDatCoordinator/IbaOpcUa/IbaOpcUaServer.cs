@@ -21,14 +21,11 @@ namespace iba.ibaOPCServer
 
     public class IbaOpcUaServer : StandardServer
     {
+        public IbaUaNodeManager IbaUaNodeManager;
+
         public IbaOpcUaServer()
         {
-            KlsStrEndpoints = "";
-            KlsStrEndpointTcp = "";
-            KlsStrSessions = "";
-            KlsStrSubscriptions = "";
-            KlsStrVarTree = "";
-            KlsStrMonitoredItems = "";
+            ResetDiagnosticStrings();
         }
 
         #region Overridden Methods
@@ -65,7 +62,7 @@ namespace iba.ibaOPCServer
             ServerProperties properties = new ServerProperties();
 
             properties.ManufacturerName = "iba-ag.com";
-            properties.ProductName      = "ibaLogicUaServer";
+            properties.ProductName = "ibaDatCoordinatorUaServer";
             properties.ProductUri       = "http://iba-ag.com";
             properties.SoftwareVersion  = Utils.GetAssemblySoftwareVersion();
             properties.BuildNumber      = Utils.GetAssemblyBuildNumber();
@@ -193,21 +190,12 @@ namespace iba.ibaOPCServer
                 Configuration.ApplicationUri,
                 new LocalizedText(info)));
         }
-        
+
         #endregion
 
-        
-        public IbaUaNodeManager IbaUaNodeManager;
 
-        // todo protect by lock for safe thread access? or not so important?
-        public string KlsStrEndpoints { get; private set; }
-        public string KlsStrEndpointTcp { get; private set; }
-        public string KlsStrSessions { get; private set; }
-        public string KlsStrSubscriptions { get; private set; }
-        public string KlsStrVarTree { get; private set; }
-        public string KlsStrMonitoredItems { get; private set; }
+        #region Trust functionality
 
-        #region trust functionality
         private IbaOpcUaServerCertificateTrustMode _trustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
         public delegate void TrustModeChangedHandler(IbaOpcUaServerCertificateTrustMode mode);
 
@@ -217,7 +205,7 @@ namespace iba.ibaOPCServer
             set
             {
                 _trustMode = value;
-                _trustModeResetHandlers();
+                TrustModeResetHandlers();
                 CertificateValidator cv = Configuration.CertificateValidator;
 
                 switch (_trustMode)
@@ -245,7 +233,7 @@ namespace iba.ibaOPCServer
             get { return _trustMode; }
         }
 
-        private void _trustModeResetHandlers()
+        private void TrustModeResetHandlers()
         {
             CertificateValidator cv = Configuration.CertificateValidator;
 
@@ -440,21 +428,17 @@ namespace iba.ibaOPCServer
         #endregion //UserAcccounts
 
 
-        public void KlsInitialize(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
+        /// <summary>
+        /// // todo. kls. comment and rename
+        /// </summary>
+        public void ApplyConfiguration(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
             bool passwordEncryptionForTcpNoneEndpoint)
         {
-            // build var tree
-            KlsUpdateConfiguration();
-
             // prepare endpoint strings for quick use
-            KlsStrEndpoints = String.Join(", ", ServerInternal.EndpointAddresses);
-            KlsStrEndpointTcp = GetEndpointAddress("opc.tcp");
+            DiagnosticStrEndpoints = String.Join(", ", ServerInternal.EndpointAddresses);
+            DiagnosticStrEndpointTcp = GetEndpointAddress("opc.tcp");
             // if there is something inside, let's delete last comma
-
-            // set info that we do not have sessions yet
-            KlsUpdateSessionsList();
-
-            
+           
             // user management
             {
 
@@ -499,47 +483,36 @@ namespace iba.ibaOPCServer
             return String.Empty;
         }
 
-        public void KlsUninitialize()
+
+        #region Diagnostic strings
+
+        public string DiagnosticStrEndpoints { get; private set; }
+        public string DiagnosticStrEndpointTcp { get; private set; }
+        public string DiagnosticStrSessions { get; private set; }
+        public string DiagnosticStrSubscriptions { get; private set; }
+        public string DiagnosticStrVarTree { get; private set; }
+        public string DiagnosticStrMonitoredItems { get; private set; }
+
+        private void ResetDiagnosticStrings()
         {
-            // delete var tree
-            KlsUpdateConfiguration();
+            DiagnosticStrEndpoints = "";
+            DiagnosticStrEndpointTcp = "";
+            DiagnosticStrSessions = "";
+            DiagnosticStrSubscriptions = "";
+            DiagnosticStrVarTree = "";
+            DiagnosticStrMonitoredItems = "";
         }
 
-        public void KlsUpdateConfiguration()
-        {
-
-            //// get PMAC status from online server
-            //PmacStatusForUaServer pmacStatus = new PmacStatusForUaServer
-            //{
-            //    IsOnline = _onlineServer.IsOnline,
-            //};
-
-            //if (_onlineServer.IsOnline)
-            //{
-            //    pmacStatus.IsRunning = _onlineServer.bTargetRunning;
-            //    pmacStatus.ProjectName = _onlineServer.KlsCurrentProjectName;
-            //    pmacStatus.MaxDongleItems = _onlineServer.KlsMaxOpcDongleItems;
-            //    pmacStatus.AvailableVariablesCount = varInfo == null ? 0 : varInfo.VarList.Count;
-            //}
-
-            //// rebuild node tree according to varInfo from PMAC
-            //_ibaUaNodeManager.KlsUpdateVarTree(varInfo, pmacStatus);
-
-            //// get vartree status string
-            //KlsStrVarTree = _ibaUaNodeManager.KlsGetDescriptionStringVarTree();
-        }
 
         /// <summary>
         /// todo. kls. delete or optimize in release version
         /// </summary>
-        public string KlsGetDescriptionStringSubscriptions()
+        public string GetDiagnosticStringSubscriptions()
         {
             string s = "";
             try
             {
               IList<Subscription> subs = ServerInternal.SubscriptionManager.GetSubscriptions();
-#if DEBUG
-
                 if (subs == null || subs.Count == 0)
                     return s;
 
@@ -560,16 +533,11 @@ namespace iba.ibaOPCServer
                 // remove last ", "
                 s = s.TrimEnd(' ', ',');
                 return s;
-#else
-            return string.Format("Count = {0}", subs.Count);
-#endif
             }
             catch
             {
                 return "error";
             }
-
-
         }
 
         public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
@@ -590,14 +558,15 @@ namespace iba.ibaOPCServer
             }
             return UserAccountAnonymous;
         }
-        private void KlsUpdateSessionsList()
+
+        private void UpdateDiagnosticStringSessions()
         {
             //List<Session> sessions = new List<Session>(ServerInternal.SessionManager.GetSessions());
             IList<Session> sessions = ServerInternal.SessionManager.GetSessions();
 
             if (sessions == null || sessions.Count == 0)
             {
-                KlsStrSessions = "<no sessions>";
+                DiagnosticStrSessions = "<no sessions>";
                 return;
             }
             // count active sessions
@@ -606,22 +575,24 @@ namespace iba.ibaOPCServer
                 if (sessions[i].Activated) activeSessionsCount++;
 
             // description overview
-            KlsStrSessions = string.Format("Total = {0}; Active = {1}: ", sessions.Count, activeSessionsCount);
+            DiagnosticStrSessions = string.Format("Total = {0}; Active = {1}: ", sessions.Count, activeSessionsCount);
 
             // description details
             for (int i = 0; i < sessions.Count; i++)
             {
                 Session s = sessions[i];
                 if (!s.Activated) continue;
-                KlsStrSessions += string.Format("[{0} {1} {2}], ",
+                DiagnosticStrSessions += string.Format("[{0} {1} {2}], ",
                     sessions[i].SessionDiagnostics.SessionName,
                     sessions[i].SessionDiagnostics.SessionId,
                     sessions[i].Identity.DisplayName);
             }
             // remove trailing delimiter
-            KlsStrSessions = KlsStrSessions.TrimEnd(',', ' ', ':');
+            DiagnosticStrSessions = DiagnosticStrSessions.TrimEnd(',', ' ', ':');
         }
 
+
+        #endregion
 
         #region override by kolesnik
 
@@ -630,38 +601,36 @@ namespace iba.ibaOPCServer
             ResponseHeader header =
                 base.CreateSession(requestHeader, clientDescription, serverUri, endpointUrl, sessionName, clientNonce, clientCertificate, requestedSessionTimeout, maxResponseMessageSize, out sessionId, out authenticationToken, out revisedSessionTimeout, out serverNonce, out serverCertificate, out serverEndpoints, out serverSoftwareCertificates, out serverSignature, out maxRequestMessageSize);
 
-            KlsUpdateSessionsList();
+            UpdateDiagnosticStringSessions();
             return header;
         }
 
-        public override ResponseHeader ActivateSession(RequestHeader requestHeader, SignatureData clientSignature,
-            SignedSoftwareCertificateCollection clientSoftwareCertificates, StringCollection localeIds,
-            ExtensionObject userIdentityToken, SignatureData userTokenSignature, out byte[] serverNonce,
-            out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos)
-        {
-            try
-            {
-                ResponseHeader responseHeader = base.ActivateSession(requestHeader, clientSignature, clientSoftwareCertificates,
-                    localeIds, userIdentityToken, userTokenSignature, out serverNonce, out results, out diagnosticInfos);
+        //public override ResponseHeader ActivateSession(RequestHeader requestHeader, SignatureData clientSignature,
+        //    SignedSoftwareCertificateCollection clientSoftwareCertificates, StringCollection localeIds,
+        //    ExtensionObject userIdentityToken, SignatureData userTokenSignature, out byte[] serverNonce,
+        //    out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos)
+        //{
+        //    try
+        //    {
+        //        var responseHeader = base.ActivateSession(requestHeader, clientSignature, clientSoftwareCertificates,
+        //            localeIds, userIdentityToken, userTokenSignature, out serverNonce, out results, out diagnosticInfos);
 
-                KlsUpdateSessionsList();
-
-                return responseHeader;
-            }
-            catch
-            {
-                ;
-                // todo. kls. 
-                throw;
-            }
-        }
+        //        UpdateDiagnosticStringSessions();
+        //        return responseHeader;
+        //    }
+        //    catch
+        //    {
+        //        ; // todo. kls. Handle closed section? Or ignore?
+        //        throw;
+        //    }
+        //}
 
         public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)
         {
             ResponseHeader header =
                 base.CloseSession(requestHeader, deleteSubscriptions);
 
-            KlsUpdateSessionsList();
+            UpdateDiagnosticStringSessions();
 
             return header;
         }
