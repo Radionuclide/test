@@ -624,30 +624,6 @@ namespace iba.Processing
             return ServiceResult.Good;
         }
 
-        private object RefreshAndReadNode(string nodeId)
-        {
-            Debug.Assert(!string.IsNullOrWhiteSpace(nodeId));
-            if (string.IsNullOrWhiteSpace(nodeId))
-                return null;
-
-            var node = NodeManager.Find(nodeId);
-
-            // not found
-            if (node == null)
-                return null;
-
-            Debug.Assert(node is IbaOpcUaVariable);
-
-            if (!(node is IbaOpcUaVariable iv))
-                return null;
-
-            Debug.Assert(iv.ExtMonVar.Group != null);
-
-            RefreshGroup(iv.ExtMonVar.Group);
-
-            return iv.Value;
-        }
-
         #endregion
 
 
@@ -745,17 +721,17 @@ namespace iba.Processing
                 ExtMonInstance.RebuildTreeIfItIsInvalid();
 
                 // we need List rather than HashSet to keep the original order
-                var result = new List<ExtMonData.GuiTreeNodeTag>(); 
-                var objList = NodeManager.GetFlatListOfAllChildren();
+                var result = new List<ExtMonData.GuiTreeNodeTag>();
+                var objList = ExtMonInstance.GetFlatListOfAllChildren();
                 if (objList == null)
                 {
                     return null;
                 }
 
                 //retrieve information about each node
-                foreach (BaseInstanceState uaNode in objList)
+                foreach (var node in objList)
                 {
-                    var tag = GetTreeNodeTag(uaNode, true);
+                    var tag = GetTreeNodeTag(node);
                     if (tag != null)
                     {
                         result.Add(tag);
@@ -773,59 +749,48 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(BaseInstanceState node, bool bUpdate = false)
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(ExtMonData.ExtMonNode node)
         {
             try
             {
-                Debug.Assert(node != null);
-
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (node == null)
-                    // ReSharper disable once HeuristicUnreachableCode
+                {
+                    Debug.Assert(false);
                     return null;
+                }
 
                 ExtMonData.GuiTreeNodeTag tag = new ExtMonData.GuiTreeNodeTag
                 {
                     Type = "",
                     Value = "",
-                    Caption = node.DisplayName.Text,
-                    Description = node.Description.Text,
+                    Caption = node.Caption,
+                    Description = node.Description,
                     IsFolder = true,
-                    OpcUaNodeId = node.NodeId.Identifier as string /*we use only string ids*/
+                    OpcUaNodeId = node.UaFullPath
                 };
 
                 Debug.Assert(tag.OpcUaNodeId != null);
 
                 // ReSharper disable once InvertIf
-                if (node is IbaOpcUaVariable iv)
+                if (node is ExtMonData.ExtMonVariableBase xmv)
                 {
                     tag.IsFolder = false;
-                    tag.Value = ""; // default val
 
-                    if (iv.IsDeleted)
+                    var type = xmv.ObjValue.GetType();
+                    tag.Type = type.IsEnum ? "Enum" : type.Name;
+
+                    // try to get an updated value
+                    try
                     {
-                        tag.Type = "";
-                        tag.Value = "";
+                        RefreshGroup(xmv.Group);
+                        tag.Value = xmv.ObjValue.ToString();
                     }
-                    else /*not deleted; is a valid variable*/
+                    catch
                     {
-                        var type = iv.ExtMonVar.ObjValue.GetType();
-                        tag.Type = type.IsEnum ? "Enum" : type.Name;
-
-                        // try to get an updated value
-                        try
-                        {
-                            object value = RefreshAndReadNode(tag.OpcUaNodeId);
-                            tag.Value = $"{value}";
-                        }
-                        catch
-                        {
-                            Debug.Assert(false);
-                            tag.Value = "(error)";
-                        }
+                        tag.Value = "(error)";
+                        Debug.Assert(false);
                     }
                 }
-
                 return tag;
             }
             catch (Exception ex)
@@ -837,36 +802,33 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId, bool bUpdate = false)
+        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId)
         {
             try
             {
-                Debug.Assert(!string.IsNullOrWhiteSpace(nodeId));
-
                 if (string.IsNullOrWhiteSpace(nodeId))
                 {
+                    Debug.Assert(false);
                     // illegal nodeId
                     return null;
                 }
 
-                BaseInstanceState uaNode = NodeManager.Find(nodeId) as BaseInstanceState;
-                // ReSharper disable once ConvertIfStatementToReturnStatement
-                if (uaNode == null)
+                List<ExtMonData.ExtMonNode> children = ExtMonInstance.GetFlatListOfAllChildren();
+                foreach (var node in children)
                 {
-                    // requested node is not found; likely is deleted
-                    return null;
+                    if (node.UaFullPath == nodeId)
+                        return GetTreeNodeTag(node);
                 }
-
-                return GetTreeNodeTag(uaNode, bUpdate);
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
                     $"{nameof(OpcUaWorker)}.{nameof(GetTreeNodeTag)}({nodeId}). {ex.Message}");
-                return null;
             }
+            return null;
         }
 
         #endregion
+
     }
 }

@@ -1047,7 +1047,7 @@ namespace iba.Processing
         {
             try
             {
-                return OpcUaWorker.GetTreeNodeTag(id, true);
+                return OpcUaWorker.GetTreeNodeTag(id);
             }
             catch (Exception ex)
             {
