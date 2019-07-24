@@ -220,61 +220,40 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gbEvent.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="gbTrigger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_btnPulseSignal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_btnPulseSignal.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_btnPulseSignal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 65</value>
-  </data>
-  <data name="m_btnPulseSignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 23</value>
-  </data>
-  <data name="m_btnPulseSignal.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_btnPulseSignal.Text" xml:space="preserve">
-    <value>Select signal...</value>
-  </data>
-  <data name="&gt;&gt;m_btnPulseSignal.Name" xml:space="preserve">
-    <value>m_btnPulseSignal</value>
-  </data>
-  <data name="&gt;&gt;m_btnPulseSignal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnPulseSignal.Parent" xml:space="preserve">
-    <value>gbTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_btnPulseSignal.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tbPulseSignal.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_grPulse.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 68</value>
   </data>
-  <data name="m_tbPulseSignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 20</value>
+  <data name="m_colPulse.Caption" xml:space="preserve">
+    <value>Pulse signal</value>
   </data>
-  <data name="m_tbPulseSignal.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_colPulse.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;m_tbPulseSignal.Name" xml:space="preserve">
-    <value>m_tbPulseSignal</value>
+  <data name="m_colPulse.VisibleIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tbPulseSignal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_grPulse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 20</value>
   </data>
-  <data name="&gt;&gt;m_tbPulseSignal.Parent" xml:space="preserve">
+  <data name="m_grPulse.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_grPulse.Name" xml:space="preserve">
+    <value>m_grPulse</value>
+  </data>
+  <data name="&gt;&gt;m_grPulse.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.GridControl, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;m_grPulse.Parent" xml:space="preserve">
     <value>gbTrigger</value>
   </data>
-  <data name="&gt;&gt;m_tbPulseSignal.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_grPulse.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -301,7 +280,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_rbTriggerBySignal.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -310,13 +289,13 @@
     <value>6, 42</value>
   </data>
   <data name="m_rbTriggerBySignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 17</value>
+    <value>276, 17</value>
   </data>
   <data name="m_rbTriggerBySignal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbTriggerBySignal.Text" xml:space="preserve">
-    <value>Create an event occurrence for every signal pulse:</value>
+    <value>Generate an event occurrence for every signal pulse:</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.Name" xml:space="preserve">
     <value>m_rbTriggerBySignal</value>
@@ -328,7 +307,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_rbTriggerPerFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -337,13 +316,13 @@
     <value>6, 19</value>
   </data>
   <data name="m_rbTriggerPerFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 17</value>
+    <value>263, 17</value>
   </data>
   <data name="m_rbTriggerPerFile.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_rbTriggerPerFile.Text" xml:space="preserve">
-    <value>Create one event occurrence per processed file</value>
+    <value>Generate one event occurrence per processed file</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerPerFile.Name" xml:space="preserve">
     <value>m_rbTriggerPerFile</value>
@@ -355,7 +334,7 @@
     <value>gbTrigger</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerPerFile.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="gbTrigger.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 114</value>
@@ -379,7 +358,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gbTrigger.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="gbDataSource.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -643,7 +622,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gbDataSource.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -838,7 +817,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -851,6 +830,18 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 995</value>
+  </data>
+  <data name="&gt;&gt;m_viewPulse.Name" xml:space="preserve">
+    <value>m_viewPulse</value>
+  </data>
+  <data name="&gt;&gt;m_viewPulse.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Views.Grid.GridView, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;m_colPulse.Name" xml:space="preserve">
+    <value>m_colPulse</value>
+  </data>
+  <data name="&gt;&gt;m_colPulse.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>HDEventCreationTaskControl</value>

@@ -13,6 +13,7 @@ namespace iba.Data
     public class HDCreateEventTaskData : TaskData
     {
         public const string CurrentFileExpression = "*CURRENT_FILE_NAME*";
+        public const string UnassignedExpression = "*UNASSIGNED*";
 
         [Serializable]
         public class EventData : ICloneable
@@ -158,7 +159,13 @@ namespace iba.Data
             }
         }
 
-        //TODO dat file req?
+        private string m_datFileHost;
+        public string DatFileHost
+        {
+            get { return m_datFileHost; }
+            set { m_datFileHost = value; }
+        }
+
         private string m_datFile;
         public string DatFile
         {
@@ -218,10 +225,11 @@ namespace iba.Data
             : base(parent)
         {
             m_name = iba.Properties.Resources.HDEventTaskTitle;
+            m_datFileHost = "";
             m_datFile = "";
             m_datFilePassword = "";
             m_triggerMode = HDEventTriggerEnum.PerFile;
-            m_pulseSignal = "";
+            m_pulseSignal = UnassignedExpression;
             m_eventSettings = new EventData();
             m_monitorData = new MonitorData();
         }
@@ -235,6 +243,7 @@ namespace iba.Data
         {
             HDCreateEventTaskData ced = new HDCreateEventTaskData(null);
             ced.m_pdoFile = m_pdoFile;
+            ced.m_datFileHost = m_datFileHost;
             ced.m_datFile = m_datFile;
             ced.m_datFilePassword = m_datFilePassword;
             ced.m_triggerMode = m_triggerMode;
@@ -251,6 +260,7 @@ namespace iba.Data
             if (other == this) return true;
 
             return other.m_pdoFile == m_pdoFile
+                && other.m_datFileHost == m_datFileHost
                 && other.m_datFile == m_datFile
                 && other.m_datFilePassword == m_datFilePassword
                 && other.m_triggerMode == m_triggerMode

@@ -4603,7 +4603,7 @@ namespace iba.Processing
             {
                 string lExpr = task.EventSettings.NumericFields[i].Item2;
 
-                if (string.IsNullOrWhiteSpace(lExpr))
+                if (string.IsNullOrWhiteSpace(lExpr) || lExpr == HDCreateEventTaskData.UnassignedExpression)
                 {
                     floats[i] = float.NaN;
                     continue;
@@ -4705,7 +4705,7 @@ namespace iba.Processing
 
             if (m_versionIbaAnalyzer == null || m_versionIbaAnalyzer < new Version(7, 1, 0))
             {
-                Log(Logging.Level.Exception, Properties.Resources.logHDEventTaskAnalyzerVersionError, filename, task);
+                Log(Logging.Level.Exception, string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"), filename, task);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
@@ -4751,7 +4751,7 @@ namespace iba.Processing
                     Dictionary<string, Tuple<List<string>, List<double>>> textResults = new Dictionary<string, Tuple<List<string>, List<double>>>();
                     foreach (var textField in task.EventSettings.TextFields)
                     {
-                        if (string.IsNullOrWhiteSpace(textField.Item2))
+                        if (string.IsNullOrWhiteSpace(textField.Item2) || textField.Item2 == HDCreateEventTaskData.UnassignedExpression)
                         {
                             textResults[textField.Item1] = Tuple.Create(new List<string>(1) { "" }, new List<double>(1) { 0.0 });
                             continue;

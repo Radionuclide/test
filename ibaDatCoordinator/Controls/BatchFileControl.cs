@@ -361,7 +361,7 @@ namespace iba.Controls
                     fd.FixedDrivesOnly = false;
                     fd.ShowFiles = true;
                     fd.SelectedPath = path;
-                    fd.Filter = "iba dat files(*.dat) | *.dat";
+                    fd.Filter = Properties.Resources.DatFileFilter;
                     result = fd.ShowDialog(this);
                     path = fd.SelectedPath;
                 }
@@ -370,7 +370,7 @@ namespace iba.Controls
             {
                 m_openFileDialog1.CheckFileExists = true;
                 m_openFileDialog1.FileName = "";
-                m_openFileDialog1.Filter = "iba dat files(*.dat) | *.dat";
+                m_openFileDialog1.Filter = Properties.Resources.DatFileFilter;
                 if (System.IO.File.Exists(path))
                     m_openFileDialog1.FileName = path;
                 else if (System.IO.Directory.Exists(path))

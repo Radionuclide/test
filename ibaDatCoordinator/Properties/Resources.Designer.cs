@@ -579,6 +579,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to iba dat files (*.dat)|*.dat.
+        /// </summary>
+        internal static string DatFileFilter {
+            get {
+                return ResourceManager.GetString("DatFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete  the Script options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteBatchfileQuestion {
@@ -1147,6 +1156,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processed filename.
+        /// </summary>
+        internal static string HDEventTask_ChannelProcessedFile {
+            get {
+                return ResourceManager.GetString("HDEventTask_ChannelProcessedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassigned.
+        /// </summary>
+        internal static string HDEventTask_ChannelUnassigned {
+            get {
+                return ResourceManager.GetString("HDEventTask_ChannelUnassigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generate ibaHD event.
         /// </summary>
         internal static string HDEventTaskTitle {
@@ -1355,6 +1382,26 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_file {
+            get {
+                object obj = ResourceManager.GetObject("img_file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_warning {
+            get {
+                object obj = ResourceManager.GetObject("img_warning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified password is incorrect !.
         /// </summary>
         internal static string incorrectPassword {
@@ -1423,6 +1470,15 @@ namespace iba.Properties {
         internal static string Last {
             get {
                 return ResourceManager.GetString("Last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer v{0} or higher is required.
+        /// </summary>
+        internal static string logAnalyzerVersionError {
+            get {
+                return ResourceManager.GetString("logAnalyzerVersionError", resourceCulture);
             }
         }
         
@@ -1829,15 +1885,6 @@ namespace iba.Properties {
         internal static string logHDEventTaskActivateError {
             get {
                 return ResourceManager.GetString("logHDEventTaskActivateError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer v7.1.0 or higher is required.
-        /// </summary>
-        internal static string logHDEventTaskAnalyzerVersionError {
-            get {
-                return ResourceManager.GetString("logHDEventTaskAnalyzerVersionError", resourceCulture);
             }
         }
         

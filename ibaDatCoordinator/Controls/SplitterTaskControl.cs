@@ -166,7 +166,7 @@ namespace iba.Controls
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = "iba dat files (*.dat)|*.dat";
+            m_openFileDialog.Filter = Properties.Resources.DatFileFilter;
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 m_datFileTextBox.Text = m_openFileDialog.FileName;

@@ -7,19 +7,6 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Component Designer generated code
 
         /// <summary> 
@@ -34,8 +21,9 @@
             this.gbStoreSelection = new System.Windows.Forms.GroupBox();
             this.m_ctrlServer = new iba.HD.Client.ControlServerSelection();
             this.gbTrigger = new iba.Utility.CollapsibleGroupBox();
-            this.m_btnPulseSignal = new System.Windows.Forms.Button();
-            this.m_tbPulseSignal = new System.Windows.Forms.TextBox();
+            this.m_grPulse = new DevExpress.XtraGrid.GridControl();
+            this.m_viewPulse = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.m_colPulse = new DevExpress.XtraGrid.Columns.GridColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.m_rbTriggerBySignal = new System.Windows.Forms.RadioButton();
             this.m_rbTriggerPerFile = new System.Windows.Forms.RadioButton();
@@ -59,6 +47,8 @@
             this.gbEvent.SuspendLayout();
             this.gbStoreSelection.SuspendLayout();
             this.gbTrigger.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_grPulse)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_viewPulse)).BeginInit();
             this.gbDataSource.SuspendLayout();
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
@@ -75,8 +65,10 @@
             // 
             // m_ctrlEvent
             // 
+            this.m_ctrlEvent.ChannelEditor = null;
             resources.ApplyResources(this.m_ctrlEvent, "m_ctrlEvent");
             this.m_ctrlEvent.Name = "m_ctrlEvent";
+            this.m_ctrlEvent.TextChannelEditor = null;
             // 
             // gbStoreSelection
             // 
@@ -93,25 +85,50 @@
             // gbTrigger
             // 
             resources.ApplyResources(this.gbTrigger, "gbTrigger");
-            this.gbTrigger.Controls.Add(this.m_btnPulseSignal);
-            this.gbTrigger.Controls.Add(this.m_tbPulseSignal);
+            this.gbTrigger.Controls.Add(this.m_grPulse);
             this.gbTrigger.Controls.Add(this.label1);
             this.gbTrigger.Controls.Add(this.m_rbTriggerBySignal);
             this.gbTrigger.Controls.Add(this.m_rbTriggerPerFile);
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
             // 
-            // m_btnPulseSignal
+            // m_grPulse
             // 
-            resources.ApplyResources(this.m_btnPulseSignal, "m_btnPulseSignal");
-            this.m_btnPulseSignal.Name = "m_btnPulseSignal";
-            this.m_btnPulseSignal.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.m_grPulse, "m_grPulse");
+            this.m_grPulse.MainView = this.m_viewPulse;
+            this.m_grPulse.Name = "m_grPulse";
+            this.m_grPulse.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.m_viewPulse});
             // 
-            // m_tbPulseSignal
+            // m_viewPulse
             // 
-            resources.ApplyResources(this.m_tbPulseSignal, "m_tbPulseSignal");
-            this.m_tbPulseSignal.Name = "m_tbPulseSignal";
-            this.m_tbPulseSignal.ReadOnly = true;
+            this.m_viewPulse.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.m_colPulse});
+            this.m_viewPulse.GridControl = this.m_grPulse;
+            this.m_viewPulse.Name = "m_viewPulse";
+            this.m_viewPulse.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.m_viewPulse.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
+            this.m_viewPulse.OptionsBehavior.AutoPopulateColumns = false;
+            this.m_viewPulse.OptionsCustomization.AllowColumnMoving = false;
+            this.m_viewPulse.OptionsCustomization.AllowColumnResizing = false;
+            this.m_viewPulse.OptionsCustomization.AllowFilter = false;
+            this.m_viewPulse.OptionsCustomization.AllowGroup = false;
+            this.m_viewPulse.OptionsCustomization.AllowQuickHideColumns = false;
+            this.m_viewPulse.OptionsCustomization.AllowSort = false;
+            this.m_viewPulse.OptionsFind.AllowFindPanel = false;
+            this.m_viewPulse.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.m_viewPulse.OptionsView.ShowColumnHeaders = false;
+            this.m_viewPulse.OptionsView.ShowGroupPanel = false;
+            this.m_viewPulse.OptionsView.ShowIndicator = false;
+            this.m_viewPulse.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.m_viewPulse_RowCellStyle);
+            // 
+            // m_colPulse
+            // 
+            resources.ApplyResources(this.m_colPulse, "m_colPulse");
+            this.m_colPulse.FieldName = "PulseID";
+            this.m_colPulse.Name = "m_colPulse";
+            this.m_colPulse.OptionsColumn.AllowEdit = false;
+            this.m_colPulse.OptionsColumn.ReadOnly = true;
             // 
             // label1
             // 
@@ -123,6 +140,7 @@
             resources.ApplyResources(this.m_rbTriggerBySignal, "m_rbTriggerBySignal");
             this.m_rbTriggerBySignal.Name = "m_rbTriggerBySignal";
             this.m_rbTriggerBySignal.UseVisualStyleBackColor = true;
+            this.m_rbTriggerBySignal.CheckedChanged += new System.EventHandler(this.m_rbTriggerBySignal_CheckedChanged);
             // 
             // m_rbTriggerPerFile
             // 
@@ -152,6 +170,7 @@
             resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
             this.m_tbPwdDAT.Name = "m_tbPwdDAT";
             this.m_tbPwdDAT.UseSystemPasswordChar = true;
+            this.m_tbPwdDAT.TextChanged += new System.EventHandler(this.m_tbPwdDAT_TextChanged);
             // 
             // label4
             // 
@@ -171,6 +190,7 @@
             this.m_btnBrowseDAT.Image = global::iba.Properties.Resources.open;
             this.m_btnBrowseDAT.Name = "m_btnBrowseDAT";
             this.m_btnBrowseDAT.UseVisualStyleBackColor = true;
+            this.m_btnBrowseDAT.Click += new System.EventHandler(this.m_btnBrowseDAT_Click);
             // 
             // m_btnBrowsePDO
             // 
@@ -288,6 +308,8 @@
             this.gbStoreSelection.ResumeLayout(false);
             this.gbTrigger.ResumeLayout(false);
             this.gbTrigger.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_grPulse)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_viewPulse)).EndInit();
             this.gbDataSource.ResumeLayout(false);
             this.gbDataSource.PerformLayout();
             this.m_monitorGroup.ResumeLayout(false);
@@ -302,8 +324,6 @@
 
         private Utility.CollapsibleGroupBox gbDataSource;
         private Utility.CollapsibleGroupBox gbTrigger;
-        private System.Windows.Forms.Button m_btnPulseSignal;
-        private System.Windows.Forms.TextBox m_tbPulseSignal;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton m_rbTriggerBySignal;
         private System.Windows.Forms.RadioButton m_rbTriggerPerFile;
@@ -327,5 +347,8 @@
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
+        private DevExpress.XtraGrid.GridControl m_grPulse;
+        private DevExpress.XtraGrid.Views.Grid.GridView m_viewPulse;
+        private DevExpress.XtraGrid.Columns.GridColumn m_colPulse;
     }
 }
