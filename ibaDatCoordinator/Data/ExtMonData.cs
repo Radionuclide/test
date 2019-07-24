@@ -342,7 +342,8 @@ namespace iba.Data
                     throw new ArgumentOutOfRangeException();
             }
             jobInfo.Guid = guid;
-            jobInfo.UaBrowseName = $@"Job{indexWithinFolder}"; // todo. kls. use guid??
+            jobInfo.UaBrowseName = $@"Job{{{guid}}}";
+            // jobInfo.UaBrowseName = $@"Job{indexWithinFolder}"; // uncomment this line to use index instead of Guid
             folder.Children.Add(jobInfo);
             // check consistency between mib name and oid
             Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
@@ -942,6 +943,9 @@ namespace iba.Data
         /// <summary> OID 1...n - one class instance per each task </summary>
         public class TaskInfo : ExtMonFolder
         {
+            /// <summary> Key of the task list; corresponds to TaskManager's cfg guid </summary>
+            public Guid Guid;
+
             /// <summary> Oid 1 </summary>
             public readonly ExtMonVariable<string> TaskName;
             /// <summary> Oid 2 </summary>
@@ -1030,7 +1034,8 @@ namespace iba.Data
                 CleanupInfo = null;
             }
 
-            /// <summary> Resets to default values everything except Oid and Parent </summary>
+            /// <summary> Resets to default all values;
+            /// (keys and structure is not reset (Guid, Oid, mibName, Parent, etc) </summary>
             public void Reset()
             {
                 TaskName.Value = "";
@@ -1116,7 +1121,7 @@ namespace iba.Data
         /// <summary> OID ...2 Standard Jobs </summary>
         public abstract class JobInfoBase : ExtMonGroup
         {
-            /// <summary> key of the job list </summary>
+            /// <summary> Key of the job list; corresponds to TaskManager's cfg guid  </summary>
             public Guid Guid;
 
             /// <summary> Oid 1 - Contains everything except tasks </summary> 
@@ -1220,13 +1225,14 @@ namespace iba.Data
                 }
             }
 
-            public TaskInfo AddTask(string taskName)
+            public TaskInfo AddTask(string taskName, Guid guid)
             {
                 var taskInfo = new TaskInfo(FolderTasks, (uint) FolderTasks.Children.Count + 1, taskName)
                 {
-                    UaBrowseName = $@"Task{FolderTasks.Children.Count + 1}" // todo. kls. use guid?
+                    Guid = guid,
+                    UaBrowseName = $@"Task{{{guid}}}" 
+                    //UaBrowseName = $@"Task{FolderTasks.Children.Count + 1}" // uncomment this line to use index instead of Guid
                 };
-
                 FolderTasks.Children.Add(taskInfo);
 
                 // check consistency between mib name and oid

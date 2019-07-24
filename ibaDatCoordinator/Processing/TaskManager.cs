@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Text;
 using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using iba.Data;
 using iba.Utility;
@@ -780,11 +778,12 @@ namespace iba.Processing
             {
                 foreach (TaskData t in cfg.Tasks)
                 {
-                    ji.AddTask(t.Name);
+                    ji.AddTask(t.Name, t.Guid);
                 }
             }
-            // if task count is nonzero and has changed then invalidate tree structure
-            else if (ji.TaskCount != cfg.Tasks.Count)
+
+            // if task count has changed then invalidate tree structure
+            if (ji.TaskCount != cfg.Tasks.Count)
             {
                 ji.ResetTasks();
                 ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
@@ -794,10 +793,18 @@ namespace iba.Processing
             // fill task's data
             for (int i = 0; i < cfg.Tasks.Count; i++)
             {
-                TaskData taskData = cfg.Tasks[i];
+                var taskData = cfg.Tasks[i];
                 var taskInfo = ji[i];
-                taskInfo.Reset();
 
+                // if tasks order has changed then invalidate tree structure
+                if (taskData.Guid != taskInfo.Guid)
+                {
+                    ji.ResetTasks();
+                    ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+
+                taskInfo.Reset();
                 taskInfo.TaskName.Value = taskData.Name;
 
                 // last execution - success, duration, memory
